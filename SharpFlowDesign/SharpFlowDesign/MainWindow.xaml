@@ -4,9 +4,36 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SharpFlowDesign"
+        xmlns:my="clr-namespace:SharpFlowDesign.UserControls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        
-    </Grid>
+        Title="MainWindow" Height="350" Width="825" Loaded="Window_Loaded">
+    <Window.Resources>
+
+
+        <Style x:Key="BaseContentControlStyle" TargetType="{x:Type ContentControl}">
+            <Setter Property="Foreground" Value="Red" />
+        </Style>
+        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BaseContentControlStyle}" />
+
+        <ControlTemplate x:Key="template1">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ShowGridLines="False">
+                <Ellipse  Fill="#FF818181" Stroke="#FF376DBB" StrokeThickness="4" HorizontalAlignment="Stretch"/>
+                <TextBox Margin="18" Name="tplTextBlock" Text="User stage" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+            </Grid>
+
+        </ControlTemplate>
+
+    </Window.Resources>
+
+    <StackPanel Background="#FF383838">
+        <Label>Hello World</Label>
+        <Button Canvas.Left="15" Canvas.Top="16" Height="22" Name="btnNewAction" Width="75" Click="btnNewAction_Click">new action</Button>
+        <Canvas Name="myCanvas" >
+
+            <my:MyThumb x:Name="myThumb1" DragDelta="onDragDelta" Canvas.Left="270" Canvas.Top="63.75" Template="{StaticResource template1}"/>
+            <my:MyThumb x:Name="myThumb2" DragDelta="onDragDelta" Canvas.Left="270" Canvas.Top="212.5" Template="{StaticResource template1}"/>
+            <my:MyThumb x:Name="myThumb3" DragDelta="onDragDelta" Canvas.Left="430" Canvas.Top="212.5" Template="{StaticResource template1}"/>
+            <my:MyThumb x:Name="myThumb4" DragDelta="onDragDelta" Canvas.Left="430" Canvas.Top="63.75" Template="{StaticResource template1}"/>
+        </Canvas>
+    </StackPanel>
 </Window>

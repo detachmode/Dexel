@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:SharpFlowDesign"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
+        <SolidColorBrush x:Key="BG" Color="#FF383838"/>
+
     </Application.Resources>
 </Application>
