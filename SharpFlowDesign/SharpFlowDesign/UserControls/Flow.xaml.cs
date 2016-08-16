@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -13,25 +12,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using SharpFlowDesign.UserControls;
-using SharpFlowDesign.ViewModels;
 
-namespace SharpFlowDesign
+namespace SharpFlowDesign.UserControls
 {
     /// <summary>
-    /// Interaktionslogik für MainWindow.xaml
+    /// Interaktionslogik für Flow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class Flow : UserControl
     {
-        public MainWindow()
+        public Flow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
-        }
-
-        private void btnNewAction_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

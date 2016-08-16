@@ -4,36 +4,31 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SharpFlowDesign"
-        xmlns:my="clr-namespace:SharpFlowDesign.UserControls"
+        xmlns:controls="clr-namespace:SharpFlowDesign.UserControls"
+        xmlns:mv="clr-namespace:SharpFlowDesign.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="825" Loaded="Window_Loaded">
+        Title="Sharp Flow Design" Height="350" Width="825">
     <Window.Resources>
-
+        <SolidColorBrush x:Key="GridColor" Color="#FF404040"/>
+        <VisualBrush x:Key="MyVisualBrush" TileMode="Tile" Viewport="0,0,15,15" ViewportUnits="Absolute" Viewbox="0,0,15,15" ViewboxUnits="Absolute">
+            <VisualBrush.Visual>
+                <Grid Background="#FF363636">
+                    <Path Data="M 0 0 L 15 0" Stroke="{DynamicResource GridColor}" />
+                    <Path Data="M 15 0 L 15 15" Stroke="{DynamicResource GridColor}" />
+                </Grid>
+            </VisualBrush.Visual>
+        </VisualBrush>
 
         <Style x:Key="BaseContentControlStyle" TargetType="{x:Type ContentControl}">
-            <Setter Property="Foreground" Value="Red" />
+            <Setter Property="Foreground" Value="Bisque" />
         </Style>
         <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BaseContentControlStyle}" />
 
-        <ControlTemplate x:Key="template1">
-            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ShowGridLines="False">
-                <Ellipse  Fill="#FF818181" Stroke="#FF376DBB" StrokeThickness="4" HorizontalAlignment="Stretch"/>
-                <TextBox Margin="18" Name="tplTextBlock" Text="User stage" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
-            </Grid>
-
-        </ControlTemplate>
-
     </Window.Resources>
 
-    <StackPanel Background="#FF383838">
-        <Label>Hello World</Label>
+    <StackPanel Background="{StaticResource MyVisualBrush}">
+        <Label>Flow Design</Label>
         <Button Canvas.Left="15" Canvas.Top="16" Height="22" Name="btnNewAction" Width="75" Click="btnNewAction_Click">new action</Button>
-        <Canvas Name="myCanvas" >
-
-            <my:MyThumb x:Name="myThumb1" DragDelta="onDragDelta" Canvas.Left="270" Canvas.Top="63.75" Template="{StaticResource template1}"/>
-            <my:MyThumb x:Name="myThumb2" DragDelta="onDragDelta" Canvas.Left="270" Canvas.Top="212.5" Template="{StaticResource template1}"/>
-            <my:MyThumb x:Name="myThumb3" DragDelta="onDragDelta" Canvas.Left="430" Canvas.Top="212.5" Template="{StaticResource template1}"/>
-            <my:MyThumb x:Name="myThumb4" DragDelta="onDragDelta" Canvas.Left="430" Canvas.Top="63.75" Template="{StaticResource template1}"/>
-        </Canvas>
+        <controls:SubFlow DataContext="{Binding}"/>
     </StackPanel>
 </Window>

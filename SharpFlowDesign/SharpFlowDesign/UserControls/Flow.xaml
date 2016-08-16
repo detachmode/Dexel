@@ -1,0 +1,32 @@
+﻿<UserControl x:Class="SharpFlowDesign.UserControls.Flow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SharpFlowDesign.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="100">
+    <Grid Background="#FF552020">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <TextBox Margin="12,0,22,0"  Text="{Binding Mode=OneWay}" Background="{x:Null}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" BorderBrush="{x:Null}"   />
+        <Grid Grid.Row="1" Margin="0,-5,0,0">
+            <Grid VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" >
+                <Grid.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform Angle="180"/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Grid.RenderTransform>
+                <Rectangle Fill="#FFFF2222" Height="3"  VerticalAlignment="Top" Margin="12,5,0,0" ></Rectangle>
+                <Path Fill="#FFFF2222" Grid.Row="1" VerticalAlignment="Top"  Data="M13,1 L13,12 L1,6 L13,1" />
+            </Grid>
+        </Grid>
+
+
+    </Grid>
+</UserControl>
