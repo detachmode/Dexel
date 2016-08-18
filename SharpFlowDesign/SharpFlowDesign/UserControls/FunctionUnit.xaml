@@ -9,7 +9,8 @@
 
     <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ShowGridLines="False">
         <Ellipse  Fill="#FF2E2E2E" Stroke="#FF376DBB" StrokeThickness="4" HorizontalAlignment="Stretch"/>
-        <TextBox Margin="18" Name="tplTextBlock" Text="{Binding Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFD6D6D6" Background="{x:Null}" BorderBrush="{x:Null}"/>
+        <TextBox Margin="18" Text="{Binding Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFD6D6D6" Background="{x:Null}" BorderBrush="{x:Null}"/>
+        <Button Width="20" Height="20" Margin="0,-15" Click="ButtonBase_OnClick" VerticalAlignment="Bottom">+</Button>
     </Grid>
 
 </UserControl>

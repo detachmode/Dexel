@@ -55,6 +55,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="UserControls\Column.xaml.cs">
+      <DependentUpon>Column.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\Flow.xaml.cs">
       <DependentUpon>Flow.xaml</DependentUpon>
     </Compile>
@@ -62,8 +65,8 @@
       <DependentUpon>FunctionUnit.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\MyThumb.cs" />
-    <Compile Include="UserControls\SubFlow.xaml.cs">
-      <DependentUpon>SubFlow.xaml</DependentUpon>
+    <Compile Include="UserControls\FlowContainer.xaml.cs">
+      <DependentUpon>FlowContainer.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\FlowElement.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
@@ -79,6 +82,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UserControls\Column.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\Flow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -87,7 +94,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UserControls\SubFlow.xaml">
+    <Page Include="UserControls\FlowContainer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

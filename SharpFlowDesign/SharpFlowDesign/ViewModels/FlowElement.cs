@@ -9,25 +9,37 @@ namespace SharpFlowDesign.ViewModels
 {
     class FlowElement
     {
-        public string Name { get; set; }
-
-        public FlowElement(string name)
-        {
-            Name = name;
-        }
+       
     }
 
     class Flow : FlowElement
     {
-        public Flow(string name) : base(name)
+        public string Name { get; set; }
+        public Flow(string name)
         {
+            Name = name;
+        }
+
+    }
+
+    class Column : FlowElement
+    {
+      
+    }
+
+    class FlowContainer : FlowElement
+    {
+        public List<FlowElement> FlowElements { get; set; }
+        public FlowContainer()
+        {
+            FlowElements = new List<FlowElement>();
         }
     }
 
-    class SubFlow : FlowElement
+    class FlowSplitter : FlowElement
     {
         public List<FlowElement> FlowElements { get; set; }
-        public SubFlow(string name) : base(name)
+        public FlowSplitter()
         {
             FlowElements = new List<FlowElement>();
         }
@@ -35,8 +47,10 @@ namespace SharpFlowDesign.ViewModels
 
     class FunctionUnit : FlowElement
     {
-        public FunctionUnit(string name) : base(name)
+        public string Name { get; set; }
+        public FunctionUnit(string name)
         {
+            Name = name;
         }
     }
 }

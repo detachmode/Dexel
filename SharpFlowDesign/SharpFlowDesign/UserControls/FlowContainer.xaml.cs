@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace SharpFlowDesign.UserControls
 {
     /// <summary>
-    /// Interaktionslogik für SubFlow.xaml
+    /// Interaktionslogik für FlowSplitter.xaml
     /// </summary>
-    public partial class SubFlow : UserControl
+    public partial class FlowContainer : UserControl
     {
-        public SubFlow()
+        public FlowContainer()
         {
             InitializeComponent();
         }

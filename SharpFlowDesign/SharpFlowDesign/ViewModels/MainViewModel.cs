@@ -9,22 +9,37 @@ namespace SharpFlowDesign.ViewModels
 {
     class MainViewModel
     {
-        public ObservableCollection<FlowElement> FlowElements { get; set; }
+
+        public FlowContainer root { get; set; }
 
 
         public MainViewModel()
         {
-            FlowElements = new ObservableCollection<FlowElement>();
-            FlowElements.Add(new Flow("customer"));
-            FlowElements.Add(new FunctionUnit("Is_Customer_has_credit"));
-            FlowElements.Add(new Flow("Arrow"));
-            FlowElements.Add(new FunctionUnit("Test"));
-            var sub = new SubFlow("Subflow");
-            sub.FlowElements.Add(new FunctionUnit("testsub1"));
-            sub.FlowElements.Add(new FunctionUnit("testsub2"));
-            FlowElements.Add(sub);
+            root = new FlowContainer();
+            root.FlowElements.Add(new Flow(""));
+            root.FlowElements.Add(new FunctionUnit(""));
+            root.FlowElements.Add(new Flow(""));
+            //root.FlowElements.Add(new Flow("customer"));
+            //root.FlowElements.Add(new FunctionUnit("Is_Customer_has_credit"));
+            //root.FlowElements.Add(new Flow("Arrow"));
+            //root.FlowElements.Add(new FunctionUnit("Test"));
+            //root.FlowElements.Add(new Flow(""));
+            ////root.FlowElements.Add(new Column());
+            //var split = new FlowSplitter();           
+            //var flow1 = new FlowContainer();
 
-            FlowElements.Add(new Flow("()"));
+            //flow1.FlowElements.Add(new Flow("string"));
+            //flow1.FlowElements.Add(new FunctionUnit("testsub1"));
+            //flow1.FlowElements.Add(new Flow("string"));
+            //var flow2 = new FlowContainer();
+            //flow2.FlowElements.Add(new Flow("string"));
+            //flow2.FlowElements.Add(new FunctionUnit("testsub2"));
+            //flow2.FlowElements.Add(new Flow("string"));
+            //split.FlowElements.Add((flow1));
+            //split.FlowElements.Add((flow2));
+            //root.FlowElements.Add(split);
+
+            //root.FlowElements.Add(new Flow("()"));
         }
     }
 }

@@ -28,7 +28,6 @@
 
     <StackPanel Background="{StaticResource MyVisualBrush}">
         <Label>Flow Design</Label>
-        <Button Canvas.Left="15" Canvas.Top="16" Height="22" Name="btnNewAction" Width="75" Click="btnNewAction_Click">new action</Button>
-        <controls:SubFlow DataContext="{Binding}"/>
+        <controls:FlowContainer DataContext="{Binding root}" HorizontalAlignment="Center"/>
     </StackPanel>
 </Window>

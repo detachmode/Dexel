@@ -1,0 +1,58 @@
+﻿<UserControl x:Class="SharpFlowDesign.UserControls.FlowContainer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SharpFlowDesign.UserControls"
+             xmlns:mv="clr-namespace:SharpFlowDesign.ViewModels"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+
+    <ListBox  ItemsSource="{Binding Path=FlowElements}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF5F5F5F">
+        <ListBox.ItemContainerStyle>
+            <Style TargetType="ListBoxItem">
+                <Setter Property="Focusable" Value="false"/>
+            </Style>
+        </ListBox.ItemContainerStyle>
+        <ListBox.ItemsPanel>
+            <ItemsPanelTemplate>
+                <WrapPanel IsItemsHost="True"  />
+            </ItemsPanelTemplate>
+        </ListBox.ItemsPanel>
+        <ListBox.Resources>
+            <DataTemplate DataType="{x:Type mv:Flow}">
+                <local:Flow  DataContext="{Binding Name}"/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type mv:Column}">
+                <local:Column  />
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type mv:FunctionUnit}">
+                <local:FunctionUnit Margin="0,10" DataContext="{Binding Name}"/>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type mv:FlowSplitter}">
+                <ListBox  ItemsSource="{Binding FlowElements}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFC7C7C7">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Focusable" Value="false"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                </ListBox>
+            </DataTemplate>
+            <DataTemplate DataType="{x:Type mv:FlowContainer}">
+                <ListBox  ItemsSource="{Binding FlowElements}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FFC7C7C7">
+                    <ListBox.ItemContainerStyle>
+                        <Style TargetType="ListBoxItem">
+                            <Setter Property="Focusable" Value="false"/>
+                        </Style>
+                    </ListBox.ItemContainerStyle>
+                    <ListBox.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel IsItemsHost="True"  />
+                        </ItemsPanelTemplate>
+                    </ListBox.ItemsPanel>
+                </ListBox>
+            </DataTemplate>
+
+        </ListBox.Resources>
+    </ListBox>
+</UserControl>
