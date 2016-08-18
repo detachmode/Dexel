@@ -11,7 +11,12 @@
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
-        <TextBox Margin="12,0,22,0"  Text="{Binding Mode=OneWay}" Background="{x:Null}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Bottom" BorderBrush="{x:Null}"   />
+        <StackPanel Margin="12,0,22,0" Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <TextBlock Foreground="White" >(</TextBlock>
+            <TextBox   Text="{Binding Mode=OneWay}" Background="{x:Null}" Foreground="White" BorderBrush="{x:Null}"   />
+            <TextBlock Foreground="White" >)</TextBlock>
+        </StackPanel>
+
         <Grid Grid.Row="1" Margin="0,-5,0,0">
             <Grid VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5" >
                 <Grid.RenderTransform>

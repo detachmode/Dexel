@@ -64,9 +64,11 @@
     <Compile Include="UserControls\FunctionUnit.xaml.cs">
       <DependentUpon>FunctionUnit.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UserControls\MyThumb.cs" />
     <Compile Include="UserControls\FlowContainer.xaml.cs">
       <DependentUpon>FlowContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\IOCell.xaml.cs">
+      <DependentUpon>IOCell.xaml</DependentUpon>
     </Compile>
     <Compile Include="UserControls\ZoomBorder.cs" />
     <Compile Include="ViewModels\FlowElement.cs" />
@@ -96,6 +98,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UserControls\FlowContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\IOCell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

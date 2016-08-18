@@ -16,14 +16,13 @@ using System.Windows.Shapes;
 namespace SharpFlowDesign.UserControls
 {
     /// <summary>
-    /// Interaktionslogik für Flow.xaml
+    /// Interaction logic for IOCell.xaml
     /// </summary>
-    public partial class Flow : UserControl
+    public partial class IOCell : UserControl
     {
-        public Flow()
+        public IOCell()
         {
             InitializeComponent();
-            DataContext = "IO";
         }
     }
 }

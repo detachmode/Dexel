@@ -21,8 +21,14 @@ namespace SharpFlowDesign.UserControls
     /// </summary>
     public partial class FunctionUnit : UserControl
     {
+        public List<LineGeometry> EndLines { get; private set; }
+        public List<LineGeometry> StartLines { get; private set; }
+
         public FunctionUnit()
         {
+            StartLines = new List<LineGeometry>();
+            EndLines = new List<LineGeometry>();
+            this.DataContext = "Test";
             InitializeComponent();
         }
 

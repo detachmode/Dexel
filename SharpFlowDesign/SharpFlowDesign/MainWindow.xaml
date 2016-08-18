@@ -23,18 +23,31 @@
             <Setter Property="Foreground" Value="Bisque" />
         </Style>
         <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BaseContentControlStyle}" />
+        
+        <ControlTemplate x:Key="template1">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ShowGridLines="False">
+                <Ellipse  Fill="#FF818181" Stroke="#FF376DBB" StrokeThickness="4" HorizontalAlignment="Stretch"/>
+                <TextBox Margin="18" Name="tplTextBlock" Text="User stage" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
+            </Grid>
 
+        </ControlTemplate>
     </Window.Resources>
 
     <Grid Background="{StaticResource MyVisualBrush}" RenderTransformOrigin="0.5,0.5">
         <Label>Flow Design</Label>
         <controls:ZoomBorder x:Name="border" ClipToBounds="True" Background="#02C73737">
-            <controls:FlowContainer DataContext="{Binding root}" HorizontalAlignment="Center"/>
+            <Canvas Name="myCanvas" >
+
+                <controls:IOCell x:Name="myThumb1" Thumb.DragDelta="onDragDelta" Canvas.Left="270" Canvas.Top="63.75" />
+                <controls:IOCell x:Name="myThumb2" Thumb.DragDelta="onDragDelta" Canvas.Left="270" Canvas.Top="212.5" />
+                <controls:IOCell x:Name="myThumb3" Thumb.DragDelta="onDragDelta" Canvas.Left="430" Canvas.Top="212.5" />
+                <controls:IOCell x:Name="myThumb4" Thumb.DragDelta="onDragDelta" Canvas.Left="430" Canvas.Top="63.75" />
+            </Canvas>
+            <!--<controls:FlowContainer DataContext="{Binding root}" HorizontalAlignment="Center"/>-->
         </controls:ZoomBorder>
 
-        <!--<Viewbox Name="ZoomViewbox">
-            
-        </Viewbox>-->
+
+
 
     </Grid>
 </Window>
