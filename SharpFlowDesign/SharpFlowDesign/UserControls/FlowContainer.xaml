@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-    <ListBox  ItemsSource="{Binding Path=FlowElements}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF5F5F5F">
+    <ListBox ItemsSource="{Binding Path=FlowElements}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF5F5F5F">
         <ListBox.ItemContainerStyle>
             <Style TargetType="ListBoxItem">
                 <Setter Property="Focusable" Value="false"/>

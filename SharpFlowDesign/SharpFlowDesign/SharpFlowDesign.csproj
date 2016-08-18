@@ -68,6 +68,7 @@
     <Compile Include="UserControls\FlowContainer.xaml.cs">
       <DependentUpon>FlowContainer.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\ZoomBorder.cs" />
     <Compile Include="ViewModels\FlowElement.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Page Include="MainWindow.xaml">

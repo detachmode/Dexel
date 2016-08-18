@@ -26,8 +26,15 @@
 
     </Window.Resources>
 
-    <StackPanel Background="{StaticResource MyVisualBrush}">
+    <Grid Background="{StaticResource MyVisualBrush}" RenderTransformOrigin="0.5,0.5">
         <Label>Flow Design</Label>
-        <controls:FlowContainer DataContext="{Binding root}" HorizontalAlignment="Center"/>
-    </StackPanel>
+        <controls:ZoomBorder x:Name="border" ClipToBounds="True" Background="#02C73737">
+            <controls:FlowContainer DataContext="{Binding root}" HorizontalAlignment="Center"/>
+        </controls:ZoomBorder>
+
+        <!--<Viewbox Name="ZoomViewbox">
+            
+        </Viewbox>-->
+
+    </Grid>
 </Window>

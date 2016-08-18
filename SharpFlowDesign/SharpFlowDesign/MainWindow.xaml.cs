@@ -27,11 +27,28 @@ namespace SharpFlowDesign
         {
             InitializeComponent();
             DataContext = new MainViewModel();
+
+            //ZoomViewbox.Width = 100;
+            //ZoomViewbox.Height = 20;
         }
 
         private void btnNewAction_Click(object sender, RoutedEventArgs e)
         {
 
         }
+
+        //private void MainWindow_OnMouseWheel(object sender, MouseWheelEventArgs e)
+        //{
+        //    UpdateViewBox((e.Delta > 0) ? 15 : -15);
+        //}
+
+        //private void UpdateViewBox(int newValue)
+        //{
+        //    if ((ZoomViewbox.Width >= 0) && ZoomViewbox.Height >= 0)
+        //    {
+        //        ZoomViewbox.Width += newValue;
+        //        ZoomViewbox.Height += newValue;
+        //    }
+        }
     }
-}
+
