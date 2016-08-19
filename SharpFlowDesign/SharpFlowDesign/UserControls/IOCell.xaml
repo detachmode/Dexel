@@ -6,9 +6,9 @@
              xmlns:local="clr-namespace:SharpFlowDesign.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="300">
-    <StackPanel Orientation="Horizontal" IsHitTestVisible="True" ZIndex="100"  Thumb.DragDelta="onDragDelta" MouseDown="StackPanel_MouseLeftButtonUp">
+    <StackPanel Orientation="Horizontal" IsHitTestVisible="True" ZIndex="100"  Thumb.DragDelta="onDragDelta" PreviewMouseDown="StackPanel_MouseLeftButtonUp">
         <local:Flow></local:Flow>
-        <local:FunctionUnit LabelContent="LabelContent"  ></local:FunctionUnit>
+        <local:FunctionUnit x:Name="FU" LabelContent="LabelContent"  ></local:FunctionUnit>
         <local:Flow></local:Flow>
     </StackPanel>
 </UserControl>

@@ -20,6 +20,9 @@ namespace SharpFlowDesign.UserControls
     /// </summary>
     public partial class IOCell : UserControl
     {
+
+        public bool isSelected { get; set; }
+
         public IOCell()
         {
             InitializeComponent();
@@ -35,13 +38,20 @@ namespace SharpFlowDesign.UserControls
         // Event hanlder for dragging functionality support same to all thumbs
         private void onDragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
+            MainWindow myWindow =  (MainWindow)Window.GetWindow(this);
+            var cells = myWindow.GetSelection();
             //UserControls.IOCell thumb = e.Source as UserControls.IOCell;
+            foreach (var cell in cells)
+            {
+                double left = Canvas.GetLeft(cell) + e.HorizontalChange;
+                double top = Canvas.GetTop(cell) + e.VerticalChange;
 
-            double left = Canvas.GetLeft(this) + e.HorizontalChange;
-            double top = Canvas.GetTop(this) + e.VerticalChange;
+                Canvas.SetLeft(cell, left);
+                Canvas.SetTop(cell, top);
 
-            Canvas.SetLeft(this, left);
-            Canvas.SetTop(this, top);
+            }
+
+
 
             // Update lines's layouts
             //UpdateLines(thumb);
@@ -49,7 +59,13 @@ namespace SharpFlowDesign.UserControls
 
         private void StackPanel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            //SelectionColor = new SolidColorBrush(Colors.Red);
+            isSelected = true;
+
+           
+            
+            FU.SelectionColor = new SolidColorBrush(Colors.DodgerBlue);
         }
+
     }
 }
+ 

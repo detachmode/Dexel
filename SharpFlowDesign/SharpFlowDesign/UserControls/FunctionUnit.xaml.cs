@@ -56,19 +56,5 @@ namespace SharpFlowDesign.UserControls
         public static readonly DependencyProperty SelectionColorProperty =
           DependencyProperty.Register("SelectionColor", typeof(SolidColorBrush), typeof(FunctionUnit));
 
-        private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            SelectionColor = new SolidColorBrush(Colors.Red);
-        }
-
-        private void Ellipse_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            SelectionColor = new SolidColorBrush(Colors.Red);
-        }
-
-        private void Thumb_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-
-        }
     }
 }

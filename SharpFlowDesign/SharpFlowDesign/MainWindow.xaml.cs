@@ -40,6 +40,25 @@ namespace SharpFlowDesign
             //ZoomViewbox.Height = 20;
         }
 
+
+        public List<IOCell> GetSelection()
+        {
+            var result = new List<IOCell>();
+            for (int i = 0; i < myCanvas.Children.Count; i++)
+            {
+                var cell = myCanvas.Children[i] as IOCell;
+                if (cell != null)
+                {
+                    if (cell.isSelected)
+                    {
+                        result.Add(cell);
+                    }
+                   
+                }
+            }
+            return result;
+        }
+
         private void btnNewAction_Click(object sender, RoutedEventArgs e)
         {
 

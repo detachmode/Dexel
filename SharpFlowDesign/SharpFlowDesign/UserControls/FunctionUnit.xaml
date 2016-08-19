@@ -7,11 +7,11 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
 
-    <Thumb HorizontalAlignment="Stretch" VerticalAlignment="Stretch" IsHitTestVisible="True"  MouseDown="Thumb_MouseDown" >
+    <Thumb HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
         <Thumb.Template>
             <ControlTemplate>
-                <Grid Background="{Binding Path=SelectionColor, RelativeSource={RelativeSource FindAncestor,  AncestorType=local:FunctionUnit,  AncestorLevel=1}}">
-                    <Ellipse  Fill="#FF2E2E2E" Stroke="#FF376DBB" StrokeThickness="4" HorizontalAlignment="Stretch"/>
+                <Grid >
+                    <Ellipse  Fill="{Binding Path=SelectionColor, RelativeSource={RelativeSource FindAncestor,  AncestorType=local:FunctionUnit,  AncestorLevel=1}, FallbackValue=#FF2E2E2E}" Stroke="#FF376DBB" StrokeThickness="4" HorizontalAlignment="Stretch"/>
                     <TextBox Margin="18" Text="{Binding Path=LabelContent, RelativeSource={RelativeSource FindAncestor,  AncestorType=local:FunctionUnit,  AncestorLevel=1}}"  
                              HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="#FFD6D6D6" Background="{x:Null}" BorderBrush="{x:Null}"/>
                     <Button Width="20" Height="20" Margin="0,-15" Click="ButtonBase_OnClick" VerticalAlignment="Bottom">+</Button>
