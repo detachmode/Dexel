@@ -16,6 +16,8 @@ namespace SharpFlowDesign.UserControls
         private Point origin;
         private Point start;
 
+        public Point BeforeContextMenuPoint;
+
         private TranslateTransform GetTranslateTransform(UIElement element)
         {
             return (TranslateTransform)((TransformGroup)element.RenderTransform)
@@ -55,9 +57,17 @@ namespace SharpFlowDesign.UserControls
                 this.MouseLeftButtonDown += child_MouseLeftButtonDown;
                 this.MouseLeftButtonUp += child_MouseLeftButtonUp;
                 this.MouseMove += child_MouseMove;
+                //this.PreviewMouseRightButtonDown += new MouseButtonEventHandler(
+                //  child_PreviewMouseRightButtonDown);
                 this.PreviewMouseRightButtonDown += new MouseButtonEventHandler(
-                  child_PreviewMouseRightButtonDown);
+                  savePositionBeforeContextMenu);
+
             }
+        }
+
+        private void savePositionBeforeContextMenu(object sender, MouseButtonEventArgs e)
+        {
+            BeforeContextMenuPoint = e.GetPosition(this);
         }
 
         public void Reset()

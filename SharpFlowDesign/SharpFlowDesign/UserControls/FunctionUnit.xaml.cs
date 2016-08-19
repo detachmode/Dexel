@@ -30,11 +30,45 @@ namespace SharpFlowDesign.UserControls
             EndLines = new List<LineGeometry>();
             this.DataContext = "Test";
             InitializeComponent();
+
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
          
+        }
+
+        public string LabelContent
+        {
+            get { return (string)GetValue(LabelContentProperty); }
+            set { SetValue(LabelContentProperty, value); }
+        }
+
+        public static readonly DependencyProperty LabelContentProperty =
+          DependencyProperty.Register("LabelContent", typeof(string), typeof(FunctionUnit));
+
+        public SolidColorBrush SelectionColor
+        {
+            get { return (SolidColorBrush)GetValue(SelectionColorProperty); }
+            set { SetValue(SelectionColorProperty, value); }
+        }
+
+        public static readonly DependencyProperty SelectionColorProperty =
+          DependencyProperty.Register("SelectionColor", typeof(SolidColorBrush), typeof(FunctionUnit));
+
+        private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            SelectionColor = new SolidColorBrush(Colors.Red);
+        }
+
+        private void Ellipse_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            SelectionColor = new SolidColorBrush(Colors.Red);
+        }
+
+        private void Thumb_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }

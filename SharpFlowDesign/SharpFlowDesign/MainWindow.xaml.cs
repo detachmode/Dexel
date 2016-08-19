@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SharpFlowDesign.UserControls;
+using System.Windows;
 using SharpFlowDesign.ViewModels;
 using FunctionUnit = SharpFlowDesign.UserControls.FunctionUnit;
 
@@ -44,20 +45,7 @@ namespace SharpFlowDesign
 
         }
 
-        // Event hanlder for dragging functionality support same to all thumbs
-        private void onDragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
-        {
-            UserControls.IOCell thumb = e.Source as UserControls.IOCell;
 
-            double left = Canvas.GetLeft(thumb) + e.HorizontalChange;
-            double top = Canvas.GetTop(thumb) + e.VerticalChange;
-
-            Canvas.SetLeft(thumb, left);
-            Canvas.SetTop(thumb, top);
-
-            // Update lines's layouts
-            //UpdateLines(thumb);
-        }
 
         // This method updates all the starting and ending lines assigned for the given thumb 
         // according to the latest known thumb position on the canvas
@@ -203,6 +191,35 @@ namespace SharpFlowDesign
         }
 
         public bool isAddNew { get; set; }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var myWindow = Window.GetWindow(this);
+            var transform = myWindow.TransformToVisual(myCanvas);
+
+            var myUiElementPosition = transform.Transform(border.BeforeContextMenuPoint);
+
+            AddNewIOCell(myUiElementPosition);
+        }
+
+        private void AddNewIOCell(Point pos)
+        {
+            var iocell = new IOCell();
+            myCanvas.Children.Add(iocell);
+            //var myWindow = Window.GetWindow(this);
+            //myWindow.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+            //myWindow.Arrange(new Rect(0, 0, myWindow.ActualWidth, myWindow.ActualHeight));
+
+            pos.X -= 100 ;
+            pos.Y -= 20;
+            iocell.SetPostion(pos);
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
 
         // Event handler for enabling new thumb creation by left mouse button click
         //private void btnNewAction_Click(object sender, RoutedEventArgs e)

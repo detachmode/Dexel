@@ -23,7 +23,7 @@ namespace SharpFlowDesign.UserControls
         public Flow()
         {
             InitializeComponent();
-            DataContext = "IO";
+            DataContext = " ";
         }
     }
 }
