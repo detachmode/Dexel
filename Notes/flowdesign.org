@@ -63,7 +63,7 @@ Im Fokus stehen dabei Funktioneneinheien und Datenflüsse, nicht jedoch der Kont
 Die einzelnen Funktioneneinheiten haben ein oder mehrere Input und Output Flüsse.
 
 
-* Princilples
+* Principles
 ** PoMO ( Principle of Mutual Oblivion)
 Dieses Prinzip besagt, dass Funktionseinheiten sich nicht gegenseitig kennen sollen.
 Es soll auch verhindert werden, dass eine Einheit eine andere aufruft und von deren Ergebnis
@@ -86,7 +86,7 @@ Integrationen. Als Regel zusammengefasst nennt er dies "Integration Operation Se
 Dieses Prinzip besagt, dass eine Funktioneseinheit entweder eine Operation oder eine Integration ist und beide 
 Verantwortungsberreiche nicht vermischt werden dürfen.
 
-Funktionen (bzw. auch Klassen, falls eine Funktioneinheit mit einer Klasse umgesetzt wurde), werden eingeteilt in Integrationen und Operationen.
+*** Operationen
 Operationen sind Funktionen, die Logik/ Kontrollstrukturen enthalten dürfen. In C# wären das:
 - if, else
 - for, foreach,
@@ -106,9 +106,13 @@ soll. Im Gegensatz dazu steht der Deklarative Ansatz. Beim deklarativen Programm
 im Detail genau angestellt wird. Ein Beispiel hierfür wären zum Beispiel SQL Befehle. Hier wird nur gesagt, was man haben möchte und das Programm kann dann
 die Anfrage nochmal untersuchen und selbst bestimmen, wie es die Anfrage am besten ausführt.
 
+*** Integrationen
 Die Integrationen werden nach Flow Design Richtlinien deklarative programmiert.
 Diese Funktioneneinheiten dürfen anders als die Operationen, andere Funktionen aufrufen, sie also kennen.  
 Der Unterschied beim Flow Design ist jedoch, dass eine bewusste Trennung eingehalten wird.
+
+Integrationen dürfen auch  auf die Terminierung einer Funktion warten und den Rückgabewert  weiterreichen an andere Funktionen.
+Dafür dürfen sie keine Logik im Sinne von Kontrollstrukturen beinhalten. 
 
 Die Businesslogik, das was die Funktionalität erzeugt, diese befinden sich in Operationen und sind entkoppelt von ihrer Umgebung.
 Sie bekommen einfach nur von irgendwo her einen Input (bzw bei keinen Inputparametern einfach ausgeführt werden) und führen damit die von ihnen implementierte
@@ -125,7 +129,20 @@ Auch Funktionen, die von der Sprache selbst bereitgestellt werden, dürfen sowoh
 Beispiele aus C#:
 FRAGE: Linq auch in Operationen erlaubt?
 int.TryParse, math.sqrt, ... 
-*** Integrationen
+*** Integrationenk
+
 **** Try / Catch
 Oft braucht man auf oberster Ebene, einen Try/Catch, der alle Exceptions abfangen soll, und eine generelle Fehlerbehandlungsroutine 
 startet. Hier ist es doch ratsam, die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
+
+** Übersicht
+|                              | Operationen | Integrationen     |
+| if,else                      | O           | -                 |
+| for, foreach                 | O           | -                 |
+| while, do                    | O           | -                 |
+| try, catch                   | O           | nur mit Ausnahmen |
+| API Aufrufe                  | O           | -                 |
+| Standard Library, LINQ       | O           | O                 |
+| Namen andere Funktion kennen | -           | O                 |
+| Auf Rückgabewert warten      | -           | O                 |
+*
