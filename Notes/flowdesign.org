@@ -1,0 +1,77 @@
+* Flow Design Vorstellung
+** Entstehung und Grundgedanke
+Flow Design ist aus der Clean Code Development Bewegung heraus entstanden. Hauptinitiatior und Erfinder ist Ralf Westphal.
+Ralf Westphal war auch Mitbegründer und Miterfinder der Clean Code Developement Bewegung.
+
+Clean Code Development besteht hauptsächlich aus Prinzipen, nicht jedoch aus Regeln, die man einfach einhalten kann.
+Somit ist es in der Praxis schwer die Prinzipen auf den eigenen Code anzuwenden.
+Flow Design soll in Ergänzung eine Methodik und Programmierregeln bieten, die man einfach befolgen kann und man erhält automatisch
+ein Code, der die CCD Prinzipen erfüllt.
+
+Im Hauptfokus liegen vorallem folgende Prinzipien von CCD:
+- Lose Koppelung
+- Orthogonalität
+  
+Weitere Prinzipien die Beachtung find sollen:
+- Separation of Concerns
+- Single Responsibility Principle
+- Information Hiding Principle 
+- Dependecy Injection
+- Interface Segregation Principle
+
+FlowDesign ist eine Entwurfsmethode, die im Gegensatz zu UML besser geeignet sein soll, bereits in der Entwurfsphase Angwendung zu finden.
+Ziel ist es sich auf dem Papier bereits ein Entwurf der Programmstruktur überlegen zu können.
+Aktuell sei es aus der Mode gekommen, vor dem Programmieren einen Entwurf zu erzeugen, was vorallem daran läge, dass die vorhandenen
+Entwurfsmethodiken eher hinderlich seien und einen unnötigen Overhead erzeugen ( laut Ralf Westphal)
+Es sei somit üblich geworden die Denkearbeit, wie man seinen Code möglichst sauber strukturien kann,
+während dem Programmieren direkt im/vor dem Sourcecode zu verrichten.
+Dies sei jedoch laut Ralf Westphal eine eher ungünstige Lösung und behindere eher den kreativen Denkprozess mit
+unnötiger Schreibarbeit.
+Auf dem Papier sei man mit einer passenden Entwurfsmethodik schneller und man könne auch verschiedene Ideen schneller
+ausprobieren, Änderungen machen, oder auch wieder verwerfen, als direkt im Sourcecode. 
+
+Es geht jedoch nicht darum den Sourcecode bis ins kleinste Detail in eine Art visuelle Programmiesprache zu pressen,
+sondern darum, wie man den Code aufteilt in kleine Funktionseinheiten, die eine möglichst aussagekräftigen Namen haben sollte.
+Wie die Funktionseinheit die Funktionalität im Inneren implementiert wird auf dem Diagramm nicht immer ersichtlich.
+Das ist jedoch keine negative Einschränkung, vielmehr ermöglicht dies, sich auf beim Entwurf nicht mit unnötigen Implementierungsdetails zu bechäftigen,
+sonder sich auf das Große ganze - das Zusammenspiel/ Komposition der Funktionseinheiten und den Datenfluss zu konzentrieren. 
+
+** Das Diagramm
+Im Fokus stehen dabei Funktioneneinheien und Datenflüsse, nicht jedoch der Kontrollfluss.
+Die einzelnen Funktioneneinheiten haben ein oder mehrere Input und Output Flüsse.
+
+
+* Princilples
+** PoMO ( Principle of Mutual Oblivion)
+Ziel ist es, dass Softwarezellen, die Logik enthalten, sich nicht gegenseitig kennen sollen.
+Das schafft eine Möglichst geringe Koppelung zwischen den einzelnen Funktionen.
+Um das zu erreichen, gibt es eine Programmierregel, die es ermöglicht, beim Programmieren darauf zu achten,
+das dieses Prinzip eingehalten wird.
+Dieses Regel nennt sich "Integration Operation Segregation Principle" kurz IOSP.
+
+
+** IOSP
+Funktionen (bzw. auch Klassen, falls eine Funktioneinheit mit einer Klasse umgesetzt wurde), werden eingeteilt in Integrationen und Operationen.
+Operationen sind Funktionen, die Logik/ Kontrollstrukturen enthalten dürfen. In C# wären das:
+- if, else
+- for, foreach,
+- while, do
+- try, catch
+  .. vollständig?
+
+Diese Funktionen sind also imperative programmiert. Imperative Programmierung ist ein Programmierstill, mit dem Fokus auf das WIE ein Problem gelöst werden
+soll. Im Gegensatz dazu steht der Deklarative Ansatz. Beim deklarativen Programmieren steht der Fokus auf das WAS getan werden soll und nicht so sehr, wie es
+im Detail genau angestellt wird. Ein Beispiel hierfür wären zum Beispiel SQL Befehle. Hier wird nur gesagt, was man haben möchte und das Programm kann dann
+die Anfrage nochmal untersuchen und selbst bestimmen, wie es die Anfrage am besten ausführt.
+
+Die Integrationen werden nach Flow Design Richtlinien deklarative programmiert.
+Diese Funktioneneinheiten dürfen anders als die Operationen, andere Funktionen aufrufen, sie also kennen. Dies widerspricht zwar dem PoMO Prinzip, um
+jedoch ein größeres Programm zu schreiben, ist es jedoch unausweichlich, dass eine Koppelung zwischen Funktionseinheiten entsteht. 
+Nur so kann aus vielen kleinen Funktionseinheiten ein großes Ganzes werden, dass eine komplexe Aufgabe lösen kann.
+Der Unterschied beim Flow Design ist jedoch, dass eine bewusste Trennung eingehalten wird.
+
+Die Businesslogik, das was die Funktionalität erzeugt, diese befinden sich in Operationen und sind entkoppelt von ihrer Umgebung.
+Sie bekommen einfach nur von irgendwo her einen Input (bzw bei keinen Inputparametern einfach ausgeführt werden) und führen damit die von ihnen implementierte
+Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die Funktionseinheit jedoch nicht den Empfänger.
+
+
