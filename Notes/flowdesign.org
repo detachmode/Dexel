@@ -31,10 +31,10 @@ Auf dem Papier sei man mit einer passenden Entwurfsmethodik schneller und man k�
 ausprobieren, Änderungen machen, oder auch wieder verwerfen, als direkt im Sourcecode. 
 
 Es geht jedoch nicht darum den Sourcecode bis ins kleinste Detail in eine Art visuelle Programmiesprache zu pressen,
-sondern darum, wie man den Code aufteilt in kleine Funktionseinheiten, die eine möglichst aussagekräftigen Namen haben sollte.
-Wie die Funktionseinheit die Funktionalität im Inneren implementiert wird auf dem Diagramm nicht immer ersichtlich.
-Das ist jedoch keine negative Einschränkung, vielmehr ermöglicht dies, sich auf beim Entwurf nicht mit unnötigen Implementierungsdetails zu bechäftigen,
-sonder sich auf das Große ganze - das Zusammenspiel/ Komposition der Funktionseinheiten und den Datenfluss zu konzentrieren. 
+sondern darum, wie man den Code am sinnvollsten in Funktionseinheiten zerlegt (die einen möglichst aussagekräftigen Namen haben sollten).
+Wie die Funktionalität auf unterster Ebene implementiert wird, wird auf dem Diagramm nicht berücksichtigt.
+Das ist jedoch keine negative Einschränkung, vielmehr ermöglicht dies, sich auf beim Entwurf nicht mit unnötigen Implementierungsdetails bechäftigen zu 
+müssen, sonder sich auf das Große ganze - das Zusammenspiel/ Komposition der Funktionseinheiten und den Datenfluss zu konzentrieren.
 
 ** Der grobe Ablauf
 *** Definieren der Portale und Provider
