@@ -65,14 +65,27 @@ Die einzelnen Funktioneneinheiten haben ein oder mehrere Input und Output Flüss
 
 * Princilples
 ** PoMO ( Principle of Mutual Oblivion)
-Ziel ist es, dass Softwarezellen, die Logik enthalten, sich nicht gegenseitig kennen sollen.
-Das schafft eine Möglichst geringe Koppelung zwischen den einzelnen Funktionen.
+Dieses Prinzip besagt, dass Funktionseinheiten sich nicht gegenseitig kennen sollen.
+Es soll auch verhindert werden, dass eine Einheit eine andere aufruft und von deren Ergebnis
+abhängig ist, bzw. auf das Ergebnis wartet. 
+Eine Funktionseinheit soll, nachdem sie die Daten bearbeitet hat, sie einfach nach 
+außen weiter reichen und nicht wissen, wer die Daten entgegennimmt.
+
+Dieses Prinzip verhindert eine Koppelung zwischen den einzelnen Funktionseinheiten.
 Um das zu erreichen, gibt es eine Programmierregel, die es ermöglicht, beim Programmieren darauf zu achten,
 das dieses Prinzip eingehalten wird.
-Dieses Regel nennt sich "Integration Operation Segregation Principle" kurz IOSP.
+Um jedoch ein "Zusammenspiel" zwischen den einzelnen entkoppelten Einheiten zu ermöglichen, bedarf es einen oder
+mehrere "Koordinatoren" welche diesem Prinzip nicht entsprechen müssen.
+Nur so kann aus vielen kleinen Funktionseinheiten ein großes Ganzes werden, dass eine komplexe Aufgabe lösen kann.
+
+Die Funktionseinheiten, die das PoMO erfüllen müssen nennt Ralf Westphal Operationen und die Koordinatoren nennt er 
+Integrationen. Als Regel zusammengefasst nennt er dies "Integration Operation Segregation Principle" kurz IOSP.
 
 
-** IOSP
+** IOSP ( Integration Operation Segregation Principle)
+Dieses Prinzip besagt, dass eine Funktioneseinheit entweder eine Operation oder eine Integration ist und beide 
+Verantwortungsberreiche nicht vermischt werden dürfen.
+
 Funktionen (bzw. auch Klassen, falls eine Funktioneinheit mit einer Klasse umgesetzt wurde), werden eingeteilt in Integrationen und Operationen.
 Operationen sind Funktionen, die Logik/ Kontrollstrukturen enthalten dürfen. In C# wären das:
 - if, else
@@ -81,19 +94,38 @@ Operationen sind Funktionen, die Logik/ Kontrollstrukturen enthalten dürfen. In
 - try, catch
 - .. vollständig?
 
-Diese Funktionen sind also imperative programmiert. Imperative Programmierung ist ein Programmierstill, mit dem Fokus auf das WIE ein Problem gelöst werden
+Gleichzeitig müssen die Operationen das PoMO prinzip erfüllen, sie dürfen keine andere Funktionseinheiten kennen oder aufrufen und auf
+das Ergebnis warten.
+Ein Funktionsaufruf ist nur über Actions ( Funktionspointer ), die man als Funktionsparameter mit übergibt, oder Events möglich.
+Damit erfüllt die Operation weiter das PoMO, da sie nicht selbst bestimmt, welche Funktion sie aufruft, sondern die Funktion, welche die
+Operation aufgrufen hat ( und somit automatisch eine Integration sein muss, welche die PoMO Bedingung nicht erfüllen muss).
+
+
+Operationen sind also imperative programmiert. Imperative Programmierung ist ein Programmierstill, mit dem Fokus auf das WIE ein Problem gelöst werden
 soll. Im Gegensatz dazu steht der Deklarative Ansatz. Beim deklarativen Programmieren steht der Fokus auf das WAS getan werden soll und nicht so sehr, wie es
 im Detail genau angestellt wird. Ein Beispiel hierfür wären zum Beispiel SQL Befehle. Hier wird nur gesagt, was man haben möchte und das Programm kann dann
 die Anfrage nochmal untersuchen und selbst bestimmen, wie es die Anfrage am besten ausführt.
 
 Die Integrationen werden nach Flow Design Richtlinien deklarative programmiert.
-Diese Funktioneneinheiten dürfen anders als die Operationen, andere Funktionen aufrufen, sie also kennen. Dies widerspricht zwar dem PoMO Prinzip, um
-jedoch ein größeres Programm zu schreiben, ist es jedoch unausweichlich, dass eine Koppelung zwischen Funktionseinheiten entsteht. 
-Nur so kann aus vielen kleinen Funktionseinheiten ein großes Ganzes werden, dass eine komplexe Aufgabe lösen kann.
+Diese Funktioneneinheiten dürfen anders als die Operationen, andere Funktionen aufrufen, sie also kennen.  
 Der Unterschied beim Flow Design ist jedoch, dass eine bewusste Trennung eingehalten wird.
 
 Die Businesslogik, das was die Funktionalität erzeugt, diese befinden sich in Operationen und sind entkoppelt von ihrer Umgebung.
 Sie bekommen einfach nur von irgendwo her einen Input (bzw bei keinen Inputparametern einfach ausgeführt werden) und führen damit die von ihnen implementierte
 Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die Funktionseinheit jedoch nicht den Empfänger.
 
-
+** Ausnahmen / Einschränkungen
+*** Operationen 
+**** API
+Operationen dürfen API aufrufe machen, was zwar ein Koppelung darstellt, gleichzeitig ist es aber auch ein Gewinn, wenn die Koppelung
+sich hier nur auf unterester Ebene auswirken, und sich diese API Logik nicht bis in die Integrationen hoch verstrickt.
+API-Aufrufe gehören zu den Provider und sollen sich möglichst nicht weit in die Domänelogik hinein ausbreiten.
+**** Standard-Library Funktionen
+Auch Funktionen, die von der Sprache selbst bereitgestellt werden, dürfen sowohl auch in den Operationen verwendet werden.
+Beispiele aus C#:
+FRAGE: Linq auch in Operationen erlaubt?
+int.TryParse, math.sqrt, ... 
+*** Integrationen
+**** Try / Catch
+Oft braucht man auf oberster Ebene, einen Try/Catch, der alle Exceptions abfangen soll, und eine generelle Fehlerbehandlungsroutine 
+startet. Hier ist es doch ratsam, die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
