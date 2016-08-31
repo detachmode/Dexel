@@ -19,7 +19,7 @@ Weitere Prinzipien die Beachtung find sollen:
 - Dependecy Injection
 - Interface Segregation Principle
 
-FlowDesign ist eine Entwurfsmethode, die im Gegensatz zu UML besser geeignet sein soll, bereits in der Entwurfsphase Angwendung zu finden.
+FlowDesign ist eine Entwurfsmethode, die im Gegensatz zu UML besser geeignet sein soll, bereits in der Entwurfsphase Anwendung zu finden.
 Ziel ist es sich auf dem Papier bereits ein Entwurf der Programmstruktur überlegen zu können.
 Aktuell sei es aus der Mode gekommen, vor dem Programmieren einen Entwurf zu erzeugen, was vorallem daran läge, dass die vorhandenen
 Entwurfsmethodiken eher hinderlich seien und einen unnötigen Overhead erzeugen ( laut Ralf Westphal)
