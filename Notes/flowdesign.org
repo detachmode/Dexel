@@ -118,24 +118,24 @@ Die Businesslogik, das was die Funktionalität erzeugt, diese befinden sich in O
 Sie bekommen einfach nur von irgendwo her einen Input (bzw bei keinen Inputparametern einfach ausgeführt werden) und führen damit die von ihnen implementierte
 Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die Funktionseinheit jedoch nicht den Empfänger.
 
-** Ausnahmen / Einschränkungen
-*** Operationen 
-**** API
+*** Ausnahmen / Einschränkungen
+**** Operationen 
+***** API
 Operationen dürfen API aufrufe machen, was zwar ein Koppelung darstellt, gleichzeitig ist es aber auch ein Gewinn, wenn die Koppelung
 sich hier nur auf unterester Ebene auswirken, und sich diese API Logik nicht bis in die Integrationen hoch verstrickt.
 API-Aufrufe gehören zu den Provider und sollen sich möglichst nicht weit in die Domänelogik hinein ausbreiten.
-**** Standard-Library Funktionen
+***** Standard-Library Funktionen
 Auch Funktionen, die von der Sprache selbst bereitgestellt werden, dürfen sowohl auch in den Operationen verwendet werden.
 Beispiele aus C#:
 FRAGE: Linq auch in Operationen erlaubt?
 int.TryParse, math.sqrt, ... 
-*** Integrationenk
+**** Integrationenk
 
-**** Try / Catch
+***** Try / Catch
 Oft braucht man auf oberster Ebene, einen Try/Catch, der alle Exceptions abfangen soll, und eine generelle Fehlerbehandlungsroutine 
 startet. Hier ist es doch ratsam, die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
 
-** Übersicht
+*** Übersicht
 |                              | Operationen | Integrationen     |
 | if,else                      | O           | -                 |
 | for, foreach                 | O           | -                 |
