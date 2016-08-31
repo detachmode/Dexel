@@ -36,7 +36,29 @@ Wie die Funktionseinheit die Funktionalität im Inneren implementiert wird auf d
 Das ist jedoch keine negative Einschränkung, vielmehr ermöglicht dies, sich auf beim Entwurf nicht mit unnötigen Implementierungsdetails zu bechäftigen,
 sonder sich auf das Große ganze - das Zusammenspiel/ Komposition der Funktionseinheiten und den Datenfluss zu konzentrieren. 
 
-** Das Diagramm
+** Der grobe Ablauf
+*** Definieren der Portale und Provider
+    Man zeichnet ein Kreis auf ein Papier, diese stellt die Domäne dar.
+    Auf der linken Seite hängt man die Sachen dran, die auf die Domände zugreifen so gegannte Portale, zum Beispiel HTTP-Zugriff,
+    Batch mode, oder GUIs.
+    Auf der anderen Seite sind die Provider, diese Stellen externe Resourcen zur Verfügung, die die Domäne verwendet.
+    Ziel ist es später in der Implementierung darauf zu achten, dass die "Schicht" oder "Membran", zwischen Domäne und Außenwelt möglichst
+dünn bleibt. Somit lässt sich die Domäne besser testen und es lassen sich leichter neue Portale und Provider anhängen.
+
+*** Interfaceskizze ( im Falle einer GUI Anwendung )
+Man zeichnet eine einfache Skizze der GUI auf ein Papier und überlegt sich, welche Interaktionen kann der Nutzer machen.
+Diese Interaktionen werden dann gesammelt und für jedes wird dann ein eigenes Flow Design erstellt.
+
+*** Flow Design Entwurf
+Herauskristallisieren der einzelnen Funktionseinheiten und welche Daten von wo nach wo fließen.
+
+*** Einordnen der Funktionseinheiten in bestimmte Klassen 
+Man fasst eine oder mehere Funktionseinheiten zusammen, indem man zum Beispiel alle mit einer gestrichelten Linie einkreist oder alle die zur selben Klasse
+gehören farblich markiert. Der Name der Klasse notiert man dann im eingekreisten Feld oder unter jeden Funktionseinheit.
+FRAGE: Manchmal wird eine Funktionseinheit selbst als Klasse implementiert? Dann kann ich sie ja nicht in eine andere Klasse schieben.
+RAGE: Schreibt man unter jeden Funktionseinheit die Klasse?
+
+*** Das Diagramm
 Im Fokus stehen dabei Funktioneneinheien und Datenflüsse, nicht jedoch der Kontrollfluss.
 Die einzelnen Funktioneneinheiten haben ein oder mehrere Input und Output Flüsse.
 
@@ -57,7 +79,7 @@ Operationen sind Funktionen, die Logik/ Kontrollstrukturen enthalten dürfen. In
 - for, foreach,
 - while, do
 - try, catch
-  .. vollständig?
+- .. vollständig?
 
 Diese Funktionen sind also imperative programmiert. Imperative Programmierung ist ein Programmierstill, mit dem Fokus auf das WIE ein Problem gelöst werden
 soll. Im Gegensatz dazu steht der Deklarative Ansatz. Beim deklarativen Programmieren steht der Fokus auf das WAS getan werden soll und nicht so sehr, wie es
