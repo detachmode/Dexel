@@ -26,6 +26,7 @@ wenn man die Skizze in Programmcode implementiert.
 * Grundlegende Notationen 
   Weitere Notationen kurz erklärt. Auch mit "Integrationen" aber noch nicht erklären, dass es ein Unterschied gibt. 
   
+  Provider Dreieck.
 * Implementationsregeln / C# Exkurse
 Integrationen und Operationen (einzige Regel?)
 ** Beispiel foreach und Funktionsaufruf als negativ Beispiel.
@@ -37,6 +38,10 @@ Integrationen und Operationen (einzige Regel?)
    Wenn jemand seine Arbeit erst zuende machen kann, wenn ein anderer seine Arbeit getan hat.
 ** Zusammenfassung - IODA Architekur -  Tabelle
 
+   Tabelle: 
+   Daten - Methoden in Daten-Objekte aufrufen? Darf Operation die Methode kennen?
+   Daten - was bedeutet die eigentlich? Extra Funktionen? file open handlers?
+   Daten - Darf Integration wirklich Kontruktor aufrufen, das sind doch daten, oder gelten nur persistente daten?
   
 * Ablauf der kompletten Flow Design - Entwurfsmethode
   endet mit Einteilen in Klassen, DLL, Anwendungen,...
@@ -46,6 +51,7 @@ Integrationen und Operationen (einzige Regel?)
 
 #  PRAXISTEIL
   
+
 
 * Systemanalyse
 ** Vision
