@@ -36,7 +36,142 @@ Wie die Funktionalität auf unterster Ebene implementiert wird, wird auf dem Dia
 Das ist jedoch keine negative Einschränkung, vielmehr ermöglicht dies, sich auf beim Entwurf nicht mit unnötigen Implementierungsdetails bechäftigen zu 
 müssen, sonder sich auf das Große ganze - das Zusammenspiel/ Komposition der Funktionseinheiten und den Datenfluss zu konzentrieren.
 
-** Der grobe Ablauf
+
+** Einfaches Beispiel eines Flow Designs
+[[./img/FlowDesign2.png]]
+http://www.code-whisperer.de/preview/2015/06/14/eva/
+
+Das Programm ist eine Konsolenanwedung, die den Benutzer eine Eingabe erlaubt.
+Wenn die Eingabe die Zahl 42 entspricht, wird das Programm beendet, wenn nicht, kann wieder eine Zahl eingeben werden.
+Das wiederholt sich, solange bis der Benuter die Zahl 42 eingetippt hat.
+
+*** Erläuterung der Syntax
+Alle eingekreisten Namen sind Funktionseinheiten, oder auch Softwarezelle genannt.
+Diese werden üblicherweise im Code als Funktionen implementiert.
+Die Pfeile zeigen den Datenstrom. Links die Inputs und rechts die Outputs.
+Eine leere Klammer bedeutet, dass keine Daten fließen.
+In diesem Fall hat die Funktion stattdessen oft eine Tonne, die anzeigt, dass die Funktionseinheit state-behaftet ist.
+Wenn die Tonne zusätzlich noch mit einer Linie verbunden ist, an dessen Ende ein Kreis gezeichnet ist,
+dann bedeutet das, dass die Funktion auf externe Resourcen zugreift. 
+Den Kreis kann man sich bildlich wie eine Hand vorstellen, an die sich die Funktion festhält.
+
+Ein Stern innerhalb der Klammern der Datenströme, bedeutet, dass mehrere Daten dieser Art kommen können,
+oder auch keine Daten. Je nach Programmiersprache, kann man das Verhalten mit einem yield in einer Schleife realisieren, 
+oder mit einer Liste/Array als Rückgabewert. 
+
+Die Main Funktion ruft die anderen 3 Funktionen auf, eine Funktionseinheit die andere Funktionseinheiten aufruft,
+werden als Integrationen bezeichnet. Die anderen 3 Methoden rufen selbst keine anderen Funktionseinheiten auf und werden
+Operationen genannt. Anhand einer Flow Design Skizze, kann man leicht herausfinden, welche Funktionen Operationen sind und welche
+Integrationen.
+Alle Leaf-Knoten sind Operationen, der Rest sind Integrationen.
+*** Finale Erklärung
+Die Main Funktion wird nach dem Programmstart ( leerer Kreis ) ohne Parameter aufgerufen.
+Danach ruft diese die Funktion ReadNumbersFromCmd auf, welche aus der Konsole eine Eingabe ließt und sie
+zu einem int parset. Der int nimmt die Main Funktion entgegen und gibt diesen an FindtheAnswer weiter.
+Diese Funktion hat die Aufgabe den entgegengenommenen int mit der Zahl 42 zu vergleichen und gibt bei
+FRAGE: Was bedeutet nochmal die Tonne, mit Hand?
+
+
+** IODA Architekur
+IODA steht für: Integration Operation Data API
+
+[[./img/ioda1.png]]
+http://blog.ralfw.de/2015/04/die-ioda-architektur.html
+
+*** Funktionale Abhängigkeiten vermeiden
+
+
+*** PoMO ( Principle of Mutual Oblivion)
+    Ein Producer
+    kennt seinen Consumer nicht. Ein Consumer kennt seinen Producer
+    nicht. Das nenne ich das Principle of Mutual Oblivion (PoMO,
+    Prinzip der gegenseitigen Nichtbeachtung) (architect napkin, Seite 80)
+
+Dieses Prinzip besagt, dass Funktionseinheiten sich nicht gegenseitig kennen sollen.
+Es soll auch verhindert werden, dass eine Einheit eine andere aufruft und von deren Ergebnis
+abhängig ist, bzw. auf das Ergebnis wartet. 
+Eine Funktionseinheit soll, nachdem sie die Daten bearbeitet hat, sie einfach nach 
+außen weiter reichen und nicht wissen, wer die Daten entgegennimmt.
+
+Dieses Prinzip verhindert eine Koppelung zwischen den einzelnen Funktionseinheiten.
+Um das zu erreichen, gibt es eine Programmierregel, die es ermöglicht, beim Programmieren darauf zu achten,
+das dieses Prinzip eingehalten wird.
+Um jedoch ein "Zusammenspiel" zwischen den einzelnen entkoppelten Einheiten zu ermöglichen, bedarf es einen oder
+mehrere "Koordinatoren" welche diesem Prinzip nicht entsprechen müssen.
+Nur so kann aus vielen kleinen Funktionseinheiten ein großes Ganzes werden, dass eine komplexe Aufgabe lösen kann.
+
+Die Funktionseinheiten, die das PoMO erfüllen müssen nennt Ralf Westphal Operationen und die Koordinatoren nennt er 
+Integrationen. Als Regel zusammengefasst nennt er dies "Integration Operation Segregation Principle" kurz IOSP.
+
+
+*** IOSP ( Integration Operation Segregation Principle)
+
+Dieses Prinzip besagt, dass eine Funktioneseinheit entweder eine Operation oder eine Integration ist und beide 
+Verantwortungsberreiche nicht vermischt werden dürfen.
+
+**** Operationen
+Operationen sind Funktionen, die Logik/ Kontrollstrukturen enthalten dürfen. In C# wären das:
+- if, else
+- for, foreach,
+- while, do
+- try, catch
+- .. vollständig?
+
+Gleichzeitig müssen die Operationen das PoMO prinzip erfüllen, sie dürfen keine andere Funktionseinheiten kennen oder aufrufen und auf
+das Ergebnis warten.
+Ein Funktionsaufruf ist nur über Actions ( Funktionspointer ), die man als Funktionsparameter mit übergibt, oder Events möglich.
+Damit erfüllt die Operation weiter das PoMO, da sie nicht selbst bestimmt, welche Funktion sie aufruft, sondern die Funktion, welche die
+Operation aufgrufen hat ( und somit automatisch eine Integration sein muss, welche die PoMO Bedingung nicht erfüllen muss).
+
+
+Operationen sind also imperative programmiert. Imperative Programmierung ist ein Programmierstill, mit dem Fokus auf das WIE ein Problem gelöst werden
+soll. Im Gegensatz dazu steht der Deklarative Ansatz. Beim deklarativen Programmieren steht der Fokus auf das WAS getan werden soll und nicht so sehr, wie es
+im Detail genau angestellt wird. Ein Beispiel hierfür wären zum Beispiel SQL Befehle. Hier wird nur gesagt, was man haben möchte und das Programm kann dann
+die Anfrage nochmal untersuchen und selbst bestimmen, wie es die Anfrage am besten ausführt.
+
+**** Integrationen
+Die Integrationen werden nach Flow Design Richtlinien deklarative programmiert.
+Diese Funktioneneinheiten dürfen anders als die Operationen, andere Funktionen aufrufen, sie also kennen.  
+Der Unterschied beim Flow Design ist jedoch, dass eine bewusste Trennung eingehalten wird.
+
+Integrationen dürfen auch  auf die Terminierung einer Funktion warten und den Rückgabewert  weiterreichen an andere Funktionen.
+Dafür dürfen sie keine Logik im Sinne von Kontrollstrukturen beinhalten. 
+
+Die Businesslogik, das was die Funktionalität erzeugt, diese befinden sich in Operationen und sind entkoppelt von ihrer Umgebung.
+Sie bekommen einfach nur von irgendwo her einen Input (bzw bei keinen Inputparametern einfach ausgeführt werden) und führen damit die von ihnen implementierte
+Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die Funktionseinheit jedoch nicht den Empfänger.
+
+**** Ausnahmen / Einschränkungen
+***** Operationen 
+****** API
+Operationen dürfen API aufrufe machen, was zwar ein Koppelung darstellt, gleichzeitig ist es aber auch ein Gewinn, wenn die Koppelung
+sich hier nur auf unterester Ebene auswirken, und sich diese API Logik nicht bis in die Integrationen hoch verstrickt.
+API-Aufrufe gehören zu den Provider und sollen sich möglichst nicht weit in die Domänelogik hinein ausbreiten.
+****** Standard-Library Funktionen
+Auch Funktionen, die von der Sprache selbst bereitgestellt werden, dürfen sowohl auch in den Operationen verwendet werden.
+Beispiele aus C#:
+FRAGE: Linq auch in Operationen erlaubt?
+int.TryParse, math.sqrt, ... 
+***** Integrationenk
+
+****** Try / Catch
+Oft braucht man auf oberster Ebene, einen Try/Catch, der alle Exceptions abfangen soll, und eine generelle Fehlerbehandlungsroutine 
+startet. Hier ist es doch ratsam, die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
+
+
+**** Tabelle -  IOSP auf einen Blick
+
+|                                                         | Operationen | Integrationen     |
+| Rechenoperationen ( +, *, %, ... )                      | Ja          | Nein              |
+| Kontrollstrukturen (if, else, while, for, foreach, ...) | Ja          | Nein              |
+| try, catch                                              | Ja          | nur mit Ausnahmen |
+| API-Aufrufe (Methoden von Bibliotheken)                 | Ja          | Nein              |
+| Ressourcen-Zugriffe (Dateien, Datenbanken etc.)         | Ja          | Nein              |
+| Standard Library, LINQ                                  | Ja          | Ja                |
+| Namen andere Funktion kennen                            | Nein        | Ja                |
+| Auf Rückgabewert warten                                 | Nein        | Ja                |
+
+** Der komlette Ablauf
 *** Definieren der Portale und Provider
     Man zeichnet ein Kreis auf ein Papier, diese stellt die Domäne dar.
     Auf der linken Seite hängt man die Sachen dran, die auf die Domände zugreifen so gegannte Portale, zum Beispiel HTTP-Zugriff,
@@ -61,97 +196,4 @@ RAGE: Schreibt man unter jeden Funktionseinheit die Klasse?
 *** Das Diagramm
 Im Fokus stehen dabei Funktioneneinheien und Datenflüsse, nicht jedoch der Kontrollfluss.
 Die einzelnen Funktioneneinheiten haben ein oder mehrere Input und Output Flüsse.
-
-
-* IODA Architekur
-IODA steht für: Integration Operation Data API
-
-[[./img/ioda1.png]]
-
-** Funktionale Abhängigkeiten vermeiden
-
-
-** PoMO ( Principle of Mutual Oblivion)
-Dieses Prinzip besagt, dass Funktionseinheiten sich nicht gegenseitig kennen sollen.
-Es soll auch verhindert werden, dass eine Einheit eine andere aufruft und von deren Ergebnis
-abhängig ist, bzw. auf das Ergebnis wartet. 
-Eine Funktionseinheit soll, nachdem sie die Daten bearbeitet hat, sie einfach nach 
-außen weiter reichen und nicht wissen, wer die Daten entgegennimmt.
-
-Dieses Prinzip verhindert eine Koppelung zwischen den einzelnen Funktionseinheiten.
-Um das zu erreichen, gibt es eine Programmierregel, die es ermöglicht, beim Programmieren darauf zu achten,
-das dieses Prinzip eingehalten wird.
-Um jedoch ein "Zusammenspiel" zwischen den einzelnen entkoppelten Einheiten zu ermöglichen, bedarf es einen oder
-mehrere "Koordinatoren" welche diesem Prinzip nicht entsprechen müssen.
-Nur so kann aus vielen kleinen Funktionseinheiten ein großes Ganzes werden, dass eine komplexe Aufgabe lösen kann.
-
-Die Funktionseinheiten, die das PoMO erfüllen müssen nennt Ralf Westphal Operationen und die Koordinatoren nennt er 
-Integrationen. Als Regel zusammengefasst nennt er dies "Integration Operation Segregation Principle" kurz IOSP.
-
-
-** IOSP ( Integration Operation Segregation Principle)
-Dieses Prinzip besagt, dass eine Funktioneseinheit entweder eine Operation oder eine Integration ist und beide 
-Verantwortungsberreiche nicht vermischt werden dürfen.
-
-*** Operationen
-Operationen sind Funktionen, die Logik/ Kontrollstrukturen enthalten dürfen. In C# wären das:
-- if, else
-- for, foreach,
-- while, do
-- try, catch
-- .. vollständig?
-
-Gleichzeitig müssen die Operationen das PoMO prinzip erfüllen, sie dürfen keine andere Funktionseinheiten kennen oder aufrufen und auf
-das Ergebnis warten.
-Ein Funktionsaufruf ist nur über Actions ( Funktionspointer ), die man als Funktionsparameter mit übergibt, oder Events möglich.
-Damit erfüllt die Operation weiter das PoMO, da sie nicht selbst bestimmt, welche Funktion sie aufruft, sondern die Funktion, welche die
-Operation aufgrufen hat ( und somit automatisch eine Integration sein muss, welche die PoMO Bedingung nicht erfüllen muss).
-
-
-Operationen sind also imperative programmiert. Imperative Programmierung ist ein Programmierstill, mit dem Fokus auf das WIE ein Problem gelöst werden
-soll. Im Gegensatz dazu steht der Deklarative Ansatz. Beim deklarativen Programmieren steht der Fokus auf das WAS getan werden soll und nicht so sehr, wie es
-im Detail genau angestellt wird. Ein Beispiel hierfür wären zum Beispiel SQL Befehle. Hier wird nur gesagt, was man haben möchte und das Programm kann dann
-die Anfrage nochmal untersuchen und selbst bestimmen, wie es die Anfrage am besten ausführt.
-
-*** Integrationen
-Die Integrationen werden nach Flow Design Richtlinien deklarative programmiert.
-Diese Funktioneneinheiten dürfen anders als die Operationen, andere Funktionen aufrufen, sie also kennen.  
-Der Unterschied beim Flow Design ist jedoch, dass eine bewusste Trennung eingehalten wird.
-
-Integrationen dürfen auch  auf die Terminierung einer Funktion warten und den Rückgabewert  weiterreichen an andere Funktionen.
-Dafür dürfen sie keine Logik im Sinne von Kontrollstrukturen beinhalten. 
-
-Die Businesslogik, das was die Funktionalität erzeugt, diese befinden sich in Operationen und sind entkoppelt von ihrer Umgebung.
-Sie bekommen einfach nur von irgendwo her einen Input (bzw bei keinen Inputparametern einfach ausgeführt werden) und führen damit die von ihnen implementierte
-Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die Funktionseinheit jedoch nicht den Empfänger.
-
-*** Ausnahmen / Einschränkungen
-**** Operationen 
-***** API
-Operationen dürfen API aufrufe machen, was zwar ein Koppelung darstellt, gleichzeitig ist es aber auch ein Gewinn, wenn die Koppelung
-sich hier nur auf unterester Ebene auswirken, und sich diese API Logik nicht bis in die Integrationen hoch verstrickt.
-API-Aufrufe gehören zu den Provider und sollen sich möglichst nicht weit in die Domänelogik hinein ausbreiten.
-***** Standard-Library Funktionen
-Auch Funktionen, die von der Sprache selbst bereitgestellt werden, dürfen sowohl auch in den Operationen verwendet werden.
-Beispiele aus C#:
-FRAGE: Linq auch in Operationen erlaubt?
-int.TryParse, math.sqrt, ... 
-**** Integrationenk
-
-***** Try / Catch
-Oft braucht man auf oberster Ebene, einen Try/Catch, der alle Exceptions abfangen soll, und eine generelle Fehlerbehandlungsroutine 
-startet. Hier ist es doch ratsam, die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
-
-
-*** Tabelle -  IOSP auf einen Blick
-
-|                              | Operationen | Integrationen     |
-| if,else                      | O           | -                 |
-| for, foreach                 | O           | -                 |
-| while, do                    | O           | -                 |
-| try, catch                   | O           | nur mit Ausnahmen |
-| API Aufrufe                  | O           | -                 |
-| Standard Library, LINQ       | O           | O                 |
-| Namen andere Funktion kennen | -           | O                 |
-| Auf Rückgabewert warten      | -           | O                 |
 
