@@ -213,7 +213,14 @@ Hiermit kann man ein Producer-Consumer Pattern implementieren.
 Vorraussetzung ist jedoch, dass man mit Daten arbeitet, die das IEnumerable Interface implementieren, wie zum Beispiel die
 List Klasse.
 
-
+Angles are written as Greek letters \alpha, \beta and \gamma.  The mass if
+     the sun is M_sun = 1.989 x 10^30 kg.  The radius of the sun is R_{sun} =
+     6.96 x 10^8 m.  If $a^2=b$ and $b=2$, then the solution must be either
+     $a=+\sqrt{2}$ or $a=-\sqrt{2}$.
+     
+     \begin{equation}
+     x=\sqrt{b}
+     \end{equation}
 &#10003;
 
 Hier der Code von dem Beispiel weiter oben.
@@ -253,13 +260,13 @@ class Program
 }
 #+END_SRC
 
-Der Producer ist in dem Fall der ReadNumbersFromCmd.
-Dieser produziert ein endloser Stream an Integer-Daten.
+Der Producer ist in dem Fall der =ReadNumbersFromCmd=.
+Dieser produziert ein endloser Stream an =int=-Daten.
 Es wird jedoch immer nur ein Element erzeugt und erst nachdem der Consumer das
 Element abgefragt hat, wird ein neues Element erzeugt.
-
-Abbruch der Schleife von 
-
+Wenn nichts mehr konsumiert wird, wird auch nichts mehr produziert.
+Den Abbruch der Endlossschleife ( also das Stoppen des Datenflusses) kann somit auch eine andere Funktion außerhalb der Schleife
+übernehmen. 
 
 *** LINQ und Lambdas
 
