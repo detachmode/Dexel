@@ -3,7 +3,11 @@
 Flow Design ist aus der Clean Code Development Bewegung heraus entstanden. Hauptinitiatior und Erfinder ist Ralf Westphal.
 Ralf Westphal war auch Mitbegründer und Miterfinder der Clean Code Developement Bewegung.
 
-Clean Code Development besteht hauptsächlich aus Prinzipen, nicht jedoch aus Regeln, die man einfach einhalten kann.
+
+Clean Code Development ist eine Ansammlung aus Prinzipen, die einem helfen sollen wartbare Software zu schreiben.
+Wartbare bedeutet Änderungen an der Software sollen leicht zu realisieren sein und der Programmcode soll
+am besten auch leicht zu lesen bleiben.
+Prinzipien sind jedoch nicht so leicht einzuhalten, wie konkrete Regeln, welche man einfach einhalten kann.
 Somit ist es in der Praxis schwer die Prinzipen auf den eigenen Code anzuwenden.
 Flow Design soll in Ergänzung eine Methodik und Programmierregeln bieten, die man einfach befolgen kann und man erhält automatisch
 ein Code, der die CCD Prinzipen erfüllt.
@@ -19,7 +23,7 @@ Weitere Prinzipien die Beachtung find sollen:
 - Dependecy Injection
 - Interface Segregation Principle
 
-FlowDesign ist eine Entwurfsmethode, die im Gegensatz zu UML besser geeignet sein soll, bereits in der Entwurfsphase Anwendung zu finden.
+Flow Design ist eine Entwurfsmethode, die im Gegensatz zu UML besser geeignet sein soll, bereits in der Entwurfsphase Anwendung zu finden.
 Ziel ist es sich auf dem Papier bereits ein Entwurf der Programmstruktur überlegen zu können.
 Aktuell sei es aus der Mode gekommen, vor dem Programmieren einen Entwurf zu erzeugen, was vorallem daran läge, dass die vorhandenen
 Entwurfsmethodiken eher hinderlich seien und einen unnötigen Overhead erzeugen ( laut Ralf Westphal)
@@ -36,8 +40,10 @@ Wie die Funktionalität auf unterster Ebene implementiert wird, wird auf dem Dia
 Das ist jedoch keine negative Einschränkung, vielmehr ermöglicht dies, sich auf beim Entwurf nicht mit unnötigen Implementierungsdetails bechäftigen zu 
 müssen, sonder sich auf das Große ganze - das Zusammenspiel/ Komposition der Funktionseinheiten und den Datenfluss zu konzentrieren.
 
+Anzumerken wäre noch, dass nicht der Kontrollfluss abgebildet wird, sondern, wie erwähnt, der Datenfluss.
 
 ** Einfaches Beispiel eines Flow Designs
+
 [[./img/FlowDesign2.png]]
 
 http://www.code-whisperer.de/preview/2015/06/14/eva/
@@ -73,6 +79,7 @@ zu einem int parset. Der int nimmt die Main Funktion entgegen und gibt diesen an
 Diese Funktion hat die Aufgabe den entgegengenommenen int mit der Zahl 42 zu vergleichen. Wenn die Zahl 42 ist, wird der Datenstrom 
 abgebrochen. Wenn es nicht die 42 war, dann wird der int nach außen gereicht und die Main Funktion reicht die Zahl an die 
 PrintNumber Funktion weiter. PrintNumber gibt die Zahl in die Konsole aus.  
+Wenn der Datenstrom abbricht, returned die Mainfunktion und das Programm wird beendet.
 FRAGE: Was bedeutet nochmal die Tonne, mit Hand?
 
 
@@ -163,6 +170,7 @@ startet. Hier bleibt einem nichts anderes übrig, als die Regel keine Logik in d
 
 **** Tabelle -  IOSP auf einen Blick
 
+
 |                                                         | Operationen | Integrationen        |
 | Rechenoperationen ( +, *, %, ... )                      | Ja          | Nein                 |
 | Kontrollstrukturen (if, else, while, for, foreach, ...) | Ja          | Nein                 |
@@ -195,7 +203,24 @@ gehören farblich markiert. Der Name der Klasse notiert man dann im eingekreiste
 FRAGE: Manchmal wird eine Funktionseinheit selbst als Klasse implementiert? Dann kann ich sie ja nicht in eine andere Klasse schieben.
 RAGE: Schreibt man unter jeden Funktionseinheit die Klasse?
 
-*** Das Diagramm
-Im Fokus stehen dabei Funktioneneinheien und Datenflüsse, nicht jedoch der Kontrollfluss.
-Die einzelnen Funktioneneinheiten haben ein oder mehrere Input und Output Flüsse.
+
+
+* C# 
+** Features der Sprache
+Um nach Flow Design Regeln zu programmieren, helfen einem in C# einige Features die in diesem Kapitel vorgestellt werden.
+*** yield return 
+Hiermit kann man ein Producer-Consumer Pattern implementieren. 
+Vorraussetzung ist jedoch, dass man mit Daten arbeitet, die das IEnumerable Interface implementieren, wie zum Beispiel die
+List Klasse.
+<Code Beispiel>
+```
+function test() {
+  console.log("notice the blank line before this function?");
+}
+  
+```
+
+*** LINQ
+
+
 
