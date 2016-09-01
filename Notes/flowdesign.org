@@ -63,7 +63,14 @@ Im Fokus stehen dabei Funktioneneinheien und Datenflüsse, nicht jedoch der Kont
 Die einzelnen Funktioneneinheiten haben ein oder mehrere Input und Output Flüsse.
 
 
-* Principles
+* IODA Architekur
+IODA steht für: Integration Operation Data API
+
+[[./img/ioda1.png]]
+
+** Funktionale Abhängigkeiten vermeiden
+
+
 ** PoMO ( Principle of Mutual Oblivion)
 Dieses Prinzip besagt, dass Funktionseinheiten sich nicht gegenseitig kennen sollen.
 Es soll auch verhindert werden, dass eine Einheit eine andere aufruft und von deren Ergebnis
@@ -135,7 +142,9 @@ int.TryParse, math.sqrt, ...
 Oft braucht man auf oberster Ebene, einen Try/Catch, der alle Exceptions abfangen soll, und eine generelle Fehlerbehandlungsroutine 
 startet. Hier ist es doch ratsam, die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
 
-*** Übersicht
+
+*** Tabelle -  IOSP auf einen Blick
+
 |                              | Operationen | Integrationen     |
 | if,else                      | O           | -                 |
 | for, foreach                 | O           | -                 |
@@ -145,4 +154,4 @@ startet. Hier ist es doch ratsam, die Regel keine Logik in den Integrationen zu 
 | Standard Library, LINQ       | O           | O                 |
 | Namen andere Funktion kennen | -           | O                 |
 | Auf Rückgabewert warten      | -           | O                 |
-*
+
