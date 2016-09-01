@@ -148,30 +148,30 @@ Operationen dürfen API aufrufe machen, was zwar ein Koppelung darstellt, gleich
 sich hier nur auf unterester Ebene auswirken, und sich diese API Logik nicht bis in die Integrationen hoch verstrickt.
 API-Aufrufe gehören zu den Provider und sollen sich möglichst nicht weit in die Domänelogik hinein ausbreiten.
 ****** Standard-Library Funktionen
-Auch Funktionen, die von der Sprache selbst bereitgestellt werden, dürfen sowohl auch in den Operationen verwendet werden.
+Funktionen, die von der Sprache selbst bereitgestellt werden, dürfen auch in den Operationen verwendet werden.
 Beispiele aus C#:
 FRAGE: Linq auch in Operationen erlaubt?
 int.TryParse, math.sqrt, ... 
-***** Integrationenk
+***** Integrationen
 
 ****** Try / Catch
 Oft braucht man auf oberster Ebene, einen Try/Catch, der alle Exceptions abfangen soll, und eine generelle Fehlerbehandlungsroutine 
-startet. Hier ist es doch ratsam, die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
+startet. Hier bleibt einem nichts anderes übrig, als die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
 
 
 **** Tabelle -  IOSP auf einen Blick
 
-|                                                         | Operationen | Integrationen     |
-| Rechenoperationen ( +, *, %, ... )                      | Ja          | Nein              |
-| Kontrollstrukturen (if, else, while, for, foreach, ...) | Ja          | Nein              |
-| try, catch                                              | Ja          | nur mit Ausnahmen |
-| API-Aufrufe (Methoden von Bibliotheken)                 | Ja          | Nein              |
-| Ressourcen-Zugriffe (Dateien, Datenbanken etc.)         | Ja          | Nein              |
-| Standard Library, LINQ                                  | Ja          | Ja                |
-| Namen andere Funktion kennen                            | Nein        | Ja                |
-| Auf Rückgabewert warten                                 | Nein        | Ja                |
+|                                                         | Operationen | Integrationen        |
+| Rechenoperationen ( +, *, %, ... )                      | Ja          | Nein                 |
+| Kontrollstrukturen (if, else, while, for, foreach, ...) | Ja          | Nein                 |
+| try, catch                                              | Ja          | Nein( mit Ausnahmen) |
+| API-Aufrufe (Methoden von Bibliotheken)                 | Ja          | Nein                 |
+| Ressourcen-Zugriffe (Dateien, Datenbanken etc.)         | Ja          | Nein                 |
+| Standard Library, LINQ                                  | Ja          | Ja                   |
+| Namen andere Funktion kennen                            | Nein        | Ja                   |
+| Auf Rückgabewert warten                                 | Nein        | Ja                   |
 
-** Der komlette Ablauf
+** Der komplette Ablauf
 *** Definieren der Portale und Provider
     Man zeichnet ein Kreis auf ein Papier, diese stellt die Domäne dar.
     Auf der linken Seite hängt man die Sachen dran, die auf die Domände zugreifen so gegannte Portale, zum Beispiel HTTP-Zugriff,
