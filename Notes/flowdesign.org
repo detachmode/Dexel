@@ -213,13 +213,56 @@ Hiermit kann man ein Producer-Consumer Pattern implementieren.
 Vorraussetzung ist jedoch, dass man mit Daten arbeitet, die das IEnumerable Interface implementieren, wie zum Beispiel die
 List Klasse.
 
-#+BEGIN_SRC emacs-lisp
-       (defun org-xor (a b)
-          "Exclusive or."
-          (if a (not b) b))
-     #+END_SRC
 
-*** LINQ
+&#10003;
+
+Hier der Code von dem Beispiel weiter oben.
+ 
+
+#+BEGIN_SRC cpp
+class Program
+{
+  static void Main()
+  {
+    IEnumerable<int> numbers = ReadNumbersFromCmd();
+    IEnumerable<int> answer = FindTheAnswer(numbers);
+    PrintNumbers(answer);
+  }
+
+  public static IEnumerable<int> ReadNumbersFromCmd()
+  {
+    while (true)
+    {
+      var line = Console.ReadLine();
+      yield return int.Parse(line);
+    }
+  }
+
+  private static IEnumerable<int> FindTheAnswer(IEnumerable<int> numbers)
+  {
+    return numbers.TakeWhile(x => x != 42);
+  }
+
+  private static void PrintNumbers(IEnumerable<int> numbers)
+  {
+    foreach (var number in numbers)
+    {
+      Console.WriteLine(number);
+    }
+  }
+}
+#+END_SRC
+
+Der Producer ist in dem Fall der ReadNumbersFromCmd.
+Dieser produziert ein endloser Stream an Integer-Daten.
+Es wird jedoch immer nur ein Element erzeugt und erst nachdem der Consumer das
+Element abgefragt hat, wird ein neues Element erzeugt.
+
+Abbruch der Schleife von 
+
+
+*** LINQ und Lambdas
+
 
 
 

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2016-09-01 Do 12:16 -->
+<!-- 2016-09-01 Do 15:02 -->
 <meta  http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta  name="viewport" content="width=device-width, initial-scale=1" />
 <title></title>
@@ -139,6 +139,28 @@ for the JavaScript code in this tag.
  }
 /*]]>*///-->
 </script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
 </head>
 <body>
 <div id="content">
@@ -146,35 +168,38 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgheadline10">1. Flow Design Vorstellung</a>
+<li><a href="#orgheadline23">1. Flow Design Vorstellung</a>
 <ul>
 <li><a href="#orgheadline1">1.1. Entstehung und Grundgedanke</a></li>
-<li><a href="#orgheadline3">1.2. Einfaches eines Flow Designs</a>
+<li><a href="#orgheadline4">1.2. Einfaches Beispiel eines Flow Designs</a>
 <ul>
-<li><a href="#orgheadline2">1.2.1. Erläuterung der Syntax</a></li>
+<li><a href="#orgheadline2">1.2.1. Erläuterung der Notation</a></li>
+<li><a href="#orgheadline3">1.2.2. Finale Erklärung</a></li>
 </ul>
 </li>
-<li><a href="#orgheadline9">1.3. Der grobe Ablauf</a>
+<li><a href="#orgheadline17">1.3. IODA Architekur</a>
 <ul>
-<li><a href="#orgheadline4">1.3.1. Definieren der Portale und Provider</a></li>
-<li><a href="#orgheadline5">1.3.2. Interfaceskizze ( im Falle einer GUI Anwendung )</a></li>
-<li><a href="#orgheadline6">1.3.3. Flow Design Entwurf</a></li>
-<li><a href="#orgheadline7">1.3.4. Einordnen der Funktionseinheiten in bestimmte Klassen</a></li>
-<li><a href="#orgheadline8">1.3.5. Das Diagramm</a></li>
+<li><a href="#orgheadline5">1.3.1. Funktionale Abhängigkeiten vermeiden</a></li>
+<li><a href="#orgheadline6">1.3.2. PoMO ( Principle of Mutual Oblivion)</a></li>
+<li><a href="#orgheadline16">1.3.3. IOSP ( Integration Operation Segregation Principle)</a></li>
+</ul>
+</li>
+<li><a href="#orgheadline22">1.4. Der komplette Ablauf</a>
+<ul>
+<li><a href="#orgheadline18">1.4.1. Definieren der Portale und Provider</a></li>
+<li><a href="#orgheadline19">1.4.2. Interfaceskizze ( im Falle einer GUI Anwendung )</a></li>
+<li><a href="#orgheadline20">1.4.3. Flow Design Entwurf</a></li>
+<li><a href="#orgheadline21">1.4.4. Einordnen der Funktionseinheiten in bestimmte Klassen</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#orgheadline23">2. IODA Architekur</a>
+<li><a href="#orgheadline27">2. C#</a>
 <ul>
-<li><a href="#orgheadline11">2.1. Funktionale Abhängigkeiten vermeiden</a></li>
-<li><a href="#orgheadline12">2.2. PoMO ( Principle of Mutual Oblivion)</a></li>
-<li><a href="#orgheadline22">2.3. IOSP ( Integration Operation Segregation Principle)</a>
+<li><a href="#orgheadline26">2.1. Features der Sprache</a>
 <ul>
-<li><a href="#orgheadline13">2.3.1. Operationen</a></li>
-<li><a href="#orgheadline14">2.3.2. Integrationen</a></li>
-<li><a href="#orgheadline20">2.3.3. Ausnahmen / Einschränkungen</a></li>
-<li><a href="#orgheadline21">2.3.4. Tabelle -  IOSP auf einen Blick</a></li>
+<li><a href="#orgheadline24">2.1.1. yield return</a></li>
+<li><a href="#orgheadline25">2.1.2. LINQ und Lambdas</a></li>
 </ul>
 </li>
 </ul>
@@ -182,8 +207,8 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
-<div id="outline-container-orgheadline10" class="outline-2">
-<h2 id="orgheadline10"><span class="section-number-2">1</span> Flow Design Vorstellung</h2>
+<div id="outline-container-orgheadline23" class="outline-2">
+<h2 id="orgheadline23"><span class="section-number-2">1</span> Flow Design Vorstellung</h2>
 <div class="outline-text-2" id="text-1">
 </div><div id="outline-container-orgheadline1" class="outline-3">
 <h3 id="orgheadline1"><span class="section-number-3">1.1</span> Entstehung und Grundgedanke</h3>
@@ -193,8 +218,12 @@ Flow Design ist aus der Clean Code Development Bewegung heraus entstanden. Haupt
 Ralf Westphal war auch Mitbegründer und Miterfinder der Clean Code Developement Bewegung.
 </p>
 
+
 <p>
-Clean Code Development besteht hauptsächlich aus Prinzipen, nicht jedoch aus Regeln, die man einfach einhalten kann.
+Clean Code Development ist eine Ansammlung aus Prinzipen, die einem helfen sollen wartbare Software zu schreiben.
+Wartbare bedeutet Änderungen an der Software sollen leicht zu realisieren sein und der Programmcode soll
+am besten auch leicht zu lesen bleiben.
+Prinzipien sind jedoch nicht so leicht einzuhalten, wie konkrete Regeln, welche man einfach einhalten kann.
 Somit ist es in der Praxis schwer die Prinzipen auf den eigenen Code anzuwenden.
 Flow Design soll in Ergänzung eine Methodik und Programmierregeln bieten, die man einfach befolgen kann und man erhält automatisch
 ein Code, der die CCD Prinzipen erfüllt.
@@ -220,7 +249,7 @@ Weitere Prinzipien die Beachtung find sollen:
 </ul>
 
 <p>
-FlowDesign ist eine Entwurfsmethode, die im Gegensatz zu UML besser geeignet sein soll, bereits in der Entwurfsphase Anwendung zu finden.
+Flow Design ist eine Entwurfsmethode, die im Gegensatz zu UML besser geeignet sein soll, bereits in der Entwurfsphase Anwendung zu finden.
 Ziel ist es sich auf dem Papier bereits ein Entwurf der Programmstruktur überlegen zu können.
 Aktuell sei es aus der Mode gekommen, vor dem Programmieren einen Entwurf zu erzeugen, was vorallem daran läge, dass die vorhandenen
 Entwurfsmethodiken eher hinderlich seien und einen unnötigen Overhead erzeugen ( laut Ralf Westphal)
@@ -239,15 +268,23 @@ Wie die Funktionalität auf unterster Ebene implementiert wird, wird auf dem Dia
 Das ist jedoch keine negative Einschränkung, vielmehr ermöglicht dies, sich auf beim Entwurf nicht mit unnötigen Implementierungsdetails bechäftigen zu 
 müssen, sonder sich auf das Große ganze - das Zusammenspiel/ Komposition der Funktionseinheiten und den Datenfluss zu konzentrieren.
 </p>
-</div>
-</div>
 
-
-<div id="outline-container-orgheadline3" class="outline-3">
-<h3 id="orgheadline3"><span class="section-number-3">1.2</span> Einfaches eines Flow Designs</h3>
-<div class="outline-text-3" id="text-1-2">
 <p>
-<img src="./img/FlowDesign2.png" alt="FlowDesign2.png" />
+Anzumerken wäre noch, dass nicht der Kontrollfluss abgebildet wird, sondern, wie erwähnt, der Datenfluss.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline4" class="outline-3">
+<h3 id="orgheadline4"><span class="section-number-3">1.2</span> Einfaches Beispiel eines Flow Designs</h3>
+<div class="outline-text-3" id="text-1-2">
+
+<div class="figure">
+<p><img src="./img/FlowDesign2.png" alt="FlowDesign2.png" />
+</p>
+</div>
+
+<p>
 <a href="http://www.code-whisperer.de/preview/2015/06/14/eva/">http://www.code-whisperer.de/preview/2015/06/14/eva/</a>
 </p>
 
@@ -259,84 +296,56 @@ Das wiederholt sich, solange bis der Benuter die Zahl 42 eingetippt hat.
 </div>
 
 <div id="outline-container-orgheadline2" class="outline-4">
-<h4 id="orgheadline2"><span class="section-number-4">1.2.1</span> Erläuterung der Syntax</h4>
+<h4 id="orgheadline2"><span class="section-number-4">1.2.1</span> Erläuterung der Notation</h4>
 <div class="outline-text-4" id="text-1-2-1">
 <p>
 Alle eingekreisten Namen sind Funktionseinheiten, oder auch Softwarezelle genannt.
 Diese werden üblicherweise im Code als Funktionen implementiert.
-Die Pfeile zeigen den Datenstrom. Links, die Inputs und rechts die Outputs.
+Die Pfeile zeigen den Datenstrom. Links die Inputs und rechts die Outputs.
 Eine leere Klammer bedeutet, dass keine Daten fließen.
 In diesem Fall hat die Funktion stattdessen oft eine Tonne, die anzeigt, dass die Funktionseinheit state-behaftet ist.
+Wenn die Tonne zusätzlich noch mit einer Linie verbunden ist, an dessen Ende ein Kreis gezeichnet ist,
+dann bedeutet das, dass die Funktion auf externe Resourcen zugreift. 
+Den Kreis kann man sich bildlich wie eine Hand vorstellen, an die sich die Funktion festhält.
+</p>
+
+<p>
+Ein Stern innerhalb der Klammern der Datenströme, bedeutet, dass 0..n Daten dieses Types zwischen
+den Funktionseinheiten fließen können.
+Je nach Programmiersprache, kann man das Verhalten mit einem yield in einer Schleife realisieren, 
+oder mit einer Liste/Array als Rückgabewert. 
+</p>
+
+<p>
+Die Main Funktion ruft die anderen 3 Funktionen auf, eine Funktionseinheit die andere Funktionseinheiten aufruft,
+werden als Integrationen bezeichnet. Die anderen 3 Methoden rufen selbst keine anderen Funktionseinheiten auf und werden
+Operationen genannt. Anhand einer Flow Design Skizze, kann man leicht herausfinden, welche Funktionen Operationen sind und welche
+Integrationen.
+Alle Leaf-Knoten sind Operationen, der Rest sind Integrationen.
+</p>
+</div>
+</div>
+<div id="outline-container-orgheadline3" class="outline-4">
+<h4 id="orgheadline3"><span class="section-number-4">1.2.2</span> Finale Erklärung</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<p>
+Die Main Funktion wird nach dem Programmstart ( leerer Kreis ) ohne Parameter aufgerufen.
+Danach ruft diese die Funktion ReadNumbersFromCmd auf, welche aus der Konsole eine Eingabe ließt und sie
+zu einem int parset. Der int nimmt die Main Funktion entgegen und gibt diesen an FindtheAnswer weiter.
+Diese Funktion hat die Aufgabe den entgegengenommenen int mit der Zahl 42 zu vergleichen. Wenn die Zahl 42 ist, wird der Datenstrom 
+abgebrochen. Wenn es nicht die 42 war, dann wird der int nach außen gereicht und die Main Funktion reicht die Zahl an die 
+PrintNumber Funktion weiter. PrintNumber gibt die Zahl in die Konsole aus.  
+Wenn der Datenstrom abbricht, returned die Mainfunktion und das Programm wird beendet.
 FRAGE: Was bedeutet nochmal die Tonne, mit Hand?
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgheadline9" class="outline-3">
-<h3 id="orgheadline9"><span class="section-number-3">1.3</span> Der grobe Ablauf</h3>
+
+<div id="outline-container-orgheadline17" class="outline-3">
+<h3 id="orgheadline17"><span class="section-number-3">1.3</span> IODA Architekur</h3>
 <div class="outline-text-3" id="text-1-3">
-</div><div id="outline-container-orgheadline4" class="outline-4">
-<h4 id="orgheadline4"><span class="section-number-4">1.3.1</span> Definieren der Portale und Provider</h4>
-<div class="outline-text-4" id="text-1-3-1">
-<p>
-    Man zeichnet ein Kreis auf ein Papier, diese stellt die Domäne dar.
-    Auf der linken Seite hängt man die Sachen dran, die auf die Domände zugreifen so gegannte Portale, zum Beispiel HTTP-Zugriff,
-    Batch mode, oder GUIs.
-    Auf der anderen Seite sind die Provider, diese Stellen externe Resourcen zur Verfügung, die die Domäne verwendet.
-    Ziel ist es später in der Implementierung darauf zu achten, dass die "Schicht" oder "Membran", zwischen Domäne und Außenwelt möglichst
-dünn bleibt. Somit lässt sich die Domäne besser testen und es lassen sich leichter neue Portale und Provider anhängen.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline5" class="outline-4">
-<h4 id="orgheadline5"><span class="section-number-4">1.3.2</span> Interfaceskizze ( im Falle einer GUI Anwendung )</h4>
-<div class="outline-text-4" id="text-1-3-2">
-<p>
-Man zeichnet eine einfache Skizze der GUI auf ein Papier und überlegt sich, welche Interaktionen kann der Nutzer machen.
-Diese Interaktionen werden dann gesammelt und für jedes wird dann ein eigenes Flow Design erstellt.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline6" class="outline-4">
-<h4 id="orgheadline6"><span class="section-number-4">1.3.3</span> Flow Design Entwurf</h4>
-<div class="outline-text-4" id="text-1-3-3">
-<p>
-Herauskristallisieren der einzelnen Funktionseinheiten und welche Daten von wo nach wo fließen.
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline7" class="outline-4">
-<h4 id="orgheadline7"><span class="section-number-4">1.3.4</span> Einordnen der Funktionseinheiten in bestimmte Klassen</h4>
-<div class="outline-text-4" id="text-1-3-4">
-<p>
-Man fasst eine oder mehere Funktionseinheiten zusammen, indem man zum Beispiel alle mit einer gestrichelten Linie einkreist oder alle die zur selben Klasse
-gehören farblich markiert. Der Name der Klasse notiert man dann im eingekreisten Feld oder unter jeden Funktionseinheit.
-FRAGE: Manchmal wird eine Funktionseinheit selbst als Klasse implementiert? Dann kann ich sie ja nicht in eine andere Klasse schieben.
-RAGE: Schreibt man unter jeden Funktionseinheit die Klasse?
-</p>
-</div>
-</div>
-
-<div id="outline-container-orgheadline8" class="outline-4">
-<h4 id="orgheadline8"><span class="section-number-4">1.3.5</span> Das Diagramm</h4>
-<div class="outline-text-4" id="text-1-3-5">
-<p>
-Im Fokus stehen dabei Funktioneneinheien und Datenflüsse, nicht jedoch der Kontrollfluss.
-Die einzelnen Funktioneneinheiten haben ein oder mehrere Input und Output Flüsse.
-</p>
-</div>
-</div>
-</div>
-</div>
-
-
-<div id="outline-container-orgheadline23" class="outline-2">
-<h2 id="orgheadline23"><span class="section-number-2">2</span> IODA Architekur</h2>
-<div class="outline-text-2" id="text-2">
 <p>
 IODA steht für: Integration Operation Data API
 </p>
@@ -347,19 +356,19 @@ IODA steht für: Integration Operation Data API
 </p>
 </div>
 
-<div id="outline-container-orgheadline11" class="outline-3">
-<h3 id="orgheadline11"><span class="section-number-3">2.1</span> Funktionale Abhängigkeiten vermeiden</h3>
+<div id="outline-container-orgheadline5" class="outline-4">
+<h4 id="orgheadline5"><span class="section-number-4">1.3.1</span> Funktionale Abhängigkeiten vermeiden</h4>
 </div>
 
 
-<div id="outline-container-orgheadline12" class="outline-3">
-<h3 id="orgheadline12"><span class="section-number-3">2.2</span> PoMO ( Principle of Mutual Oblivion)</h3>
-<div class="outline-text-3" id="text-2-2">
+<div id="outline-container-orgheadline6" class="outline-4">
+<h4 id="orgheadline6"><span class="section-number-4">1.3.2</span> PoMO ( Principle of Mutual Oblivion)</h4>
+<div class="outline-text-4" id="text-1-3-2">
 <p>
-;;Ein Producer
-    kennt seinen Consumer nicht. Ein Consumer kennt seinen Producer
-    nicht. Das nenne ich das Principle of Mutual Oblivion (PoMO,
-    Prinzip der gegenseitigen Nichtbeachtung)
+Ein Producer
+kennt seinen Consumer nicht. Ein Consumer kennt seinen Producer
+nicht. Das nenne ich das Principle of Mutual Oblivion (PoMO,
+Prinzip der gegenseitigen Nichtbeachtung) (architect napkin, Seite 80)
 </p>
 
 <p>
@@ -368,12 +377,10 @@ Es soll auch verhindert werden, dass eine Einheit eine andere aufruft und von de
 abhängig ist, bzw. auf das Ergebnis wartet. 
 Eine Funktionseinheit soll, nachdem sie die Daten bearbeitet hat, sie einfach nach 
 außen weiter reichen und nicht wissen, wer die Daten entgegennimmt.
+Dieses Prinzip verhindert eine Koppelung zwischen den einzelnen Funktionseinheiten.
 </p>
 
 <p>
-Dieses Prinzip verhindert eine Koppelung zwischen den einzelnen Funktionseinheiten.
-Um das zu erreichen, gibt es eine Programmierregel, die es ermöglicht, beim Programmieren darauf zu achten,
-das dieses Prinzip eingehalten wird.
 Um jedoch ein "Zusammenspiel" zwischen den einzelnen entkoppelten Einheiten zu ermöglichen, bedarf es einen oder
 mehrere "Koordinatoren" welche diesem Prinzip nicht entsprechen müssen.
 Nur so kann aus vielen kleinen Funktionseinheiten ein großes Ganzes werden, dass eine komplexe Aufgabe lösen kann.
@@ -387,18 +394,16 @@ Integrationen. Als Regel zusammengefasst nennt er dies "Integration Operation Se
 </div>
 
 
-<div id="outline-container-orgheadline22" class="outline-3">
-<h3 id="orgheadline22"><span class="section-number-3">2.3</span> IOSP ( Integration Operation Segregation Principle)</h3>
-<div class="outline-text-3" id="text-2-3">
+<div id="outline-container-orgheadline16" class="outline-4">
+<h4 id="orgheadline16"><span class="section-number-4">1.3.3</span> IOSP ( Integration Operation Segregation Principle)</h4>
+<div class="outline-text-4" id="text-1-3-3">
 <p>
 Dieses Prinzip besagt, dass eine Funktioneseinheit entweder eine Operation oder eine Integration ist und beide 
 Verantwortungsberreiche nicht vermischt werden dürfen.
 </p>
 </div>
 
-<div id="outline-container-orgheadline13" class="outline-4">
-<h4 id="orgheadline13"><span class="section-number-4">2.3.1</span> Operationen</h4>
-<div class="outline-text-4" id="text-2-3-1">
+<ol class="org-ol"><li><a id="orgheadline7"></a>Operationen<br  /><div class="outline-text-5" id="text-1-3-3-1">
 <p>
 Operationen sind Funktionen, die Logik/ Kontrollstrukturen enthalten dürfen. In C# wären das:
 </p>
@@ -425,12 +430,9 @@ soll. Im Gegensatz dazu steht der Deklarative Ansatz. Beim deklarativen Programm
 im Detail genau angestellt wird. Ein Beispiel hierfür wären zum Beispiel SQL Befehle. Hier wird nur gesagt, was man haben möchte und das Programm kann dann
 die Anfrage nochmal untersuchen und selbst bestimmen, wie es die Anfrage am besten ausführt.
 </p>
-</div>
-</div>
+</div></li>
 
-<div id="outline-container-orgheadline14" class="outline-4">
-<h4 id="orgheadline14"><span class="section-number-4">2.3.2</span> Integrationen</h4>
-<div class="outline-text-4" id="text-2-3-2">
+<li><a id="orgheadline8"></a>Integrationen<br  /><div class="outline-text-5" id="text-1-3-3-2">
 <p>
 Die Integrationen werden nach Flow Design Richtlinien deklarative programmiert.
 Diese Funktioneneinheiten dürfen anders als die Operationen, andere Funktionen aufrufen, sie also kennen.  
@@ -447,39 +449,32 @@ Die Businesslogik, das was die Funktionalität erzeugt, diese befinden sich in O
 Sie bekommen einfach nur von irgendwo her einen Input (bzw bei keinen Inputparametern einfach ausgeführt werden) und führen damit die von ihnen implementierte
 Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die Funktionseinheit jedoch nicht den Empfänger.
 </p>
-</div>
-</div>
+</div></li>
 
-<div id="outline-container-orgheadline20" class="outline-4">
-<h4 id="orgheadline20"><span class="section-number-4">2.3.3</span> Ausnahmen / Einschränkungen</h4>
-<div class="outline-text-4" id="text-2-3-3">
-</div><ol class="org-ol"><li><a id="orgheadline17"></a>Operationen<br  /><ol class="org-ol"><li><a id="orgheadline15"></a>API<br  /><div class="outline-text-6" id="text-2-3-3-1-1">
+<li><a id="orgheadline14"></a>Ausnahmen / Einschränkungen<br  /><ol class="org-ol"><li><a id="orgheadline11"></a>Operationen<br  /><ol class="org-ol"><li><a id="orgheadline9"></a>API<br  /><div class="outline-text-7" id="text-1-3-3-3-1-1">
 <p>
 Operationen dürfen API aufrufe machen, was zwar ein Koppelung darstellt, gleichzeitig ist es aber auch ein Gewinn, wenn die Koppelung
 sich hier nur auf unterester Ebene auswirken, und sich diese API Logik nicht bis in die Integrationen hoch verstrickt.
 API-Aufrufe gehören zu den Provider und sollen sich möglichst nicht weit in die Domänelogik hinein ausbreiten.
 </p>
 </div></li>
-<li><a id="orgheadline16"></a>Standard-Library Funktionen<br  /><div class="outline-text-6" id="text-2-3-3-1-2">
+<li><a id="orgheadline10"></a>Standard-Library Funktionen<br  /><div class="outline-text-7" id="text-1-3-3-3-1-2">
 <p>
-Auch Funktionen, die von der Sprache selbst bereitgestellt werden, dürfen sowohl auch in den Operationen verwendet werden.
+Funktionen, die von der Sprache selbst bereitgestellt werden, dürfen auch in den Operationen verwendet werden.
 Beispiele aus C#:
 FRAGE: Linq auch in Operationen erlaubt?
 int.TryParse, math.sqrt, &#x2026; 
 </p>
 </div></li></ol></li>
-<li><a id="orgheadline19"></a>Integrationenk<br  /><ol class="org-ol"><li><a id="orgheadline18"></a>Try / Catch<br  /><div class="outline-text-6" id="text-2-3-3-2-1">
+<li><a id="orgheadline13"></a>Integrationen<br  /><ol class="org-ol"><li><a id="orgheadline12"></a>Try / Catch<br  /><div class="outline-text-7" id="text-1-3-3-3-2-1">
 <p>
 Oft braucht man auf oberster Ebene, einen Try/Catch, der alle Exceptions abfangen soll, und eine generelle Fehlerbehandlungsroutine 
-startet. Hier ist es doch ratsam, die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
+startet. Hier bleibt einem nichts anderes übrig, als die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
 </p>
-</div></li></ol></li></ol>
-</div>
+</div></li></ol></li></ol></li>
 
 
-<div id="outline-container-orgheadline21" class="outline-4">
-<h4 id="orgheadline21"><span class="section-number-4">2.3.4</span> Tabelle -  IOSP auf einen Blick</h4>
-<div class="outline-text-4" id="text-2-3-4">
+<li><a id="orgheadline15"></a>Tabelle -  IOSP auf einen Blick<br  /><div class="outline-text-5" id="text-1-3-3-4">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -512,7 +507,7 @@ startet. Hier ist es doch ratsam, die Regel keine Logik in den Integrationen zu 
 <tr>
 <td class="org-left">try, catch</td>
 <td class="org-left">Ja</td>
-<td class="org-left">nur mit Ausnahmen</td>
+<td class="org-left">Nein( mit Ausnahmen)</td>
 </tr>
 
 <tr>
@@ -546,13 +541,156 @@ startet. Hier ist es doch ratsam, die Regel keine Logik in den Integrationen zu 
 </tr>
 </tbody>
 </table>
+</div></li></ol>
 </div>
+</div>
+
+<div id="outline-container-orgheadline22" class="outline-3">
+<h3 id="orgheadline22"><span class="section-number-3">1.4</span> Der komplette Ablauf</h3>
+<div class="outline-text-3" id="text-1-4">
+</div><div id="outline-container-orgheadline18" class="outline-4">
+<h4 id="orgheadline18"><span class="section-number-4">1.4.1</span> Definieren der Portale und Provider</h4>
+<div class="outline-text-4" id="text-1-4-1">
+<p>
+    Man zeichnet ein Kreis auf ein Papier, diese stellt die Domäne dar.
+    Auf der linken Seite hängt man die Sachen dran, die auf die Domände zugreifen so gegannte Portale, zum Beispiel HTTP-Zugriff,
+    Batch mode, oder GUIs.
+    Auf der anderen Seite sind die Provider, diese Stellen externe Resourcen zur Verfügung, die die Domäne verwendet.
+    Ziel ist es später in der Implementierung darauf zu achten, dass die "Schicht" oder "Membran", zwischen Domäne und Außenwelt möglichst
+dünn bleibt. Somit lässt sich die Domäne besser testen und es lassen sich leichter neue Portale und Provider anhängen.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline19" class="outline-4">
+<h4 id="orgheadline19"><span class="section-number-4">1.4.2</span> Interfaceskizze ( im Falle einer GUI Anwendung )</h4>
+<div class="outline-text-4" id="text-1-4-2">
+<p>
+Man zeichnet eine einfache Skizze der GUI auf ein Papier und überlegt sich, welche Interaktionen kann der Nutzer machen.
+Diese Interaktionen werden dann gesammelt und für jedes wird dann ein eigenes Flow Design erstellt.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline20" class="outline-4">
+<h4 id="orgheadline20"><span class="section-number-4">1.4.3</span> Flow Design Entwurf</h4>
+<div class="outline-text-4" id="text-1-4-3">
+<p>
+Herauskristallisieren der einzelnen Funktionseinheiten und welche Daten von wo nach wo fließen.
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline21" class="outline-4">
+<h4 id="orgheadline21"><span class="section-number-4">1.4.4</span> Einordnen der Funktionseinheiten in bestimmte Klassen</h4>
+<div class="outline-text-4" id="text-1-4-4">
+<p>
+Man fasst eine oder mehere Funktionseinheiten zusammen, indem man zum Beispiel alle mit einer gestrichelten Linie einkreist oder alle die zur selben Klasse
+gehören farblich markiert. Der Name der Klasse notiert man dann im eingekreisten Feld oder unter jeden Funktionseinheit.
+FRAGE: Manchmal wird eine Funktionseinheit selbst als Klasse implementiert? Dann kann ich sie ja nicht in eine andere Klasse schieben.
+RAGE: Schreibt man unter jeden Funktionseinheit die Klasse?
+</p>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-orgheadline27" class="outline-2">
+<h2 id="orgheadline27"><span class="section-number-2">2</span> C#</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-orgheadline26" class="outline-3">
+<h3 id="orgheadline26"><span class="section-number-3">2.1</span> Features der Sprache</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Um nach Flow Design Regeln zu programmieren, helfen einem in C# einige Features die in diesem Kapitel vorgestellt werden.
+</p>
+</div>
+<div id="outline-container-orgheadline24" class="outline-4">
+<h4 id="orgheadline24"><span class="section-number-4">2.1.1</span> yield return</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<p>
+Hiermit kann man ein Producer-Consumer Pattern implementieren. 
+Vorraussetzung ist jedoch, dass man mit Daten arbeitet, die das IEnumerable Interface implementieren, wie zum Beispiel die
+List Klasse.
+</p>
+
+<p>
+Angles are written as Greek letters &alpha;, &beta; and &gamma;.  The mass if
+     the sun is M<sub>sun</sub> = 1.989 x 10<sup>30</sup> kg.  The radius of the sun is R<sub>sun</sub> =
+     6.96 x 10<sup>8</sup> m.  If \(a^2=b\) and \(b=2\), then the solution must be either
+     \(a=+\sqrt{2}\) or \(a=-\sqrt{2}\).
+</p>
+
+\begin{equation}
+x=\sqrt{b}
+\end{equation}
+<p>
+&amp;#10003;
+</p>
+
+<p>
+Hier der Code von dem Beispiel weiter oben.
+</p>
+
+
+<div class="org-src-container">
+
+<pre class="src src-cpp"><span style="color: #4f97d7; font-weight: bold;">class</span> <span style="color: #ce537a; font-weight: bold;">Program</span>
+<span style="color: #4f97d7;">{</span>
+  <span style="color: #4f97d7; font-weight: bold;">static</span> <span style="color: #ce537a; font-weight: bold;">void</span> <span style="color: #bc6ec5; font-weight: bold;">Main</span><span style="color: #bc6ec5;">()</span>
+  <span style="color: #bc6ec5;">{</span>
+    <span style="color: #ce537a; font-weight: bold;">IEnumerable</span><span style="color: #2d9574;">&lt;</span><span style="color: #ce537a; font-weight: bold;">int</span><span style="color: #2d9574;">&gt;</span> <span style="color: #7590db;">numbers</span> = ReadNumbersFromCmd<span style="color: #2d9574;">()</span>;
+    <span style="color: #ce537a; font-weight: bold;">IEnumerable</span><span style="color: #2d9574;">&lt;</span><span style="color: #ce537a; font-weight: bold;">int</span><span style="color: #2d9574;">&gt;</span> <span style="color: #7590db;">answer</span> = FindTheAnswer<span style="color: #2d9574;">(</span>numbers<span style="color: #2d9574;">)</span>;
+    PrintNumbers<span style="color: #2d9574;">(</span>answer<span style="color: #2d9574;">)</span>;
+  <span style="color: #bc6ec5;">}</span>
+
+  <span style="color: #4f97d7; font-weight: bold;">public</span> <span style="color: #4f97d7; font-weight: bold;">static</span> <span style="color: #ce537a; font-weight: bold;">IEnumerable</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">int</span><span style="color: #bc6ec5;">&gt;</span> ReadNumbersFromCmd<span style="color: #bc6ec5;">()</span>
+  <span style="color: #bc6ec5;">{</span>
+    <span style="color: #4f97d7; font-weight: bold;">while</span> <span style="color: #2d9574;">(</span><span style="color: #a45bad;">true</span><span style="color: #2d9574;">)</span>
+    <span style="color: #2d9574;">{</span>
+      <span style="color: #ce537a; font-weight: bold;">var</span> <span style="color: #7590db;">line</span> = Console.ReadLine<span style="color: #67b11d;">()</span>;
+      yield <span style="color: #4f97d7; font-weight: bold;">return</span> <span style="color: #ce537a; font-weight: bold;">int</span>.Parse<span style="color: #67b11d;">(</span>line<span style="color: #67b11d;">)</span>;
+    <span style="color: #2d9574;">}</span>
+  <span style="color: #bc6ec5;">}</span>
+
+  <span style="color: #4f97d7; font-weight: bold;">private</span> <span style="color: #4f97d7; font-weight: bold;">static</span> <span style="color: #ce537a; font-weight: bold;">IEnumerable</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">int</span><span style="color: #bc6ec5;">&gt;</span> FindTheAnswer<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">IEnumerable</span><span style="color: #2d9574;">&lt;</span><span style="color: #ce537a; font-weight: bold;">int</span><span style="color: #2d9574;">&gt;</span> <span style="color: #7590db;">numbers</span><span style="color: #bc6ec5;">)</span>
+  <span style="color: #bc6ec5;">{</span>
+    <span style="color: #4f97d7; font-weight: bold;">return</span> numbers.TakeWhile<span style="color: #2d9574;">(</span>x =&gt; x != <span style="color: #a45bad;">42</span><span style="color: #2d9574;">)</span>;
+  <span style="color: #bc6ec5;">}</span>
+
+  <span style="color: #4f97d7; font-weight: bold;">private</span> <span style="color: #4f97d7; font-weight: bold;">static</span> <span style="color: #ce537a; font-weight: bold;">void</span> PrintNumbers<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">IEnumerable</span><span style="color: #2d9574;">&lt;</span><span style="color: #ce537a; font-weight: bold;">int</span><span style="color: #2d9574;">&gt;</span> <span style="color: #7590db;">numbers</span><span style="color: #bc6ec5;">)</span>
+  <span style="color: #bc6ec5;">{</span>
+    <span style="color: #bc6ec5; font-weight: bold;">foreach</span> <span style="color: #2d9574;">(</span><span style="color: #ce537a; font-weight: bold;">var</span> number <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">numbers</span><span style="color: #2d9574;">)</span>
+    <span style="color: #2d9574;">{</span>
+      Console.WriteLine<span style="color: #67b11d;">(</span>number<span style="color: #67b11d;">)</span>;
+    <span style="color: #2d9574;">}</span>
+  <span style="color: #bc6ec5;">}</span>
+<span style="color: #4f97d7;">}</span>
+</pre>
+</div>
+
+<p>
+Der Producer ist in dem Fall der <code>ReadNumbersFromCmd</code>.
+Dieser produziert ein endloser Stream an <code>int</code>-Daten.
+Es wird jedoch immer nur ein Element erzeugt und erst nachdem der Consumer das
+Element abgefragt hat, wird ein neues Element erzeugt.
+Wenn nichts mehr konsumiert wird, wird auch nichts mehr produziert.
+Den Abbruch der Endlossschleife ( also das Stoppen des Datenflusses) kann somit auch eine andere Funktion außerhalb der Schleife
+übernehmen. 
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgheadline25" class="outline-4">
+<h4 id="orgheadline25"><span class="section-number-4">2.1.2</span> LINQ und Lambdas</h4>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
-<p class="date">Created: 2016-09-01 Do 12:16</p>
+<p class="date">Created: 2016-09-01 Do 15:02</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
