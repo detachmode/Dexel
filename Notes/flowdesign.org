@@ -68,7 +68,9 @@ Alle Leaf-Knoten sind Operationen, der Rest sind Integrationen.
 Die Main Funktion wird nach dem Programmstart ( leerer Kreis ) ohne Parameter aufgerufen.
 Danach ruft diese die Funktion ReadNumbersFromCmd auf, welche aus der Konsole eine Eingabe ließt und sie
 zu einem int parset. Der int nimmt die Main Funktion entgegen und gibt diesen an FindtheAnswer weiter.
-Diese Funktion hat die Aufgabe den entgegengenommenen int mit der Zahl 42 zu vergleichen und gibt bei
+Diese Funktion hat die Aufgabe den entgegengenommenen int mit der Zahl 42 zu vergleichen. Wenn die Zahl 42 ist, wird der Datenstrom 
+abgebrochen. Wenn es nicht die 42 war, dann wird der int nach außen gereicht und die Main Funktion reicht die Zahl an die 
+PrintNumber Funktion weiter. Diese gibt die Zahl in die Konsole aus.  
 FRAGE: Was bedeutet nochmal die Tonne, mit Hand?
 
 
