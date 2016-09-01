@@ -45,7 +45,7 @@ Das Programm ist eine Konsolenanwedung, die den Benutzer eine Eingabe erlaubt.
 Wenn die Eingabe die Zahl 42 entspricht, wird das Programm beendet, wenn nicht, kann wieder eine Zahl eingeben werden.
 Das wiederholt sich, solange bis der Benuter die Zahl 42 eingetippt hat.
 
-*** Erläuterung der Syntax
+*** Erläuterung der Notation
 Alle eingekreisten Namen sind Funktionseinheiten, oder auch Softwarezelle genannt.
 Diese werden üblicherweise im Code als Funktionen implementiert.
 Die Pfeile zeigen den Datenstrom. Links die Inputs und rechts die Outputs.
@@ -55,8 +55,9 @@ Wenn die Tonne zusätzlich noch mit einer Linie verbunden ist, an dessen Ende ei
 dann bedeutet das, dass die Funktion auf externe Resourcen zugreift. 
 Den Kreis kann man sich bildlich wie eine Hand vorstellen, an die sich die Funktion festhält.
 
-Ein Stern innerhalb der Klammern der Datenströme, bedeutet, dass mehrere Daten dieser Art kommen können,
-oder auch keine Daten. Je nach Programmiersprache, kann man das Verhalten mit einem yield in einer Schleife realisieren, 
+Ein Stern innerhalb der Klammern der Datenströme, bedeutet, dass 0..n Daten dieses Types zwischen
+den Funktionseinheiten fließen können.
+Je nach Programmiersprache, kann man das Verhalten mit einem yield in einer Schleife realisieren, 
 oder mit einer Liste/Array als Rückgabewert. 
 
 Die Main Funktion ruft die anderen 3 Funktionen auf, eine Funktionseinheit die andere Funktionseinheiten aufruft,
@@ -70,7 +71,7 @@ Danach ruft diese die Funktion ReadNumbersFromCmd auf, welche aus der Konsole ei
 zu einem int parset. Der int nimmt die Main Funktion entgegen und gibt diesen an FindtheAnswer weiter.
 Diese Funktion hat die Aufgabe den entgegengenommenen int mit der Zahl 42 zu vergleichen. Wenn die Zahl 42 ist, wird der Datenstrom 
 abgebrochen. Wenn es nicht die 42 war, dann wird der int nach außen gereicht und die Main Funktion reicht die Zahl an die 
-PrintNumber Funktion weiter. Diese gibt die Zahl in die Konsole aus.  
+PrintNumber Funktion weiter. PrintNumber gibt die Zahl in die Konsole aus.  
 FRAGE: Was bedeutet nochmal die Tonne, mit Hand?
 
 
@@ -94,10 +95,8 @@ Es soll auch verhindert werden, dass eine Einheit eine andere aufruft und von de
 abhängig ist, bzw. auf das Ergebnis wartet. 
 Eine Funktionseinheit soll, nachdem sie die Daten bearbeitet hat, sie einfach nach 
 außen weiter reichen und nicht wissen, wer die Daten entgegennimmt.
-
 Dieses Prinzip verhindert eine Koppelung zwischen den einzelnen Funktionseinheiten.
-Um das zu erreichen, gibt es eine Programmierregel, die es ermöglicht, beim Programmieren darauf zu achten,
-das dieses Prinzip eingehalten wird.
+
 Um jedoch ein "Zusammenspiel" zwischen den einzelnen entkoppelten Einheiten zu ermöglichen, bedarf es einen oder
 mehrere "Koordinatoren" welche diesem Prinzip nicht entsprechen müssen.
 Nur so kann aus vielen kleinen Funktionseinheiten ein großes Ganzes werden, dass eine komplexe Aufgabe lösen kann.
