@@ -199,6 +199,8 @@ Den Abbruch der Endlossschleife ( also das Stoppen des Datenflusses) kann somit 
 
   Rückgabewert entgegennehmen.
 ** Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.
+- Rückgabewert erwarten von Function als Parameter übergeben.
+- API-Aufruf, Filehandling?, Daten in Integrationen?
 
 ** Warum macht man das? Sinn der Aufteilung. -> Ketten Bild
    nochmal rückbesinnen auf CCD
