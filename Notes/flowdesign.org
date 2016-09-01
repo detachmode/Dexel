@@ -212,13 +212,12 @@ Um nach Flow Design Regeln zu programmieren, helfen einem in C# einige Features 
 Hiermit kann man ein Producer-Consumer Pattern implementieren. 
 Vorraussetzung ist jedoch, dass man mit Daten arbeitet, die das IEnumerable Interface implementieren, wie zum Beispiel die
 List Klasse.
-<Code Beispiel>
-```
-function test() {
-  console.log("notice the blank line before this function?");
-}
-  
-```
+
+#+BEGIN_SRC emacs-lisp
+       (defun org-xor (a b)
+          "Exclusive or."
+          (if a (not b) b))
+     #+END_SRC
 
 *** LINQ
 
