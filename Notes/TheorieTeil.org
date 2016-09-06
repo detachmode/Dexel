@@ -70,6 +70,10 @@ die zusammen die Aufgabe erledigen, die die übergeordnete Softwarezelle beschre
 
 
 * Grundlegende Notationen
+Bilder sind von: 
+
+http://flow-design.org/overview/implementation/#How_to_implement_inputs_to_a_functional_unit
+
   Weitere Notationen kurz erklärt. Auch mit "Integrationen" aber noch nicht erklären, dass es ein Unterschied gibt.
   Provider Dreieck.
 ** Datentypen 
@@ -80,6 +84,9 @@ Doppelpunkt getrennt hintereinander.
 Benutzt man einen Datenstrom bestehend aus einem eigenen Datentypen, so zeichnet man irgendwo auf dem Papier eine Box,
 indem man den Datentyp mit seinen Membervariablen auflistet.
 ** Container / Listen
+
+[[./img/DiagrammCollection.png]]
+
 Stern innerhalb der Klammer.
 Der Datentyp liegt in einem Container vor. 
 Die zu bearbeitende Daten können entweder komplett auf einmal an die Funktionseinheit gegeben werden ( als Liste, Dictionary, etc. )
@@ -91,12 +98,18 @@ Werden Daten als Arrays mit fester größe übergeben, so wird hinter dem Datent
 Ist die Arraygröße bekannt, so kann man diese in die Klammer noch zustätzlich eintragen.
 ** Kardinalitäten 
 *** 0 bis n
+
+[[./img/Diagramm0n.png]]
+
 Wird als * außerhalb der Klammer dargestellt.
 (int)*
 Selten wird ein Datenstrom auch mit geschweiften Klammern dargestellt, um ihn von dem optionalen Output zu unterscheiden.
 {int}
 
 *** 0 bis 1 (optionaler Output)
+
+[[./img/DiagrammOptional.png]]
+
 Eckige Klammer
 [int]
 
@@ -106,6 +119,9 @@ Mehrere Outputs lassen sich nicht in allen Sprachen einfach realiseren.
 Wahlweise kann man es mit Tupel realisieren, oder man verwendet stattdessen einen eigenen Datentyp
 
 ** Joined Inputs 
+
+[[./img/DiagrammJoin.png]]
+
 Wenn die Softwarezelle nur dann ihre Aufgabe erledigen kann, wenn mehrere ihre Inputs 
 vorhanden sind und diese aus unterschiedliche Quellen stammen, dann braucht man ein so genannten Join.
 Dieser wird als Linie dargestellt an die mehrere Inputs zusammenlaufen.
@@ -115,6 +131,9 @@ Das Bündeln der Datenströme soll nicht die Funktion F erledigen, sondern ist A
 Die Funktionseinheit F erwartet einfach 2 Parameter und kennt deren Herkunft nicht. 
 
 ** Tonnen
+
+[[./img/DiagrammTonne.png]]
+
 ** Anhängigkeiten / Provider
 ** GUIS / Programmstart/ Ende
 ** Klassen / Container definieren  
@@ -134,6 +153,7 @@ Integrationen und Operationen (einzige Regel?)
 IODA steht für: Integration Operation Data API
 
 [[./img/ioda1.png]]
+
 http://blog.ralfw.de/2015/04/die-ioda-architektur.html
 
 **** Funktionale Abhängigkeiten vermeiden
@@ -244,9 +264,9 @@ Derartiger Code wird wohl in den meisten C#-Codebase zufinden sein und doch ist 
 In diesem Beispiel wurde Logik (foreach) gemischt mit einem expliziten Funktionsaufruf einer Funktion.
 Diese Funktion ist somit nicht IOSP konform.
 
-Es ist etwas ungewohnt, dass Trennen von Integrationen und Operationen im Code auch zu berücksichtigen.
+Es ist etwas ungewohnt, das Trennen von Integrationen und Operationen im Code auch zu berücksichtigen.
 Eine For-Schleife über eine Collection laufen zu lassen und jedes Element an eine Unterfunktion weiterzureichen ist etwas,
-was wohl viele Programmierer regelmässig tuen.
+was wohl viele Programmierer regelmässig so schreiben.
 Das soetwas nun nicht mehr erlaubt ist, braucht eine gewissen Umgewöhnungszeit.
 
 
@@ -372,10 +392,14 @@ Den Abbruch der Endlossschleife ( also das Stoppen des Datenflusses) kann somit 
 
 ** Datenströme mit mehreren Wegen
 *** Ein Output-Weg mehrer Empfänger
+[[./img/DiagrammOut1to2.png]]
 Falls ein Output an mehrere Empfänger weitergereicht werden soll, so lässt sich das am besten mit Events realisieren.
 Leider bedarf es dann bei der Benutzung der API mehr Vorsicht, da man sich vorher auf ein Events registrieren muss, bevor man
 die gewünschte Funktion aufrufen kann.
 *** Mehrere Output-Wege 
+
+[[./img/DiagrammOut2.png]]
+
 Wenn eine Funktion mehrer Output-Wege hat, so kann man das im Code nicht mehr mit einem einfachen Rückgabewert implementieren.
 Stattdessen braucht man entweder mehrere Events oder man gibt der Funktion mehrere Funktionspointer mit, die die Funktion aufruft.
 
