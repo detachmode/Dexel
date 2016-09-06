@@ -120,149 +120,15 @@ Die Funktionseinheit F erwartet einfach 2 Parameter und kennt deren Herkunft nic
 ** Klassen / Container definieren  
 
 * Implementationsregeln / C# Exkurse
+
 Das Flow Design unterscheidet zwei Arten von Funktionseinheiten.
+Operationen sind Funktionseinheiten, die Logik enthalten.
 Die Aufgabe einer Integration ist, die unabhängigen Operationen in das große Ganze zu
-Integrieren. Ralf Westphal spielte auch mit den Gedanken diese als Funktionseinheiten als Koordinatoren oder
+Integrieren. 
+(Fußnote) Ralf Westphal spielte auch mit den Gedanken diese als Funktionseinheiten als Koordinatoren oder
 Kompositionen zu bezeichnen.
 
 Integrationen und Operationen (einzige Regel?)
-
-** Beispiel foreach und Funktionsaufruf als negativ Beispiel.
-
-#+BEGIN_SRC cpp
-class Program
-{
-static void Main()
-{
-   while (true)
-   {
-      int number = ReadNumberFromCmd();
-      bool isAnswer = FindTheAnswer(number);
-
-      if (isAnswer)
-         break;
-      else
-         PrintNumber(number);
-   }
-}
-
-static int ReadNumbersFromCmd()
-{
-    var line = Console.ReadLine();
-    int number = int.Parse(line);
-    return number;
-}
-
-static bool FindtheAnswer(int number)
-{ 
-    if (number == 42)
-        return true;
-    return false;
-}
-...
-#+END_SRC
-** C# Features um Datenflüsse zu implementieren
-Um nach Flow Design Regeln zu programmieren, helfen einem in C# einige Features die in diesem Kapitel vorgestellt werden.
-*** yield return
-Hiermit kann man ein Producer-Consumer Pattern implementieren.
-Vorraussetzung ist jedoch, dass man mit Daten arbeitet, die das =IEnumerable= Interface implementieren, wie zum Beispiel die
-=List= Klasse.
-
-Hier der Code von dem Beispiel weiter oben.
-
-#+BEGIN_SRC cpp
-class Program
-{
-  static void Main()
-  {
-    IEnumerable<int> numbers = ReadNumbersFromCmd();
-    IEnumerable<int> answer = FindTheAnswer(numbers);
-    PrintNumbers(answer);
-  }
- 
-  public static IEnumerable<int> ReadNumbersFromCmd()
-  {
-    while (true)
-    {
-      var line = Console.ReadLine();
-      yield return int.Parse(line);
-    }
-  }
-
-  private static IEnumerable<int> FindTheAnswer(IEnumerable<int> numbers)
-  {
-    return numbers.TakeWhile(x => x != 42);
-  }
-
-  private static void PrintNumbers(IEnumerable<int> numbers)
-  {
-    foreach (var number in numbers)
-    {
-      Console.WriteLine(number);
-    }
-  }
-}
-#+END_SRC
-
-Der Producer ist in dem Fall der =ReadNumbersFromCmd=.
-Dieser produziert ein endloser Stream an =int=-Daten.
-Es wird jedoch immer nur ein Element erzeugt und erst nachdem der Consumer das
-Element abgefragt hat, wird ein neues Element erzeugt.
-Wenn nichts mehr konsumiert wird, wird auch nichts mehr produziert.
-Den Abbruch der Endlossschleife ( also das Stoppen des Datenflusses) kann somit auch eine andere Funktion außerhalb der Schleife
-übernehmen.
-
-*** LINQ und Lambdas
-
-
-
-
-** Datenströme mit mehreren Wegen
-*** Ein Output-Weg mehrer Empfänger
-Falls ein Output an mehrere Empfänger weitergereicht werden soll, so lässt sich das am besten mit Events realisieren.
-Leider bedarf es dann bei der Benutzung der API mehr Vorsicht, da man sich vorher auf ein Events registrieren muss, bevor man
-die gewünschte Funktion aufrufen kann.
-*** Mehrere Output-Wege 
-Wenn eine Funktion mehrer Output-Wege hat, so kann man das im Code nicht mehr mit einem einfachen Rückgabewert implementieren.
-Stattdessen braucht man entweder mehrere Events oder man gibt der Funktion mehrere Funktionspointer mit, die die Funktion aufruft.
-
-Wäre es für eine Operation erlaubt eine andere Funktionseinheit zu kennen, dann könnten wir natürlich einfach in der Operation selbst
-die nachfolgenden Funktionen per Namen aufrufen. Da aber Operationen entkoppelt von ihrer Umwelt sein sollen, müssen die möglichen
-Outputwege über die Funktionsparameter mitgegeben werden. Somit wurden die Verantwortlichkeiten bewahrt und die übergeordnete 
-Integration koordiniert weiter den Datenfluss und die Operation kennt keine anderen Funktionseinheiten.
-
-
-**** mit und/oder Ausgabe
-*
-** Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.
-- Rückgabewert erwarten von Function als Parameter übergeben.
-- API-Aufruf, Filehandling?, Daten in Integrationen?
-
-** Warum macht man das? Sinn der Aufteilung. -> Ketten Bild
-   nochmal rückbesinnen auf CCD
-   Größtes übel funktionale Abhängigkeiten.
-   Wenn jemand seine Arbeit erst zuende machen kann, wenn ein anderer seine Arbeit getan hat.
-** Zusammenfassung - IODA Architekur -  Tabelle
-
-   Tabelle:
-   Daten - Methoden in Daten-Objekte aufrufen? Darf Operation die Methode kennen?
-   Daten - was bedeutet die eigentlich? Extra Funktionen? file open handlers?
-   Daten - Darf Integration wirklich Kontruktor aufrufen, das sind doch daten, oder gelten nur persistente daten?
-
-
-
-***** Tabelle -  IOSP auf einen Blick
-
-
-|                                                         | Operationen | Integrationen        |
-| Rechenoperationen ( +, *, %, ... )                      | Ja          | Nein                 |
-| Kontrollstrukturen (if, else, while, for, foreach, ...) | Ja          | Nein                 |
-| try, catch                                              | Ja          | Nein( mit Ausnahmen) |
-| API-Aufrufe (Methoden von Bibliotheken)                 | Ja          | Nein                 |
-| Ressourcen-Zugriffe (Dateien, Datenbanken etc.)         | Ja          | Nein                 |
-| Standard Library, LINQ                                  | Ja          | Ja                   |
-| Namen andere Funktion kennen                            | Nein        | Ja                   |
-| Auf Rückgabewert warten                                 | Nein        | Ja                   |
 
 ** IODA Architekur
 IODA steht für: Integration Operation Data API
@@ -361,6 +227,197 @@ startet. Hier bleibt einem nichts anderes übrig, als die Regel keine Logik in d
 | Namen andere Funktion kennen                            | Nein        | Ja                   |
 | Auf Rückgabewert warten                                 | Nein        | Ja                   |
 
+** Beispiel foreach und Funktionsaufruf als negativ Beispiel.
+#+BEGIN_SRC cpp
+static void FormatAndPrintStrings(List<string> lines)
+{
+   foreach(line in lines)
+   {
+      string s = MyComplexFormattingFunction(line);
+      Console.WriteLine(s);
+   }
+}
+
+#+END_SRC
+Derartiger Code wird wohl in den meisten C#-Codebase zufinden sein und doch ist er nach Flow Design Richtlinien falsch.
+
+In diesem Beispiel wurde Logik (foreach) gemischt mit einem expliziten Funktionsaufruf einer Funktion.
+Diese Funktion ist somit nicht IOSP konform.
+
+Es ist etwas ungewohnt, dass Trennen von Integrationen und Operationen im Code auch zu berücksichtigen.
+Eine For-Schleife über eine Collection laufen zu lassen und jedes Element an eine Unterfunktion weiterzureichen ist etwas,
+was wohl viele Programmierer regelmässig tuen.
+Das soetwas nun nicht mehr erlaubt ist, braucht eine gewissen Umgewöhnungszeit.
+
+
+Hier nun die Umsetzung in Flow Design mit einfachsten Mitteln.
+
+#+BEGIN_SRC cpp
+static void Main(List<string> lines)
+{
+   List<string> formattedStrings = MyComplexFormattingFunction(lines);
+   PrintLines(formattedStrings);
+}
+
+static List<string> FormatLines(List<string> lines)
+{
+    List<string> result = new List<string>();
+    foreach(line in lines)
+    {
+          string formattedstring;
+          // do complex formatting here
+          result.Add(formattedstring) 
+    }
+    return result;
+}
+
+static void PrintLines(List<string> lines)
+{
+   foreach(line in lines)
+   {
+      Console.WriteLine(s);
+   }
+}
+#+END_SRC
+
+Die Funktion wurde aufgeteilt in eine Integration (Main) und zwei Operationen.
+Im ersten Beispiel hat die Funktion zwei Aufgaben erfüllt, sie hat die Formatierung-Funktion integriert und 
+das Ergebnis ausgegeben.
+
+Nun sind Integration, Ausgabe und Formattierung sauber getrennt.
+Jedoch wurde der Code nun deutlich länger. Die Foreach-Schleife ist in beide Operationen gelandet und das Initialisieren und
+Befüllen der temporären Liste in =FormatLines= nimmt auch etwas Platz ein.
+
+Es stellt sich die Frage, ob es nicht eine elegantere Lösung gibt, die auch das IOSP erfüllt. 
+Ja, es gibt sie:
+
+#+BEGIN_SRC cpp
+static void Main(List<string> lines)
+{
+   lines.Select( x => MyComplexFormattingFunction(x)).ForEach( x => Console.Writeline(x));
+}
+
+#+END_SRC
+
+** C# Features um Datenflüsse zu implementieren
+Um nach Flow Design Regeln zu programmieren, helfen einem in C# einige Features die in diesem Kapitel vorgestellt werden.
+*** yield return
+Hiermit kann man ein Producer-Consumer Pattern implementieren.
+Vorraussetzung ist jedoch, dass man mit Daten arbeitet, die das =IEnumerable= Interface implementieren, wie zum Beispiel die
+=List= Klasse.
+
+Hier der Code von dem Beispiel weiter oben.
+
+#+BEGIN_SRC cpp
+class Program
+{
+  static void Main()
+  {
+    IEnumerable<int> numbers = ReadNumbersFromCmd();
+    IEnumerable<int> answer = FindTheAnswer(numbers);
+    PrintNumbers(answer);
+  }
+ 
+  public static IEnumerable<int> ReadNumbersFromCmd()
+  {
+    while (true)
+    {
+      var line = Console.ReadLine();
+      yield return int.Parse(line);
+    }
+  }
+
+  private static IEnumerable<int> FindTheAnswer(IEnumerable<int> numbers)
+  {
+    return numbers.TakeWhile(x => x != 42);
+  }
+
+  private static void PrintNumbers(IEnumerable<int> numbers)
+  {
+    foreach (var number in numbers)
+    {
+      Console.WriteLine(number);
+    }
+  }
+}
+#+END_SRC
+
+Der Producer ist in dem Fall der =ReadNumbersFromCmd=.
+Dieser produziert ein endloser Stream an =int=-Daten.
+Es wird jedoch immer nur ein Element erzeugt und erst nachdem der Consumer das
+Element abgefragt hat, wird ein neues Element erzeugt.
+Wenn nichts mehr konsumiert wird, wird auch nichts mehr produziert.
+Den Abbruch der Endlossschleife ( also das Stoppen des Datenflusses) kann somit auch eine andere Funktion außerhalb der Schleife
+übernehmen.
+
+*** LINQ und Lambdas
+
+
+
+
+** Datenströme mit mehreren Wegen
+*** Ein Output-Weg mehrer Empfänger
+Falls ein Output an mehrere Empfänger weitergereicht werden soll, so lässt sich das am besten mit Events realisieren.
+Leider bedarf es dann bei der Benutzung der API mehr Vorsicht, da man sich vorher auf ein Events registrieren muss, bevor man
+die gewünschte Funktion aufrufen kann.
+*** Mehrere Output-Wege 
+Wenn eine Funktion mehrer Output-Wege hat, so kann man das im Code nicht mehr mit einem einfachen Rückgabewert implementieren.
+Stattdessen braucht man entweder mehrere Events oder man gibt der Funktion mehrere Funktionspointer mit, die die Funktion aufruft.
+
+Wäre es für eine Operation erlaubt eine andere Funktionseinheit zu kennen, dann könnten wir natürlich einfach in der Operation selbst
+die nachfolgenden Funktionen per Namen aufrufen. Da aber Operationen entkoppelt von ihrer Umwelt sein sollen, müssen die möglichen
+Outputwege über die Funktionsparameter mitgegeben werden. Somit wurden die Verantwortlichkeiten bewahrt und die übergeordnete 
+Integration koordiniert weiter den Datenfluss und die Operation kennt keine anderen Funktionseinheiten.
+
+
+**** mit und/oder Ausgabe
+*
+** Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.
+- Rückgabewert erwarten von Function als Parameter übergeben.
+- API-Aufruf, Filehandling?, Daten in Integrationen?
+
+#+BEGIN_SRC cpp
+static List<string> FormatStrings(List<string> lines , Func<string,string> formatFunc )
+{
+   List<string> result = new List<string>();
+   foreach(line in lines)
+   {
+      string formattedstring = formatFunc(line);
+      result.Add(formattedstring) 
+   }
+   return result;
+}
+
+
+#+END_SRC
+
+
+** Warum macht man das? Sinn der Aufteilung. -> Ketten Bild
+   nochmal rückbesinnen auf CCD
+   Größtes übel funktionale Abhängigkeiten.
+   Wenn jemand seine Arbeit erst zuende machen kann, wenn ein anderer seine Arbeit getan hat.
+** Zusammenfassung - IODA Architekur -  Tabelle
+
+   Tabelle:
+   Daten - Methoden in Daten-Objekte aufrufen? Darf Operation die Methode kennen?
+   Daten - was bedeutet die eigentlich? Extra Funktionen? file open handlers?
+   Daten - Darf Integration wirklich Kontruktor aufrufen, das sind doch daten, oder gelten nur persistente daten?
+
+
+
+***** Tabelle -  IOSP auf einen Blick
+
+
+|                                                         | Operationen | Integrationen        |
+| Rechenoperationen ( +, *, %, ... )                      | Ja          | Nein                 |
+| Kontrollstrukturen (if, else, while, for, foreach, ...) | Ja          | Nein                 |
+| try, catch                                              | Ja          | Nein( mit Ausnahmen) |
+| API-Aufrufe (Methoden von Bibliotheken)                 | Ja          | Nein                 |
+| Ressourcen-Zugriffe (Dateien, Datenbanken etc.)         | Ja          | Nein                 |
+| Standard Library, LINQ                                  | Ja          | Ja                   |
+| Namen andere Funktion kennen                            | Nein        | Ja                   |
+| Auf Rückgabewert warten                                 | Nein        | Ja                   |
+
 * Ablauf der kompletten Flow Design - Entwurfsmethode
 
 ** Definieren der Portale und Provider
@@ -441,3 +498,37 @@ abgebrochen. Wenn es nicht die 42 war, dann wird der int nach außen gereicht un
 PrintNumber Funktion weiter. PrintNumber gibt die Zahl in die Konsole aus.
 Wenn der Datenstrom abbricht, returned die Mainfunktion und das Programm wird beendet.
 FRAGE: Was bedeutet nochmal die Tonne, mit Hand?
+
+
+*** Negativ Beispiel
+#+BEGIN_SRC cpp
+...
+static void Main()
+{
+   while (true)
+   {
+      int number = ReadNumberFromCmd();
+      bool isAnswer = FindTheAnswer(number);
+
+      if (isAnswer)
+         break;
+      else
+         PrintNumber(number);
+   }
+}
+
+static int ReadNumbersFromCmd()
+{
+    var line = Console.ReadLine();
+    int number = int.Parse(line);
+    return number;
+}
+
+static bool FindtheAnswer(int number)
+{ 
+    if (number == 42)
+        return true;
+    return false;
+}
+...
+#+END_SRC
