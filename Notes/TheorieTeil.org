@@ -85,7 +85,7 @@ Benutzt man einen Datenstrom bestehend aus einem eigenen Datentypen, so zeichnet
 indem man den Datentyp mit seinen Membervariablen auflistet.
 ** Container / Listen
 
-[[./img/DiagrammCollection.png]]
+[[./img/diagramCollection.png]]
 
 Stern innerhalb der Klammer.
 Der Datentyp liegt in einem Container vor. 
@@ -99,7 +99,7 @@ Ist die Arraygröße bekannt, so kann man diese in die Klammer noch zustätzlich
 ** Kardinalitäten 
 *** 0 bis n
 
-[[./img/Diagramm0n.png]]
+[[./img/diagram0n.png]]
 
 Wird als * außerhalb der Klammer dargestellt.
 (int)*
@@ -108,7 +108,7 @@ Selten wird ein Datenstrom auch mit geschweiften Klammern dargestellt, um ihn vo
 
 *** 0 bis 1 (optionaler Output)
 
-[[./img/DiagrammOptional.png]]
+[[./img/DiagramOptional.png]]
 
 Eckige Klammer
 [int]
@@ -120,7 +120,7 @@ Wahlweise kann man es mit Tupel realisieren, oder man verwendet stattdessen eine
 
 ** Joined Inputs 
 
-[[./img/DiagrammJoin.png]]
+[[./img/DiagramJoin.png]]
 
 Wenn die Softwarezelle nur dann ihre Aufgabe erledigen kann, wenn mehrere ihre Inputs 
 vorhanden sind und diese aus unterschiedliche Quellen stammen, dann braucht man ein so genannten Join.
@@ -132,7 +132,7 @@ Die Funktionseinheit F erwartet einfach 2 Parameter und kennt deren Herkunft nic
 
 ** Tonnen
 
-[[./img/DiagrammTonne.png]]
+[[./img/DiagramTonne.png]]
 
 ** Anhängigkeiten / Provider
 ** GUIS / Programmstart/ Ende
@@ -392,13 +392,13 @@ Den Abbruch der Endlossschleife ( also das Stoppen des Datenflusses) kann somit 
 
 ** Datenströme mit mehreren Wegen
 *** Ein Output-Weg mehrer Empfänger
-[[./img/DiagrammOut1to2.png]]
+[[./img/diagramOut1to2.png]]
 Falls ein Output an mehrere Empfänger weitergereicht werden soll, so lässt sich das am besten mit Events realisieren.
 Leider bedarf es dann bei der Benutzung der API mehr Vorsicht, da man sich vorher auf ein Events registrieren muss, bevor man
 die gewünschte Funktion aufrufen kann.
 *** Mehrere Output-Wege 
 
-[[./img/DiagrammOut2.png]]
+[[./img/diagramOut2.png]]
 
 Wenn eine Funktion mehrer Output-Wege hat, so kann man das im Code nicht mehr mit einem einfachen Rückgabewert implementieren.
 Stattdessen braucht man entweder mehrere Events oder man gibt der Funktion mehrere Funktionspointer mit, die die Funktion aufruft.
