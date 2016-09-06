@@ -1,0 +1,23 @@
+* Systemanalyse
+** Vision
+** Gedanken zur Machbarkeit, alternative Lösung von zu schwiergen Problemen, Einschränkungen
+   Attribute als Hilfe zum Identifizieren von Funktionen.
+** Was soll das Programm können.
+*** Zeichnen eines Flow Designs.
+    Gute Usability in Anlehnung an Node-basierte Grafik Anwendungen.
+    Erzeugen von Nodes, Selektieren, Beschriften, Bewegen, 
+    Kopieren, Eingliedern von neuen Nodes in bestehende.
+    Anordenen, automatisches Spacing
+    Implementation Previewen mit Maus-over
+    Tests dranhängen an Node, Kommentare dranhängen,
+    Einkreisen/ Gruppieren in Klassen
+*** Generieren des Codes aus dem Flow Design
+*** Einlesen eines Csharp Files / Solution und generieren des Flow Design
+* Vorstellung Roslyn
+* Vorstellung was erreicht wurde
+* Schwierigkeiten, Ausblick und Fazit
+  
+
+  
+
+

@@ -12,6 +12,8 @@ Flow Design soll in Ergänzung eine Methodik und Programmierregeln bieten, die m
 ein Code, der die CCD Prinzipen erfüllt.
 
 Im Hauptfokus liegen vorallem folgende Prinzipien von CCD:
+- KISS
+- YAGNI
 - Lose Koppelung
 - Orthogonalität
 
@@ -20,9 +22,12 @@ Weitere Prinzipien die Beachtung find sollen:
 - Single Responsibility Principle
 - Information Hiding Principle
 - Dependecy Injection
-- Interface Segregation Principle
 
-Flow Design ist eine Entwurfsmethode, die im Gegensatz zu UML besser geeignet sein soll, bereits in der Entwurfsphase Anwendung zu finden.
+Unter Flow Design versteht man zwei Dinge:
+Einmal das Diagramm und einmal die Komplette Entwurfsmethode, indem das
+Diagramm nur ein Teil davon ist.
+
+Flow Design soll im Gegensatz zu UML besser geeignet sein , bereits in der Entwurfsphase Anwendung zu finden.
 Ziel ist es sich auf dem Papier bereits ein Entwurf der Programmstruktur überlegen zu können.
 Aktuell sei es aus der Mode gekommen, vor dem Programmieren einen Entwurf zu erzeugen, was vorallem daran läge, dass die vorhandenen
 Entwurfsmethodiken eher hinderlich seien und einen unnötigen Overhead erzeugen ( laut Ralf Westphal)
@@ -41,56 +46,141 @@ müssen, sonder sich auf das Große ganze - das Zusammenspiel/ Komposition der F
 
 Anzumerken wäre noch, dass nicht der Kontrollfluss abgebildet wird, sondern, wie erwähnt, der Datenfluss.
 
-** Einfaches Beispiel eines Flow Designs
-Das Programm ist eine Konsolenanwedung, die den Benutzer eine Eingabe erlaubt.
-Wenn die Eingabe die Zahl 42 entspricht, wird das Programm beendet, wenn nicht, kann wieder eine Zahl eingeben werden.
-Das wiederholt sich, solange bis der Benuter die Zahl 42 eingetippt hat.
-
- 
-*** Erläuterung der Notation
-Alle eingekreisten Namen sind Funktionseinheiten, oder auch Softwarezelle genannt.
-Diese werden üblicherweise im Code als Funktionen implementiert.
-Die Pfeile zeigen den Datenstrom. Links die Inputs und rechts die Outputs.
-Eine leere Klammer bedeutet, dass keine Daten fließen.
-In diesem Fall hat die Funktion stattdessen oft eine Tonne, die anzeigt, dass die Funktionseinheit state-behaftet ist.
-Wenn die Tonne zusätzlich noch mit einer Linie verbunden ist, an dessen Ende ein Kreis gezeichnet ist,
-dann bedeutet das, dass die funktion auf externe resourcen zugreift. 
-den kreis kann man sich bildlich wie eine hand vorstellen, an die sich die funktion festhält.
-
-ein stern innerhalb der Klammern der Datenströme, bedeutet, dass 0..n Daten dieses Types zwischen
-den Funktionseinheiten fließen können.
-Je nach Programmiersprache, kann man das Verhalten mit einem yield in einer Schleife realisieren, 
-oder mit einer Liste/Array als Rückgabewert. 
-
-Die Main Funktion ruft die anderen 3 Funktionen auf, eine Funktionseinheit die andere Funktionseinheiten aufruft,
-werden als Integrationen bezeichnet. Die anderen 3 Methoden rufen selbst keine anderen Funktionseinheiten auf und werden
-Operationen genannt. Anhand einer Flow Design Skizze, kann man leicht herausfinden, welche Funktionen Operationen sind und welche
-Integrationen.
-Alle Leaf-Knoten sind Operationen, der Rest sind Integrationen.
- 
- 
-
 * Pfeile und Kreise
 ** RomanNumbers Beispiel
+Das nachfolgende Beispiel soll an einem einfach Beispiel zeigen, was ein Flow Design Diagramm ist.
+Das Programm/Unterprogramm soll eine römische Zahl in eine Dezimalzahl konvertieren.
+
+Der Input-Datenstrom besteht aus einem String. Dieser String wird zerlegt in einzelne Buchstaben.
+Der Buchstabenstrom wird anschließend einer Funktionseinheit gegeben, die jeden Buchstaben zu der entsprächenden 
+Dezimalzahl konvertiert. Anschließend muss auf den Strom noch nach eine Negationsregel angewandt werden. Diese untersucht den
+Strom aus Ganzzahlen auf Stellen, wo eine kleinere Zahl vor einer größeren Zahl steht und sie in dem Fall dann negativ macht.
+Am Ende wird der Datenstrom einer Funktionseinheit übergeben, die alle Zahlen aufaddiert.
+Das Ergebnis ist die Summe aller Zahlen. 
+
+Die Funktionseinheiten sind im Diagramm als Kreise dargestellt, in welchen der möglichst aussagekräftige Name steht.
+Pfeile zeigen den Datenstrom, auf dem der Datentyp vermerkt ist.
+Links gehen Pfeile in die Funktionseinheit hinein, das ist der eingehende Datenstrom und rechts ist der ausgehende Datenstrom.
+Die Funktionseinheit wird auch als Domäne bezeichnet. Die Domäne interessiert sich nur für ihre Aufgabe und soll möglichst isoliert
+betrachtet ihre Aufgabe erledigen können.
 ** "Aufmachen" einer Zelle
-*** Finale Erklärung
-Die Main Funktion wird nach dem Programmstart ( leerer Kreis ) ohne Parameter aufgerufen.
-Danach ruft diese die Funktion ReadNumbersFromCmd auf, welche aus der Konsole eine Eingabe ließt und sie
-zu einem int parset. Der int nimmt die Main Funktion entgegen und gibt diesen an FindtheAnswer weiter.
-Diese Funktion hat die Aufgabe den entgegengenommenen int mit der Zahl 42 zu vergleichen. Wenn die Zahl 42 ist, wird der Datenstrom 
-abgebrochen. Wenn es nicht die 42 war, dann wird der int nach außen gereicht und die Main Funktion reicht die Zahl an die 
-PrintNumber Funktion weiter. PrintNumber gibt die Zahl in die Konsole aus.  
-Wenn der Datenstrom abbricht, returned die Mainfunktion und das Programm wird beendet.
-FRAGE: Was bedeutet nochmal die Tonne, mit Hand?
-* Rekursive Eigenschaft der Softwarezellen/ Architekur
+Das Flow Design unterstützt die Funktion in eine Softwarezelle sozusagen hineinzuzoomen.
+Hier erkennt man die rekusive Eigenschaft der Softwarezellen. Eine Softwarezelle kann wiederum aus mehreren Softwarezellen bestehen,
+die zusammen die Aufgabe erledigen, die die übergeordnete Softwarezelle beschreibt.
+
 
 * Grundlegende Notationen
   Weitere Notationen kurz erklärt. Auch mit "Integrationen" aber noch nicht erklären, dass es ein Unterschied gibt.
   Provider Dreieck.
+** Datentypen 
+Falls man sowohl dem Datenstrom einen Namengeben möchte, als auch den Datentyp definieren möchte, schreibt man beides mit einem
+Doppelpunkt getrennt hintereinander.
+*** Definition eigener Datentypen 
+Benutzt man einen Datenstrom bestehend aus einem eigenen Datentypen, so zeichnet man irgendwo auf dem Papier eine Box,
+indem man den Datentyp mit seinen Membervariablen auflistet.
+** Mehrere Inputs
+** Mehrere Outputs 
+*** mit und/oder Ausgabe
+** Kardinalitäten 
+*** Optional
+*** Arrays (auch mit fester Größe)
+*** Listen. Stern innerhalb und außerhalb der Klammern
+** Tonnen
+** Anhängigkeiten / Provider
+** GUIS / Programmstart/ Ende
+** Klassen / Container definieren  
 
 * Implementationsregeln / C# Exkurse
 Integrationen und Operationen (einzige Regel?)
+
 ** Beispiel foreach und Funktionsaufruf als negativ Beispiel.
+** C# Features um Datenflüsse zu implementieren
+Um nach Flow Design Regeln zu programmieren, helfen einem in C# einige Features die in diesem Kapitel vorgestellt werden.
+*** yield return
+Hiermit kann man ein Producer-Consumer Pattern implementieren.
+>>>>>>> 41529167f0f3e8e730b93908c42e6a71c6ab8ce2:Notes/TheorieTeil.org
+Vorraussetzung ist jedoch, dass man mit Daten arbeitet, die das IEnumerable Interface implementieren, wie zum Beispiel die
+List Klasse.
+
+Hier der Code von dem Beispiel weiter oben.
+
+#+BEGIN_SRC cpp
+class Program
+{
+  static void Main()
+  {
+    IEnumerable<int> numbers = ReadNumbersFromCmd();
+    IEnumerable<int> answer = FindTheAnswer(numbers);
+    PrintNumbers(answer);
+  }
+ 
+  public static IEnumerable<int> ReadNumbersFromCmd()
+  {
+    while (true)
+    {
+      var line = Console.ReadLine();
+      yield return int.Parse(line);
+    }
+  }
+
+  private static IEnumerable<int> FindTheAnswer(IEnumerable<int> numbers)
+  {
+    return numbers.TakeWhile(x => x != 42);
+  }
+
+  private static void PrintNumbers(IEnumerable<int> numbers)
+  {
+    foreach (var number in numbers)
+    {
+      Console.WriteLine(number);
+    }
+  }
+}
+#+END_SRC
+
+Der Producer ist in dem Fall der =ReadNumbersFromCmd=.
+Dieser produziert ein endloser Stream an =int=-Daten.
+Es wird jedoch immer nur ein Element erzeugt und erst nachdem der Consumer das
+Element abgefragt hat, wird ein neues Element erzeugt.
+Wenn nichts mehr konsumiert wird, wird auch nichts mehr produziert.
+Den Abbruch der Endlossschleife ( also das Stoppen des Datenflusses) kann somit auch eine andere Funktion außerhalb der Schleife
+übernehmen.
+
+*** LINQ und Lambdas
+
+
+
+
+  Rückgabewert entgegennehmen.
+** Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.
+- Rückgabewert erwarten von Function als Parameter übergeben.
+- API-Aufruf, Filehandling?, Daten in Integrationen?
+
+** Warum macht man das? Sinn der Aufteilung. -> Ketten Bild
+   nochmal rückbesinnen auf CCD
+   Größtes übel funktionale Abhängigkeiten.
+   Wenn jemand seine Arbeit erst zuende machen kann, wenn ein anderer seine Arbeit getan hat.
+** Zusammenfassung - IODA Architekur -  Tabelle
+
+   Tabelle:
+   Daten - Methoden in Daten-Objekte aufrufen? Darf Operation die Methode kennen?
+   Daten - was bedeutet die eigentlich? Extra Funktionen? file open handlers?
+   Daten - Darf Integration wirklich Kontruktor aufrufen, das sind doch daten, oder gelten nur persistente daten?
+
+
+
+***** Tabelle -  IOSP auf einen Blick
+
+
+|                                                         | Operationen | Integrationen        |
+| Rechenoperationen ( +, *, %, ... )                      | Ja          | Nein                 |
+| Kontrollstrukturen (if, else, while, for, foreach, ...) | Ja          | Nein                 |
+| try, catch                                              | Ja          | Nein( mit Ausnahmen) |
+| API-Aufrufe (Methoden von Bibliotheken)                 | Ja          | Nein                 |
+| Ressourcen-Zugriffe (Dateien, Datenbanken etc.)         | Ja          | Nein                 |
+| Standard Library, LINQ                                  | Ja          | Ja                   |
+| Namen andere Funktion kennen                            | Nein        | Ja                   |
+| Auf Rückgabewert warten                                 | Nein        | Ja                   |
 
 ** IODA Architekur
 IODA steht für: Integration Operation Data API
@@ -189,125 +279,7 @@ startet. Hier bleibt einem nichts anderes übrig, als die Regel keine Logik in d
 | Namen andere Funktion kennen                            | Nein        | Ja                   |
 | Auf Rückgabewert warten                                 | Nein        | Ja                   |
 
-** Der komplette Ablauf der Entwurfsmethode
-*** Definieren der Portale und Provider
-    Man zeichnet ein Kreis auf ein Papier, diese stellt die Domäne dar.
-    Auf der linken Seite hängt man die Sachen dran, die auf die Domände zugreifen so gegannte Portale, zum Beispiel HTTP-Zugriff,
-    Batch mode, oder GUIs.
-    Auf der anderen Seite sind die Provider, diese Stellen externe Resourcen zur Verfügung, die die Domäne verwendet.
-    Ziel ist es später in der Implementierung darauf zu achten, dass die "Schicht" oder "Membran", zwischen Domäne und Außenwelt möglichst
-dünn bleibt. Somit lässt sich die Domäne besser testen und es lassen sich leichter neue Portale und Provider anhängen.
-
-*** Interfaceskizze ( im Falle einer GUI Anwendung )
-Man zeichnet eine einfache Skizze der GUI auf ein Papier und überlegt sich, welche Interaktionen kann der Nutzer machen.
-Diese Interaktionen werden dann gesammelt und für jedes wird dann ein eigenes Flow Design erstellt.
-
-*** Flow Design Entwurf
-Herauskristallisieren der einzelnen Funktionseinheiten und welche Daten von wo nach wo fließen.
-
-*** Einordnen der Funktionseinheiten in bestimmte Klassen 
-Man fasst eine oder mehere Funktionseinheiten zusammen, indem man zum Beispiel alle mit einer gestrichelten Linie einkreist oder alle die zur selben Klasse
-gehören farblich markiert. Der Name der Klasse notiert man dann im eingekreisten Feld oder unter jeden Funktionseinheit.
-FRAGE: Manchmal wird eine Funktionseinheit selbst als Klasse implementiert? Dann kann ich sie ja nicht in eine andere Klasse schieben.
-RAGE: Schreibt man unter jeden Funktionseinheit die Klasse?
-
-
-
-* C# 
-** C# Features um Datenflüsse zu implementieren
-Um nach Flow Design Regeln zu programmieren, helfen einem in C# einige Features die in diesem Kapitel vorgestellt werden.
-*** yield return
-Hiermit kann man ein Producer-Consumer Pattern implementieren.
->>>>>>> 41529167f0f3e8e730b93908c42e6a71c6ab8ce2:Notes/TheorieTeil.org
-Vorraussetzung ist jedoch, dass man mit Daten arbeitet, die das IEnumerable Interface implementieren, wie zum Beispiel die
-List Klasse.
-
-Hier der Code von dem Beispiel weiter oben.
-
-#+BEGIN_SRC cpp
-class Program
-{
-  static void Main()
-  {
-    IEnumerable<int> numbers = ReadNumbersFromCmd();
-    IEnumerable<int> answer = FindTheAnswer(numbers);
-    PrintNumbers(answer);
-  }
- 
-  public static IEnumerable<int> ReadNumbersFromCmd()
-  {
-    while (true)
-    {
-      var line = Console.ReadLine();
-      yield return int.Parse(line);
-    }
-  }
-
-  private static IEnumerable<int> FindTheAnswer(IEnumerable<int> numbers)
-  {
-    return numbers.TakeWhile(x => x != 42);
-  }
-
-  private static void PrintNumbers(IEnumerable<int> numbers)
-  {
-    foreach (var number in numbers)
-    {
-      Console.WriteLine(number);
-    }
-  }
-}
-#+END_SRC
-
-Der Producer ist in dem Fall der =ReadNumbersFromCmd=.
-Dieser produziert ein endloser Stream an =int=-Daten.
-Es wird jedoch immer nur ein Element erzeugt und erst nachdem der Consumer das
-Element abgefragt hat, wird ein neues Element erzeugt.
-Wenn nichts mehr konsumiert wird, wird auch nichts mehr produziert.
-Den Abbruch der Endlossschleife ( also das Stoppen des Datenflusses) kann somit auch eine andere Funktion außerhalb der Schleife
-übernehmen.
-
-*** LINQ und Lambdas
-
-
-
-
-  Rückgabewert entgegennehmen.
-** Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.
-- Rückgabewert erwarten von Function als Parameter übergeben.
-- API-Aufruf, Filehandling?, Daten in Integrationen?
-
-** Warum macht man das? Sinn der Aufteilung. -> Ketten Bild
-   nochmal rückbesinnen auf CCD
-   Größtes übel funktionale Abhängigkeiten.
-   Wenn jemand seine Arbeit erst zuende machen kann, wenn ein anderer seine Arbeit getan hat.
-** Zusammenfassung - IODA Architekur -  Tabelle
-
-   Tabelle:
-   Daten - Methoden in Daten-Objekte aufrufen? Darf Operation die Methode kennen?
-   Daten - was bedeutet die eigentlich? Extra Funktionen? file open handlers?
-   Daten - Darf Integration wirklich Kontruktor aufrufen, das sind doch daten, oder gelten nur persistente daten?
-
-
-
-***** Tabelle -  IOSP auf einen Blick
-
-
-|                                                         | Operationen | Integrationen        |
-| Rechenoperationen ( +, *, %, ... )                      | Ja          | Nein                 |
-| Kontrollstrukturen (if, else, while, for, foreach, ...) | Ja          | Nein                 |
-| try, catch                                              | Ja          | Nein( mit Ausnahmen) |
-| API-Aufrufe (Methoden von Bibliotheken)                 | Ja          | Nein                 |
-| Ressourcen-Zugriffe (Dateien, Datenbanken etc.)         | Ja          | Nein                 |
-| Standard Library, LINQ                                  | Ja          | Ja                   |
-| Namen andere Funktion kennen                            | Nein        | Ja                   |
-| Auf Rückgabewert warten                                 | Nein        | Ja                   |
-
-
 * Ablauf der kompletten Flow Design - Entwurfsmethode
-
-  endet mit Einteilen in Klassen, DLL, Anwendungen,...
-
-  Entwurf ist ein Interativer Prozess, somit wäre round trip super "Sinn des Systems SharpFlowDesign erläutern"
 
 ** Definieren der Portale und Provider
     Man zeichnet ein Kreis auf ein Papier, diese stellt die Domäne dar.
@@ -324,12 +296,26 @@ Diese Interaktionen werden dann gesammelt und für jedes wird dann ein eigenes F
 ** Flow Design Entwurf
 Herauskristallisieren der einzelnen Funktionseinheiten und welche Daten von wo nach wo fließen.
 
-** Einordnen der Funktionseinheiten in bestimmte Klassen
+** Einordnen der Funktionseinheiten in bestimmte Container
+Mit Container meint man: Klassen, DLL, Anwendungen.
 Man fasst eine oder mehere Funktionseinheiten zusammen, indem man zum Beispiel alle mit einer gestrichelten Linie einkreist oder alle die zur selben Klasse
 gehören farblich markiert. Der Name der Klasse notiert man dann im eingekreisten Feld oder unter jeden Funktionseinheit.
 FRAGE: Manchmal wird eine Funktionseinheit selbst als Klasse implementiert? Dann kann ich sie ja nicht in eine andere Klasse schieben.
 RAGE: Schreibt man unter jeden Funktionseinheit die Klasse?
+  endet mit Einteilen in Klassen, DLL, Anwendungen,...
 
+  Entwurf ist ein Interativer Prozess, somit wäre round trip super "Sinn des Systems SharpFlowDesign erläutern"
+
+
+
+* Rekursive Eigenschaft der Softwarezellen/ Architekur
+Das Schöne an Flow Design und dem Konzept der Softwarezelle ist, dass sie rekusive ist.
+Man kann das Problem/die Andwendugn ganz oben als eine Softwarezelle (oder hier der Kreis mit den Providern? ist das auch eine Softwarezelle?)
+verstehen, indem links Portale Zugriffe machen und rechts davon, die Softwarezelle wiederum auf ihre Provider Zugriffe macht.
+Die einzelnen Aktionen aus dem die Andwendung besteht können wiederrum als Softwarezellen verstanden werden, auf die von links 
+der Zugriff und der Input in die Softwarezelle hineinkommen, die Softwarezelle bearbeitet die Anfrage und rechts von ihr, kommt das
+Ergebnis heraus. Die Interaktion kann wiederum wieder in kleiner Teile zerlegt werden, die alle eine Softwarezelle sind, mit Inputs und
+Outputs. Damit ist die Architektur weniger starr, als zum Beispiel das Schichtenmodell oder das Zwiebelschalenmodell ( laut Ralf Westphal ). 
 
 
 
