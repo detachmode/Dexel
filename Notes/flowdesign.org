@@ -42,7 +42,7 @@ müssen, sonder sich auf das Große ganze - das Zusammenspiel/ Komposition der F
 
 Anzumerken wäre noch, dass nicht der Kontrollfluss abgebildet wird, sondern, wie erwähnt, der Datenfluss.
 
-** Einfaches Beispiel eines Flow Designs
+** Einfaches Beispiel ppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppppeines Flow Designs
 
 [[./img/FlowDesign2.png]]
 
@@ -52,6 +52,100 @@ Das Programm ist eine Konsolenanwedung, die den Benutzer eine Eingabe erlaubt.
 Wenn die Eingabe die Zahl 42 entspricht, wird das Programm beendet, wenn nicht, kann wieder eine Zahl eingeben werden.
 Das wiederholt sich, solange bis der Benuter die Zahl 42 eingetippt hat.
 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 *** Erläuterung der Notation
 Alle eingekreisten Namen sind Funktionseinheiten, oder auch Softwarezelle genannt.
 Diese werden üblicherweise im Code als Funktionen implementiert.
@@ -59,10 +153,10 @@ Die Pfeile zeigen den Datenstrom. Links die Inputs und rechts die Outputs.
 Eine leere Klammer bedeutet, dass keine Daten fließen.
 In diesem Fall hat die Funktion stattdessen oft eine Tonne, die anzeigt, dass die Funktionseinheit state-behaftet ist.
 Wenn die Tonne zusätzlich noch mit einer Linie verbunden ist, an dessen Ende ein Kreis gezeichnet ist,
-dann bedeutet das, dass die Funktion auf externe Resourcen zugreift. 
-Den Kreis kann man sich bildlich wie eine Hand vorstellen, an die sich die Funktion festhält.
+dann bedeutet das, dass die funktion auf externe resourcen zugreift. 
+den kreis kann man sich bildlich wie eine hand vorstellen, an die sich die funktion festhält.
 
-Ein Stern innerhalb der Klammern der Datenströme, bedeutet, dass 0..n Daten dieses Types zwischen
+ein stern innerhalb der Klammern der Datenströme, bedeutet, dass 0..n Daten dieses Types zwischen
 den Funktionseinheiten fließen können.
 Je nach Programmiersprache, kann man das Verhalten mit einem yield in einer Schleife realisieren, 
 oder mit einer Liste/Array als Rückgabewert. 
@@ -72,6 +166,135 @@ werden als Integrationen bezeichnet. Die anderen 3 Methoden rufen selbst keine a
 Operationen genannt. Anhand einer Flow Design Skizze, kann man leicht herausfinden, welche Funktionen Operationen sind und welche
 Integrationen.
 Alle Leaf-Knoten sind Operationen, der Rest sind Integrationen.
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
 *** Finale Erklärung
 Die Main Funktion wird nach dem Programmstart ( leerer Kreis ) ohne Parameter aufgerufen.
 Danach ruft diese die Funktion ReadNumbersFromCmd auf, welche aus der Konsole eine Eingabe ließt und sie
@@ -181,7 +404,7 @@ startet. Hier bleibt einem nichts anderes übrig, als die Regel keine Logik in d
 | Namen andere Funktion kennen                            | Nein        | Ja                   |
 | Auf Rückgabewert warten                                 | Nein        | Ja                   |
 
-** Der komplette Ablauf
+** Der komplette Ablauf der Entwurfsmethode
 *** Definieren der Portale und Provider
     Man zeichnet ein Kreis auf ein Papier, diese stellt die Domäne dar.
     Auf der linken Seite hängt man die Sachen dran, die auf die Domände zugreifen so gegannte Portale, zum Beispiel HTTP-Zugriff,
@@ -207,7 +430,7 @@ RAGE: Schreibt man unter jeden Funktionseinheit die Klasse?
 
 * C# 
 ** Features der Sprache
-Um nach Flow Design Regeln zu programmieren, helfen einem in C# einige Features die in diesem Kapitel vorgestellt werden.
+Um nach Flow Design Regeln zu programmieren, helfen einem in C# einige Featuresm, die in diesem Kapitel vorgestellt werden.
 *** yield return 
 Hiermit kann man ein Producer-Consumer Pattern implementieren. 
 Vorraussetzung ist jedoch, dass man mit Daten arbeitet, die das IEnumerable Interface implementieren, wie zum Beispiel die
@@ -224,7 +447,7 @@ class Program
     IEnumerable<int> answer = FindTheAnswer(numbers);
     PrintNumbers(answer);
   }
-
+ 
   public static IEnumerable<int> ReadNumbersFromCmd()
   {
     while (true)
