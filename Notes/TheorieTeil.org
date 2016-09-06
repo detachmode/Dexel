@@ -48,6 +48,9 @@ Anzumerken wäre noch, dass nicht der Kontrollfluss abgebildet wird, sondern, wi
 
 * Pfeile und Kreise
 ** RomanNumbers Beispiel
+
+[[./img/FromRomanNumerals.png]]
+
 Das nachfolgende Beispiel soll an einem einfach Beispiel zeigen, was ein Flow Design Diagramm ist.
 Das Programm/Unterprogramm soll eine römische Zahl in eine Dezimalzahl konvertieren.
 
@@ -219,21 +222,6 @@ Die Businesslogik, das was die Funktionalität erzeugt, diese befinden sich in O
 Sie bekommen einfach nur von irgendwo her einen Input (bzw bei keinen Inputparametern einfach ausgeführt werden) und führen damit die von ihnen implementierte
 Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die Funktionseinheit jedoch nicht den Empfänger.
 
-***** Ausnahmen
-****** Integrationen
-
-******* LINQ / Standard-Library Funktionen
-Manche Funktionalitäten, die die Sprache selbst bereitstellt, können streng genommen als API-Aufrufe bezeichnet werden
-. Jedoch gilt hier eine Ausnahme. Man darf auch in Integrationen diese Funktionalität verwenden.
-Beispiele aus C#:
-=int.TryParse= , =List<>=, =Dictionary<>=, ...
-
-******* Try / Catch
-Oft braucht man auf oberster Ebene, einen Try/Catch, der alle Exceptions abfangen soll, und eine generelle Fehlerbehandlungsroutine
-startet. Hier bleibt einem nichts anderes übrig, als die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
-
-
-<<<<<<< HEAD:Notes/flowdesign.org
 **** Tabelle -  IOSP auf einen Blick
 
 
@@ -435,6 +423,22 @@ static List<string> FormatStrings(List<string> lines , Func<string,string> forma
    nochmal rückbesinnen auf CCD
    Größtes übel funktionale Abhängigkeiten.
    Wenn jemand seine Arbeit erst zuende machen kann, wenn ein anderer seine Arbeit getan hat.
+** Ausnahmen
+*** Rekursion
+Operationen dürfen sich selber aufrufen.
+*** Integrationen
+
+**** LINQ / Standard-Library Funktionen
+Manche Funktionalitäten, die die Sprache selbst bereitstellt, können streng genommen als API-Aufrufe bezeichnet werden
+. Jedoch gilt hier eine Ausnahme. Man darf auch in Integrationen diese Funktionalität verwenden.
+Beispiele aus C#:
+=int.TryParse= , =List<>=, =Dictionary<>=, ...
+
+**** Try / Catch
+Oft braucht man auf oberster Ebene, einen Try/Catch, der alle Exceptions abfangen soll, und eine generelle Fehlerbehandlungsroutine
+startet. Hier bleibt einem nichts anderes übrig, als die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
+
+
 ** Zusammenfassung - IODA Architekur -  Tabelle
 
    Tabelle:
