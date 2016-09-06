@@ -287,7 +287,10 @@ das Ergebnis ausgegeben.
 Nun sind Integration, Ausgabe und Formattierung sauber getrennt.
 Jedoch wurde der Code nun deutlich länger. Die Foreach-Schleife ist in beide Operationen gelandet und das Initialisieren und
 Befüllen der temporären Liste in =FormatLines= nimmt auch etwas Platz ein.
+Dazu kommt noch, das die String-Formattierungslogik nun eingebettet in dieser Foreach-Schleife liegt, welche vorher getrennt in
+einer extra Funktion sich befand. 
 
+Gibt es eine elegantere Lösung?
 
 Es gibt zwei Möglichkeiten: Die erste Möglichkeit besteht darin, die Richtlinien etwas aufzulockern und eineKategorie "Helfer-Funktionen" einzuführen.
 Diese Funktionen haben den Status von API-Funktion. Somit wäre das erste Beispiel IOSP konfrom und die Funktione =FormatAndPrintStrings=
