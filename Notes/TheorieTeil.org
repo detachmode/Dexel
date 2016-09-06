@@ -253,7 +253,7 @@ Das soetwas nun nicht mehr erlaubt ist, braucht eine gewissen Umgewöhnungszeit.
 Hier nun die Umsetzung in Flow Design mit einfachsten Mitteln.
 
 #+BEGIN_SRC cpp
-static void Main(List<string> lines)
+static void FormatAndPrintStrings(List<string> lines)
 {
    List<string> formattedStrings = MyComplexFormattingFunction(lines);
    PrintLines(formattedStrings);
@@ -280,7 +280,7 @@ static void PrintLines(List<string> lines)
 }
 #+END_SRC
 
-Die Funktion wurde aufgeteilt in eine Integration (Main) und zwei Operationen.
+Die Funktion wurde aufgeteilt in eine Integration (=FormatAndPrintStrings=) und zwei Operationen.
 Im ersten Beispiel hat die Funktion zwei Aufgaben erfüllt, sie hat die Formatierung-Funktion integriert und 
 das Ergebnis ausgegeben.
 
@@ -288,8 +288,20 @@ Nun sind Integration, Ausgabe und Formattierung sauber getrennt.
 Jedoch wurde der Code nun deutlich länger. Die Foreach-Schleife ist in beide Operationen gelandet und das Initialisieren und
 Befüllen der temporären Liste in =FormatLines= nimmt auch etwas Platz ein.
 
-Es stellt sich die Frage, ob es nicht eine elegantere Lösung gibt, die auch das IOSP erfüllt. 
-Ja, es gibt sie:
+
+Es gibt zwei Möglichkeiten: Die erste Möglichkeit besteht darin, die Richtlinien etwas aufzulockern und eineKategorie "Helfer-Funktionen" einzuführen.
+Diese Funktionen haben den Status von API-Funktion. Somit wäre das erste Beispiel IOSP konfrom und die Funktione =FormatAndPrintStrings=
+würde als Operation gelten.
+Dabei stellt sich jedoch die Frage, welche Kriterien eine Funktion erfüllen muss, damit sie unter diese Kategorie 
+fällt, was sich als eine nicht ganz triviale Frage herausstellt.
+
+Die zweite Möglichkeit besteht darin auf Datenfluss orientierte Sprachfeatures zu verwenden.
+Somit hängt diese Möglichkeit stark von der verwendetet Programmiersprache ab.
+
+In C# exisitiert eine Kategorie an Methoden, die speziell auf das arbeiten mit Datenflüssen ausgerichtet ist, diese werden 
+zusammengefasst unter dem Namen LINQ (Language-Integrated Query).
+
+Mit Hilfe von LINQ lässt sich obiges Beispiel zu einem IOSP konformen Einzeiler reduzieren.
 
 #+BEGIN_SRC cpp
 static void Main(List<string> lines)
