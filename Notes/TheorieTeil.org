@@ -76,6 +76,9 @@ die zusammen die Aufgabe erledigen, die die übergeordnete Softwarezelle beschre
 
 Falls man sowohl dem Datenstrom einen Namengeben möchte, als auch den Datentyp definieren möchte, schreibt man beides mit einem
 Doppelpunkt getrennt hintereinander.
+** Definition eigener Datentypen 
+Benutzt man einen Datenstrom bestehend aus einem eigenen Datentypen, so zeichnet man irgendwo auf dem Papier eine Box,
+indem man den Datentyp mit seinen Membervariablen auflistet.
 ** Container / Listen
 Stern innerhalb der Klammer.
 Der Datentyp liegt in einem Container vor. 
@@ -97,9 +100,6 @@ Selten wird ein Datenstrom auch mit geschweiften Klammern dargestellt, um ihn vo
 Eckige Klammer
 [int]
 
-** Definition eigener Datentypen 
-Benutzt man einen Datenstrom bestehend aus einem eigenen Datentypen, so zeichnet man irgendwo auf dem Papier eine Box,
-indem man den Datentyp mit seinen Membervariablen auflistet.
 ** Mehrere Inputs / Outputs
 Mehrere Inputs werden in die Klammer geschrieben und mit einem Komma getrennt.
 Mehrere Outputs lassen sich nicht in allen Sprachen einfach realiseren.
@@ -128,6 +128,39 @@ Kompositionen zu bezeichnen.
 Integrationen und Operationen (einzige Regel?)
 
 ** Beispiel foreach und Funktionsaufruf als negativ Beispiel.
+
+#+BEGIN_SRC cpp
+class Program
+{
+static void Main()
+{
+   while (true)
+   {
+      int number = ReadNumberFromCmd();
+      bool isAnswer = FindTheAnswer(number);
+
+      if (isAnswer)
+         break;
+      else
+         PrintNumber(number);
+   }
+}
+
+static int ReadNumbersFromCmd()
+{
+    var line = Console.ReadLine();
+    int number = int.Parse(line);
+    return number;
+}
+
+static bool FindtheAnswer(int number)
+{ 
+    if (number == 42)
+        return true;
+    return false;
+}
+...
+#+END_SRC
 ** C# Features um Datenflüsse zu implementieren
 Um nach Flow Design Regeln zu programmieren, helfen einem in C# einige Features die in diesem Kapitel vorgestellt werden.
 *** yield return
