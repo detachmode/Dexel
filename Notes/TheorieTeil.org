@@ -108,7 +108,7 @@ Selten wird ein Datenstrom auch mit geschweiften Klammern dargestellt, um ihn vo
 
 *** 0 bis 1 (optionaler Output)
 
-[[./img/DiagramOptional.png]]
+[[./img/diagramOptional.png]]
 
 Eckige Klammer
 [int]
@@ -120,7 +120,7 @@ Wahlweise kann man es mit Tupel realisieren, oder man verwendet stattdessen eine
 
 ** Joined Inputs 
 
-[[./img/DiagramJoin.png]]
+[[./img/diagramJoin.png]]
 
 Wenn die Softwarezelle nur dann ihre Aufgabe erledigen kann, wenn mehrere ihre Inputs 
 vorhanden sind und diese aus unterschiedliche Quellen stammen, dann braucht man ein so genannten Join.
@@ -132,7 +132,7 @@ Die Funktionseinheit F erwartet einfach 2 Parameter und kennt deren Herkunft nic
 
 ** Tonnen
 
-[[./img/DiagramTonne.png]]
+[[./img/diagramTonne.png]]
 
 ** Anhängigkeiten / Provider
 ** GUIS / Programmstart/ Ende
