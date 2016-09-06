@@ -63,7 +63,7 @@ Pfeile zeigen den Datenstrom, auf dem der Datentyp vermerkt ist.
 Links gehen Pfeile in die Funktionseinheit hinein, das ist der eingehende Datenstrom und rechts ist der ausgehende Datenstrom.
 Die Funktionseinheit wird auch als Domäne bezeichnet. Die Domäne interessiert sich nur für ihre Aufgabe und soll möglichst isoliert
 betrachtet ihre Aufgabe erledigen können.
-** "Aufmachen" einer Zelle
+** Hirarchische Datenflüsse 
 Das Flow Design unterstützt die Funktion in eine Softwarezelle sozusagen hineinzuzoomen.
 Hier erkennt man die rekusive Eigenschaft der Softwarezellen. Eine Softwarezelle kann wiederum aus mehreren Softwarezellen bestehen,
 die zusammen die Aufgabe erledigen, die die übergeordnete Softwarezelle beschreibt.
@@ -73,24 +73,58 @@ die zusammen die Aufgabe erledigen, die die übergeordnete Softwarezelle beschre
   Weitere Notationen kurz erklärt. Auch mit "Integrationen" aber noch nicht erklären, dass es ein Unterschied gibt.
   Provider Dreieck.
 ** Datentypen 
+
 Falls man sowohl dem Datenstrom einen Namengeben möchte, als auch den Datentyp definieren möchte, schreibt man beides mit einem
 Doppelpunkt getrennt hintereinander.
-*** Definition eigener Datentypen 
+** Container / Listen
+Stern innerhalb der Klammer.
+Der Datentyp liegt in einem Container vor. 
+Die zu bearbeitende Daten können entweder komplett auf einmal an die Funktionseinheit gegeben werden ( als Liste, Dictionary, etc. )
+oder aber - falls die Programmiersprache dies unterstützt - als Stream realisert werden, wo einzelne Elemente bereits abgearbeitet werden
+können, bevor alle anderen Daten erzeugt wurden.
+
+** Arrays (auch mit fester Größe)
+Werden Daten als Arrays mit fester größe übergeben, so wird hinter dem Datentyp eine leere Eckigeklammer angehängt.
+Ist die Arraygröße bekannt, so kann man diese in die Klammer noch zustätzlich eintragen.
+** Kardinalitäten 
+*** 0 bis n
+Wird als * außerhalb der Klammer dargestellt.
+(int)*
+Selten wird ein Datenstrom auch mit geschweiften Klammern dargestellt, um ihn von dem optionalen Output zu unterscheiden.
+{int}
+
+*** 0 bis 1 (optionaler Output)
+Eckige Klammer
+[int]
+
+** Definition eigener Datentypen 
 Benutzt man einen Datenstrom bestehend aus einem eigenen Datentypen, so zeichnet man irgendwo auf dem Papier eine Box,
 indem man den Datentyp mit seinen Membervariablen auflistet.
-** Mehrere Inputs
-** Mehrere Outputs 
-*** mit und/oder Ausgabe
-** Kardinalitäten 
-*** Optional
-*** Arrays (auch mit fester Größe)
-*** Listen. Stern innerhalb und außerhalb der Klammern
+** Mehrere Inputs / Outputs
+Mehrere Inputs werden in die Klammer geschrieben und mit einem Komma getrennt.
+Mehrere Outputs lassen sich nicht in allen Sprachen einfach realiseren.
+Wahlweise kann man es mit Tupel realisieren, oder man verwendet stattdessen einen eigenen Datentyp
+
+** Joined Inputs 
+Wenn die Softwarezelle nur dann ihre Aufgabe erledigen kann, wenn mehrere ihre Inputs 
+vorhanden sind und diese aus unterschiedliche Quellen stammen, dann braucht man ein so genannten Join.
+Dieser wird als Linie dargestellt an die mehrere Inputs zusammenlaufen.
+Im Code kann dies einfach realisiert werden, als eine Funktion, die mehrer Inputsparameter entgegennimmt.
+
+Das Bündeln der Datenströme soll nicht die Funktion F erledigen, sondern ist Aufgabe einer übergeordneten Funktionseinheit.
+Die Funktionseinheit F erwartet einfach 2 Parameter und kennt deren Herkunft nicht. 
+
 ** Tonnen
 ** Anhängigkeiten / Provider
 ** GUIS / Programmstart/ Ende
 ** Klassen / Container definieren  
 
 * Implementationsregeln / C# Exkurse
+Das Flow Design unterscheidet zwei Arten von Funktionseinheiten.
+Die Aufgabe einer Integration ist, die unabhängigen Operationen in das große Ganze zu
+Integrieren. Ralf Westphal spielte auch mit den Gedanken diese als Funktionseinheiten als Koordinatoren oder
+Kompositionen zu bezeichnen.
+
 Integrationen und Operationen (einzige Regel?)
 
 ** Beispiel foreach und Funktionsaufruf als negativ Beispiel.
@@ -98,9 +132,8 @@ Integrationen und Operationen (einzige Regel?)
 Um nach Flow Design Regeln zu programmieren, helfen einem in C# einige Features die in diesem Kapitel vorgestellt werden.
 *** yield return
 Hiermit kann man ein Producer-Consumer Pattern implementieren.
->>>>>>> 41529167f0f3e8e730b93908c42e6a71c6ab8ce2:Notes/TheorieTeil.org
-Vorraussetzung ist jedoch, dass man mit Daten arbeitet, die das IEnumerable Interface implementieren, wie zum Beispiel die
-List Klasse.
+Vorraussetzung ist jedoch, dass man mit Daten arbeitet, die das =IEnumerable= Interface implementieren, wie zum Beispiel die
+=List= Klasse.
 
 Hier der Code von dem Beispiel weiter oben.
 
@@ -151,7 +184,23 @@ Den Abbruch der Endlossschleife ( also das Stoppen des Datenflusses) kann somit 
 
 
 
-  Rückgabewert entgegennehmen.
+** Datenströme mit mehreren Wegen
+*** Ein Output-Weg mehrer Empfänger
+Falls ein Output an mehrere Empfänger weitergereicht werden soll, so lässt sich das am besten mit Events realisieren.
+Leider bedarf es dann bei der Benutzung der API mehr Vorsicht, da man sich vorher auf ein Events registrieren muss, bevor man
+die gewünschte Funktion aufrufen kann.
+*** Mehrere Output-Wege 
+Wenn eine Funktion mehrer Output-Wege hat, so kann man das im Code nicht mehr mit einem einfachen Rückgabewert implementieren.
+Stattdessen braucht man entweder mehrere Events oder man gibt der Funktion mehrere Funktionspointer mit, die die Funktion aufruft.
+
+Wäre es für eine Operation erlaubt eine andere Funktionseinheit zu kennen, dann könnten wir natürlich einfach in der Operation selbst
+die nachfolgenden Funktionen per Namen aufrufen. Da aber Operationen entkoppelt von ihrer Umwelt sein sollen, müssen die möglichen
+Outputwege über die Funktionsparameter mitgegeben werden. Somit wurden die Verantwortlichkeiten bewahrt und die übergeordnete 
+Integration koordiniert weiter den Datenfluss und die Operation kennt keine anderen Funktionseinheiten.
+
+
+**** mit und/oder Ausgabe
+*
 ** Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.
 - Rückgabewert erwarten von Function als Parameter übergeben.
 - API-Aufruf, Filehandling?, Daten in Integrationen?
