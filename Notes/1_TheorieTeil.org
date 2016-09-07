@@ -326,7 +326,7 @@ Elegantere Lösungen mit Actions
 #+BEGIN_SRC cpp
 static void FormatAndPrintStrings(List<string> lines)
 {
-   ItrerateOverLines(lines, PrintFormat );
+   IterateOverEnumeration(lines, onLine=PrintFormat );
 }
 
 static void  PrintFormat(string line)
@@ -335,7 +335,7 @@ static void  PrintFormat(string line)
     Console.WriteLine(fl);
 }
 
-static void ItrerateOverEnumeration(IEnumerable<string> lines, Action<string> onLine)
+static void IterateOverEnumeration(IEnumerable<string> lines, Action<string> onLine)
 {
    foreach(line in lines)
    {
@@ -350,14 +350,14 @@ Noch eleganter mit Actions und Lambdas
 #+BEGIN_SRC cpp
 static void FormatAndPrintStrings(List<string> lines)
 {
-  ItrerateOverLines(lines,
+  IterateOverEnumeration(lines,
     line => {
       var fl = MyComplexFormattingFunction(line);
       Console.WriteLine(fl);
   });
 }
 
-static void ItrerateOverEnumeration(IEnumerable<string> lines, Action<string> onLine)
+static void IterateOverEnumeration(IEnumerable<string> lines, Action<string> onLine)
 {
    foreach(line in lines)
    {
