@@ -1,4 +1,4 @@
-% Created 2016-09-07 Mi 13:48
+% Created 2016-09-07 Mi 14:08
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -199,13 +199,16 @@ Regeln:
 \begin{itemize}
 \item Trennen von Integrationen und Operationen
 \item keine funktionale Abhängigkeiten in Operationen zu anderen Funktionseinheiten aus dem selben Programm
+fs
 \end{itemize}
-
 \subsection{IODA Architekur}
 \label{sec:orgheadline25}
 IODA steht für: Integration Operation Data API
-
+\begin{figure}[htb]
+\centering
 \includegraphics[width=.9\linewidth]{./img/ioda1.png}
+\caption{\url{http://blog.ralfw.de/2015/04/die-ioda-architektur.html}}
+\end{figure}
 
 \url{http://blog.ralfw.de/2015/04/die-ioda-architektur.html}
 
@@ -297,7 +300,8 @@ und selbst bestimmen, wie es die Anfrage am besten ausführt.
 \item Integrationen
 \label{sec:orgheadline21}
 
-The Org homepage\footnote{The link is: \url{http://orgmode.org}
+The Org homepage\footnote{The link is: \url{http://orgmode.org}} now looks a lot better than it used to.
+
 
 Die Integrationen werden nach Flow Design Richtlinien deklarative programmiert.
 Diese Funktioneneinheiten dürfen anders als die Operationen, andere Funktionen aufrufen, sie also kennen.
@@ -309,9 +313,8 @@ Dafür dürfen sie keine Logik im Sinne von Kontrollstrukturen beinhalten.
 
 Die Businesslogik, das was die Funktionalität erzeugt, diese befinden sich in Operationen und sind entkoppelt von ihrer Umgebung.
 Sie bekommen einfach nur von irgendwo her einen Input (bzw bei keinen Inputparametern einfach ausgeführt werden) und führen damit die von ihnen implementierte
-Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die Funktionseinheit jedoch nicht den Empfänger.} now looks a lot better than it used to.
+Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die Funktionseinheit jedoch nicht den Empfänger.
 \end{enumerate}
-
 \item Tabelle -  IOSP auf einen Blick
 \label{sec:orgheadline23}
 
@@ -481,6 +484,7 @@ Den Abbruch der Endlossschleife ( also das Stoppen des Datenflusses) kann somit 
 \subsubsection{Ein Output-Weg mehrer Empfänger}
 \label{sec:orgheadline30}
 \includegraphics[width=.9\linewidth]{./img/diagramOut1to2.png}
+
 Falls ein Output an mehrere Empfänger weitergereicht werden soll, so lässt sich das am besten mit Events realisieren.
 Leider bedarf es dann bei der Benutzung der API mehr Vorsicht, da man sich vorher auf ein Events registrieren muss, bevor man
 die gewünschte Funktion aufrufen kann.
@@ -670,7 +674,7 @@ Alle Leaf-Knoten sind Operationen, der Rest sind Integrationen.
 \subsubsection{Finale Erklärung}
 \label{sec:orgheadline52}
 Die Main Funktion wird nach dem Programmstart ( leerer Kreis ) ohne Parameter aufgerufen.
-Danach ruft diese die Funktion ReadNumbersFromCmd auf, welche aus der Konsole eine Eingabe ließt und sie
+Danach ruft diese die Funktion \texttt{ReadNumbersFromCmd} auf, welche aus der Konsole eine Eingabe ließt und sie
 zu einem int parset. Der int nimmt die Main Funktion entgegen und gibt diesen an FindtheAnswer weiter.
 Diese Funktion hat die Aufgabe den entgegengenommenen int mit der Zahl 42 zu vergleichen. Wenn die Zahl 42 ist, wird der Datenstrom
 abgebrochen. Wenn es nicht die 42 war, dann wird der int nach außen gereicht und die Main Funktion reicht die Zahl an die

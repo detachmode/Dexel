@@ -1,0 +1,46 @@
+\contentsline {section}{\numberline {1}Entstehung und Grundgedanke}{1}{section.1}
+\contentsline {section}{\numberline {2}Pfeile und Kreise}{2}{section.2}
+\contentsline {subsection}{\numberline {2.1}RomanNumbers Beispiel}{2}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Hirarchische Datenfl\IeC {\"u}sse}{3}{subsection.2.2}
+\contentsline {section}{\numberline {3}Grundlegende Notationen}{3}{section.3}
+\contentsline {subsection}{\numberline {3.1}Datentypen}{3}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Definition eigener Datentypen}{3}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Container / Listen}{4}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Arrays (auch mit fester Gr\IeC {\"o}\IeC {\ss }e)}{4}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}Kardinalit\IeC {\"a}ten}{4}{subsection.3.5}
+\contentsline {subsubsection}{\numberline {3.5.1}0 bis n}{4}{subsubsection.3.5.1}
+\contentsline {subsubsection}{\numberline {3.5.2}0 bis 1 (optionaler Output)}{5}{subsubsection.3.5.2}
+\contentsline {subsection}{\numberline {3.6}Mehrere Inputs / Outputs}{5}{subsection.3.6}
+\contentsline {subsection}{\numberline {3.7}Joined Inputs}{5}{subsection.3.7}
+\contentsline {subsection}{\numberline {3.8}Tonnen}{6}{subsection.3.8}
+\contentsline {subsection}{\numberline {3.9}Anh\IeC {\"a}ngigkeiten / Provider}{6}{subsection.3.9}
+\contentsline {subsection}{\numberline {3.10}GUIS / Programmstart/ Ende}{6}{subsection.3.10}
+\contentsline {subsection}{\numberline {3.11}Klassen / Container definieren}{6}{subsection.3.11}
+\contentsline {section}{\numberline {4}Implementationsregeln / C\# Exkurse}{6}{section.4}
+\contentsline {subsection}{\numberline {4.1}IODA Architekur}{6}{subsection.4.1}
+\contentsline {subsubsection}{\numberline {4.1.1}Erl\IeC {\"a}uterung des Schaubildes}{7}{subsubsection.4.1.1}
+\contentsline {subsection}{\numberline {4.2}Beispiel foreach und Funktionsaufruf als negativ Beispiel.}{10}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}C\# Features um Datenfl\IeC {\"u}sse zu implementieren}{12}{subsection.4.3}
+\contentsline {subsubsection}{\numberline {4.3.1}LINQ und Lambdas}{12}{subsubsection.4.3.1}
+\contentsline {subsubsection}{\numberline {4.3.2}yield return}{12}{subsubsection.4.3.2}
+\contentsline {subsection}{\numberline {4.4}Datenstr\IeC {\"o}me mit mehreren Wegen}{14}{subsection.4.4}
+\contentsline {subsubsection}{\numberline {4.4.1}Ein Output-Weg mehrer Empf\IeC {\"a}nger}{14}{subsubsection.4.4.1}
+\contentsline {subsubsection}{\numberline {4.4.2}Mehrere Output-Wege}{14}{subsubsection.4.4.2}
+\contentsline {subsection}{\numberline {4.5}Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.}{15}{subsection.4.5}
+\contentsline {subsubsection}{\numberline {4.5.1}R\IeC {\"u}ckgabewert erwarten von Funktion als Parameter \IeC {\"u}bergeben.}{15}{subsubsection.4.5.1}
+\contentsline {subsection}{\numberline {4.6}Warum macht man das? Sinn der Aufteilung. -> Ketten Bild}{15}{subsection.4.6}
+\contentsline {subsection}{\numberline {4.7}Ausnahmen}{16}{subsection.4.7}
+\contentsline {subsubsection}{\numberline {4.7.1}Rekursion}{16}{subsubsection.4.7.1}
+\contentsline {subsubsection}{\numberline {4.7.2}Integrationen}{16}{subsubsection.4.7.2}
+\contentsline {subsection}{\numberline {4.8}Zusammenfassung - IODA Architekur - Tabelle}{16}{subsection.4.8}
+\contentsline {section}{\numberline {5}Ablauf der kompletten Flow Design - Entwurfsmethode}{17}{section.5}
+\contentsline {subsection}{\numberline {5.1}Definieren der Portale und Provider}{17}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Interfaceskizze ( im Falle einer GUI Anwendung )}{17}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}Flow Design Entwurf}{17}{subsection.5.3}
+\contentsline {subsection}{\numberline {5.4}Einordnen der Funktionseinheiten in bestimmte Container}{17}{subsection.5.4}
+\contentsline {section}{\numberline {6}Rekursive Eigenschaft der Softwarezellen/ Architekur}{18}{section.6}
+\contentsline {section}{\numberline {7}Backlog}{18}{section.7}
+\contentsline {subsection}{\numberline {7.1}Einfaches Beispiel eines Flow Designs}{18}{subsection.7.1}
+\contentsline {subsubsection}{\numberline {7.1.1}Erl\IeC {\"a}uterung der Notation}{18}{subsubsection.7.1.1}
+\contentsline {subsubsection}{\numberline {7.1.2}Finale Erkl\IeC {\"a}rung}{19}{subsubsection.7.1.2}
+\contentsline {subsubsection}{\numberline {7.1.3}Negativ Beispiel}{19}{subsubsection.7.1.3}

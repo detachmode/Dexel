@@ -146,10 +146,10 @@ Die Funktionseinheit F erwartet einfach 2 Parameter und kennt deren Herkunft nic
 Regeln:
 - Trennen von Integrationen und Operationen
 - keine funktionale Abhängigkeiten in Operationen zu anderen Funktionseinheiten aus dem selben Programm
-
+ fs
 ** IODA Architekur
 IODA steht für: Integration Operation Data API
-
+ #+CAPTION: http://blog.ralfw.de/2015/04/die-ioda-architektur.html
 [[./img/ioda1.png]]
 
 http://blog.ralfw.de/2015/04/die-ioda-architektur.html
@@ -233,8 +233,8 @@ und selbst bestimmen, wie es die Anfrage am besten ausführt.
 
 ***** Integrationen
 
-   The Org homepage[fn:1] now looks a lot better than it used to.
-[fn:1] The link is: http://orgmode.org
+The Org homepage[fn:1] now looks a lot better than it used to.
+
 
 Die Integrationen werden nach Flow Design Richtlinien deklarative programmiert.
 Diese Funktioneneinheiten dürfen anders als die Operationen, andere Funktionen aufrufen, sie also kennen.
@@ -248,6 +248,7 @@ Die Businesslogik, das was die Funktionalität erzeugt, diese befinden sich in O
 Sie bekommen einfach nur von irgendwo her einen Input (bzw bei keinen Inputparametern einfach ausgeführt werden) und führen damit die von ihnen implementierte
 Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die Funktionseinheit jedoch nicht den Empfänger.
 
+[fn:1] The link is: http://orgmode.org
 **** Tabelle -  IOSP auf einen Blick
 
 
@@ -407,6 +408,7 @@ Den Abbruch der Endlossschleife ( also das Stoppen des Datenflusses) kann somit 
 ** Datenströme mit mehreren Wegen
 *** Ein Output-Weg mehrer Empfänger
 [[./img/diagramOut1to2.png]]
+ 
 Falls ein Output an mehrere Empfänger weitergereicht werden soll, so lässt sich das am besten mit Events realisieren.
 Leider bedarf es dann bei der Benutzung der API mehr Vorsicht, da man sich vorher auf ein Events registrieren muss, bevor man
 die gewünschte Funktion aufrufen kann.
@@ -564,7 +566,7 @@ Integrationen.
 Alle Leaf-Knoten sind Operationen, der Rest sind Integrationen.
 *** Finale Erklärung
 Die Main Funktion wird nach dem Programmstart ( leerer Kreis ) ohne Parameter aufgerufen.
-Danach ruft diese die Funktion ReadNumbersFromCmd auf, welche aus der Konsole eine Eingabe ließt und sie
+Danach ruft diese die Funktion =ReadNumbersFromCmd= auf, welche aus der Konsole eine Eingabe ließt und sie
 zu einem int parset. Der int nimmt die Main Funktion entgegen und gibt diesen an FindtheAnswer weiter.
 Diese Funktion hat die Aufgabe den entgegengenommenen int mit der Zahl 42 zu vergleichen. Wenn die Zahl 42 ist, wird der Datenstrom
 abgebrochen. Wenn es nicht die 42 war, dann wird der int nach außen gereicht und die Main Funktion reicht die Zahl an die

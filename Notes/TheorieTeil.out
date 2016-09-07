@@ -1,0 +1,46 @@
+\BOOKMARK [1][-]{section.1}{Entstehung und Grundgedanke}{}% 1
+\BOOKMARK [1][-]{section.2}{Pfeile und Kreise}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{RomanNumbers Beispiel}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Hirarchische Datenfl\374sse}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{Grundlegende Notationen}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{Datentypen}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.2}{Definition eigener Datentypen}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.3}{Container / Listen}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.4}{Arrays \(auch mit fester Gr\366\337e\)}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.5}{Kardinalit\344ten}{section.3}% 10
+\BOOKMARK [3][-]{subsubsection.3.5.1}{0 bis n}{subsection.3.5}% 11
+\BOOKMARK [3][-]{subsubsection.3.5.2}{0 bis 1 \(optionaler Output\)}{subsection.3.5}% 12
+\BOOKMARK [2][-]{subsection.3.6}{Mehrere Inputs / Outputs}{section.3}% 13
+\BOOKMARK [2][-]{subsection.3.7}{Joined Inputs}{section.3}% 14
+\BOOKMARK [2][-]{subsection.3.8}{Tonnen}{section.3}% 15
+\BOOKMARK [2][-]{subsection.3.9}{Anh\344ngigkeiten / Provider}{section.3}% 16
+\BOOKMARK [2][-]{subsection.3.10}{GUIS / Programmstart/ Ende}{section.3}% 17
+\BOOKMARK [2][-]{subsection.3.11}{Klassen / Container definieren}{section.3}% 18
+\BOOKMARK [1][-]{section.4}{Implementationsregeln / C\043 Exkurse}{}% 19
+\BOOKMARK [2][-]{subsection.4.1}{IODA Architekur}{section.4}% 20
+\BOOKMARK [3][-]{subsubsection.4.1.1}{Erl\344uterung des Schaubildes}{subsection.4.1}% 21
+\BOOKMARK [2][-]{subsection.4.2}{Beispiel foreach und Funktionsaufruf als negativ Beispiel.}{section.4}% 22
+\BOOKMARK [2][-]{subsection.4.3}{C\043 Features um Datenfl\374sse zu implementieren}{section.4}% 23
+\BOOKMARK [3][-]{subsubsection.4.3.1}{LINQ und Lambdas}{subsection.4.3}% 24
+\BOOKMARK [3][-]{subsubsection.4.3.2}{yield return}{subsection.4.3}% 25
+\BOOKMARK [2][-]{subsection.4.4}{Datenstr\366me mit mehreren Wegen}{section.4}% 26
+\BOOKMARK [3][-]{subsubsection.4.4.1}{Ein Output-Weg mehrer Empf\344nger}{subsection.4.4}% 27
+\BOOKMARK [3][-]{subsubsection.4.4.2}{Mehrere Output-Wege}{subsection.4.4}% 28
+\BOOKMARK [2][-]{subsection.4.5}{Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.}{section.4}% 29
+\BOOKMARK [3][-]{subsubsection.4.5.1}{R\374ckgabewert erwarten von Funktion als Parameter \374bergeben.}{subsection.4.5}% 30
+\BOOKMARK [2][-]{subsection.4.6}{Warum macht man das? Sinn der Aufteilung. -> Ketten Bild}{section.4}% 31
+\BOOKMARK [2][-]{subsection.4.7}{Ausnahmen}{section.4}% 32
+\BOOKMARK [3][-]{subsubsection.4.7.1}{Rekursion}{subsection.4.7}% 33
+\BOOKMARK [3][-]{subsubsection.4.7.2}{Integrationen}{subsection.4.7}% 34
+\BOOKMARK [2][-]{subsection.4.8}{Zusammenfassung - IODA Architekur - Tabelle}{section.4}% 35
+\BOOKMARK [1][-]{section.5}{Ablauf der kompletten Flow Design - Entwurfsmethode}{}% 36
+\BOOKMARK [2][-]{subsection.5.1}{Definieren der Portale und Provider}{section.5}% 37
+\BOOKMARK [2][-]{subsection.5.2}{Interfaceskizze \( im Falle einer GUI Anwendung \)}{section.5}% 38
+\BOOKMARK [2][-]{subsection.5.3}{Flow Design Entwurf}{section.5}% 39
+\BOOKMARK [2][-]{subsection.5.4}{Einordnen der Funktionseinheiten in bestimmte Container}{section.5}% 40
+\BOOKMARK [1][-]{section.6}{Rekursive Eigenschaft der Softwarezellen/ Architekur}{}% 41
+\BOOKMARK [1][-]{section.7}{Backlog}{}% 42
+\BOOKMARK [2][-]{subsection.7.1}{Einfaches Beispiel eines Flow Designs}{section.7}% 43
+\BOOKMARK [3][-]{subsubsection.7.1.1}{Erl\344uterung der Notation}{subsection.7.1}% 44
+\BOOKMARK [3][-]{subsubsection.7.1.2}{Finale Erkl\344rung}{subsection.7.1}% 45
+\BOOKMARK [3][-]{subsubsection.7.1.3}{Negativ Beispiel}{subsection.7.1}% 46
