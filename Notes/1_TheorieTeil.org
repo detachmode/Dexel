@@ -152,8 +152,6 @@ IODA steht für: Integration Operation Data API
  #+CAPTION: http://blog.ralfw.de/2015/04/die-ioda-architektur.html
 [[./img/ioda1.png]]
 
-http://blog.ralfw.de/2015/04/die-ioda-architektur.html
-
 *** Erläuterung des Schaubildes 
 Das Flow Design unterscheidet zwei Arten von Funktionseinheiten: Integrationen und Operationen.
 Die Aufgabe einer Integration ist, die unabhängigen Operationen in das große Ganze zu
@@ -233,9 +231,6 @@ und selbst bestimmen, wie es die Anfrage am besten ausführt.
 
 ***** Integrationen
 
-The Org homepage[fn:1] now looks a lot better than it used to.
-
-
 Die Integrationen werden nach Flow Design Richtlinien deklarative programmiert.
 Diese Funktioneneinheiten dürfen anders als die Operationen, andere Funktionen aufrufen, sie also kennen.
 Die Integrationen erfüllen also nicht das /Principle of Mutual Exclusion/
@@ -248,7 +243,6 @@ Die Businesslogik, das was die Funktionalität erzeugt, diese befinden sich in O
 Sie bekommen einfach nur von irgendwo her einen Input (bzw bei keinen Inputparametern einfach ausgeführt werden) und führen damit die von ihnen implementierte
 Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die Funktionseinheit jedoch nicht den Empfänger.
 
-[fn:1] The link is: http://orgmode.org
 **** Tabelle -  IOSP auf einen Blick
 
 
@@ -535,10 +529,9 @@ Outputs. Damit ist die Architektur weniger starr, als zum Beispiel das Schichten
 
 * Backlog
 ** Einfaches Beispiel eines Flow Designs
-
+#+CAPTION: http://www.code-whisperer.de/preview/2015/06/14/eva/
 [[./img/FlowDesign2.png]]
 
-http://www.code-whisperer.de/preview/2015/06/14/eva/
 
 Das Programm ist eine Konsolenanwedung, die den Benutzer eine Eingabe erlaubt.
 Wenn die Eingabe die Zahl 42 entspricht, wird das Programm beendet, wenn nicht, kann wieder eine Zahl eingeben werden.
