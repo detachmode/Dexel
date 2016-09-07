@@ -143,14 +143,9 @@ Die Funktionseinheit F erwartet einfach 2 Parameter und kennt deren Herkunft nic
 
 * Implementationsregeln / C# Exkurse
 
-Das Flow Design unterscheidet zwei Arten von Funktionseinheiten.
-Operationen sind Funktionseinheiten, die Logik enthalten.
-Die Aufgabe einer Integration ist, die unabhängigen Operationen in das große Ganze zu
-Integrieren. 
-(Fußnote) Ralf Westphal spielte auch mit den Gedanken diese als Funktionseinheiten als Koordinatoren oder
-Kompositionen zu bezeichnen.
-
-Integrationen und Operationen (einzige Regel?)
+Regeln:
+- Trennen von Integrationen und Operationen
+- keine funktionale Abhängigkeiten in Operationen zu anderen Funktionseinheiten aus dem selben Programm
 
 ** IODA Architekur
 IODA steht für: Integration Operation Data API
@@ -159,14 +154,35 @@ IODA steht für: Integration Operation Data API
 
 http://blog.ralfw.de/2015/04/die-ioda-architektur.html
 
-**** Funktionale Abhängigkeiten vermeiden
+*** Erläuterung des Schaubildes 
+Das Flow Design unterscheidet zwei Arten von Funktionseinheiten: Integrationen und Operationen.
+Die Aufgabe einer Integration ist, die unabhängigen Operationen in das große Ganze zu
+Integrieren. 
+(Fußnote) Ralf Westphal spielte auch mit den Gedanken diese als Funktionseinheiten als Koordinatoren oder
+Kompositionen zu bezeichnen.
+
+Integrationen "integrieren" andere Integrationen und/oder Operationen in das Programm. Sie dürfen also funktional abhängig sein
+von beiden Arten von Funktionseinheiten.
+
+Im Gegensatz dazu dürfen Operationen keine Integrationen oder andere Operationen kennen. 
+Sie dürfen aber auf Daten Zugreifen über diese entsteht auch die einzige Möglichkeit der Kommunikation zwischen Operationen.
+Mit Daten sind meint man sowohl inpersitent Daten (Daten im Arbeitsspeicher), als auch persitente Daten auf der Festplatte.
+Wie zum Beispiel Dateien, oder Datenbanken, wobei man beides auch zu der Gruppe API zählen könnte. 
+Außerdem werden API-Aufrufe in Operationen isoliert und eine Integration darf kein Wissen über die API haben.
+
+Sowohl Operationen als auch Integratinen dürfen Daten Erzeugen.
+Beispielsweise das Aufrufen eines Konstruktors oder Deklarieren einer lokalen Variablen.
+Das Koordinieren und Weiterreichen und von Daten übernimmt jedoch die Integrationen ( was auf dem Schaubild nicht so
+gut herauskommt).
+
 
 
 **** PoMO ( Principle of Mutual Oblivion)
-    Ein Producer
-    kennt seinen Consumer nicht. Ein Consumer kennt seinen Producer
+#+BEGIN_QUOTE
+    Ein Producer kennt seinen Consumer nicht. Ein Consumer kennt seinen Producer
     nicht. Das nenne ich das Principle of Mutual Oblivion (PoMO,
-    Prinzip der gegenseitigen Nichtbeachtung) (architect napkin, Seite 80)
+    Prinzip der gegenseitigen Nichtbeachtung) -- architect napkin, Seite 80
+#+END_QUOTE
 
 Dieses Prinzip besagt, dass Funktionseinheiten sich nicht gegenseitig kennen sollen.
 Es soll auch verhindert werden, dass eine Einheit eine andere aufruft und von deren Ergebnis
@@ -197,25 +213,36 @@ Operationen sind Funktionen, die Logik/ Kontrollstrukturen enthalten dürfen. In
 - .. vollständig?
 - API, Daten
 
-FRAGE: Darf eine Integration ein API Funktion kennen? LoginAndContinue(onSuccess: AmazonAPI.WarenkorbAbrufen)
+
+
 Gleichzeitig müssen die Operationen das PoMO prinzip erfüllen, sie dürfen keine andere Funktionseinheiten kennen oder aufrufen und auf
-das Ergebnis warten.
+das Ergebnis warten. 
 Ein Funktionsaufruf ist nur über Actions ( Funktionspointer ), die man als Funktionsparameter mit übergibt, oder Events möglich.
-Damit erfüllt die Operation weiter das PoMO, da sie nicht selbst bestimmt, welche Funktion sie aufruft, sondern die Funktion, welche die
-Operation aufgrufen hat ( und somit automatisch eine Integration sein muss, welche die PoMO Bedingung nicht erfüllen muss).
+Beide dürfen keine Rückgabewerte haben, was bei Actions implizit der Fall ist.
+Damit erfüllt die Operation weiter das PoMO, da sie nicht selbst bestimmt, welche Funktion sie aufruft, sondern die Funktion,
+welche die Operation aufgrufen hat ( und somit automatisch eine Integration sein muss, welche die PoMO Bedingung nicht erfüllen muss).
 
 
-Operationen sind also imperative programmiert. Imperative Programmierung ist ein Programmierstill, mit dem Fokus auf das WIE ein Problem gelöst werden
-soll. Im Gegensatz dazu steht der Deklarative Ansatz. Beim deklarativen Programmieren steht der Fokus auf das WAS getan werden soll und nicht so sehr, wie es
-im Detail genau angestellt wird. Ein Beispiel hierfür wären zum Beispiel SQL Befehle. Hier wird nur gesagt, was man haben möchte und das Programm kann dann
-die Anfrage nochmal untersuchen und selbst bestimmen, wie es die Anfrage am besten ausführt.
+Operationen sind also imperative programmiert. Imperative Programmierung ist ein Programmierstill,
+mit dem Fokus auf das *wie* ein Problem gelöst werden soll.
+Im Gegensatz dazu steht der Deklarative Ansatz.
+Beim deklarativen Programmieren steht der Fokus auf das *was* getan werden soll und nicht so sehr,
+wie es im Detail genau angestellt wird. Ein Beispiel hierfür wären zum Beispiel SQL Befehle.
+Hier wird nur gesagt, was man haben möchte und das Programm kann dann die Anfrage nochmal untersuchen
+und selbst bestimmen, wie es die Anfrage am besten ausführt.
 
 ***** Integrationen
+
+   The Org homepage[fn:1] now looks a lot better than it used to.
+     ...
+     [fn:1] The link is: http://orgmode.org
+
 Die Integrationen werden nach Flow Design Richtlinien deklarative programmiert.
 Diese Funktioneneinheiten dürfen anders als die Operationen, andere Funktionen aufrufen, sie also kennen.
+Die Integrationen erfüllen also nicht das /Principle of Mutual Exclusion/
 Der Unterschied beim Flow Design ist jedoch, dass eine bewusste Trennung eingehalten wird.
 
-Integrationen dürfen auch  auf die Terminierung einer Funktion warten und den Rückgabewert  weiterreichen an andere Funktionen.
+Integrationen dürfen auch auf die Terminierung einer Funktion warten und den Rückgabewert  weiterreichen an andere Funktionen.
 Dafür dürfen sie keine Logik im Sinne von Kontrollstrukturen beinhalten.
 
 Die Businesslogik, das was die Funktionalität erzeugt, diese befinden sich in Operationen und sind entkoppelt von ihrer Umgebung.
@@ -324,6 +351,8 @@ static void Main(List<string> lines)
 
 ** C# Features um Datenflüsse zu implementieren
 Um nach Flow Design Regeln zu programmieren, helfen einem in C# einige Features die in diesem Kapitel vorgestellt werden.
+
+*** LINQ und Lambdas
 *** yield return
 Hiermit kann man ein Producer-Consumer Pattern implementieren.
 Vorraussetzung ist jedoch, dass man mit Daten arbeitet, die das =IEnumerable= Interface implementieren, wie zum Beispiel die
@@ -373,8 +402,6 @@ Wenn nichts mehr konsumiert wird, wird auch nichts mehr produziert.
 Den Abbruch der Endlossschleife ( also das Stoppen des Datenflusses) kann somit auch eine andere Funktion außerhalb der Schleife
 übernehmen.
 
-*** LINQ und Lambdas
-
 
 
 
@@ -400,8 +427,11 @@ Integration koordiniert weiter den Datenfluss und die Operation kennt keine ande
 **** mit und/oder Ausgabe
 *
 ** Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.
-- Rückgabewert erwarten von Function als Parameter übergeben.
-- API-Aufruf, Filehandling?, Daten in Integrationen?
+*** Rückgabewert erwarten von Funktion als Parameter übergeben.
+In C# gibt es neben den =Actions=, die keine Rückgabewerte erlauben, auch Funktionspointer, die einen Rückgabewert erlauben. 
+Diese werden mit =Func<Rückgabewert,Parameter,...>= deklariert.
+Die Func würde zwar das IOSP erfüllen, die Operation würde die andere Funktion nicht kennen,
+jedoch würde trotzdem eine funktionale Abhängigkeiten entstehen und somit ist die untenstehende Funktion nicht Flow Design konform.
 
 #+BEGIN_SRC cpp
 static List<string> FormatStrings(List<string> lines , Func<string,string> formatFunc )
@@ -419,6 +449,7 @@ static List<string> FormatStrings(List<string> lines , Func<string,string> forma
 #+END_SRC
 
 
+- API-Aufruf, Filehandling?, Daten in Integrationen?
 ** Warum macht man das? Sinn der Aufteilung. -> Ketten Bild
    nochmal rückbesinnen auf CCD
    Größtes übel funktionale Abhängigkeiten.
