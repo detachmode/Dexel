@@ -345,6 +345,7 @@ static void ItrerateOverEnumeration(IEnumerable<string> lines, Action<string> on
 
 #+END_SRC
 
+Noch eleganter mit Actions und Lambdas
 
 #+BEGIN_SRC cpp
 static void FormatAndPrintStrings(List<string> lines)
@@ -383,13 +384,22 @@ zusammengefasst unter dem Namen LINQ (Language-Integrated Query).
 Mit Hilfe von LINQ lässt sich obiges Beispiel zu einem IOSP konformen Einzeiler reduzieren.
 
 #+BEGIN_SRC cpp
-static void Main(List<string> lines)
+static void FormatAndPrintStrings(List<string> lines)
 {
    lines.Select( x => MyComplexFormattingFunction(x)).ForEach( x => Console.Writeline(x));
 }
 
 #+END_SRC
+Man könnte sich nun darüber streiten, was man nun damit gewonnen hat. Schließlich enthält die Funktion mit LINQ im Grunde
+genommen fast nun genau die selbe Logik, wie das erste Beispiel, nur mit einer anderen Schreibweise.
+Den Nutzen dieser Regel erschließt sich erst, bei größeren Codebasen und kommt bei kleinen Beispielen oft nicht zum Vorschein.
+Erst wenn die Integrationen mehr mache, als nur eine Funktion aufrufen, wird das Entkopplen nützlich.
+Außerdem ist der Fall einer Foreach-Schleife und ein Funktionsaufruf eine Koppelung, die nicht so dramatisch ist. Man
+könnte für diesen Fall sogar eine Ausnahme machen und sie erlauben.
 
+
+Zusammenfassend könnte man noch sagen, dass eine größere Lesebarkeit von IOSP komformen Programmcode entsteht, umso mehr moderne
+Features eine Sprache hat (??? )
 ** C# Features um Datenflüsse zu implementieren
 Um nach Flow Design Regeln zu programmieren, helfen einem in C# einige Features die in diesem Kapitel vorgestellt werden.
 
