@@ -1,4 +1,6 @@
-* Entstehung und Grundgedanke
+
+
+* Entstehung und Grundgedanken
 Flow Design ist aus der Clean Code Development Bewegung heraus entstanden. Hauptinitiatior und Erfinder ist Ralf Westphal.
 Ralf Westphal war auch Mitbegründer und Miterfinder der Clean Code Developement Bewegung.
 
@@ -175,7 +177,7 @@ gut herauskommt).
 
 
 
-**** PoMO ( Principle of Mutual Oblivion)
+*** PoMO ( Principle of Mutual Oblivion)
 #+BEGIN_QUOTE
     Ein Producer kennt seinen Consumer nicht. Ein Consumer kennt seinen Producer
     nicht. Das nenne ich das Principle of Mutual Oblivion (PoMO,
@@ -197,12 +199,12 @@ Die Funktionseinheiten, die das PoMO erfüllen müssen nennt Ralf Westphal Opera
 Integrationen. Als Regel zusammengefasst nennt er dies "Integration Operation Segregation Principle" kurz IOSP.
 
 
-**** IOSP ( Integration Operation Segregation Principle)
+*** IOSP ( Integration Operation Segregation Principle)
 
 Dieses Prinzip besagt, dass eine Funktioneseinheit entweder eine Operation oder eine Integration ist und beide
 Verantwortungsberreiche nicht vermischt werden dürfen.
 
-***** Operationen
+**** Operationen
 Operationen sind Funktionen, die Logik/ Kontrollstrukturen enthalten dürfen. In C# wären das:
 - if, else
 - for, foreach,
@@ -229,7 +231,8 @@ wie es im Detail genau angestellt wird. Ein Beispiel hierfür wären zum Beispie
 Hier wird nur gesagt, was man haben möchte und das Programm kann dann die Anfrage nochmal untersuchen
 und selbst bestimmen, wie es die Anfrage am besten ausführt.
 
-***** Integrationen
+**** Integrationen
+
 
 Die Integrationen werden nach Flow Design Richtlinien deklarative programmiert.
 Diese Funktioneneinheiten dürfen anders als die Operationen, andere Funktionen aufrufen, sie also kennen.
@@ -243,18 +246,20 @@ Die Businesslogik, das was die Funktionalität erzeugt, diese befinden sich in O
 Sie bekommen einfach nur von irgendwo her einen Input (bzw bei keinen Inputparametern einfach ausgeführt werden) und führen damit die von ihnen implementierte
 Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die Funktionseinheit jedoch nicht den Empfänger.
 
-**** Tabelle -  IOSP auf einen Blick
+*** Tabelle -  IOSP auf einen Blick
+
+|                                                         | Operationen | Integrationen |
+|---------------------------------------------------------+-------------+---------------|
+| Rechenoperationen ( +, *, %, ... )                      | Ja          | Nein          |
+| Kontrollstrukturen (if, else, while, for, foreach, ...) | Ja          | Nein          |
+| try, catch                                              | Ja          | Nein          |
+| API-Aufrufe (Methoden von Bibliotheken)                 | Ja          | Nein          |
+| Ressourcen-Zugriffe (Dateien, Datenbanken etc.)         | Ja          | Nein          |
+| Standard Library, LINQ                                  | Ja          | Ja            |
+| Namen andere Funktion kennen                            | Nein        | Ja            |
+| Auf Rückgabewert warten                                 | Nein        | Ja            |
 
 
-|                                                         | Operationen | Integrationen        |
-| Rechenoperationen ( +, *, %, ... )                      | Ja          | Nein                 |
-| Kontrollstrukturen (if, else, while, for, foreach, ...) | Ja          | Nein                 |
-| try, catch                                              | Ja          | Nein( mit Ausnahmen) |
-| API-Aufrufe (Methoden von Bibliotheken)                 | Ja          | Nein                 |
-| Ressourcen-Zugriffe (Dateien, Datenbanken etc.)         | Ja          | Nein                 |
-| Standard Library, LINQ                                  | Ja          | Ja                   |
-| Namen andere Funktion kennen                            | Nein        | Ja                   |
-| Auf Rückgabewert warten                                 | Nein        | Ja                   |
 
 ** Beispiel foreach und Funktionsaufruf als negativ Beispiel.
 #+BEGIN_SRC cpp
@@ -485,7 +490,7 @@ Diese werden mit =Func<Rückgabewert,Parameter,...>= deklariert.
 Die Func würde zwar das IOSP erfüllen, die Operation würde die andere Funktion nicht kennen,
 jedoch würde trotzdem eine funktionale Abhängigkeiten entstehen und somit ist die untenstehende Funktion nicht Flow Design konform.
 
-#+BEGIN_SRC cpp
+#+BEGIN_SRC cpp 
 static List<string> FormatStrings(List<string> lines , Func<string,string> formatFunc )
 {
    List<string> result = new List<string>();
@@ -522,20 +527,7 @@ Oft braucht man auf oberster Ebene, einen Try/Catch, der alle Exceptions abfange
 startet. Hier bleibt einem nichts anderes übrig, als die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
 
 
-** Tabelle -  IOSP auf einen Blick
-
-
-|                                                         | Operationen | Integrationen        |
-| Rechenoperationen ( +, *, %, ... )                      | Ja          | Nein                 |
-| Kontrollstrukturen (if, else, while, for, foreach, ...) | Ja          | Nein                 |
-| try, catch                                              | Ja          | Nein( mit Ausnahmen) |
-| API-Aufrufe (Methoden von Bibliotheken)                 | Ja          | Nein                 |
-| Ressourcen-Zugriffe (Dateien, Datenbanken etc.)         | Ja          | Nein                 |
-| Standard Library, LINQ                                  | Ja          | Ja                   |
-| Namen andere Funktion kennen                            | Nein        | Ja                   |
-| Auf Rückgabewert warten                                 | Nein        | Ja                   |
-
-** Zusammenfassung - IODA Architekur -  Tabelle
+** TODO Zusammenfassung - IODA Architekur -  Tabelle
 
    Tabelle:
    Daten - Methoden in Daten-Objekte aufrufen? Darf Operation die Methode kennen?
@@ -558,15 +550,16 @@ dünn bleibt. Somit lässt sich die Domäne besser testen und es lassen sich lei
 Man zeichnet eine einfache Skizze der GUI auf ein Papier und überlegt sich, welche Interaktionen kann der Nutzer machen.
 Diese Interaktionen werden dann gesammelt und für jedes wird dann ein eigenes Flow Design erstellt.
 
-** Flow Design Entwurf
+** TODO Flow Design Entwurf
 Herauskristallisieren der einzelnen Funktionseinheiten und welche Daten von wo nach wo fließen.
 
-** Einordnen der Funktionseinheiten in bestimmte Container
+** Einordnen der Funktionseinheiten in bestimmte Container           :Frage:
+
 Mit Container meint man: Klassen, DLL, Anwendungen.
 Man fasst eine oder mehere Funktionseinheiten zusammen, indem man zum Beispiel alle mit einer gestrichelten Linie einkreist oder alle die zur selben Klasse
 gehören farblich markiert. Der Name der Klasse notiert man dann im eingekreisten Feld oder unter jeden Funktionseinheit.
-FRAGE: Manchmal wird eine Funktionseinheit selbst als Klasse implementiert? Dann kann ich sie ja nicht in eine andere Klasse schieben.
-RAGE: Schreibt man unter jeden Funktionseinheit die Klasse?
+:FRAGE: Manchmal wird eine Funktionseinheit selbst als Klasse implementiert? Dann kann ich sie ja nicht in eine andere Klasse schieben.
+:FRAGE: Schreibt man unter jeden Funktionseinheit die Klasse?
   endet mit Einteilen in Klassen, DLL, Anwendungen,...
 
   Entwurf ist ein Interativer Prozess, somit wäre round trip super "Sinn des Systems SharpFlowDesign erläutern"

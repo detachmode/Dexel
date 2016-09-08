@@ -1,4 +1,4 @@
-% Created 2016-09-07 Mi 14:34
+% Created 2016-09-08 Thu 03:45
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -14,47 +14,17 @@
 \usepackage{amssymb}
 \usepackage{capt-of}
 \usepackage{hyperref}
-\usepackage{listings}
+\author{Dennis Müller}
 \date{\today}
 \title{}
 \hypersetup{
- pdfauthor={},
+ pdfauthor={Dennis Müller},
  pdftitle={},
  pdfkeywords={},
  pdfsubject={},
- pdfcreator={Emacs 25.1.1 (Org mode 8.3.5)}, 
+ pdfcreator={Emacs 24.5.1 (Org mode 8.3.5)}, 
  pdflang={English}}
 \begin{document}
-	
-
-
-
-
-
-% Using typewriter font: \ttfamily inside \lstset
-
-\begin{frame}[fragile]
-	\frametitle{Inserting source code without setting typewriter}
-	\lstset{language=C++,
-		keywordstyle=\color{blue},
-		stringstyle=\color{red},
-		commentstyle=\color{green},
-		morecomment=[l][\color{magenta}]{\#}
-	}
-	\begin{lstlisting}
-	#include<stdio.h>
-	#include<iostream>
-	// A comment
-	int main(void)
-	{
-	printf("Hello World\n");
-	return 0;
-	}
-	\end{lstlisting}
-\end{frame}
-
-
-	
 
 \tableofcontents
 
@@ -386,6 +356,8 @@ Das soetwas nun nicht mehr erlaubt ist, braucht eine gewissen Umgewöhnungszeit.
 
 Hier nun die Umsetzung in Flow Design mit einfachsten Mitteln.
 
+
+
 \begin{verbatim}
 static void FormatAndPrintStrings(List<string> lines)
 {
@@ -424,7 +396,52 @@ Befüllen der temporären Liste in \texttt{FormatLines} nimmt auch etwas Platz e
 Dazu kommt noch, das die String-Formattierungslogik nun eingebettet in dieser Foreach-Schleife liegt, welche vorher getrennt in
 einer extra Funktion sich befand. 
 
-Gibt es eine elegantere Lösung?
+Elegantere Lösungen mit Actions
+
+\begin{verbatim}
+static void FormatAndPrintStrings(List<string> lines)
+{
+   IterateOverEnumeration(lines, onLine=PrintFormat );
+}
+
+static void  PrintFormat(string line)
+{
+    var fl = MyComplexFormattingFunction(line);
+    Console.WriteLine(fl);
+}
+
+static void IterateOverEnumeration(IEnumerable<string> lines, Action<string> onLine)
+{
+   foreach(line in lines)
+   {
+      onLine(line);
+   }
+}
+\end{verbatim}
+
+Noch eleganter mit Actions und Lambdas
+
+\begin{verbatim}
+static void FormatAndPrintStrings(List<string> lines)
+{
+  IterateOverEnumeration(lines,
+    line => {
+      var fl = MyComplexFormattingFunction(line);
+      Console.WriteLine(fl);
+  });
+}
+
+static void IterateOverEnumeration(IEnumerable<string> lines, Action<string> onLine)
+{
+   foreach(line in lines)
+   {
+      onLine(line);
+   }
+}
+\end{verbatim}
+
+
+Elegantere Lösungen?
 
 Es gibt zwei Möglichkeiten: Die erste Möglichkeit besteht darin, die Richtlinien etwas aufzulockern und eineKategorie "Helfer-Funktionen" einzuführen.
 Diese Funktionen haben den Status von API-Funktion. Somit wäre das erste Beispiel IOSP konfrom und die Funktione \texttt{FormatAndPrintStrings}
@@ -441,12 +458,21 @@ zusammengefasst unter dem Namen LINQ (Language-Integrated Query).
 Mit Hilfe von LINQ lässt sich obiges Beispiel zu einem IOSP konformen Einzeiler reduzieren.
 
 \begin{verbatim}
-static void Main(List<string> lines)
+static void FormatAndPrintStrings(List<string> lines)
 {
    lines.Select( x => MyComplexFormattingFunction(x)).ForEach( x => Console.Writeline(x));
 }
 \end{verbatim}
+Man könnte sich nun darüber streiten, was man nun damit gewonnen hat. Schließlich enthält die Funktion mit LINQ im Grunde
+genommen fast nun genau die selbe Logik, wie das erste Beispiel, nur mit einer anderen Schreibweise.
+Den Nutzen dieser Regel erschließt sich erst, bei größeren Codebasen und kommt bei kleinen Beispielen oft nicht zum Vorschein.
+Erst wenn die Integrationen mehr mache, als nur eine Funktion aufrufen, wird das Entkopplen nützlich.
+Außerdem ist der Fall einer Foreach-Schleife und ein Funktionsaufruf eine Koppelung, die nicht so dramatisch ist. Man
+könnte für diesen Fall sogar eine Ausnahme machen und sie erlauben.
 
+
+Zusammenfassend könnte man noch sagen, dass eine größere Lesebarkeit von IOSP komformen Programmcode entsteht, umso mehr moderne
+Features eine Sprache hat (??? )
 \subsection{C\# Features um Datenflüsse zu implementieren}
 \label{sec:orgheadline29}
 Um nach Flow Design Regeln zu programmieren, helfen einem in C\# einige Features die in diesem Kapitel vorgestellt werden.
@@ -606,7 +632,7 @@ Auf Rückgabewert warten & Nein & Ja\\
 \end{tabular}
 \end{center}
 
-\subsection{Zusammenfassung - IODA Architekur -  Tabelle}
+\subsection{{\bfseries\sffamily TODO} Zusammenfassung - IODA Architekur -  Tabelle}
 \label{sec:orgheadline43}
 
 Tabelle:
@@ -637,13 +663,13 @@ Diese Interaktionen werden dann gesammelt und für jedes wird dann ein eigenes F
 \label{sec:orgheadline47}
 Herauskristallisieren der einzelnen Funktionseinheiten und welche Daten von wo nach wo fließen.
 
-\subsection{Einordnen der Funktionseinheiten in bestimmte Container}
+\subsection{Einordnen der Funktionseinheiten in bestimmte Container\hfill{}\textsc{Frage}}
 \label{sec:orgheadline48}
 Mit Container meint man: Klassen, DLL, Anwendungen.
 Man fasst eine oder mehere Funktionseinheiten zusammen, indem man zum Beispiel alle mit einer gestrichelten Linie einkreist oder alle die zur selben Klasse
 gehören farblich markiert. Der Name der Klasse notiert man dann im eingekreisten Feld oder unter jeden Funktionseinheit.
-FRAGE: Manchmal wird eine Funktionseinheit selbst als Klasse implementiert? Dann kann ich sie ja nicht in eine andere Klasse schieben.
-RAGE: Schreibt man unter jeden Funktionseinheit die Klasse?
+:FRAGE: Manchmal wird eine Funktionseinheit selbst als Klasse implementiert? Dann kann ich sie ja nicht in eine andere Klasse schieben.
+:FRAGE: Schreibt man unter jeden Funktionseinheit die Klasse?
   endet mit Einteilen in Klassen, DLL, Anwendungen,\ldots{}
 
 Entwurf ist ein Interativer Prozess, somit wäre round trip super "Sinn des Systems SharpFlowDesign erläutern"
