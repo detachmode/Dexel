@@ -6,7 +6,7 @@ Ralf Westphal war auch Mitbegründer und Miterfinder der Clean Code Developement
 
 
 Clean Code Development ist eine Ansammlung aus Prinzipen, die einem helfen sollen wartbare Software zu schreiben.
-Wartbare bedeutet Änderungen an der Software sollen leicht zu realisieren sein und der Programmcode soll
+Wartbare bedeutet Änderungen an der Software sollen leicht zu realisier sein und der Programmcode soll
 am besten auch leicht zu lesen bleiben.
 Prinzipien sind jedoch nicht so leicht einzuhalten, wie konkrete Regeln, welche man einfach einhalten kann.
 Somit ist es in der Praxis schwer die Prinzipen auf den eigenen Code anzuwenden.

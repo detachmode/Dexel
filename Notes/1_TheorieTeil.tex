@@ -1,4 +1,4 @@
-% Created 2016-09-08 Thu 03:45
+% Created 2016-09-08 Do 16:45
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -14,28 +14,29 @@
 \usepackage{amssymb}
 \usepackage{capt-of}
 \usepackage{hyperref}
-\author{Dennis Müller}
 \date{\today}
-\title{}
+\title{Flow Design Theorieteil}
 \hypersetup{
- pdfauthor={Dennis Müller},
- pdftitle={},
+ pdfauthor={},
+ pdftitle={Flow Design Theorieteil},
  pdfkeywords={},
  pdfsubject={},
- pdfcreator={Emacs 24.5.1 (Org mode 8.3.5)}, 
+ pdfcreator={Emacs 25.1.1 (Org mode 8.3.5)}, 
  pdflang={English}}
 \begin{document}
 
+\maketitle
 \tableofcontents
 
-\section{Entstehung und Grundgedanke}
+
+\section{Entstehung und Grundgedanken}
 \label{sec:orgheadline1}
 Flow Design ist aus der Clean Code Development Bewegung heraus entstanden. Hauptinitiatior und Erfinder ist Ralf Westphal.
 Ralf Westphal war auch Mitbegründer und Miterfinder der Clean Code Developement Bewegung.
 
 
 Clean Code Development ist eine Ansammlung aus Prinzipen, die einem helfen sollen wartbare Software zu schreiben.
-Wartbare bedeutet Änderungen an der Software sollen leicht zu realisieren sein und der Programmcode soll
+Wartbare bedeutet Änderungen an der Software sollen leicht zu realisier sein und der Programmcode soll
 am besten auch leicht zu lesen bleiben.
 Prinzipien sind jedoch nicht so leicht einzuhalten, wie konkrete Regeln, welche man einfach einhalten kann.
 Somit ist es in der Praxis schwer die Prinzipen auf den eigenen Code anzuwenden.
@@ -83,13 +84,18 @@ Anzumerken wäre noch, dass nicht der Kontrollfluss abgebildet wird, sondern, wi
 
 \section{Pfeile und Kreise}
 \label{sec:orgheadline4}
-\subsection{RomanNumbers Beispiel}
+\subsection{{\bfseries\sffamily DRAFT} RomanNumbers Beispiel}
 \label{sec:orgheadline2}
 
 \includegraphics[width=.9\linewidth]{./img/FromRomanNumerals.png}
 
 Das nachfolgende Beispiel soll an einem einfach Beispiel zeigen, was ein Flow Design Diagramm ist.
 Das Programm/Unterprogramm soll eine römische Zahl in eine Dezimalzahl konvertieren.
+
+Alle eingekreisten Namen sind Funktionseinheiten, oder auch Softwarezelle genannt.
+Diese werden in den meisten Fällen im Code als Methoden implementiert.
+Die Pfeile zeigen den Datenstrom. Links die Inputs und rechts die Outputs.
+
 
 Der Input-Datenstrom besteht aus einem String. Dieser String wird zerlegt in einzelne Buchstaben.
 Der Buchstabenstrom wird anschließend einer Funktionseinheit gegeben, die jeden Buchstaben zu der entsprächenden 
@@ -103,7 +109,7 @@ Pfeile zeigen den Datenstrom, auf dem der Datentyp vermerkt ist.
 Links gehen Pfeile in die Funktionseinheit hinein, das ist der eingehende Datenstrom und rechts ist der ausgehende Datenstrom.
 Die Funktionseinheit wird auch als Domäne bezeichnet. Die Domäne interessiert sich nur für ihre Aufgabe und soll möglichst isoliert
 betrachtet ihre Aufgabe erledigen können.
-\subsection{Hirarchische Datenflüsse}
+\subsection{{\bfseries\sffamily MISSING IMAGES} Hirarchische Datenflüsse}
 \label{sec:orgheadline3}
 Das Flow Design unterstützt die Funktion in eine Softwarezelle sozusagen hineinzuzoomen.
 Hier erkennt man die rekusive Eigenschaft der Softwarezellen. Eine Softwarezelle kann wiederum aus mehreren Softwarezellen bestehen,
@@ -111,41 +117,30 @@ die zusammen die Aufgabe erledigen, die die übergeordnete Softwarezelle beschre
 
 
 \section{Grundlegende Notationen}
-\label{sec:orgheadline18}
+\label{sec:orgheadline17}
 Bilder sind von: 
 
 \url{http://flow-design.org/overview/implementation/#How_to_implement_inputs_to_a_functional_unit}
 
 Weitere Notationen kurz erklärt. Auch mit "Integrationen" aber noch nicht erklären, dass es ein Unterschied gibt.
 Provider Dreieck.
-\subsection{Datentypen}
+\subsection{{\bfseries\sffamily MISSING IMAGES} Datentypen}
 \label{sec:orgheadline5}
 
+Eine leere Klammer bedeutet, dass keine Daten fließen.
 Falls man sowohl dem Datenstrom einen Namengeben möchte, als auch den Datentyp definieren möchte, schreibt man beides mit einem
 Doppelpunkt getrennt hintereinander.
-\subsection{Definition eigener Datentypen}
+\subsection{{\bfseries\sffamily MISSING IMAGES} Definition eigener Datentypen}
 \label{sec:orgheadline6}
 Benutzt man einen Datenstrom bestehend aus einem eigenen Datentypen, so zeichnet man irgendwo auf dem Papier eine Box,
 indem man den Datentyp mit seinen Membervariablen auflistet.
-\subsection{Container / Listen}
+
+\subsection{{\bfseries\sffamily MISSING IMAGES} Arrays (auch mit fester Größe)}
 \label{sec:orgheadline7}
-
-\includegraphics[width=.9\linewidth]{./img/diagramCollection.png}
-
-Stern innerhalb der Klammer.
-Der Datentyp liegt in einem Container vor. 
-Die zu bearbeitende Daten können entweder komplett auf einmal an die Funktionseinheit gegeben werden ( als Liste, Dictionary, etc. )
-oder aber - falls die Programmiersprache dies unterstützt - als Stream realisert werden, wo einzelne Elemente bereits abgearbeitet werden
-können, bevor alle anderen Daten erzeugt wurden.
-
-\subsection{Arrays (auch mit fester Größe)}
-\label{sec:orgheadline8}
 Werden Daten als Arrays mit fester größe übergeben, so wird hinter dem Datentyp eine leere Eckigeklammer angehängt.
 Ist die Arraygröße bekannt, so kann man diese in die Klammer noch zustätzlich eintragen.
-\subsection{Kardinalitäten}
-\label{sec:orgheadline11}
-\subsubsection{0 bis n}
-\label{sec:orgheadline9}
+\subsection{{\bfseries\sffamily FRAGEN} 0 bis n (Datenstrom)}
+\label{sec:orgheadline8}
 
 \includegraphics[width=.9\linewidth]{./img/diagram0n.png}
 
@@ -154,7 +149,21 @@ Wird als * außerhalb der Klammer dargestellt.
 Selten wird ein Datenstrom auch mit geschweiften Klammern dargestellt, um ihn von dem optionalen Output zu unterscheiden.
 \{int\}
 
-\subsubsection{0 bis 1 (optionaler Output)}
+FRAGE: Wenn auf Container mit yield gearbeitet wird, so sind die Grenzen zum
+Datenstrom verschwommen.
+\subsection{{\bfseries\sffamily FRAGEN} Container / Listen}
+\label{sec:orgheadline9}
+
+\includegraphics[width=.9\linewidth]{./img/diagramCollection.png}
+
+Stern innerhalb der Klammer.
+Der Datentyp liegt in einem Container vor. 
+Die zu bearbeitende Daten können entweder komplett auf einmal an die Funktionseinheit gegeben werden ( als Liste, Dictionary, etc. )
+oder aber - falls die Programmiersprache dies unterstützt - als yield ähnlich
+wie ein Stream realisert werden, wo einzelne Elemente bereits abgearbeitet werden
+können, bevor alle anderen Daten erzeugt wurden.
+
+\subsection{{\bfseries\sffamily FRAGEN} 0 bis 1 (optionaler Output)}
 \label{sec:orgheadline10}
 
 \includegraphics[width=.9\linewidth]{./img/diagramOptional.png}
@@ -162,39 +171,58 @@ Selten wird ein Datenstrom auch mit geschweiften Klammern dargestellt, um ihn vo
 Eckige Klammer
 [int]
 
-\subsection{Mehrere Inputs / Outputs}
-\label{sec:orgheadline12}
+Optinale Outputs können nicht über ein Rückgabewert realisiert werden.
+
+FRAGE: Stimmt das? Kann man nicht auch ein Datentyp verwenden, der \texttt{null} Werte zulässt?
+Dann müsste jedoch wahrscheinlich die folgende Operation den Input auf null überprüfen.
+
+\subsection{{\bfseries\sffamily MISSING IMAGES} Mehrere Inputs / Outputs auf einem Weg}
+\label{sec:orgheadline11}
 Mehrere Inputs werden in die Klammer geschrieben und mit einem Komma getrennt.
+
 Mehrere Outputs lassen sich nicht in allen Sprachen einfach realiseren.
-Wahlweise kann man es mit Tupel realisieren, oder man verwendet stattdessen einen eigenen Datentyp
+Wahlweise kann man es mit Tupel realisieren, oder man verwendet stattdessen
+einen eigenen Datentyp, der alle Output-Daten beinhaltet.
 
-\subsection{Joined Inputs}
-\label{sec:orgheadline13}
-
+\subsection{{\bfseries\sffamily DONE} Joined Inputs}
+\label{sec:orgheadline12}
 \includegraphics[width=.9\linewidth]{./img/diagramJoin.png}
 
 Wenn die Softwarezelle nur dann ihre Aufgabe erledigen kann, wenn mehrere ihre Inputs 
 vorhanden sind und diese aus unterschiedliche Quellen stammen, dann braucht man ein so genannten Join.
 Dieser wird als Linie dargestellt an die mehrere Inputs zusammenlaufen.
-Im Code kann dies einfach realisiert werden, als eine Funktion, die mehrer Inputsparameter entgegennimmt.
+
+Im Code kann dies einfach realisiert werden als eine Funktion, die mehrer Inputsparameter entgegennimmt.
 
 Das Bündeln der Datenströme soll nicht die Funktion F erledigen, sondern ist Aufgabe einer übergeordneten Funktionseinheit.
-Die Funktionseinheit F erwartet einfach 2 Parameter und kennt deren Herkunft nicht. 
+Die Funktionseinheit F erwartet einfach 2 Parameter auf einmal und kennt deren Herkunft nicht. 
 
-\subsection{Tonnen}
-\label{sec:orgheadline14}
+\subsection{{\bfseries\sffamily FRAGEN} Tonnen}
+\label{sec:orgheadline13}
 
 \includegraphics[width=.9\linewidth]{./img/diagramTonne.png}
+Hat die Funkton keine Eingangsparameter, so hat sie oft stattdessen eine Tonne, die anzeigt, dass die Funktionseinheit state-behaftet ist.
 
-\subsection{Anhängigkeiten / Provider}
+Tonnen bedeuten, dass die Funktionseinheit state-behaftet ist.
+In den meisten Fällen ist das eine Membervariable einer Klasse?
+
+FRAGE: Kann State auch anders umgesetzt sein?
+\subsection{{\bfseries\sffamily TODO} Anhängigkeiten / Provider}
+\label{sec:orgheadline14}
+Tonnen oder Dreicke können zusätzlich noch mit einer Linie verbunden sein, an dessen Ende ein Kreis gezeichnet ist,
+dann bedeutet das, dass die Funktion auf externe Resourcen zugreift / von ihr
+Abhängig ist.
+Den Kreis kann man sich bildlich wie eine Hand vorstellen, an die sich die
+Funktion festhält, also eine Koppelung entsteht.
+
+
+\subsection{{\bfseries\sffamily TODO} GUIS / Programmstart/ Ende}
 \label{sec:orgheadline15}
-\subsection{GUIS / Programmstart/ Ende}
+\subsection{{\bfseries\sffamily TODO} Klassen / Container definieren}
 \label{sec:orgheadline16}
-\subsection{Klassen / Container definieren}
-\label{sec:orgheadline17}
 
 \section{Implementationsregeln / C\# Exkurse}
-\label{sec:orgheadline44}
+\label{sec:orgheadline45}
 
 Regeln:
 \begin{itemize}
@@ -203,7 +231,7 @@ Regeln:
 fs
 \end{itemize}
 \subsection{IODA Architekur}
-\label{sec:orgheadline25}
+\label{sec:orgheadline24}
 IODA steht für: Integration Operation Data API
 \begin{figure}[htb]
 \centering
@@ -211,8 +239,8 @@ IODA steht für: Integration Operation Data API
 \caption{\url{http://blog.ralfw.de/2015/04/die-ioda-architektur.html}}
 \end{figure}
 
-\subsubsection{Erläuterung des Schaubildes}
-\label{sec:orgheadline24}
+\subsubsection{{\bfseries\sffamily DRAFT} Erläuterung des Schaubildes}
+\label{sec:orgheadline18}
 Das Flow Design unterscheidet zwei Arten von Funktionseinheiten: Integrationen und Operationen.
 Die Aufgabe einer Integration ist, die unabhängigen Operationen in das große Ganze zu
 Integrieren. 
@@ -233,10 +261,13 @@ Beispielsweise das Aufrufen eines Konstruktors oder Deklarieren einer lokalen Va
 Das Koordinieren und Weiterreichen und von Daten übernimmt jedoch die Integrationen ( was auf dem Schaubild nicht so
 gut herauskommt).
 
+Anhand einer Flow Design Skizze, kann man leicht herausfinden, welche Methoden Operationen sind und welche
+Integrationen.
+Alle Leaf-Knoten sind Operationen, der Rest sind Integrationen.
 
 
-\begin{enumerate}
-\item PoMO ( Principle of Mutual Oblivion)
+
+\subsubsection{{\bfseries\sffamily DRAFT} PoMO ( Principle of Mutual Oblivion)}
 \label{sec:orgheadline19}
 \begin{quote}
 Ein Producer kennt seinen Consumer nicht. Ein Consumer kennt seinen Producer
@@ -259,7 +290,7 @@ Die Funktionseinheiten, die das PoMO erfüllen müssen nennt Ralf Westphal Opera
 Integrationen. Als Regel zusammengefasst nennt er dies "Integration Operation Segregation Principle" kurz IOSP.
 
 
-\item IOSP ( Integration Operation Segregation Principle)
+\subsubsection{{\bfseries\sffamily DRAFT} IOSP ( Integration Operation Segregation Principle)}
 \label{sec:orgheadline22}
 
 Dieses Prinzip besagt, dass eine Funktioneseinheit entweder eine Operation oder eine Integration ist und beide
@@ -268,20 +299,22 @@ Verantwortungsberreiche nicht vermischt werden dürfen.
 \begin{enumerate}
 \item Operationen
 \label{sec:orgheadline20}
-Operationen sind Funktionen, die Logik/ Kontrollstrukturen enthalten dürfen. In C\# wären das:
+Operationen sind Methoden, die Logik/ Kontrollstrukturen enthalten dürfen. In C\# wären das:
 \begin{itemize}
 \item if, else
+\item switch, case
 \item for, foreach,
 \item while, do
-\item try, catch
-\item .. vollständig?
-\item API, Daten
+\item try, catch, finally
+\item goto
 \end{itemize}
 
 
 
-Gleichzeitig müssen die Operationen das PoMO prinzip erfüllen, sie dürfen keine andere Funktionseinheiten kennen oder aufrufen und auf
-das Ergebnis warten. 
+
+Gleichzeitig müssen die Operationen das PoMO prinzip erfüllen, sie dürfen keine
+andere Funktionseinheiten kennen ( gemeint ist, sie über ihrer eigentlichen
+Namen aufzurufen) oder auf das Ergebnis einer zu warten. 
 Ein Funktionsaufruf ist nur über Actions ( Funktionspointer ), die man als Funktionsparameter mit übergibt, oder Events möglich.
 Beide dürfen keine Rückgabewerte haben, was bei Actions implizit der Fall ist.
 Damit erfüllt die Operation weiter das PoMO, da sie nicht selbst bestimmt, welche Funktion sie aufruft, sondern die Funktion,
@@ -296,7 +329,7 @@ wie es im Detail genau angestellt wird. Ein Beispiel hierfür wären zum Beispie
 Hier wird nur gesagt, was man haben möchte und das Programm kann dann die Anfrage nochmal untersuchen
 und selbst bestimmen, wie es die Anfrage am besten ausführt.
 
-\item Integrationen
+\item {\bfseries\sffamily FRAGEN} Integrationen
 \label{sec:orgheadline21}
 
 Die Integrationen werden nach Flow Design Richtlinien deklarative programmiert.
@@ -306,22 +339,23 @@ Der Unterschied beim Flow Design ist jedoch, dass eine bewusste Trennung eingeha
 
 Integrationen dürfen auch auf die Terminierung einer Funktion warten und den Rückgabewert  weiterreichen an andere Funktionen.
 Dafür dürfen sie keine Logik im Sinne von Kontrollstrukturen beinhalten.
+Auch dürfen sie keine API-spezifischen Befehle kennen, (kein Zugriff auf
+persitent Daten in Integrationen /Filehandles?).
 
 Die Businesslogik, das was die Funktionalität erzeugt, diese befinden sich in Operationen und sind entkoppelt von ihrer Umgebung.
 Sie bekommen einfach nur von irgendwo her einen Input (bzw bei keinen Inputparametern einfach ausgeführt werden) und führen damit die von ihnen implementierte
 Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die Funktionseinheit jedoch nicht den Empfänger.
 \end{enumerate}
 
-\item Tabelle -  IOSP auf einen Blick
+\subsubsection{{\bfseries\sffamily DONE} Tabelle -  IOSP auf einen Blick}
 \label{sec:orgheadline23}
-
-
 \begin{center}
 \begin{tabular}{lll}
  & Operationen & Integrationen\\
+\hline
 Rechenoperationen ( +, *, \%, \ldots{} ) & Ja & Nein\\
 Kontrollstrukturen (if, else, while, for, foreach, \ldots{}) & Ja & Nein\\
-try, catch & Ja & Nein( mit Ausnahmen)\\
+try, catch & Ja & Nein\\
 API-Aufrufe (Methoden von Bibliotheken) & Ja & Nein\\
 Ressourcen-Zugriffe (Dateien, Datenbanken etc.) & Ja & Nein\\
 Standard Library, LINQ & Ja & Ja\\
@@ -329,10 +363,11 @@ Namen andere Funktion kennen & Nein & Ja\\
 Auf Rückgabewert warten & Nein & Ja\\
 \end{tabular}
 \end{center}
-\end{enumerate}
 
-\subsection{Beispiel foreach und Funktionsaufruf als negativ Beispiel.}
-\label{sec:orgheadline26}
+
+
+\subsection{{\bfseries\sffamily DONE} Beispiel foreach und Funktionsaufruf als negativ Beispiel.}
+\label{sec:orgheadline25}
 \begin{verbatim}
 static void FormatAndPrintStrings(List<string> lines)
 {
@@ -474,19 +509,46 @@ könnte für diesen Fall sogar eine Ausnahme machen und sie erlauben.
 Zusammenfassend könnte man noch sagen, dass eine größere Lesebarkeit von IOSP komformen Programmcode entsteht, umso mehr moderne
 Features eine Sprache hat (??? )
 \subsection{C\# Features um Datenflüsse zu implementieren}
-\label{sec:orgheadline29}
+\label{sec:orgheadline30}
 Um nach Flow Design Regeln zu programmieren, helfen einem in C\# einige Features die in diesem Kapitel vorgestellt werden.
 
-\subsubsection{LINQ und Lambdas}
-\label{sec:orgheadline27}
-\subsubsection{yield return}
-\label{sec:orgheadline28}
+\subsubsection{{\bfseries\sffamily TODO} LINQ und Lambdas}
+\label{sec:orgheadline26}
+\subsubsection{{\bfseries\sffamily DRAFT} yield return}
+\label{sec:orgheadline29}
 Hiermit kann man ein Producer-Consumer Pattern implementieren.
 Vorraussetzung ist jedoch, dass man mit Daten arbeitet, die das \texttt{IEnumerable} Interface implementieren, wie zum Beispiel die
 \texttt{List} Klasse.
 
-Hier der Code von dem Beispiel weiter oben.
+Das folgende Flow Design soll mit \texttt{yield return} realisiert werden.
 
+\begin{figure}[htb]
+\centering
+\includegraphics[width=.9\linewidth]{./img/FlowDesign2.png}
+\caption{\url{http://www.code-whisperer.de/preview/2015/06/14/eva/}}
+\end{figure}
+
+
+Das Programm ist eine Konsolenanwedung, die den Benutzer eine Eingabe erlaubt.
+Wenn die Eingabe die Zahl 42 entspricht, wird das Programm beendet, wenn nicht,
+dann wird die Zahl ausgegeben und der Benutzer kann wieder eine Zahl eingeben.
+Das wiederholt sich, solange bis der Benuter die Zahl 42 eingetippt hat.
+
+
+\begin{enumerate}
+\item {\bfseries\sffamily FRAGEN} Erläuterung des Schaubildes
+\label{sec:orgheadline27}
+Die Main Funktion wird nach dem Programmstart ( leerer Kreis ) ohne Parameter aufgerufen.
+Danach ruft diese die Funktion \texttt{ReadNumbersFromCmd} auf, welche aus der Konsole eine Eingabe ließt und sie
+zu einem int parset. Der int nimmt die Main Funktion entgegen und gibt diesen an FindtheAnswer weiter.
+Diese Funktion hat die Aufgabe den entgegengenommenen int mit der Zahl 42 zu vergleichen. Wenn die Zahl 42 ist, wird der Datenstrom
+abgebrochen. Wenn es nicht die 42 war, dann wird der int nach außen gereicht und die Main Funktion reicht die Zahl an die
+PrintNumber Funktion weiter. PrintNumber gibt die Zahl in die Konsole aus.
+Wenn der Datenstrom abbricht, returned die Mainfunktion und das Programm wird beendet.
+FRAGE: Was bedeutet nochmal die Tonne, mit Hand?
+
+\item {\bfseries\sffamily DONE} Implementation
+\label{sec:orgheadline28}
 \begin{verbatim}
 class Program
 {
@@ -528,42 +590,61 @@ Element abgefragt hat, wird ein neues Element erzeugt.
 Wenn nichts mehr konsumiert wird, wird auch nichts mehr produziert.
 Den Abbruch der Endlossschleife ( also das Stoppen des Datenflusses) kann somit auch eine andere Funktion außerhalb der Schleife
 übernehmen.
+\end{enumerate}
 
 
 
 
-\subsection{Datenströme mit mehreren Wegen}
-\label{sec:orgheadline33}
+\subsection{{\bfseries\sffamily FRAGEN} Datenströme mit mehreren Wegen}
+\label{sec:orgheadline34}
 \subsubsection{Ein Output-Weg mehrer Empfänger}
-\label{sec:orgheadline30}
+\label{sec:orgheadline31}
 \includegraphics[width=.9\linewidth]{./img/diagramOut1to2.png}
 
 Falls ein Output an mehrere Empfänger weitergereicht werden soll, so lässt sich das am besten mit Events realisieren.
 Leider bedarf es dann bei der Benutzung der API mehr Vorsicht, da man sich vorher auf ein Events registrieren muss, bevor man
 die gewünschte Funktion aufrufen kann.
-\subsubsection{Mehrere Output-Wege}
+Alternativ kann auch die übergeordnete Integration den Rückgabewert an die
+anderen Beiden weiterreichen, oder über Actions (FRAGE: Liste aus Actions
+übergeben?).
+
+\subsubsection{{\bfseries\sffamily DRAFT} Mehrere Output-Wege}
 \label{sec:orgheadline32}
 
 \includegraphics[width=.9\linewidth]{./img/diagramOut2.png}
 
 Wenn eine Funktion mehrer Output-Wege hat, so kann man das im Code nicht mehr mit einem einfachen Rückgabewert implementieren.
-Stattdessen braucht man entweder mehrere Events oder man gibt der Funktion mehrere Funktionspointer mit, die die Funktion aufruft.
-
 Wäre es für eine Operation erlaubt eine andere Funktionseinheit zu kennen, dann könnten wir natürlich einfach in der Operation selbst
-die nachfolgenden Funktionen per Namen aufrufen. Da aber Operationen entkoppelt von ihrer Umwelt sein sollen, müssen die möglichen
-Outputwege über die Funktionsparameter mitgegeben werden. Somit wurden die Verantwortlichkeiten bewahrt und die übergeordnete 
+die nachfolgenden Methoden per Namen aufrufen. Da aber Operationen entkoppelt von ihrer Umwelt sein sollen, müssen die möglichen
+Outputwege über die Argumente der Methode mitgegeben werden. Somit werden die Verantwortlichkeiten bewahrt und die übergeordnete 
 Integration koordiniert weiter den Datenfluss und die Operation kennt keine anderen Funktionseinheiten.
 
+Alternativ könnte man auch hier Events nutzen, was aber durch das zusätzliche
+Registerien auf das Event eher nicht zu empfehlen ist, wenn absehbar ist, dass
+nicht mehrere Funktonseinheiten gleichzeitig das Ergebnis empfangen sollen.
 
+\subsubsection{{\bfseries\sffamily FRAGEN} mit und/oder den Kontrollfluss notieren.}
+\label{sec:orgheadline33}
+Wenn man möchte, so kann man den Kontrollfluss, auch in das Diagramm hier mit
+reinnehmen. Man kann in den Winkel der beiden Pfeile notierem, ob beide
+Datenflüsse fließen, oder immer nur einer 
+
+FRAGE; 
 \begin{enumerate}
-\item mit und/oder Ausgabe
-\label{sec:orgheadline31}
-*
+\item XOR , OR ,\ldots{}
+\item Kann man eine implementationsregel davon ableiten?
+Wenn ich ein UND habe, dann kann der Strom als Tupel/Datentyp realisiert
+werden. Dann muss die Integration einfach nur den ersten Teil an die eine
+Methode weiterreichen und den zweiten Teil an die andere.
+Wenn es es ODER ist, dann sind gelten ähnliche Regeln, wie für Optionale
+Outpute.
+Ich muss eine Action mitgeben. (Oder Datentypen, die null sein dürfen?)
 \end{enumerate}
+
 \subsection{Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.}
+\label{sec:orgheadline37}
+\subsubsection{{\bfseries\sffamily DONE} Rückgabewert erwarten von Funktion als Parameter übergeben.}
 \label{sec:orgheadline35}
-\subsubsection{Rückgabewert erwarten von Funktion als Parameter übergeben.}
-\label{sec:orgheadline34}
 In C\# gibt es neben den \texttt{Actions}, die keine Rückgabewerte erlauben, auch Funktionspointer, die einen Rückgabewert erlauben. 
 Diese werden mit \texttt{Func<Rückgabewert,Parameter,...>} deklariert.
 Die Func würde zwar das IOSP erfüllen, die Operation würde die andere Funktion nicht kennen,
@@ -583,70 +664,53 @@ static List<string> FormatStrings(List<string> lines , Func<string,string> forma
 \end{verbatim}
 
 
-\begin{itemize}
-\item API-Aufruf, Filehandling?, Daten in Integrationen?
-\end{itemize}
-\subsection{Warum macht man das? Sinn der Aufteilung. -> Ketten Bild}
+\subsubsection{{\bfseries\sffamily TODO} API-Aufruf, Filehandling?, Daten in Integrationen?}
 \label{sec:orgheadline36}
-nochmal rückbesinnen auf CCD
-Größtes übel funktionale Abhängigkeiten.
-Wenn jemand seine Arbeit erst zuende machen kann, wenn ein anderer seine Arbeit getan hat.
-\subsection{Ausnahmen}
-\label{sec:orgheadline41}
-\subsubsection{Rekursion}
-\label{sec:orgheadline37}
-Operationen dürfen sich selber aufrufen.
-\subsubsection{Integrationen}
-\label{sec:orgheadline40}
-
-\begin{enumerate}
-\item LINQ / Standard-Library Funktionen
+\subsection{{\bfseries\sffamily TODO} Warum macht man das? Sinn der Aufteilung.}
 \label{sec:orgheadline38}
+\begin{itemize}
+\item Ketten Bild
+\item nochmal rückbesinnen auf CCD
+\item Größtes übel funktionale Abhängigkeiten. Wenn jemand seine Arbeit erst zuende machen kann, wenn ein anderer seine Arbeit getan hat.
+\end{itemize}
+\subsection{{\bfseries\sffamily DRAFT} Ausnahmen}
+\label{sec:orgheadline43}
+\subsubsection{{\bfseries\sffamily TODO} Rekursion}
+\label{sec:orgheadline39}
+Operationen dürfen sich selber aufrufen.
+\subsubsection{{\bfseries\sffamily DONE} Integrationen}
+\label{sec:orgheadline42}
+\begin{enumerate}
+\item {\bfseries\sffamily DONE} LINQ / Standard-Library Funktionen
+\label{sec:orgheadline40}
 Manche Funktionalitäten, die die Sprache selbst bereitstellt, können streng genommen als API-Aufrufe bezeichnet werden
 . Jedoch gilt hier eine Ausnahme. Man darf auch in Integrationen diese Funktionalität verwenden.
 Beispiele aus C\#:
 \texttt{int.TryParse} , \texttt{List<>.Sort}, \texttt{Dictionary<>.Insert}, \ldots{}
 
-\item Try / Catch
-\label{sec:orgheadline39}
+\item {\bfseries\sffamily DONE} Try / Catch
+\label{sec:orgheadline41}
 Oft braucht man auf oberster Ebene, einen Try/Catch, der alle Exceptions abfangen soll, und eine generelle Fehlerbehandlungsroutine
 startet. Hier bleibt einem nichts anderes übrig, als die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
 \end{enumerate}
 
 
-\subsection{Tabelle -  IOSP auf einen Blick}
-\label{sec:orgheadline42}
-
-
-\begin{center}
-\begin{tabular}{lll}
- & Operationen & Integrationen\\
-Rechenoperationen ( +, *, \%, \ldots{} ) & Ja & Nein\\
-Kontrollstrukturen (if, else, while, for, foreach, \ldots{}) & Ja & Nein\\
-try, catch & Ja & Nein( mit Ausnahmen)\\
-API-Aufrufe (Methoden von Bibliotheken) & Ja & Nein\\
-Ressourcen-Zugriffe (Dateien, Datenbanken etc.) & Ja & Nein\\
-Standard Library, LINQ & Ja & Ja\\
-Namen andere Funktion kennen & Nein & Ja\\
-Auf Rückgabewert warten & Nein & Ja\\
-\end{tabular}
-\end{center}
-
-\subsection{{\bfseries\sffamily TODO} Zusammenfassung - IODA Architekur -  Tabelle}
-\label{sec:orgheadline43}
+\subsection{{\bfseries\sffamily FRAGEN} KNOWNCAUSE Zusammenfassung - IODA Architekur -  Tabelle}
+\label{sec:orgheadline44}
 
 Tabelle:
 Daten - Methoden in Daten-Objekte aufrufen? Darf Operation die Methode kennen?
-Daten - was bedeutet die eigentlich? Extra Funktionen? file open handlers?
+Daten - was bedeutet die eigentlich? Methoden die zum Datentyp
+gehören/gekaspelt sind, sind die in Operationen erlaubt? file open handlers?
 Daten - Darf Integration wirklich Kontruktor aufrufen, das sind doch daten, oder gelten nur persistente daten?
 
 
 
 \section{Ablauf der kompletten Flow Design - Entwurfsmethode}
-\label{sec:orgheadline49}
+\label{sec:orgheadline51}
 
-\subsection{Definieren der Portale und Provider}
-\label{sec:orgheadline45}
+\subsection{{\bfseries\sffamily TODO} Definieren der Portale und Provider}
+\label{sec:orgheadline46}
     Man zeichnet ein Kreis auf ein Papier, diese stellt die Domäne dar.
     Auf der linken Seite hängt man die Sachen dran, die auf die Domände zugreifen so gegannte Portale, zum Beispiel HTTP-Zugriff,
     Batch mode, oder GUIs.
@@ -654,30 +718,34 @@ Daten - Darf Integration wirklich Kontruktor aufrufen, das sind doch daten, oder
     Ziel ist es später in der Implementierung darauf zu achten, dass die "Schicht" oder "Membran", zwischen Domäne und Außenwelt möglichst
 dünn bleibt. Somit lässt sich die Domäne besser testen und es lassen sich leichter neue Portale und Provider anhängen.
 
-\subsection{Interfaceskizze ( im Falle einer GUI Anwendung )}
-\label{sec:orgheadline46}
+\subsection{{\bfseries\sffamily TODO} Interfaceskizze ( im Falle einer GUI Anwendung )}
+\label{sec:orgheadline47}
 Man zeichnet eine einfache Skizze der GUI auf ein Papier und überlegt sich, welche Interaktionen kann der Nutzer machen.
 Diese Interaktionen werden dann gesammelt und für jedes wird dann ein eigenes Flow Design erstellt.
 
-\subsection{Flow Design Entwurf}
-\label{sec:orgheadline47}
+\subsection{{\bfseries\sffamily TODO} Flow Design Entwurf}
+\label{sec:orgheadline48}
 Herauskristallisieren der einzelnen Funktionseinheiten und welche Daten von wo nach wo fließen.
 
-\subsection{Einordnen der Funktionseinheiten in bestimmte Container\hfill{}\textsc{Frage}}
-\label{sec:orgheadline48}
+\subsection{{\bfseries\sffamily FRAGEN} Einordnen der Funktionseinheiten in bestimmte Container}
+\label{sec:orgheadline49}
+
 Mit Container meint man: Klassen, DLL, Anwendungen.
-Man fasst eine oder mehere Funktionseinheiten zusammen, indem man zum Beispiel alle mit einer gestrichelten Linie einkreist oder alle die zur selben Klasse
+Man fasst eine oder mehere Funktionseinheiten zusammen, indem mag zum Beispiel alle mit einer gestrichelten Linie einkreist oder alle die zur selben Klasse
 gehören farblich markiert. Der Name der Klasse notiert man dann im eingekreisten Feld oder unter jeden Funktionseinheit.
-:FRAGE: Manchmal wird eine Funktionseinheit selbst als Klasse implementiert? Dann kann ich sie ja nicht in eine andere Klasse schieben.
-:FRAGE: Schreibt man unter jeden Funktionseinheit die Klasse?
   endet mit Einteilen in Klassen, DLL, Anwendungen,\ldots{}
 
 Entwurf ist ein Interativer Prozess, somit wäre round trip super "Sinn des Systems SharpFlowDesign erläutern"
 
+1)FRAGE: Manchmal wird eine Funktionseinheit selbst als Klasse implementiert? Dann kann ich sie ja nicht in eine andere Klasse schieben.
 
-
-\section{Rekursive Eigenschaft der Softwarezellen/ Architekur}
+\subsection{{\bfseries\sffamily FRAGEN} Optional - Bestimmen von Parallelitäten}
 \label{sec:orgheadline50}
+Es können zusätzlich noch Pfeile eingefärbt werden, um zu verdeutlichen, dass
+manche Datenströme parallel laufen können.
+FRAGE: Wie genau geht das?
+\section{{\bfseries\sffamily TODO} Rekursive Eigenschaft der Softwarezellen/ Architekur}
+\label{sec:orgheadline52}
 Das Schöne an Flow Design und dem Konzept der Softwarezelle ist, dass sie rekusive ist.
 Man kann das Problem/die Andwendugn ganz oben als eine Softwarezelle (oder hier der Kreis mit den Providern? ist das auch eine Softwarezelle?)
 verstehen, indem links Portale Zugriffe machen und rechts davon, die Softwarezelle wiederum auf ihre Provider Zugriffe macht.
@@ -692,50 +760,6 @@ Outputs. Damit ist die Architektur weniger starr, als zum Beispiel das Schichten
 \label{sec:orgheadline55}
 \subsection{Einfaches Beispiel eines Flow Designs}
 \label{sec:orgheadline54}
-\begin{figure}[htb]
-\centering
-\includegraphics[width=.9\linewidth]{./img/FlowDesign2.png}
-\caption{\url{http://www.code-whisperer.de/preview/2015/06/14/eva/}}
-\end{figure}
-
-
-Das Programm ist eine Konsolenanwedung, die den Benutzer eine Eingabe erlaubt.
-Wenn die Eingabe die Zahl 42 entspricht, wird das Programm beendet, wenn nicht, kann wieder eine Zahl eingeben werden.
-Das wiederholt sich, solange bis der Benuter die Zahl 42 eingetippt hat.
-
-\subsubsection{Erläuterung der Notation}
-\label{sec:orgheadline51}
-Alle eingekreisten Namen sind Funktionseinheiten, oder auch Softwarezelle genannt.
-Diese werden in den meisten Fällen im Code als Funktionen implementiert.
-Die Pfeile zeigen den Datenstrom. Links die Inputs und rechts die Outputs.
-Eine leere Klammer bedeutet, dass keine Daten fließen.
-In diesem Fall hat die Funktion stattdessen oft eine Tonne, die anzeigt, dass die Funktionseinheit state-behaftet ist.
-Wenn die Tonne zusätzlich noch mit einer Linie verbunden ist, an dessen Ende ein Kreis gezeichnet ist,
-dann bedeutet das, dass die Funktion auf externe Resourcen zugreift.
-Den Kreis kann man sich bildlich wie eine Hand vorstellen, an die sich die Funktion festhält.
-
-Ein Stern innerhalb der Klammern der Datenströme, bedeutet, dass 0..n Daten dieses Types zwischen
-den Funktionseinheiten fließen können.
-Je nach Programmiersprache, kann man das Verhalten mit einem yield in einer Schleife realisieren,
-oder mit einer Liste/Array als Rückgabewert.
-
-Die Main Funktion ruft die anderen 3 Funktionen auf, eine Funktionseinheit die andere Funktionseinheiten aufruft,
-werden als Integrationen bezeichnet. Die anderen 3 Methoden rufen selbst keine anderen Funktionseinheiten auf und werden
-Operationen genannt. Anhand einer Flow Design Skizze, kann man leicht herausfinden, welche Funktionen Operationen sind und welche
-Integrationen.
-Alle Leaf-Knoten sind Operationen, der Rest sind Integrationen.
-\subsubsection{Finale Erklärung}
-\label{sec:orgheadline52}
-Die Main Funktion wird nach dem Programmstart ( leerer Kreis ) ohne Parameter aufgerufen.
-Danach ruft diese die Funktion \texttt{ReadNumbersFromCmd} auf, welche aus der Konsole eine Eingabe ließt und sie
-zu einem int parset. Der int nimmt die Main Funktion entgegen und gibt diesen an FindtheAnswer weiter.
-Diese Funktion hat die Aufgabe den entgegengenommenen int mit der Zahl 42 zu vergleichen. Wenn die Zahl 42 ist, wird der Datenstrom
-abgebrochen. Wenn es nicht die 42 war, dann wird der int nach außen gereicht und die Main Funktion reicht die Zahl an die
-PrintNumber Funktion weiter. PrintNumber gibt die Zahl in die Konsole aus.
-Wenn der Datenstrom abbricht, returned die Mainfunktion und das Programm wird beendet.
-FRAGE: Was bedeutet nochmal die Tonne, mit Hand?
-
-
 \subsubsection{Negativ Beispiel}
 \label{sec:orgheadline53}
 \begin{verbatim}

@@ -1,0 +1,49 @@
+\BOOKMARK [1][-]{section.1}{Entstehung und Grundgedanken}{}% 1
+\BOOKMARK [1][-]{section.2}{Pfeile und Kreise}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{DRAFT RomanNumbers Beispiel}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{MISSING IMAGES Hirarchische Datenfl\374sse}{section.2}% 4
+\BOOKMARK [1][-]{section.3}{Grundlegende Notationen}{}% 5
+\BOOKMARK [2][-]{subsection.3.1}{MISSING IMAGES Datentypen}{section.3}% 6
+\BOOKMARK [2][-]{subsection.3.2}{MISSING IMAGES Definition eigener Datentypen}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.3}{MISSING IMAGES Arrays \(auch mit fester Gr\366\337e\)}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.4}{FRAGEN 0 bis n \(Datenstrom\)}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.5}{FRAGEN Container / Listen}{section.3}% 10
+\BOOKMARK [2][-]{subsection.3.6}{FRAGEN 0 bis 1 \(optionaler Output\)}{section.3}% 11
+\BOOKMARK [2][-]{subsection.3.7}{MISSING IMAGES Mehrere Inputs / Outputs auf einem Weg}{section.3}% 12
+\BOOKMARK [2][-]{subsection.3.8}{DONE Joined Inputs}{section.3}% 13
+\BOOKMARK [2][-]{subsection.3.9}{FRAGEN Tonnen}{section.3}% 14
+\BOOKMARK [2][-]{subsection.3.10}{TODO Anh\344ngigkeiten / Provider}{section.3}% 15
+\BOOKMARK [2][-]{subsection.3.11}{TODO GUIS / Programmstart/ Ende}{section.3}% 16
+\BOOKMARK [2][-]{subsection.3.12}{TODO Klassen / Container definieren}{section.3}% 17
+\BOOKMARK [1][-]{section.4}{Implementationsregeln / C\043 Exkurse}{}% 18
+\BOOKMARK [2][-]{subsection.4.1}{IODA Architekur}{section.4}% 19
+\BOOKMARK [3][-]{subsubsection.4.1.1}{DRAFT Erl\344uterung des Schaubildes}{subsection.4.1}% 20
+\BOOKMARK [3][-]{subsubsection.4.1.2}{DRAFT PoMO \( Principle of Mutual Oblivion\)}{subsection.4.1}% 21
+\BOOKMARK [3][-]{subsubsection.4.1.3}{DRAFT IOSP \( Integration Operation Segregation Principle\)}{subsection.4.1}% 22
+\BOOKMARK [3][-]{subsubsection.4.1.4}{DONE Tabelle - IOSP auf einen Blick}{subsection.4.1}% 23
+\BOOKMARK [2][-]{subsection.4.2}{DONE Beispiel foreach und Funktionsaufruf als negativ Beispiel.}{section.4}% 24
+\BOOKMARK [2][-]{subsection.4.3}{C\043 Features um Datenfl\374sse zu implementieren}{section.4}% 25
+\BOOKMARK [3][-]{subsubsection.4.3.1}{TODO LINQ und Lambdas}{subsection.4.3}% 26
+\BOOKMARK [3][-]{subsubsection.4.3.2}{DRAFT yield return}{subsection.4.3}% 27
+\BOOKMARK [2][-]{subsection.4.4}{FRAGEN Datenstr\366me mit mehreren Wegen}{section.4}% 28
+\BOOKMARK [3][-]{subsubsection.4.4.1}{Ein Output-Weg mehrer Empf\344nger}{subsection.4.4}% 29
+\BOOKMARK [3][-]{subsubsection.4.4.2}{DRAFT Mehrere Output-Wege}{subsection.4.4}% 30
+\BOOKMARK [3][-]{subsubsection.4.4.3}{FRAGEN mit und/oder den Kontrollfluss notieren.}{subsection.4.4}% 31
+\BOOKMARK [2][-]{subsection.4.5}{Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.}{section.4}% 32
+\BOOKMARK [3][-]{subsubsection.4.5.1}{DONE R\374ckgabewert erwarten von Funktion als Parameter \374bergeben.}{subsection.4.5}% 33
+\BOOKMARK [3][-]{subsubsection.4.5.2}{TODO API-Aufruf, Filehandling?, Daten in Integrationen?}{subsection.4.5}% 34
+\BOOKMARK [2][-]{subsection.4.6}{TODO Warum macht man das? Sinn der Aufteilung.}{section.4}% 35
+\BOOKMARK [2][-]{subsection.4.7}{DRAFT Ausnahmen}{section.4}% 36
+\BOOKMARK [3][-]{subsubsection.4.7.1}{TODO Rekursion}{subsection.4.7}% 37
+\BOOKMARK [3][-]{subsubsection.4.7.2}{DONE Integrationen}{subsection.4.7}% 38
+\BOOKMARK [2][-]{subsection.4.8}{FRAGEN KNOWNCAUSE Zusammenfassung - IODA Architekur - Tabelle}{section.4}% 39
+\BOOKMARK [1][-]{section.5}{Ablauf der kompletten Flow Design - Entwurfsmethode}{}% 40
+\BOOKMARK [2][-]{subsection.5.1}{TODO Definieren der Portale und Provider}{section.5}% 41
+\BOOKMARK [2][-]{subsection.5.2}{TODO Interfaceskizze \( im Falle einer GUI Anwendung \)}{section.5}% 42
+\BOOKMARK [2][-]{subsection.5.3}{TODO Flow Design Entwurf}{section.5}% 43
+\BOOKMARK [2][-]{subsection.5.4}{FRAGEN Einordnen der Funktionseinheiten in bestimmte Container}{section.5}% 44
+\BOOKMARK [2][-]{subsection.5.5}{FRAGEN Optional - Bestimmen von Parallelit\344ten}{section.5}% 45
+\BOOKMARK [1][-]{section.6}{TODO Rekursive Eigenschaft der Softwarezellen/ Architekur}{}% 46
+\BOOKMARK [1][-]{section.7}{Backlog}{}% 47
+\BOOKMARK [2][-]{subsection.7.1}{Einfaches Beispiel eines Flow Designs}{section.7}% 48
+\BOOKMARK [3][-]{subsubsection.7.1.1}{Negativ Beispiel}{subsection.7.1}% 49
