@@ -1,11 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-<title>Flow Design Theorieteil</title>
-<!-- 2016-09-08 Do 16:29 -->
+<title></title>
+<!-- 2016-09-08 Thu 23:07 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="Org-mode">
+<meta name="author" content="Dennis Müller">
 
 <link  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -27,9 +28,9 @@ body {
 
 
 
-h1, h2, h3 {
-    padding-top: 0.6em;
-    padding-bottom: 0.3em;
+h3 {
+    padding-top: 0.8em;
+    padding-bottom: 0.4em;
     line-height: 1.4;
     border-bottom: #eee 1px solid;
 }
@@ -40,19 +41,18 @@ h4, h5, h6 {
     padding-top: 0.3em;
 }
 
-h1
-{
-  background-color: #322a63;
-  font-size: 60px;
-  padding: 24px;
-  color: white;
+h1 {
+    background-color: #322a63;
+    font-size: 60px;
+    padding: 24px;
+    color: white;
 }
 
 h2 {
-  font-size: 70px;
-  margin-bottom: 1em;
-  margin-top: 2.5em;
-  font-variant: small-caps;
+    font-size: 70px;
+    margin-bottom: 0.7em;
+    margin-top: 1.3em;
+    font-variant: small-caps;
 }
 
 img {
@@ -95,6 +95,7 @@ footer {
 
 pre {
   font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  margin: 44px 4px;
 }
 
 footer > div {
@@ -255,8 +256,7 @@ $(function() {
 </head>
 <body>
 <div id="content" class="container">
-<div class="row"><div class="col-md-9"><h1 class="title">Flow Design Theorieteil</h1>
-
+<div class="row"><div class="col-md-9"><h1 class="title"></h1>
 <div id="outline-container-sec-1" class="outline-2">
 <h2 id="sec-1"><span class="section-number-2">1</span> Entstehung und Grundgedanken</h2>
 <div class="outline-text-2" id="text-1">
@@ -393,7 +393,7 @@ die zusammen die Aufgabe erledigen, die die übergeordnete Softwarezelle beschre
 
 
 <div id="outline-container-sec-3" class="outline-2">
-<h2 id="sec-3"><span class="section-number-2">3</span> Grundlegende Notationen</h2>
+<h2 id="sec-3"><span class="section-number-2">3</span> Notationen</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 Bilder sind von: 
@@ -586,7 +586,7 @@ Funktion festhält, also eine Koppelung entsteht.
 </div>
 
 <div id="outline-container-sec-4" class="outline-2">
-<h2 id="sec-4"><span class="section-number-2">4</span> Implementationsregeln / C# Exkurse</h2>
+<h2 id="sec-4"><span class="section-number-2">4</span> Implementation</h2>
 <div class="outline-text-2" id="text-4">
 <p>
 Regeln:
@@ -849,7 +849,7 @@ Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die
 
 <pre class="src src-cpp"><span style="color: #4f97d7; font-weight: bold;">static</span> <span style="color: #ce537a; font-weight: bold;">void</span> <span style="color: #bc6ec5; font-weight: bold;">FormatAndPrintStrings</span><span style="color: #4f97d7;">(</span><span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">lines</span><span style="color: #4f97d7;">)</span>
 <span style="color: #4f97d7;">{</span>
-   <span style="color: #bc6ec5; font-weight: bold;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
+   <span style="color: #7590db;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
    <span style="color: #bc6ec5;">{</span>
       <span style="color: #ce537a; font-weight: bold;">string</span> <span style="color: #7590db;">s</span> = MyComplexFormattingFunction<span style="color: #2d9574;">(</span>line<span style="color: #2d9574;">)</span>;
       Console.WriteLine<span style="color: #2d9574;">(</span>s<span style="color: #2d9574;">)</span>;
@@ -890,8 +890,8 @@ Hier nun die Umsetzung in Flow Design mit einfachsten Mitteln.
 
 <span style="color: #4f97d7; font-weight: bold;">static</span> <span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #4f97d7;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #4f97d7;">&gt;</span> <span style="color: #bc6ec5; font-weight: bold;">FormatLines</span><span style="color: #4f97d7;">(</span><span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">lines</span><span style="color: #4f97d7;">)</span>
 <span style="color: #4f97d7;">{</span>
-    <span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">result</span> = <span style="color: #4f97d7; font-weight: bold;">new</span> List<span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;()</span>;
-    <span style="color: #bc6ec5; font-weight: bold;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
+    <span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">result</span> = <span style="color: #4f97d7; font-weight: bold;">new</span> <span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span>string<span style="color: #bc6ec5;">&gt;()</span>;
+    <span style="color: #7590db;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
     <span style="color: #bc6ec5;">{</span>
           <span style="color: #ce537a; font-weight: bold;">string</span> <span style="color: #7590db;">formattedstring</span>;
           <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">do complex formatting here</span>
@@ -902,7 +902,7 @@ Hier nun die Umsetzung in Flow Design mit einfachsten Mitteln.
 
 <span style="color: #4f97d7; font-weight: bold;">static</span> <span style="color: #ce537a; font-weight: bold;">void</span> <span style="color: #bc6ec5; font-weight: bold;">PrintLines</span><span style="color: #4f97d7;">(</span><span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">lines</span><span style="color: #4f97d7;">)</span>
 <span style="color: #4f97d7;">{</span>
-   <span style="color: #bc6ec5; font-weight: bold;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
+   <span style="color: #7590db;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
    <span style="color: #bc6ec5;">{</span>
       Console.WriteLine<span style="color: #2d9574;">(</span>s<span style="color: #2d9574;">)</span>;
    <span style="color: #bc6ec5;">}</span>
@@ -943,7 +943,7 @@ Elegantere Lösungen mit Actions
 
 <span style="color: #4f97d7; font-weight: bold;">static</span> <span style="color: #ce537a; font-weight: bold;">void</span> <span style="color: #bc6ec5; font-weight: bold;">IterateOverEnumeration</span><span style="color: #4f97d7;">(</span><span style="color: #ce537a; font-weight: bold;">IEnumerable</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">lines</span>, <span style="color: #ce537a; font-weight: bold;">Action</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">onLine</span><span style="color: #4f97d7;">)</span>
 <span style="color: #4f97d7;">{</span>
-   <span style="color: #bc6ec5; font-weight: bold;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
+   <span style="color: #7590db;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
    <span style="color: #bc6ec5;">{</span>
       onLine<span style="color: #2d9574;">(</span>line<span style="color: #2d9574;">)</span>;
    <span style="color: #bc6ec5;">}</span>
@@ -968,7 +968,7 @@ Noch eleganter mit Actions und Lambdas
 
 <span style="color: #4f97d7; font-weight: bold;">static</span> <span style="color: #ce537a; font-weight: bold;">void</span> <span style="color: #bc6ec5; font-weight: bold;">IterateOverEnumeration</span><span style="color: #4f97d7;">(</span><span style="color: #ce537a; font-weight: bold;">IEnumerable</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">lines</span>, <span style="color: #ce537a; font-weight: bold;">Action</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">onLine</span><span style="color: #4f97d7;">)</span>
 <span style="color: #4f97d7;">{</span>
-   <span style="color: #bc6ec5; font-weight: bold;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
+   <span style="color: #7590db;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
    <span style="color: #bc6ec5;">{</span>
       onLine<span style="color: #2d9574;">(</span>line<span style="color: #2d9574;">)</span>;
    <span style="color: #bc6ec5;">}</span>
@@ -1110,7 +1110,7 @@ FRAGE: Was bedeutet nochmal die Tonne, mit Hand?
 
   <span style="color: #4f97d7; font-weight: bold;">private</span> <span style="color: #4f97d7; font-weight: bold;">static</span> <span style="color: #ce537a; font-weight: bold;">void</span> PrintNumbers<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">IEnumerable</span><span style="color: #2d9574;">&lt;</span><span style="color: #ce537a; font-weight: bold;">int</span><span style="color: #2d9574;">&gt;</span> <span style="color: #7590db;">numbers</span><span style="color: #bc6ec5;">)</span>
   <span style="color: #bc6ec5;">{</span>
-    <span style="color: #bc6ec5; font-weight: bold;">foreach</span> <span style="color: #2d9574;">(</span><span style="color: #ce537a; font-weight: bold;">var</span> number <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">numbers</span><span style="color: #2d9574;">)</span>
+    <span style="color: #7590db;">foreach</span> <span style="color: #2d9574;">(</span><span style="color: #ce537a; font-weight: bold;">var</span> number <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">numbers</span><span style="color: #2d9574;">)</span>
     <span style="color: #2d9574;">{</span>
       Console.WriteLine<span style="color: #67b11d;">(</span>number<span style="color: #67b11d;">)</span>;
     <span style="color: #2d9574;">}</span>
@@ -1229,8 +1229,8 @@ jedoch würde trotzdem eine funktionale Abhängigkeiten entstehen und somit ist 
 
 <pre class="src src-cpp"><span style="color: #4f97d7; font-weight: bold;">static</span> <span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #4f97d7;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #4f97d7;">&gt;</span> <span style="color: #bc6ec5; font-weight: bold;">FormatStrings</span><span style="color: #4f97d7;">(</span><span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">lines</span> , <span style="color: #ce537a; font-weight: bold;">Func</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span>,<span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">formatFunc</span> <span style="color: #4f97d7;">)</span>
 <span style="color: #4f97d7;">{</span>
-   <span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">result</span> = <span style="color: #4f97d7; font-weight: bold;">new</span> List<span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;()</span>;
-   <span style="color: #bc6ec5; font-weight: bold;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
+   <span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">result</span> = <span style="color: #4f97d7; font-weight: bold;">new</span> <span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span>string<span style="color: #bc6ec5;">&gt;()</span>;
+   <span style="color: #7590db;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
    <span style="color: #bc6ec5;">{</span>
       <span style="color: #ce537a; font-weight: bold;">string</span> <span style="color: #7590db;">formattedstring</span> = formatFunc<span style="color: #2d9574;">(</span>line<span style="color: #2d9574;">)</span>;
       result.Add<span style="color: #2d9574;">(</span>formattedstring<span style="color: #2d9574;">)</span> 
@@ -1314,7 +1314,7 @@ Daten - Darf Integration wirklich Kontruktor aufrufen, das sind doch daten, oder
 
 
 <div id="outline-container-sec-5" class="outline-2">
-<h2 id="sec-5"><span class="section-number-2">5</span> Ablauf der kompletten Flow Design - Entwurfsmethode</h2>
+<h2 id="sec-5"><span class="section-number-2">5</span> Die Entwurfsmethode</h2>
 <div class="outline-text-2" id="text-5">
 </div><div id="outline-container-sec-5-1" class="outline-3">
 <h3 id="sec-5-1"><span class="section-number-3">5.1</span> <span class="label label-primary TODO">TODO</span> Definieren der Portale und Provider</h3>
@@ -1381,7 +1381,7 @@ FRAGE: Wie genau geht das?
 </div>
 </div>
 <div id="outline-container-sec-6" class="outline-2">
-<h2 id="sec-6"><span class="section-number-2">6</span> <span class="label label-primary TODO">TODO</span> Rekursive Eigenschaft der Softwarezellen/ Architekur</h2>
+<h2 id="sec-6"><span class="section-number-2">6</span> <span class="label label-primary TODO">TODO</span> Rekursive Eigenschaft</h2>
 <div class="outline-text-2" id="text-6">
 <p>
 Das Schöne an Flow Design und dem Konzept der Softwarezelle ist, dass sie rekusive ist.
@@ -1453,7 +1453,7 @@ Outputs. Damit ist die Architektur weniger starr, als zum Beispiel das Schichten
 <li><a href="#sec-2-2">2.2. Hirarchische Datenflüsse</a></li>
 </ul>
 </li>
-<li><a href="#sec-3">3. Grundlegende Notationen</a>
+<li><a href="#sec-3">3. Notationen</a>
 <ul class="nav">
 <li><a href="#sec-3-1">3.1. Datentypen</a></li>
 <li><a href="#sec-3-2">3.2. Definition eigener Datentypen</a></li>
@@ -1469,7 +1469,7 @@ Outputs. Damit ist die Architektur weniger starr, als zum Beispiel das Schichten
 <li><a href="#sec-3-12">3.12. Klassen / Container definieren</a></li>
 </ul>
 </li>
-<li><a href="#sec-4">4. Implementationsregeln / C# Exkurse</a>
+<li><a href="#sec-4">4. Implementation</a>
 <ul class="nav">
 <li><a href="#sec-4-1">4.1. IODA Architekur</a></li>
 <li><a href="#sec-4-2">4.2. Beispiel foreach und Funktionsaufruf als negativ Beispiel.</a></li>
@@ -1481,7 +1481,7 @@ Outputs. Damit ist die Architektur weniger starr, als zum Beispiel das Schichten
 <li><a href="#sec-4-8">4.8. KNOWNCAUSE Zusammenfassung - IODA Architekur -  Tabelle</a></li>
 </ul>
 </li>
-<li><a href="#sec-5">5. Ablauf der kompletten Flow Design - Entwurfsmethode</a>
+<li><a href="#sec-5">5. Die Entwurfsmethode</a>
 <ul class="nav">
 <li><a href="#sec-5-1">5.1. Definieren der Portale und Provider</a></li>
 <li><a href="#sec-5-2">5.2. Interfaceskizze ( im Falle einer GUI Anwendung )</a></li>
@@ -1490,7 +1490,7 @@ Outputs. Damit ist die Architektur weniger starr, als zum Beispiel das Schichten
 <li><a href="#sec-5-5">5.5. Optional - Bestimmen von Parallelitäten</a></li>
 </ul>
 </li>
-<li><a href="#sec-6">6. Rekursive Eigenschaft der Softwarezellen/ Architekur</a></li>
+<li><a href="#sec-6">6. Rekursive Eigenschaft</a></li>
 <li><a href="#sec-7">7. Backlog</a>
 <ul class="nav">
 <li><a href="#sec-7-1">7.1. Einfaches Beispiel eines Flow Designs</a></li>
@@ -1501,8 +1501,9 @@ Outputs. Damit ist die Architektur weniger starr, als zum Beispiel das Schichten
 </nav>
 </div></div></div>
 <footer id="postamble" class="">
-<div><p class="date">Created: 2016-09-08 Do 16:29</p>
-<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.1.1 (<a href="http://orgmode.org">Org-mode</a> 8.3.5)</p>
+<div><p class="author">Author: Dennis Müller</p>
+<p class="date">Created: 2016-09-08 Thu 23:07</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org-mode</a> 8.3.5)</p>
 </div>
 </footer>
 </body>

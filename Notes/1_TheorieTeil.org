@@ -1,5 +1,4 @@
-#+TITLE: Flow Design Theorieteil
-
+ 
 * Entstehung und Grundgedanken
 Flow Design ist aus der Clean Code Development Bewegung heraus entstanden. Hauptinitiatior und Erfinder ist Ralf Westphal.
 Ralf Westphal war auch Mitbegründer und Miterfinder der Clean Code Developement Bewegung.
@@ -79,7 +78,7 @@ Hier erkennt man die rekusive Eigenschaft der Softwarezellen. Eine Softwarezelle
 die zusammen die Aufgabe erledigen, die die übergeordnete Softwarezelle beschreibt.
 
 
-* Grundlegende Notationen
+* Notationen
 Bilder sind von: 
 
 http://flow-design.org/overview/implementation/#How_to_implement_inputs_to_a_functional_unit
@@ -173,7 +172,7 @@ Funktion festhält, also eine Koppelung entsteht.
 ** TODO GUIS / Programmstart/ Ende
 ** TODO Klassen / Container definieren  
 
-* Implementationsregeln / C# Exkurse
+* Implementation
 
 Regeln:
 - Trennen von Integrationen und Operationen
@@ -669,7 +668,7 @@ gehören farblich markiert. Der Name der Klasse notiert man dann im eingekreiste
 Es können zusätzlich noch Pfeile eingefärbt werden, um zu verdeutlichen, dass
 manche Datenströme parallel laufen können.
 FRAGE: Wie genau geht das?
-* TODO Rekursive Eigenschaft der Softwarezellen/ Architekur
+* TODO Rekursive Eigenschaft 
 Das Schöne an Flow Design und dem Konzept der Softwarezelle ist, dass sie rekusive ist.
 Man kann das Problem/die Andwendugn ganz oben als eine Softwarezelle (oder hier der Kreis mit den Providern? ist das auch eine Softwarezelle?)
 verstehen, indem links Portale Zugriffe machen und rechts davon, die Softwarezelle wiederum auf ihre Provider Zugriffe macht.
