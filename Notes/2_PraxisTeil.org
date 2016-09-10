@@ -1,20 +1,48 @@
 * Systemanalyse
+
 ** Vision
-** Gedanken zur Machbarkeit, alternative Lösung von zu schwiergen Problemen, Einschränkungen
+Es wäre schon, wenn eine Möglichkeit hätte direkt aus einem Flow Design Diagramm den Code zu generieren, der sich aus dem Schaubild ableiten lässt.
+Wenn man nun indem erzeugten Code weiter arbeitet und möglicherweise auch die Struktur wieder abändert, so wäre es auch komfortabel diesen wieder zurück in ein Flow Design zu 
+verwandeln.
+Die große Vision besteht also darin, einen "Roundtrip" zu erschaffen:
+Erzeugen eines Flow Design Diagrammes in einem Editor -> Automatisches Erzeugen von Code -> Code einlesen und automatisch ein Flow Design Diagramm erzeugen.
+
+Beim Erzeugen des Codes geht es darum, die Methoden-Signaturen zu erzeugen und im Falle von Integrationen, sogar die Implementationen.
+
+** Schwierigkeiten eines Roundtrips
+
+
+**  Alternative Lösung von zu schwiergen Problemen, Einschränkungen
    Attribute als Hilfe zum Identifizieren von Funktionen.
-** Was soll das Programm können.
-*** Zeichnen eines Flow Designs.
+
+* Der Editor
+** Brainstroming
     Gute Usability in Anlehnung an Node-basierte Grafik Anwendungen.
-    Erzeugen von Nodes, Selektieren, Beschriften, Bewegen, 
-    Kopieren, Eingliedern von neuen Nodes in bestehende.
-    Anordenen, automatisches Spacing
-    Implementation Previewen mit Maus-over
-    Tests dranhängen an Node, Kommentare dranhängen,
-    Einkreisen/ Gruppieren in Klassen
-*** Generieren des Codes aus dem Flow Design
-*** Einlesen eines Csharp Files / Solution und generieren des Flow Design
-* Vorstellung Roslyn
-* Vorstellung was erreicht wurde
+    Es gibt einige Andwendungen, speziell in Grafikanwendungen, die sich schon seit vielen Jahren auf Node-basierte Editoren konzentrieren.
+    Diese dienen als gute Inspiration, wie eine gute Useability aussehen kann.
+    In diesem Fall wurden das Compositing-Programm The Foundary Nuke und das 3dsmax Plugin Thinking Particles als Inspiration herangezogen.
+
+   - Einkreisen/ Gruppieren in Klassen
+   - Erzeugen von Nodes, Beschriften, Bewegen
+   - Selektieren (Rect-Selection, Subtraktion, Addition),
+   - Duplizieren, 
+   - Eingliedern von neuen Nodes in bestehende.
+   - Anordenen, automatisches Spacing
+   - Keyboard-Shortcuts zum effizenteren Arbeiten.
+   - Integrationen Innere Flows darunter darstellen
+   - Integrationen wenn zu wenig Platz um Inneren Flow darunter dazustellen, dann automtisch in neues Flow Design
+   - Einkreisen/ Gruppieren in Klassen
+   - Drucken / Exportieren als PDF in weiß auf schwarz Farbschema
+   
+*** weiter Ideen
+   - Implementation Previewen mit Maus-over
+   - Tests dranhängen an Node, Kommentare dranhängen,
+** Vorstellung was erreicht wurde
+* Generieren des Codes aus dem Flow Design
+** Vorstellung Roslyn
+** Vorstellung was erreicht wurde
+* Einlesen eines Csharp Files / Solution und generieren des Flow Design
+** Vorstellung was erreicht wurde
 * Schwierigkeiten, Ausblick und Fazit
   
 

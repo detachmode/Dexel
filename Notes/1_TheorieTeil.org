@@ -178,7 +178,6 @@ Funktion festhält, also eine Koppelung entsteht.
 Regeln:
 - Trennen von Integrationen und Operationen
 - keine funktionale Abhängigkeiten in Operationen zu anderen Funktionseinheiten aus dem selben Programm
- fs
 ** IODA Architekur
 IODA steht für: Integration Operation Data API
  #+CAPTION: http://blog.ralfw.de/2015/04/die-ioda-architektur.html
@@ -611,7 +610,7 @@ Oft braucht man auf oberster Ebene, einen Try/Catch, der alle Exceptions abfange
 startet. Hier bleibt einem nichts anderes übrig, als die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
 
 
-** FRAGEN KNOWNCAUSE Zusammenfassung - IODA Architekur -  Tabelle
+** FRAGEN Zusammenfassung - IODA Architekur -  Tabelle
 
    Tabelle:
    Daten - Methoden in Daten-Objekte aufrufen? Darf Operation die Methode kennen?
@@ -619,6 +618,23 @@ startet. Hier bleibt einem nichts anderes übrig, als die Regel keine Logik in d
    gehören/gekaspelt sind, sind die in Operationen erlaubt? file open handlers?
    Daten - Darf Integration wirklich Kontruktor aufrufen, das sind doch daten, oder gelten nur persistente daten?
 
+
+
+** Leserlichkeit 
+In diesem Kaptitel werde ich mich speziell mit der Frage der Lesbarkeit mancher Flow Design Implementationen beschäftigen.
+Ziel von CCD ist es nicht nur den Code evolvierbar zu halten, sondern ihn auch besser leserlich zu machen.
+
+*** Integration gibt Funktionspointer an Operationen, welche diesen jedoch auch nur an die nächste Operation weitergibt.
+Auf Ebene der Integration, wo man eigentlich das Zusammenspiel der einzelnen Operationen leicht erkennen soll, ist es bei solch einem Beispiel den 
+Fluss nachzuvollziehen.
+
+-> main ->
+->DecideValidationProcess -> Validation -> DoSomething ->
+
+Lösung: erstellen einer weiteren Integration, die die beiden letzen Operationen integriert.
+-> main ->
+-> DecideValidationProcess -> Validation1AndDoSomething ->
+                          -> Validation -> DoSomething ->
 
 
 * Ablauf der kompletten Flow Design - Entwurfsmethode

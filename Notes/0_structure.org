@@ -21,13 +21,11 @@ wenn man die Skizze in Programmcode implementiert.
 ** RomanNumbers Beispiel
 ** "Aufmachen" einer Zelle
 
-* Rekursive Eigenschaft der Softwarezellen/ Architekur
-
-* Grundlegende Notationen
+* Notationen
   Weitere Notationen kurz erklärt. Auch mit "Integrationen" aber noch nicht erklären, dass es ein Unterschied gibt.
 
   Provider Dreieck.
-* Implementationsregeln / C# Exkurse
+* Implementation
 Integrationen und Operationen (einzige Regel?)
 ** Beispiel foreach und Funktionsaufruf als negativ Beispiel.
 ** Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.
@@ -38,12 +36,14 @@ Integrationen und Operationen (einzige Regel?)
    Wenn jemand seine Arbeit erst zuende machen kann, wenn ein anderer seine Arbeit getan hat.
 ** Zusammenfassung - IODA Architekur -  Tabelle
 
+
    Tabelle:
    Daten - Methoden in Daten-Objekte aufrufen? Darf Operation die Methode kennen?
    Daten - was bedeutet die eigentlich? Extra Funktionen? file open handlers?
    Daten - Darf Integration wirklich Kontruktor aufrufen, das sind doch daten, oder gelten nur persistente daten?
+** Leserlichkeit / Kritik / Aufzeigen von Beispielen
 
-* Ablauf der kompletten Flow Design - Entwurfsmethode
+* Die Entwurfsmethode
   endet mit Einteilen in Klassen, DLL, Anwendungen,...
 
   Entwurf ist ein Interativer Prozess, somit wäre round trip super "Sinn des Systems SharpFlowDesign erläutern"
@@ -52,6 +52,7 @@ Integrationen und Operationen (einzige Regel?)
 #  PRAXISTEIL
 
 
+* Rekursive Eigenschaft 
 
 * Systemanalyse
 ** Vision
