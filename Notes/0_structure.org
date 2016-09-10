@@ -2,7 +2,7 @@
 * Abstract
 * Danksagungen
 * Inhaltsverzeichnis
-  
+
 
 
 # THEORYTEIL
@@ -12,7 +12,7 @@
 	zwei dinge sind damit gemeint. Skizze und Entwurfmethodik. Zusätzlich
 	dazu gibt es auch noch eine kleines Regelwerk, die man Einhalten soll,
 wenn man die Skizze in Programmcode implementiert.
-** Prinzipien 
+** Prinzipien
    Kiss, und yagni noch hinzufügen
    yagni, weil man software so gestaltet, dass man änderungen leicht zu machen sind, und es so leichter ist
   dinge erst zu programmieren, wenn man es braucht.
@@ -23,9 +23,9 @@ wenn man die Skizze in Programmcode implementiert.
 
 * Rekursive Eigenschaft der Softwarezellen/ Architekur
 
-* Grundlegende Notationen 
-  Weitere Notationen kurz erklärt. Auch mit "Integrationen" aber noch nicht erklären, dass es ein Unterschied gibt. 
-  
+* Grundlegende Notationen
+  Weitere Notationen kurz erklärt. Auch mit "Integrationen" aber noch nicht erklären, dass es ein Unterschied gibt.
+
   Provider Dreieck.
 * Implementationsregeln / C# Exkurse
 Integrationen und Operationen (einzige Regel?)
@@ -34,15 +34,15 @@ Integrationen und Operationen (einzige Regel?)
    Rückgabewert entgegennehmen.
 ** Warum macht man das? Sinn der Aufteilung. -> Ketten Bild
    nochmal rückbesinnen auf CCD
-   Größtes übel funktionale Abhängigkeiten. 
+   Größtes übel funktionale Abhängigkeiten.
    Wenn jemand seine Arbeit erst zuende machen kann, wenn ein anderer seine Arbeit getan hat.
 ** Zusammenfassung - IODA Architekur -  Tabelle
 
-   Tabelle: 
+   Tabelle:
    Daten - Methoden in Daten-Objekte aufrufen? Darf Operation die Methode kennen?
    Daten - was bedeutet die eigentlich? Extra Funktionen? file open handlers?
    Daten - Darf Integration wirklich Kontruktor aufrufen, das sind doch daten, oder gelten nur persistente daten?
-  
+
 * Ablauf der kompletten Flow Design - Entwurfsmethode
   endet mit Einteilen in Klassen, DLL, Anwendungen,...
 
@@ -50,7 +50,7 @@ Integrationen und Operationen (einzige Regel?)
 
 
 #  PRAXISTEIL
-  
+
 
 
 * Systemanalyse
@@ -60,7 +60,7 @@ Integrationen und Operationen (einzige Regel?)
 ** Was soll das Programm können.
 *** Zeichnen eines Flow Designs.
     Gute Usability in Anlehnung an Node-basierte Grafik Anwendungen.
-    Erzeugen von Nodes, Selektieren, Beschriften, Bewegen, 
+    Erzeugen von Nodes, Selektieren, Beschriften, Bewegen,
     Kopieren, Eingliedern von neuen Nodes in bestehende.
     Anordenen, automatisches Spacing
     Implementation Previewen mit Maus-over
@@ -71,12 +71,12 @@ Integrationen und Operationen (einzige Regel?)
 * Vorstellung Roslyn
 * Vorstellung was erreicht wurde
 * Schwierigkeiten, Ausblick und Fazit
-  
-
-  
 
 
-* Flow Design in anderen Sprachen
-** Python 
-** MaxScript 
+
+
+* Appendix
+** Flow Design in anderen Sprachen
+*** Python
+*** MaxScript
 * Referenzen

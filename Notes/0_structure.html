@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title></title>
+<!-- 2016-09-08 Thu 09:43 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="Org-mode">
+<meta name="author" content="Dennis Müller">
+
+<link  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<style type="text/css">
+/* org mode styles on top of twbs */
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    font-size: 18px;
+    margin-bottom: 105px;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 101px;
+    background-color: #f5f5f5;
+}
+
+footer > div {
+    padding: 10px;
+}
+
+footer p {
+    margin: 0 0 5px;
+    text-align: center;
+    font-size: 16px;
+}
+
+#table-of-contents {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+blockquote p {
+    font-size: 18px;
+}
+
+pre {
+    font-size: 16px;
+}
+
+.footpara {
+    display: inline-block;
+}
+
+figcaption {
+  font-size: 16px;
+  color: #666;
+  font-style: italic;
+  padding-bottom: 15px;
+}
+
+/* from twbs docs */
+
+.bs-docs-sidebar.affix {
+    position: static;
+}
+@media (min-width: 768px) {
+    .bs-docs-sidebar {
+        padding-left: 20px;
+    }
+}
+
+/* All levels of nav */
+.bs-docs-sidebar .nav > li > a {
+    display: block;
+    padding: 4px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #999;
+}
+.bs-docs-sidebar .nav > li > a:hover,
+.bs-docs-sidebar .nav > li > a:focus {
+    padding-left: 19px;
+    color: #A1283B;
+    text-decoration: none;
+    background-color: transparent;
+    border-left: 1px solid #A1283B;
+}
+.bs-docs-sidebar .nav > .active > a,
+.bs-docs-sidebar .nav > .active:hover > a,
+.bs-docs-sidebar .nav > .active:focus > a {
+    padding-left: 18px;
+    font-weight: bold;
+    color: #A1283B;
+    background-color: transparent;
+    border-left: 2px solid #A1283B;
+}
+
+/* Nav: second level (shown on .active) */
+.bs-docs-sidebar .nav .nav {
+    display: none; /* Hide by default, but at >768px, show it */
+    padding-bottom: 10px;
+}
+.bs-docs-sidebar .nav .nav > li > a {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 30px;
+    font-size: 12px;
+    font-weight: normal;
+}
+.bs-docs-sidebar .nav .nav > li > a:hover,
+.bs-docs-sidebar .nav .nav > li > a:focus {
+    padding-left: 29px;
+}
+.bs-docs-sidebar .nav .nav > .active > a,
+.bs-docs-sidebar .nav .nav > .active:hover > a,
+.bs-docs-sidebar .nav .nav > .active:focus > a {
+    padding-left: 28px;
+    font-weight: 500;
+}
+
+/* Nav: third level (shown on .active) */
+.bs-docs-sidebar .nav .nav .nav {
+    padding-bottom: 10px;
+}
+.bs-docs-sidebar .nav .nav .nav > li > a {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 40px;
+    font-size: 12px;
+    font-weight: normal;
+}
+.bs-docs-sidebar .nav .nav .nav > li > a:hover,
+.bs-docs-sidebar .nav .nav .nav > li > a:focus {
+    padding-left: 39px;
+}
+.bs-docs-sidebar .nav .nav .nav > .active > a,
+.bs-docs-sidebar .nav .nav .nav > .active:hover > a,
+.bs-docs-sidebar .nav .nav .nav > .active:focus > a {
+    padding-left: 38px;
+    font-weight: 500;
+}
+
+/* Show and affix the side nav when space allows it */
+@media (min-width: 992px) {
+    .bs-docs-sidebar .nav > .active > ul {
+        display: block;
+    }
+    /* Widen the fixed sidebar */
+    .bs-docs-sidebar.affix,
+    .bs-docs-sidebar.affix-bottom {
+        width: 213px;
+    }
+    .bs-docs-sidebar.affix {
+        position: fixed; /* Undo the static from mobile first approach */
+        top: 20px;
+    }
+    .bs-docs-sidebar.affix-bottom {
+        position: absolute; /* Undo the static from mobile first approach */
+    }
+    .bs-docs-sidebar.affix .bs-docs-sidenav,.bs-docs-sidebar.affix-bottom .bs-docs-sidenav {
+        margin-top: 0;
+        margin-bottom: 0
+    }
+}
+@media (min-width: 1200px) {
+    /* Widen the fixed sidebar again */
+    .bs-docs-sidebar.affix-bottom,
+    .bs-docs-sidebar.affix {
+        width: 263px;
+    }
+}
+</style>
+<script type="text/javascript">
+$(function() {
+    'use strict';
+
+    $('.bs-docs-sidebar li').first().addClass('active');
+
+    $(document.body).scrollspy({target: '.bs-docs-sidebar'});
+
+    $('.bs-docs-sidebar').affix();
+});
+</script>
+</head>
+<body>
+<div id="content" class="container">
+<div class="row"><div class="col-md-9"><h1 class="title"></h1>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Titelseite</h2>
+</div>
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Abstract</h2>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Danksagungen</h2>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Inhaltsverzeichnis</h2>
+</div>
+
+
+
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Entstehung und Grundgedanke</h2>
+<div class="outline-text-2" id="text-5">
+<p>
+  zwei dinge sind damit gemeint. Skizze und Entwurfmethodik. Zusätzlich
+  dazu gibt es auch noch eine kleines Regelwerk, die man Einhalten soll,
+wenn man die Skizze in Programmcode implementiert.
+</p>
+</div>
+<div id="outline-container-sec-5-1" class="outline-3">
+<h3 id="sec-5-1"><span class="section-number-3">5.1</span> Prinzipien</h3>
+<div class="outline-text-3" id="text-5-1">
+<p>
+ Kiss, und yagni noch hinzufügen
+ yagni, weil man software so gestaltet, dass man änderungen leicht zu machen sind, und es so leichter ist
+dinge erst zu programmieren, wenn man es braucht.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-6" class="outline-2">
+<h2 id="sec-6"><span class="section-number-2">6</span> Pfeile und Kreise</h2>
+<div class="outline-text-2" id="text-6">
+</div><div id="outline-container-sec-6-1" class="outline-3">
+<h3 id="sec-6-1"><span class="section-number-3">6.1</span> RomanNumbers Beispiel</h3>
+</div>
+<div id="outline-container-sec-6-2" class="outline-3">
+<h3 id="sec-6-2"><span class="section-number-3">6.2</span> "Aufmachen" einer Zelle</h3>
+</div>
+</div>
+
+<div id="outline-container-sec-7" class="outline-2">
+<h2 id="sec-7"><span class="section-number-2">7</span> Rekursive Eigenschaft der Softwarezellen/ Architekur</h2>
+</div>
+
+<div id="outline-container-sec-8" class="outline-2">
+<h2 id="sec-8"><span class="section-number-2">8</span> Grundlegende Notationen</h2>
+<div class="outline-text-2" id="text-8">
+<p>
+Weitere Notationen kurz erklärt. Auch mit "Integrationen" aber noch nicht erklären, dass es ein Unterschied gibt. 
+</p>
+
+<p>
+Provider Dreieck.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-9" class="outline-2">
+<h2 id="sec-9"><span class="section-number-2">9</span> Implementationsregeln / C# Exkurse</h2>
+<div class="outline-text-2" id="text-9">
+<p>
+Integrationen und Operationen (einzige Regel?)
+</p>
+</div>
+<div id="outline-container-sec-9-1" class="outline-3">
+<h3 id="sec-9-1"><span class="section-number-3">9.1</span> Beispiel foreach und Funktionsaufruf als negativ Beispiel.</h3>
+</div>
+<div id="outline-container-sec-9-2" class="outline-3">
+<h3 id="sec-9-2"><span class="section-number-3">9.2</span> Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.</h3>
+<div class="outline-text-3" id="text-9-2">
+<p>
+Rückgabewert entgegennehmen.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-9-3" class="outline-3">
+<h3 id="sec-9-3"><span class="section-number-3">9.3</span> Warum macht man das? Sinn der Aufteilung. -&gt; Ketten Bild</h3>
+<div class="outline-text-3" id="text-9-3">
+<p>
+nochmal rückbesinnen auf CCD
+Größtes übel funktionale Abhängigkeiten. 
+Wenn jemand seine Arbeit erst zuende machen kann, wenn ein anderer seine Arbeit getan hat.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-9-4" class="outline-3">
+<h3 id="sec-9-4"><span class="section-number-3">9.4</span> Zusammenfassung - IODA Architekur -  Tabelle</h3>
+<div class="outline-text-3" id="text-9-4">
+<p>
+Tabelle: 
+Daten - Methoden in Daten-Objekte aufrufen? Darf Operation die Methode kennen?
+Daten - was bedeutet die eigentlich? Extra Funktionen? file open handlers?
+Daten - Darf Integration wirklich Kontruktor aufrufen, das sind doch daten, oder gelten nur persistente daten?
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-10" class="outline-2">
+<h2 id="sec-10"><span class="section-number-2">10</span> Ablauf der kompletten Flow Design - Entwurfsmethode</h2>
+<div class="outline-text-2" id="text-10">
+<p>
+endet mit Einteilen in Klassen, DLL, Anwendungen,&#x2026;
+</p>
+
+<p>
+Entwurf ist ein Interativer Prozess, somit wäre round trip super "Sinn des Systems SharpFlowDesign erläutern"
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-sec-11" class="outline-2">
+<h2 id="sec-11"><span class="section-number-2">11</span> Systemanalyse</h2>
+<div class="outline-text-2" id="text-11">
+</div><div id="outline-container-sec-11-1" class="outline-3">
+<h3 id="sec-11-1"><span class="section-number-3">11.1</span> Vision</h3>
+</div>
+<div id="outline-container-sec-11-2" class="outline-3">
+<h3 id="sec-11-2"><span class="section-number-3">11.2</span> Gedanken zur Machbarkeit, alternative Lösung von zu schwiergen Problemen, Einschränkungen</h3>
+<div class="outline-text-3" id="text-11-2">
+<p>
+Attribute als Hilfe zum Identifizieren von Funktionen.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-11-3" class="outline-3">
+<h3 id="sec-11-3"><span class="section-number-3">11.3</span> Was soll das Programm können.</h3>
+<div class="outline-text-3" id="text-11-3">
+</div><div id="outline-container-sec-11-3-1" class="outline-4">
+<h4 id="sec-11-3-1"><span class="section-number-4">11.3.1</span> Zeichnen eines Flow Designs.</h4>
+<div class="outline-text-4" id="text-11-3-1">
+<p>
+Gute Usability in Anlehnung an Node-basierte Grafik Anwendungen.
+Erzeugen von Nodes, Selektieren, Beschriften, Bewegen, 
+Kopieren, Eingliedern von neuen Nodes in bestehende.
+Anordenen, automatisches Spacing
+Implementation Previewen mit Maus-over
+Tests dranhängen an Node, Kommentare dranhängen,
+Einkreisen/ Gruppieren in Klassen
+</p>
+</div>
+</div>
+<div id="outline-container-sec-11-3-2" class="outline-4">
+<h4 id="sec-11-3-2"><span class="section-number-4">11.3.2</span> Generieren des Codes aus dem Flow Design</h4>
+</div>
+<div id="outline-container-sec-11-3-3" class="outline-4">
+<h4 id="sec-11-3-3"><span class="section-number-4">11.3.3</span> Einlesen eines Csharp Files / Solution und generieren des Flow Design</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-12" class="outline-2">
+<h2 id="sec-12"><span class="section-number-2">12</span> Vorstellung Roslyn</h2>
+</div>
+<div id="outline-container-sec-13" class="outline-2">
+<h2 id="sec-13"><span class="section-number-2">13</span> Vorstellung was erreicht wurde</h2>
+</div>
+<div id="outline-container-sec-14" class="outline-2">
+<h2 id="sec-14"><span class="section-number-2">14</span> Schwierigkeiten, Ausblick und Fazit</h2>
+</div>
+
+
+
+
+
+<div id="outline-container-sec-15" class="outline-2">
+<h2 id="sec-15"><span class="section-number-2">15</span> Appendix</h2>
+<div class="outline-text-2" id="text-15">
+</div><div id="outline-container-sec-15-1" class="outline-3">
+<h3 id="sec-15-1"><span class="section-number-3">15.1</span> Flow Design in anderen Sprachen</h3>
+<div class="outline-text-3" id="text-15-1">
+</div><div id="outline-container-sec-15-1-1" class="outline-4">
+<h4 id="sec-15-1-1"><span class="section-number-4">15.1.1</span> Python</h4>
+</div>
+<div id="outline-container-sec-15-1-2" class="outline-4">
+<h4 id="sec-15-1-2"><span class="section-number-4">15.1.2</span> MaxScript</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-16" class="outline-2">
+<h2 id="sec-16"><span class="section-number-2">16</span> Referenzen</h2>
+</div>
+</div><div class="col-md-3"><nav id="table-of-contents">
+<div id="text-table-of-contents" class="bs-docs-sidebar">
+<ul class="nav">
+<li><a href="#sec-1">1. Titelseite</a></li>
+<li><a href="#sec-2">2. Abstract</a></li>
+<li><a href="#sec-3">3. Danksagungen</a></li>
+<li><a href="#sec-4">4. Inhaltsverzeichnis</a></li>
+<li><a href="#sec-5">5. Entstehung und Grundgedanke</a>
+<ul class="nav">
+<li><a href="#sec-5-1">5.1. Prinzipien</a></li>
+</ul>
+</li>
+<li><a href="#sec-6">6. Pfeile und Kreise</a>
+<ul class="nav">
+<li><a href="#sec-6-1">6.1. RomanNumbers Beispiel</a></li>
+<li><a href="#sec-6-2">6.2. "Aufmachen" einer Zelle</a></li>
+</ul>
+</li>
+<li><a href="#sec-7">7. Rekursive Eigenschaft der Softwarezellen/ Architekur</a></li>
+<li><a href="#sec-8">8. Grundlegende Notationen</a></li>
+<li><a href="#sec-9">9. Implementationsregeln / C# Exkurse</a>
+<ul class="nav">
+<li><a href="#sec-9-1">9.1. Beispiel foreach und Funktionsaufruf als negativ Beispiel.</a></li>
+<li><a href="#sec-9-2">9.2. Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.</a></li>
+<li><a href="#sec-9-3">9.3. Warum macht man das? Sinn der Aufteilung. -&gt; Ketten Bild</a></li>
+<li><a href="#sec-9-4">9.4. Zusammenfassung - IODA Architekur -  Tabelle</a></li>
+</ul>
+</li>
+<li><a href="#sec-10">10. Ablauf der kompletten Flow Design - Entwurfsmethode</a></li>
+<li><a href="#sec-11">11. Systemanalyse</a>
+<ul class="nav">
+<li><a href="#sec-11-1">11.1. Vision</a></li>
+<li><a href="#sec-11-2">11.2. Gedanken zur Machbarkeit, alternative Lösung von zu schwiergen Problemen, Einschränkungen</a></li>
+<li><a href="#sec-11-3">11.3. Was soll das Programm können.</a></li>
+</ul>
+</li>
+<li><a href="#sec-12">12. Vorstellung Roslyn</a></li>
+<li><a href="#sec-13">13. Vorstellung was erreicht wurde</a></li>
+<li><a href="#sec-14">14. Schwierigkeiten, Ausblick und Fazit</a></li>
+<li><a href="#sec-15">15. Appendix</a>
+<ul class="nav">
+<li><a href="#sec-15-1">15.1. Flow Design in anderen Sprachen</a></li>
+</ul>
+</li>
+<li><a href="#sec-16">16. Referenzen</a></li>
+</ul>
+</div>
+</nav>
+</div></div></div>
+<footer id="postamble" class="">
+<div><p class="author">Author: Dennis Müller</p>
+<p class="date">Created: 2016-09-08 Thu 09:43</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org-mode</a> 8.3.5)</p>
+</div>
+</footer>
+</body>
+</html>
