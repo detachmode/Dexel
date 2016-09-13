@@ -544,15 +544,20 @@ https://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods(v=vs.110
 
 Im foglendem werden hier nur ein paar der häufigsten verwendeten Methoden erläutert.
 
-**** Filtern und Verändern
-| Select                        | Selektiert jedes Element und der Sequenze und modifziert es. Zurückgegeben wird eine Sequenze der mofifizierten Elemente                           |
-| First,  Last                  | Gibt das erste/letzte Element der Sequenze zurück, das eine bestimmte Bedingung erfüllt.                                                           |
-| ForEach (nur für List-Klasse) | Iteriert über die Sequenze und führt mit jedem Element den Selector-Ausdruck aus. Im Gegensatz zu Select wird kein Sequenze zurückgeliefert        |
-| OrderBy                       | Ordnet die Sequenze mitHilfe eines =keySelector=-Ausdrucks. Dieser bestimmt das Sortierkriterum. In manchen Fällen, kann dieser weggelassen werden |
-| Where                         | Filtern der Sequenze anhand des Selectors. Zurückgegeben wird eine Sequenze von Elementen, die das Filterkriterum entsprachen.                     |
-| Distinct                      | Dublikate werden aus der Sequenze gelöst.                                                                                                          |
-| Join                          | Zwei Sequenzen werden zu einer zusammengefasst                                                                                          |
+**** Modifzieren 
+Folgende Methoden verändern den Datenstrom und liefern einen neuen Datenstrom
+zurück (mit Ausnahme von ForEach).
+| Select                        | Selektiert jedes Element und der Sequenze und modifziert es. Zurückgegeben wird eine Sequenze der mofifizierten Elemente                                                                                                                |
+| ForEach (nur für List-Klasse) | Iteriert über die Sequenze und führt mit jedem Element den Selector-Ausdruck aus. Im Gegensatz zu Select wird kein Sequenze zurückgeliefert                                                                                             |
+| First,  Last                  | Gibt das erste/letzte Element der Sequenze zurück, das eine bestimmte Bedingung erfüllt.                                                                                                                                                |
+| OrderBy                       | Ordnet die Sequenze mitHilfe eines =keySelector=-Ausdrucks. Dieser bestimmt das Sortierkriterum. In manchen Fällen (Elemente sind Zahlenwerte, oder Strings), kann dieser weggelassen werden, falls das Default-Verhalten gewünscht ist |
+| Distinct                      | Duplikate werden aus der Sequenze gelöst.                                                                                                                                                                                               |
+| Join                          | Zwei Sequenzen werden zu einer zusammengefasst                                                                                                                                                                                          |
+
+**** Filtern
+| Where                         | Filtern der Sequenze anhand des Predicate. Zurückgegeben wird eine Sequenze von Elementen, die das Filterkriterum entsprachen.                |
 **** Überprüfungen 
+Diese Methoden liefern einen Boolean als Rückgabewert zurück.
 | Any      | Wendet auf jedes Element den Selector-Ausdruck an,solange, bis bei einem Element der Ausdruck wahr wird. Dann wird =true= zurückgegeben, ansonsten =false=                                                      |
 | Contains | Ähnlich wie =Any=, nur dass kein Selector übergeben wird, sondern ein Element, der selben Klasse, wie die Elemente des Containers. Befindet sich das Element in dem Container, dann wird =true= zurückgeben, ansonsten =false= |
 | All      | Ähnlich wie =Any= mit dem Unterschied, dass nur dann =true= zurückgeben wird, wenn für alle Elemente des Containers der Ausdruck wahr ist.                                                                               |
@@ -568,9 +573,11 @@ die mathematische Rechenoperationen mit jedem Element umzugehen hat.
 | Count   | Zählt die Elemente des Containers und gibt die Anzahl zurück |
 | Average | Berechnet den Durchschnitt der Sequenze                      |
 **** Überspringen und Nehmen
-| TakeWhile | Nimmt Elemente solange aus dem Container, bis eine Bedingung erfüllt ist. Es wird eine Sequenze von allen genommenen Elementen zurückgegeben                                               |
-| Skip      | Überspringt eine Anzahl an Elementen                                                                                                                                                       |
-| SkipWhile | Überspringt die ersten Elemente eine Sequenze, solange bis bis die Bedingung von einem Elemnt nicht erfüllt wird, dann wird ohne weitere Überprüfungen der Rest der Sequenze zurückgegeben |
+Diese Methoden liefern genau wie die modifizierneden Methoden als Rückgabewert
+eine neue Sequenze an Daten zurück.
+| TakeWhile | Nimmt Elemente solange aus dem Container, bis eine Bedingung erfüllt ist. Es wird eine Sequenze von allen genommenen Elementen zurückgegeben                                                 |
+| Skip      | Überspringt eine Anzahl an Elementen                                                                                                                                                         |
+| SkipWhile | Überspringt die ersten Elemente einer Sequenze, solange bis bis die Bedingung von einem Element nicht erfüllt wird, dann wird ohne weitere Überprüfungen der Rest der Sequenze zurückgegeben |
 **** Konvertieren
 Sqeunzen können mit Hilfe eines einfach Methodenaufrufs zu einem bestimmten Typ
 von Container konvertiert werden. Zum Beispiel: =ToList= oder =ToDictionary=.

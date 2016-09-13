@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title></title>
+<!-- 2016-09-13 Di 21:15 -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="Org-mode">
+
+<link  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
+<style type="text/css">
+/* org mode styles on top of twbs */
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    font-size: 16px;
+    line-height: 1.5;
+    font-family: -apple-system, BlinkMacSystemFont,   "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    margin-bottom: 105px;
+}
+
+
+
+h1, h2, h3 {
+    padding-top: 0.6em;
+    padding-bottom: 0.3em;
+    line-height: 1.4;
+    border-bottom: #eee 1px solid;
+}
+
+
+h4, h5, h6 {
+    line-height: 1.4;
+    padding-top: 0.3em;
+}
+
+h1
+{
+  background-color: #322a63;
+  font-size: 60px;
+  padding: 24px;
+  color: white;
+}
+
+h2 {
+  font-size: 70px;
+  margin-bottom: 1em;
+  margin-top: 2.5em;
+  font-variant: small-caps;
+}
+
+img {
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.section-number-1, .section-number-2, .section-number-3, .section-number-4 {
+    display: none;
+}
+
+
+
+.TODO {
+    background-color: orange;
+}
+
+.FRAGEN {
+    background-color: red;
+}
+
+.DRAFT {
+  background-color: #337ab7;
+}
+
+.DONE {
+  background-color: green;
+}
+
+
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 101px;
+    background-color: #f5f5f5;
+}
+
+
+pre {
+  font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+
+td, th {
+  min-width:180px;
+}
+
+footer > div {
+    padding: 10px;
+}
+
+footer p {
+    margin: 0 0 5px;
+    text-align: center;
+    font-size: 16px;
+}
+
+#table-of-contents {
+    margin-top: 100px;
+    margin-bottom: 20px;
+}
+
+blockquote p {
+    font-size: 18px;
+}
+
+
+
+.footpara {
+    display: inline-block;
+}
+
+figcaption {
+  font-size: 16px;
+  color: #666;
+  font-style: italic;
+  padding-bottom: 15px;
+}
+
+/* from twbs docs */
+
+.bs-docs-sidebar.affix {
+    position: static;
+}
+@media (min-width: 768px) {
+    .bs-docs-sidebar {
+        padding-left: 6px;
+    }
+}
+
+/* All levels of nav */
+.bs-docs-sidebar .nav > li > a {
+    display: block;
+    padding: 4px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #999;
+}
+.bs-docs-sidebar .nav > li > a:hover,
+.bs-docs-sidebar .nav > li > a:focus {
+    padding-left: 19px;
+    color: #A1283B;
+    text-decoration: none;
+    background-color: transparent;
+    border-left: 1px solid #A1283B;
+}
+.bs-docs-sidebar .nav > .active > a,
+.bs-docs-sidebar .nav > .active:hover > a,
+.bs-docs-sidebar .nav > .active:focus > a {
+    padding-left: 18px;
+    font-weight: bold;
+    color: #A1283B;
+    background-color: transparent;
+    border-left: 2px solid #A1283B;
+}
+
+/* Nav: second level (shown on .active) */
+.bs-docs-sidebar .nav .nav {
+    display: none; /* Hide by default, but at >768px, show it */
+    padding-bottom: 10px;
+}
+.bs-docs-sidebar .nav .nav > li > a {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 30px;
+    font-size: 12px;
+    font-weight: normal;
+}
+.bs-docs-sidebar .nav .nav > li > a:hover,
+.bs-docs-sidebar .nav .nav > li > a:focus {
+    padding-left: 29px;
+}
+.bs-docs-sidebar .nav .nav > .active > a,
+.bs-docs-sidebar .nav .nav > .active:hover > a,
+.bs-docs-sidebar .nav .nav > .active:focus > a {
+    padding-left: 28px;
+    font-weight: 500;
+}
+
+/* Nav: third level (shown on .active) */
+.bs-docs-sidebar .nav .nav .nav {
+    padding-bottom: 10px;
+}
+.bs-docs-sidebar .nav .nav .nav > li > a {
+    padding-top: 1px;
+    padding-bottom: 1px;
+    padding-left: 40px;
+    font-size: 12px;
+    font-weight: normal;
+}
+.bs-docs-sidebar .nav .nav .nav > li > a:hover,
+.bs-docs-sidebar .nav .nav .nav > li > a:focus {
+    padding-left: 39px;
+}
+.bs-docs-sidebar .nav .nav .nav > .active > a,
+.bs-docs-sidebar .nav .nav .nav > .active:hover > a,
+.bs-docs-sidebar .nav .nav .nav > .active:focus > a {
+    padding-left: 38px;
+    font-weight: 500;
+}
+
+/* Show and affix the side nav when space allows it */
+@media (min-width: 992px) {
+    .bs-docs-sidebar .nav > .active > ul {
+        display: block;
+    }
+    /* Widen the fixed sidebar */
+    .bs-docs-sidebar.affix,
+    .bs-docs-sidebar.affix-bottom {
+        width: 213px;
+    }
+    .bs-docs-sidebar.affix {
+        position: fixed; /* Undo the static from mobile first approach */
+        top: 100px;
+    }
+    .bs-docs-sidebar.affix-bottom {
+        position: absolute; /* Undo the static from mobile first approach */
+    }
+    .bs-docs-sidebar.affix .bs-docs-sidenav,.bs-docs-sidebar.affix-bottom .bs-docs-sidenav {
+        margin-top: 0;
+        margin-bottom: 0
+    }
+}
+@media (min-width: 1200px) {
+    /* Widen the fixed sidebar again */
+    .bs-docs-sidebar.affix-bottom,
+    .bs-docs-sidebar.affix {
+        width: 263px;
+    }
+}
+</style>
+<script type="text/javascript">
+$(function() {
+    'use strict';
+
+    $('.bs-docs-sidebar li').first().addClass('active');
+
+    $(document.body).scrollspy({target: '.bs-docs-sidebar'});
+
+    $('.bs-docs-sidebar').affix();
+});
+</script>
+</head>
+<body>
+<div id="content" class="container">
+<div class="row"><div class="col-md-9"><h1 class="title"></h1>
+<div id="outline-container-sec-1" class="outline-2">
+<h2 id="sec-1"><span class="section-number-2">1</span> Systemanalyse</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Vision</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+Es wäre schon, wenn eine Möglichkeit hätte direkt aus einem Flow Design Diagramm den Code zu generieren, der sich aus dem Schaubild ableiten lässt.
+Wenn man nun indem erzeugten Code weiter arbeitet und möglicherweise auch die Struktur wieder abändert, so wäre es auch komfortabel diesen wieder zurück in ein Flow Design zu 
+verwandeln.
+Die große Vision besteht also darin, einen "Roundtrip" zu erschaffen:
+Erzeugen eines Flow Design Diagrammes in einem Editor -&gt; Automatisches Erzeugen von Code -&gt; Code einlesen und automatisch ein Flow Design Diagramm erzeugen.
+</p>
+
+<p>
+Beim Erzeugen des Codes geht es darum, die Methoden-Signaturen zu erzeugen und im Falle von Integrationen, sogar die Implementationen.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> Schwierigkeiten eines Roundtrips</h3>
+</div>
+
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> Alternative Lösung von zu schwiergen Problemen, Einschränkungen</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+Attribute als Hilfe zum Identifizieren von Funktionen.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-sec-2" class="outline-2">
+<h2 id="sec-2"><span class="section-number-2">2</span> Der Editor</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-sec-2-1" class="outline-3">
+<h3 id="sec-2-1"><span class="section-number-3">2.1</span> Brainstroming</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Gute Usability in Anlehnung an Node-basierte Grafik Anwendungen.
+Es gibt einige Andwendungen, speziell in Grafikanwendungen, die sich schon seit vielen Jahren auf Node-basierte Editoren konzentrieren.
+Diese dienen als gute Inspiration, wie eine gute Useability aussehen kann.
+In diesem Fall wurden das Compositing-Programm The Foundary Nuke und das 3dsmax Plugin Thinking Particles als Inspiration herangezogen.
+</p>
+
+<ul class="org-ul">
+<li>Einkreisen/ Gruppieren in Klassen
+</li>
+<li>Erzeugen von Nodes, Beschriften, Bewegen
+</li>
+<li>Selektieren (Rect-Selection, Subtraktion, Addition),
+</li>
+<li>Duplizieren, 
+</li>
+<li>Eingliedern von neuen Nodes in bestehende.
+</li>
+<li>Anordenen, automatisches Spacing
+</li>
+<li>Keyboard-Shortcuts zum effizenteren Arbeiten.
+</li>
+<li>Integrationen Innere Flows darunter darstellen
+</li>
+<li>Integrationen wenn zu wenig Platz um Inneren Flow darunter dazustellen, dann automtisch in neues Flow Design
+</li>
+<li>Einkreisen/ Gruppieren in Klassen
+</li>
+<li>Drucken / Exportieren als PDF in weiß auf schwarz Farbschema
+</li>
+</ul>
+</div>
+
+<div id="outline-container-sec-2-1-1" class="outline-4">
+<h4 id="sec-2-1-1"><span class="section-number-4">2.1.1</span> weiter Ideen</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<ul class="org-ul">
+<li>Implementation Previewen mit Maus-over
+</li>
+<li>Tests dranhängen an Node, Kommentare dranhängen,
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-sec-2-2" class="outline-3">
+<h3 id="sec-2-2"><span class="section-number-3">2.2</span> Vorstellung was erreicht wurde</h3>
+</div>
+</div>
+<div id="outline-container-sec-3" class="outline-2">
+<h2 id="sec-3"><span class="section-number-2">3</span> Diagramm ➔ Code</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
+<h3 id="sec-3-1"><span class="section-number-3">3.1</span> Vorstellung Roslyn</h3>
+</div>
+<div id="outline-container-sec-3-2" class="outline-3">
+<h3 id="sec-3-2"><span class="section-number-3">3.2</span> Vorstellung was erreicht wurde</h3>
+</div>
+</div>
+<div id="outline-container-sec-4" class="outline-2">
+<h2 id="sec-4"><span class="section-number-2">4</span> Code ➔ Diagramm</h2>
+</div>
+<div id="outline-container-sec-5" class="outline-2">
+<h2 id="sec-5"><span class="section-number-2">5</span> Schwierigkeiten, Ausblick und Fazit</h2>
+</div>
+</div><div class="col-md-3"><nav id="table-of-contents">
+<div id="text-table-of-contents" class="bs-docs-sidebar">
+<ul class="nav">
+<li><a href="#sec-1">1. Systemanalyse</a>
+<ul class="nav">
+<li><a href="#sec-1-1">1.1. Vision</a></li>
+<li><a href="#sec-1-2">1.2. Schwierigkeiten eines Roundtrips</a></li>
+<li><a href="#sec-1-3">1.3. Alternative Lösung von zu schwiergen Problemen, Einschränkungen</a></li>
+</ul>
+</li>
+<li><a href="#sec-2">2. Der Editor</a>
+<ul class="nav">
+<li><a href="#sec-2-1">2.1. Brainstroming</a></li>
+<li><a href="#sec-2-2">2.2. Vorstellung was erreicht wurde</a></li>
+</ul>
+</li>
+<li><a href="#sec-3">3. Diagramm ➔ Code</a>
+<ul class="nav">
+<li><a href="#sec-3-1">3.1. Vorstellung Roslyn</a></li>
+<li><a href="#sec-3-2">3.2. Vorstellung was erreicht wurde</a></li>
+</ul>
+</li>
+<li><a href="#sec-4">4. Code ➔ Diagramm</a></li>
+<li><a href="#sec-5">5. Schwierigkeiten, Ausblick und Fazit</a></li>
+</ul>
+</div>
+</nav>
+</div></div></div>
+<footer id="postamble" class="">
+<div><p class="date">Created: 2016-09-13 Di 21:15</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.1.1 (<a href="http://orgmode.org">Org-mode</a> 8.3.5)</p>
+</div>
+</footer>
+</body>
+</html>

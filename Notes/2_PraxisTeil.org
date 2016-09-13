@@ -38,11 +38,10 @@ Beim Erzeugen des Codes geht es darum, die Methoden-Signaturen zu erzeugen und i
    - Implementation Previewen mit Maus-over
    - Tests dranhängen an Node, Kommentare dranhängen,
 ** Vorstellung was erreicht wurde
-* Generieren des Codes aus dem Flow Design
+* Diagramm ➔ Code
 ** Vorstellung Roslyn
 ** Vorstellung was erreicht wurde
-* Einlesen eines Csharp Files / Solution und generieren des Flow Design
-** Vorstellung was erreicht wurde
+* Code ➔ Diagramm
 * Schwierigkeiten, Ausblick und Fazit
   
 
