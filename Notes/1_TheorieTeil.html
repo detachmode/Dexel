@@ -2,11 +2,10 @@
 <html lang="en">
 <head>
 <title></title>
-<!-- 2016-09-08 Thu 23:07 -->
+<!-- 2016-09-13 Di 18:03 -->
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="Org-mode">
-<meta name="author" content="Dennis Müller">
 
 <link  href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -28,9 +27,9 @@ body {
 
 
 
-h3 {
-    padding-top: 0.8em;
-    padding-bottom: 0.4em;
+h1, h2, h3 {
+    padding-top: 0.6em;
+    padding-bottom: 0.3em;
     line-height: 1.4;
     border-bottom: #eee 1px solid;
 }
@@ -41,18 +40,19 @@ h4, h5, h6 {
     padding-top: 0.3em;
 }
 
-h1 {
-    background-color: #322a63;
-    font-size: 60px;
-    padding: 24px;
-    color: white;
+h1
+{
+  background-color: #322a63;
+  font-size: 60px;
+  padding: 24px;
+  color: white;
 }
 
 h2 {
-    font-size: 70px;
-    margin-bottom: 0.7em;
-    margin-top: 1.3em;
-    font-variant: small-caps;
+  font-size: 70px;
+  margin-bottom: 1em;
+  margin-top: 2.5em;
+  font-variant: small-caps;
 }
 
 img {
@@ -95,7 +95,10 @@ footer {
 
 pre {
   font: 12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
-  margin: 44px 4px;
+}
+
+td, th {
+  min-width:180px;
 }
 
 footer > div {
@@ -260,6 +263,9 @@ $(function() {
 <div id="outline-container-sec-1" class="outline-2">
 <h2 id="sec-1"><span class="section-number-2">1</span> Entstehung und Grundgedanken</h2>
 <div class="outline-text-2" id="text-1">
+</div><div id="outline-container-sec-1-1" class="outline-3">
+<h3 id="sec-1-1"><span class="section-number-3">1.1</span> Einleitung</h3>
+<div class="outline-text-3" id="text-1-1">
 <p>
 Flow Design ist aus der Clean Code Development Bewegung heraus entstanden. Hauptinitiatior und Erfinder ist Ralf Westphal.
 Ralf Westphal war auch Mitbegründer und Miterfinder der Clean Code Developement Bewegung.
@@ -267,43 +273,196 @@ Ralf Westphal war auch Mitbegründer und Miterfinder der Clean Code Developement
 
 
 <p>
-Clean Code Development ist eine Ansammlung aus Prinzipen, die einem helfen sollen wartbare Software zu schreiben.
-Wartbare bedeutet Änderungen an der Software sollen leicht zu realisier sein und der Programmcode soll
-am besten auch leicht zu lesen bleiben.
+Clean Code Development ist eine Ansammlung aus Prinzipen, die einem helfen
+sollen wartbare Software zu schreiben. Ein Synonym, welches CCD für wartbar
+verwendet lautet <i>evolvierbar</i>. 
+Software die mit dem Fokus auf Evolvierbarkeit hin programmiert wurde,
+kann leicht an neue Rahmenbedingungen oder Kundenwünsche angepasst werden.
+Gleichzeitig soll der Code auch leselich bleiben und möglichst ohne Kommentare
+verstanden werden können.
+</p>
+
+<p>
 Prinzipien sind jedoch nicht so leicht einzuhalten, wie konkrete Regeln, welche man einfach einhalten kann.
 Somit ist es in der Praxis schwer die Prinzipen auf den eigenen Code anzuwenden.
 Flow Design soll in Ergänzung eine Methodik und Programmierregeln bieten, die man einfach befolgen kann und man erhält automatisch
 ein Code, der die CCD Prinzipen erfüllt.
 </p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2" class="outline-3">
+<h3 id="sec-1-2"><span class="section-number-3">1.2</span> <span class="label label-primary FRAGEN">FRAGEN</span> CCD Prinzipien</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+Im Hauptfokus von FLow Design liegen vorallem folgende Prinzipien von CCD:
+</p>
+
+<table class="table table-striped table-bordered table-hover table-condensed">
+
+
+<colgroup>
+<col  class="left">
+
+<col  class="left">
+</colgroup>
+<tbody>
+<tr>
+<td class="left">KISS (Keep It Stupid Simple)</td>
+<td class="left">Ein System sollte so einfach wie möglich gestaltet werden.</td>
+</tr>
+
+<tr>
+<td class="left">YAGNI ( You Ain't Gonna Need It )</td>
+<td class="left">Es soll nicht unnötig viel Zeit damit verbracht werden für zukünftige Eventualitäten zu programmieren. Der Fokus sollte darauf liegen, was aktuell gebraucht wird.</td>
+</tr>
+
+<tr>
+<td class="left">Lose Koppelung</td>
+<td class="left">Seperate Einheiten eines Systems sollen möglichst über möglichst wenige Punkte miteinander kommunizieren.</td>
+</tr>
+
+<tr>
+<td class="left">Orthogonalität</td>
+<td class="left">Änderungen an einer Funktion des Systems sollen auf so wenig wie möglich andere Funktionen des Systems negativen Einfluss haben.</td>
+</tr>
+</tbody>
+</table>
 
 <p>
-Im Hauptfokus liegen vorallem folgende Prinzipien von CCD:
+FRAGE: Kurzbeschreibung richtig?
 </p>
-<ul class="org-ul">
-<li>KISS
-</li>
-<li>YAGNI
-</li>
-<li>Lose Koppelung
-</li>
-<li>Orthogonalität
-</li>
-</ul>
+</div>
+
+<div id="outline-container-sec-1-2-1" class="outline-4">
+<h4 id="sec-1-2-1"><span class="section-number-4">1.2.1</span> KISS</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+Die Komplexität der Lösung eines Problems soll immer in Relation zu der
+Komplexität des Problems stehen.
+</p>
 
 <p>
-Weitere Prinzipien die Beachtung find sollen:
+Schnell passiert es, dass man die einfachste Lösung für ein Problem übersieht und das Problem unnötig verkompliziert.
+Das KISS Prinzip soll einen in erster Linie ein Bewusstsein dafür schaffen bei
+komplizierten Lösungen innezuhalten und sich nochmal genau zu
+überlegen, ob es nicht eine einfachere Lösung gibt.
+Manche Problemdomänen erfordern jedoch eine komplexe Lösung, da das Problem
+komplex ist.
 </p>
-<ul class="org-ul">
-<li>Separation of Concerns
-</li>
-<li>Single Responsibility Principle
-</li>
-<li>Information Hiding Principle
-</li>
-<li>Dependecy Injection
-</li>
-</ul>
 
+<p>
+Verkomplizierte Lösungen müssen am besten schon beim Entwurf erkannt werden.
+Hierbei soll Flow Design als Entwurfsmethode helfen, die einfachste und leicht
+verständlichste Lösung für ein Problem zu finden.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2-2" class="outline-4">
+<h4 id="sec-1-2-2"><span class="section-number-4">1.2.2</span> YAGNI</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<p>
+Vielen Programmieren ist es wohl schon passiert, dass sie es zu gut gemeint
+haben mit dem vorrausschauend Denken. Etliche Funktionen wurden für ein
+zukünftiges Scenario implementiert oder verkompliziert, die jedoch nie
+eintraffen, oder falls sie eintraffen wurde die Software bereits durch eine
+andere ersetzt.
+YAGNI soll einem das Bewusstsein dafür schärfen, wann man sich gerade mit einer 
+Situation beschäftigt, die aktuellen Rahmenbedingungen überschreiten.
+Man sollte sich eher auf das aktuelle Scenario beschränken  und keine unnötige Resourcen für zukünfitge 
+Eventualitäten verschwenden.
+Flow Design bietet hierfür Implementierungsregeln, die es einem ermöglichen
+schnell Änderungen am Code zu realisieren.
+Diese Eigenschaft des Codes bietet damit die Basis diesem Prinzip auch gestrost
+zu befolgen und sich auf die aktuellen Rahmenbedingungen zu konzentrieren.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2-3" class="outline-4">
+<h4 id="sec-1-2-3"><span class="section-number-4">1.2.3</span> Lose Koppelung</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<p>
+Ein System soll aus möglichst voneinander unabhängigen Untersystemen bestehen,
+die nur über eine  klar definierte Stelle miteinander kommunizieren.
+Bei jedem Aufruf einer Funktion oder Abrufen einer Variable entsteht eine
+Koppelung zwischen beiden.
+Ändert sich die Struktur des Codes, so muss jede Stelle angepasst werden, die zu
+der geänderten Struktur eine Koppelung besitzt. Mit Loser Koppelung möchte man
+veranschaulichen, dass wenn eine Koppelung nötig ist, diese an einer Stelle konzentriert sein soll und
+sich nicht an verschiedenen Stellen des Codes fortpflanzen soll.
+</p>
+</div>
+</div>
+
+<div id="outline-container-sec-1-2-4" class="outline-4">
+<h4 id="sec-1-2-4"><span class="section-number-4">1.2.4</span> Orthogonalität</h4>
+<div class="outline-text-4" id="text-1-2-4">
+<p>
+In einem dreidimensionalen Raum sind die 3 Achsen üblicherweise zueinander
+orthogonal. Verschiebe ich ein Objekt auf einer Achse, so bleiben die Werte der
+beiden anderen unberüht. Wäre eine Achse nicht orthogonal zu den beiden anderen,
+so würde eine Verschiebung entlang dieser Achse auch eine Änderung der Werte
+einer anderen Achse bewirken. Diese Eigenschaft wird nun auch auf Code und wie
+er auf Änderungen reagiert, projziert. 
+Wird an einer Stelle der Code geändert, soll diese Änderung möglichst keinen Einfluss auf
+andere Teile des Codes haben.
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-sec-1-3" class="outline-3">
+<h3 id="sec-1-3"><span class="section-number-3">1.3</span> Weitere Prinzipien die Beachtung find sollen</h3>
+<div class="outline-text-3" id="text-1-3">
+<table class="table table-striped table-bordered table-hover table-condensed">
+
+
+<colgroup>
+<col  class="left">
+
+<col  class="left">
+</colgroup>
+<tbody>
+<tr>
+<td class="left">DRY  (Don't Repeat Yourself)</td>
+<td class="left">Coderedundanzen vermeiden, zerlegen in Codebestandteile, die man an mehreren Stellen wiederverwenden kann</td>
+</tr>
+
+<tr>
+<td class="left">kleine Funktionen</td>
+<td class="left">Viele kleine Funktionen , anstatt eine große Funktion</td>
+</tr>
+
+<tr>
+<td class="left">Single Responsibility Principle</td>
+<td class="left">Jede Funktion/Klasse soll sich nur um eine Sache kümmern. Falls eine Funktion mehrere Aufgaben erledigt, sollten sie diese nicht selbst implementieren, sondern an Unterfunktionen weitergeben</td>
+</tr>
+
+<tr>
+<td class="left">Separation of Concerns</td>
+<td class="left">Unterschiedliche Funktionalitäten des System sollen in unabhängige Untersysteme gekapselt sein.</td>
+</tr>
+
+<tr>
+<td class="left">Information Hiding Principle</td>
+<td class="left">Ein Untersystem soll seiner Inneren Funktionalität vor anderen Systemen verbergen und eine möglichst fokusierte Schnittstelle bieten, mitdem äußere Systeme dieses System steuern können.</td>
+</tr>
+
+<tr>
+<td class="left">Dependecy Injection</td>
+<td class="left">Objekte/Variablen werden einer Funktion als Parameter mitgegeben, anstatt eine Bindung an einen äußeren Variable zu erzeugen.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+<div id="outline-container-sec-1-4" class="outline-3">
+<h3 id="sec-1-4"><span class="section-number-3">1.4</span> Flow Design - Was ist das?</h3>
+<div class="outline-text-3" id="text-1-4">
 <p>
 Unter Flow Design versteht man zwei Dinge:
 Einmal das Diagramm und einmal die Komplette Entwurfsmethode, indem das
@@ -334,6 +493,15 @@ müssen, sonder sich auf das Große ganze - das Zusammenspiel/ Komposition der F
 <p>
 Anzumerken wäre noch, dass nicht der Kontrollfluss abgebildet wird, sondern, wie erwähnt, der Datenfluss.
 </p>
+</div>
+</div>
+<div id="outline-container-sec-1-5" class="outline-3">
+<h3 id="sec-1-5"><span class="section-number-3">1.5</span> Referenzen</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+<a href="http://clean-code-developer.de/die-grade/roter-grad/">http://clean-code-developer.de/die-grade/roter-grad/</a>
+</p>
+</div>
 </div>
 </div>
 
@@ -395,20 +563,7 @@ die zusammen die Aufgabe erledigen, die die übergeordnete Softwarezelle beschre
 <div id="outline-container-sec-3" class="outline-2">
 <h2 id="sec-3"><span class="section-number-2">3</span> Notationen</h2>
 <div class="outline-text-2" id="text-3">
-<p>
-Bilder sind von: 
-</p>
-
-<p>
-<a href="http://flow-design.org/overview/implementation/#How_to_implement_inputs_to_a_functional_unit">http://flow-design.org/overview/implementation/#How_to_implement_inputs_to_a_functional_unit</a>
-</p>
-
-<p>
-Weitere Notationen kurz erklärt. Auch mit "Integrationen" aber noch nicht erklären, dass es ein Unterschied gibt.
-Provider Dreieck.
-</p>
-</div>
-<div id="outline-container-sec-3-1" class="outline-3">
+</div><div id="outline-container-sec-3-1" class="outline-3">
 <h3 id="sec-3-1"><span class="section-number-3">3.1</span> <span class="label label-primary MISSING_IMAGES">MISSING IMAGES</span> Datentypen</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
@@ -564,7 +719,7 @@ FRAGE: Kann State auch anders umgesetzt sein?
 </div>
 </div>
 <div id="outline-container-sec-3-10" class="outline-3">
-<h3 id="sec-3-10"><span class="section-number-3">3.10</span> <span class="label label-primary TODO">TODO</span> Anhängigkeiten / Provider</h3>
+<h3 id="sec-3-10"><span class="section-number-3">3.10</span> <span class="label label-primary FRAGEN">FRAGEN</span> Anhängigkeiten / Provider</h3>
 <div class="outline-text-3" id="text-3-10">
 <p>
 Tonnen oder Dreicke können zusätzlich noch mit einer Linie verbunden sein, an dessen Ende ein Kreis gezeichnet ist,
@@ -572,16 +727,43 @@ dann bedeutet das, dass die Funktion auf externe Resourcen zugreift / von ihr
 Abhängig ist.
 Den Kreis kann man sich bildlich wie eine Hand vorstellen, an die sich die
 Funktion festhält, also eine Koppelung entsteht.
+FRAGE: Was bedeutet nochmal genau dir Hand?
 </p>
 </div>
 </div>
 
-
 <div id="outline-container-sec-3-11" class="outline-3">
-<h3 id="sec-3-11"><span class="section-number-3">3.11</span> <span class="label label-primary TODO">TODO</span> GUIS / Programmstart/ Ende</h3>
+<h3 id="sec-3-11"><span class="section-number-3">3.11</span> <span class="label label-primary MISSING_IMAGES">MISSING IMAGES</span> GUIS / Programmstart/ Ende</h3>
+<div class="outline-text-3" id="text-3-11">
+<p>
+Programmstart wird mit einem Kreis leeren Kreis dargestellt und Programmende mit
+einem Kreis in dessen Mitte ein Kreuz ist.
+Wenn man zeigen will, dass eine Methode von einem Event aus der GUI ausgelöst
+wurde, so macht man das deutlich, indem man ein Viereck link von der Methode zeichnet.
+</p>
+</div>
 </div>
 <div id="outline-container-sec-3-12" class="outline-3">
-<h3 id="sec-3-12"><span class="section-number-3">3.12</span> <span class="label label-primary TODO">TODO</span> Klassen / Container definieren</h3>
+<h3 id="sec-3-12"><span class="section-number-3">3.12</span> <span class="label label-primary DRAFT">DRAFT</span> Klassen / Container definieren</h3>
+<div class="outline-text-3" id="text-3-12">
+<p>
+Das Definieren von Container und Zuordnen von Funktionseinheiten ist auch
+einfach möglich. Unter Container versteht man: Klassen, DLLs und Anwendungen.
+Es gibt zwei Möglichkeiten eine Zugehörigkeit zu einem Container zu notieren.
+Entweder man schreibt direkt unter der Funktionseinheit den Namen des
+Containers, oder man umrandet mehrere Funktioneseinheiten und notiert den Namen
+des Containers am Rand der Umrandung.
+</p>
+</div>
+</div>
+<div id="outline-container-sec-3-13" class="outline-3">
+<h3 id="sec-3-13"><span class="section-number-3">3.13</span> Referenzen</h3>
+<div class="outline-text-3" id="text-3-13">
+<p>
+Bilder sind von: 
+<a href="http://flow-design.org/overview/implementation/#How_to_implement_inputs_to_a_functional_unit">http://flow-design.org/overview/implementation/#How_to_implement_inputs_to_a_functional_unit</a>
+</p>
+</div>
 </div>
 </div>
 
@@ -595,7 +777,6 @@ Regeln:
 <li>Trennen von Integrationen und Operationen
 </li>
 <li>keine funktionale Abhängigkeiten in Operationen zu anderen Funktionseinheiten aus dem selben Programm
-fs
 </li>
 </ul>
 </div>
@@ -849,7 +1030,7 @@ Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die
 
 <pre class="src src-cpp"><span style="color: #4f97d7; font-weight: bold;">static</span> <span style="color: #ce537a; font-weight: bold;">void</span> <span style="color: #bc6ec5; font-weight: bold;">FormatAndPrintStrings</span><span style="color: #4f97d7;">(</span><span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">lines</span><span style="color: #4f97d7;">)</span>
 <span style="color: #4f97d7;">{</span>
-   <span style="color: #7590db;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
+   <span style="color: #bc6ec5; font-weight: bold;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
    <span style="color: #bc6ec5;">{</span>
       <span style="color: #ce537a; font-weight: bold;">string</span> <span style="color: #7590db;">s</span> = MyComplexFormattingFunction<span style="color: #2d9574;">(</span>line<span style="color: #2d9574;">)</span>;
       Console.WriteLine<span style="color: #2d9574;">(</span>s<span style="color: #2d9574;">)</span>;
@@ -890,8 +1071,8 @@ Hier nun die Umsetzung in Flow Design mit einfachsten Mitteln.
 
 <span style="color: #4f97d7; font-weight: bold;">static</span> <span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #4f97d7;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #4f97d7;">&gt;</span> <span style="color: #bc6ec5; font-weight: bold;">FormatLines</span><span style="color: #4f97d7;">(</span><span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">lines</span><span style="color: #4f97d7;">)</span>
 <span style="color: #4f97d7;">{</span>
-    <span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">result</span> = <span style="color: #4f97d7; font-weight: bold;">new</span> <span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span>string<span style="color: #bc6ec5;">&gt;()</span>;
-    <span style="color: #7590db;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
+    <span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">result</span> = <span style="color: #4f97d7; font-weight: bold;">new</span> List<span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;()</span>;
+    <span style="color: #bc6ec5; font-weight: bold;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
     <span style="color: #bc6ec5;">{</span>
           <span style="color: #ce537a; font-weight: bold;">string</span> <span style="color: #7590db;">formattedstring</span>;
           <span style="color: #2aa1ae; background-color: #292e34;">// </span><span style="color: #2aa1ae; background-color: #292e34;">do complex formatting here</span>
@@ -902,7 +1083,7 @@ Hier nun die Umsetzung in Flow Design mit einfachsten Mitteln.
 
 <span style="color: #4f97d7; font-weight: bold;">static</span> <span style="color: #ce537a; font-weight: bold;">void</span> <span style="color: #bc6ec5; font-weight: bold;">PrintLines</span><span style="color: #4f97d7;">(</span><span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">lines</span><span style="color: #4f97d7;">)</span>
 <span style="color: #4f97d7;">{</span>
-   <span style="color: #7590db;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
+   <span style="color: #bc6ec5; font-weight: bold;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
    <span style="color: #bc6ec5;">{</span>
       Console.WriteLine<span style="color: #2d9574;">(</span>s<span style="color: #2d9574;">)</span>;
    <span style="color: #bc6ec5;">}</span>
@@ -943,7 +1124,7 @@ Elegantere Lösungen mit Actions
 
 <span style="color: #4f97d7; font-weight: bold;">static</span> <span style="color: #ce537a; font-weight: bold;">void</span> <span style="color: #bc6ec5; font-weight: bold;">IterateOverEnumeration</span><span style="color: #4f97d7;">(</span><span style="color: #ce537a; font-weight: bold;">IEnumerable</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">lines</span>, <span style="color: #ce537a; font-weight: bold;">Action</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">onLine</span><span style="color: #4f97d7;">)</span>
 <span style="color: #4f97d7;">{</span>
-   <span style="color: #7590db;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
+   <span style="color: #bc6ec5; font-weight: bold;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
    <span style="color: #bc6ec5;">{</span>
       onLine<span style="color: #2d9574;">(</span>line<span style="color: #2d9574;">)</span>;
    <span style="color: #bc6ec5;">}</span>
@@ -968,7 +1149,7 @@ Noch eleganter mit Actions und Lambdas
 
 <span style="color: #4f97d7; font-weight: bold;">static</span> <span style="color: #ce537a; font-weight: bold;">void</span> <span style="color: #bc6ec5; font-weight: bold;">IterateOverEnumeration</span><span style="color: #4f97d7;">(</span><span style="color: #ce537a; font-weight: bold;">IEnumerable</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">lines</span>, <span style="color: #ce537a; font-weight: bold;">Action</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">onLine</span><span style="color: #4f97d7;">)</span>
 <span style="color: #4f97d7;">{</span>
-   <span style="color: #7590db;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
+   <span style="color: #bc6ec5; font-weight: bold;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
    <span style="color: #bc6ec5;">{</span>
       onLine<span style="color: #2d9574;">(</span>line<span style="color: #2d9574;">)</span>;
    <span style="color: #bc6ec5;">}</span>
@@ -1036,8 +1217,210 @@ Um nach Flow Design Regeln zu programmieren, helfen einem in C# einige Features 
 </div>
 
 <div id="outline-container-sec-4-3-1" class="outline-4">
-<h4 id="sec-4-3-1"><span class="section-number-4">4.3.1</span> <span class="label label-primary TODO">TODO</span> LINQ und Lambdas</h4>
+<h4 id="sec-4-3-1"><span class="section-number-4">4.3.1</span> <span class="label label-primary DRAFT">DRAFT</span> LINQ und Lambdas</h4>
+<div class="outline-text-4" id="text-4-3-1">
+<p>
+Laut Flow Design Richtlinien ist es erlaubt die Funktionen der
+Standardbibliothek der Sprache sowohl in Operationen als auch in Integrationen
+zu verwenden. LINQ ist eine in C# integrierte Ansammlung an Funktionen die in Verbindung mit
+Objekten, die das IEnumerable Interface implementieren, eingesetzt werden
+können.
+IEnumerable ist das Interface einer Containerklasse. Daran lässt sich bereits erahnen, dass LINQ
+auf das Arbeiten mit Datenflüssen speziallisert ist.
+</p>
+
+<p>
+In den meisten Fällen werden den LINQ Methoden ein Lambda-Ausdruck übergeben. 
+Dieser wird auch als <code>Selector</code> bezeichnet, oder im Falle von Bedingungen als <code>Predicate</code>.
+Lambda-Ausdrücke sind in Integrationen nur dann erlaubt, wenn die Lambdafuntkion
+selbst nur eine Integration ist.
+</p>
+
+<p>
+LINQ besteht aus ca. 150 Methoden.
+Eine (nicht vollständige Liste) findet sich hier.
+<a href="https://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods">https://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods</a>(v=vs.110).aspx
+</p>
+
+<p>
+Im foglendem werden hier nur ein paar der häufigsten verwendeten Methoden erläutert.
+</p>
 </div>
+
+<ol class="org-ol"><li><a id="sec-4-3-1-1" name="sec-4-3-1-1"></a>Filtern und Verändern<br ><div class="outline-text-5" id="text-4-3-1-1">
+<table class="table table-striped table-bordered table-hover table-condensed">
+
+
+<colgroup>
+<col  class="left">
+
+<col  class="left">
+</colgroup>
+<tbody>
+<tr>
+<td class="left">Select</td>
+<td class="left">Selektiert jedes Element und der Sequenze und modifziert es. Zurückgegeben wird eine Sequenze der mofifizierten Elemente</td>
+</tr>
+
+<tr>
+<td class="left">First,  Last</td>
+<td class="left">Gibt das erste/letzte Element der Sequenze zurück, das eine bestimmte Bedingung erfüllt.</td>
+</tr>
+
+<tr>
+<td class="left">ForEach (nur für List-Klasse)</td>
+<td class="left">Iteriert über die Sequenze und führt mit jedem Element den Selector-Ausdruck aus. Im Gegensatz zu Select wird kein Sequenze zurückgeliefert</td>
+</tr>
+
+<tr>
+<td class="left">OrderBy</td>
+<td class="left">Ordnet die Sequenze mitHilfe eines <code>keySelector</code>-Ausdrucks. Dieser bestimmt das Sortierkriterum. In manchen Fällen, kann dieser weggelassen werden</td>
+</tr>
+
+<tr>
+<td class="left">Where</td>
+<td class="left">Filtern der Sequenze anhand des Selectors. Zurückgegeben wird eine Sequenze von Elementen, die das Filterkriterum entsprachen.</td>
+</tr>
+
+<tr>
+<td class="left">Distinct</td>
+<td class="left">Dublikate werden aus der Sequenze gelöst.</td>
+</tr>
+
+<tr>
+<td class="left">Join</td>
+<td class="left">Zwei Sequenzen werden zu einer zusammengefasst</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li><a id="sec-4-3-1-2" name="sec-4-3-1-2"></a>Überprüfungen<br ><div class="outline-text-5" id="text-4-3-1-2">
+<table class="table table-striped table-bordered table-hover table-condensed">
+
+
+<colgroup>
+<col  class="left">
+
+<col  class="left">
+</colgroup>
+<tbody>
+<tr>
+<td class="left">Any</td>
+<td class="left">Wendet auf jedes Element den Selector-Ausdruck an,solange, bis bei einem Element der Ausdruck wahr wird. Dann wird <code>true</code> zurückgegeben, ansonsten <code>false</code></td>
+</tr>
+
+<tr>
+<td class="left">Contains</td>
+<td class="left">Ähnlich wie <code>Any</code>, nur dass kein Selector übergeben wird, sondern ein Element, der selben Klasse, wie die Elemente des Containers. Befindet sich das Element in dem Container, dann wird <code>true</code> zurückgeben, ansonsten <code>false</code></td>
+</tr>
+
+<tr>
+<td class="left">All</td>
+<td class="left">Ähnlich wie <code>Any</code> mit dem Unterschied, dass nur dann <code>true</code> zurückgeben wird, wenn für alle Elemente des Containers der Ausdruck wahr ist.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li><a id="sec-4-3-1-3" name="sec-4-3-1-3"></a>Berechnungen<br ><div class="outline-text-5" id="text-4-3-1-3">
+<p>
+Bei Container mit Zahlenwerten (<code>int</code>, <code>float</code>, <code>decimal</code>,&#x2026;) als Elementen,
+können nachfolgende Funktionen ohne zusätzliche Parameter aufgerufen werden.
+Falls dies nicht der Fall ist, muss ein Selector-Ausdruck, wahlweise als
+Lambda-Ausdruck, mitübergeben werden. Mit dem Selector kann bestimmt werden, wie
+die mathematische Rechenoperationen mit jedem Element umzugehen hat.
+</p>
+<table class="table table-striped table-bordered table-hover table-condensed">
+
+
+<colgroup>
+<col  class="left">
+
+<col  class="left">
+</colgroup>
+<tbody>
+<tr>
+<td class="left">Sum</td>
+<td class="left">Aufsummieren der Elemente</td>
+</tr>
+
+<tr>
+<td class="left">Max</td>
+<td class="left">Gibt das Element mit dem höchsten Wert zurück</td>
+</tr>
+
+<tr>
+<td class="left">Min</td>
+<td class="left">Gibt das Element mit dem niedrigsten Wert zurück</td>
+</tr>
+
+<tr>
+<td class="left">Count</td>
+<td class="left">Zählt die Elemente des Containers und gibt die Anzahl zurück</td>
+</tr>
+
+<tr>
+<td class="left">Average</td>
+<td class="left">Berechnet den Durchschnitt der Sequenze</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li><a id="sec-4-3-1-4" name="sec-4-3-1-4"></a>Überspringen und Nehmen<br ><div class="outline-text-5" id="text-4-3-1-4">
+<table class="table table-striped table-bordered table-hover table-condensed">
+
+
+<colgroup>
+<col  class="left">
+
+<col  class="left">
+</colgroup>
+<tbody>
+<tr>
+<td class="left">TakeWhile</td>
+<td class="left">Nimmt Elemente solange aus dem Container, bis eine Bedingung erfüllt ist. Es wird eine Sequenze von allen genommenen Elementen zurückgegeben</td>
+</tr>
+
+<tr>
+<td class="left">Skip</td>
+<td class="left">Überspringt eine Anzahl an Elementen</td>
+</tr>
+
+<tr>
+<td class="left">SkipWhile</td>
+<td class="left">Überspringt die ersten Elemente eine Sequenze, solange bis bis die Bedingung von einem Elemnt nicht erfüllt wird, dann wird ohne weitere Überprüfungen der Rest der Sequenze zurückgegeben</td>
+</tr>
+</tbody>
+</table>
+</div>
+</li>
+<li><a id="sec-4-3-1-5" name="sec-4-3-1-5"></a>Konvertieren<br ><div class="outline-text-5" id="text-4-3-1-5">
+<p>
+Sqeunzen können mit Hilfe eines einfach Methodenaufrufs zu einem bestimmten Typ
+von Container konvertiert werden. Zum Beispiel: <code>ToList</code> oder <code>ToDictionary</code>.
+</p>
+</div>
+</li>
+
+<li><a id="sec-4-3-1-6" name="sec-4-3-1-6"></a>Parallele Verarbeitung<br ><div class="outline-text-5" id="text-4-3-1-6">
+<p>
+Datenströme können von LINQ auch parallel verarbeitet werden. Dazu konvertiert
+man die Sequenz mit <code>toParallel()</code> zu einem PLINQ Datenstrom.
+Anschließend ausgeführte Methoden werden, falls möglich parallel verarbeitet. 
+</p>
+</div>
+</li>
+
+<li><a id="sec-4-3-1-7" name="sec-4-3-1-7"></a>Referenzen<br ><div class="outline-text-5" id="text-4-3-1-7">
+<p>
+Referenz: <a href="https://www.dotnetperls.com/linq">https://www.dotnetperls.com/linq</a>
+</p>
+</div>
+</li></ol>
+</div>
+
 <div id="outline-container-sec-4-3-2" class="outline-4">
 <h4 id="sec-4-3-2"><span class="section-number-4">4.3.2</span> <span class="label label-primary DRAFT">DRAFT</span> yield return</h4>
 <div class="outline-text-4" id="text-4-3-2">
@@ -1110,7 +1493,7 @@ FRAGE: Was bedeutet nochmal die Tonne, mit Hand?
 
   <span style="color: #4f97d7; font-weight: bold;">private</span> <span style="color: #4f97d7; font-weight: bold;">static</span> <span style="color: #ce537a; font-weight: bold;">void</span> PrintNumbers<span style="color: #bc6ec5;">(</span><span style="color: #ce537a; font-weight: bold;">IEnumerable</span><span style="color: #2d9574;">&lt;</span><span style="color: #ce537a; font-weight: bold;">int</span><span style="color: #2d9574;">&gt;</span> <span style="color: #7590db;">numbers</span><span style="color: #bc6ec5;">)</span>
   <span style="color: #bc6ec5;">{</span>
-    <span style="color: #7590db;">foreach</span> <span style="color: #2d9574;">(</span><span style="color: #ce537a; font-weight: bold;">var</span> number <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">numbers</span><span style="color: #2d9574;">)</span>
+    <span style="color: #bc6ec5; font-weight: bold;">foreach</span> <span style="color: #2d9574;">(</span><span style="color: #ce537a; font-weight: bold;">var</span> number <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">numbers</span><span style="color: #2d9574;">)</span>
     <span style="color: #2d9574;">{</span>
       Console.WriteLine<span style="color: #67b11d;">(</span>number<span style="color: #67b11d;">)</span>;
     <span style="color: #2d9574;">}</span>
@@ -1220,7 +1603,7 @@ Ich muss eine Action mitgeben. (Oder Datentypen, die null sein dürfen?)
 <div class="outline-text-4" id="text-4-5-1">
 <p>
 In C# gibt es neben den <code>Actions</code>, die keine Rückgabewerte erlauben, auch Funktionspointer, die einen Rückgabewert erlauben. 
-Diese werden mit <code>Func&lt;Rückgabewert,Parameter,...&gt;</code> deklariert.
+Diese werden mit <code>Func&lt;Parameter,...,Rückgabewert&gt;</code> deklariert.
 Die Func würde zwar das IOSP erfüllen, die Operation würde die andere Funktion nicht kennen,
 jedoch würde trotzdem eine funktionale Abhängigkeiten entstehen und somit ist die untenstehende Funktion nicht Flow Design konform.
 </p>
@@ -1229,8 +1612,8 @@ jedoch würde trotzdem eine funktionale Abhängigkeiten entstehen und somit ist 
 
 <pre class="src src-cpp"><span style="color: #4f97d7; font-weight: bold;">static</span> <span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #4f97d7;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #4f97d7;">&gt;</span> <span style="color: #bc6ec5; font-weight: bold;">FormatStrings</span><span style="color: #4f97d7;">(</span><span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">lines</span> , <span style="color: #ce537a; font-weight: bold;">Func</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span>,<span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">formatFunc</span> <span style="color: #4f97d7;">)</span>
 <span style="color: #4f97d7;">{</span>
-   <span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">result</span> = <span style="color: #4f97d7; font-weight: bold;">new</span> <span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span>string<span style="color: #bc6ec5;">&gt;()</span>;
-   <span style="color: #7590db;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
+   <span style="color: #ce537a; font-weight: bold;">List</span><span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;</span> <span style="color: #7590db;">result</span> = <span style="color: #4f97d7; font-weight: bold;">new</span> List<span style="color: #bc6ec5;">&lt;</span><span style="color: #ce537a; font-weight: bold;">string</span><span style="color: #bc6ec5;">&gt;()</span>;
+   <span style="color: #bc6ec5; font-weight: bold;">foreach</span><span style="color: #bc6ec5;">(</span>line <span style="color: #ce537a; font-weight: bold;">in</span> <span style="color: #7590db;">lines</span><span style="color: #bc6ec5;">)</span>
    <span style="color: #bc6ec5;">{</span>
       <span style="color: #ce537a; font-weight: bold;">string</span> <span style="color: #7590db;">formattedstring</span> = formatFunc<span style="color: #2d9574;">(</span>line<span style="color: #2d9574;">)</span>;
       result.Add<span style="color: #2d9574;">(</span>formattedstring<span style="color: #2d9574;">)</span> 
@@ -1298,7 +1681,7 @@ startet. Hier bleibt einem nichts anderes übrig, als die Regel keine Logik in d
 
 
 <div id="outline-container-sec-4-8" class="outline-3">
-<h3 id="sec-4-8"><span class="section-number-3">4.8</span> <span class="label label-primary FRAGEN">FRAGEN</span> KNOWNCAUSE Zusammenfassung - IODA Architekur -  Tabelle</h3>
+<h3 id="sec-4-8"><span class="section-number-3">4.8</span> <span class="label label-primary FRAGEN">FRAGEN</span> Zusammenfassung - IODA Architekur -  Tabelle</h3>
 <div class="outline-text-3" id="text-4-8">
 <p>
 Tabelle:
@@ -1309,8 +1692,41 @@ Daten - Darf Integration wirklich Kontruktor aufrufen, das sind doch daten, oder
 </p>
 </div>
 </div>
+
+
+
+<div id="outline-container-sec-4-9" class="outline-3">
+<h3 id="sec-4-9"><span class="section-number-3">4.9</span> Leserlichkeit</h3>
+<div class="outline-text-3" id="text-4-9">
+<p>
+In diesem Kaptitel werde ich mich speziell mit der Frage der Lesbarkeit mancher Flow Design Implementationen beschäftigen.
+Ziel von CCD ist es nicht nur den Code evolvierbar zu halten, sondern ihn auch besser leserlich zu machen.
+</p>
 </div>
 
+<div id="outline-container-sec-4-9-1" class="outline-4">
+<h4 id="sec-4-9-1"><span class="section-number-4">4.9.1</span> Integration gibt Funktionspointer an Operationen, welche diesen jedoch auch nur an die nächste Operation weitergibt.</h4>
+<div class="outline-text-4" id="text-4-9-1">
+<p>
+Auf Ebene der Integration, wo man eigentlich das Zusammenspiel der einzelnen Operationen leicht erkennen soll, ist es bei solch einem Beispiel den 
+Fluss nachzuvollziehen.
+</p>
+
+<p>
+-&gt; main -&gt;
+-&gt;DecideValidationProcess -&gt; Validation -&gt; DoSomething -&gt;
+</p>
+
+<p>
+Lösung: erstellen einer weiteren Integration, die die beiden letzen Operationen integriert.
+-&gt; main -&gt;
+-&gt; DecideValidationProcess -&gt; Validation1AndDoSomething -&gt;
+                          -&gt; Validation -&gt; DoSomething -&gt;
+</p>
+</div>
+</div>
+</div>
+</div>
 
 
 <div id="outline-container-sec-5" class="outline-2">
@@ -1446,7 +1862,15 @@ Outputs. Damit ist die Architektur weniger starr, als zum Beispiel das Schichten
 </div><div class="col-md-3"><nav id="table-of-contents">
 <div id="text-table-of-contents" class="bs-docs-sidebar">
 <ul class="nav">
-<li><a href="#sec-1">1. Entstehung und Grundgedanken</a></li>
+<li><a href="#sec-1">1. Entstehung und Grundgedanken</a>
+<ul class="nav">
+<li><a href="#sec-1-1">1.1. Einleitung</a></li>
+<li><a href="#sec-1-2">1.2. CCD Prinzipien</a></li>
+<li><a href="#sec-1-3">1.3. Weitere Prinzipien die Beachtung find sollen</a></li>
+<li><a href="#sec-1-4">1.4. Flow Design - Was ist das?</a></li>
+<li><a href="#sec-1-5">1.5. Referenzen</a></li>
+</ul>
+</li>
 <li><a href="#sec-2">2. Pfeile und Kreise</a>
 <ul class="nav">
 <li><a href="#sec-2-1">2.1. RomanNumbers Beispiel</a></li>
@@ -1467,6 +1891,7 @@ Outputs. Damit ist die Architektur weniger starr, als zum Beispiel das Schichten
 <li><a href="#sec-3-10">3.10. Anhängigkeiten / Provider</a></li>
 <li><a href="#sec-3-11">3.11. GUIS / Programmstart/ Ende</a></li>
 <li><a href="#sec-3-12">3.12. Klassen / Container definieren</a></li>
+<li><a href="#sec-3-13">3.13. Referenzen</a></li>
 </ul>
 </li>
 <li><a href="#sec-4">4. Implementation</a>
@@ -1478,7 +1903,8 @@ Outputs. Damit ist die Architektur weniger starr, als zum Beispiel das Schichten
 <li><a href="#sec-4-5">4.5. Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.</a></li>
 <li><a href="#sec-4-6">4.6. Warum macht man das? Sinn der Aufteilung.</a></li>
 <li><a href="#sec-4-7">4.7. Ausnahmen</a></li>
-<li><a href="#sec-4-8">4.8. KNOWNCAUSE Zusammenfassung - IODA Architekur -  Tabelle</a></li>
+<li><a href="#sec-4-8">4.8. Zusammenfassung - IODA Architekur -  Tabelle</a></li>
+<li><a href="#sec-4-9">4.9. Leserlichkeit</a></li>
 </ul>
 </li>
 <li><a href="#sec-5">5. Die Entwurfsmethode</a>
@@ -1501,9 +1927,8 @@ Outputs. Damit ist die Architektur weniger starr, als zum Beispiel das Schichten
 </nav>
 </div></div></div>
 <footer id="postamble" class="">
-<div><p class="author">Author: Dennis Müller</p>
-<p class="date">Created: 2016-09-08 Thu 23:07</p>
-<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 24.5.1 (<a href="http://orgmode.org">Org-mode</a> 8.3.5)</p>
+<div><p class="date">Created: 2016-09-13 Di 18:03</p>
+<p class="creator"><a href="http://www.gnu.org/software/emacs/">Emacs</a> 25.1.1 (<a href="http://orgmode.org">Org-mode</a> 8.3.5)</p>
 </div>
 </footer>
 </body>

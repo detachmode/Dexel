@@ -1,28 +1,96 @@
  
-* Entstehung und Grundgedanken
+*  Entstehung und Grundgedanken
+
+** Einleitung
+
 Flow Design ist aus der Clean Code Development Bewegung heraus entstanden. Hauptinitiatior und Erfinder ist Ralf Westphal.
 Ralf Westphal war auch Mitbegründer und Miterfinder der Clean Code Developement Bewegung.
 
 
-Clean Code Development ist eine Ansammlung aus Prinzipen, die einem helfen sollen wartbare Software zu schreiben.
-Wartbare bedeutet Änderungen an der Software sollen leicht zu realisier sein und der Programmcode soll
-am besten auch leicht zu lesen bleiben.
+Clean Code Development ist eine Ansammlung aus Prinzipen, die einem helfen
+sollen wartbare Software zu schreiben. Ein Synonym, welches CCD für wartbar
+verwendet lautet /evolvierbar/. 
+Software die mit dem Fokus auf Evolvierbarkeit hin programmiert wurde,
+kann leicht an neue Rahmenbedingungen oder Kundenwünsche angepasst werden.
+Gleichzeitig soll der Code auch leselich bleiben und möglichst ohne Kommentare
+verstanden werden können.
+
 Prinzipien sind jedoch nicht so leicht einzuhalten, wie konkrete Regeln, welche man einfach einhalten kann.
 Somit ist es in der Praxis schwer die Prinzipen auf den eigenen Code anzuwenden.
 Flow Design soll in Ergänzung eine Methodik und Programmierregeln bieten, die man einfach befolgen kann und man erhält automatisch
 ein Code, der die CCD Prinzipen erfüllt.
 
-Im Hauptfokus liegen vorallem folgende Prinzipien von CCD:
-- KISS
-- YAGNI
-- Lose Koppelung
-- Orthogonalität
+** FRAGEN CCD Prinzipien  
+Im Hauptfokus von FLow Design liegen vorallem folgende Prinzipien von CCD:
 
-Weitere Prinzipien die Beachtung find sollen:
-- Separation of Concerns
-- Single Responsibility Principle
-- Information Hiding Principle
-- Dependecy Injection
+  | KISS (Keep It Stupid Simple)      | Ein System sollte so einfach wie möglich gestaltet werden.                                                                                                         |
+  | YAGNI ( You Ain't Gonna Need It ) | Es soll nicht unnötig viel Zeit damit verbracht werden für zukünftige Eventualitäten zu programmieren. Der Fokus sollte darauf liegen, was aktuell gebraucht wird. |
+  | Lose Koppelung                    | Seperate Einheiten eines Systems sollen möglichst über möglichst wenige Punkte miteinander kommunizieren.                                                          |
+  | Orthogonalität                    | Änderungen an einer Funktion des Systems sollen auf so wenig wie möglich andere Funktionen des Systems negativen Einfluss haben.                                   |
+
+FRAGE: Kurzbeschreibung richtig?
+
+*** KISS
+Die Komplexität der Lösung eines Problems soll immer in Relation zu der
+Komplexität des Problems stehen.
+
+Schnell passiert es, dass man die einfachste Lösung für ein Problem übersieht und das Problem unnötig verkompliziert.
+Das KISS Prinzip soll einen in erster Linie ein Bewusstsein dafür schaffen bei
+komplizierten Lösungen innezuhalten und sich nochmal genau zu
+überlegen, ob es nicht eine einfachere Lösung gibt.
+Manche Problemdomänen erfordern jedoch eine komplexe Lösung, da das Problem
+komplex ist.
+
+Verkomplizierte Lösungen müssen am besten schon beim Entwurf erkannt werden.
+Hierbei soll Flow Design als Entwurfsmethode helfen, die einfachste und leicht
+verständlichste Lösung für ein Problem zu finden.
+
+*** YAGNI 
+Vielen Programmieren ist es wohl schon passiert, dass sie es zu gut gemeint
+haben mit dem vorrausschauend Denken. Etliche Funktionen wurden für ein
+zukünftiges Scenario implementiert oder verkompliziert, die jedoch nie
+eintraffen, oder falls sie eintraffen wurde die Software bereits durch eine
+andere ersetzt.
+YAGNI soll einem das Bewusstsein dafür schärfen, wann man sich gerade mit einer 
+Situation beschäftigt, die aktuellen Rahmenbedingungen überschreiten.
+Man sollte sich eher auf das aktuelle Scenario beschränken  und keine unnötige Resourcen für zukünfitge 
+Eventualitäten verschwenden.
+Flow Design bietet hierfür Implementierungsregeln, die es einem ermöglichen
+schnell Änderungen am Code zu realisieren.
+Diese Eigenschaft des Codes bietet damit die Basis diesem Prinzip auch gestrost
+zu befolgen und sich auf die aktuellen Rahmenbedingungen zu konzentrieren.
+
+*** Lose Koppelung
+Ein System soll aus möglichst voneinander unabhängigen Untersystemen bestehen,
+die nur über eine  klar definierte Stelle miteinander kommunizieren.
+Bei jedem Aufruf einer Funktion oder Abrufen einer Variable entsteht eine
+Koppelung zwischen beiden.
+Ändert sich die Struktur des Codes, so muss jede Stelle angepasst werden, die zu
+der geänderten Struktur eine Koppelung besitzt. Mit Loser Koppelung möchte man
+veranschaulichen, dass wenn eine Koppelung nötig ist, diese an einer Stelle konzentriert sein soll und
+sich nicht an verschiedenen Stellen des Codes fortpflanzen soll.
+
+*** Orthogonalität
+In einem dreidimensionalen Raum sind die 3 Achsen üblicherweise zueinander
+orthogonal. Verschiebe ich ein Objekt auf einer Achse, so bleiben die Werte der
+beiden anderen unberüht. Wäre eine Achse nicht orthogonal zu den beiden anderen,
+so würde eine Verschiebung entlang dieser Achse auch eine Änderung der Werte
+einer anderen Achse bewirken. Diese Eigenschaft wird nun auch auf Code und wie
+er auf Änderungen reagiert, projziert. 
+Wird an einer Stelle der Code geändert, soll diese Änderung möglichst keinen Einfluss auf
+andere Teile des Codes haben.
+
+
+** Weitere Prinzipien die Beachtung find sollen
+
+| DRY  (Don't Repeat Yourself)    | Coderedundanzen vermeiden, zerlegen in Codebestandteile, die man an mehreren Stellen wiederverwenden kann                                                                                      |
+| kleine Funktionen               | Viele kleine Funktionen , anstatt eine große Funktion                                                                                                                                          |
+| Single Responsibility Principle | Jede Funktion/Klasse soll sich nur um eine Sache kümmern. Falls eine Funktion mehrere Aufgaben erledigt, sollten sie diese nicht selbst implementieren, sondern an Unterfunktionen weitergeben |
+| Separation of Concerns          | Unterschiedliche Funktionalitäten des System sollen in unabhängige Untersysteme gekapselt sein.                                                                                                |
+| Information Hiding Principle    | Ein Untersystem soll seiner Inneren Funktionalität vor anderen Systemen verbergen und eine möglichst fokusierte Schnittstelle bieten, mitdem äußere Systeme dieses System steuern können.      |
+| Dependecy Injection             | Objekte/Variablen werden einer Funktion als Parameter mitgegeben, anstatt eine Bindung an einen äußeren Variable zu erzeugen.                                                              |
+
+** Flow Design - Was ist das?
 
 Unter Flow Design versteht man zwei Dinge:
 Einmal das Diagramm und einmal die Komplette Entwurfsmethode, indem das
@@ -46,6 +114,9 @@ Das ist jedoch keine negative Einschränkung, vielmehr ermöglicht dies, sich au
 müssen, sonder sich auf das Große ganze - das Zusammenspiel/ Komposition der Funktionseinheiten und den Datenfluss zu konzentrieren.
 
 Anzumerken wäre noch, dass nicht der Kontrollfluss abgebildet wird, sondern, wie erwähnt, der Datenfluss.
+** Referenzen
+
+http://clean-code-developer.de/die-grade/roter-grad/
 
 * Pfeile und Kreise
 ** DRAFT RomanNumbers Beispiel
@@ -79,12 +150,6 @@ die zusammen die Aufgabe erledigen, die die übergeordnete Softwarezelle beschre
 
 
 * Notationen
-Bilder sind von: 
-
-http://flow-design.org/overview/implementation/#How_to_implement_inputs_to_a_functional_unit
-
-  Weitere Notationen kurz erklärt. Auch mit "Integrationen" aber noch nicht erklären, dass es ein Unterschied gibt.
-  Provider Dreieck.
 ** MISSING IMAGES Datentypen 
 
 Eine leere Klammer bedeutet, dass keine Daten fließen.
@@ -161,16 +226,30 @@ Tonnen bedeuten, dass die Funktionseinheit state-behaftet ist.
 In den meisten Fällen ist das eine Membervariable einer Klasse?
 
 FRAGE: Kann State auch anders umgesetzt sein?
-** TODO Anhängigkeiten / Provider
+** FRAGEN Anhängigkeiten / Provider
+
 Tonnen oder Dreicke können zusätzlich noch mit einer Linie verbunden sein, an dessen Ende ein Kreis gezeichnet ist,
 dann bedeutet das, dass die Funktion auf externe Resourcen zugreift / von ihr
 Abhängig ist.
 Den Kreis kann man sich bildlich wie eine Hand vorstellen, an die sich die
 Funktion festhält, also eine Koppelung entsteht.
+FRAGE: Was bedeutet nochmal genau dir Hand?
 
-
-** TODO GUIS / Programmstart/ Ende
-** TODO Klassen / Container definieren  
+** MISSING IMAGES GUIS / Programmstart/ Ende
+Programmstart wird mit einem Kreis leeren Kreis dargestellt und Programmende mit
+einem Kreis in dessen Mitte ein Kreuz ist.
+Wenn man zeigen will, dass eine Methode von einem Event aus der GUI ausgelöst
+wurde, so macht man das deutlich, indem man ein Viereck link von der Methode zeichnet.
+** DRAFT Klassen / Container definieren  
+Das Definieren von Container und Zuordnen von Funktionseinheiten ist auch
+einfach möglich. Unter Container versteht man: Klassen, DLLs und Anwendungen.
+Es gibt zwei Möglichkeiten eine Zugehörigkeit zu einem Container zu notieren.
+Entweder man schreibt direkt unter der Funktionseinheit den Namen des
+Containers, oder man umrandet mehrere Funktioneseinheiten und notiert den Namen
+des Containers am Rand der Umrandung.
+** Referenzen
+Bilder sind von: 
+http://flow-design.org/overview/implementation/#How_to_implement_inputs_to_a_functional_unit
 
 * Implementation
 
@@ -445,7 +524,65 @@ Features eine Sprache hat (??? )
 ** C# Features um Datenflüsse zu implementieren
 Um nach Flow Design Regeln zu programmieren, helfen einem in C# einige Features die in diesem Kapitel vorgestellt werden.
 
-*** TODO LINQ und Lambdas
+*** DRAFT LINQ und Lambdas
+Laut Flow Design Richtlinien ist es erlaubt die Funktionen der
+Standardbibliothek der Sprache sowohl in Operationen als auch in Integrationen
+zu verwenden. LINQ ist eine in C# integrierte Ansammlung an Funktionen die in Verbindung mit
+Objekten, die das IEnumerable Interface implementieren, eingesetzt werden
+können.
+IEnumerable ist das Interface einer Containerklasse. Daran lässt sich bereits erahnen, dass LINQ
+auf das Arbeiten mit Datenflüssen speziallisert ist.
+
+In den meisten Fällen werden den LINQ Methoden ein Lambda-Ausdruck übergeben. 
+Dieser wird auch als =Selector= bezeichnet, oder im Falle von Bedingungen als =Predicate=.
+Lambda-Ausdrücke sind in Integrationen nur dann erlaubt, wenn die Lambdafuntkion
+selbst nur eine Integration ist.
+
+LINQ besteht aus ca. 150 Methoden.
+Eine (nicht vollständige Liste) findet sich hier.
+https://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods(v=vs.110).aspx
+
+Im foglendem werden hier nur ein paar der häufigsten verwendeten Methoden erläutert.
+
+**** Filtern und Verändern
+| Select                        | Selektiert jedes Element und der Sequenze und modifziert es. Zurückgegeben wird eine Sequenze der mofifizierten Elemente                           |
+| First,  Last                  | Gibt das erste/letzte Element der Sequenze zurück, das eine bestimmte Bedingung erfüllt.                                                           |
+| ForEach (nur für List-Klasse) | Iteriert über die Sequenze und führt mit jedem Element den Selector-Ausdruck aus. Im Gegensatz zu Select wird kein Sequenze zurückgeliefert        |
+| OrderBy                       | Ordnet die Sequenze mitHilfe eines =keySelector=-Ausdrucks. Dieser bestimmt das Sortierkriterum. In manchen Fällen, kann dieser weggelassen werden |
+| Where                         | Filtern der Sequenze anhand des Selectors. Zurückgegeben wird eine Sequenze von Elementen, die das Filterkriterum entsprachen.                     |
+| Distinct                      | Dublikate werden aus der Sequenze gelöst.                                                                                                          |
+| Join                          | Zwei Sequenzen werden zu einer zusammengefasst                                                                                          |
+**** Überprüfungen 
+| Any      | Wendet auf jedes Element den Selector-Ausdruck an,solange, bis bei einem Element der Ausdruck wahr wird. Dann wird =true= zurückgegeben, ansonsten =false=                                                      |
+| Contains | Ähnlich wie =Any=, nur dass kein Selector übergeben wird, sondern ein Element, der selben Klasse, wie die Elemente des Containers. Befindet sich das Element in dem Container, dann wird =true= zurückgeben, ansonsten =false= |
+| All      | Ähnlich wie =Any= mit dem Unterschied, dass nur dann =true= zurückgeben wird, wenn für alle Elemente des Containers der Ausdruck wahr ist.                                                                               |
+**** Berechnungen
+Bei Container mit Zahlenwerten (=int=, =float=, =decimal=,...) als Elementen,
+können nachfolgende Funktionen ohne zusätzliche Parameter aufgerufen werden.
+Falls dies nicht der Fall ist, muss ein Selector-Ausdruck, wahlweise als
+Lambda-Ausdruck, mitübergeben werden. Mit dem Selector kann bestimmt werden, wie
+die mathematische Rechenoperationen mit jedem Element umzugehen hat.
+| Sum     | Aufsummieren der Elemente                                    |
+| Max     | Gibt das Element mit dem höchsten Wert zurück                |
+| Min     | Gibt das Element mit dem niedrigsten Wert zurück     |
+| Count   | Zählt die Elemente des Containers und gibt die Anzahl zurück |
+| Average | Berechnet den Durchschnitt der Sequenze                      |
+**** Überspringen und Nehmen
+| TakeWhile | Nimmt Elemente solange aus dem Container, bis eine Bedingung erfüllt ist. Es wird eine Sequenze von allen genommenen Elementen zurückgegeben                                               |
+| Skip      | Überspringt eine Anzahl an Elementen                                                                                                                                                       |
+| SkipWhile | Überspringt die ersten Elemente eine Sequenze, solange bis bis die Bedingung von einem Elemnt nicht erfüllt wird, dann wird ohne weitere Überprüfungen der Rest der Sequenze zurückgegeben |
+**** Konvertieren
+Sqeunzen können mit Hilfe eines einfach Methodenaufrufs zu einem bestimmten Typ
+von Container konvertiert werden. Zum Beispiel: =ToList= oder =ToDictionary=.
+
+**** Parallele Verarbeitung
+Datenströme können von LINQ auch parallel verarbeitet werden. Dazu konvertiert
+man die Sequenz mit =toParallel()= zu einem PLINQ Datenstrom.
+Anschließend ausgeführte Methoden werden, falls möglich parallel verarbeitet. 
+
+**** Referenzen
+Referenz: https://www.dotnetperls.com/linq
+
 *** DRAFT yield return
 Hiermit kann man ein Producer-Consumer Pattern implementieren.
 Vorraussetzung ist jedoch, dass man mit Daten arbeitet, die das =IEnumerable= Interface implementieren, wie zum Beispiel die
@@ -565,7 +702,7 @@ FRAGE;
 *** DONE Rückgabewert erwarten von Funktion als Parameter übergeben.
 CLOSED: [2016-09-08 Do 14:08]
 In C# gibt es neben den =Actions=, die keine Rückgabewerte erlauben, auch Funktionspointer, die einen Rückgabewert erlauben. 
-Diese werden mit =Func<Rückgabewert,Parameter,...>= deklariert.
+Diese werden mit =Func<Parameter,...,Rückgabewert>= deklariert.
 Die Func würde zwar das IOSP erfüllen, die Operation würde die andere Funktion nicht kennen,
 jedoch würde trotzdem eine funktionale Abhängigkeiten entstehen und somit ist die untenstehende Funktion nicht Flow Design konform.
 
@@ -636,7 +773,7 @@ Lösung: erstellen einer weiteren Integration, die die beiden letzen Operationen
                           -> Validation -> DoSomething ->
 
 
-* Ablauf der kompletten Flow Design - Entwurfsmethode
+* Die Entwurfsmethode
 
 ** TODO Definieren der Portale und Provider
     Man zeichnet ein Kreis auf ein Papier, diese stellt die Domäne dar.
