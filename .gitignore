@@ -13,6 +13,7 @@
 *.pdf
 *.gz
 *.html
+*.aux
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
