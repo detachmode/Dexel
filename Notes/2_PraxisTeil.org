@@ -32,6 +32,7 @@ Beim Erzeugen des Codes geht es darum, die Methoden-Signaturen zu erzeugen und i
    - Integrationen Innere Flows darunter darstellen
    - Integrationen wenn zu wenig Platz um Inneren Flow darunter dazustellen, dann automtisch in neues Flow Design
    - Einkreisen/ Gruppieren in Klassen
+   - Autosave
    - Drucken / Exportieren als PDF in weiß auf schwarz Farbschema
    
 *** weiter Ideen

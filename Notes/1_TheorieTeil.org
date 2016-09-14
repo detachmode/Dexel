@@ -1,7 +1,7 @@
  
 *  Entstehung und Grundgedanken
 
-** Einleitung
+** DRAFT Einleitung
 
 Flow Design ist aus der Clean Code Development Bewegung heraus entstanden. Hauptinitiatior und Erfinder ist Ralf Westphal.
 Ralf Westphal war auch Mitbegründer und Miterfinder der Clean Code Developement Bewegung.
@@ -81,16 +81,71 @@ Wird an einer Stelle der Code geändert, soll diese Änderung möglichst keinen 
 andere Teile des Codes haben.
 
 
-** Weitere Prinzipien die Beachtung find sollen
+** DRAFT Weitere Prinzipien die Beachtung find sollen
 
 | DRY  (Don't Repeat Yourself)    | Coderedundanzen vermeiden, zerlegen in Codebestandteile, die man an mehreren Stellen wiederverwenden kann                                                                                      |
 | kleine Funktionen               | Viele kleine Funktionen , anstatt eine große Funktion                                                                                                                                          |
 | Single Responsibility Principle | Jede Funktion/Klasse soll sich nur um eine Sache kümmern. Falls eine Funktion mehrere Aufgaben erledigt, sollten sie diese nicht selbst implementieren, sondern an Unterfunktionen weitergeben |
 | Separation of Concerns          | Unterschiedliche Funktionalitäten des System sollen in unabhängige Untersysteme gekapselt sein.                                                                                                |
 | Information Hiding Principle    | Ein Untersystem soll seiner Inneren Funktionalität vor anderen Systemen verbergen und eine möglichst fokusierte Schnittstelle bieten, mitdem äußere Systeme dieses System steuern können.      |
-| Dependecy Injection             | Objekte/Variablen werden einer Funktion als Parameter mitgegeben, anstatt eine Bindung an einen äußeren Variable zu erzeugen.                                                              |
+| Dependency Injection           | Objekte/Variablen werden einer Funktion als Parameter mitgegeben, anstatt eine Bindung an einen äußeren Variable zu erzeugen.                                                              |
 
-** Flow Design - Was ist das?
+*** DRY
+Einer der wichtigsten Aspekte von sauberen Codebasen. Der Grund warum es
+überhaupt Programmstrukturen wie Funktionen, Methoden, Klassen etc. gibt.
+Durch Coderedundanzen (Copy-Paste) können schnell Fehler entstehen, der Code
+wird unverständlicher und durch die Wiederholungen schwerer zu lesen.
+Wenn man das DRY Prinzip befolgt, können viele Änderungen meistens bereits an
+eine Stelle gezielt geändert werden, anstatt die Änderung an vielen Stellen
+machen zu müssen.
+
+*** kleine Funktionen 
+Nachteile
+- Der Programmverlauf ist bis ins Detail nicht mehr so leicht zu überschauen
+- In bestimmten Szenarien ist der Overhead eines Methodenaufrufs möglicherweise
+  ein nicht zu verachtender Performanceaspekt (Remote Procedure Calls)
+Vorteile
+- Erspart Kommentare durch aussagekräftige Methodennamen                                                                                
+- Änderungen sind leichter zu realisieren, da durch kleine Methoden auch die
+  höhere Wiederverwendbarkeit einzelner Methoden gegeben ist. Durch weniger Redundanzen kann man
+  eine Änderung meistens gezielt an einer Stelle machen anstatt an vielen
+  Stellen etwas ändern zu müssen.
+- Erlaubt ein Denken auf höherer Abstraktionsebene, da low-Level
+  Implementierungsdetails hinter aussagekräftigen Methodennamen verborgen sind.
+- Erlaubt anderen Personen den Code leichter zu verstehen und  können selbst
+  leichter Änderungen an der Codebasis realisieren, da sie nicht den kompletten
+  Code nachvollziehen brauchen, sondern direkt zu den für sie relevanten Stellen
+  springen können. 
+- Automatische Test / Unittest sind besser realisierbar, da man feingranularer
+  Testen kann
+
+*** TODO Single Responsibiltiy Principle 
+Beispiel einer Methode, die mehrere Verantwortlichkeiten hat:
+
+Sauber getrennte Verantwortlichkeiten:
+*** Separation of Concerns
+Wenn man mit Single Responsibility Principle die Methoden in viele kleine
+Methoden aufgeteilt hat, so ist es ratsam, solche in Container
+zusammenzufassen, die einen ähnlichen Aufgabenbereich haben.
+Als Container können zum Beispiel Klassen verwendet werden.
+Oft meint man mit Separation of Concerns auch das Trennen von 
+GUI, Daten und Businesslogik gemeint.
+
+*** Information Hiding Principle
+Eine Klasse besteht aus vielen Funktionen, diese werden jedoch nicht alle nach
+außen zur Verfügung gestellt.
+Oder eine API, die nach außen nur eine ganz bestimmte Schnittstelle bietet und
+die komplexität des Systems im Inneren verbergt.
+
+*** Dependency Injection
+Anstatt das eine Methode auf eine äußere Varibale (zum Beispiel Membervariable einer
+Klasse) zugreift, bekommt sie den Wert als Parameter mit.
+Durch erhält man Methoden, die leichter mit Mockdaten zu testen sind.
+ 
+
+
+
+** DRAFT Flow Design - Was ist das?
 
 Unter Flow Design versteht man zwei Dinge:
 Einmal das Diagramm und einmal die Komplette Entwurfsmethode, indem das
@@ -729,16 +784,71 @@ static List<string> FormatStrings(List<string> lines , Func<string,string> forma
 #+END_SRC
 
 
-*** TODO API-Aufruf, Filehandling?, Daten in Integrationen?
-** TODO Warum macht man das? Sinn der Aufteilung.
-- Ketten Bild
+*** FRAGEN API-Aufruf, Filehandling?, Daten in Integrationen?
+
+Was ist erlaubt in Integrationen? 
+
+#+BEGIN_SRC cpp 
+static void Foo ()
+{
+   
+   var json = http.get(adress);
+
+   Person p = new Person();
+   p.name = "Peter"
+
+   with (var f = File.Open(path))
+   {
+      dosomething();
+   }
+   OtherFunc();
+}
+
+#+END_SRC
+
+** Warum macht man das? Sinn der Aufteilung.
+*** DRAFT Die Perlenkette
+Die Codebasis, die nach IOSP implementiert wurde, so bildlich gesprochen einer
+Perlenkette ähneln. Der Code besteht aus aneinandergereihte Funktionseinheiten,
+die zusammen ein großes Ganzes bilden. Möchte man Änderungen an dem Programm
+vornehmen, so brauch man nur an einer Stelle die Kette zu öffnen und etwas
+hinzufügen oder entfernen. Danach schließt man die Kette wieder und das Programm
+läuft wieder. Beim einfügen oder entfernen ist nur darauf zu achten, dass die
+Eingänge und Ausgänge zueinander passen. Ist das nicht der Fall, so kann man das
+entweder durch eine weitere dazwischengeschobene "Adapter"-Funktionseinheit
+beheben, oder man ändern die anschließenden Funktionseinheiten und deren
+Eingänge und Ausgänge entsprechend um. 
+Die erste Variante bringt möglicherweise einen Performanceverlust mit sich.
+In vielen Stellen des Codes, ist dies jedoch meistens kein Problem.
+Falls die Funktionseinheiten an anderer Stelle verwendet werden, ist
+möglicherweise auch eine Abänderung nicht einfach umzusetzen.
+
+*** FRAGEN Größtes Übel funktionale Abhängigkeiten. 
+Funktionale Abhängikeiten sind im echten Leben auch ein Problem, wenn es um
+produktive Arbeitsabläufe geht.
+Wenn jemand seine Arbeit erst zuende machen kann, wenn ein anderer seine Arbeit
+getan hat, ist das schlecht.
+Besser ist es, wenn eine Person sich von einem Pool an Aufgaben bedienen kann,
+sie unabhängig von anderen Personen erledigen kann und dann das Ergebnis wieder
+in ein Pool zurückgibt, von denen sich andere wieder bedienen können.
+
+
+*** Optional 
 -  nochmal rückbesinnen auf CCD
--  Größtes übel funktionale Abhängigkeiten. Wenn jemand seine Arbeit erst zuende machen kann, wenn ein anderer seine Arbeit getan hat.
 ** DRAFT Ausnahmen
-*** TODO Rekursion
+Generell gilt die Regel, wenn ich mich bewusst an einer Stelle gegen die IOSP
+Regel entscheide, ist dann in Ordnung, solange ich es gut begründen kann.
+Es gibt jedoch bereits einige Fälle, wo sich ein Aufheben der Regel als gut
+herausgestellt hat.
+*** FRAGEN Rekursion
 Operationen dürfen sich selber aufrufen.
+Was ist mit einer Kette von Operatione, wo die letze Operation die Rekursion startet?
 *** DONE Integrationen
 CLOSED: [2016-09-08 Do 14:08]
+**** DONE Try / Catch
+CLOSED: [2016-09-08 Do 14:08]
+Oft braucht man auf oberster Ebene, einen Try/Catch, der alle Exceptions abfangen soll, und eine generelle Fehlerbehandlungsroutine
+startet. Hier bleibt einem nichts anderes übrig, als die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
 
 **** DONE LINQ / Standard-Library Funktionen
 CLOSED: [2016-09-08 Do 14:08]
@@ -747,13 +857,8 @@ Manche Funktionalitäten, die die Sprache selbst bereitstellt, können streng ge
 Beispiele aus C#:
 =int.TryParse= , =List<>.Sort=, =Dictionary<>.Insert=, ...
 
-**** DONE Try / Catch
-CLOSED: [2016-09-08 Do 14:08]
-Oft braucht man auf oberster Ebene, einen Try/Catch, der alle Exceptions abfangen soll, und eine generelle Fehlerbehandlungsroutine
-startet. Hier bleibt einem nichts anderes übrig, als die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
 
-
-** FRAGEN Zusammenfassung - IODA Architekur -  Tabelle
+** FRAGEN Zusammenfassung 
 
    Tabelle:
    Daten - Methoden in Daten-Objekte aufrufen? Darf Operation die Methode kennen?
@@ -761,7 +866,7 @@ startet. Hier bleibt einem nichts anderes übrig, als die Regel keine Logik in d
    gehören/gekaspelt sind, sind die in Operationen erlaubt? file open handlers?
    Daten - Darf Integration wirklich Kontruktor aufrufen, das sind doch daten, oder gelten nur persistente daten?
 
-
+ 
 
 ** Leserlichkeit 
 In diesem Kaptitel werde ich mich speziell mit der Frage der Lesbarkeit mancher Flow Design Implementationen beschäftigen.
@@ -782,7 +887,7 @@ Lösung: erstellen einer weiteren Integration, die die beiden letzen Operationen
 
 * Die Entwurfsmethode
 
-** TODO Definieren der Portale und Provider
+** TODO System-Umwelt-Diagramm
     Man zeichnet ein Kreis auf ein Papier, diese stellt die Domäne dar.
     Auf der linken Seite hängt man die Sachen dran, die auf die Domände zugreifen so gegannte Portale, zum Beispiel HTTP-Zugriff,
     Batch mode, oder GUIs.

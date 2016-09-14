@@ -1,61 +1,70 @@
 \contentsline {section}{\numberline {1}Entstehung und Grundgedanken}{3}{section.1}
-\contentsline {subsection}{\numberline {1.1}Einleitung}{3}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.1}{\bfseries \sffamily DRAFT} Einleitung}{3}{subsection.1.1}
 \contentsline {subsection}{\numberline {1.2}{\bfseries \sffamily FRAGEN} CCD Prinzipien}{3}{subsection.1.2}
-\contentsline {subsubsection}{\numberline {1.2.1}KISS}{3}{subsubsection.1.2.1}
+\contentsline {subsubsection}{\numberline {1.2.1}KISS}{4}{subsubsection.1.2.1}
 \contentsline {subsubsection}{\numberline {1.2.2}YAGNI}{4}{subsubsection.1.2.2}
 \contentsline {subsubsection}{\numberline {1.2.3}Lose Koppelung}{4}{subsubsection.1.2.3}
-\contentsline {subsubsection}{\numberline {1.2.4}Orthogonalit\IeC {\"a}t}{4}{subsubsection.1.2.4}
-\contentsline {subsection}{\numberline {1.3}Weitere Prinzipien die Beachtung find sollen}{5}{subsection.1.3}
-\contentsline {subsection}{\numberline {1.4}Flow Design - Was ist das?}{5}{subsection.1.4}
-\contentsline {subsection}{\numberline {1.5}Referenzen}{6}{subsection.1.5}
-\contentsline {section}{\numberline {2}Pfeile und Kreise}{6}{section.2}
-\contentsline {subsection}{\numberline {2.1}{\bfseries \sffamily DRAFT} RomanNumbers Beispiel}{6}{subsection.2.1}
-\contentsline {subsection}{\numberline {2.2}{\bfseries \sffamily MISSING IMAGES} Hirarchische Datenfl\IeC {\"u}sse}{7}{subsection.2.2}
-\contentsline {section}{\numberline {3}Notationen}{7}{section.3}
-\contentsline {subsection}{\numberline {3.1}{\bfseries \sffamily MISSING IMAGES} Datentypen}{7}{subsection.3.1}
-\contentsline {subsection}{\numberline {3.2}{\bfseries \sffamily MISSING IMAGES} Definition eigener Datentypen}{7}{subsection.3.2}
-\contentsline {subsection}{\numberline {3.3}{\bfseries \sffamily MISSING IMAGES} Arrays (auch mit fester Gr\IeC {\"o}\IeC {\ss }e)}{7}{subsection.3.3}
-\contentsline {subsection}{\numberline {3.4}{\bfseries \sffamily FRAGEN} 0 bis n (Datenstrom)}{8}{subsection.3.4}
-\contentsline {subsection}{\numberline {3.5}{\bfseries \sffamily FRAGEN} Container / Listen}{8}{subsection.3.5}
-\contentsline {subsection}{\numberline {3.6}{\bfseries \sffamily FRAGEN} 0 bis 1 (optionaler Output)}{9}{subsection.3.6}
-\contentsline {subsection}{\numberline {3.7}{\bfseries \sffamily MISSING IMAGES} Mehrere Inputs / Outputs auf einem Weg}{9}{subsection.3.7}
-\contentsline {subsection}{\numberline {3.8}{\bfseries \sffamily DONE} Joined Inputs}{10}{subsection.3.8}
-\contentsline {subsection}{\numberline {3.9}{\bfseries \sffamily FRAGEN} Tonnen}{10}{subsection.3.9}
-\contentsline {subsection}{\numberline {3.10}{\bfseries \sffamily FRAGEN} Anh\IeC {\"a}ngigkeiten / Provider}{11}{subsection.3.10}
-\contentsline {subsection}{\numberline {3.11}{\bfseries \sffamily MISSING IMAGES} GUIS / Programmstart/ Ende}{11}{subsection.3.11}
-\contentsline {subsection}{\numberline {3.12}{\bfseries \sffamily DRAFT} Klassen / Container definieren}{11}{subsection.3.12}
-\contentsline {subsection}{\numberline {3.13}Referenzen}{11}{subsection.3.13}
-\contentsline {section}{\numberline {4}Implementation}{11}{section.4}
-\contentsline {subsection}{\numberline {4.1}IODA Architekur}{11}{subsection.4.1}
-\contentsline {subsubsection}{\numberline {4.1.1}{\bfseries \sffamily DRAFT} Erl\IeC {\"a}uterung des Schaubildes}{12}{subsubsection.4.1.1}
-\contentsline {subsubsection}{\numberline {4.1.2}{\bfseries \sffamily DRAFT} PoMO ( Principle of Mutual Oblivion)}{13}{subsubsection.4.1.2}
-\contentsline {subsubsection}{\numberline {4.1.3}{\bfseries \sffamily DRAFT} IOSP ( Integration Operation Segregation Principle)}{13}{subsubsection.4.1.3}
-\contentsline {subsubsection}{\numberline {4.1.4}{\bfseries \sffamily DONE} Tabelle - IOSP auf einen Blick}{15}{subsubsection.4.1.4}
-\contentsline {subsection}{\numberline {4.2}{\bfseries \sffamily DONE} Beispiel foreach und Funktionsaufruf als negativ Beispiel.}{15}{subsection.4.2}
-\contentsline {subsection}{\numberline {4.3}C\# Features um Datenfl\IeC {\"u}sse zu implementieren}{18}{subsection.4.3}
-\contentsline {subsubsection}{\numberline {4.3.1}{\bfseries \sffamily DRAFT} LINQ und Lambdas}{19}{subsubsection.4.3.1}
-\contentsline {subsubsection}{\numberline {4.3.2}{\bfseries \sffamily DRAFT} yield return}{20}{subsubsection.4.3.2}
-\contentsline {subsection}{\numberline {4.4}{\bfseries \sffamily FRAGEN} Datenstr\IeC {\"o}me mit mehreren Wegen}{23}{subsection.4.4}
-\contentsline {subsubsection}{\numberline {4.4.1}Ein Output-Weg mehrer Empf\IeC {\"a}nger}{23}{subsubsection.4.4.1}
-\contentsline {subsubsection}{\numberline {4.4.2}{\bfseries \sffamily DRAFT} Mehrere Output-Wege}{23}{subsubsection.4.4.2}
-\contentsline {subsubsection}{\numberline {4.4.3}{\bfseries \sffamily FRAGEN} mit und/oder den Kontrollfluss notieren.}{24}{subsubsection.4.4.3}
-\contentsline {subsection}{\numberline {4.5}Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.}{24}{subsection.4.5}
-\contentsline {subsubsection}{\numberline {4.5.1}{\bfseries \sffamily DONE} R\IeC {\"u}ckgabewert erwarten von Funktion als Parameter \IeC {\"u}bergeben.}{24}{subsubsection.4.5.1}
-\contentsline {subsubsection}{\numberline {4.5.2}{\bfseries \sffamily TODO} API-Aufruf, Filehandling?, Daten in Integrationen?}{25}{subsubsection.4.5.2}
-\contentsline {subsection}{\numberline {4.6}{\bfseries \sffamily TODO} Warum macht man das? Sinn der Aufteilung.}{25}{subsection.4.6}
-\contentsline {subsection}{\numberline {4.7}{\bfseries \sffamily DRAFT} Ausnahmen}{25}{subsection.4.7}
-\contentsline {subsubsection}{\numberline {4.7.1}{\bfseries \sffamily TODO} Rekursion}{25}{subsubsection.4.7.1}
-\contentsline {subsubsection}{\numberline {4.7.2}{\bfseries \sffamily DONE} Integrationen}{25}{subsubsection.4.7.2}
-\contentsline {subsection}{\numberline {4.8}{\bfseries \sffamily FRAGEN} Zusammenfassung - IODA Architekur - Tabelle}{26}{subsection.4.8}
-\contentsline {subsection}{\numberline {4.9}Leserlichkeit}{26}{subsection.4.9}
-\contentsline {subsubsection}{\numberline {4.9.1}Integration gibt Funktionspointer an Operationen, welche diesen jedoch auch nur an die n\IeC {\"a}chste Operation weitergibt.}{26}{subsubsection.4.9.1}
-\contentsline {section}{\numberline {5}Die Entwurfsmethode}{26}{section.5}
-\contentsline {subsection}{\numberline {5.1}{\bfseries \sffamily TODO} Definieren der Portale und Provider}{26}{subsection.5.1}
-\contentsline {subsection}{\numberline {5.2}{\bfseries \sffamily TODO} Interfaceskizze ( im Falle einer GUI Anwendung )}{27}{subsection.5.2}
-\contentsline {subsection}{\numberline {5.3}{\bfseries \sffamily TODO} Flow Design Entwurf}{27}{subsection.5.3}
-\contentsline {subsection}{\numberline {5.4}{\bfseries \sffamily FRAGEN} Einordnen der Funktionseinheiten in bestimmte Container}{27}{subsection.5.4}
-\contentsline {subsection}{\numberline {5.5}{\bfseries \sffamily FRAGEN} Optional - Bestimmen von Parallelit\IeC {\"a}ten}{27}{subsection.5.5}
-\contentsline {section}{\numberline {6}{\bfseries \sffamily TODO} Rekursive Eigenschaft}{27}{section.6}
-\contentsline {section}{\numberline {7}Backlog}{28}{section.7}
-\contentsline {subsection}{\numberline {7.1}Einfaches Beispiel eines Flow Designs}{28}{subsection.7.1}
-\contentsline {subsubsection}{\numberline {7.1.1}Negativ Beispiel}{28}{subsubsection.7.1.1}
+\contentsline {subsubsection}{\numberline {1.2.4}Orthogonalit\IeC {\"a}t}{5}{subsubsection.1.2.4}
+\contentsline {subsection}{\numberline {1.3}{\bfseries \sffamily DRAFT} Weitere Prinzipien die Beachtung find sollen}{5}{subsection.1.3}
+\contentsline {subsubsection}{\numberline {1.3.1}DRY}{5}{subsubsection.1.3.1}
+\contentsline {subsubsection}{\numberline {1.3.2}kleine Funktionen}{5}{subsubsection.1.3.2}
+\contentsline {subsubsection}{\numberline {1.3.3}{\bfseries \sffamily TODO} Single Responsibiltiy Principle}{6}{subsubsection.1.3.3}
+\contentsline {subsubsection}{\numberline {1.3.4}Separation of Concerns}{6}{subsubsection.1.3.4}
+\contentsline {subsubsection}{\numberline {1.3.5}Information Hiding Principle}{6}{subsubsection.1.3.5}
+\contentsline {subsubsection}{\numberline {1.3.6}Dependency Injection}{7}{subsubsection.1.3.6}
+\contentsline {subsection}{\numberline {1.4}{\bfseries \sffamily DRAFT} Flow Design - Was ist das?}{7}{subsection.1.4}
+\contentsline {subsection}{\numberline {1.5}Referenzen}{7}{subsection.1.5}
+\contentsline {section}{\numberline {2}Pfeile und Kreise}{8}{section.2}
+\contentsline {subsection}{\numberline {2.1}{\bfseries \sffamily DRAFT} RomanNumbers Beispiel}{8}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}{\bfseries \sffamily MISSING IMAGES} Hirarchische Datenfl\IeC {\"u}sse}{8}{subsection.2.2}
+\contentsline {section}{\numberline {3}Notationen}{9}{section.3}
+\contentsline {subsection}{\numberline {3.1}{\bfseries \sffamily MISSING IMAGES} Datentypen}{9}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}{\bfseries \sffamily MISSING IMAGES} Definition eigener Datentypen}{9}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}{\bfseries \sffamily MISSING IMAGES} Arrays (auch mit fester Gr\IeC {\"o}\IeC {\ss }e)}{9}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}{\bfseries \sffamily FRAGEN} 0 bis n (Datenstrom)}{9}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}{\bfseries \sffamily FRAGEN} Container / Listen}{10}{subsection.3.5}
+\contentsline {subsection}{\numberline {3.6}{\bfseries \sffamily FRAGEN} 0 bis 1 (optionaler Output)}{10}{subsection.3.6}
+\contentsline {subsection}{\numberline {3.7}{\bfseries \sffamily MISSING IMAGES} Mehrere Inputs / Outputs auf einem Weg}{11}{subsection.3.7}
+\contentsline {subsection}{\numberline {3.8}{\bfseries \sffamily DONE} Joined Inputs}{11}{subsection.3.8}
+\contentsline {subsection}{\numberline {3.9}{\bfseries \sffamily FRAGEN} Tonnen}{12}{subsection.3.9}
+\contentsline {subsection}{\numberline {3.10}{\bfseries \sffamily FRAGEN} Anh\IeC {\"a}ngigkeiten / Provider}{12}{subsection.3.10}
+\contentsline {subsection}{\numberline {3.11}{\bfseries \sffamily MISSING IMAGES} GUIS / Programmstart/ Ende}{12}{subsection.3.11}
+\contentsline {subsection}{\numberline {3.12}{\bfseries \sffamily DRAFT} Klassen / Container definieren}{12}{subsection.3.12}
+\contentsline {subsection}{\numberline {3.13}Referenzen}{13}{subsection.3.13}
+\contentsline {section}{\numberline {4}Implementation}{13}{section.4}
+\contentsline {subsection}{\numberline {4.1}IODA Architekur}{13}{subsection.4.1}
+\contentsline {subsubsection}{\numberline {4.1.1}{\bfseries \sffamily DRAFT} Erl\IeC {\"a}uterung des Schaubildes}{14}{subsubsection.4.1.1}
+\contentsline {subsubsection}{\numberline {4.1.2}{\bfseries \sffamily DRAFT} PoMO ( Principle of Mutual Oblivion)}{14}{subsubsection.4.1.2}
+\contentsline {subsubsection}{\numberline {4.1.3}{\bfseries \sffamily DRAFT} IOSP ( Integration Operation Segregation Principle)}{15}{subsubsection.4.1.3}
+\contentsline {subsubsection}{\numberline {4.1.4}{\bfseries \sffamily DONE} Tabelle - IOSP auf einen Blick}{16}{subsubsection.4.1.4}
+\contentsline {subsection}{\numberline {4.2}{\bfseries \sffamily DONE} Beispiel foreach und Funktionsaufruf als negativ Beispiel.}{17}{subsection.4.2}
+\contentsline {subsection}{\numberline {4.3}C\# Features um Datenfl\IeC {\"u}sse zu implementieren}{20}{subsection.4.3}
+\contentsline {subsubsection}{\numberline {4.3.1}{\bfseries \sffamily DRAFT} LINQ und Lambdas}{20}{subsubsection.4.3.1}
+\contentsline {subsubsection}{\numberline {4.3.2}{\bfseries \sffamily DRAFT} yield return}{22}{subsubsection.4.3.2}
+\contentsline {subsection}{\numberline {4.4}{\bfseries \sffamily FRAGEN} Datenstr\IeC {\"o}me mit mehreren Wegen}{24}{subsection.4.4}
+\contentsline {subsubsection}{\numberline {4.4.1}Ein Output-Weg mehrer Empf\IeC {\"a}nger}{24}{subsubsection.4.4.1}
+\contentsline {subsubsection}{\numberline {4.4.2}{\bfseries \sffamily DRAFT} Mehrere Output-Wege}{25}{subsubsection.4.4.2}
+\contentsline {subsubsection}{\numberline {4.4.3}{\bfseries \sffamily FRAGEN} mit und/oder den Kontrollfluss notieren.}{25}{subsubsection.4.4.3}
+\contentsline {subsection}{\numberline {4.5}Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.}{26}{subsection.4.5}
+\contentsline {subsubsection}{\numberline {4.5.1}{\bfseries \sffamily DONE} R\IeC {\"u}ckgabewert erwarten von Funktion als Parameter \IeC {\"u}bergeben.}{26}{subsubsection.4.5.1}
+\contentsline {subsubsection}{\numberline {4.5.2}{\bfseries \sffamily FRAGEN} API-Aufruf, Filehandling?, Daten in Integrationen?}{26}{subsubsection.4.5.2}
+\contentsline {subsection}{\numberline {4.6}Warum macht man das? Sinn der Aufteilung.}{27}{subsection.4.6}
+\contentsline {subsubsection}{\numberline {4.6.1}{\bfseries \sffamily DRAFT} Die Perlenkette}{27}{subsubsection.4.6.1}
+\contentsline {subsubsection}{\numberline {4.6.2}{\bfseries \sffamily FRAGEN} Gr\IeC {\"o}\IeC {\ss }tes \IeC {\"U}bel funktionale Abh\IeC {\"a}ngigkeiten.}{27}{subsubsection.4.6.2}
+\contentsline {subsubsection}{\numberline {4.6.3}Optional}{27}{subsubsection.4.6.3}
+\contentsline {subsection}{\numberline {4.7}{\bfseries \sffamily DRAFT} Ausnahmen}{28}{subsection.4.7}
+\contentsline {subsubsection}{\numberline {4.7.1}{\bfseries \sffamily FRAGEN} Rekursion}{28}{subsubsection.4.7.1}
+\contentsline {subsubsection}{\numberline {4.7.2}{\bfseries \sffamily DONE} Integrationen}{28}{subsubsection.4.7.2}
+\contentsline {subsection}{\numberline {4.8}{\bfseries \sffamily FRAGEN} Zusammenfassung}{28}{subsection.4.8}
+\contentsline {subsection}{\numberline {4.9}Leserlichkeit}{28}{subsection.4.9}
+\contentsline {subsubsection}{\numberline {4.9.1}Integration gibt Funktionspointer an Operationen, welche diesen jedoch auch nur an die n\IeC {\"a}chste Operation weitergibt.}{29}{subsubsection.4.9.1}
+\contentsline {section}{\numberline {5}Die Entwurfsmethode}{29}{section.5}
+\contentsline {subsection}{\numberline {5.1}{\bfseries \sffamily TODO} Definieren der Portale und Provider}{29}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}{\bfseries \sffamily TODO} Interfaceskizze ( im Falle einer GUI Anwendung )}{29}{subsection.5.2}
+\contentsline {subsection}{\numberline {5.3}{\bfseries \sffamily TODO} Flow Design Entwurf}{29}{subsection.5.3}
+\contentsline {subsection}{\numberline {5.4}{\bfseries \sffamily FRAGEN} Einordnen der Funktionseinheiten in bestimmte Container}{30}{subsection.5.4}
+\contentsline {subsection}{\numberline {5.5}{\bfseries \sffamily FRAGEN} Optional - Bestimmen von Parallelit\IeC {\"a}ten}{30}{subsection.5.5}
+\contentsline {section}{\numberline {6}{\bfseries \sffamily TODO} Rekursive Eigenschaft}{30}{section.6}
+\contentsline {section}{\numberline {7}Backlog}{31}{section.7}
+\contentsline {subsection}{\numberline {7.1}Einfaches Beispiel eines Flow Designs}{31}{subsection.7.1}
+\contentsline {subsubsection}{\numberline {7.1.1}Negativ Beispiel}{31}{subsubsection.7.1.1}
