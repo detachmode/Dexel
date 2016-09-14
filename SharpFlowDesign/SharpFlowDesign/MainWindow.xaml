@@ -42,13 +42,28 @@
         <Label>Flow Design</Label>
         <Button Width="100" Height="20" VerticalAlignment="Top" Content="Test" Click="Button_Click"></Button>
         <controls:ZoomBorder x:Name="border" ClipToBounds="True" Background="#02C73737">
-            <Canvas Name="myCanvas" >
+            <ItemsControl Name="myCanvas"  >
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <Canvas/>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemContainerStyle>
+                    <Style>
+                        <Setter Property="Canvas.Left"
+                                Value="{Binding Position.X}">
+                        </Setter>
+                        <Setter Property="Canvas.Top"
+                                Value="{Binding Position.Y}">
+                        </Setter>
+                    </Style>
+                </ItemsControl.ItemContainerStyle>
 
-                <controls:IOCell x:Name="myThumb1"  Canvas.Left="270" Canvas.Top="63.75" />
-                <controls:IOCell x:Name="myThumb2"  Canvas.Left="270" Canvas.Top="212.5" />
-                <controls:IOCell x:Name="myThumb3"  Canvas.Left="430" Canvas.Top="212.5" />
-                <controls:IOCell x:Name="myThumb4"  Canvas.Left="430" Canvas.Top="63.75" />
-            </Canvas>
+                <!--<controls:IOCell x:Name="myThumb1" />
+                <controls:IOCell x:Name="myThumb2" />
+                <controls:IOCell x:Name="myThumb3"   />
+                <controls:IOCell x:Name="myThumb4"  /-->>
+            </ItemsControl>
             <!--<controls:FlowContainer DataContext="{Binding root}" HorizontalAlignment="Center"/>-->
         </controls:ZoomBorder>
 

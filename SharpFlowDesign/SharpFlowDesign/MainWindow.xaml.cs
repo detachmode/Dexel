@@ -44,16 +44,16 @@ namespace SharpFlowDesign
         public List<IOCell> GetSelection()
         {
             var result = new List<IOCell>();
-            for (int i = 0; i < myCanvas.Children.Count; i++)
+            for (int i = 0; i < myCanvas.Items.Count; i++)
             {
-                var cell = myCanvas.Children[i] as IOCell;
+                var cell = myCanvas.Items[i] as IOCell;
                 if (cell != null)
                 {
                     if (cell.isSelected)
                     {
                         result.Add(cell);
                     }
-                   
+
                 }
             }
             return result;
@@ -83,68 +83,11 @@ namespace SharpFlowDesign
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // Move all the predefined thumbs to the front to be over the lines
-            Canvas.SetZIndex(myThumb1, 1);
-            Canvas.SetZIndex(myThumb2, 1);
-            Canvas.SetZIndex(myThumb3, 1);
-            Canvas.SetZIndex(myThumb4, 1);
+            //Canvas.SetZIndex(myThumb1, 1);
+            //Canvas.SetZIndex(myThumb2, 1);
+            //Canvas.SetZIndex(myThumb3, 1);
+            //Canvas.SetZIndex(myThumb4, 1);
 
-            #region Initialize paths for predefined thumbs
-            path1 = new Path();
-            path1.Stroke = Brushes.Black;
-            path1.StrokeThickness = 1;
-
-            path2 = new Path();
-            path2.Stroke = Brushes.Blue;
-            path2.StrokeThickness = 1;
-
-            path3 = new Path();
-            path3.Stroke = Brushes.Green;
-            path3.StrokeThickness = 1;
-
-            path4 = new Path();
-            path4.Stroke = Brushes.Red;
-            path4.StrokeThickness = 1;
-
-            myCanvas.Children.Add(path1);
-            myCanvas.Children.Add(path2);
-            myCanvas.Children.Add(path3);
-            myCanvas.Children.Add(path4);
-            #endregion
-
-            #region Initialize line geometry for predefined thumbs
-            LineGeometry line1 = new LineGeometry();
-            path1.Data = line1;
-
-            LineGeometry line2 = new LineGeometry();
-            path2.Data = line2;
-
-            LineGeometry line3 = new LineGeometry();
-            path3.Data = line3;
-
-            LineGeometry line4 = new LineGeometry();
-            path4.Data = line4;
-            #endregion
-
-            #region Setup connections for predefined thumbs
-            //myThumb1.StartLines.Add(line1);
-            //myThumb2.EndLines.Add(line1);
-
-            //myThumb2.StartLines.Add(line2);
-            //myThumb3.EndLines.Add(line2);
-
-            //myThumb3.StartLines.Add(line3);
-            //myThumb4.EndLines.Add(line3);
-
-            //myThumb4.StartLines.Add(line4);
-            //myThumb1.EndLines.Add(line4);
-            #endregion
-
-            #region Update lines' layouts
-            //UpdateLines(myThumb1);
-            //UpdateLines(myThumb2);
-            //UpdateLines(myThumb3);
-            //UpdateLines(myThumb4);
-            #endregion
 
             this.PreviewMouseLeftButtonDown += new MouseButtonEventHandler(Window1_PreviewMouseLeftButtonDown);
         }
@@ -224,14 +167,20 @@ namespace SharpFlowDesign
         private void AddNewIOCell(Point pos)
         {
             var iocell = new IOCell();
-            myCanvas.Children.Add(iocell);
+           var datacontext =  ((IOCellViewModel) iocell.DataContext);
+            datacontext.Input = "neuer input";
+
+            pos.X -= 100 ;
+            pos.Y -= 20;
+
+            datacontext.Position = new Point(pos.X,pos.Y);
+
+            myCanvas.Items.Add(iocell);
+
             //var myWindow = Window.GetWindow(this);
             //myWindow.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
             //myWindow.Arrange(new Rect(0, 0, myWindow.ActualWidth, myWindow.ActualHeight));
 
-            pos.X -= 100 ;
-            pos.Y -= 20;
-            iocell.SetPostion(pos);
 
         }
 

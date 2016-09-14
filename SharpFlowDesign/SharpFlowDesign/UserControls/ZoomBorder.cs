@@ -54,8 +54,8 @@ namespace SharpFlowDesign.UserControls
                 child.RenderTransform = group;
                 child.RenderTransformOrigin = new Point(0.0, 0.0);
                 this.MouseWheel += child_MouseWheel;
-                this.MouseLeftButtonDown += child_MouseLeftButtonDown;
-                this.MouseLeftButtonUp += child_MouseLeftButtonUp;
+                this.MouseDown += child_MouseLeftButtonDown;
+                this.MouseUp += child_MouseLeftButtonUp;
                 this.MouseMove += child_MouseMove;
                 //this.PreviewMouseRightButtonDown += new MouseButtonEventHandler(
                 //  child_PreviewMouseRightButtonDown);
@@ -116,6 +116,10 @@ namespace SharpFlowDesign.UserControls
 
         private void child_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+            if (e.ChangedButton != MouseButton.Middle)
+            {
+                return;
+            }
             if (child != null)
             {
                 var tt = GetTranslateTransform(child);
@@ -128,6 +132,11 @@ namespace SharpFlowDesign.UserControls
 
         private void child_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+
+            if (e.ChangedButton != MouseButton.Middle)
+            {
+                return;
+            }
             if (child != null)
             {
                 child.ReleaseMouseCapture();

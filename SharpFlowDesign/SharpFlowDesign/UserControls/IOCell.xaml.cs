@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using SharpFlowDesign.ViewModels;
 
 namespace SharpFlowDesign.UserControls
 {
@@ -26,7 +27,7 @@ namespace SharpFlowDesign.UserControls
         public IOCell()
         {
             InitializeComponent();
-            
+            DataContext = new IOCellViewModel();
         }
 
         public void SetPostion(Point pt)
@@ -38,16 +39,16 @@ namespace SharpFlowDesign.UserControls
         // Event hanlder for dragging functionality support same to all thumbs
         private void onDragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
         {
-            MainWindow myWindow =  (MainWindow)Window.GetWindow(this);
+            MainWindow myWindow = (MainWindow)Window.GetWindow(this);
+
             var cells = myWindow.GetSelection();
-            //UserControls.IOCell thumb = e.Source as UserControls.IOCell;
+
             foreach (var cell in cells)
             {
-                double left = Canvas.GetLeft(cell) + e.HorizontalChange;
-                double top = Canvas.GetTop(cell) + e.VerticalChange;
-
-                Canvas.SetLeft(cell, left);
-                Canvas.SetTop(cell, top);
+                var pos = ((IOCellViewModel)cell.DataContext).Position;
+                pos.X += e.HorizontalChange;
+                pos.Y += e.VerticalChange;
+                ((IOCellViewModel)cell.DataContext).Position = pos;
 
             }
 
@@ -59,13 +60,18 @@ namespace SharpFlowDesign.UserControls
 
         private void StackPanel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            isSelected = true;
+            isSelected = !isSelected;
+            if (isSelected)
+            {
+                FU.SelectionColor = new SolidColorBrush(Colors.DodgerBlue);
+            }
+            else
+            {
+                FU.SelectionColor = new SolidColorBrush(Colors.Black);
+            }
 
-           
-            
-            FU.SelectionColor = new SolidColorBrush(Colors.DodgerBlue);
+
         }
 
     }
 }
- 

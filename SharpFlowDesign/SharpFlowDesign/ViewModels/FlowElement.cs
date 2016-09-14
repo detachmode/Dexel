@@ -4,53 +4,52 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace SharpFlowDesign.ViewModels
 {
-    class FlowElement
+    [XmlInclude(typeof(FunctionUnit))]
+    [XmlInclude(typeof(Flow))]
+    [XmlInclude(typeof(FlowContainer))]
+    [XmlInclude(typeof(FlowSplitter))]
+    public class FlowElement
     {
        
     }
 
-    class Flow : FlowElement
+    public class Flow : FlowElement
     {
         public string Name { get; set; }
-        public Flow(string name)
-        {
-            Name = name;
-        }
+
 
     }
 
-    class Column : FlowElement
+    public class Column : FlowElement
     {
       
     }
 
-    class FlowContainer : FlowElement
+    public class FlowContainer : FlowElement
     {
         public List<FlowElement> FlowElements { get; set; }
-        public FlowContainer()
+        internal FlowContainer()
         {
             FlowElements = new List<FlowElement>();
         }
     }
 
-    class FlowSplitter : FlowElement
+    public class FlowSplitter : FlowElement
     {
         public List<FlowElement> FlowElements { get; set; }
-        public FlowSplitter()
+        internal FlowSplitter()
         {
             FlowElements = new List<FlowElement>();
         }
     }
 
-    class FunctionUnit : FlowElement
+    public class FunctionUnit  : FlowElement
     {
         public string Name { get; set; }
-        public FunctionUnit(string name)
-        {
-            Name = name;
-        }
+
     }
 }

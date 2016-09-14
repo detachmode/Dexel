@@ -4,11 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SharpFlowDesign.UserControls"
+            
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="300">
-    <StackPanel Orientation="Horizontal" IsHitTestVisible="True" ZIndex="100"  Thumb.DragDelta="onDragDelta" PreviewMouseDown="StackPanel_MouseLeftButtonUp">
-        <local:Flow></local:Flow>
-        <local:FunctionUnit x:Name="FU" LabelContent="LabelContent"  ></local:FunctionUnit>
-        <local:Flow></local:Flow>
+    <StackPanel Canvas.Top ="{Binding Position.Y}"  Orientation="Horizontal" IsHitTestVisible="True" ZIndex="100"  Thumb.DragDelta="onDragDelta" PreviewMouseDown="StackPanel_MouseLeftButtonUp">
+        <local:Flow DataContext="{Binding Input}"></local:Flow>
+        <local:FunctionUnit x:Name="FU" LabelContent="{Binding Name}"  ></local:FunctionUnit>
+        <local:Flow DataContext="{Binding Output}"></local:Flow>
     </StackPanel>
 </UserControl>
