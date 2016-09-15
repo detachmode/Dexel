@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -21,57 +23,70 @@ namespace SharpFlowDesign.UserControls
     /// </summary>
     public partial class IOCell : UserControl
     {
-
-        public bool isSelected { get; set; }
+        private static bool IsDraggingMode = false;
 
         public IOCell()
         {
             InitializeComponent();
-            DataContext = new IOCellViewModel();
+;
         }
 
-        public void SetPostion(Point pt)
-        {
-            Canvas.SetLeft(this, pt.X);
-            Canvas.SetTop(this, pt.Y);
-        }
+
 
         // Event hanlder for dragging functionality support same to all thumbs
-        private void onDragDelta(object sender, System.Windows.Controls.Primitives.DragDeltaEventArgs e)
+        private void OnDragDelta(object sender, DragDeltaEventArgs e)
         {
-            MainWindow myWindow = (MainWindow)Window.GetWindow(this);
+            Debug.WriteLine("onDragDelta");
 
-            var cells = myWindow.GetSelection();
+            IOCell.IsDraggingMode = true;
 
-            foreach (var cell in cells)
-            {
-                var pos = ((IOCellViewModel)cell.DataContext).Position;
-                pos.X += e.HorizontalChange;
-                pos.Y += e.VerticalChange;
-                ((IOCellViewModel)cell.DataContext).Position = pos;
-
-            }
-
-
-
-            // Update lines's layouts
-            //UpdateLines(thumb);
-        }
-
-        private void StackPanel_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            isSelected = !isSelected;
-            if (isSelected)
-            {
-                FU.SelectionColor = new SolidColorBrush(Colors.DodgerBlue);
-            }
-            else
-            {
-                FU.SelectionColor = new SolidColorBrush(Colors.Black);
-            }
-
+            var vm = (IOCellViewModel)DataContext;
+            Interactions.OnItemDragged(vm, e);
 
         }
 
+
+
+
+        private void PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            Debug.WriteLine("PreviewMouseUp");
+            if (!IOCell.IsDraggingMode)
+            {              
+                Interactions.ToggleSelection(GetDataContext());
+                FU.FocusTextBox();
+
+            }
+        }
+
+
+
+
+
+        private void Thumb_OnDragStarted(object sender, DragStartedEventArgs e)
+        {
+            
+            Debug.WriteLine("Thumb_OnDragStarted");
+            Interactions.DecideDragMode(GetDataContext());
+        }
+
+
+        private void Thumb_OnDragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            
+            Debug.WriteLine("Thumb_OnDragCompleted");
+            IOCell.IsDraggingMode = false;
+            e.Handled = true;
+        }
+
+
+
+
+        private IOCellViewModel GetDataContext()
+        {
+
+            var dc = (IOCellViewModel)this.DataContext;
+            return dc;
+        }
     }
 }

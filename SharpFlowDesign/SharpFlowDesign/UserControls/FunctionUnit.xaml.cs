@@ -28,7 +28,6 @@ namespace SharpFlowDesign.UserControls
         {
             StartLines = new List<LineGeometry>();
             EndLines = new List<LineGeometry>();
-            this.DataContext = "Test";
             InitializeComponent();
 
         }
@@ -36,6 +35,13 @@ namespace SharpFlowDesign.UserControls
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
          
+        }
+
+
+        public void FocusTextBox()
+        {
+            TextBox textBox = (TextBox)theThumb.Template.FindName("FUName", theThumb);
+            textBox.Focus();
         }
 
         public string LabelContent

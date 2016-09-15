@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using SharpFlowDesign.UserControls;
 
 namespace SharpFlowDesign.ViewModels
 {
@@ -70,12 +71,51 @@ namespace SharpFlowDesign.ViewModels
             }
         }
 
+        private bool isSelected;
+        public bool IsSelected
+        {
+            get
+            {
+                return isSelected;
+            }
+
+            set
+            {
+                if (value == isSelected) return;
+                isSelected = value;
+                OnPropertyChanged();
+
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
 
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+
+        public void Move(double x, double y)
+        {
+            var pos = this.Position;
+            pos.X += x;
+            pos.Y += y;
+            this.Position = pos;
+        }
+
+
+
+        public void Deselect()
+        {
+            this.IsSelected = false;
+        }
+
+
+        public void Select()
+        {
+            this.IsSelected = true;
         }
     }
 }

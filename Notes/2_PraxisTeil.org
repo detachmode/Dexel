@@ -44,6 +44,39 @@ Beim Erzeugen des Codes geht es darum, die Methoden-Signaturen zu erzeugen und i
 ** Vorstellung was erreicht wurde
 * Code ➔ Diagramm
 * Schwierigkeiten, Ausblick und Fazit
+** Eigene Meinung zu FLow Design
+Ich hatte Probleme ein Flow Design für die GUI Logik des Editors zu entwerfen, da
+ich die technische Umsetzung mit WPF nicht im vorraus wusste, sondern sie erst
+durch Reserche und vielen Ausprobieren am Code herausfand, was die beste Möglichkeit ist.
+Auch Wenn es um die Frage der Usability geht, ist oft eine mehrmaliges
+Ausprobieren anhand eines einfach Protopyen meiner Meinung nach die einzige
+Möglichkeit wirlich das beste an Usability für ein Programm rauszukitzeln.
+Eine Interfaceskizze und dann gleich mit der Abarbeitung der Featureliste
+fortzufahren ist nur für einfachere GUIs ausreichend. 
+Ich persönlich habe den Wunsch neue innovative GUIs zu entwerfen, um dies zu
+Verwirklichen erfordert das mehrere Interationen an Skizzen und Protoypen.
+Hier würde ich dann das Flow Design eher nach dem Protoypen stellen.
+Also um sich zu überlegen, wie man den Protoypen dann refaktorisiert, wenn ich
+bereits alle technischen Probleme (API, WPF) gelöst habe und es nur noch darum
+geht, alles in eine saubere Form zu bringen.
+Also gerade bei komplexeren Frameworks wie WPF, wo es viele Möglichkeiten gibt
+ein Problem zu lösen, hilft einem das Flow Design eher am Anfang wenig.
+Möglicherweise implementiere ich etwas von Grund auf neu, was mir das Framework
+vielleicht mit wenigen Zeilen Code liefern hätte können, wenn ich nur vorher
+etwas reserchiert hätte. 
+
+Außerdem seh ich einen großen Nutzen von Flow Desing Diagrammen in der
+Dokumentation. Das was man an Übersichtlichkeit des Programmverlaufs verliert, wenn man viele kleine
+Funktionen hat, kann man durch ein Flow Design Diagramm in einem übersichtlichen
+Schaubild wieder zurück gewinnen. Nach längerer Pause an einem Projekt oder für
+eine andere Person hilft einem das Flow Design Diagramm um schnell wieder den
+Überblick über das Zusammenspiel der einzelnen Teile des Projektes zu gewinnen.
+Meiner Meinung nach ist es für Dokumentation hilfreicher als ein UML-Diagramm.
+
+Auch der Fokus auf den Datenfluss anstatt auf Kontrollfluss hat mir gut gefallen
+und das häufigere Erzeugen von neuen Datentypen finde ich gut um den Code
+überschaubar und robuster zu gestalten.
+
   
 
   

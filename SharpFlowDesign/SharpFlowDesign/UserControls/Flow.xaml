@@ -6,14 +6,14 @@
              xmlns:local="clr-namespace:SharpFlowDesign.UserControls"
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="100">
-    <Grid Background="#FF552020">
+    <Grid Background="#FF552020" >
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
         <StackPanel Margin="12,0,22,0" Orientation="Horizontal"  HorizontalAlignment="Center" VerticalAlignment="Bottom">
             <TextBlock Foreground="White" >(</TextBlock>
-            <TextBox   Text="{Binding Mode=OneWay}" Background="{x:Null}" Foreground="White" BorderBrush="{x:Null}"   />
+            <TextBox   Text="{Binding Mode=OneWay}"  Background="{x:Null}" Foreground="White" BorderBrush="{x:Null}"   />
             <TextBlock Foreground="White" >)</TextBlock>
         </StackPanel>
 

@@ -4,12 +4,28 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SharpFlowDesign.UserControls"
-            
+             xmlns:converter="clr-namespace:SharpFlowDesign.Converter"
+
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="300">
-    <StackPanel Canvas.Top ="{Binding Position.Y}"  Orientation="Horizontal" IsHitTestVisible="True" ZIndex="100"  Thumb.DragDelta="onDragDelta" PreviewMouseDown="StackPanel_MouseLeftButtonUp">
+
+    <UserControl.Resources>
+        <converter:IOCellSelectionConverter x:Key="SelectionConverter"/>
+    </UserControl.Resources>
+    <StackPanel 
+        MinWidth="100" MinHeight="100"
+        Orientation="Horizontal" 
+        
+
+        ZIndex="100" 
+        >
         <local:Flow DataContext="{Binding Input}"></local:Flow>
-        <local:FunctionUnit x:Name="FU" LabelContent="{Binding Name}"  ></local:FunctionUnit>
+        <local:FunctionUnit x:Name="FU" LabelContent="{Binding Name}" 
+                                    Thumb.DragDelta="OnDragDelta" 
+                            Thumb.DragStarted="Thumb_OnDragStarted"
+                            Thumb.DragCompleted="Thumb_OnDragCompleted"
+                            Thumb.PreviewMouseUp="PreviewMouseUp"
+                            SelectionColor="{Binding Path=IsSelected, Converter={StaticResource SelectionConverter}}"  ></local:FunctionUnit>
         <local:Flow DataContext="{Binding Output}"></local:Flow>
     </StackPanel>
 </UserControl>

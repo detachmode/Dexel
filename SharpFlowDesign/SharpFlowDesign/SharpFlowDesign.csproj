@@ -56,6 +56,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CommandHandler.cs" />
+    <Compile Include="Converter\IOCellConverter.cs" />
+    <Compile Include="Interactions.cs" />
     <Compile Include="UserControls\Column.xaml.cs">
       <DependentUpon>Column.xaml</DependentUpon>
     </Compile>
