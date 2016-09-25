@@ -1,7 +1,81 @@
+% Created 2016-09-08 Do 16:45
+\documentclass[a4paper,12pt,oneside]{book}
+\usepackage[DIV=12,BCOR=2mm,headinclude=true,footinclude=false]{typearea}
+\usepackage[utf8]{inputenc}
+%\usepackage[T1]{fontenc}
+\usepackage[german]{babel} 
+%\usepackage{kpfonts}
+%\usepackage{mathptmx}
+%\usepackage{times,mtpro2}
+\usepackage{stix}
 
-*  Entstehung und Grundgedanken
+\usepackage{url}
+\usepackage{tabularx}
 
-** DRAFT Einleitung
+%\usepackage{txfonts}
+%\usepackage{newtxtext,newtxmath}
+%\usepackage{libertine} \usepackage[libertine]{newtxmath}
+\usepackage{listings}
+\usepackage{color}
+\usepackage{textcomp}
+\definecolor{bluekeywords}{rgb}{0,0,1}
+\definecolor{greencomments}{rgb}{0,0.5,0}
+\definecolor{redstrings}{rgb}{0.64,0.08,0.08}
+\definecolor{xmlcomments}{rgb}{0.5,0.5,0.5}
+\definecolor{types}{rgb}{0.17,0.57,0.68}
+
+\usepackage{listings}
+\lstset{language=[Sharp]C,
+	captionpos=a,
+	basicstyle=\fontfamily{consolas}\selectfont
+	framextopmargin=26pt,
+	framexbottommargin=26pt, 
+	frame=tb, framerule=0pt,
+	showspaces=false,
+	showtabs=false,
+	breaklines=true,
+	showstringspaces=false,
+	breakatwhitespace=true,
+	escapeinside={(*@}{@*)},
+	commentstyle=\color{greencomments},
+	morekeywords={partial, var, value, get, set},
+	keywordstyle=\color{bluekeywords},
+	stringstyle=\color{redstrings},
+	basicstyle=\ttfamily\small,
+}
+
+
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+%\usepackage{cite}
+\usepackage{cite}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+
+\date{\today}
+\title{Theorieteil}
+\hypersetup{
+  pdfkeywords={},
+  pdfsubject={},
+  pdfcreator={Emacs 24.5.1 (Org mode 8.2.10)}}
+\begin{document}
+
+\maketitle
+\tableofcontents
+
+\chapter{Entstehung und Grundgedanken}
+\label{sec-1}
+
+\section{DRAFT Einleitung}
+\label{sec-1-1}
 
 Flow Design ist aus der Clean Code Development Bewegung heraus entstanden. Hauptinitiatior und Erfinder ist Ralf Westphal.
 Ralf Westphal war auch Mitbegründer und Miterfinder der Clean Code Development Bewegung.
@@ -9,7 +83,7 @@ Ralf Westphal war auch Mitbegründer und Miterfinder der Clean Code Development 
 
 Clean Code Development ist eine Ansammlung aus Prinzipien, die einem helfen
 sollen wartbare Software zu schreiben. Ein Synonym, welches CCD für wartbar
-verwendet lautet /evolvierbar/.
+verwendet lautet: \emph{evolvierbar}.
 Software die mit dem Fokus auf Evolvierbarkeit hin programmiert wurde,
 kann leicht an neue Rahmenbedingungen oder Kundenwünsche angepasst werden.
 Gleichzeitig soll der Code auch leserlich bleiben und möglichst ohne Kommentare
@@ -20,17 +94,30 @@ Somit ist es in der Praxis schwer die Prinzipien auf den eigenen Code anzuwenden
 Flow Design soll in Ergänzung eine Methodik und Programmierregeln bieten, die man einfach befolgen kann und man erhält automatisch
 ein Code, der die CCD Prinzipien erfüllt.
 
-** FRAGEN CCD Prinzipien
+\section{FRAGEN CCD Prinzipien}
+\label{sec-1-2}
 Im Hauptfokus von Flow Design liegen vor allem folgende Prinzipien von CCD:
 
-  | KISS (Keep It Stupid Simple)      | Ein System sollte so einfach wie möglich gestaltet werden.                                                                                                         |
-  | YAGNI ( You Ain't Gonna Need It ) | Es soll nicht unnötig viel Zeit damit verbracht werden für zukünftige Eventualitäten zu programmieren. Der Fokus sollte darauf liegen, was aktuell gebraucht wird. |
-  | Lose Koppelung                    | Separate Einheiten eines Systems sollen möglichst über möglichst wenige Punkte miteinander kommunizieren.                                                          |
-  | Orthogonalität                    | Änderungen an einer Funktion des Systems sollen auf so wenig wie möglich andere Funktionen des Systems negativen Einfluss haben.                                   |
+\begin{center}
+	
+
+\bgroup
+\def\arraystretch{1.5}%
+	\begin{tabularx}{\textwidth}{|p{5cm}|X|}
+		\cline{1-2}
+KISS (Keep It Stupid Simple) & Ein System sollte so einfach wie möglich gestaltet werden.\\ \cline{1-2}
+YAGNI ( You Ain't Gonna Need It ) & Es soll nicht unnötig viel Zeit damit verbracht werden für zukünftige Eventualitäten zu programmieren. Der Fokus sollte darauf liegen, was aktuell gebraucht wird.\\ \cline{1-2}
+Lose Koppelung & Separate Einheiten eines Systems sollen möglichst über  wenige Punkte miteinander kommunizieren.\\ \cline{1-2}
+Orthogonalität & Änderungen an einer Funktion des Systems sollen auf so wenig wie möglich andere Funktionen des Systems negativen Einfluss haben.\\ \cline{1-2}
+	\end{tabularx}
+\egroup
+
+\end{center}
 
 FRAGE: Kurzbeschreibung richtig?
 
-*** KISS
+\subsection{KISS}
+\label{sec-1-2-1}
 Die Komplexität der Lösung eines Problems soll immer in Relation zu der
 Komplexität des Problems stehen.
 
@@ -45,7 +132,8 @@ Verkomplizierte Lösungen müssen am besten schon beim Entwurf erkannt werden.
 Hierbei soll Flow Design als Entwurfsmethode helfen, die einfachste und leicht
 verständlichste Lösung für ein Problem zu finden.
 
-*** YAGNI
+\subsection{YAGNI}
+\label{sec-1-2-2}
 Vielen Programmieren ist es wohl schon passiert, dass sie es zu gut gemeint
 haben mit dem vorausschauend Denken. Etliche Funktionen wurden für ein
 zukünftiges Szenario implementiert oder verkompliziert, die jedoch nie
@@ -60,7 +148,8 @@ schnell Änderungen am Code zu realisieren.
 Diese Eigenschaft des Codes bietet damit die Basis diesem Prinzip auch getrost
 zu befolgen und sich auf die aktuellen Rahmenbedingungen zu konzentrieren.
 
-*** Lose Koppelung
+\subsection{Lose Koppelung}
+\label{sec-1-2-3}
 Ein System soll aus möglichst voneinander unabhängigen Untersystemen bestehen,
 die nur über eine  klar definierte Stelle miteinander kommunizieren.
 Bei jedem Aufruf einer Funktion oder Abrufen einer Variable entsteht eine
@@ -70,7 +159,8 @@ der geänderten Struktur eine Koppelung besitzt. Mit loser Koppelung möchte man
 veranschaulichen, dass wenn eine Koppelung nötig ist, diese an einer Stelle konzentriert sein soll und
 sich nicht an verschiedenen Stellen des Codes fortpflanzen soll.
 
-*** Orthogonalität
+\subsection{Orthogonalität}
+\label{sec-1-2-4}
 In einem dreidimensionalen Raum sind die 3 Achsen üblicherweise zueinander
 orthogonal. Verschiebe ich ein Objekt auf einer Achse, so bleiben die Werte der
 beiden anderen unberührt Wäre eine Achse nicht orthogonal zu den beiden anderen,
@@ -81,16 +171,30 @@ Wird an einer Stelle der Code geändert, soll diese Änderung möglichst keinen 
 andere Teile des Codes haben.
 
 
-** DRAFT Weitere Prinzipien die Beachtung finden sollen
+\section{DRAFT Weitere Prinzipien die Beachtung finden sollen}
+\label{sec-1-3}
 
-| DRY  (Don't Repeat Yourself)    | Coderedundanzen vermeiden, zerlegen in Codebestandteile, die man an mehreren Stellen wiederverwenden kann                                                                                      |
-| Kleine Funktionen / Methoden    | Viele kleine Funktionen , anstatt eine große Funktion                                                                                                                                          |
-| Single Responsibility Principle | Jede Funktion/Klasse soll sich nur um eine Sache kümmern. Falls eine Funktion mehrere Aufgaben erledigt, sollten sie diese nicht selbst implementieren, sondern an Unterfunktionen weitergeben |
-| Separation of Concerns          | Unterschiedliche Funktionalitäten des System sollen in unabhängige Untersysteme gekapselt sein.                                                                                                |
-| Information Hiding Principle    | Ein Untersystem soll seiner Inneren Funktionalität vor anderen Systemen verbergen und eine möglichst fokussierte Schnittstelle bieten, mit dem äußere Systeme dieses System steuern können.      |
-| Dependency Injection           | Objekte/Variablen werden einer Funktion als Parameter mitgegeben, anstatt eine Bindung an einen äußeren Variable zu erzeugen.                                                              |
 
-*** DRY
+
+\begin{center}
+	
+
+\bgroup
+\def\arraystretch{1.5}%
+\begin{tabularx}{\textwidth}{|p{5.5cm}|X|}
+DRY  (Don't Repeat Yourself) & Coderedundanzen vermeiden, zerlegen in Codebestandteile, die man an mehreren Stellen wiederverwenden kann\\
+kleine Funktionen & Viele kleine Funktionen , anstatt eine große Funktion\\
+Single Responsibility Principle & Jede Funktion/Klasse soll sich nur um eine Sache kümmern. Falls eine Funktion mehrere Aufgaben erledigt, sollten sie diese nicht selbst implementieren, sondern an Unterfunktionen weitergeben\\
+Separation of Concerns & Unterschiedliche Funktionalitäten des System sollen in unabhängige Untersysteme gekapselt sein.\\
+Information Hiding Principle & Ein Untersystem soll seiner Inneren Funktionalität vor anderen Systemen verbergen und eine möglichst fokussierte Schnittstelle bieten, mit dem äußere Systeme dieses System steuern können.\\
+Dependency Injection & Objekte/Variablen werden einer Funktion als Parameter mitgegeben, anstatt eine Bindung an einen äußeren Variable zu erzeugen.\\
+		\end{tabularx}
+\egroup
+
+\end{center}
+
+\subsection{DRY}
+\label{sec-1-3-1}
 Einer der wichtigsten Aspekte von sauberen Codebasen. Der Grund warum es
 überhaupt Programmstrukturen wie Funktionen, Methoden, Klassen etc. gibt.
 Durch Coderedundanzen (Copy-Paste) können schnell Fehler entstehen, der Code
@@ -99,34 +203,38 @@ Wenn man das DRY Prinzip befolgt, können viele Änderungen meistens bereits an
 eine Stelle gezielt geändert werden, anstatt die Änderung an vielen Stellen
 machen zu müssen.
 
-*** Kleine Funktionen / Methoden
-CCD schlägt vor Methoden so klein wie nur möglich zu gestalten (ca. 3-10 Zeilen) und sobald sie länger werden den Code aufzuteilen und in kleinere Methoden auszulagern.
+\subsection{kleine Funktionen}
+\label{sec-1-3-2}
 Nachteile
-- Dadurch das die Methoden sehr tief verschachtelt und überall im Sourcecode verteilt sein können, 
-  ist der Programmverlauf ist bis ins Detail nicht mehr so leicht zu überschauen.
-- Das Finden von aussagekräftigen Namen erschwert sich zunehmend.
-- In bestimmten Szenarien ist der Overhead eines Methodenaufrufs möglicherweise
-  ein nicht zu verachtender Performanceaspekt (Remote Procedure Calls)
+\begin{itemize}
+\item Der Programmverlauf ist bis ins Detail nicht mehr so leicht zu überschauen
+\item In bestimmten Szenarien ist der Overhead eines Methodenaufrufs möglicherweise
+ein nicht zu verachtender Performanceaspekt (Remote Procedure Calls)
+\end{itemize}
 Vorteile
-- Erspart Kommentare durch aussagekräftige Methodennamen
-- Änderungen sind leichter zu realisieren, da durch kleine Methoden auch die
-  höhere Wiederverwendbarkeit einzelner Methoden gegeben ist. Durch weniger Redundanzen kann man
-  eine Änderung meistens gezielt an einer Stelle machen anstatt an vielen
-  Stellen etwas ändern zu müssen.
-- Erlaubt ein Denken auf höherer Abstraktionsebene, da low-Level
-  Implementierungsdetails hinter aussagekräftigen Methodennamen verborgen sind.
-- Erlaubt anderen Personen den Code leichter zu verstehen und  können selbst
-  leichter Änderungen an der Codebasis realisieren, da sie nicht den kompletten
-  Code nachvollziehen brauchen, sondern direkt zu den für sie relevanten Stellen
-  springen können.
-- Automatische Test / Unittest sind besser realisierbar, da man feingranularer
-  Testen kann
+\begin{itemize}
+\item Erspart Kommentare durch aussagekräftige Methodennamen
+\item Änderungen sind leichter zu realisieren, da durch kleine Methoden auch die
+höhere Wiederverwendbarkeit einzelner Methoden gegeben ist. Durch weniger Redundanzen kann man
+eine Änderung meistens gezielt an einer Stelle machen anstatt an vielen
+Stellen etwas ändern zu müssen.
+\item Erlaubt ein Denken auf höherer Abstraktionsebene, da low-Level
+Implementierungsdetails hinter aussagekräftigen Methodennamen verborgen sind.
+\item Erlaubt anderen Personen den Code leichter zu verstehen und  können selbst
+leichter Änderungen an der Codebasis realisieren, da sie nicht den kompletten
+Code nachvollziehen brauchen, sondern direkt zu den für sie relevanten Stellen
+springen können.
+\item Automatische Test / Unittest sind besser realisierbar, da man feingranularer
+Testen kann
+\end{itemize}
 
-*** TODO Single Responsibiltiy Principle
+\subsection{{\bfseries\sffamily TODO} Single Responsibiltiy Principle}
+\label{sec-1-3-3}
 Beispiel einer Methode, die mehrere Verantwortlichkeiten hat:
 
 Sauber getrennte Verantwortlichkeiten:
-*** Separation of Concerns
+\subsection{Separation of Concerns}
+\label{sec-1-3-4}
 Wenn man mit Single Responsibility Principle die Methoden in viele kleine
 Methoden aufgeteilt hat, so ist es ratsam, solche in Container
 zusammenzufassen, die einen ähnlichen Aufgabenbereich haben.
@@ -134,13 +242,15 @@ Als Container können zum Beispiel Klassen verwendet werden.
 Oft meint man mit Separation of Concerns auch das Trennen von
 GUI, Daten und Businesslogik gemeint.
 
-*** Information Hiding Principle
+\subsection{Information Hiding Principle}
+\label{sec-1-3-5}
 Eine Klasse besteht aus vielen Funktionen, diese werden jedoch nicht alle nach
 außen zur Verfügung gestellt.
 Oder eine API, die nach außen nur eine ganz bestimmte Schnittstelle bietet und
 die Komplexität des Systems im Inneren verbergt.
 
-*** Dependency Injection
+\subsection{Dependency Injection}
+\label{sec-1-3-6}
 Anstatt das eine Methode auf eine äußere Variable (zum Beispiel eine Membervariable einer
 Klasse) zugreift, bekommt sie den Wert als Parameter mit.
 Durch erhält man Methoden, die leichter mit Mockdaten zu testen sind.
@@ -148,7 +258,8 @@ Durch erhält man Methoden, die leichter mit Mockdaten zu testen sind.
 
 
 
-** DRAFT Flow Design - Was ist das?
+\section{DRAFT Flow Design - Was ist das?}
+\label{sec-1-4}
 
 Unter Flow Design versteht man zwei Dinge:
 Einmal das Diagramm und einmal die komplette Entwurfsmethode, indem das
@@ -172,14 +283,17 @@ Das ist jedoch keine negative Einschränkung, vielmehr ermöglicht dies, sich au
 müssen, sondern sich auf das Große ganze - das Zusammenspiel/ Komposition der Funktionseinheiten und den Datenfluss zu konzentrieren.
 
 Anzumerken wäre noch, dass nicht der Kontrollfluss abgebildet wird, sondern, wie erwähnt, der Datenfluss.
-** Referenzen
+\section{Referenzen}
+\label{sec-1-5}
 
-http://clean-code-developer.de/die-grade/roter-grad/
+\url{http://clean-code-developer.de/die-grade/roter-grad/}
 
-* Pfeile und Kreise
-** DRAFT RomanNumbers Beispiel
+\chapter{Pfeile und Kreise}
+\label{sec-2}
+\section{DRAFT RomanNumbers Beispiel}
+\label{sec-2-1}
 
-[[./img/FromRomanNumerals.png]]
+\includegraphics[width=.9\linewidth]{./img/FromRomanNumerals.png}
 
 Das nachfolgende Beispiel soll an einem einfach Beispiel zeigen, was ein Flow Design Diagramm ist.
 Das Programm/Unterprogramm soll eine römische Zahl in eine Dezimalzahl konvertieren.
@@ -201,39 +315,46 @@ Pfeile zeigen den Datenstrom, auf dem der Datentyp vermerkt ist.
 Links gehen Pfeile in die Funktionseinheit hinein, das ist der eingehende Datenstrom und rechts ist der ausgehende Datenstrom.
 Die Funktionseinheit wird auch als Domäne bezeichnet. Die Domäne interessiert sich nur für ihre Aufgabe und soll möglichst isoliert
 betrachtet ihre Aufgabe erledigen können.
-** MISSING IMAGES Hierarchische Datenflüsse
+\section{MISSING IMAGES Hierarchische Datenflüsse}
+\label{sec-2-2}
 Das Flow Design unterstützt die Funktion in eine Softwarezelle sozusagen hineinzuzoomen.
 Hier erkennt man die rekursive Eigenschaft der Softwarezellen. Eine Softwarezelle kann wiederum aus mehreren Softwarezellen bestehen,
 die zusammen die Aufgabe erledigen, die die übergeordnete Softwarezelle beschreibt.
 
 
-* Notationen
-** MISSING IMAGES Datentypen
+\chapter{Notationen}
+\label{sec-3}
+\section{MISSING IMAGES Datentypen}
+\label{sec-3-1}
 
 Eine leere Klammer bedeutet, dass keine Daten fließen.
 Falls man sowohl dem Datenstrom einen Namen geben möchte, als auch den Datentyp definieren möchte, schreibt man beides mit einem
 Doppelpunkt getrennt hintereinander.
-** MISSING IMAGES Definition eigener Datentypen
+\section{MISSING IMAGES Definition eigener Datentypen}
+\label{sec-3-2}
 Benutzt man einen Datenstrom bestehend aus einem eigenen Datentypen, so zeichnet man irgendwo auf dem Papier eine Box,
 indem man den Datentyp mit seinen Membervariablen auflistet.
 
-** MISSING IMAGES Arrays (auch mit fester Größe)
+\section{MISSING IMAGES Arrays (auch mit fester Größe)}
+\label{sec-3-3}
 Werden Daten als Arrays mit fester Größe übergeben, so wird hinter dem Datentyp eine leere eckige Klammer angehängt.
 Ist die Arraygröße bekannt, so kann man diese in die Klammer noch zusätzlich eintragen.
-** FRAGEN 0 bis n (Datenstrom)
+\section{FRAGEN 0 bis n (Datenstrom)}
+\label{sec-3-4}
 
-[[./img/diagram0n.png]]
+\includegraphics[width=.9\linewidth]{./img/diagram0n.png}
 
 Wird als * außerhalb der Klammer dargestellt.
 (int)*
 Selten wird ein Datenstrom auch mit geschweiften Klammern dargestellt, um ihn von dem optionalen Output zu unterscheiden.
-{int}
+\{int\}
 
 FRAGE: Wenn auf Container mit yield gearbeitet wird, so sind die Grenzen zum
 Datenstrom verschwommen.
-** FRAGEN Container / Listen
+\section{FRAGEN Container / Listen}
+\label{sec-3-5}
 
-[[./img/diagramCollection.png]]
+\includegraphics[width=.9\linewidth]{./img/diagramCollection.png}
 
 Stern innerhalb der Klammer.
 Der Datentyp liegt in einem Container vor.
@@ -242,29 +363,30 @@ oder aber - falls die Programmiersprache dies unterstützt - als yield ähnlich
 wie ein Stream realisiert werden, wo einzelne Elemente bereits abgearbeitet werden
 können, bevor alle anderen Daten erzeugt wurden.
 
-** FRAGEN 0 bis 1 (optionaler Output)
+\section{FRAGEN 0 bis 1 (optionaler Output)}
+\label{sec-3-6}
 
-[[./img/diagramOptional.png]]
+\includegraphics[width=.9\linewidth]{./img/diagramOptional.png}
 
 Eckige Klammer
 [int]
 
 Optionale Outputs können nicht über ein Rückgabewert realisiert werden.
 
-FRAGE: Stimmt das? Kann man nicht auch ein Datentyp verwenden, der =null= Werte zulässt?
+FRAGE: Stimmt das? Kann man nicht auch ein Datentyp verwenden, der \texttt{null} Werte zulässt?
 Dann müsste jedoch wahrscheinlich die folgende Operation den Input auf null überprüfen.
 
-** MISSING IMAGES Mehrere Inputs / Outputs auf einem Weg
+\section{MISSING IMAGES Mehrere Inputs / Outputs auf einem Weg}
+\label{sec-3-7}
 Mehrere Inputs werden in die Klammer geschrieben und mit einem Komma getrennt.
 
 Mehrere Outputs lassen sich nicht in allen Sprachen einfach realisieren
 Wahlweise kann man es mit Tupel realisieren, oder man verwendet stattdessen
 einen eigenen Datentyp, der alle Output-Daten beinhaltet.
 
-** DONE Joined Inputs
-CLOSED: [2016-09-08 Do 13:43]
-
-[[./img/diagramJoin.png]]
+\section{{\bfseries\sffamily DONE} Joined Inputs}
+\label{sec-3-8}
+\includegraphics[width=.9\linewidth]{./img/diagramJoin.png}
 
 Wenn die Softwarezelle nur dann ihre Aufgabe erledigen kann, wenn mehrere ihre Inputs
 vorhanden sind und diese aus unterschiedliche Quellen stammen, dann braucht man ein so genannten Join.
@@ -275,16 +397,18 @@ Im Code kann dies einfach realisiert werden als eine Funktion, die mehrere Input
 Das Bündeln der Datenströme soll nicht die Funktion F erledigen, sondern ist Aufgabe einer übergeordneten Funktionseinheit.
 Die Funktionseinheit F erwartet einfach 2 Parameter auf einmal und kennt deren Herkunft nicht.
 
-** FRAGEN Tonnen
+\section{FRAGEN Tonnen}
+\label{sec-3-9}
 
-[[./img/diagramTonne.png]]
+\includegraphics[width=.9\linewidth]{./img/diagramTonne.png}
 Hat die Funkton keine Eingangsparameter, so hat sie oft stattdessen eine Tonne, die anzeigt, dass die Funktionseinheit state-behaftet ist.
 
 Tonnen bedeuten, dass die Funktionseinheit state-behaftet ist.
 In den meisten Fällen ist das eine Membervariable einer Klasse?
 
 FRAGE: Kann State auch anders umgesetzt sein?
-** FRAGEN Abhängigkeiten / Provider
+\section{FRAGEN Abhängigkeiten / Provider}
+\label{sec-3-10}
 
 Tonnen oder Dreiecke können zusätzlich noch mit einer Linie verbunden sein, an dessen Ende ein Kreis gezeichnet ist,
 dann bedeutet das, dass die Funktion auf externe Ressourcen zugreift / von ihr
@@ -293,33 +417,44 @@ Den Kreis kann man sich bildlich wie eine Hand vorstellen, an die sich die
 Funktion festhält, also eine Koppelung entsteht.
 FRAGE: Was bedeutet nochmal genau dir Hand?
 
-** MISSING IMAGES GUIS / Programmstart/ Ende
+\section{MISSING IMAGES GUIS / Programmstart/ Ende}
+\label{sec-3-11}
 Programmstart wird mit einem Kreis leeren Kreis dargestellt und Programmende mit
 einem Kreis in dessen Mitte ein Kreuz ist.
 Wenn man zeigen will, dass eine Methode von einem Event aus der GUI ausgelöst
 wurde, so macht man das deutlich, indem man ein Viereck links von der Methode zeichnet.
-** DRAFT Klassen / Container definieren
+\section{DRAFT Klassen / Container definieren}
+\label{sec-3-12}
 Das Definieren von Container und Zuordnen von Funktionseinheiten ist auch
 einfach möglich. Unter Container versteht man: Klassen, DLLs und Anwendungen.
 Es gibt zwei Möglichkeiten eine Zugehörigkeit zu einem Container zu notieren.
 Entweder man schreibt direkt unter der Funktionseinheit den Namen des
 Containers, oder man umrandet mehrere Funktionseinheiten und notiert den Namen
 des Containers am Rand der Umrandung.
-** Referenzen
+\section{Referenzen}
+\label{sec-3-13}
 Bilder sind von:
-http://flow-design.org/overview/implementation/#How_to_implement_inputs_to_a_functional_unit
+\url{http://flow-design.org/overview/implementation/#How_to_implement_inputs_to_a_functional_unit}
 
-* Implementation
+\chapter{Implementation}
+\label{sec-4}
 
 Regeln:
-- Trennen von Integrationen und Operationen
-- keine funktionale Abhängigkeiten in Operationen zu anderen Funktionseinheiten aus dem selben Programm
-** IODA Architektur
+\begin{itemize}
+\item Trennen von Integrationen und Operationen
+\item keine funktionale Abhängigkeiten in Operationen zu anderen Funktionseinheiten aus dem selben Programm
+\end{itemize}
+\section{IODA Architektur}
+\label{sec-4-1}
 IODA steht für: Integration Operation Data API
- #+CAPTION: http://blog.ralfw.de/2015/04/die-ioda-architektur.html
-[[./img/ioda1.png]]
+\begin{figure}[htb]
+\centering
+\includegraphics[width=.9\linewidth]{./img/ioda1.png}
+\caption{\url{http://blog.ralfw.de/2015/04/die-ioda-architektur.html}}
+\end{figure}
 
-*** DRAFT Erläuterung des Schaubildes
+\subsection{DRAFT Erläuterung des Schaubildes}
+\label{sec-4-1-1}
 Das Flow Design unterscheidet zwei Arten von Funktionseinheiten: Integrationen und Operationen.
 Die Aufgabe einer Integration ist, die unabhängigen Operationen in das große Ganze zu
 Integrieren.
@@ -346,12 +481,13 @@ Alle Leaf-Knoten sind Operationen, der Rest sind Integrationen.
 
 
 
-*** DRAFT PoMO ( Principle of Mutual Oblivion)
-#+BEGIN_QUOTE
-    Ein Producer kennt seinen Consumer nicht. Ein Consumer kennt seinen Producer
-    nicht. Das nenne ich das Principle of Mutual Oblivion (PoMO,
-    Prinzip der gegenseitigen Nichtbeachtung) -- architect napkin, Seite 80
-#+END_QUOTE
+\subsection{DRAFT PoMO ( Principle of Mutual Oblivion)}
+\label{sec-4-1-2}
+\begin{quote}
+Ein Producer kennt seinen Consumer nicht. Ein Consumer kennt seinen Producer
+nicht. Das nenne ich das Principle of Mutual Oblivion (PoMO,
+Prinzip der gegenseitigen Nichtbeachtung) -- architect napkin, Seite 80
+\end{quote}
 
 Dieses Prinzip besagt, dass Funktionseinheiten sich nicht gegenseitig kennen sollen.
 Es soll auch verhindert werden, dass eine Einheit eine andere aufruft und von deren Ergebnis
@@ -368,19 +504,24 @@ Die Funktionseinheiten, die das PoMO erfüllen müssen nennt Ralf Westphal Opera
 Integrationen. Als Regel zusammengefasst nennt er dies "Integration Operation Segregation Principle" kurz IOSP.
 
 
-*** DRAFT IOSP ( Integration Operation Segregation Principle)
+\subsection{DRAFT IOSP ( Integration Operation Segregation Principle)}
+\label{sec-4-1-3}
 
 Dieses Prinzip besagt, dass eine Funktionseinheit entweder eine Operation oder eine Integration ist und beide
 Verantwortungsbereiche nicht vermischt werden dürfen.
 
-**** Operationen
-Operationen sind Methoden, die Logik/ Kontrollstrukturen enthalten dürfen. In C# wären das:
-- if, else
-- switch, case
-- for, foreach,
-- while, do
-- try, catch, finally
-- goto
+\begin{enumerate}
+\item Operationen
+\label{sec-4-1-3-1}
+Operationen sind Methoden, die Logik/ Kontrollstrukturen enthalten dürfen. In C\# wären das:
+\begin{itemize}
+\item if, else
+\item switch, case
+\item for, foreach,
+\item while, do
+\item try, catch, finally
+\item goto
+\end{itemize}
 
 
 
@@ -395,18 +536,19 @@ welche die Operation aufgerufen hat ( und somit automatisch eine Integration sei
 
 
 Operationen sind also imperative programmiert. Imperative Programmierung ist ein Programmierstill,
-mit dem Fokus auf das *wie* ein Problem gelöst werden soll.
+mit dem Fokus auf das \textbf{wie} ein Problem gelöst werden soll.
 Im Gegensatz dazu steht der deklarative Ansatz.
-Beim deklarativen Programmieren steht der Fokus auf das *was* getan werden soll und nicht so sehr,
+Beim deklarativen Programmieren steht der Fokus auf das \textbf{was} getan werden soll und nicht so sehr,
 wie es im Detail genau angestellt wird. Ein Beispiel hierfür wären zum Beispiel SQL Befehle.
 Hier wird nur gesagt, was man haben möchte und das Programm kann dann die Anfrage nochmal untersuchen
 und selbst bestimmen, wie es die Anfrage am besten ausführt.
 
-**** FRAGEN Integrationen
+\item FRAGEN Integrationen
+\label{sec-4-1-3-2}
 
 Die Integrationen werden nach Flow Design Richtlinien deklarative programmiert.
 Diese Funktionseinheiten dürfen anders als die Operationen, andere Funktionen aufrufen, sie also kennen.
-Die Integrationen erfüllen also nicht das /Principle of Mutual Exclusion/
+Die Integrationen erfüllen also nicht das \emph{Principle of Mutual Exclusion}
 Der Unterschied beim Flow Design ist jedoch, dass eine bewusste Trennung eingehalten wird.
 
 Integrationen dürfen auch auf die Terminierung einer Funktion warten und den Rückgabewert  weiterreichen an andere Funktionen.
@@ -417,25 +559,29 @@ persitente Daten in Integrationen /Filehandles?).
 Die Businesslogik, das was die Funktionalität erzeugt, diese befinden sich in Operationen und sind entkoppelt von ihrer Umgebung.
 Sie bekommen einfach nur von irgendwo her einen Input (bzw. bei keinen Inputparametern einfach ausgeführt werden) und führen damit die von ihnen implementierte
 Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die Funktionseinheit jedoch nicht den Empfänger.
+\end{enumerate}
 
-*** DONE Tabelle -  IOSP auf einen Blick
-CLOSED: [2016-09-08 Do 13:54]
+\subsection{{\bfseries\sffamily DONE} Tabelle -  IOSP auf einen Blick}
+\label{sec-4-1-4}
+\begin{center}
+\begin{tabular}{lll}
+ & Operationen & Integrationen\\
+\hline
+Rechenoperationen ( +, *, \%, \ldots{} ) & Ja & Nein\\
+Kontrollstrukturen (if, else, while, for, foreach, \ldots{}) & Ja & Nein\\
+API-Aufrufe (Methoden von Bibliotheken) & Ja & Nein\\
+Ressourcen-Zugriffe (Dateien, Datenbanken etc.) & Ja & Nein\\
+Standard Library, LINQ & Ja & Ja\\
+Namen andere Funktion kennen & Nein & Ja\\
+Auf Rückgabewert warten & Nein & Ja\\
+\end{tabular}
+\end{center}
 
-|                                                         | Operationen | Integrationen |
-|---------------------------------------------------------+-------------+---------------|
-| Rechenoperationen ( +, *, %, ... )                      | Ja          | Nein          |
-| Kontrollstrukturen (if, else, while, for, foreach, ...) | Ja          | Nein          |
-| API-Aufrufe (Methoden von Bibliotheken)                 | Ja          | Nein          |
-| Ressourcen-Zugriffe (Dateien, Datenbanken etc.)         | Ja          | Nein          |
-| Standard Library, LINQ                                  | Ja          | Ja            |
-| Namen andere Funktion kennen                            | Nein        | Ja            |
-| Auf Rückgabewert warten                                 | Nein        | Ja            |
 
 
-
-** DONE Beispiel foreach und Funktionsaufruf als negativ Beispiel.
-CLOSED: [2016-09-08 Do 14:26]
-#+BEGIN_SRC cpp
+\section{{\bfseries\sffamily DONE} Beispiel foreach und Funktionsaufruf als negativ Beispiel.}
+\label{sec-4-2}
+\begin{verbatim}
 static void FormatAndPrintStrings(List<string> lines)
 {
    foreach(line in lines)
@@ -444,9 +590,8 @@ static void FormatAndPrintStrings(List<string> lines)
       Console.WriteLine(s);
    }
 }
-
-#+END_SRC
-Derartiger Code wird wohl in den meisten C#-Codebasen zu finden sein und doch ist er nach Flow Design Richtlinien falsch.
+\end{verbatim}
+Derartiger Code wird wohl in den meisten C\#-Codebasen zu finden sein und doch ist er nach Flow Design Richtlinien falsch.
 
 In diesem Beispiel wurde Logik (foreach) gemischt mit einem expliziten Funktionsaufruf einer Funktion.
 Diese Funktion ist somit nicht IOSP konform.
@@ -461,7 +606,7 @@ Hier nun die Umsetzung in Flow Design mit einfachsten Mitteln.
 
 
 
-#+BEGIN_SRC cpp
+\begin{verbatim}
 static void FormatAndPrintStrings(List<string> lines)
 {
    List<string> formattedLines = FormatLines(lines);
@@ -487,21 +632,21 @@ static void PrintLines(List<string> lines)
       Console.WriteLine(line);
    }
 }
-#+END_SRC
+\end{verbatim}
 
-Die Funktion wurde aufgeteilt in eine Integration (=FormatAndPrintStrings=) und zwei Operationen.
+Die Funktion wurde aufgeteilt in eine Integration (\texttt{FormatAndPrintStrings}) und zwei Operationen.
 Im ersten Beispiel hat die Funktion zwei Aufgaben erfüllt, sie hat die Formatierung-Funktion integriert und
 das Ergebnis ausgegeben.
 
 Nun sind Integration, Ausgabe und Formatierung sauber getrennt.
 Jedoch wurde der Code nun deutlich länger. Die Foreach-Schleife ist in beide Operationen gelandet und das Initialisieren und
-Befüllen der temporären Liste in =FormatLines= nimmt auch etwas Platz ein.
+Befüllen der temporären Liste in \texttt{FormatLines} nimmt auch etwas Platz ein.
 Dazu kommt noch, das die String-Formattierungslogik nun eingebettet in dieser Foreach-Schleife liegt, welche vorher getrennt in
 einer extra Funktion sich befand.
 
 Elegantere Lösungen mit Actions
 
-#+BEGIN_SRC cpp
+\begin{verbatim}
 static void FormatAndPrintStrings(List<string> lines)
 {
    IterateOverLines(lines, onLine=PrintFormat );
@@ -520,12 +665,11 @@ static void IterateOverLines(IEnumerable<string> lines, Action<string> onLine)
       onLine(line);
    }
 }
-
-#+END_SRC
+\end{verbatim}
 
 Noch eleganter mit Actions und Lambdas
 
-#+BEGIN_SRC cpp
+\begin{verbatim}
 static void FormatAndPrintStrings(List<string> lines)
 {
   IterateOverLines(lines,
@@ -542,13 +686,13 @@ static void IterateOverLines(IEnumerable<string> lines, Action<string> onLine)
       onLine(line);
    }
 }
-#+END_SRC
+\end{verbatim}
 
 
 Elegantere Lösungen?
 
 Es gibt zwei Möglichkeiten: Die erste Möglichkeit besteht darin, die Richtlinien etwas aufzulockern und eine Kategorie "Helfer-Funktionen" einzuführen.
-Diese Funktionen haben den Status von API-Funktion. Somit wäre das erste Beispiel IOSP konform und die Funktion =FormatAndPrintStrings=
+Diese Funktionen haben den Status von API-Funktion. Somit wäre das erste Beispiel IOSP konform und die Funktion \texttt{FormatAndPrintStrings}
 würde als Operation gelten.
 Dabei stellt sich jedoch die Frage, welche Kriterien eine Funktion erfüllen muss, damit sie unter diese Kategorie
 fällt, was sich als eine nicht ganz triviale Frage herausstellt.
@@ -556,18 +700,18 @@ fällt, was sich als eine nicht ganz triviale Frage herausstellt.
 Die zweite Möglichkeit besteht darin auf Datenfluss orientierte Sprachfeatures zu verwenden.
 Somit hängt diese Möglichkeit stark von der verwendetet Programmiersprache ab.
 
-In C# existiert eine Kategorie an Methoden, die speziell auf das Arbeiten mit Datenflüssen ausgerichtet ist, diese werden
+In C\# existiert eine Kategorie an Methoden, die speziell auf das Arbeiten mit Datenflüssen ausgerichtet ist, diese werden
 zusammengefasst unter dem Namen LINQ (Language-Integrated Query).
 
 Mit Hilfe von LINQ lässt sich obiges Beispiel zu einem IOSP konformen Einzeiler reduzieren.
 
-#+BEGIN_SRC cpp
+\begin{verbatim}
 static void FormatAndPrintStrings(List<string> lines)
 {
-   lines.Select( x => MyComplexFormattingFunction(x)).ForEach( x => Console.Writeline(x));
+   lines.Select( x => MyComplexFormattingFunction(x))
+	.ForEach( x => Console.Writeline(x));
 }
-
-#+END_SRC
+\end{verbatim}
 Man könnte sich nun darüber streiten, was man nun damit gewonnen hat. Schließlich enthält die Funktion mit LINQ im Grunde
 genommen fast nun genau die selbe Logik, wie das erste Beispiel, nur mit einer anderen Schreibweise.
 Den Nutzen dieser Regel erschließt sich erst, bei größeren Codebasen und kommt bei kleinen Beispielen oft nicht zum Vorschein.
@@ -578,84 +722,142 @@ könnte für diesen Fall sogar eine Ausnahme machen und sie erlauben.
 
 Zusammenfassend könnte man noch sagen, dass eine größere Lesbarkeit von IOSP konformen Programmcode entsteht, umso mehr moderne
 Features eine Sprache hat (??? )
-** C# Features um Datenflüsse zu implementieren
-Um nach Flow Design Regeln zu programmieren, helfen einem in C# einige Features die in diesem Kapitel vorgestellt werden.
+\section{C\# Features um Datenflüsse zu implementieren}
+\label{sec-4-3}
+Um nach Flow Design Regeln zu programmieren, helfen einem in C\# einige Features die in diesem Kapitel vorgestellt werden.
 
-*** DRAFT LINQ und Lambdas
+\subsection{DRAFT LINQ und Lambdas}
+\label{sec-4-3-1}
 Laut Flow Design Richtlinien ist es erlaubt die Funktionen der
 Standardbibliothek der Sprache sowohl in Operationen als auch in Integrationen
-zu verwenden. LINQ ist eine in C# integrierte Ansammlung an Funktionen die in Verbindung mit
+zu verwenden. LINQ ist eine in C\# integrierte Ansammlung an Funktionen die in Verbindung mit
 Objekten, die das IEnumerable Interface implementieren, eingesetzt werden
 können.
 IEnumerable ist das Interface einer Containerklasse. Daran lässt sich bereits erahnen, dass LINQ
 auf das Arbeiten mit Datenflüssen spezialisiert ist.
 
 In den meisten Fällen werden den LINQ Methoden ein Lambda-Ausdruck übergeben.
-Dieser wird auch als =Selector= bezeichnet, oder im Falle von Bedingungen als =Predicate=.
+Dieser wird auch als \texttt{Selector} bezeichnet, oder im Falle von Bedingungen als \texttt{Predicate}.
 Lambda-Ausdrücke sind in Integrationen nur dann erlaubt, wenn die Lambdafuntkion
 selbst nur eine Integration ist.
 
 LINQ besteht aus ca. 150 Methoden.
 Eine (nicht vollständige Liste) findet sich hier.
-https://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods(v=vs.110).aspx
+\url{https://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods}(v=vs.110).aspx
 
 Im Folgendem werden hier nur ein paar der häufigsten verwendeten Methoden erläutert.
 
-**** Modifizieren
+\begin{enumerate}
+\item Modifizieren
+
+\label{sec-4-3-1-1}
 Folgende Methoden verändern den Datenstrom und liefern einen neuen Datenstrom
 zurück (mit Ausnahme von ForEach).
-| Select                        | Selektiert jedes Element und der Sequenz und modifiziert es. Zurückgegeben wird eine Sequenz der modifizierten Elemente                                                                                                                |
-| ForEach (nur für List-Klasse) | Iteriert über die Sequenz und führt mit jedem Element den Selector-Ausdruck aus. Im Gegensatz zu Select wird kein Sequenz zurückgeliefert                                                                                             |
-| First,  Last                  | Gibt das erste/letzte Element der Sequenz zurück, das eine bestimmte Bedingung erfüllt.                                                                                                                                                |
-| OrderBy                       | Ordnet die Sequenz mit Hilfe eines =keySelector=-Ausdrucks. Dieser bestimmt das Sortierkriterium. In manchen Fällen (Elemente sind Zahlenwerte, oder Strings), kann dieser weggelassen werden, falls das Default-Verhalten gewünscht ist |
-| Distinct                      | Duplikate werden aus der Sequenz gelöst.                                                                                                                                                                                               |
-| Join                          | Zwei Sequenzen werden zu einer zusammengefasst                                                                                                                                                                                          |
+\begin{center}
+	\bgroup
+	\def\arraystretch{1.5}%
+	\begin{tabularx}{\textwidth}{|p{5cm}|X|}
+Select & Selektiert jedes Element und der Sequenz und modifiziert es. Zurückgegeben wird eine Sequenz der modifizierten Elemente\\
+ForEach (nur für List-Klasse) & Iteriert über die Sequenz und führt mit jedem Element den Selector-Ausdruck aus. Im Gegensatz zu Select wird kein Sequenz zurückgeliefert\\
+First,  Last & Gibt das erste/letzte Element der Sequenz zurück, das eine bestimmte Bedingung erfüllt.\\
+OrderBy & Ordnet die Sequenz mit Hilfe eines \texttt{keySelector}-Ausdrucks. Dieser bestimmt das Sortierkriterium. In manchen Fällen (Elemente sind Zahlenwerte, oder Strings), kann dieser weggelassen werden, falls das Default-Verhalten gewünscht ist\\
+Distinct & Duplikate werden aus der Sequenz gelöst.\\
+Join & Zwei Sequenzen werden zu einer zusammengefasst\\
+\end{tabularx}
+\egroup
+\end{center}
 
-**** Filtern
-| Where                         | Filtern der Sequenz anhand des Predicate. Zurückgegeben wird eine Sequenz von Elementen, die das Filterkriterium entsprachen.                |
-**** Überprüfungen
+\item Filtern
+\label{sec-4-3-1-2}
+
+\begin{center}
+	\bgroup
+	\def\arraystretch{1.5}%
+	\begin{tabularx}{\textwidth}{|p{5cm}|X|}
+Where & Filtern der Sequenz anhand des Predicate. Zurückgegeben wird eine Sequenz von Elementen, die das Filterkriterium entsprachen.\\
+\end{tabularx}
+\egroup
+\end{center}
+\item Überprüfungen
+
+\label{sec-4-3-1-3}
 Diese Methoden liefern einen Boolean als Rückgabewert zurück.
-| Any      | Wendet auf jedes Element den Selector-Ausdruck an,solange, bis bei einem Element der Ausdruck wahr wird. Dann wird =true= zurückgegeben, ansonsten =false=                                                      |
-| Contains | Ähnlich wie =Any=, nur dass kein Selector übergeben wird, sondern ein Element, der selben Klasse, wie die Elemente des Containers. Befindet sich das Element in dem Container, dann wird =true= zurückgeben, ansonsten =false= |
-| All      | Ähnlich wie =Any= mit dem Unterschied, dass nur dann =true= zurückgeben wird, wenn für alle Elemente des Containers der Ausdruck wahr ist.                                                                               |
-**** Berechnungen
-Bei Container mit Zahlenwerten (=int=, =float=, =decimal=,...) als Elementen,
+\begin{center}
+	\bgroup
+	\def\arraystretch{1.5}%
+	\begin{tabularx}{\textwidth}{|p{5cm}|X|}
+Any & Wendet auf jedes Element den Selector-Ausdruck an,solange, bis bei einem Element der Ausdruck wahr wird. Dann wird \texttt{true} zurückgegeben, ansonsten \texttt{false}\\
+Contains & Ähnlich wie \texttt{Any}, nur dass kein Selector übergeben wird, sondern ein Element, der selben Klasse, wie die Elemente des Containers. Befindet sich das Element in dem Container, dann wird \texttt{true} zurückgeben, ansonsten \texttt{false}\\
+All & Ähnlich wie \texttt{Any} mit dem Unterschied, dass nur dann \texttt{true} zurückgeben wird, wenn für alle Elemente des Containers der Ausdruck wahr ist.\\
+\end{tabularx}
+\egroup
+\end{center}
+\item Berechnungen
+
+\label{sec-4-3-1-4}
+Bei Container mit Zahlenwerten (\texttt{int}, \texttt{float}, \texttt{decimal},\ldots{}) als Elementen,
 können nachfolgende Funktionen ohne zusätzliche Parameter aufgerufen werden.
 Falls dies nicht der Fall ist, muss ein Selector-Ausdruck, wahlweise als
 Lambda-Ausdruck, mit übergeben werden. Mit dem Selector kann bestimmt werden, wie
 die mathematische Rechenoperationen mit jedem Element umzugehen hat.
-| Sum     | Aufsummieren der Elemente                                    |
-| Max     | Gibt das Element mit dem höchsten Wert zurück                |
-| Min     | Gibt das Element mit dem niedrigsten Wert zurück     |
-| Count   | Zählt die Elemente des Containers und gibt die Anzahl zurück |
-| Average | Berechnet den Durchschnitt der Sequenz                      |
-**** Überspringen und Nehmen
+\begin{center}
+	\bgroup
+	\def\arraystretch{1.5}%
+	\begin{tabularx}{\textwidth}{|p{5cm}|X|}
+Sum & Aufsummieren der Elemente\\
+Max & Gibt das Element mit dem höchsten Wert zurück\\
+Min & Gibt das Element mit dem niedrigsten Wert zurück\\
+Count & Zählt die Elemente des Containers und gibt die Anzahl zurück\\
+Average & Berechnet den Durchschnitt der Sequenz\\
+\end{tabularx}
+\egroup
+\end{center}
+\item Überspringen und Nehmen
+
+\label{sec-4-3-1-5}
 Diese Methoden liefern genau wie die modifizierenden Methoden als Rückgabewert
 eine neue Sequenz an Daten zurück.
-| TakeWhile | Nimmt Elemente solange aus dem Container, bis eine Bedingung erfüllt ist. Es wird eine Sequenz von allen genommenen Elementen zurückgegeben                                                 |
-| Skip      | Überspringt eine Anzahl an Elementen                                                                                                                                                         |
-| SkipWhile | Überspringt die ersten Elemente einer Sequenz, solange bis bis die Bedingung von einem Element nicht erfüllt wird, dann wird ohne weitere Überprüfungen der Rest der Sequenz zurückgegeben |
-**** Konvertieren
-Sequenzen können mit Hilfe eines einfach Methodenaufrufs zu einem bestimmten Typ
-von Container konvertiert werden. Zum Beispiel: =ToList= oder =ToDictionary=.
+\begin{center}
+	\bgroup
+	\def\arraystretch{1.5}%
+	\begin{tabularx}{\textwidth}{|p{5cm}|X|}
+TakeWhile & Nimmt Elemente solange aus dem Container, bis eine Bedingung erfüllt ist. Es wird eine Sequenz von allen genommenen Elementen zurückgegeben\\
+Skip & Überspringt eine Anzahl an Elementen\\
+SkipWhile & Überspringt die ersten Elemente einer Sequenz, solange bis bis die Bedingung von einem Element nicht erfüllt wird, dann wird ohne weitere Überprüfungen der Rest der Sequenz zurückgegeben\\
+\end{tabularx}
+\egroup
+\end{center}
+\item Konvertieren
 
-**** Parallele Verarbeitung
+\label{sec-4-3-1-6}
+Sequenzen können mit Hilfe eines einfach Methodenaufrufs zu einem bestimmten Typ
+von Container konvertiert werden. Zum Beispiel: \texttt{ToList} oder \texttt{ToDictionary}.
+
+\item Parallele Verarbeitung
+\label{sec-4-3-1-7}
+
 Datenströme können von LINQ auch parallel verarbeitet werden. Dazu konvertiert
-man die Sequenz mit =toParallel()= zu einem PLINQ Datenstrom.
+man die Sequenz mit \texttt{toParallel()} zu einem PLINQ Datenstrom.
 Anschließend ausgeführte Methoden werden, falls möglich parallel verarbeitet.
 
-**** Referenzen
-Referenz: https://www.dotnetperls.com/linq
+\item Referenzen
+\label{sec-4-3-1-8}
+Referenz: \url{https://www.dotnetperls.com/linq}
+\end{enumerate}
 
-*** DRAFT yield return
+\subsection{DRAFT yield return}
+\label{sec-4-3-2}
 Hiermit kann man ein Producer-Consumer Pattern implementieren.
-Voraussetzung ist jedoch, dass man mit Daten arbeitet, die das =IEnumerable= Interface implementieren, wie zum Beispiel die
-=List= Klasse.
+Voraussetzung ist jedoch, dass man mit Daten arbeitet, die das \texttt{IEnumerable} Interface implementieren, wie zum Beispiel die
+\texttt{List} Klasse.
 
-Das folgende Flow Design soll mit =yield return= realisiert werden.
+Das folgende Flow Design soll mit \texttt{yield return} realisiert werden.
 
-#+CAPTION: http://www.code-whisperer.de/preview/2015/06/14/eva/
-[[./img/FlowDesign2.png]]
+\begin{figure}[htb]
+\centering
+\includegraphics[width=.9\linewidth]{./img/FlowDesign2.png}
+\caption{\url{http://www.code-whisperer.de/preview/2015/06/14/eva/}}
+\end{figure}
 
 
 Das Programm ist eine Konsolenanwendung, die den Benutzer eine Eingabe erlaubt.
@@ -664,9 +866,11 @@ dann wird die Zahl ausgegeben und der Benutzer kann wieder eine Zahl eingeben.
 Das wiederholt sich, solange bis der Benutzer die Zahl 42 eingetippt hat.
 
 
-**** FRAGEN Erläuterung des Schaubildes
+\begin{enumerate}
+\item FRAGEN Erläuterung des Schaubildes
+\label{sec-4-3-2-1}
 Die Main Funktion wird nach dem Programmstart ( leerer Kreis ) ohne Parameter aufgerufen.
-Danach ruft diese die Funktion =ReadNumbersFromCmd= auf, welche aus der Konsole eine Eingabe ließt und sie
+Danach ruft diese die Funktion \texttt{ReadNumbersFromCmd} auf, welche aus der Konsole eine Eingabe ließt und sie
 zu einem int parset. Der int nimmt die Main Funktion entgegen und gibt diesen an FindtheAnswer weiter.
 Diese Funktion hat die Aufgabe den entgegengenommenen int mit der Zahl 42 zu vergleichen. Wenn die Zahl 42 ist, wird der Datenstrom
 abgebrochen. Wenn es nicht die 42 war, dann wird der int nach außen gereicht und die Main Funktion reicht die Zahl an die
@@ -674,10 +878,9 @@ PrintNumber Funktion weiter. PrintNumber gibt die Zahl in die Konsole aus.
 Wenn der Datenstrom abbricht, returned die Mainfunktion und das Programm wird beendet.
 FRAGE: Was bedeutet nochmal die Tonne, mit Hand?
 
-**** DONE Implementation
-CLOSED: [2016-09-08 Do 14:14]
-
-#+BEGIN_SRC cpp
+\item {\bfseries\sffamily DONE} Implementation
+\label{sec-4-3-2-2}
+\begin{verbatim}
 class Program
 {
   static void Main()
@@ -709,22 +912,25 @@ class Program
     }
   }
 }
-#+END_SRC
+\end{verbatim}
 
-Der Producer ist in dem Fall der =ReadNumbersFromCmd=.
-Dieser produziert ein endloser Stream an =int=-Daten.
+Der Producer ist in dem Fall der \texttt{ReadNumbersFromCmd}.
+Dieser produziert ein endloser Stream an \texttt{int}-Daten.
 Es wird jedoch immer nur ein Element erzeugt und erst nachdem der Consumer das
 Element abgefragt hat, wird ein neues Element erzeugt.
 Wenn nichts mehr konsumiert wird, wird auch nichts mehr produziert.
 Den Abbruch der Endlosschleife ( also das Stoppen des Datenflusses) kann somit auch eine andere Funktion außerhalb der Schleife
 übernehmen.
+\end{enumerate}
 
 
 
 
-** FRAGEN Datenströme mit mehreren Wegen
-*** Ein Output-Weg mehrere Empfänger
-[[./img/diagramOut1to2.png]]
+\section{FRAGEN Datenströme mit mehreren Wegen}
+\label{sec-4-4}
+\subsection{Ein Output-Weg mehrere Empfänger}
+\label{sec-4-4-1}
+\includegraphics[width=.9\linewidth]{./img/diagramOut1to2.png}
 
 Falls ein Output an mehrere Empfänger weitergereicht werden soll, so lässt sich das am besten mit Events realisieren.
 Leider bedarf es dann bei der Benutzung der API mehr Vorsicht, da man sich vorher auf ein Events registrieren muss, bevor man
@@ -733,9 +939,10 @@ Alternativ kann auch die übergeordnete Integration den Rückgabewert an die
 anderen Beiden weiterreichen, oder über Actions (FRAGE: Liste aus Actions
 übergeben?).
 
-*** DRAFT Mehrere Output-Wege
+\subsection{DRAFT Mehrere Output-Wege}
+\label{sec-4-4-2}
 
-[[./img/diagramOut2.png]]
+\includegraphics[width=.9\linewidth]{./img/diagramOut2.png}
 
 Wenn eine Funktion mehrere Output-Wege hat, so kann man das im Code nicht mehr mit einem einfachen Rückgabewert implementieren.
 Wäre es für eine Operation erlaubt eine andere Funktionseinheit zu kennen, dann könnten wir natürlich einfach in der Operation selbst
@@ -747,31 +954,36 @@ Alternativ könnte man auch hier Events nutzen, was aber durch das zusätzliche
 Registrieren auf das Event eher nicht zu empfehlen ist, wenn absehbar ist, dass
 nicht mehrere Funktionseinheiten gleichzeitig das Ergebnis empfangen sollen.
 
-*** FRAGEN mit und/oder den Kontrollfluss notieren.
+\subsection{FRAGEN mit und/oder den Kontrollfluss notieren.}
+\label{sec-4-4-3}
 Wenn man möchte, so kann man den Kontrollfluss, auch in das Diagramm hier mit
 dazu nehmen. Man kann in den Winkel der beiden Pfeile notieren, ob beide
 Datenflüsse fließen, oder immer nur einer,
 
 FRAGE;
-1) XOR , OR ,...
-2) Kann man eine Implementationsregel davon ableiten?
-   Wenn ich ein UND habe, dann kann der Strom als Tupel/Datentyp realisiert
-   werden. Dann muss die Integration einfach nur den ersten Teil an die eine
-   Methode weiterreichen und den zweiten Teil an die andere.
-   Wenn es es ODER ist, dann sind gelten ähnliche Regeln, wie für Optionale
-   Outpute.
-   Ich muss eine Action mitgeben. (Oder Datentypen, die null sein dürfen?)
+\begin{enumerate}
+\item XOR , OR ,\ldots{}
+\item Kann man eine Implementationsregel davon ableiten?
+Wenn ich ein UND habe, dann kann der Strom als Tupel/Datentyp realisiert
+werden. Dann muss die Integration einfach nur den ersten Teil an die eine
+Methode weiterreichen und den zweiten Teil an die andere.
+Wenn es es ODER ist, dann sind gelten ähnliche Regeln, wie für Optionale
+Outpute.
+Ich muss eine Action mitgeben. (Oder Datentypen, die null sein dürfen?)
+\end{enumerate}
 
-** Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.
-*** DONE Rückgabewert erwarten von Funktion als Parameter übergeben.
-CLOSED: [2016-09-08 Do 14:08]
-In C# gibt es neben den =Actions=, die keine Rückgabewerte erlauben, auch Funktionszeiger, die einen Rückgabewert erlauben.
-Diese werden mit =Func<Parameter,...,Rückgabewert>= deklariert.
+\section{Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.}
+\label{sec-4-5}
+\subsection{{\bfseries\sffamily DONE} Rückgabewert erwarten von Funktion als Parameter übergeben.}
+\label{sec-4-5-1}
+In C\# gibt es neben den \texttt{Actions}, die keine Rückgabewerte erlauben, auch Funktionszeiger, die einen Rückgabewert erlauben.
+Diese werden mit \texttt{Func<Parameter,...,Rückgabewert>} deklariert.
 Die Func würde zwar das IOSP erfüllen, die Operation würde die andere Funktion nicht kennen,
 jedoch würde trotzdem eine funktionale Abhängigkeit entstehen und somit ist die untenstehende Funktion nicht Flow Design konform.
 
-#+BEGIN_SRC cpp
-static List<string> FormatStrings(List<string> lines , Func<string,string> formatFunc )
+\begin{verbatim}
+static List<string> FormatStrings(List<string> lines ,
+ Func<string,string> formatFunc )
 {
    List<string> result = new List<string>();
    foreach(line in lines)
@@ -781,16 +993,15 @@ static List<string> FormatStrings(List<string> lines , Func<string,string> forma
    }
    return result;
 }
+\end{verbatim}
 
 
-#+END_SRC
-
-
-*** FRAGEN API-Aufruf, Filehandling?, Daten in Integrationen?
+\subsection{FRAGEN API-Aufruf, Filehandling?, Daten in Integrationen?}
+\label{sec-4-5-2}
 
 Was ist erlaubt in Integrationen?
 
-#+BEGIN_SRC cpp
+\begin{verbatim}
 static void Foo ()
 {
 
@@ -805,11 +1016,12 @@ static void Foo ()
    }
    OtherFunc();
 }
+\end{verbatim}
 
-#+END_SRC
-
-** Warum macht man das? Sinn der Aufteilung.
-*** DRAFT Die Perlenkette
+\section{Warum macht man das? Sinn der Aufteilung.}
+\label{sec-4-6}
+\subsection{DRAFT Die Perlenkette}
+\label{sec-4-6-1}
 Die Codebasis, die nach IOSP implementiert wurde, so bildlich gesprochen einer
 Perlenkette ähneln. Der Code besteht aus aneinandergereihte Funktionseinheiten,
 die zusammen ein großes Ganzes bilden. Möchte man Änderungen an dem Programm
@@ -825,7 +1037,8 @@ In vielen Stellen des Codes, ist dies jedoch meistens kein Problem.
 Falls die Funktionseinheiten an anderer Stelle verwendet werden, ist
 möglicherweise auch eine Abänderung nicht einfach umzusetzen.
 
-*** FRAGEN Größtes Übel funktionale Abhängigkeiten.
+\subsection{FRAGEN Größtes Übel funktionale Abhängigkeiten.}
+\label{sec-4-6-2}
 Funktionale Abhängigkeiten sind im echten Leben auch ein Problem, wenn es um
 produktive Arbeitsabläufe geht.
 Wenn jemand seine Arbeit erst zu Ende bringen kann, wenn ein anderer seine Arbeit
@@ -835,46 +1048,56 @@ sie unabhängig von anderen Personen erledigen kann und dann das Ergebnis wieder
 in ein Pool zurückgibt, von denen sich andere wieder bedienen können.
 
 
-*** Optional
--  nochmal rückbesinnen auf CCD
-** DRAFT Ausnahmen
+\subsection{Optional}
+\label{sec-4-6-3}
+\begin{itemize}
+\item nochmal rückbesinnen auf CCD
+\end{itemize}
+\section{DRAFT Ausnahmen}
+\label{sec-4-7}
 Generell gilt die Regel, wenn ich mich bewusst an einer Stelle gegen die IOSP
 Regel entscheide, ist dann in Ordnung, solange ich es gut begründen kann.
 Es gibt jedoch bereits einige Fälle, wo sich ein Aufheben der Regel als gut
 herausgestellt hat.
-*** FRAGEN Rekursion
+\subsection{FRAGEN Rekursion}
+\label{sec-4-7-1}
 Operationen dürfen sich selber aufrufen.
 Was ist mit einer Kette von Operationen, wo die letzte Operation die Rekursion startet?
-*** DONE Integrationen
-CLOSED: [2016-09-08 Do 14:08]
-**** DONE Try / Catch
-CLOSED: [2016-09-08 Do 14:08]
+\subsection{{\bfseries\sffamily DONE} Integrationen}
+\label{sec-4-7-2}
+\begin{enumerate}
+\item {\bfseries\sffamily DONE} Try / Catch
+\label{sec-4-7-2-1}
 Oft braucht man auf oberster Ebene, einen Try/Catch, der alle Exceptions abfangen soll, und eine generelle Fehlerbehandlungsroutine
 startet. Hier bleibt einem nichts anderes übrig, als die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
 
-**** DONE LINQ / Standard-Library Funktionen
-CLOSED: [2016-09-08 Do 14:08]
+\item {\bfseries\sffamily DONE} LINQ / Standard-Library Funktionen
+\label{sec-4-7-2-2}
 Manche Funktionalitäten, die die Sprache selbst bereitstellt, können streng genommen als API-Aufrufe bezeichnet werden
 . Jedoch gilt hier eine Ausnahme. Man darf auch in Integrationen diese Funktionalität verwenden.
-Beispiele aus C#:
-=int.TryParse= , =List<>.Sort=, =Dictionary<>.Insert=, ...
+Beispiele aus C\#:
+\texttt{int.TryParse} , \texttt{List<>.Sort}, \texttt{Dictionary<>.Insert}, \ldots{}
+\end{enumerate}
 
 
-** FRAGEN Zusammenfassung
+\section{FRAGEN Zusammenfassung}
+\label{sec-4-8}
 
-   Tabelle:
-   Daten - Methoden in Daten-Objekte aufrufen? Darf Operation die Methode kennen?
-   Daten - was bedeutet die eigentlich? Methoden die zum Datentyp
-   gehören/gekapselt sind, sind die in Operationen erlaubt? file open handlers?
-   Daten - Darf Integration wirklich Konstruktor aufrufen, das sind doch Daten, oder gelten nur persistente Daten?
+Tabelle:
+Daten - Methoden in Daten-Objekte aufrufen? Darf Operation die Methode kennen?
+Daten - was bedeutet die eigentlich? Methoden die zum Datentyp
+gehören/gekapselt sind, sind die in Operationen erlaubt? file open handlers?
+Daten - Darf Integration wirklich Konstruktor aufrufen, das sind doch Daten, oder gelten nur persistente Daten?
 
 
 
-** Leserlichkeit
+\section{Leserlichkeit}
+\label{sec-4-9}
 In diesem Kapitel werde ich mich speziell mit der Frage der Lesbarkeit mancher Flow Design Implementationen beschäftigen.
 Ziel von CCD ist es nicht nur den Code evolvierbar zu halten, sondern ihn auch besser leserlich zu machen.
 
-*** Integration gibt Funktionszeiger an Operationen, welche diesen jedoch auch nur an die nächste Operation weitergibt.
+\subsection{Integration gibt Funktionszeiger an Operationen, welche diesen jedoch auch nur an die nächste Operation weitergibt.}
+\label{sec-4-9-1}
 Auf Ebene der Integration, wo man eigentlich das Zusammenspiel der einzelnen Operationen leicht erkennen soll, ist es bei solch einem Beispiel den
 Fluss nachzuvollziehen.
 
@@ -887,9 +1110,11 @@ Lösung: erstellen einer weiteren Integration, die die beiden letzten Operatione
                           -> Validation -> DoSomething ->
 
 
-* Die Entwurfsmethode
+\chapter{Die Entwurfsmethode}
+\label{sec-5}
 
-** TODO System-Umwelt-Diagramm
+\section{{\bfseries\sffamily TODO} System-Umwelt-Diagramm}
+\label{sec-5-1}
     Man zeichnet ein Kreis auf ein Papier, diese stellt die Domäne dar.
     Auf der linken Seite hängt man die Sachen dran, die auf die Domäne zugreifen sogenannte Portale, zum Beispiel HTTP-Zugriff,
     Batch mode, oder GUIs.
@@ -897,29 +1122,34 @@ Lösung: erstellen einer weiteren Integration, die die beiden letzten Operatione
     Ziel ist es später in der Implementierung darauf zu achten, dass die "Schicht" oder "Membran", zwischen Domäne und Außenwelt möglichst
 dünn bleibt. Somit lässt sich die Domäne besser testen und es lassen sich leichter neue Portale und Provider anhängen.
 
-** TODO Interfaceskizze ( im Falle einer GUI Anwendung )
+\section{{\bfseries\sffamily TODO} Interfaceskizze ( im Falle einer GUI Anwendung )}
+\label{sec-5-2}
 Man zeichnet eine einfache Skizze der GUI auf ein Papier und überlegt sich, welche Interaktionen kann der Nutzer machen.
 Diese Interaktionen werden dann gesammelt und für jedes wird dann ein eigenes Flow Design erstellt.
 
-** TODO Flow Design Entwurf
+\section{{\bfseries\sffamily TODO} Flow Design Entwurf}
+\label{sec-5-3}
 Herauskristallisieren der einzelnen Funktionseinheiten und welche Daten von wo nach wo fließen.
 
-** FRAGEN Einordnen der Funktionseinheiten in bestimmte Container
+\section{FRAGEN Einordnen der Funktionseinheiten in bestimmte Container}
+\label{sec-5-4}
 
 Mit Container meint man: Klassen, DLL, Anwendungen.
 Man fasst eine oder mehrere Funktionseinheiten zusammen, indem mag zum Beispiel alle mit einer gestrichelten Linie einkreist oder alle die zur selben Klasse
 gehören farblich markiert. Der Name der Klasse notiert man dann im eingekreisten Feld oder unter jeder Funktionseinheit.
-  endet mit Einteilen in Klassen, DLL, Anwendungen,...
+  endet mit Einteilen in Klassen, DLL, Anwendungen,\ldots{}
 
-  Entwurf ist ein Interaktiver Prozess, somit wäre Roundtrip super "Sinn des Systems SharpFlowDesign erläutern"
+Entwurf ist ein Interaktiver Prozess, somit wäre Roundtrip super "Sinn des Systems SharpFlowDesign erläutern"
 
 1)FRAGE: Manchmal wird eine Funktionseinheit selbst als Klasse implementiert? Dann kann ich sie ja nicht in eine andere Klasse schieben.
 
-** FRAGEN Optional - Bestimmen von Parallelitäten
+\section{FRAGEN Optional - Bestimmen von Parallelitäten}
+\label{sec-5-5}
 Es können zusätzlich noch Pfeile eingefärbt werden, um zu verdeutlichen, dass
 manche Datenströme parallel laufen können.
 FRAGE: Wie genau geht das?
-* TODO Rekursive Eigenschaft
+\chapter{{\bfseries\sffamily TODO} Rekursive Eigenschaft}
+\label{sec-6}
 Das Schöne an Flow Design und dem Konzept der Softwarezelle ist, dass sie rekursive ist.
 Man kann das Problem/die Anwendung ganz oben als eine Softwarezelle (oder hier der Kreis mit den Providern? ist das auch eine Softwarezelle?)
 verstehen, indem links Portale Zugriffe machen und rechts davon, die Softwarezelle wiederum auf ihre Provider Zugriffe macht.
@@ -930,10 +1160,13 @@ Outputs. Damit ist die Architektur weniger starr, als zum Beispiel das Schichten
 
 
 
-* Backlog
-** Einfaches Beispiel eines Flow Designs
-*** Negativ Beispiel
-#+BEGIN_SRC cpp
+\chapter{Backlog}
+\label{sec-7}
+\section{Einfaches Beispiel eines Flow Designs}
+\label{sec-7-1}
+\subsection{Negativ Beispiel}
+\label{sec-7-1-1}
+\begin{verbatim}
 ...
 static void Main()
 {
@@ -963,4 +1196,6 @@ static bool FindtheAnswer(int number)
     return false;
 }
 ...
-#+END_SRC
+\end{verbatim}
+% Emacs 24.5.1 (Org mode 8.2.10)
+\end{document}
