@@ -1,4 +1,4 @@
- 
+
 *  Entstehung und Grundgedanken
 
 ** DRAFT Einleitung
@@ -9,7 +9,7 @@ Ralf Westphal war auch Mitbegründer und Miterfinder der Clean Code Developement
 
 Clean Code Development ist eine Ansammlung aus Prinzipen, die einem helfen
 sollen wartbare Software zu schreiben. Ein Synonym, welches CCD für wartbar
-verwendet lautet /evolvierbar/. 
+verwendet lautet /evolvierbar/.
 Software die mit dem Fokus auf Evolvierbarkeit hin programmiert wurde,
 kann leicht an neue Rahmenbedingungen oder Kundenwünsche angepasst werden.
 Gleichzeitig soll der Code auch leselich bleiben und möglichst ohne Kommentare
@@ -20,7 +20,7 @@ Somit ist es in der Praxis schwer die Prinzipen auf den eigenen Code anzuwenden.
 Flow Design soll in Ergänzung eine Methodik und Programmierregeln bieten, die man einfach befolgen kann und man erhält automatisch
 ein Code, der die CCD Prinzipen erfüllt.
 
-** FRAGEN CCD Prinzipien  
+** FRAGEN CCD Prinzipien
 Im Hauptfokus von FLow Design liegen vorallem folgende Prinzipien von CCD:
 
   | KISS (Keep It Stupid Simple)      | Ein System sollte so einfach wie möglich gestaltet werden.                                                                                                         |
@@ -45,15 +45,15 @@ Verkomplizierte Lösungen müssen am besten schon beim Entwurf erkannt werden.
 Hierbei soll Flow Design als Entwurfsmethode helfen, die einfachste und leicht
 verständlichste Lösung für ein Problem zu finden.
 
-*** YAGNI 
+*** YAGNI
 Vielen Programmieren ist es wohl schon passiert, dass sie es zu gut gemeint
 haben mit dem vorrausschauend Denken. Etliche Funktionen wurden für ein
 zukünftiges Scenario implementiert oder verkompliziert, die jedoch nie
 eintraffen, oder falls sie eintraffen wurde die Software bereits durch eine
 andere ersetzt.
-YAGNI soll einem das Bewusstsein dafür schärfen, wann man sich gerade mit einer 
+YAGNI soll einem das Bewusstsein dafür schärfen, wann man sich gerade mit einer
 Situation beschäftigt, die aktuellen Rahmenbedingungen überschreiten.
-Man sollte sich eher auf das aktuelle Scenario beschränken  und keine unnötige Resourcen für zukünfitge 
+Man sollte sich eher auf das aktuelle Scenario beschränken  und keine unnötige Resourcen für zukünfitge
 Eventualitäten verschwenden.
 Flow Design bietet hierfür Implementierungsregeln, die es einem ermöglichen
 schnell Änderungen am Code zu realisieren.
@@ -76,7 +76,7 @@ orthogonal. Verschiebe ich ein Objekt auf einer Achse, so bleiben die Werte der
 beiden anderen unberüht. Wäre eine Achse nicht orthogonal zu den beiden anderen,
 so würde eine Verschiebung entlang dieser Achse auch eine Änderung der Werte
 einer anderen Achse bewirken. Diese Eigenschaft wird nun auch auf Code und wie
-er auf Änderungen reagiert, projziert. 
+er auf Änderungen reagiert, projziert.
 Wird an einer Stelle der Code geändert, soll diese Änderung möglichst keinen Einfluss auf
 andere Teile des Codes haben.
 
@@ -99,13 +99,13 @@ Wenn man das DRY Prinzip befolgt, können viele Änderungen meistens bereits an
 eine Stelle gezielt geändert werden, anstatt die Änderung an vielen Stellen
 machen zu müssen.
 
-*** kleine Funktionen 
+*** kleine Funktionen
 Nachteile
 - Der Programmverlauf ist bis ins Detail nicht mehr so leicht zu überschauen
 - In bestimmten Szenarien ist der Overhead eines Methodenaufrufs möglicherweise
   ein nicht zu verachtender Performanceaspekt (Remote Procedure Calls)
 Vorteile
-- Erspart Kommentare durch aussagekräftige Methodennamen                                                                                
+- Erspart Kommentare durch aussagekräftige Methodennamen
 - Änderungen sind leichter zu realisieren, da durch kleine Methoden auch die
   höhere Wiederverwendbarkeit einzelner Methoden gegeben ist. Durch weniger Redundanzen kann man
   eine Änderung meistens gezielt an einer Stelle machen anstatt an vielen
@@ -115,11 +115,11 @@ Vorteile
 - Erlaubt anderen Personen den Code leichter zu verstehen und  können selbst
   leichter Änderungen an der Codebasis realisieren, da sie nicht den kompletten
   Code nachvollziehen brauchen, sondern direkt zu den für sie relevanten Stellen
-  springen können. 
+  springen können.
 - Automatische Test / Unittest sind besser realisierbar, da man feingranularer
   Testen kann
 
-*** TODO Single Responsibiltiy Principle 
+*** TODO Single Responsibiltiy Principle
 Beispiel einer Methode, die mehrere Verantwortlichkeiten hat:
 
 Sauber getrennte Verantwortlichkeiten:
@@ -128,7 +128,7 @@ Wenn man mit Single Responsibility Principle die Methoden in viele kleine
 Methoden aufgeteilt hat, so ist es ratsam, solche in Container
 zusammenzufassen, die einen ähnlichen Aufgabenbereich haben.
 Als Container können zum Beispiel Klassen verwendet werden.
-Oft meint man mit Separation of Concerns auch das Trennen von 
+Oft meint man mit Separation of Concerns auch das Trennen von
 GUI, Daten und Businesslogik gemeint.
 
 *** Information Hiding Principle
@@ -141,7 +141,7 @@ die komplexität des Systems im Inneren verbergt.
 Anstatt das eine Methode auf eine äußere Varibale (zum Beispiel Membervariable einer
 Klasse) zugreift, bekommt sie den Wert als Parameter mit.
 Durch erhält man Methoden, die leichter mit Mockdaten zu testen sind.
- 
+
 
 
 
@@ -187,30 +187,30 @@ Die Pfeile zeigen den Datenstrom. Links die Inputs und rechts die Outputs.
 
 
 Der Input-Datenstrom besteht aus einem String. Dieser String wird zerlegt in einzelne Buchstaben.
-Der Buchstabenstrom wird anschließend einer Funktionseinheit gegeben, die jeden Buchstaben zu der entsprächenden 
+Der Buchstabenstrom wird anschließend einer Funktionseinheit gegeben, die jeden Buchstaben zu der entsprächenden
 Dezimalzahl konvertiert. Anschließend muss auf den Strom noch nach eine Negationsregel angewandt werden. Diese untersucht den
 Strom aus Ganzzahlen auf Stellen, wo eine kleinere Zahl vor einer größeren Zahl steht und sie in dem Fall dann negativ macht.
 Am Ende wird der Datenstrom einer Funktionseinheit übergeben, die alle Zahlen aufaddiert.
-Das Ergebnis ist die Summe aller Zahlen. 
+Das Ergebnis ist die Summe aller Zahlen.
 
 Die Funktionseinheiten sind im Diagramm als Kreise dargestellt, in welchen der möglichst aussagekräftige Name steht.
 Pfeile zeigen den Datenstrom, auf dem der Datentyp vermerkt ist.
 Links gehen Pfeile in die Funktionseinheit hinein, das ist der eingehende Datenstrom und rechts ist der ausgehende Datenstrom.
 Die Funktionseinheit wird auch als Domäne bezeichnet. Die Domäne interessiert sich nur für ihre Aufgabe und soll möglichst isoliert
 betrachtet ihre Aufgabe erledigen können.
-** MISSING IMAGES Hirarchische Datenflüsse 
+** MISSING IMAGES Hirarchische Datenflüsse
 Das Flow Design unterstützt die Funktion in eine Softwarezelle sozusagen hineinzuzoomen.
 Hier erkennt man die rekusive Eigenschaft der Softwarezellen. Eine Softwarezelle kann wiederum aus mehreren Softwarezellen bestehen,
 die zusammen die Aufgabe erledigen, die die übergeordnete Softwarezelle beschreibt.
 
 
 * Notationen
-** MISSING IMAGES Datentypen 
+** MISSING IMAGES Datentypen
 
 Eine leere Klammer bedeutet, dass keine Daten fließen.
 Falls man sowohl dem Datenstrom einen Namengeben möchte, als auch den Datentyp definieren möchte, schreibt man beides mit einem
 Doppelpunkt getrennt hintereinander.
-** MISSING IMAGES Definition eigener Datentypen 
+** MISSING IMAGES Definition eigener Datentypen
 Benutzt man einen Datenstrom bestehend aus einem eigenen Datentypen, so zeichnet man irgendwo auf dem Papier eine Box,
 indem man den Datentyp mit seinen Membervariablen auflistet.
 
@@ -233,7 +233,7 @@ Datenstrom verschwommen.
 [[./img/diagramCollection.png]]
 
 Stern innerhalb der Klammer.
-Der Datentyp liegt in einem Container vor. 
+Der Datentyp liegt in einem Container vor.
 Die zu bearbeitende Daten können entweder komplett auf einmal an die Funktionseinheit gegeben werden ( als Liste, Dictionary, etc. )
 oder aber - falls die Programmiersprache dies unterstützt - als yield ähnlich
 wie ein Stream realisert werden, wo einzelne Elemente bereits abgearbeitet werden
@@ -258,19 +258,19 @@ Mehrere Outputs lassen sich nicht in allen Sprachen einfach realiseren.
 Wahlweise kann man es mit Tupel realisieren, oder man verwendet stattdessen
 einen eigenen Datentyp, der alle Output-Daten beinhaltet.
 
-** DONE Joined Inputs 
+** DONE Joined Inputs
 CLOSED: [2016-09-08 Do 13:43]
 
 [[./img/diagramJoin.png]]
 
-Wenn die Softwarezelle nur dann ihre Aufgabe erledigen kann, wenn mehrere ihre Inputs 
+Wenn die Softwarezelle nur dann ihre Aufgabe erledigen kann, wenn mehrere ihre Inputs
 vorhanden sind und diese aus unterschiedliche Quellen stammen, dann braucht man ein so genannten Join.
 Dieser wird als Linie dargestellt an die mehrere Inputs zusammenlaufen.
 
 Im Code kann dies einfach realisiert werden als eine Funktion, die mehrer Inputsparameter entgegennimmt.
 
 Das Bündeln der Datenströme soll nicht die Funktion F erledigen, sondern ist Aufgabe einer übergeordneten Funktionseinheit.
-Die Funktionseinheit F erwartet einfach 2 Parameter auf einmal und kennt deren Herkunft nicht. 
+Die Funktionseinheit F erwartet einfach 2 Parameter auf einmal und kennt deren Herkunft nicht.
 
 ** FRAGEN Tonnen
 
@@ -295,7 +295,7 @@ Programmstart wird mit einem Kreis leeren Kreis dargestellt und Programmende mit
 einem Kreis in dessen Mitte ein Kreuz ist.
 Wenn man zeigen will, dass eine Methode von einem Event aus der GUI ausgelöst
 wurde, so macht man das deutlich, indem man ein Viereck link von der Methode zeichnet.
-** DRAFT Klassen / Container definieren  
+** DRAFT Klassen / Container definieren
 Das Definieren von Container und Zuordnen von Funktionseinheiten ist auch
 einfach möglich. Unter Container versteht man: Klassen, DLLs und Anwendungen.
 Es gibt zwei Möglichkeiten eine Zugehörigkeit zu einem Container zu notieren.
@@ -303,7 +303,7 @@ Entweder man schreibt direkt unter der Funktionseinheit den Namen des
 Containers, oder man umrandet mehrere Funktioneseinheiten und notiert den Namen
 des Containers am Rand der Umrandung.
 ** Referenzen
-Bilder sind von: 
+Bilder sind von:
 http://flow-design.org/overview/implementation/#How_to_implement_inputs_to_a_functional_unit
 
 * Implementation
@@ -316,20 +316,20 @@ IODA steht für: Integration Operation Data API
  #+CAPTION: http://blog.ralfw.de/2015/04/die-ioda-architektur.html
 [[./img/ioda1.png]]
 
-*** DRAFT Erläuterung des Schaubildes 
+*** DRAFT Erläuterung des Schaubildes
 Das Flow Design unterscheidet zwei Arten von Funktionseinheiten: Integrationen und Operationen.
 Die Aufgabe einer Integration ist, die unabhängigen Operationen in das große Ganze zu
-Integrieren. 
+Integrieren.
 (Fußnote) Ralf Westphal spielte auch mit den Gedanken diese als Funktionseinheiten als Koordinatoren oder
 Kompositionen zu bezeichnen.
 
 Integrationen "integrieren" andere Integrationen und/oder Operationen in das Programm. Sie dürfen also funktional abhängig sein
 von beiden Arten von Funktionseinheiten.
 
-Im Gegensatz dazu dürfen Operationen keine Integrationen oder andere Operationen kennen. 
+Im Gegensatz dazu dürfen Operationen keine Integrationen oder andere Operationen kennen.
 Sie dürfen aber auf Daten Zugreifen über diese entsteht auch die einzige Möglichkeit der Kommunikation zwischen Operationen.
 Mit Daten sind meint man sowohl inpersitent Daten (Daten im Arbeitsspeicher), als auch persitente Daten auf der Festplatte.
-Wie zum Beispiel Dateien, oder Datenbanken, wobei man beides auch zu der Gruppe API zählen könnte. 
+Wie zum Beispiel Dateien, oder Datenbanken, wobei man beides auch zu der Gruppe API zählen könnte.
 Außerdem werden API-Aufrufe in Operationen isoliert und eine Integration darf kein Wissen über die API haben.
 
 Sowohl Operationen als auch Integratinen dürfen Daten Erzeugen.
@@ -384,7 +384,7 @@ Operationen sind Methoden, die Logik/ Kontrollstrukturen enthalten dürfen. In C
 
 Gleichzeitig müssen die Operationen das PoMO prinzip erfüllen, sie dürfen keine
 andere Funktionseinheiten kennen ( gemeint ist, sie über ihrer eigentlichen
-Namen aufzurufen) oder auf das Ergebnis einer zu warten. 
+Namen aufzurufen) oder auf das Ergebnis einer zu warten.
 Ein Funktionsaufruf ist nur über Actions ( Funktionspointer ), die man als Funktionsparameter mit übergibt, oder Events möglich.
 Beide dürfen keine Rückgabewerte haben, was bei Actions implizit der Fall ist.
 Damit erfüllt die Operation weiter das PoMO, da sie nicht selbst bestimmt, welche Funktion sie aufruft, sondern die Funktion,
@@ -422,7 +422,6 @@ CLOSED: [2016-09-08 Do 13:54]
 |---------------------------------------------------------+-------------+---------------|
 | Rechenoperationen ( +, *, %, ... )                      | Ja          | Nein          |
 | Kontrollstrukturen (if, else, while, for, foreach, ...) | Ja          | Nein          |
-| try, catch                                              | Ja          | Nein          |
 | API-Aufrufe (Methoden von Bibliotheken)                 | Ja          | Nein          |
 | Ressourcen-Zugriffe (Dateien, Datenbanken etc.)         | Ja          | Nein          |
 | Standard Library, LINQ                                  | Ja          | Ja            |
@@ -462,8 +461,8 @@ Hier nun die Umsetzung in Flow Design mit einfachsten Mitteln.
 #+BEGIN_SRC cpp
 static void FormatAndPrintStrings(List<string> lines)
 {
-   List<string> formattedStrings = MyComplexFormattingFunction(lines);
-   PrintLines(formattedStrings);
+   List<string> formattedLines = FormatLines(lines);
+   PrintLines(formattedLines);
 }
 
 static List<string> FormatLines(List<string> lines)
@@ -473,7 +472,7 @@ static List<string> FormatLines(List<string> lines)
     {
           string formattedstring;
           // do complex formatting here
-          result.Add(formattedstring) 
+          result.Add(formattedstring)
     }
     return result;
 }
@@ -482,27 +481,27 @@ static void PrintLines(List<string> lines)
 {
    foreach(line in lines)
    {
-      Console.WriteLine(s);
+      Console.WriteLine(line);
    }
 }
 #+END_SRC
 
 Die Funktion wurde aufgeteilt in eine Integration (=FormatAndPrintStrings=) und zwei Operationen.
-Im ersten Beispiel hat die Funktion zwei Aufgaben erfüllt, sie hat die Formatierung-Funktion integriert und 
+Im ersten Beispiel hat die Funktion zwei Aufgaben erfüllt, sie hat die Formatierung-Funktion integriert und
 das Ergebnis ausgegeben.
 
 Nun sind Integration, Ausgabe und Formattierung sauber getrennt.
 Jedoch wurde der Code nun deutlich länger. Die Foreach-Schleife ist in beide Operationen gelandet und das Initialisieren und
 Befüllen der temporären Liste in =FormatLines= nimmt auch etwas Platz ein.
 Dazu kommt noch, das die String-Formattierungslogik nun eingebettet in dieser Foreach-Schleife liegt, welche vorher getrennt in
-einer extra Funktion sich befand. 
+einer extra Funktion sich befand.
 
 Elegantere Lösungen mit Actions
 
 #+BEGIN_SRC cpp
 static void FormatAndPrintStrings(List<string> lines)
 {
-   IterateOverEnumeration(lines, onLine=PrintFormat );
+   IterateOverLines(lines, onLine=PrintFormat );
 }
 
 static void  PrintFormat(string line)
@@ -511,7 +510,7 @@ static void  PrintFormat(string line)
     Console.WriteLine(fl);
 }
 
-static void IterateOverEnumeration(IEnumerable<string> lines, Action<string> onLine)
+static void IterateOverLines(IEnumerable<string> lines, Action<string> onLine)
 {
    foreach(line in lines)
    {
@@ -526,14 +525,14 @@ Noch eleganter mit Actions und Lambdas
 #+BEGIN_SRC cpp
 static void FormatAndPrintStrings(List<string> lines)
 {
-  IterateOverEnumeration(lines,
+  IterateOverLines(lines,
     line => {
       var fl = MyComplexFormattingFunction(line);
       Console.WriteLine(fl);
   });
 }
 
-static void IterateOverEnumeration(IEnumerable<string> lines, Action<string> onLine)
+static void IterateOverLines(IEnumerable<string> lines, Action<string> onLine)
 {
    foreach(line in lines)
    {
@@ -548,13 +547,13 @@ Elegantere Lösungen?
 Es gibt zwei Möglichkeiten: Die erste Möglichkeit besteht darin, die Richtlinien etwas aufzulockern und eineKategorie "Helfer-Funktionen" einzuführen.
 Diese Funktionen haben den Status von API-Funktion. Somit wäre das erste Beispiel IOSP konfrom und die Funktione =FormatAndPrintStrings=
 würde als Operation gelten.
-Dabei stellt sich jedoch die Frage, welche Kriterien eine Funktion erfüllen muss, damit sie unter diese Kategorie 
+Dabei stellt sich jedoch die Frage, welche Kriterien eine Funktion erfüllen muss, damit sie unter diese Kategorie
 fällt, was sich als eine nicht ganz triviale Frage herausstellt.
 
 Die zweite Möglichkeit besteht darin auf Datenfluss orientierte Sprachfeatures zu verwenden.
 Somit hängt diese Möglichkeit stark von der verwendetet Programmiersprache ab.
 
-In C# exisitiert eine Kategorie an Methoden, die speziell auf das arbeiten mit Datenflüssen ausgerichtet ist, diese werden 
+In C# exisitiert eine Kategorie an Methoden, die speziell auf das arbeiten mit Datenflüssen ausgerichtet ist, diese werden
 zusammengefasst unter dem Namen LINQ (Language-Integrated Query).
 
 Mit Hilfe von LINQ lässt sich obiges Beispiel zu einem IOSP konformen Einzeiler reduzieren.
@@ -588,7 +587,7 @@ können.
 IEnumerable ist das Interface einer Containerklasse. Daran lässt sich bereits erahnen, dass LINQ
 auf das Arbeiten mit Datenflüssen speziallisert ist.
 
-In den meisten Fällen werden den LINQ Methoden ein Lambda-Ausdruck übergeben. 
+In den meisten Fällen werden den LINQ Methoden ein Lambda-Ausdruck übergeben.
 Dieser wird auch als =Selector= bezeichnet, oder im Falle von Bedingungen als =Predicate=.
 Lambda-Ausdrücke sind in Integrationen nur dann erlaubt, wenn die Lambdafuntkion
 selbst nur eine Integration ist.
@@ -599,7 +598,7 @@ https://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods(v=vs.110
 
 Im foglendem werden hier nur ein paar der häufigsten verwendeten Methoden erläutert.
 
-**** Modifzieren 
+**** Modifzieren
 Folgende Methoden verändern den Datenstrom und liefern einen neuen Datenstrom
 zurück (mit Ausnahme von ForEach).
 | Select                        | Selektiert jedes Element und der Sequenze und modifziert es. Zurückgegeben wird eine Sequenze der mofifizierten Elemente                                                                                                                |
@@ -611,7 +610,7 @@ zurück (mit Ausnahme von ForEach).
 
 **** Filtern
 | Where                         | Filtern der Sequenze anhand des Predicate. Zurückgegeben wird eine Sequenze von Elementen, die das Filterkriterum entsprachen.                |
-**** Überprüfungen 
+**** Überprüfungen
 Diese Methoden liefern einen Boolean als Rückgabewert zurück.
 | Any      | Wendet auf jedes Element den Selector-Ausdruck an,solange, bis bei einem Element der Ausdruck wahr wird. Dann wird =true= zurückgegeben, ansonsten =false=                                                      |
 | Contains | Ähnlich wie =Any=, nur dass kein Selector übergeben wird, sondern ein Element, der selben Klasse, wie die Elemente des Containers. Befindet sich das Element in dem Container, dann wird =true= zurückgeben, ansonsten =false= |
@@ -640,7 +639,7 @@ von Container konvertiert werden. Zum Beispiel: =ToList= oder =ToDictionary=.
 **** Parallele Verarbeitung
 Datenströme können von LINQ auch parallel verarbeitet werden. Dazu konvertiert
 man die Sequenz mit =toParallel()= zu einem PLINQ Datenstrom.
-Anschließend ausgeführte Methoden werden, falls möglich parallel verarbeitet. 
+Anschließend ausgeführte Methoden werden, falls möglich parallel verarbeitet.
 
 **** Referenzen
 Referenz: https://www.dotnetperls.com/linq
@@ -684,7 +683,7 @@ class Program
     IEnumerable<int> answer = FindTheAnswer(numbers);
     PrintNumbers(answer);
   }
- 
+
   public static IEnumerable<int> ReadNumbersFromCmd()
   {
     while (true)
@@ -723,7 +722,7 @@ Den Abbruch der Endlossschleife ( also das Stoppen des Datenflusses) kann somit 
 ** FRAGEN Datenströme mit mehreren Wegen
 *** Ein Output-Weg mehrer Empfänger
 [[./img/diagramOut1to2.png]]
- 
+
 Falls ein Output an mehrere Empfänger weitergereicht werden soll, so lässt sich das am besten mit Events realisieren.
 Leider bedarf es dann bei der Benutzung der API mehr Vorsicht, da man sich vorher auf ein Events registrieren muss, bevor man
 die gewünschte Funktion aufrufen kann.
@@ -731,14 +730,14 @@ Alternativ kann auch die übergeordnete Integration den Rückgabewert an die
 anderen Beiden weiterreichen, oder über Actions (FRAGE: Liste aus Actions
 übergeben?).
 
-*** DRAFT Mehrere Output-Wege 
+*** DRAFT Mehrere Output-Wege
 
 [[./img/diagramOut2.png]]
 
 Wenn eine Funktion mehrer Output-Wege hat, so kann man das im Code nicht mehr mit einem einfachen Rückgabewert implementieren.
 Wäre es für eine Operation erlaubt eine andere Funktionseinheit zu kennen, dann könnten wir natürlich einfach in der Operation selbst
 die nachfolgenden Methoden per Namen aufrufen. Da aber Operationen entkoppelt von ihrer Umwelt sein sollen, müssen die möglichen
-Outputwege über die Argumente der Methode mitgegeben werden. Somit werden die Verantwortlichkeiten bewahrt und die übergeordnete 
+Outputwege über die Argumente der Methode mitgegeben werden. Somit werden die Verantwortlichkeiten bewahrt und die übergeordnete
 Integration koordiniert weiter den Datenfluss und die Operation kennt keine anderen Funktionseinheiten.
 
 Alternativ könnte man auch hier Events nutzen, was aber durch das zusätzliche
@@ -748,9 +747,9 @@ nicht mehrere Funktonseinheiten gleichzeitig das Ergebnis empfangen sollen.
 *** FRAGEN mit und/oder den Kontrollfluss notieren.
 Wenn man möchte, so kann man den Kontrollfluss, auch in das Diagramm hier mit
 reinnehmen. Man kann in den Winkel der beiden Pfeile notierem, ob beide
-Datenflüsse fließen, oder immer nur einer 
+Datenflüsse fließen, oder immer nur einer
 
-FRAGE; 
+FRAGE;
 1) XOR , OR ,...
 2) Kann man eine implementationsregel davon ableiten?
    Wenn ich ein UND habe, dann kann der Strom als Tupel/Datentyp realisiert
@@ -759,23 +758,23 @@ FRAGE;
    Wenn es es ODER ist, dann sind gelten ähnliche Regeln, wie für Optionale
    Outpute.
    Ich muss eine Action mitgeben. (Oder Datentypen, die null sein dürfen?)
- 
+
 ** Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.
 *** DONE Rückgabewert erwarten von Funktion als Parameter übergeben.
 CLOSED: [2016-09-08 Do 14:08]
-In C# gibt es neben den =Actions=, die keine Rückgabewerte erlauben, auch Funktionspointer, die einen Rückgabewert erlauben. 
+In C# gibt es neben den =Actions=, die keine Rückgabewerte erlauben, auch Funktionspointer, die einen Rückgabewert erlauben.
 Diese werden mit =Func<Parameter,...,Rückgabewert>= deklariert.
 Die Func würde zwar das IOSP erfüllen, die Operation würde die andere Funktion nicht kennen,
 jedoch würde trotzdem eine funktionale Abhängigkeiten entstehen und somit ist die untenstehende Funktion nicht Flow Design konform.
 
-#+BEGIN_SRC cpp 
+#+BEGIN_SRC cpp
 static List<string> FormatStrings(List<string> lines , Func<string,string> formatFunc )
 {
    List<string> result = new List<string>();
    foreach(line in lines)
    {
       string formattedstring = formatFunc(line);
-      result.Add(formattedstring) 
+      result.Add(formattedstring)
    }
    return result;
 }
@@ -786,12 +785,12 @@ static List<string> FormatStrings(List<string> lines , Func<string,string> forma
 
 *** FRAGEN API-Aufruf, Filehandling?, Daten in Integrationen?
 
-Was ist erlaubt in Integrationen? 
+Was ist erlaubt in Integrationen?
 
-#+BEGIN_SRC cpp 
+#+BEGIN_SRC cpp
 static void Foo ()
 {
-   
+
    var json = http.get(adress);
 
    Person p = new Person();
@@ -817,13 +816,13 @@ läuft wieder. Beim einfügen oder entfernen ist nur darauf zu achten, dass die
 Eingänge und Ausgänge zueinander passen. Ist das nicht der Fall, so kann man das
 entweder durch eine weitere dazwischengeschobene "Adapter"-Funktionseinheit
 beheben, oder man ändern die anschließenden Funktionseinheiten und deren
-Eingänge und Ausgänge entsprechend um. 
+Eingänge und Ausgänge entsprechend um.
 Die erste Variante bringt möglicherweise einen Performanceverlust mit sich.
 In vielen Stellen des Codes, ist dies jedoch meistens kein Problem.
 Falls die Funktionseinheiten an anderer Stelle verwendet werden, ist
 möglicherweise auch eine Abänderung nicht einfach umzusetzen.
 
-*** FRAGEN Größtes Übel funktionale Abhängigkeiten. 
+*** FRAGEN Größtes Übel funktionale Abhängigkeiten.
 Funktionale Abhängikeiten sind im echten Leben auch ein Problem, wenn es um
 produktive Arbeitsabläufe geht.
 Wenn jemand seine Arbeit erst zuende machen kann, wenn ein anderer seine Arbeit
@@ -833,7 +832,7 @@ sie unabhängig von anderen Personen erledigen kann und dann das Ergebnis wieder
 in ein Pool zurückgibt, von denen sich andere wieder bedienen können.
 
 
-*** Optional 
+*** Optional
 -  nochmal rückbesinnen auf CCD
 ** DRAFT Ausnahmen
 Generell gilt die Regel, wenn ich mich bewusst an einer Stelle gegen die IOSP
@@ -858,7 +857,7 @@ Beispiele aus C#:
 =int.TryParse= , =List<>.Sort=, =Dictionary<>.Insert=, ...
 
 
-** FRAGEN Zusammenfassung 
+** FRAGEN Zusammenfassung
 
    Tabelle:
    Daten - Methoden in Daten-Objekte aufrufen? Darf Operation die Methode kennen?
@@ -866,14 +865,14 @@ Beispiele aus C#:
    gehören/gekaspelt sind, sind die in Operationen erlaubt? file open handlers?
    Daten - Darf Integration wirklich Kontruktor aufrufen, das sind doch daten, oder gelten nur persistente daten?
 
- 
 
-** Leserlichkeit 
+
+** Leserlichkeit
 In diesem Kaptitel werde ich mich speziell mit der Frage der Lesbarkeit mancher Flow Design Implementationen beschäftigen.
 Ziel von CCD ist es nicht nur den Code evolvierbar zu halten, sondern ihn auch besser leserlich zu machen.
 
 *** Integration gibt Funktionspointer an Operationen, welche diesen jedoch auch nur an die nächste Operation weitergibt.
-Auf Ebene der Integration, wo man eigentlich das Zusammenspiel der einzelnen Operationen leicht erkennen soll, ist es bei solch einem Beispiel den 
+Auf Ebene der Integration, wo man eigentlich das Zusammenspiel der einzelnen Operationen leicht erkennen soll, ist es bei solch einem Beispiel den
 Fluss nachzuvollziehen.
 
 -> main ->
@@ -917,14 +916,14 @@ gehören farblich markiert. Der Name der Klasse notiert man dann im eingekreiste
 Es können zusätzlich noch Pfeile eingefärbt werden, um zu verdeutlichen, dass
 manche Datenströme parallel laufen können.
 FRAGE: Wie genau geht das?
-* TODO Rekursive Eigenschaft 
+* TODO Rekursive Eigenschaft
 Das Schöne an Flow Design und dem Konzept der Softwarezelle ist, dass sie rekusive ist.
 Man kann das Problem/die Andwendugn ganz oben als eine Softwarezelle (oder hier der Kreis mit den Providern? ist das auch eine Softwarezelle?)
 verstehen, indem links Portale Zugriffe machen und rechts davon, die Softwarezelle wiederum auf ihre Provider Zugriffe macht.
-Die einzelnen Aktionen aus dem die Andwendung besteht können wiederrum als Softwarezellen verstanden werden, auf die von links 
+Die einzelnen Aktionen aus dem die Andwendung besteht können wiederrum als Softwarezellen verstanden werden, auf die von links
 der Zugriff und der Input in die Softwarezelle hineinkommen, die Softwarezelle bearbeitet die Anfrage und rechts von ihr, kommt das
 Ergebnis heraus. Die Interaktion kann wiederum wieder in kleiner Teile zerlegt werden, die alle eine Softwarezelle sind, mit Inputs und
-Outputs. Damit ist die Architektur weniger starr, als zum Beispiel das Schichtenmodell oder das Zwiebelschalenmodell ( laut Ralf Westphal ). 
+Outputs. Damit ist die Architektur weniger starr, als zum Beispiel das Schichtenmodell oder das Zwiebelschalenmodell ( laut Ralf Westphal ).
 
 
 
@@ -955,7 +954,7 @@ static int ReadNumbersFromCmd()
 }
 
 static bool FindtheAnswer(int number)
-{ 
+{
     if (number == 42)
         return true;
     return false;
