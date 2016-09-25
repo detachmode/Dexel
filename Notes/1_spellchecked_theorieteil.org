@@ -87,7 +87,7 @@ andere Teile des Codes haben.
 | kleine Funktionen               | Viele kleine Funktionen , anstatt eine große Funktion                                                                                                                                          |
 | Single Responsibility Principle | Jede Funktion/Klasse soll sich nur um eine Sache kümmern. Falls eine Funktion mehrere Aufgaben erledigt, sollten sie diese nicht selbst implementieren, sondern an Unterfunktionen weitergeben |
 | Separation of Concerns          | Unterschiedliche Funktionalitäten des System sollen in unabhängige Untersysteme gekapselt sein.                                                                                                |
-| Information Hiding Principle    | Ein Untersystem soll seiner Inneren Funktionalität vor anderen Systemen verbergen und eine möglichst fokusierte Schnittstelle bieten, mitdem äußere Systeme dieses System steuern können.      |
+| Information Hiding Principle    | Ein Untersystem soll seiner Inneren Funktionalität vor anderen Systemen verbergen und eine möglichst fokussierte Schnittstelle bieten, mit dem äußere Systeme dieses System steuern können.      |
 | Dependency Injection           | Objekte/Variablen werden einer Funktion als Parameter mitgegeben, anstatt eine Bindung an einen äußeren Variable zu erzeugen.                                                              |
 
 *** DRY
@@ -138,7 +138,7 @@ Oder eine API, die nach außen nur eine ganz bestimmte Schnittstelle bietet und
 die Komplexität des Systems im Inneren verbergt.
 
 *** Dependency Injection
-Anstatt das eine Methode auf eine äußere Variable (zum Beispiel Membervariable einer
+Anstatt das eine Methode auf eine äußere Variable (zum Beispiel eine Membervariable einer
 Klasse) zugreift, bekommt sie den Wert als Parameter mit.
 Durch erhält man Methoden, die leichter mit Mockdaten zu testen sind.
 
@@ -153,7 +153,7 @@ Diagramm nur ein Teil davon ist.
 
 Flow Design soll im Gegensatz zu UML besser geeignet sein, bereits in der Entwurfsphase Anwendung zu finden.
 Ziel ist es sich auf dem Papier bereits ein Entwurf der Programmstruktur überlegen zu können.
-Aktuell sei es aus der Mode gekommen, vor dem Programmieren einen Entwurf zu erzeugen, was vorallem daran läge, dass die vorhandenen
+Aktuell sei es aus der Mode gekommen, vor dem Programmieren einen Entwurf zu erzeugen, was vor allem daran läge, dass die vorhandenen
 Entwurfsmethodiken eher hinderlich seien und einen unnötigen Overhead erzeugen ( laut Ralf Westphal)
 Es sei somit üblich geworden die Denkarbeit, wie man seinen Code möglichst sauber strukturieren kann,
 während dem Programmieren direkt im/vor dem Sourcecode zu verrichten.
@@ -281,7 +281,7 @@ Tonnen bedeuten, dass die Funktionseinheit state-behaftet ist.
 In den meisten Fällen ist das eine Membervariable einer Klasse?
 
 FRAGE: Kann State auch anders umgesetzt sein?
-** FRAGEN Anhängigkeiten / Provider
+** FRAGEN Abhängigkeiten / Provider
 
 Tonnen oder Dreiecke können zusätzlich noch mit einer Linie verbunden sein, an dessen Ende ein Kreis gezeichnet ist,
 dann bedeutet das, dass die Funktion auf externe Ressourcen zugreift / von ihr
@@ -311,7 +311,7 @@ http://flow-design.org/overview/implementation/#How_to_implement_inputs_to_a_fun
 Regeln:
 - Trennen von Integrationen und Operationen
 - keine funktionale Abhängigkeiten in Operationen zu anderen Funktionseinheiten aus dem selben Programm
-** IODA Architekur
+** IODA Architektur
 IODA steht für: Integration Operation Data API
  #+CAPTION: http://blog.ralfw.de/2015/04/die-ioda-architektur.html
 [[./img/ioda1.png]]
@@ -332,7 +332,7 @@ Mit Daten sind meint man sowohl inpersitent Daten (Daten im Arbeitsspeicher), al
 Wie zum Beispiel Dateien, oder Datenbanken, wobei man beides auch zu der Gruppe API zählen könnte.
 Außerdem werden API-Aufrufe in Operationen isoliert und eine Integration darf kein Wissen über die API haben.
 
-Sowohl Operationen als auch Integratinen dürfen Daten Erzeugen.
+Sowohl Operationen als auch Integrationen dürfen Daten Erzeugen.
 Beispielsweise das Aufrufen eines Konstruktors oder Deklarieren einer lokalen Variablen.
 Das Koordinieren und Weiterreichen und von Daten übernimmt jedoch die Integrationen ( was auf dem Schaubild nicht so
 gut herauskommt).
@@ -382,18 +382,18 @@ Operationen sind Methoden, die Logik/ Kontrollstrukturen enthalten dürfen. In C
 
 
 
-Gleichzeitig müssen die Operationen das PoMO prinzip erfüllen, sie dürfen keine
+Gleichzeitig müssen die Operationen das PoMO Prinzip erfüllen, sie dürfen keine
 andere Funktionseinheiten kennen ( gemeint ist, sie über ihrer eigentlichen
 Namen aufzurufen) oder auf das Ergebnis einer zu warten.
 Ein Funktionsaufruf ist nur über Actions ( Funktionszeiger ), die man als Funktionsparameter mit übergibt, oder Events möglich.
 Beide dürfen keine Rückgabewerte haben, was bei Actions implizit der Fall ist.
 Damit erfüllt die Operation weiter das PoMO, da sie nicht selbst bestimmt, welche Funktion sie aufruft, sondern die Funktion,
-welche die Operation aufgrufen hat ( und somit automatisch eine Integration sein muss, welche die PoMO Bedingung nicht erfüllen muss).
+welche die Operation aufgerufen hat ( und somit automatisch eine Integration sein muss, welche die PoMO Bedingung nicht erfüllen muss).
 
 
 Operationen sind also imperative programmiert. Imperative Programmierung ist ein Programmierstill,
 mit dem Fokus auf das *wie* ein Problem gelöst werden soll.
-Im Gegensatz dazu steht der Deklarative Ansatz.
+Im Gegensatz dazu steht der deklarative Ansatz.
 Beim deklarativen Programmieren steht der Fokus auf das *was* getan werden soll und nicht so sehr,
 wie es im Detail genau angestellt wird. Ein Beispiel hierfür wären zum Beispiel SQL Befehle.
 Hier wird nur gesagt, was man haben möchte und das Programm kann dann die Anfrage nochmal untersuchen
@@ -402,14 +402,14 @@ und selbst bestimmen, wie es die Anfrage am besten ausführt.
 **** FRAGEN Integrationen
 
 Die Integrationen werden nach Flow Design Richtlinien deklarative programmiert.
-Diese Funktioneneinheiten dürfen anders als die Operationen, andere Funktionen aufrufen, sie also kennen.
+Diese Funktionseinheiten dürfen anders als die Operationen, andere Funktionen aufrufen, sie also kennen.
 Die Integrationen erfüllen also nicht das /Principle of Mutual Exclusion/
 Der Unterschied beim Flow Design ist jedoch, dass eine bewusste Trennung eingehalten wird.
 
 Integrationen dürfen auch auf die Terminierung einer Funktion warten und den Rückgabewert  weiterreichen an andere Funktionen.
 Dafür dürfen sie keine Logik im Sinne von Kontrollstrukturen beinhalten.
 Auch dürfen sie keine API-spezifischen Befehle kennen, (kein Zugriff auf
-persitent Daten in Integrationen /Filehandles?).
+persitente Daten in Integrationen /Filehandles?).
 
 Die Businesslogik, das was die Funktionalität erzeugt, diese befinden sich in Operationen und sind entkoppelt von ihrer Umgebung.
 Sie bekommen einfach nur von irgendwo her einen Input (bzw. bei keinen Inputparametern einfach ausgeführt werden) und führen damit die von ihnen implementierte
@@ -490,7 +490,7 @@ Die Funktion wurde aufgeteilt in eine Integration (=FormatAndPrintStrings=) und 
 Im ersten Beispiel hat die Funktion zwei Aufgaben erfüllt, sie hat die Formatierung-Funktion integriert und
 das Ergebnis ausgegeben.
 
-Nun sind Integration, Ausgabe und Formattierung sauber getrennt.
+Nun sind Integration, Ausgabe und Formatierung sauber getrennt.
 Jedoch wurde der Code nun deutlich länger. Die Foreach-Schleife ist in beide Operationen gelandet und das Initialisieren und
 Befüllen der temporären Liste in =FormatLines= nimmt auch etwas Platz ein.
 Dazu kommt noch, das die String-Formattierungslogik nun eingebettet in dieser Foreach-Schleife liegt, welche vorher getrennt in
@@ -655,7 +655,7 @@ Das folgende Flow Design soll mit =yield return= realisiert werden.
 [[./img/FlowDesign2.png]]
 
 
-Das Programm ist eine Konsolenanwedung, die den Benutzer eine Eingabe erlaubt.
+Das Programm ist eine Konsolenanwendung, die den Benutzer eine Eingabe erlaubt.
 Wenn die Eingabe die Zahl 42 entspricht, wird das Programm beendet, wenn nicht,
 dann wird die Zahl ausgegeben und der Benutzer kann wieder eine Zahl eingeben.
 Das wiederholt sich, solange bis der Benutzer die Zahl 42 eingetippt hat.
