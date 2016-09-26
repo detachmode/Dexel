@@ -3,9 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SharpFlowDesign"
-        xmlns:controls="clr-namespace:SharpFlowDesign.UserControls"
-        xmlns:mv="clr-namespace:SharpFlowDesign.ViewModels"
+        xmlns:customControls="clr-namespace:SharpFlowDesign.CustomControls"
+        xmlns:views="clr-namespace:SharpFlowDesign.Views"
         mc:Ignorable="d"
         Title="Sharp Flow Design" Height="350" Width="825">
     <Window.Resources>
@@ -41,7 +40,7 @@
     <Grid Background="{StaticResource MyVisualBrush}" MouseUp="UIElement_OnMouseUp"  RenderTransformOrigin="0.5,0.5"  ContextMenu="{StaticResource MyContextMenu}" >
         <Label>Flow Design</Label>
         <Button Width="100" Height="20" VerticalAlignment="Top" Content="Test" ></Button>
-        <controls:ZoomBorder x:Name="border" ClipToBounds="True" Background="#02C73737">
+        <customControls:ZoomBorder x:Name="border" ClipToBounds="True" Background="#02C73737">
             <ItemsControl Name="myCanvas" ItemsSource="{Binding Items}" >
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -60,11 +59,11 @@
                 </ItemsControl.ItemContainerStyle>
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <controls:IOCell/>
+                        <views:IOCell/>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
                 </ItemsControl>
-        </controls:ZoomBorder>
+        </customControls:ZoomBorder>
 
 
 

@@ -1,22 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using SharpFlowDesign.ViewModels;
 
-namespace SharpFlowDesign.UserControls
+namespace SharpFlowDesign.Views
 {
     /// <summary>
     /// Interaction logic for IOCell.xaml
@@ -48,14 +36,20 @@ namespace SharpFlowDesign.UserControls
 
 
 
-        private void PreviewMouseUp(object sender, MouseButtonEventArgs e)
+        private void PreviewMouseUp(object sender, MouseButtonEventArgs args)
         {
             Debug.WriteLine("PreviewMouseUp");
             if (!IOCell.IsDraggingMode)
             {              
-                Interactions.ToggleSelection(GetDataContext());
-                FU.FocusTextBox();
-
+               Interactions.ToggleSelection(GetDataContext());
+               if (args.Source.GetType() == typeof(FunctionUnit))
+                    FU.FocusTextBox();
+                if (args.Source.GetType() == typeof(Flow))
+                {
+                    var flow = (Flow) args.Source;
+                    flow.FocusTextBox();                    
+                }
+                args.Handled = true;
             }
         }
 
@@ -87,6 +81,12 @@ namespace SharpFlowDesign.UserControls
 
             var dc = (IOCellViewModel)this.DataContext;
             return dc;
+        }
+
+
+        private void UIElement_OnMouseEnter(object sender, MouseEventArgs e)
+        {
+            this.Cursor = Cursors.Hand;
         }
     }
 }

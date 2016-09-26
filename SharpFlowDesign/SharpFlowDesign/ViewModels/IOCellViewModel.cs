@@ -1,100 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using SharpFlowDesign.UserControls;
+﻿using System.Windows;
+using PropertyChanged;
 
 namespace SharpFlowDesign.ViewModels
 {
-    public class IOCellViewModel : INotifyPropertyChanged
+    [ImplementPropertyChanged]
+    public class IOCellViewModel
     {
-        private string name;
-        private Point position;
-        private string input;
-        private string output;
 
-        public string Name
-        {
-            get
-            {
-                return name;
-            }
+        public string Name { get; set; }
+        public string Input { get; set; }
+        public string Output { get; set; }
+        public Point Position { get; set; }
+        public bool IsSelected { get; set; }
 
-            set
-            {
-                name = value;
-            }
-        }
-
-        public string Input
-        {
-            get
-            {
-                return input;
-            }
-
-            set
-            {
-                input = value;
-            }
-        }
-
-        public string Output
-        {
-            get
-            {
-                return output;
-            }
-
-            set
-            {
-                output = value;
-            }
-        }
-
-        public Point Position
-        {
-            get
-            {
-                return position;
-            }
-
-            set
-            {
-                if (value == position) return;
-                position = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool isSelected;
-        public bool IsSelected
-        {
-            get
-            {
-                return isSelected;
-            }
-
-            set
-            {
-                if (value == isSelected) return;
-                isSelected = value;
-                OnPropertyChanged();
-
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
 
         public void Move(double x, double y)

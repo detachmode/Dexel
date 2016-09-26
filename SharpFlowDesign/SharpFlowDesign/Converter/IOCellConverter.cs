@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Media;
-using SharpFlowDesign.UserControls;
 using static System.Windows.Media.ColorConverter;
 
 namespace SharpFlowDesign.Converter

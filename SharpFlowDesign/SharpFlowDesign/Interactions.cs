@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
-using SharpFlowDesign.UserControls;
 using SharpFlowDesign.ViewModels;
 
 namespace SharpFlowDesign
