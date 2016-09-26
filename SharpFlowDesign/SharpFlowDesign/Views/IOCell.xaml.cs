@@ -6,19 +6,20 @@ using SharpFlowDesign.ViewModels;
 
 namespace SharpFlowDesign.Views
 {
+
     /// <summary>
-    /// Interaction logic for IOCell.xaml
+    ///     Interaction logic for IOCell.xaml
     /// </summary>
     public partial class IOCell : UserControl
     {
-        private static bool IsDraggingMode = false;
+        private static bool IsDraggingMode;
+
 
         public IOCell()
         {
             InitializeComponent();
-;
+            Loaded += (sender, args) => FU.FocusTextBox();
         }
-
 
 
         // Event hanlder for dragging functionality support same to all thumbs
@@ -26,40 +27,33 @@ namespace SharpFlowDesign.Views
         {
             Debug.WriteLine("onDragDelta");
 
-            IOCell.IsDraggingMode = true;
+            IsDraggingMode = true;
 
-            var vm = (IOCellViewModel)DataContext;
+            var vm = (IOCellViewModel) DataContext;
             Interactions.OnItemDragged(vm, e);
-
         }
-
-
 
 
         private void PreviewMouseUp(object sender, MouseButtonEventArgs args)
         {
             Debug.WriteLine("PreviewMouseUp");
-            if (!IOCell.IsDraggingMode)
-            {              
-               Interactions.ToggleSelection(GetDataContext());
-               if (args.Source.GetType() == typeof(FunctionUnit))
+            if (!IsDraggingMode)
+            {
+                Interactions.ToggleSelection(GetDataContext());
+                if (args.Source.GetType() == typeof(FunctionUnit))
                     FU.FocusTextBox();
                 if (args.Source.GetType() == typeof(Flow))
                 {
                     var flow = (Flow) args.Source;
-                    flow.FocusTextBox();                    
+                    flow.FocusTextBox();
                 }
                 args.Handled = true;
             }
         }
 
 
-
-
-
         private void Thumb_OnDragStarted(object sender, DragStartedEventArgs e)
         {
-            
             Debug.WriteLine("Thumb_OnDragStarted");
             Interactions.DecideDragMode(GetDataContext());
         }
@@ -67,26 +61,23 @@ namespace SharpFlowDesign.Views
 
         private void Thumb_OnDragCompleted(object sender, DragCompletedEventArgs e)
         {
-            
             Debug.WriteLine("Thumb_OnDragCompleted");
-            IOCell.IsDraggingMode = false;
+            IsDraggingMode = false;
             e.Handled = true;
         }
 
 
-
-
         private IOCellViewModel GetDataContext()
         {
-
-            var dc = (IOCellViewModel)this.DataContext;
+            var dc = (IOCellViewModel) DataContext;
             return dc;
         }
 
 
         private void UIElement_OnMouseEnter(object sender, MouseEventArgs e)
         {
-            this.Cursor = Cursors.Hand;
+            Cursor = Cursors.Hand;
         }
     }
+
 }

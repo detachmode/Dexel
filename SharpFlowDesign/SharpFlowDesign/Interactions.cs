@@ -16,7 +16,7 @@ namespace SharpFlowDesign
 
         public static void AddNewIOCell(Point pos)
         {
-            var cell = new IOCellViewModel {Input = "neuer input"};
+            var cell = new IOCellViewModel();
             cell.IsSelected = true;
 
             pos.X -= 100;
