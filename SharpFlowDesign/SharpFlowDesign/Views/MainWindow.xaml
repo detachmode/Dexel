@@ -5,10 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:customControls="clr-namespace:SharpFlowDesign.CustomControls"
         xmlns:views="clr-namespace:SharpFlowDesign.Views"
+        xmlns:media2D="clr-namespace:Petzold.Media2D"
+        xmlns:converter="clr-namespace:SharpFlowDesign.Converter"
+        xmlns:viewModels="clr-namespace:SharpFlowDesign.ViewModels"
         mc:Ignorable="d"
         Title="Sharp Flow Design" Height="350" Width="825">
     <Window.Resources>
-        <SolidColorBrush x:Key="GridColor" Color="#FF404040"/>
+        <converter:DebugConverter x:Key="DebugConverter" />
+            <SolidColorBrush x:Key="GridColor" Color="#FF404040"/>
         <VisualBrush x:Key="MyVisualBrush" TileMode="Tile" Viewport="0,0,15,15" ViewportUnits="Absolute" Viewbox="0,0,15,15" ViewboxUnits="Absolute">
             <VisualBrush.Visual>
                 <Grid Background="#FF363636">
@@ -30,8 +34,6 @@
             </Grid>
 
         </ControlTemplate>
-
-
         <ContextMenu x:Key="MyContextMenu">
             <MenuItem Header="Add Celldaw" Click="MenuItem_Click" />
         </ContextMenu>
@@ -41,32 +43,33 @@
         <Label>Flow Design</Label>
         <Button Width="100" Height="20" VerticalAlignment="Top" Content="Test" ></Button>
         <customControls:ZoomBorder x:Name="border" ClipToBounds="True" Background="#02C73737">
-            <ItemsControl Name="myCanvas" ItemsSource="{Binding Items}" >
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <Canvas />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemContainerStyle>
-                    <Style>
-                        <Setter Property="Canvas.Left"
+            <Canvas x:Name="theCanvas">
+                <viewModels:ConnectionCanvas x:Name="connectionCanvas" ></viewModels:ConnectionCanvas>
+
+                <ItemsControl Name="itemContainer" ItemsSource="{Binding Items}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <Canvas />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="Canvas.Left"
                                 Value="{Binding Position.X}">
-                        </Setter>
-                        <Setter Property="Canvas.Top"
+                            </Setter>
+                            <Setter Property="Canvas.Top"
                                 Value="{Binding Position.Y}">
-                        </Setter>
-                    </Style>
-                </ItemsControl.ItemContainerStyle>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <views:IOCell/>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
+                            </Setter>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <views:IOCell/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
                 </ItemsControl>
+            </Canvas>
         </customControls:ZoomBorder>
-
-
-
 
     </Grid>
 </Window>

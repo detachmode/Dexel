@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="SharpFlowDesign.Views.ConnectionArrow"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SharpFlowDesign.Views"
+             xmlns:media2D="clr-namespace:Petzold.Media2D"
+             mc:Ignorable="d" 
+             >
+    <Grid ZIndex="-10" Background="BlueViolet">
+        <media2D:ArrowLine x:Name="Arrow" X1="0" Y1="0" X2="100" Y2="10" Stroke="Red" StrokeThickness="3" />
+        <StackPanel Margin="0,-20,0,0" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"
+                    Grid.Column="1">
+            <TextBlock Foreground="White" FontSize="14" >(</TextBlock>
+            <TextBox x:Name="textBox"  Text="10o" 
+                     CaretBrush="Wheat" Background="{x:Null}"
+                     Foreground="White" BorderBrush="{x:Null}"   />
+            <TextBlock Foreground="White" FontSize="14" >)</TextBlock>
+        </StackPanel>
+       
+    </Grid>
+</UserControl>

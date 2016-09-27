@@ -11,9 +11,9 @@
       <Flow name="customer" to="Is_Customer_has_credit"/>
       <Flow name=".HasCredit()" from="Is_Customer_has_credit" to="Checkout_with_creditcard"> </Flow>
       <Flow name=".HasNoCredit()" from="Is_Customer_has_credit" to="Checkout_with_cash"> </Flow>
-      <Flow name="" from="Checkout_with_creditcard" to="outputConnection"/>
-      <Flow name="" from="Checkout_with_cash" to="outputConnection"/>
-      <Flow name="" from="outputConnection" />
+      <Flow name="" from="Checkout_with_creditcard" to="outputConnectionTextBox"/>
+      <Flow name="" from="Checkout_with_cash" to="outputConnectionTextBox"/>
+      <Flow name="" from="outputConnectionTextBox" />
      
     </DataFlow>
 
@@ -21,7 +21,7 @@
     <FunctionUnit name="Checkout_with_creditcard"/>
     <FunctionUnit name="Checkout_with_cash"/>
     
-    <Connection name="outputConnection"/>
+    <ConnectionTextBox name="outputConnectionTextBox"/>
     
   </FunctionUnit>
   

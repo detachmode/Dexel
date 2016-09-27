@@ -6,27 +6,30 @@
              xmlns:converter="clr-namespace:SharpFlowDesign.Converter"
              xmlns:views="clr-namespace:SharpFlowDesign.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="300">
+            >
 
     <UserControl.Resources>
         <converter:IOCellSelectionConverter x:Key="SelectionConverter"/>
     </UserControl.Resources>
-    <StackPanel 
+    <StackPanel SizeChanged="SizeChanged"
         MinWidth="100" MinHeight="100"
         Orientation="Horizontal" 
         
 
         ZIndex="100" 
         >
-        <views:Flow MouseEnter="UIElement_OnMouseEnter"  Thumb.MouseUp="PreviewMouseUp" DataContext="{Binding Input}"></views:Flow>
-        <views:FunctionUnit x:Name="FU" LabelContent="{Binding Name}" 
+        <views:Flow x:Name="InputFlow" MouseEnter="UIElement_OnMouseEnter"  Thumb.MouseUp="PreviewMouseUp" DataContext="{Binding Input}"></views:Flow>
+
+        <views:FunctionUnit x:Name="FU"  LabelContent="{Binding Name}" 
                                     Thumb.DragDelta="OnDragDelta" 
                             Thumb.DragStarted="Thumb_OnDragStarted"
                             Thumb.DragCompleted="Thumb_OnDragCompleted"
                             Thumb.PreviewMouseUp="PreviewMouseUp"
-                            SelectionColor="{Binding Path=IsSelected, Converter={StaticResource SelectionConverter}}"  ></views:FunctionUnit>
-        <views:Flow  Thumb.MouseUp="PreviewMouseUp" DataContext="{Binding Output}" RenderTransformOrigin="0,0.5">
-        </views:Flow>
-        
+                            SelectionColor="{Binding Path=IsSelected, Converter={StaticResource SelectionConverter}}" 
+                             >
+
+        </views:FunctionUnit>
+        <views:Flow  x:Name="OutputFlow" Thumb.MouseUp="PreviewMouseUp" DataContext="{Binding Output}" RenderTransformOrigin="0,0.5"/>
+
     </StackPanel>
 </UserControl>

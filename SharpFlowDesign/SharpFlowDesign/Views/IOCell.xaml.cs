@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
@@ -77,6 +78,14 @@ namespace SharpFlowDesign.Views
         private void UIElement_OnMouseEnter(object sender, MouseEventArgs e)
         {
             Cursor = Cursors.Hand;
+        }
+
+        private void SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
+        {
+            (DataContext as IOCellViewModel).InputPoint = 
+                new Point(InputFlow.ActualWidth,this.ActualHeight/2);
+            (DataContext as IOCellViewModel).OutputPoint =
+                new Point(this.ActualWidth - OutputFlow.ActualWidth, this.ActualHeight / 2);
         }
     }
 

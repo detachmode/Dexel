@@ -62,8 +62,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Converter\IOCellConverter.cs" />
+    <Compile Include="Arrow\ArrowEnds.cs" />
+    <Compile Include="Arrow\ArrowLine.cs" />
+    <Compile Include="Arrow\ArrowLineBase.cs" />
+    <Compile Include="Arrow\ArrowPolyline.cs" />
+    <Compile Include="Converter\Converter.cs" />
     <Compile Include="Interactions.cs" />
+    <Compile Include="ViewModels\Connection.cs" />
+    <Compile Include="ViewModels\ConnectionCanvas.cs" />
+    <Compile Include="Views\ConnectionArrow.xaml.cs">
+      <DependentUpon>ConnectionArrow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Flow.xaml.cs">
       <DependentUpon>Flow.xaml</DependentUpon>
     </Compile>
@@ -77,6 +86,10 @@
     <Compile Include="ViewModels\IOCellViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="XML\XMLConverter.cs" />
+    <Page Include="Views\ConnectionArrow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -138,6 +151,7 @@
   <ItemGroup>
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
