@@ -1,29 +1,29 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<FlowDesign>
+<StreamViewModelDesign>
   
-  <DataFlow>
-    <Flow name="customer" to="Checkout"/>
-    <Flow name="" from="Checkout"/>
-  </DataFlow>
+  <DataStreamViewModel>
+    <StreamViewModel name="customer" to="Checkout"/>
+    <StreamViewModel name="" from="Checkout"/>
+  </DataStreamViewModel>
 
-  <FunctionUnit name="Checkout">
-    <DataFlow>
-      <Flow name="customer" to="Is_Customer_has_credit"/>
-      <Flow name=".HasCredit()" from="Is_Customer_has_credit" to="Checkout_with_creditcard"> </Flow>
-      <Flow name=".HasNoCredit()" from="Is_Customer_has_credit" to="Checkout_with_cash"> </Flow>
-      <Flow name="" from="Checkout_with_creditcard" to="outputConnectionTextBox"/>
-      <Flow name="" from="Checkout_with_cash" to="outputConnectionTextBox"/>
-      <Flow name="" from="outputConnectionTextBox" />
+  <SoftwareCell name="Checkout">
+    <DataStreamViewModel>
+      <StreamViewModel name="customer" to="Is_Customer_has_credit"/>
+      <StreamViewModel name=".HasCredit()" from="Is_Customer_has_credit" to="Checkout_with_creditcard"> </StreamViewModel>
+      <StreamViewModel name=".HasNoCredit()" from="Is_Customer_has_credit" to="Checkout_with_cash"> </StreamViewModel>
+      <StreamViewModel name="" from="Checkout_with_creditcard" to="outputConnectionTextBox"/>
+      <StreamViewModel name="" from="Checkout_with_cash" to="outputConnectionTextBox"/>
+      <StreamViewModel name="" from="outputConnectionTextBox" />
      
-    </DataFlow>
+    </DataStreamViewModel>
 
-    <FunctionUnit name="Is_Customer_has_credit"/>
-    <FunctionUnit name="Checkout_with_creditcard"/>
-    <FunctionUnit name="Checkout_with_cash"/>
+    <SoftwareCell name="Is_Customer_has_credit"/>
+    <SoftwareCell name="Checkout_with_creditcard"/>
+    <SoftwareCell name="Checkout_with_cash"/>
     
     <ConnectionTextBox name="outputConnectionTextBox"/>
     
-  </FunctionUnit>
+  </SoftwareCell>
   
   
-</FlowDesign>
+</StreamViewModelDesign>

@@ -40,11 +40,11 @@ namespace SharpFlowDesign.Views
             if (!_isDraggingMode)
             {
                 Interactions.ToggleSelection(GetDataContext());
-                if (args.Source.GetType() == typeof(FunctionUnit))
+                if (args.Source.GetType() == typeof(SoftwareCell))
                     Fu.FocusTextBox();
-                if (args.Source.GetType() == typeof(Flow))
+                if (args.Source.GetType() == typeof(Stream))
                 {
-                    var flow = (Flow) args.Source;
+                    var flow = (Stream) args.Source;
                     flow.FocusTextBox();
                 }
                 args.Handled = true;

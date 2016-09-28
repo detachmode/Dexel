@@ -18,10 +18,10 @@
 
         ZIndex="100" 
         >
-        <views:Flow x:Name="InputFlow" MouseEnter="UIElement_OnMouseEnter"  
-                    MouseUp="PreviewMouseUp" DataContext="{Binding Input}"></views:Flow>
+        <views:Stream x:Name="InputFlow" MouseEnter="UIElement_OnMouseEnter"  
+                    MouseUp="PreviewMouseUp" DataContext="{Binding Input}"></views:Stream>
 
-        <views:FunctionUnit x:Name="Fu"  LabelContent="{Binding Name}" 
+        <views:SoftwareCell x:Name="Fu"  LabelContent="{Binding Name}" 
                                     Thumb.DragDelta="OnDragDelta" 
                             Thumb.DragStarted="Thumb_OnDragStarted"
                             Thumb.DragCompleted="Thumb_OnDragCompleted"
@@ -29,8 +29,9 @@
                             SelectionColor="{Binding Path=IsSelected, Converter={StaticResource SelectionConverter}}" 
                              >
 
-        </views:FunctionUnit>
-        <views:Flow  x:Name="OutputFlow" MouseUp="PreviewMouseUp" DataContext="{Binding Output}" RenderTransformOrigin="0,0.5"/>
+        </views:SoftwareCell>
+        <views:Stream  x:Name="OutputFlow" MouseUp="PreviewMouseUp" DataContext="{Binding Output}" RenderTransformOrigin="0,0.5"/>
 
     </StackPanel>
 </UserControl>
+

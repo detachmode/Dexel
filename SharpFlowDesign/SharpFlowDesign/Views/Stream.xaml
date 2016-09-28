@@ -3,11 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:ViewModels="clr-namespace:SharpFlowDesign.ViewModels" x:Class="SharpFlowDesign.Views.Flow"
+             xmlns:ViewModels="clr-namespace:SharpFlowDesign.ViewModels" x:Class="SharpFlowDesign.Views.Stream"
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="100">
     <UserControl.DataContext>
-        <ViewModels:Stream/>
+        <ViewModels:StreamViewModel/>
     </UserControl.DataContext>
     <Grid Background="#FF552020" Height="50" >
         <Grid.RowDefinitions>

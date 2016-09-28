@@ -52,7 +52,7 @@ namespace SharpFlowDesign.Model
             var foundMatchingInput = InputStreams.Any(x =>
                 integration.InputStreams.Any(y => x.DataNames.Equals(y.DataNames)));
             if (!foundMatchingInput)
-                throw new Exception("Integration inputs are not matching with inputs of integrated Flow!");
+                throw new Exception("Integration inputs are not matching with inputs of integrated StreamViewModel!");
 
             Integration = integration;
         }

@@ -6,14 +6,14 @@ using System.Windows.Media;
 namespace SharpFlowDesign.Views
 {
     /// <summary>
-    /// Interaktionslogik für FunctionUnit.xaml
+    /// Interaktionslogik für SoftwareCell.xaml
     /// </summary>
-    public partial class FunctionUnit
+    public partial class SoftwareCell
     {
         public List<LineGeometry> EndLines { get; private set; }
         public List<LineGeometry> StartLines { get; private set; }
 
-        public FunctionUnit()
+        public SoftwareCell()
         {
             StartLines = new List<LineGeometry>();
             EndLines = new List<LineGeometry>();
@@ -36,7 +36,7 @@ namespace SharpFlowDesign.Views
         }
 
         public static readonly DependencyProperty LabelContentProperty =
-          DependencyProperty.Register("LabelContent", typeof(string), typeof(FunctionUnit));
+          DependencyProperty.Register("LabelContent", typeof(string), typeof(SoftwareCell));
 
         public SolidColorBrush SelectionColor
         {
@@ -45,7 +45,7 @@ namespace SharpFlowDesign.Views
         }
 
         public static readonly DependencyProperty SelectionColorProperty =
-          DependencyProperty.Register("SelectionColor", typeof(SolidColorBrush), typeof(FunctionUnit));
+          DependencyProperty.Register("SelectionColor", typeof(SolidColorBrush), typeof(SoftwareCell));
 
     }
 }

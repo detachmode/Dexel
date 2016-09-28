@@ -9,7 +9,7 @@
         xmlns:converter="clr-namespace:SharpFlowDesign.Converter"
         xmlns:viewModels="clr-namespace:SharpFlowDesign.ViewModels"
         mc:Ignorable="d"
-        Title="Sharp Flow Design" Height="350" Width="825">
+        Title="Sharp StreamViewModel Design" Height="350" Width="825">
     <Window.Resources>
         <converter:DebugConverter x:Key="DebugConverter" />
             <SolidColorBrush x:Key="GridColor" Color="#FF404040"/>
@@ -40,7 +40,7 @@
     </Window.Resources>
 
     <Grid Background="{StaticResource MyVisualBrush}" MouseUp="UIElement_OnMouseUp"  RenderTransformOrigin="0.5,0.5"  ContextMenu="{StaticResource MyContextMenu}" >
-        <Label>Flow Design</Label>
+        <Label>StreamViewModel Design</Label>
         <Button Width="100" Height="20" VerticalAlignment="Top" Content="Test" ></Button>
         <customControls:ZoomBorder x:Name="border" ClipToBounds="True" Background="#02C73737">
             <Canvas x:Name="theCanvas">

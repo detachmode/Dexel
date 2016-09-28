@@ -75,15 +75,15 @@
     <Compile Include="Model\Stream.cs" />
     <Compile Include="ViewModels\Connection.cs" />
     <Compile Include="ViewModels\ConnectionCanvas.cs" />
-    <Compile Include="ViewModels\Stream.cs" />
+    <Compile Include="ViewModels\StreamViewModel.cs" />
     <Compile Include="Views\ConnectionArrow.xaml.cs">
       <DependentUpon>ConnectionArrow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Flow.xaml.cs">
-      <DependentUpon>Flow.xaml</DependentUpon>
+    <Compile Include="Views\Stream.xaml.cs">
+      <DependentUpon>Stream.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\FunctionUnit.xaml.cs">
-      <DependentUpon>FunctionUnit.xaml</DependentUpon>
+    <Compile Include="Views\SoftwareCell.xaml.cs">
+      <DependentUpon>SoftwareCell.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\IOCell.xaml.cs">
       <DependentUpon>IOCell.xaml</DependentUpon>
@@ -108,11 +108,11 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\Flow.xaml">
+    <Page Include="Views\Stream.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\FunctionUnit.xaml">
+    <Page Include="Views\SoftwareCell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -8,7 +8,7 @@ using PropertyChanged;
 namespace SharpFlowDesign.ViewModels
 {
     [ImplementPropertyChanged]
-    public class Stream
+    public class StreamViewModel
     {
         public string Datanames { get; set; }
         public string Actionname { get; set; }

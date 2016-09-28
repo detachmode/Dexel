@@ -7,6 +7,7 @@ using Petzold.Media2D;
 using PropertyChanged;
 using SharpFlowDesign.Model;
 using SharpFlowDesign.Views;
+using SoftwareCell = SharpFlowDesign.Model.SoftwareCell;
 
 namespace SharpFlowDesign.ViewModels
 {
@@ -21,8 +22,8 @@ namespace SharpFlowDesign.ViewModels
         }
 
         public string Name { get; set; }
-        public ViewModels.Stream Input { get; set; }
-        public ViewModels.Stream Output { get; set; }
+        public ViewModels.StreamViewModel Input { get; set; }
+        public ViewModels.StreamViewModel Output { get; set; }
         public Point Position { get; set; }
         public bool IsSelected { get; set; }
         public List<ConnectionArrow> ArrowLinesStart { get; set; }
@@ -77,10 +78,10 @@ namespace SharpFlowDesign.ViewModels
             return new IOCellViewModel
             {
                 Name = cell.Name,
-                Input = new Stream {
+                Input = new StreamViewModel {
                     Datanames = cell.InputStreams.FirstOrDefault()?.DataNames,
                     Actionname = cell.InputStreams.FirstOrDefault()?.ActionName},
-                Output = new Stream
+                Output = new StreamViewModel
                 {
                     Datanames = cell.OutputStreams.FirstOrDefault()?.DataNames,
                     Actionname = cell.OutputStreams.FirstOrDefault()?.ActionName

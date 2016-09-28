@@ -2,11 +2,11 @@
 {
 
     /// <summary>
-    ///     Interaktionslogik für Flow.xaml
+    ///     Interaktionslogik für Stream.xaml
     /// </summary>
-    public partial class Flow
+    public partial class Stream
     {
-        public Flow()
+        public Stream()
         {
             InitializeComponent();
             DataContext = " ";
