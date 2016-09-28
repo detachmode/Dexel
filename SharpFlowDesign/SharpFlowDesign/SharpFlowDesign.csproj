@@ -43,6 +43,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -68,6 +69,8 @@
     <Compile Include="Arrow\ArrowPolyline.cs" />
     <Compile Include="Converter\Converter.cs" />
     <Compile Include="Interactions.cs" />
+    <Compile Include="Mockdata\SoftwareCell.cs" />
+    <Compile Include="Model\SoftwareCell.cs" />
     <Compile Include="ViewModels\Connection.cs" />
     <Compile Include="ViewModels\ConnectionCanvas.cs" />
     <Compile Include="Views\ConnectionArrow.xaml.cs">

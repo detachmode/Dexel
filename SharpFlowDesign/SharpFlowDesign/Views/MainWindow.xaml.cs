@@ -23,22 +23,22 @@ namespace SharpFlowDesign
             Interactions.SetViewModel((MainViewModel)DataContext);
 
             
-            ConnectionArrow connectionArrow = new ConnectionArrow();
+            //ConnectionArrow connectionArrow = new ConnectionArrow();
 
-            (DataContext as MainViewModel).Items.Add(new IOCellViewModel());
-            (DataContext as MainViewModel).Items.Add(new IOCellViewModel() { Position = new Point(400, 200) });
-            var cell1 = ((MainViewModel) DataContext).Items[0];
-            var cell2 = ((MainViewModel) DataContext).Items[1];
-            connectionCanvas.Connection.StartPoint = cell1.Position;
-            connectionCanvas.EndPoint = cell2.Position;
-            cell1.ArrowLinesStart.Add(connectionArrow);
-            cell2.ArrowLinesEnd.Add(connectionArrow);
-            connectionArrow.Arrow.Stroke = Brushes.Red;
+            //(DataContext as MainViewModel).Items.Add(new IOCellViewModel());
+            //(DataContext as MainViewModel).Items.Add(new IOCellViewModel() { Position = new Point(400, 200) });
+            //var cell1 = ((MainViewModel) DataContext).Items[0];
+            //var cell2 = ((MainViewModel) DataContext).Items[1];
+            //connectionCanvas.Connection.StartPoint = cell1.Position;
+            //connectionCanvas.EndPoint = cell2.Position;
+            //cell1.ArrowLinesStart.Add(connectionArrow);
+            //cell2.ArrowLinesEnd.Add(connectionArrow);
+            //connectionArrow.Arrow.Stroke = Brushes.Red;
 
-            connectionArrow.Arrow.StrokeThickness = 3;
-            connectionArrow.textBox.Text = "hello";
+            //connectionArrow.Arrow.StrokeThickness = 3;
+            //connectionArrow.textBox.Text = "hello";
             
-            theCanvas.Children.Add(connectionArrow);
+            //theCanvas.Children.Add(connectionArrow);
            
             //var line = new LineGeometry();
             //line.StartPoint = new Point(0, 0);

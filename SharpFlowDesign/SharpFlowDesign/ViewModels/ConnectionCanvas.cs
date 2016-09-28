@@ -29,7 +29,7 @@ namespace SharpFlowDesign.ViewModels
             set
             {
                 this._endPoint = value;
-                Update();
+                //Update();
             }
         }
 
