@@ -46,7 +46,8 @@ namespace SharpFlowDesign
             romanNumbersConverter.SetIntegration(splitter);
 
             var convertEach = new SoftwareCell { Name = "Convert to decimal" };
-            splitter.Connect(convertEach, "Roman Numeral*");
+            splitter.Connect(convertEach, "Roman Numeral*", actionName:".eachSplitted");
+
 
             var negatelogic = new SoftwareCell { Name = "Negate when larger" };
             convertEach.Connect(negatelogic, "Decimal*");

@@ -75,6 +75,7 @@
     <Compile Include="Model\Stream.cs" />
     <Compile Include="ViewModels\Connection.cs" />
     <Compile Include="ViewModels\ConnectionCanvas.cs" />
+    <Compile Include="ViewModels\Stream.cs" />
     <Compile Include="Views\ConnectionArrow.xaml.cs">
       <DependentUpon>ConnectionArrow.xaml</DependentUpon>
     </Compile>

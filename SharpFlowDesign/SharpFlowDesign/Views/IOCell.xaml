@@ -18,7 +18,8 @@
 
         ZIndex="100" 
         >
-        <views:Flow x:Name="InputFlow" MouseEnter="UIElement_OnMouseEnter"  MouseUp="PreviewMouseUp" DataContext="{Binding Input}"></views:Flow>
+        <views:Flow x:Name="InputFlow" MouseEnter="UIElement_OnMouseEnter"  
+                    MouseUp="PreviewMouseUp" DataContext="{Binding Input}"></views:Flow>
 
         <views:FunctionUnit x:Name="Fu"  LabelContent="{Binding Name}" 
                                     Thumb.DragDelta="OnDragDelta" 

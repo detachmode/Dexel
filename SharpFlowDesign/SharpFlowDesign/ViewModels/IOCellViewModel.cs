@@ -21,8 +21,8 @@ namespace SharpFlowDesign.ViewModels
         }
 
         public string Name { get; set; }
-        public string Input { get; set; }
-        public string Output { get; set; }
+        public ViewModels.Stream Input { get; set; }
+        public ViewModels.Stream Output { get; set; }
         public Point Position { get; set; }
         public bool IsSelected { get; set; }
         public List<ConnectionArrow> ArrowLinesStart { get; set; }
@@ -77,8 +77,14 @@ namespace SharpFlowDesign.ViewModels
             return new IOCellViewModel
             {
                 Name = cell.Name,
-                Input = cell.InputStreams.FirstOrDefault()?.DataNames,
-                Output = cell.OutputStreams.FirstOrDefault()?.DataNames
+                Input = new Stream {
+                    Datanames = cell.InputStreams.FirstOrDefault()?.DataNames,
+                    Actionname = cell.InputStreams.FirstOrDefault()?.ActionName},
+                Output = new Stream
+                {
+                    Datanames = cell.OutputStreams.FirstOrDefault()?.DataNames,
+                    Actionname = cell.OutputStreams.FirstOrDefault()?.ActionName
+                },
 
             };
         }
