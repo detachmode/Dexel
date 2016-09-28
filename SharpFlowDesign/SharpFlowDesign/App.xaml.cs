@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows;
-using SharpFlowDesign.Model;
+using SharpFlowDesign.DebuggingHelper;
 
 namespace SharpFlowDesign
 {
@@ -8,7 +8,7 @@ namespace SharpFlowDesign
     /// <summary>
     ///     Interaktionslogik für "App.xaml"
     /// </summary>
-    public partial class App : Application
+    public partial class App
     {
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
@@ -23,7 +23,7 @@ namespace SharpFlowDesign
             AllocConsole();
 
             var splitter = Mockdata.RomanNumbers();
-            SoftwareCell.PrintRecursive(splitter);
+            DebugPrinter.PrintRecursive(splitter);
 
             var mainwindow = new MainWindow();
             mainwindow.Show();

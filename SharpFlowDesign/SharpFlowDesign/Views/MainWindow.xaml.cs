@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Petzold.Media2D;
+using SharpFlowDesign.Model;
 using SharpFlowDesign.ViewModels;
 using SharpFlowDesign.Views;
 
@@ -20,9 +21,12 @@ namespace SharpFlowDesign
         {
             InitializeComponent();
             DataContext = new MainViewModel();
+            var mainviewmodel = DataContext as MainViewModel;
             Interactions.SetViewModel((MainViewModel)DataContext);
 
-            
+            var splitter =  Mockdata.RomanNumbers();
+            mainviewmodel.AddToViewModelRecursive(splitter);
+
             //ConnectionArrow connectionArrow = new ConnectionArrow();
 
             //(DataContext as MainViewModel).Items.Add(new IOCellViewModel());
@@ -37,9 +41,9 @@ namespace SharpFlowDesign
 
             //connectionArrow.Arrow.StrokeThickness = 3;
             //connectionArrow.textBox.Text = "hello";
-            
+
             //theCanvas.Children.Add(connectionArrow);
-           
+
             //var line = new LineGeometry();
             //line.StartPoint = new Point(0, 0);
             //line.EndPoint = new Point(100, 100);

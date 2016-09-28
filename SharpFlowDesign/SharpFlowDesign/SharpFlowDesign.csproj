@@ -68,9 +68,11 @@
     <Compile Include="Arrow\ArrowLineBase.cs" />
     <Compile Include="Arrow\ArrowPolyline.cs" />
     <Compile Include="Converter\Converter.cs" />
+    <Compile Include="DebuggingHelper\DebugPrinter.cs" />
     <Compile Include="Interactions.cs" />
-    <Compile Include="Mockdata\SoftwareCell.cs" />
+    <Compile Include="DebuggingHelper\Mockdata.cs" />
     <Compile Include="Model\SoftwareCell.cs" />
+    <Compile Include="Model\Stream.cs" />
     <Compile Include="ViewModels\Connection.cs" />
     <Compile Include="ViewModels\ConnectionCanvas.cs" />
     <Compile Include="Views\ConnectionArrow.xaml.cs">

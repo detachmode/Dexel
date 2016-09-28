@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using SharpFlowDesign.ViewModels;
@@ -11,15 +10,15 @@ namespace SharpFlowDesign.Views
     /// <summary>
     ///     Interaction logic for IOCell.xaml
     /// </summary>
-    public partial class IOCell : UserControl
+    public partial class IOCell
     {
-        private static bool IsDraggingMode;
+        private static bool _isDraggingMode;
 
 
         public IOCell()
         {
             InitializeComponent();
-            Loaded += (sender, args) => FU.FocusTextBox();
+            Loaded += (sender, args) => Fu.FocusTextBox();
         }
 
 
@@ -28,21 +27,21 @@ namespace SharpFlowDesign.Views
         {
             Debug.WriteLine("onDragDelta");
 
-            IsDraggingMode = true;
+            _isDraggingMode = true;
 
             var vm = (IOCellViewModel) DataContext;
             Interactions.OnItemDragged(vm, e);
         }
 
 
-        private void PreviewMouseUp(object sender, MouseButtonEventArgs args)
+        private new void PreviewMouseUp(object sender, MouseButtonEventArgs args)
         {
             Debug.WriteLine("PreviewMouseUp");
-            if (!IsDraggingMode)
+            if (!_isDraggingMode)
             {
                 Interactions.ToggleSelection(GetDataContext());
                 if (args.Source.GetType() == typeof(FunctionUnit))
-                    FU.FocusTextBox();
+                    Fu.FocusTextBox();
                 if (args.Source.GetType() == typeof(Flow))
                 {
                     var flow = (Flow) args.Source;
@@ -63,7 +62,7 @@ namespace SharpFlowDesign.Views
         private void Thumb_OnDragCompleted(object sender, DragCompletedEventArgs e)
         {
             Debug.WriteLine("Thumb_OnDragCompleted");
-            IsDraggingMode = false;
+            _isDraggingMode = false;
             e.Handled = true;
         }
 
@@ -80,12 +79,12 @@ namespace SharpFlowDesign.Views
             Cursor = Cursors.Hand;
         }
 
-        private void SizeChanged(object sender, System.Windows.SizeChangedEventArgs e)
+        private new void SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            (DataContext as IOCellViewModel).InputPoint = 
-                new Point(InputFlow.ActualWidth,this.ActualHeight/2);
-            (DataContext as IOCellViewModel).OutputPoint =
-                new Point(this.ActualWidth - OutputFlow.ActualWidth, this.ActualHeight / 2);
+            ((IOCellViewModel) DataContext).InputPoint = 
+                new Point(InputFlow.ActualWidth,ActualHeight/2);
+            ((IOCellViewModel) DataContext).OutputPoint =
+                new Point(ActualWidth - OutputFlow.ActualWidth, ActualHeight / 2);
         }
     }
 

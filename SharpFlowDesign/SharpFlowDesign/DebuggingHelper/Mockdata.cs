@@ -51,6 +51,8 @@ namespace SharpFlowDesign
             var negatelogic = new SoftwareCell { Name = "Negate when larger" };
             convertEach.Connect(negatelogic, "Decimal*");
 
+
+
             return splitter;
         }
     }

@@ -1,12 +1,10 @@
-﻿using System.Windows.Controls;
-
-namespace SharpFlowDesign.Views
+﻿namespace SharpFlowDesign.Views
 {
 
     /// <summary>
     ///     Interaktionslogik für Flow.xaml
     /// </summary>
-    public partial class Flow : UserControl
+    public partial class Flow
     {
         public Flow()
         {

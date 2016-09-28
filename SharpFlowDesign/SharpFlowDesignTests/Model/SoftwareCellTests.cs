@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using SharpFlowDesign.DebuggingHelper;
 
 namespace SharpFlowDesign.Model.Tests
 {
@@ -32,9 +33,9 @@ namespace SharpFlowDesign.Model.Tests
             var negatelogic = new SoftwareCell { Name = "Negate when larger" };
             convertEach.Connect(negatelogic, "Decimal*");
 
-            romanNumbersConverter.PrintOutputs();
-            romanNumbersConverter.PrintIntegration();
-            SoftwareCell.PrintRecursive(splitter);
+            DebugPrinter.PrintOutputs(romanNumbersConverter);
+            DebugPrinter.PrintIntegration(romanNumbersConverter);
+            DebugPrinter.PrintRecursive(splitter);
             Console.WriteLine(@"DONE");
 
         }

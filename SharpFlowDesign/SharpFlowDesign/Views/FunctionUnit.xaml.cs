@@ -8,7 +8,7 @@ namespace SharpFlowDesign.Views
     /// <summary>
     /// Interaktionslogik für FunctionUnit.xaml
     /// </summary>
-    public partial class FunctionUnit : UserControl
+    public partial class FunctionUnit
     {
         public List<LineGeometry> EndLines { get; private set; }
         public List<LineGeometry> StartLines { get; private set; }

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Petzold.Media2D;
 using PropertyChanged;
+using SharpFlowDesign.Model;
 using SharpFlowDesign.Views;
 
 namespace SharpFlowDesign.ViewModels
@@ -67,6 +69,18 @@ namespace SharpFlowDesign.ViewModels
         public void Select()
         {
             this.IsSelected = true;
+        }
+
+
+        public static IOCellViewModel Create(SoftwareCell cell)
+        {
+            return new IOCellViewModel
+            {
+                Name = cell.Name,
+                Input = cell.InputStreams.FirstOrDefault()?.DataNames,
+                Output = cell.OutputStreams.FirstOrDefault()?.DataNames
+
+            };
         }
     }
 }

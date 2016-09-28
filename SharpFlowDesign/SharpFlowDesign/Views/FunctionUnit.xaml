@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:views="clr-namespace:SharpFlowDesign.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="100" d:DesignWidth="100">
 
     <Thumb x:Name="theThumb" HorizontalAlignment="Stretch" 
            Background="Transparent"
@@ -21,7 +21,7 @@
                     <TextBox x:Name="FUName" Margin="18" Text="{Binding Path=LabelContent, 
                         RelativeSource={RelativeSource FindAncestor,  AncestorType=views:FunctionUnit,  AncestorLevel=1}}"  
                         HorizontalAlignment="Center" VerticalAlignment="Center" 
-                        Foreground="#FFD6D6D6" Background="{x:Null}" BorderBrush="{x:Null}"/>
+                        Foreground="#FFD6D6D6" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="16"/>
                 </Grid>
             </ControlTemplate>
         </Thumb.Template>
