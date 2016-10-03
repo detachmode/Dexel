@@ -15,10 +15,10 @@
 
         public void FocusTextBox()
         {
-            //TextBox textBox = (TextBox)theThumb.Template.FindName("FUName", theThumb);
-            textBox.Focus();
-            textBox.SelectionStart = textBox.Text.Length; // add some logic if length is 0
-            textBox.SelectionLength = 0;
+            //TextBox DatanamesTextBox = (TextBox)theThumb.Template.FindName("FUName", theThumb);
+            DatanamesTextBox.Focus();
+            DatanamesTextBox.SelectionStart = DatanamesTextBox.Text.Length; // add some logic if length is 0
+            DatanamesTextBox.SelectionLength = 0;
         }
     }
 

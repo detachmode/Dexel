@@ -81,7 +81,7 @@ namespace SharpFlowDesign.Views
 
         public void FocusTextBox()
         {
-            TextBox textBox = (TextBox)theThumb.Template.FindName("theTextBox", theThumb);
+            TextBox textBox = (TextBox)TheThumb.Template.FindName("theTextBox", TheThumb);
             textBox.Focus();
         }
 

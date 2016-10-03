@@ -9,13 +9,12 @@
              mc:Ignorable="d"
              d:DesignHeight="100" d:DesignWidth="100">
 
-    <Thumb x:Name="theThumb" HorizontalAlignment="Stretch"
+    <Thumb x:Name="TheThumb" HorizontalAlignment="Stretch"
            Background="Transparent"
            IsHitTestVisible="True"
            VerticalAlignment="Stretch">
         <i:Interaction.Behaviors>
-
-            <behavior1:FrameworkElementDropBehavior/>
+            <behavior1:FrameworkElementDropBehavior />
         </i:Interaction.Behaviors>
         <Thumb.Template>
             <ControlTemplate>
@@ -26,43 +25,18 @@
                     </Grid.ColumnDefinitions>
                     <Grid Margin="20" Grid.ColumnSpan="2">
                         <Ellipse Margin="-20" Fill="#FF484848" Stroke="DeepSkyBlue"
-
-                                 StrokeThickness="3">
-                            <!--<i:Interaction.Behaviors>
-                                                <local:SelectAble/>
-                                            </i:Interaction.Behaviors>-->
-
-                        </Ellipse>
+                                StrokeThickness="3" />
                         <TextBox x:Name="theTextBox"
                                  Text="{Binding Path=LabelContent, RelativeSource={RelativeSource FindAncestor,  AncestorType=views:SoftwareCell,  AncestorLevel=1}}"
                                  Foreground="White"
                                  VerticalAlignment="Center"
                                  BorderBrush="{x:Null}" Background="{x:Null}" />
                     </Grid>
-                    <!--                               PreviewDragOver="softwareCell_DragOver"-->
-                    <!--                               DragOver="softwareCell_DragOver"-->
-                    <!--                               DragLeave="SoftwareCell_DragLeave"-->
-                    <!--                               Drop="SoftwareCell_Drop"-->
-                    <!--                               PreviewDrop="SoftwareCell_Drop" -->
                     <Rectangle Grid.Column="0"
                                Fill="Transparent"
-                               IsHitTestVisible="True"
-                               >
-                    </Rectangle>
+                               IsHitTestVisible="True" />
                 </Grid>
-                <!--<Grid >
-                    <Ellipse MinWidth="100" Fill="{Binding Path=SelectionColor, 
-                        RelativeSource={RelativeSource FindAncestor,  
-                        AncestorType=views:SoftwareCell,  AncestorLevel=1}, FallbackValue=#FF2E2E2E}" 
-                        Stroke="#FF376DBB" StrokeThickness="4" HorizontalAlignment="Stretch"/>
-                    <TextBox x:Name="FUName" Margin="18" Text="{Binding Path=LabelContent, 
-                        RelativeSource={RelativeSource FindAncestor,  AncestorType=views:SoftwareCell,  AncestorLevel=1}}"  
-                        HorizontalAlignment="Center" VerticalAlignment="Center" 
-                        Foreground="#FFD6D6D6" Background="{x:Null}" BorderBrush="{x:Null}" FontSize="16"/>
-                </Grid>-->
             </ControlTemplate>
         </Thumb.Template>
-
     </Thumb>
-
 </UserControl>

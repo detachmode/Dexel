@@ -10,43 +10,27 @@ namespace SharpFlowDesign
 
     public static class Interactions
     {
-        private static MainViewModel _vm;
-        private static DragMode _dragMode;
-
 
         public static void AddNewIOCell(Point pos)
         {
-            var cell = new IOCellViewModel();
-            cell.IsSelected = true;
+            var cell = new IOCellViewModel {IsSelected = true};
 
             pos.X -= 100;
             pos.Y -= 20;
             cell.Position = new Point(pos.X, pos.Y);
 
-            _vm.SoftwareCells.Add(cell);
+            MainViewModel.Instance().SoftwareCells.Add(cell);
         }
 
 
         public static void DeselectAll()
         {
-            _vm.SoftwareCells.ToList().ForEach( i => i.Deselect());
+            MainViewModel.Instance().SoftwareCells.ToList().ForEach( i => i.Deselect());
         }
 
         internal static void OnItemDragged(IOCellViewModel cellvm, DragDeltaEventArgs dragDeltaEventArgs)
         {
             cellvm.Move(dragDeltaEventArgs.HorizontalChange, dragDeltaEventArgs.VerticalChange);
-//            if (_dragMode == DragMode.Single)
-//            {
-//                DeselectAll();
-//                cellvm.Select();
-//                
-//            }
-//
-//            if (_dragMode == DragMode.Multiple)
-//            {
-//                DragSelection(dragDeltaEventArgs);
-//            }
-
         }
 
         public static void DragSelection(DragDeltaEventArgs e)
@@ -58,13 +42,7 @@ namespace SharpFlowDesign
 
         public static IEnumerable<IOCellViewModel> GetSelection()
         {
-            return _vm.SoftwareCells.Where(c => c.IsSelected);
-        }
-
-
-        public static void SetViewModel(MainViewModel dataContext)
-        {
-            _vm = dataContext;
+            return MainViewModel.Instance().SoftwareCells.Where(c => c.IsSelected);
         }
 
 
@@ -82,12 +60,6 @@ namespace SharpFlowDesign
         }
 
 
-        public static void DecideDragMode(IOCellViewModel ioCellViewModel)
-        {
-
-            _dragMode = ioCellViewModel.IsSelected ? DragMode.Multiple : DragMode.Single;
-        }
-
 
         public enum DragMode
         {
@@ -98,10 +70,10 @@ namespace SharpFlowDesign
 
         public static void AddNewConnectionNoDestination(IOCellViewModel ioCellViewModel)
         {
-            _vm.TemporaryConnection= new ConnectionViewModel(ioCellViewModel, null);
-            _vm.TemporaryConnection.IsDragging = true;
-            
-           
+            MainViewModel.Instance().TemporaryConnection = new ConnectionViewModel(ioCellViewModel, null)
+            {
+                IsDragging = true
+            };
         }
     }
 

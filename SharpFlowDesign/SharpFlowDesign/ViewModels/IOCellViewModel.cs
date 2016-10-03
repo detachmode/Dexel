@@ -4,7 +4,7 @@ using System.Linq;
 using System.Windows;
 using PropertyChanged;
 using SharpFlowDesign.Behavior;
-using SoftwareCell = SharpFlowDesign.Model.SoftwareCell;
+using SharpFlowDesign.Model;
 
 namespace SharpFlowDesign.ViewModels
 {
@@ -15,7 +15,6 @@ namespace SharpFlowDesign.ViewModels
         {
             DangelingInputs = new ObservableCollection<DangelingConnectionViewModel>();
             DangelingOutputs = new ObservableCollection<DangelingConnectionViewModel>();
-
         }
 
         public string Name { get; set; }
@@ -23,39 +22,54 @@ namespace SharpFlowDesign.ViewModels
         public ObservableCollection<DangelingConnectionViewModel> DangelingOutputs { get; set; }
         public Point Position { get; set; }
         public bool IsSelected { get; set; }
-//        public List<ConnectionArrow> ArrowLinesStart { get; set; }
-//        public List<ConnectionArrow> ArrowLinesEnd { get; set; }
         public double ActualWidth { get; set; }
         public double ActualHeight { get; set; }
         public Point InputPoint { get; set; }
         public Point OutputPoint { get; set; }
 
 
-        public void Move(double x, double y)
+        public Type DataType => typeof (ConnectionViewModel);
+
+        public void Drop(object data, int index = -1)
         {
-            var pos = this.Position;
-            pos.X += x;
-            pos.Y += y;
-            this.Position = pos;
+            var dangelingConnection = data as DangelingConnectionViewModel;
+          
+            if (dangelingConnection != null)
+            {
+                MainViewModel.Instance().Connections.Add(
+                    new ConnectionViewModel(dangelingConnection.IOCellViewModel, this)
+                    {
+                        Name = dangelingConnection.Datanames
+                    });
+            }
+//           this.Children = this.GetChildren();  //refresh view
         }
 
+
+        public void Move(double x, double y)
+        {
+            var pos = Position;
+            pos.X += x;
+            pos.Y += y;
+            Position = pos;
+        }
 
 
         public void Deselect()
         {
-            this.IsSelected = false;
+            IsSelected = false;
         }
 
 
         public void Select()
         {
-            this.IsSelected = true;
+            IsSelected = true;
         }
 
 
         public static IOCellViewModel Create(SoftwareCell cell)
         {
-            var newIOCellViewModel =  new IOCellViewModel();
+            var newIOCellViewModel = new IOCellViewModel();
             newIOCellViewModel.Name = cell.Name;
             cell.InputStreams.ToList().ForEach(stream =>
             {
@@ -79,7 +93,6 @@ namespace SharpFlowDesign.ViewModels
 
 
             return newIOCellViewModel;
-            
         }
 
 
@@ -87,32 +100,6 @@ namespace SharpFlowDesign.ViewModels
         {
             DangelingInputs.Remove(dangelingConnectionViewModel);
             DangelingOutputs.Remove(dangelingConnectionViewModel);
-        }
-
-
-        public Type DataType => typeof(ConnectionViewModel);
-
-        public void Drop(object data, int index = -1)
-        {
-            //if moving within organization, reassign the children to the 
-            //level above first
-            DangelingConnectionViewModel dangelingConnection = data as DangelingConnectionViewModel;
-            
-//            ElementViewModel elem = data as ElementViewModel;
-
-            if (dangelingConnection != null)
-            {
-                //org.isMoveWithinOrganization = true;
-                //                if (org.ID == this.ID) //if dragged and dropped yourself, don't need to do anything
-                //                    return;
-                MainViewModel.Instance().Connections.Add(
-                    new ConnectionViewModel(dangelingConnection.IOCellViewModel, this)
-                    {
-                        Name = dangelingConnection.Datanames
-                    });
-                
-            }
-//           this.Children = this.GetChildren();  //refresh view
         }
     }
 }

@@ -8,43 +8,42 @@
              xmlns:customControls="clr-namespace:SharpFlowDesign.CustomControls"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="300" d:DesignWidth="700" >
+             d:DesignHeight="300" d:DesignWidth="700">
 
-    <Grid x:Name="theCanvas" MouseUp="UIElement_OnMouseUp"
+    <Grid x:Name="TheCanvas" MouseUp="UIElement_OnMouseUp"
           AllowDrop="True"
           Canvas.ZIndex="100"
           IsHitTestVisible="True"
           Background="Transparent"
           DragOver="MainWindow_OnDragOver">
-        <customControls:Pointer Start="{Binding TemporaryConnection.Start.OutputPoint}"></customControls:Pointer>
-        <ItemsControl ItemsSource="{Binding Connections}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+        
+        <customControls:Pointer Start="{Binding TemporaryConnection.Start.OutputPoint}" />
+        
+        <!--Connections-->
+        <ItemsControl ItemsPanel="{StaticResource DrawingBoardItemControl}" 
+                      ItemsSource="{Binding Connections}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <customControls:Pointer
-                        
-                        FillColor="Red" Text="{Binding Name, Mode=TwoWay}" Start="{Binding Start.OutputPoint}"
+                        FillColor="Red" 
+                        Text="{Binding Name, Mode=TwoWay}" 
+                        Start="{Binding Start.OutputPoint}"
                         End="{Binding End.InputPoint}"
                         ArrowSize="30,15" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-
-        <ItemsControl Name="itemContainer"                     
-                     ItemsSource="{Binding SoftwareCells}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+        
+        <!--SoftwareCells-->
+        <ItemsControl Name="ItemContainer"
+                      ItemsPanel="{StaticResource DrawingBoardItemControl}" 
+                      ItemsSource="{Binding SoftwareCells}">
             <ItemsControl.ItemContainerStyle>
                 <Style>
+                    <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                     <Setter Property="Canvas.Left"
                             Value="{Binding Position.X}" />
+                    <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                     <Setter Property="Canvas.Top"
                             Value="{Binding Position.Y}" />
                 </Style>

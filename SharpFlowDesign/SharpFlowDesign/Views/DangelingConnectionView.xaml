@@ -19,7 +19,7 @@
             <TextBlock Foreground="White" FontSize="14">
                     <Run Text="(" />
             </TextBlock>
-            <TextBox x:Name="textBox" Text="{Binding Datanames}"
+            <TextBox x:Name="DatanamesTextBox" Text="{Binding Datanames}"
                          CaretBrush="Wheat" Background="{x:Null}"
                          Foreground="White" BorderBrush="{x:Null}" />
             <TextBlock Foreground="White" FontSize="14">
@@ -38,10 +38,10 @@
                     </TransformGroup>
                 </Grid.RenderTransform>
                 <Rectangle Fill="#FFFF2222" Height="3" VerticalAlignment="Top" Margin="29,6.5,0,0" />
-                <Path Fill="#FFFF2222" Grid.Row="1" VerticalAlignment="Top" Data="M30,1 L30,15 L1,7.5 L30,1" />
+                <Path Fill="#FFFF2222"  VerticalAlignment="Top" Data="M30,1 L30,15 L1,7.5 L30,1" />
 
             </Grid>
-            <TextBox x:Name="textBoxActionName" VerticalAlignment="Bottom" Text="{Binding Actionname}"
+            <TextBox x:Name="ActionNameTextBox" VerticalAlignment="Bottom" Text="{Binding Actionname}"
                          CaretBrush="Wheat" Background="{x:Null}"
                          Foreground="White" BorderBrush="{x:Null}" />
         </Grid>

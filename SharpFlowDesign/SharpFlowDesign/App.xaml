@@ -5,6 +5,7 @@
              xmlns:converter="clr-namespace:SharpFlowDesign.Converter">
     <Application.Resources>
         <converter:DebugConverter x:Key="DebugConverter" />
+        <converter:IOCellSelectionConverter x:Key="SelectionConverter" />
 
         <SolidColorBrush x:Key="BG" Color="#FF383838"/>
         <SolidColorBrush x:Key="GridColor" Color="#FF404040" />
@@ -30,6 +31,12 @@
                          VerticalAlignment="Center" Foreground="Black" />
             </Grid>
         </ControlTemplate>
+
+
+        <ItemsPanelTemplate x:Key="DrawingBoardItemControl">
+            <Canvas />
+        </ItemsPanelTemplate>
+
 
     </Application.Resources>
 </Application>

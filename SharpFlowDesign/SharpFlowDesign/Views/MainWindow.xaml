@@ -5,11 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:customControls="clr-namespace:SharpFlowDesign.CustomControls"
         xmlns:views="clr-namespace:SharpFlowDesign.Views"
-        xmlns:media2D="clr-namespace:Petzold.Media2D"
-        xmlns:converter="clr-namespace:SharpFlowDesign.Converter"
-        xmlns:viewModels="clr-namespace:SharpFlowDesign.ViewModels"
         mc:Ignorable="d"
-        Title="Sharp StreamViewModel Design" Height="350" Width="825">
+        Title="Sharp Flow Design" Height="350" Width="825">
     <Window.Resources>
         <ContextMenu x:Key="MyContextMenu">
             <MenuItem Header="Add Celldaw" Click="MenuItem_Click" />
@@ -17,10 +14,10 @@
     </Window.Resources>
 
     <Grid ContextMenu="{StaticResource MyContextMenu}">
-        <Label>StreamViewModel Design</Label>
-<!--        <Button Width="100" Height="20" VerticalAlignment="Top" Content="Test" ></Button>-->
-        <customControls:ZoomBorder x:Name="border" ClipToBounds="True" Background="{StaticResource MyVisualBrush}">
-            <views:DrawingBoard x:Name="theDrawingBoard"/>
+        <Label>Flow Design</Label>
+        <customControls:ZoomBorder x:Name="TheZoomBorder" ClipToBounds="True"
+                                   Background="{StaticResource MyVisualBrush}">
+            <views:DrawingBoard x:Name="TheDrawingBoard" />
         </customControls:ZoomBorder>
     </Grid>
 </Window>

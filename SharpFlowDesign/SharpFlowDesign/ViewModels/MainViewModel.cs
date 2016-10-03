@@ -1,28 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
 using PropertyChanged;
-using SharpFlowDesign.CustomControls;
 using SharpFlowDesign.Model;
-using SharpFlowDesign.XML;
 
 namespace SharpFlowDesign.ViewModels
 {
     [ImplementPropertyChanged]
-    public class MainViewModel 
+    public class MainViewModel
     {
         private static MainViewModel self;
 
@@ -32,9 +18,16 @@ namespace SharpFlowDesign.ViewModels
             SoftwareCells = new ObservableCollection<IOCellViewModel>();
             Connections = new ObservableCollection<ConnectionViewModel>();
             Connections.CollectionChanged += Connections_CollectionChanged;
+
+            AddToViewModelRecursive(FlowDesignManager.Root);
         }
 
-        private void Connections_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+
+        public ObservableCollection<ConnectionViewModel> Connections { get; }
+        public ObservableCollection<IOCellViewModel> SoftwareCells { get; set; }
+        public ConnectionViewModel TemporaryConnection { get; set; }
+
+        private void Connections_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action != NotifyCollectionChangedAction.Add) return;
             foreach (ConnectionViewModel item in e.NewItems)
@@ -46,10 +39,10 @@ namespace SharpFlowDesign.ViewModels
         private void connection_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName != "IsDragging") return;
-            var vm = (sender as ConnectionViewModel);
+            var vm = sender as ConnectionViewModel;
 
             // as long as an connection is dragged around don't change the Collections
-            if (vm.IsDragging) return;
+            if (vm != null && vm.IsDragging) return;
 
             MaybeRemoveConnection(vm);
         }
@@ -57,13 +50,8 @@ namespace SharpFlowDesign.ViewModels
         private void MaybeRemoveConnection(ConnectionViewModel vm)
         {
             if (vm.End == null)
-                this.Connections.Remove(vm);
+                Connections.Remove(vm);
         }
-
-
-        public ObservableCollection<ConnectionViewModel> Connections { get; private set; }
-        public ObservableCollection<IOCellViewModel> SoftwareCells { get; set; }
-        public ConnectionViewModel TemporaryConnection { get; set; }
 
 
         public void AddToViewModelRecursive(SoftwareCell cell, IOCellViewModel previous = null)
@@ -74,22 +62,17 @@ namespace SharpFlowDesign.ViewModels
             {
                 Connections.Add(new ConnectionViewModel(previous, cellvm) {Name = cell.InputStreams.First().DataNames});
             }
-          
-            var destinations =  cell.OutputStreams.SelectMany(stream => stream.Destinations).ToList();
-            destinations.ForEach(x => AddToViewModelRecursive(x, previous:cellvm));
+
+            var destinations = cell.OutputStreams.SelectMany(stream => stream.Destinations).ToList();
+            destinations.ForEach(x => AddToViewModelRecursive(x, cellvm));
         }
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            //DragDrop.DoDragDrop((DependencyObject)e.Source, "Sample", DragDropEffects.Copy);
-        }
+
 
 
         public static MainViewModel Instance()
         {
-            if (self == null)
-                self = new MainViewModel();
-            return self;
+            return self ?? (self = new MainViewModel());
         }
 
 
@@ -98,5 +81,4 @@ namespace SharpFlowDesign.ViewModels
             Connections.Remove(connectionViewModel);
         }
     }
-
 }

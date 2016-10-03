@@ -104,6 +104,7 @@
     <Compile Include="DebuggingHelper\DebugPrinter.cs" />
     <Compile Include="Interactions.cs" />
     <Compile Include="DebuggingHelper\Mockdata.cs" />
+    <Compile Include="Model\FlowDesignManager.cs" />
     <Compile Include="Model\SoftwareCell.cs" />
     <Compile Include="Model\Stream.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />

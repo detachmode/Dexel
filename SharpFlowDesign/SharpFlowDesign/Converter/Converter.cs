@@ -37,7 +37,7 @@ namespace SharpFlowDesign.Converter
                 return new SolidColorBrush(Colors.DodgerBlue);
             }
 
-            Color color = (Color)ConvertFromString("#FF2E2E2E");
+            Color color = (Color)ConvertFromString("#7F484848");
             return new SolidColorBrush(color); ;
 
         }

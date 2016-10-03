@@ -28,8 +28,8 @@ namespace SharpFlowDesign.CustomControls
         //    public static readonly DependencyProperty TextBoxProperty =
         //DependencyProperty.Register("TextBox", typeof(ContentPresenter), typeof(Pointer));
 
-        private readonly Path ArrowShape;
-        private readonly Path PathShape;
+        private readonly Path arrowShape;
+        private readonly Path pathShape;
         private readonly TextBox txtBox;
 
         private readonly double connectionExtensionLength = 100;
@@ -38,13 +38,13 @@ namespace SharpFlowDesign.CustomControls
         public Pointer()
         {
 
-            PathShape = new Path
+            pathShape = new Path
             {
                 Stroke = FillColor,
                 StrokeThickness = 3
             };
 
-            ArrowShape = new Path
+            arrowShape = new Path
             {
                 Stroke = FillColor,
                 Fill = FillColor,               
@@ -52,10 +52,10 @@ namespace SharpFlowDesign.CustomControls
 
             };
             
-            ArrowShape.MouseDown += (sender, args) =>
+            arrowShape.MouseDown += (sender, args) =>
             {
-                ArrowShape.IsHitTestVisible = false;
-                PathShape.IsHitTestVisible = false;
+                arrowShape.IsHitTestVisible = false;
+                pathShape.IsHitTestVisible = false;
                 IsDragging = true;
                 (DataContext as ConnectionViewModel).IsDragging = true;
                 try
@@ -69,22 +69,22 @@ namespace SharpFlowDesign.CustomControls
                 }
                 (DataContext as ConnectionViewModel).IsDragging = false;
                 IsDragging = false;
-                ArrowShape.IsHitTestVisible = true;
-                PathShape.IsHitTestVisible = true;
+                arrowShape.IsHitTestVisible = true;
+                pathShape.IsHitTestVisible = true;
 
             };
 
            
 
-            ArrowShape.MouseEnter += (sender, args) =>
+            arrowShape.MouseEnter += (sender, args) =>
             {
-                ArrowShape.Fill = Brushes.Red;
+                arrowShape.Fill = Brushes.Red;
             };
 
-            ArrowShape.MouseLeave += (sender, args) =>
+            arrowShape.MouseLeave += (sender, args) =>
             {
                 if (IsDragging) return;
-                ArrowShape.Fill = FillColor;
+                arrowShape.Fill = FillColor;
             };
 
 
@@ -93,8 +93,8 @@ namespace SharpFlowDesign.CustomControls
 
             txtBox = new TextBox();
 
-            Children.Add(PathShape);
-            Children.Add(ArrowShape);
+            Children.Add(pathShape);
+            Children.Add(arrowShape);
             Children.Add(txtBox);
 
             DependencyPropertyDescriptor
@@ -156,9 +156,9 @@ namespace SharpFlowDesign.CustomControls
 
         private void Update()
         {
-            ArrowShape.Stroke = FillColor;
-            ArrowShape.Fill = FillColor;
-            PathShape.Stroke = FillColor;
+            arrowShape.Stroke = FillColor;
+            arrowShape.Fill = FillColor;
+            pathShape.Stroke = FillColor;
 
             var end = End;
             var start = Start;
@@ -187,7 +187,7 @@ namespace SharpFlowDesign.CustomControls
             Canvas.SetLeft(txtBox, centerPoint.X);
             Canvas.SetTop(txtBox, centerPoint.Y);
 
-            PathShape.Data = path;
+            pathShape.Data = path;
 
             var position = End;
 
@@ -206,7 +206,7 @@ namespace SharpFlowDesign.CustomControls
             figure.Segments.Add(new PolyLineSegment(pts, true));
             path = new PathGeometry();
             path.Figures.Add(figure);
-            ArrowShape.Data = path;
+            arrowShape.Data = path;
         }
     }
 }
