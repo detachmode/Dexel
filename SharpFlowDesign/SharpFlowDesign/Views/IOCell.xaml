@@ -14,14 +14,21 @@
     </UserControl.Resources>
 
 
-
     <StackPanel SizeChanged="SizeChanged"
                 MinWidth="100" MinHeight="60"
                 Orientation="Horizontal"
                 Panel.ZIndex="100">
-        <views:Stream x:Name="InputFlow" MouseEnter="UIElement_OnMouseEnter"
-                       Visibility="Hidden"
-                      MouseUp="PreviewMouseUp" DataContext="{Binding Input}" />
+        <ItemsControl x:Name="InputFlow" ItemsSource="{Binding DangelingInputs}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <views:DangelingConnectionView x:Name="InputFlow"
+                                                  MouseEnter="UIElement_OnMouseEnter"
+                                                  MouseUp="PreviewMouseUp"
+                                                  DataContext="{Binding}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
 
         <views:SoftwareCell x:Name="Fu" LabelContent="{Binding Name}"
                             Thumb.DragDelta="OnDragDelta"
@@ -29,10 +36,15 @@
                             Thumb.DragCompleted="Thumb_OnDragCompleted"
                             PreviewMouseUp="PreviewMouseUp"
                             SelectionColor="{Binding IsSelected, Converter={StaticResource SelectionConverter}}" />
-        <views:Stream x:Name="OutputFlow" MouseUp="PreviewMouseUp"
-                      Visibility="Hidden"
-                      DataContext="{Binding Output}"
-                      RenderTransformOrigin="0,0.5" />
-
+        <ItemsControl x:Name="OutputFlow" ItemsSource="{Binding DangelingOutputs}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <views:DangelingConnectionView x:Name="InputFlow"
+                                                  MouseEnter="UIElement_OnMouseEnter"
+                                                  MouseUp="PreviewMouseUp"
+                                                  DataContext="{Binding}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </StackPanel>
 </UserControl>

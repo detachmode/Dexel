@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using SharpFlowDesign.ViewModels;
@@ -106,6 +107,14 @@ namespace SharpFlowDesign.Views
             var vm = GetDataContext();
             vm.InputPoint = new Point(vm.Position.X + InputFlow.ActualWidth, vm.Position.Y + ActualHeight/2);
             vm.OutputPoint = new Point(vm.Position.X + (ActualWidth - OutputFlow.ActualWidth), vm.Position.Y + (ActualHeight /2));
+        }
+
+        private void Output_DragEnter(object sender, DragEventArgs e)
+        {
+            var vm =  GetDataContext();
+            Interactions.AddNewConnectionNoDestination(vm);
+            
+
         }
     }
 }

@@ -1,15 +1,17 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using PropertyChanged;
+using SharpFlowDesign.Behavior;
 
 namespace SharpFlowDesign.ViewModels
 {
 
     [ImplementPropertyChanged]
-    public class ConnectionViewModel : INotifyPropertyChanged
+    public class ConnectionViewModel : INotifyPropertyChanged, IDragable
     {
         public ConnectionViewModel(IOCellViewModel start, IOCellViewModel end)
         {
@@ -30,6 +32,17 @@ namespace SharpFlowDesign.ViewModels
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+
+        Type IDragable.DataType
+        {
+            get { return typeof(ConnectionViewModel); }
+        }
+
+        void IDragable.Remove(object i)
+        {
+            MainViewModel.Instance().RemoveConnection(this);
         }
     }
 

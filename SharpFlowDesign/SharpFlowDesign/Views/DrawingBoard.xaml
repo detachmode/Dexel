@@ -17,6 +17,7 @@
           IsHitTestVisible="True"
           Background="Transparent"
           DragOver="MainWindow_OnDragOver">
+        <customControls:Pointer Start="{Binding TemporaryConnection.Start.OutputPoint}"></customControls:Pointer>
         <ItemsControl ItemsSource="{Binding Connections}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>

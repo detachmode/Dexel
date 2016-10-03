@@ -24,6 +24,9 @@ namespace SharpFlowDesign.ViewModels
     [ImplementPropertyChanged]
     public class MainViewModel 
     {
+        private static MainViewModel self;
+
+
         public MainViewModel()
         {
             SoftwareCells = new ObservableCollection<IOCellViewModel>();
@@ -60,6 +63,7 @@ namespace SharpFlowDesign.ViewModels
 
         public ObservableCollection<ConnectionViewModel> Connections { get; private set; }
         public ObservableCollection<IOCellViewModel> SoftwareCells { get; set; }
+        public ConnectionViewModel TemporaryConnection { get; set; }
 
 
         public void AddToViewModelRecursive(SoftwareCell cell, IOCellViewModel previous = null)
@@ -81,11 +85,18 @@ namespace SharpFlowDesign.ViewModels
         }
 
 
+        public static MainViewModel Instance()
+        {
+            if (self == null)
+                self = new MainViewModel();
+            return self;
+        }
 
 
-
-   
-    
-}
+        public void RemoveConnection(ConnectionViewModel connectionViewModel)
+        {
+            Connections.Remove(connectionViewModel);
+        }
+    }
 
 }

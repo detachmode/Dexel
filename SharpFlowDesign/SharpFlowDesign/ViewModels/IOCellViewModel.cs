@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using Petzold.Media2D;
 using PropertyChanged;
+using SharpFlowDesign.Behavior;
 using SharpFlowDesign.Model;
 using SharpFlowDesign.Views;
 using SoftwareCell = SharpFlowDesign.Model.SoftwareCell;
@@ -12,18 +14,18 @@ using SoftwareCell = SharpFlowDesign.Model.SoftwareCell;
 namespace SharpFlowDesign.ViewModels
 {
     [ImplementPropertyChanged]
-    public class IOCellViewModel
+    public class IOCellViewModel : IDropable
     {
         public IOCellViewModel()
         {
+            DangelingInputs = new ObservableCollection<DangelingConnectionViewModel>();
+            DangelingOutputs = new ObservableCollection<DangelingConnectionViewModel>();
 
-//            ArrowLinesStart = new List<ConnectionArrow>();
-//            ArrowLinesEnd = new List<ConnectionArrow>();
         }
 
         public string Name { get; set; }
-        public ViewModels.StreamViewModel Input { get; set; }
-        public ViewModels.StreamViewModel Output { get; set; }
+        public ObservableCollection<DangelingConnectionViewModel> DangelingInputs { get; set; }
+        public ObservableCollection<DangelingConnectionViewModel> DangelingOutputs { get; set; }
         public Point Position { get; set; }
         public bool IsSelected { get; set; }
 //        public List<ConnectionArrow> ArrowLinesStart { get; set; }
@@ -58,19 +60,54 @@ namespace SharpFlowDesign.ViewModels
 
         public static IOCellViewModel Create(SoftwareCell cell)
         {
-            return new IOCellViewModel
+            var newIOCellViewModel =  new IOCellViewModel();
+            newIOCellViewModel.Name = cell.Name;
+            newIOCellViewModel.DangelingInputs.Add(new DangelingConnectionViewModel
             {
-                Name = cell.Name,
-                Input = new StreamViewModel {
-                    Datanames = cell.InputStreams.FirstOrDefault()?.DataNames,
-                    Actionname = cell.InputStreams.FirstOrDefault()?.ActionName},
-                Output = new StreamViewModel
-                {
-                    Datanames = cell.OutputStreams.FirstOrDefault()?.DataNames,
-                    Actionname = cell.OutputStreams.FirstOrDefault()?.ActionName
-                },
+                Datanames = cell.InputStreams.FirstOrDefault()?.DataNames,
+                Actionname = cell.InputStreams.FirstOrDefault()?.ActionName
+            });
+            newIOCellViewModel.DangelingOutputs.Add(new DangelingConnectionViewModel
+            {
+                Datanames = cell.OutputStreams.FirstOrDefault()?.DataNames,
+                Actionname = cell.OutputStreams.FirstOrDefault()?.ActionName
+            });
+            newIOCellViewModel.DangelingInputs.First().IOCellViewModel = newIOCellViewModel;
+            newIOCellViewModel.DangelingOutputs.First().IOCellViewModel = newIOCellViewModel;
 
-            };
+            return newIOCellViewModel;
+            
+        }
+
+
+        public void RemoveDangelingConnection(DangelingConnectionViewModel dangelingConnectionViewModel)
+        {
+            DangelingInputs.Remove(dangelingConnectionViewModel);
+            DangelingOutputs.Remove(dangelingConnectionViewModel);
+        }
+
+
+        public Type DataType
+        {
+            get { return typeof(ConnectionViewModel); }
+        }
+        public void Drop(object data, int index = -1)
+        {
+            //if moving within organization, reassign the children to the 
+            //level above first
+            DangelingConnectionViewModel dangelingConnection = data as DangelingConnectionViewModel;
+            
+//            ElementViewModel elem = data as ElementViewModel;
+
+            if (dangelingConnection != null)
+            {
+                //org.isMoveWithinOrganization = true;
+                //                if (org.ID == this.ID) //if dragged and dropped yourself, don't need to do anything
+                //                    return;
+                MainViewModel.Instance().Connections.Add(new ConnectionViewModel(dangelingConnection.IOCellViewModel, this));
+                
+            }
+//           this.Children = this.GetChildren();  //refresh view
         }
     }
 }

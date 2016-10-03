@@ -20,7 +20,7 @@ namespace SharpFlowDesign
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            DataContext = MainViewModel.Instance();
             var mainviewmodel = DataContext as MainViewModel;
             Interactions.SetViewModel((MainViewModel)DataContext);
 

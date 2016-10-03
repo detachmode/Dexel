@@ -4,6 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:views="clr-namespace:SharpFlowDesign.Views"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behavior1="clr-namespace:SharpFlowDesign.Behavior"
              mc:Ignorable="d"
              d:DesignHeight="100" d:DesignWidth="100">
 
@@ -11,6 +13,10 @@
            Background="Transparent"
            IsHitTestVisible="True"
            VerticalAlignment="Stretch">
+        <i:Interaction.Behaviors>
+
+            <behavior1:FrameworkElementDropBehavior/>
+        </i:Interaction.Behaviors>
         <Thumb.Template>
             <ControlTemplate>
                 <Grid>
@@ -33,15 +39,16 @@
                                  VerticalAlignment="Center"
                                  BorderBrush="{x:Null}" Background="{x:Null}" />
                     </Grid>
+                    <!--                               PreviewDragOver="softwareCell_DragOver"-->
+                    <!--                               DragOver="softwareCell_DragOver"-->
+                    <!--                               DragLeave="SoftwareCell_DragLeave"-->
+                    <!--                               Drop="SoftwareCell_Drop"-->
+                    <!--                               PreviewDrop="SoftwareCell_Drop" -->
                     <Rectangle Grid.Column="0"
                                Fill="Transparent"
                                IsHitTestVisible="True"
-                               AllowDrop="True"
-                               PreviewDragOver="softwareCell_DragOver"
-                               DragOver="softwareCell_DragOver"
-                               DragLeave="SoftwareCell_DragLeave"
-                               Drop="SoftwareCell_Drop"
-                               PreviewDrop="SoftwareCell_Drop" />
+                               >
+                    </Rectangle>
                 </Grid>
                 <!--<Grid >
                     <Ellipse MinWidth="100" Fill="{Binding Path=SelectionColor, 

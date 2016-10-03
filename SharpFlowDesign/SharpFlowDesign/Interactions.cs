@@ -94,6 +94,15 @@ namespace SharpFlowDesign
             Single,
             Multiple
         }
+
+
+        public static void AddNewConnectionNoDestination(IOCellViewModel ioCellViewModel)
+        {
+            _vm.TemporaryConnection= new ConnectionViewModel(ioCellViewModel, null);
+            _vm.TemporaryConnection.IsDragging = true;
+            
+           
+        }
     }
 
 

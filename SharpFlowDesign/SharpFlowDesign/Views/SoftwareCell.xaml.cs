@@ -60,8 +60,6 @@ namespace SharpFlowDesign.Views
             if (!(obj is Pointer)) return;
 
             var pointer = (obj as Pointer);
-            var datacontext = (ConnectionViewModel)pointer.DataContext;
-
             pointer.End = p2;
         }
 

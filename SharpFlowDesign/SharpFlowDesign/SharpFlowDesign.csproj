@@ -57,6 +57,10 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Blend.Interctivity.WPF.v4.0.1.0.3\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="PropertyChanged, Version=1.51.3.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.1.51.3\lib\dotnet\PropertyChanged.dll</HintPath>
       <Private>False</Private>
@@ -65,6 +69,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Blend.Interctivity.WPF.v4.0.1.0.3\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -87,6 +95,10 @@
     <Compile Include="Arrow\ArrowLine.cs" />
     <Compile Include="Arrow\ArrowLineBase.cs" />
     <Compile Include="Arrow\ArrowPolyline.cs" />
+    <Compile Include="Behavior\FrameworkElementDragBehavior.cs" />
+    <Compile Include="Behavior\FrameworkElementDropBehavior.cs" />
+    <Compile Include="Behavior\IDragable.cs" />
+    <Compile Include="Behavior\IDropable.cs" />
     <Compile Include="Converter\Converter.cs" />
     <Compile Include="CustomControls\Pointer.cs" />
     <Compile Include="DebuggingHelper\DebugPrinter.cs" />
@@ -95,12 +107,12 @@
     <Compile Include="Model\SoftwareCell.cs" />
     <Compile Include="Model\Stream.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
-    <Compile Include="ViewModels\StreamViewModel.cs" />
+    <Compile Include="ViewModels\DangelingConnectionViewModel.cs" />
     <Compile Include="Views\DrawingBoard.xaml.cs">
       <DependentUpon>DrawingBoard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Stream.xaml.cs">
-      <DependentUpon>Stream.xaml</DependentUpon>
+    <Compile Include="Views\DangelingConnectionView.xaml.cs">
+      <DependentUpon>DangelingConnectionView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SoftwareCell.xaml.cs">
       <DependentUpon>SoftwareCell.xaml</DependentUpon>
@@ -128,7 +140,7 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\Stream.xaml">
+    <Page Include="Views\DangelingConnectionView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
