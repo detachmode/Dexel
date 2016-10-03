@@ -23,13 +23,13 @@ namespace SharpFlowDesign
             pos.Y -= 20;
             cell.Position = new Point(pos.X, pos.Y);
 
-            _vm.Items.Add(cell);
+            _vm.SoftwareCells.Add(cell);
         }
 
 
         public static void DeselectAll()
         {
-            _vm.Items.ToList().ForEach( i => i.Deselect());
+            _vm.SoftwareCells.ToList().ForEach( i => i.Deselect());
         }
 
         internal static void OnItemDragged(IOCellViewModel cellvm, DragDeltaEventArgs dragDeltaEventArgs)
@@ -58,7 +58,7 @@ namespace SharpFlowDesign
 
         public static IEnumerable<IOCellViewModel> GetSelection()
         {
-            return _vm.Items.Where(c => c.IsSelected);
+            return _vm.SoftwareCells.Where(c => c.IsSelected);
         }
 
 

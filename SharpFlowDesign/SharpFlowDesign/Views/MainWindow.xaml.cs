@@ -26,41 +26,7 @@ namespace SharpFlowDesign
 
             var splitter =  Mockdata.RomanNumbers();
             mainviewmodel.AddToViewModelRecursive(splitter);
-
-            //ConnectionArrow connectionArrow = new ConnectionArrow();
-
-            //(DataContext as MainViewModel).Items.Add(new IOCellViewModel());
-            //(DataContext as MainViewModel).Items.Add(new IOCellViewModel() { Position = new Point(400, 200) });
-            //var cell1 = ((MainViewModel) DataContext).Items[0];
-            //var cell2 = ((MainViewModel) DataContext).Items[1];
-            //connectionCanvas.Connection.StartPoint = cell1.Position;
-            //connectionCanvas.EndPoint = cell2.Position;
-            //cell1.ArrowLinesStart.Add(connectionArrow);
-            //cell2.ArrowLinesEnd.Add(connectionArrow);
-            //connectionArrow.Arrow.Stroke = Brushes.Red;
-
-            //connectionArrow.Arrow.StrokeThickness = 3;
-            //connectionArrow.textBox.Text = "hello";
-
-            //theCanvas.Children.Add(connectionArrow);
-
-            //var line = new LineGeometry();
-            //line.StartPoint = new Point(0, 0);
-            //line.EndPoint = new Point(100, 100);
-            //connectors.Children.Add(line);
-
         }
-
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            var myWindow = GetWindow(this);
-            var transform = myWindow?.TransformToVisual(itemContainer);
-            var myUiElementPosition = transform.Transform(border.BeforeContextMenuPoint);
-
-            Interactions.AddNewIOCell(myUiElementPosition);
-        }
-
-
         private void UIElement_OnMouseUp(object sender, MouseButtonEventArgs e)
         {
             Debug.WriteLine("UIElement_OnMouseUp");
@@ -68,6 +34,15 @@ namespace SharpFlowDesign
 
             Interactions.DeselectAll();
 
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            var myWindow = GetWindow(this);
+            var transform = myWindow?.TransformToVisual(theDrawingBoard.itemContainer);
+            var myUiElementPosition = transform.Transform(border.BeforeContextMenuPoint);
+
+            Interactions.AddNewIOCell(myUiElementPosition);
         }
     }
 

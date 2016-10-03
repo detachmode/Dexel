@@ -12,64 +12,16 @@
         Title="Sharp StreamViewModel Design" Height="350" Width="825">
     <Window.Resources>
         <converter:DebugConverter x:Key="DebugConverter" />
-            <SolidColorBrush x:Key="GridColor" Color="#FF404040"/>
-        <VisualBrush x:Key="MyVisualBrush" TileMode="Tile" Viewport="0,0,15,15" ViewportUnits="Absolute" Viewbox="0,0,15,15" ViewboxUnits="Absolute">
-            <VisualBrush.Visual>
-                <Grid Background="#FF363636">
-                    <Path Data="M 0 0 L 15 0" Stroke="{DynamicResource GridColor}" />
-                    <Path Data="M 15 0 L 15 15" Stroke="{DynamicResource GridColor}" />
-                </Grid>
-            </VisualBrush.Visual>
-        </VisualBrush>
-
-        <Style x:Key="BaseContentControlStyle" TargetType="{x:Type ContentControl}">
-            <Setter Property="Foreground" Value="Bisque" />
-        </Style>
-        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BaseContentControlStyle}" />
-
-        <ControlTemplate x:Key="template1">
-            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ShowGridLines="False">
-                <Ellipse  Fill="#FF818181" Stroke="#FF376DBB" StrokeThickness="4" HorizontalAlignment="Stretch"/>
-                <TextBox Margin="18" Name="tplTextBlock" Text="User stage" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black"/>
-            </Grid>
-
-        </ControlTemplate>
         <ContextMenu x:Key="MyContextMenu">
             <MenuItem Header="Add Celldaw" Click="MenuItem_Click" />
         </ContextMenu>
     </Window.Resources>
 
-    <Grid Background="{StaticResource MyVisualBrush}" MouseUp="UIElement_OnMouseUp"  RenderTransformOrigin="0.5,0.5"  ContextMenu="{StaticResource MyContextMenu}" >
+    <Grid ContextMenu="{StaticResource MyContextMenu}">
         <Label>StreamViewModel Design</Label>
         <Button Width="100" Height="20" VerticalAlignment="Top" Content="Test" ></Button>
-        <customControls:ZoomBorder x:Name="border" ClipToBounds="True" Background="#02C73737">
-            <Canvas x:Name="theCanvas">
-                <viewModels:ConnectionCanvas x:Name="connectionCanvas" ></viewModels:ConnectionCanvas>
-
-                <ItemsControl Name="itemContainer" ItemsSource="{Binding Items}">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <Canvas />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemContainerStyle>
-                        <Style>
-                            <Setter Property="Canvas.Left"
-                                Value="{Binding Position.X}">
-                            </Setter>
-                            <Setter Property="Canvas.Top"
-                                Value="{Binding Position.Y}">
-                            </Setter>
-                        </Style>
-                    </ItemsControl.ItemContainerStyle>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <views:IOCell/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </Canvas>
+        <customControls:ZoomBorder x:Name="border" ClipToBounds="True" Background="{StaticResource MyVisualBrush}">
+            <views:DrawingBoard x:Name="theDrawingBoard"/>
         </customControls:ZoomBorder>
-
     </Grid>
 </Window>

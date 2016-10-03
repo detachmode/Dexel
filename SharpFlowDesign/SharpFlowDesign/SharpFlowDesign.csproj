@@ -36,6 +36,26 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="PropertyChanged, Version=1.51.3.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.1.51.3\lib\dotnet\PropertyChanged.dll</HintPath>
@@ -68,16 +88,19 @@
     <Compile Include="Arrow\ArrowLineBase.cs" />
     <Compile Include="Arrow\ArrowPolyline.cs" />
     <Compile Include="Converter\Converter.cs" />
+    <Compile Include="CustomControls\Pointer.cs" />
     <Compile Include="DebuggingHelper\DebugPrinter.cs" />
     <Compile Include="Interactions.cs" />
     <Compile Include="DebuggingHelper\Mockdata.cs" />
     <Compile Include="Model\SoftwareCell.cs" />
     <Compile Include="Model\Stream.cs" />
-    <Compile Include="ViewModels\Connection.cs" />
-    <Compile Include="ViewModels\ConnectionCanvas.cs" />
+    <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\StreamViewModel.cs" />
     <Compile Include="Views\ConnectionArrow.xaml.cs">
       <DependentUpon>ConnectionArrow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DrawingBoard.xaml.cs">
+      <DependentUpon>DrawingBoard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Stream.xaml.cs">
       <DependentUpon>Stream.xaml</DependentUpon>
@@ -93,6 +116,10 @@
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="XML\XMLConverter.cs" />
     <Page Include="Views\ConnectionArrow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DrawingBoard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
