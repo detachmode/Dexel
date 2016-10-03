@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using Petzold.Media2D;
 using PropertyChanged;
 using SharpFlowDesign.Behavior;
-using SharpFlowDesign.Model;
-using SharpFlowDesign.Views;
 using SoftwareCell = SharpFlowDesign.Model.SoftwareCell;
 
 namespace SharpFlowDesign.ViewModels
@@ -62,18 +57,26 @@ namespace SharpFlowDesign.ViewModels
         {
             var newIOCellViewModel =  new IOCellViewModel();
             newIOCellViewModel.Name = cell.Name;
-            newIOCellViewModel.DangelingInputs.Add(new DangelingConnectionViewModel
+            cell.InputStreams.ToList().ForEach(stream =>
             {
-                Datanames = cell.InputStreams.FirstOrDefault()?.DataNames,
-                Actionname = cell.InputStreams.FirstOrDefault()?.ActionName
+                if (stream.Sources.Count != 0) return;
+                newIOCellViewModel.DangelingInputs.Add(new DangelingConnectionViewModel(newIOCellViewModel)
+                {
+                    Datanames = stream.DataNames,
+                    Actionname = stream.ActionName
+                });
             });
-            newIOCellViewModel.DangelingOutputs.Add(new DangelingConnectionViewModel
+
+            cell.OutputStreams.ToList().ForEach(stream =>
             {
-                Datanames = cell.OutputStreams.FirstOrDefault()?.DataNames,
-                Actionname = cell.OutputStreams.FirstOrDefault()?.ActionName
+                if (stream.Destinations.Count != 0) return;
+                newIOCellViewModel.DangelingOutputs.Add(new DangelingConnectionViewModel(newIOCellViewModel)
+                {
+                    Datanames = stream.DataNames,
+                    Actionname = stream.ActionName
+                });
             });
-            newIOCellViewModel.DangelingInputs.First().IOCellViewModel = newIOCellViewModel;
-            newIOCellViewModel.DangelingOutputs.First().IOCellViewModel = newIOCellViewModel;
+
 
             return newIOCellViewModel;
             
@@ -87,10 +90,8 @@ namespace SharpFlowDesign.ViewModels
         }
 
 
-        public Type DataType
-        {
-            get { return typeof(ConnectionViewModel); }
-        }
+        public Type DataType => typeof(ConnectionViewModel);
+
         public void Drop(object data, int index = -1)
         {
             //if moving within organization, reassign the children to the 
@@ -104,7 +105,11 @@ namespace SharpFlowDesign.ViewModels
                 //org.isMoveWithinOrganization = true;
                 //                if (org.ID == this.ID) //if dragged and dropped yourself, don't need to do anything
                 //                    return;
-                MainViewModel.Instance().Connections.Add(new ConnectionViewModel(dangelingConnection.IOCellViewModel, this));
+                MainViewModel.Instance().Connections.Add(
+                    new ConnectionViewModel(dangelingConnection.IOCellViewModel, this)
+                    {
+                        Name = dangelingConnection.Datanames
+                    });
                 
             }
 //           this.Children = this.GetChildren();  //refresh view

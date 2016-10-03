@@ -22,6 +22,9 @@ namespace SharpFlowDesign.CustomControls
         public static readonly DependencyProperty FillColorProperty =
          DependencyProperty.Register("FillColor", typeof(SolidColorBrush), typeof(Pointer));
 
+        public static readonly DependencyProperty TextProperty =
+ DependencyProperty.Register("Text", typeof(string), typeof(Pointer));
+
         //    public static readonly DependencyProperty TextBoxProperty =
         //DependencyProperty.Register("TextBox", typeof(ContentPresenter), typeof(Pointer));
 
@@ -111,6 +114,10 @@ namespace SharpFlowDesign.CustomControls
                 .FromProperty(FillColorProperty, typeof(Pointer))
                 .AddValueChanged(this, (s, e) => Update());
 
+            DependencyPropertyDescriptor
+                .FromProperty(TextProperty, typeof(Pointer))
+                .AddValueChanged(this, (s, e) => Update());
+
             //path.GetPointAtFractionLength(0.5, out centerPoint, out tg);
         }
 
@@ -139,7 +146,13 @@ namespace SharpFlowDesign.CustomControls
             set { SetValue(FillColorProperty, value); }
         }
 
-        
+        public string Text
+        {
+            get { return (string)GetValue(TextProperty); }
+            set { SetValue(TextProperty, value); }
+        }
+
+
 
         private void Update()
         {
@@ -149,6 +162,8 @@ namespace SharpFlowDesign.CustomControls
 
             var end = End;
             var start = Start;
+
+            txtBox.Text = Text;
 
             end.X -= ArrowSize.X;
             var figure = new PathFigure

@@ -10,7 +10,6 @@
              d:DataContext="{d:DesignInstance viewModels:MainViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="700" >
 
-
     <Grid x:Name="theCanvas" MouseUp="UIElement_OnMouseUp"
           AllowDrop="True"
           Canvas.ZIndex="100"
@@ -27,7 +26,8 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <customControls:Pointer
-                        FillColor="White" Start="{Binding Start.OutputPoint}"
+                        
+                        FillColor="Red" Text="{Binding Name, Mode=TwoWay}" Start="{Binding Start.OutputPoint}"
                         End="{Binding End.InputPoint}"
                         ArrowSize="30,15" />
                 </DataTemplate>

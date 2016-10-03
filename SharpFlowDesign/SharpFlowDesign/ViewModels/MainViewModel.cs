@@ -72,7 +72,7 @@ namespace SharpFlowDesign.ViewModels
             SoftwareCells.Add(cellvm);
             if (previous != null)
             {
-                Connections.Add(new ConnectionViewModel(previous, cellvm));
+                Connections.Add(new ConnectionViewModel(previous, cellvm) {Name = cell.InputStreams.First().DataNames});
             }
           
             var destinations =  cell.OutputStreams.SelectMany(stream => stream.Destinations).ToList();

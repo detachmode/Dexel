@@ -116,5 +116,11 @@ namespace SharpFlowDesign.Views
             
 
         }
+
+        private void NewOutput_click(object sender, RoutedEventArgs e)
+        {
+            GetDataContext().DangelingOutputs.Add(new DangelingConnectionViewModel(GetDataContext()));
+
+        }
     }
 }

@@ -25,7 +25,7 @@
                         <ColumnDefinition Width="40*" />
                     </Grid.ColumnDefinitions>
                     <Grid Margin="20" Grid.ColumnSpan="2">
-                        <Ellipse Margin="-20" Fill="#FF484848" Stroke="White"
+                        <Ellipse Margin="-20" Fill="#FF484848" Stroke="DeepSkyBlue"
 
                                  StrokeThickness="3">
                             <!--<i:Interaction.Behaviors>

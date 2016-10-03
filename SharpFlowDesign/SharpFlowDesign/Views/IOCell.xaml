@@ -5,26 +5,33 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:converter="clr-namespace:SharpFlowDesign.Converter"
     xmlns:views="clr-namespace:SharpFlowDesign.Views"
-    xmlns:ViewModels="clr-namespace:SharpFlowDesign.ViewModels" x:Class="SharpFlowDesign.Views.IOCell"
+    xmlns:ViewModels="clr-namespace:SharpFlowDesign.ViewModels"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:behavior="clr-namespace:SharpFlowDesign.Behavior"
+    x:Class="SharpFlowDesign.Views.IOCell"
     d:DataContext="{d:DesignInstance ViewModels:IOCellViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
 
     <UserControl.Resources>
         <converter:IOCellSelectionConverter x:Key="SelectionConverter" />
+        <ContextMenu x:Key="MyContextMenu">
+            <MenuItem Header="Add New Output" Click="NewOutput_click" />
+        </ContextMenu>
     </UserControl.Resources>
 
 
     <StackPanel SizeChanged="SizeChanged"
-                MinWidth="100" MinHeight="60"
+                ContextMenu="{StaticResource MyContextMenu}"
+                MinHeight="60"
                 Orientation="Horizontal"
                 Panel.ZIndex="100">
         <ItemsControl x:Name="InputFlow" ItemsSource="{Binding DangelingInputs}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <views:DangelingConnectionView x:Name="InputFlow"
+                    <views:DangelingConnectionView 
                                                   MouseEnter="UIElement_OnMouseEnter"
                                                   MouseUp="PreviewMouseUp"
-                                                  DataContext="{Binding}" />
+                                                  />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
@@ -36,13 +43,17 @@
                             Thumb.DragCompleted="Thumb_OnDragCompleted"
                             PreviewMouseUp="PreviewMouseUp"
                             SelectionColor="{Binding IsSelected, Converter={StaticResource SelectionConverter}}" />
-        <ItemsControl x:Name="OutputFlow" ItemsSource="{Binding DangelingOutputs}">
+        <ItemsControl x:Name="OutputFlow" ItemsSource="{Binding DangelingOutputs, Mode=TwoWay}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <views:DangelingConnectionView x:Name="InputFlow"
+                    <views:DangelingConnectionView
                                                   MouseEnter="UIElement_OnMouseEnter"
                                                   MouseUp="PreviewMouseUp"
-                                                  DataContext="{Binding}" />
+                                                   >
+                        <i:Interaction.Behaviors>
+                            <behavior:FrameworkElementDragBehavior />
+                        </i:Interaction.Behaviors>
+                    </views:DangelingConnectionView>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

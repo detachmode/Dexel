@@ -15,10 +15,15 @@ namespace SharpFlowDesign.ViewModels
         public string Actionname { get; set; }
         public IOCellViewModel IOCellViewModel { get; set; }
 
-        Type IDragable.DataType
+        public DangelingConnectionViewModel(IOCellViewModel ioCellViewModel)
         {
-            get { return typeof(ConnectionViewModel); }
+            Datanames = "Parameter";
+            Actionname = "";
+
+            IOCellViewModel = ioCellViewModel;
         }
+
+        Type IDragable.DataType => typeof(ConnectionViewModel);
 
         void IDragable.Remove(object i)
         {
