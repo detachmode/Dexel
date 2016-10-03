@@ -32,7 +32,7 @@ namespace SharpFlowDesign.Views
                 var pointer = (obj as Pointer);
                 var datacontext = (ConnectionViewModel)pointer.DataContext;
                 var droppedContext = (IOCellViewModel)((Rectangle)sender).DataContext;
-                pointer.SetBinding((DependencyProperty)Pointer.EndProperty, "End.Position");
+                pointer.SetBinding((DependencyProperty)Pointer.EndProperty, "End.InputPoint");
                 datacontext.End = droppedContext;
 
             }
@@ -41,7 +41,7 @@ namespace SharpFlowDesign.Views
         }
 
 
-        private SolidColorBrush hoverfeedbackBrush = new SolidColorBrush(Colors.GreenYellow);
+        private SolidColorBrush hoverfeedbackBrush = new SolidColorBrush(Colors.LimeGreen);
 
         private void softwareCell_DragOver(object sender, DragEventArgs e)
         {
@@ -83,7 +83,7 @@ namespace SharpFlowDesign.Views
 
         public void FocusTextBox()
         {
-            TextBox textBox = (TextBox)theThumb.Template.FindName("FUName", theThumb);
+            TextBox textBox = (TextBox)theThumb.Template.FindName("theTextBox", theThumb);
             textBox.Focus();
         }
 

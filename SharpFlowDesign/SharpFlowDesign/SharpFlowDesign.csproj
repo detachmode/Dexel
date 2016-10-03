@@ -96,9 +96,6 @@
     <Compile Include="Model\Stream.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\StreamViewModel.cs" />
-    <Compile Include="Views\ConnectionArrow.xaml.cs">
-      <DependentUpon>ConnectionArrow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\DrawingBoard.xaml.cs">
       <DependentUpon>DrawingBoard.xaml</DependentUpon>
     </Compile>
@@ -115,10 +112,6 @@
     <Compile Include="ViewModels\IOCellViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="XML\XMLConverter.cs" />
-    <Page Include="Views\ConnectionArrow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\DrawingBoard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

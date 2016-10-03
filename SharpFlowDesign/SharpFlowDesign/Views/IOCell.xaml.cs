@@ -6,7 +6,6 @@ using SharpFlowDesign.ViewModels;
 
 namespace SharpFlowDesign.Views
 {
-
     /// <summary>
     ///     Interaction logic for IOCell.xaml
     /// </summary>
@@ -19,51 +18,67 @@ namespace SharpFlowDesign.Views
         {
             InitializeComponent();
             Loaded += (sender, args) => Fu.FocusTextBox();
+            LayoutUpdated += IOCell_LayoutUpdated;
+            
         }
+
+        private void IOCell_LayoutUpdated(object sender, System.EventArgs e)
+        {
+            updateViewModel();
+        }
+
+
+
 
 
         // Event hanlder for dragging functionality support same to all thumbs
         private void OnDragDelta(object sender, DragDeltaEventArgs e)
         {
-            Debug.WriteLine("onDragDelta");
+            var node = ((SoftwareCell)sender).DataContext as IOCellViewModel;
+            var pos = node.Position;
+            pos.X += e.HorizontalChange;
+            pos.Y += e.VerticalChange;
+            node.Position = pos;
 
-            _isDraggingMode = true;
-
-            var vm = (IOCellViewModel) DataContext;
-            Interactions.OnItemDragged(vm, e);
+//            Debug.WriteLine("onDragDelta");
+//
+//            _isDraggingMode = true;
+//
+//            var vm = (IOCellViewModel) DataContext;
+//            Interactions.OnItemDragged(vm, e);
         }
 
 
         private new void PreviewMouseUp(object sender, MouseButtonEventArgs args)
         {
-            Debug.WriteLine("PreviewMouseUp");
-            if (!_isDraggingMode)
-            {
-                Interactions.ToggleSelection(GetDataContext());
-                if (args.Source.GetType() == typeof(SoftwareCell))
-                    Fu.FocusTextBox();
-                if (args.Source.GetType() == typeof(Stream))
-                {
-                    var flow = (Stream) args.Source;
-                    flow.FocusTextBox();
-                }
-                args.Handled = true;
-            }
+//            Debug.WriteLine("PreviewMouseUp");
+//            if (!_isDraggingMode)
+//            {
+//                Interactions.ToggleSelection(GetDataContext());
+//                if (args.Source.GetType() == typeof (SoftwareCell))
+//                    Fu.FocusTextBox();
+//                if (args.Source.GetType() == typeof (Stream))
+//                {
+//                    var flow = (Stream) args.Source;
+//                    flow.FocusTextBox();
+//                }
+//                args.Handled = true;
+//            }
         }
 
 
         private void Thumb_OnDragStarted(object sender, DragStartedEventArgs e)
         {
-            Debug.WriteLine("Thumb_OnDragStarted");
-            Interactions.DecideDragMode(GetDataContext());
+//            Debug.WriteLine("Thumb_OnDragStarted");
+//            Interactions.DecideDragMode(GetDataContext());
         }
 
 
         private void Thumb_OnDragCompleted(object sender, DragCompletedEventArgs e)
         {
-            Debug.WriteLine("Thumb_OnDragCompleted");
-            _isDraggingMode = false;
-            e.Handled = true;
+//            Debug.WriteLine("Thumb_OnDragCompleted");
+//            _isDraggingMode = false;
+//            e.Handled = true;
         }
 
 
@@ -79,13 +94,18 @@ namespace SharpFlowDesign.Views
             Cursor = Cursors.Hand;
         }
 
+
         private new void SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            ((IOCellViewModel) DataContext).InputPoint = 
-                new Point(InputFlow.ActualWidth,ActualHeight/2);
-            ((IOCellViewModel) DataContext).OutputPoint =
-                new Point(ActualWidth - OutputFlow.ActualWidth, ActualHeight / 2);
+            
+        }
+
+
+        private void updateViewModel()
+        {
+            var vm = GetDataContext();
+            vm.InputPoint = new Point(vm.Position.X + InputFlow.ActualWidth, vm.Position.Y + ActualHeight/2);
+            vm.OutputPoint = new Point(vm.Position.X + (ActualWidth - OutputFlow.ActualWidth), vm.Position.Y + (ActualHeight /2));
         }
     }
-
 }

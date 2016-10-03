@@ -34,18 +34,18 @@ namespace SharpFlowDesign
 
         internal static void OnItemDragged(IOCellViewModel cellvm, DragDeltaEventArgs dragDeltaEventArgs)
         {
-
-            if (_dragMode == DragMode.Single)
-            {
-                DeselectAll();
-                cellvm.Select();
-                cellvm.Move(dragDeltaEventArgs.HorizontalChange, dragDeltaEventArgs.VerticalChange);
-            }
-
-            if (_dragMode == DragMode.Multiple)
-            {
-                DragSelection(dragDeltaEventArgs);
-            }
+            cellvm.Move(dragDeltaEventArgs.HorizontalChange, dragDeltaEventArgs.VerticalChange);
+//            if (_dragMode == DragMode.Single)
+//            {
+//                DeselectAll();
+//                cellvm.Select();
+//                
+//            }
+//
+//            if (_dragMode == DragMode.Multiple)
+//            {
+//                DragSelection(dragDeltaEventArgs);
+//            }
 
         }
 

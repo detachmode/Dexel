@@ -15,6 +15,8 @@ namespace SharpFlowDesign
         private static extern bool AllocConsole();
 
 
+
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);

@@ -7,28 +7,16 @@
              xmlns:viewModels="clr-namespace:SharpFlowDesign.ViewModels"
              xmlns:customControls="clr-namespace:SharpFlowDesign.CustomControls"
              mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:MainViewModel, IsDesignTimeCreatable=True}"
+             d:DesignHeight="300" d:DesignWidth="700" >
 
-             d:DesignHeight="300" d:DesignWidth="700">
-    <UserControl.Resources>
 
-
-        <Style x:Key="BaseContentControlStyle" TargetType="{x:Type ContentControl}">
-            <Setter Property="Foreground" Value="Bisque" />
-        </Style>
-        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BaseContentControlStyle}" />
-
-        <ControlTemplate x:Key="template1">
-            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ShowGridLines="False">
-                <Ellipse Fill="#FF818181" Stroke="#FF376DBB" StrokeThickness="4" HorizontalAlignment="Stretch" />
-                <TextBox Margin="18" Name="tplTextBlock" Text="User stage" HorizontalAlignment="Center"
-                         VerticalAlignment="Center" Foreground="Black" />
-            </Grid>
-        </ControlTemplate>
-    </UserControl.Resources>
-
-    <Grid x:Name="theCanvas" MouseUp="UIElement_OnMouseUp"              AllowDrop="True"
-             IsHitTestVisible="True"
-             DragOver="MainWindow_OnDragOver">
+    <Grid x:Name="theCanvas" MouseUp="UIElement_OnMouseUp"
+          AllowDrop="True"
+          Canvas.ZIndex="100"
+          IsHitTestVisible="True"
+          Background="Transparent"
+          DragOver="MainWindow_OnDragOver">
         <ItemsControl ItemsSource="{Binding Connections}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -38,14 +26,15 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <customControls:Pointer
-                        FillColor="White" Start="{Binding Start.Position}"
-                        End="{Binding End.Position}"
+                        FillColor="White" Start="{Binding Start.OutputPoint}"
+                        End="{Binding End.InputPoint}"
                         ArrowSize="30,15" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
 
-        <ItemsControl Name="itemContainer" ItemsSource="{Binding SoftwareCells}">
+        <ItemsControl Name="itemContainer"                     
+                     ItemsSource="{Binding SoftwareCells}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
                     <Canvas />

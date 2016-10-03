@@ -11,7 +11,6 @@
         mc:Ignorable="d"
         Title="Sharp StreamViewModel Design" Height="350" Width="825">
     <Window.Resources>
-        <converter:DebugConverter x:Key="DebugConverter" />
         <ContextMenu x:Key="MyContextMenu">
             <MenuItem Header="Add Celldaw" Click="MenuItem_Click" />
         </ContextMenu>
@@ -19,7 +18,7 @@
 
     <Grid ContextMenu="{StaticResource MyContextMenu}">
         <Label>StreamViewModel Design</Label>
-        <Button Width="100" Height="20" VerticalAlignment="Top" Content="Test" ></Button>
+<!--        <Button Width="100" Height="20" VerticalAlignment="Top" Content="Test" ></Button>-->
         <customControls:ZoomBorder x:Name="border" ClipToBounds="True" Background="{StaticResource MyVisualBrush}">
             <views:DrawingBoard x:Name="theDrawingBoard"/>
         </customControls:ZoomBorder>

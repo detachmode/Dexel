@@ -2,8 +2,9 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:SharpFlowDesign"
-             >
+             xmlns:converter="clr-namespace:SharpFlowDesign.Converter">
     <Application.Resources>
+        <converter:DebugConverter x:Key="DebugConverter" />
 
         <SolidColorBrush x:Key="BG" Color="#FF383838"/>
         <SolidColorBrush x:Key="GridColor" Color="#FF404040" />
@@ -16,6 +17,19 @@
                 </Grid>
             </VisualBrush.Visual>
         </VisualBrush>
+
+        <Style x:Key="BaseContentControlStyle" TargetType="{x:Type ContentControl}">
+            <Setter Property="Foreground" Value="Bisque" />
+        </Style>
+        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BaseContentControlStyle}" />
+
+        <ControlTemplate x:Key="template1">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ShowGridLines="False">
+                <Ellipse Fill="#FF818181" Stroke="#FF376DBB" StrokeThickness="4" HorizontalAlignment="Stretch" />
+                <TextBox Margin="18" Name="tplTextBlock" Text="User stage" HorizontalAlignment="Center"
+                         VerticalAlignment="Center" Foreground="Black" />
+            </Grid>
+        </ControlTemplate>
 
     </Application.Resources>
 </Application>
