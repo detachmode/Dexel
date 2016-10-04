@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using SharpFlowDesign.CustomControls;
+using SharpFlowDesign.Model;
 using SharpFlowDesign.ViewModels;
 
 namespace SharpFlowDesign.Views
@@ -30,7 +31,7 @@ namespace SharpFlowDesign.Views
             if (obj is Pointer)
             {
                 var pointer = (obj as Pointer);
-                var datacontext = (ConnectionViewModel)pointer.DataContext;
+                var datacontext = (Connection)pointer.DataContext;
                 var droppedContext = (IOCellViewModel)((Rectangle)sender).DataContext;
                 pointer.SetBinding((DependencyProperty)Pointer.EndProperty, "End.InputPoint");
                 datacontext.End = droppedContext;

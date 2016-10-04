@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using SharpFlowDesign.Model;
 using SharpFlowDesign.ViewModels;
 
 namespace SharpFlowDesign.Views
@@ -119,7 +120,7 @@ namespace SharpFlowDesign.Views
 
         private void NewOutput_click(object sender, RoutedEventArgs e)
         {
-            GetDataContext().DangelingOutputs.Add(new DangelingConnectionViewModel(GetDataContext()));
+            GetDataContext().DangelingOutputs.Add(new DangelingConnection(GetDataContext()));
 
         }
     }

@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
+using SharpFlowDesign.Model;
 using SharpFlowDesign.ViewModels;
 
 namespace SharpFlowDesign
@@ -70,7 +71,7 @@ namespace SharpFlowDesign
 
         public static void AddNewConnectionNoDestination(IOCellViewModel ioCellViewModel)
         {
-            MainViewModel.Instance().TemporaryConnection = new ConnectionViewModel(ioCellViewModel, null)
+            MainViewModel.Instance().TemporaryConnection = new Connection(ioCellViewModel, null)
             {
                 IsDragging = true
             };

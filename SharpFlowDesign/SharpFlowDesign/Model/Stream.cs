@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using PropertyChanged;
 
 namespace SharpFlowDesign.Model
 {
     public partial class SoftwareCell
     {
+        [ImplementPropertyChanged]
         public class Stream
         {
             public Stream()

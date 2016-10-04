@@ -30,7 +30,7 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <views:SoftwareCell x:Name="Fu" LabelContent="{Binding Name}"
+        <views:SoftwareCell x:Name="Fu" LabelContent="{Binding ModelSoftwareCell.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Thumb.DragDelta="OnDragDelta"
                             Thumb.DragStarted="Thumb_OnDragStarted"
                             Thumb.DragCompleted="Thumb_OnDragCompleted"

@@ -27,7 +27,10 @@
                         <Ellipse Margin="-20" Fill="#FF484848" Stroke="DeepSkyBlue"
                                 StrokeThickness="3" />
                         <TextBox x:Name="theTextBox"
-                                 Text="{Binding Path=LabelContent, RelativeSource={RelativeSource FindAncestor,  AncestorType=views:SoftwareCell,  AncestorLevel=1}}"
+                                 Text="{Binding Path=LabelContent, 
+                                        UpdateSourceTrigger=PropertyChanged,
+                                        RelativeSource={RelativeSource FindAncestor, 
+                                        AncestorType=views:SoftwareCell,  AncestorLevel=1}}"
                                  Foreground="White"
                                  VerticalAlignment="Center"
                                  BorderBrush="{x:Null}" Background="{x:Null}" />

@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using SharpFlowDesign.CustomControls;
+using SharpFlowDesign.Model;
 using SharpFlowDesign.ViewModels;
 
 namespace SharpFlowDesign.Views
@@ -49,7 +50,7 @@ namespace SharpFlowDesign.Views
             if (!(obj is Pointer)) return;
 
             var pointer = (obj as Pointer);
-            var datacontext = (ConnectionViewModel)pointer.DataContext;
+            var datacontext = (Connection)pointer.DataContext;
 
             pointer.End = p2;
         }

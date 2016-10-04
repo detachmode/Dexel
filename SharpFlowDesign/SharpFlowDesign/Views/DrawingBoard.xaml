@@ -26,7 +26,7 @@
                 <DataTemplate>
                     <customControls:Pointer
                         FillColor="Red" 
-                        Text="{Binding Name, Mode=TwoWay}" 
+                        Text="{Binding DataNames, Mode=TwoWay}" 
                         Start="{Binding Start.OutputPoint}"
                         End="{Binding End.InputPoint}"
                         ArrowSize="30,15" />

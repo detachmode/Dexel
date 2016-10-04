@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using SharpFlowDesign.Model;
 using SharpFlowDesign.ViewModels;
 
 namespace SharpFlowDesign.CustomControls
@@ -57,17 +58,17 @@ namespace SharpFlowDesign.CustomControls
                 arrowShape.IsHitTestVisible = false;
                 pathShape.IsHitTestVisible = false;
                 IsDragging = true;
-                (DataContext as ConnectionViewModel).IsDragging = true;
+                (DataContext as Connection).IsDragging = true;
                 try
                 {
-                    (DataContext as ConnectionViewModel).End = null;
+                    (DataContext as Connection).End = null;
                     DragDrop.DoDragDrop((DependencyObject) args.Source, this, DragDropEffects.Move);
                 }
                 catch
                 {
                     // ignored
                 }
-                (DataContext as ConnectionViewModel).IsDragging = false;
+                (DataContext as Connection).IsDragging = false;
                 IsDragging = false;
                 arrowShape.IsHitTestVisible = true;
                 pathShape.IsHitTestVisible = true;
@@ -160,53 +161,72 @@ namespace SharpFlowDesign.CustomControls
             arrowShape.Fill = FillColor;
             pathShape.Stroke = FillColor;
 
-            var end = End;
-            var start = Start;
+            UpdatePath();
+            UpdateTextbox();
+            UpdateArrowHead();
+        }
 
-            txtBox.Text = Text;
 
-            end.X -= ArrowSize.X;
-            var figure = new PathFigure
-            {
-                StartPoint = start,
-                IsClosed = false
-            };
-            var startextend = new Point(start.X + connectionExtensionLength, start.Y);
-            var endextend = new Point(end.X - connectionExtensionLength, end.Y);
-            figure.Segments.Add(new BezierSegment(startextend, endextend, end, true));
+        private void UpdateArrowHead()
+        {
+            var position = End;
+            position.X -= ArrowSize.X;
 
-           
+            var figure = new PathFigure();
+            figure.StartPoint = position;
+            figure.IsClosed = true;
 
-            //Point tg;
+            var pts = new List<Point>();
+            pts.Add(new Point(position.X, position.Y - ArrowSize.Y/2));
+            pts.Add(new Point(position.X + ArrowSize.X, position.Y));
+            pts.Add(new Point(position.X, position.Y + ArrowSize.Y/2));
+            figure.Segments.Add(new PolyLineSegment(pts, true));
+
+            SetShapeData(arrowShape,figure);
+        }
+
+
+        private void SetShapeData(Path shape, PathFigure figure)
+        {
             var path = new PathGeometry();
             path.Figures.Add(figure);
+            shape.Data = path;
+        }
 
-            Point centerPoint;
-            Point tg;
-            path.GetPointAtFractionLength(0.5, out centerPoint, out tg);
+
+        private void UpdateTextbox()
+        {
+            var centerPoint = GetCenterPoint();
+            txtBox.Text = Text;
             Canvas.SetLeft(txtBox, centerPoint.X);
             Canvas.SetTop(txtBox, centerPoint.Y);
+        }
 
-            pathShape.Data = path;
 
-            var position = End;
+        private void UpdatePath()
+        {
+            var end = End;
+            var start = Start;
+            end.X -= ArrowSize.X;
+            var startextend = new Point(start.X + connectionExtensionLength, start.Y);
+            var endextend = new Point(end.X - connectionExtensionLength, end.Y);
 
-            position.X -= ArrowSize.X;
-            figure = new PathFigure
-            {
-                StartPoint = position,
-                IsClosed = true
-            };
-            var pts = new List<Point>
-            {
-                new Point(position.X, position.Y - ArrowSize.Y/2),
-                new Point(position.X + ArrowSize.X, position.Y),
-                new Point(position.X, position.Y + ArrowSize.Y/2)
-            };
-            figure.Segments.Add(new PolyLineSegment(pts, true));
-            path = new PathGeometry();
-            path.Figures.Add(figure);
-            arrowShape.Data = path;
+            var figure = new PathFigure();
+            figure.IsClosed = false;
+            figure.StartPoint = start;
+            figure.Segments.Add(new BezierSegment(startextend, endextend, end, true));
+
+            SetShapeData(pathShape, figure);
+
+
+        }
+
+
+        private Point GetCenterPoint()
+        {
+            Point centerPoint, tg;
+            ((PathGeometry) pathShape.Data).GetPointAtFractionLength(0.5, out centerPoint, out tg);
+            return centerPoint;
         }
     }
 }

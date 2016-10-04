@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using PropertyChanged;
 
 namespace SharpFlowDesign.Model
 {
 
+    [ImplementPropertyChanged]
     public partial class SoftwareCell
     {
         public string Name { get; set; }

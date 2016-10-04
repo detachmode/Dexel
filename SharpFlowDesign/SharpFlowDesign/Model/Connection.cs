@@ -1,32 +1,36 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using PropertyChanged;
 using SharpFlowDesign.Behavior;
+using SharpFlowDesign.ViewModels;
 
-namespace SharpFlowDesign.ViewModels
+namespace SharpFlowDesign.Model
 {
     [ImplementPropertyChanged]
-    public class ConnectionViewModel : INotifyPropertyChanged, IDragable
+    public class Connection : ConnectionBase, INotifyPropertyChanged, IDragable
     {
-        public ConnectionViewModel(IOCellViewModel start, IOCellViewModel end)
+        public Connection(IOCellViewModel start, IOCellViewModel end)
         {
             Start = start;
             End = end;
-            Name = "Parameter";
+        }
+
+
+        public Connection()
+        {
+            
         }
 
 
         public bool IsDragging { get; set; }
         public IOCellViewModel Start { get; set; }
         public IOCellViewModel End { get; set; }
-        public string Name { get; set; }
-        public Point Center { get; set; }
-        public double AngleText { get; set; }
+        
 
 
-        Type IDragable.DataType => typeof (ConnectionViewModel);
+
+        Type IDragable.DataType => typeof (Connection);
 
         void IDragable.Remove(object i)
         {
@@ -40,4 +44,5 @@ namespace SharpFlowDesign.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
+
 }

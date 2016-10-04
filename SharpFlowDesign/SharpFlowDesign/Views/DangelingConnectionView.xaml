@@ -4,8 +4,9 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:viewModels="clr-namespace:SharpFlowDesign.ViewModels"
+    xmlns:model="clr-namespace:SharpFlowDesign.Model"
     x:Class="SharpFlowDesign.Views.DangelingConnectionView"
-    d:DataContext="{d:DesignInstance viewModels:DangelingConnectionViewModel, IsDesignTimeCreatable=True}"
+    d:DataContext="{d:DesignInstance model:DangelingConnection, IsDesignTimeCreatable=True}"
     mc:Ignorable="d"
     d:DesignHeight="100" >
     
@@ -19,7 +20,7 @@
             <TextBlock Foreground="White" FontSize="14">
                     <Run Text="(" />
             </TextBlock>
-            <TextBox x:Name="DatanamesTextBox" Text="{Binding Datanames}"
+            <TextBox x:Name="DatanamesTextBox" Text="{Binding DataNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          CaretBrush="Wheat" Background="{x:Null}"
                          Foreground="White" BorderBrush="{x:Null}" />
             <TextBlock Foreground="White" FontSize="14">
@@ -41,7 +42,7 @@
                 <Path Fill="#FFFF2222"  VerticalAlignment="Top" Data="M30,1 L30,15 L1,7.5 L30,1" />
 
             </Grid>
-            <TextBox x:Name="ActionNameTextBox" VerticalAlignment="Bottom" Text="{Binding Actionname}"
+            <TextBox x:Name="ActionNameTextBox" VerticalAlignment="Bottom" Text="{Binding ActionName}"
                          CaretBrush="Wheat" Background="{x:Null}"
                          Foreground="White" BorderBrush="{x:Null}" />
         </Grid>

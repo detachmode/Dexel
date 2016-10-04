@@ -16,21 +16,21 @@ namespace SharpFlowDesign.ViewModels
         public MainViewModel()
         {
             SoftwareCells = new ObservableCollection<IOCellViewModel>();
-            Connections = new ObservableCollection<ConnectionViewModel>();
+            Connections = new ObservableCollection<Connection>();
             Connections.CollectionChanged += Connections_CollectionChanged;
 
             AddToViewModelRecursive(FlowDesignManager.Root);
         }
 
 
-        public ObservableCollection<ConnectionViewModel> Connections { get; }
+        public ObservableCollection<Connection> Connections { get; }
         public ObservableCollection<IOCellViewModel> SoftwareCells { get; set; }
-        public ConnectionViewModel TemporaryConnection { get; set; }
+        public Connection TemporaryConnection { get; set; }
 
         private void Connections_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.Action != NotifyCollectionChangedAction.Add) return;
-            foreach (ConnectionViewModel item in e.NewItems)
+            foreach (Connection item in e.NewItems)
             {
                 item.PropertyChanged += connection_PropertyChanged;
             }
@@ -39,7 +39,7 @@ namespace SharpFlowDesign.ViewModels
         private void connection_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName != "IsDragging") return;
-            var vm = sender as ConnectionViewModel;
+            var vm = sender as Connection;
 
             // as long as an connection is dragged around don't change the Collections
             if (vm != null && vm.IsDragging) return;
@@ -47,7 +47,7 @@ namespace SharpFlowDesign.ViewModels
             MaybeRemoveConnection(vm);
         }
 
-        private void MaybeRemoveConnection(ConnectionViewModel vm)
+        private void MaybeRemoveConnection(Connection vm)
         {
             if (vm.End == null)
                 Connections.Remove(vm);
@@ -60,7 +60,7 @@ namespace SharpFlowDesign.ViewModels
             SoftwareCells.Add(cellvm);
             if (previous != null)
             {
-                Connections.Add(new ConnectionViewModel(previous, cellvm) {Name = cell.InputStreams.First().DataNames});
+                Connections.Add(new Connection(previous, cellvm) { DataNames = cell.InputStreams.First().DataNames });
             }
 
             var destinations = cell.OutputStreams.SelectMany(stream => stream.Destinations).ToList();
@@ -76,9 +76,9 @@ namespace SharpFlowDesign.ViewModels
         }
 
 
-        public void RemoveConnection(ConnectionViewModel connectionViewModel)
+        public void RemoveConnection(Connection connection)
         {
-            Connections.Remove(connectionViewModel);
+            Connections.Remove(connection);
         }
     }
 }

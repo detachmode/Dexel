@@ -99,6 +99,7 @@
     <Compile Include="Behavior\FrameworkElementDropBehavior.cs" />
     <Compile Include="Behavior\IDragable.cs" />
     <Compile Include="Behavior\IDropable.cs" />
+    <Compile Include="Common\ViewModelBase.cs" />
     <Compile Include="Converter\Converter.cs" />
     <Compile Include="CustomControls\Pointer.cs" />
     <Compile Include="DebuggingHelper\DebugPrinter.cs" />
@@ -107,8 +108,10 @@
     <Compile Include="Model\FlowDesignManager.cs" />
     <Compile Include="Model\SoftwareCell.cs" />
     <Compile Include="Model\Stream.cs" />
-    <Compile Include="ViewModels\ConnectionViewModel.cs" />
-    <Compile Include="ViewModels\DangelingConnectionViewModel.cs" />
+    <Compile Include="Model\ConnectionBase.cs" />
+    <Compile Include="Properties\Annotations2.cs" />
+    <Compile Include="Model\Connection.cs" />
+    <Compile Include="Model\DangelingConnection.cs" />
     <Compile Include="Views\DrawingBoard.xaml.cs">
       <DependentUpon>DrawingBoard.xaml</DependentUpon>
     </Compile>
