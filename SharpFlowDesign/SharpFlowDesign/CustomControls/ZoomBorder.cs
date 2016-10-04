@@ -31,7 +31,7 @@ namespace SharpFlowDesign.CustomControls
             get { return base.Child; }
             set
             {
-                if (value != null && value != this.Child)
+                if (value != null && value != Child)
                     this.Initialize(value);
                 base.Child = value;
             }

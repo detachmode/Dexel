@@ -2,10 +2,41 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:SharpFlowDesign"
-             >
+             xmlns:converter="clr-namespace:SharpFlowDesign.Converter">
     <Application.Resources>
+        <converter:DebugConverter x:Key="DebugConverter" />
+        <converter:IOCellSelectionConverter x:Key="SelectionConverter" />
 
         <SolidColorBrush x:Key="BG" Color="#FF383838"/>
+        <SolidColorBrush x:Key="GridColor" Color="#FF404040" />
+        <VisualBrush x:Key="MyVisualBrush" TileMode="Tile" Viewport="0,0,15,15" ViewportUnits="Absolute"
+                     Viewbox="0,0,15,15" ViewboxUnits="Absolute">
+            <VisualBrush.Visual>
+                <Grid Background="#FF363636">
+                    <Path Data="M 0 0 L 15 0" Stroke="{DynamicResource GridColor}" />
+                    <Path Data="M 15 0 L 15 15" Stroke="{DynamicResource GridColor}" />
+                </Grid>
+            </VisualBrush.Visual>
+        </VisualBrush>
+
+        <Style x:Key="BaseContentControlStyle" TargetType="{x:Type ContentControl}">
+            <Setter Property="Foreground" Value="Bisque" />
+        </Style>
+        <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BaseContentControlStyle}" />
+
+        <ControlTemplate x:Key="template1">
+            <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch" ShowGridLines="False">
+                <Ellipse Fill="#FF818181" Stroke="#FF376DBB" StrokeThickness="4" HorizontalAlignment="Stretch" />
+                <TextBox Margin="18" Name="tplTextBlock" Text="User stage" HorizontalAlignment="Center"
+                         VerticalAlignment="Center" Foreground="Black" />
+            </Grid>
+        </ControlTemplate>
+
+
+        <ItemsPanelTemplate x:Key="DrawingBoardItemControl">
+            <Canvas />
+        </ItemsPanelTemplate>
+
 
     </Application.Resources>
 </Application>

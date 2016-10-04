@@ -24,15 +24,6 @@ namespace SharpFlowDesign.Model
 
 
 
-        public void Connect(SoftwareCell destination, string datanames, string actionName = null, bool optional = false)
-        {
-            var tempStream = new Stream {ActionName = actionName, DataNames = datanames, Optional = optional};
-            CheckForStreamWithSameName(destination, tempStream,
-                AddToExistingConnection,
-                AddNewConnection);
-        }
-
-
         public void AddOutput(string datanames, string actionName = null, bool optional = false)
         {
             var stream = new Stream {ActionName = actionName, DataNames = datanames, Optional = optional};
@@ -57,10 +48,8 @@ namespace SharpFlowDesign.Model
             Integration = integration;
         }
 
-      
 
-
-        private void CheckForStreamWithSameName(SoftwareCell destination, Stream tempStream,
+        public void CheckForStreamWithSameName(SoftwareCell destination, Stream tempStream,
             Action<Stream, SoftwareCell> onFound, Action<SoftwareCell, Stream> onNotFound)
         {
             var found =
@@ -73,14 +62,14 @@ namespace SharpFlowDesign.Model
         }
 
 
-        private void AddToExistingConnection(Stream stream, SoftwareCell destination)
+        public void AddToExistingConnection(Stream foundStream, SoftwareCell destination)
         {
-            stream.AddSource(this);
-            stream.AddDestination(destination);
+            foundStream.AddSource(this);
+            foundStream.AddDestination(destination);
         }
 
 
-        private void AddNewConnection(SoftwareCell destination, Stream stream)
+        public void AddNewConnection(SoftwareCell destination, Stream stream)
         {
             AddOutput(stream);
             destination.AddInput(stream);

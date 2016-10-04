@@ -1,93 +1,105 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
-using Petzold.Media2D;
 using PropertyChanged;
+using SharpFlowDesign.Behavior;
 using SharpFlowDesign.Model;
-using SharpFlowDesign.Views;
-using SoftwareCell = SharpFlowDesign.Model.SoftwareCell;
 
 namespace SharpFlowDesign.ViewModels
 {
     [ImplementPropertyChanged]
-    public class IOCellViewModel
+    public class IOCellViewModel : IDropable
     {
         public IOCellViewModel()
         {
-
-            ArrowLinesStart = new List<ConnectionArrow>();
-            ArrowLinesEnd = new List<ConnectionArrow>();
+            DangelingInputs = new ObservableCollection<DangelingConnectionViewModel>();
+            DangelingOutputs = new ObservableCollection<DangelingConnectionViewModel>();
         }
 
         public string Name { get; set; }
-        public ViewModels.StreamViewModel Input { get; set; }
-        public ViewModels.StreamViewModel Output { get; set; }
+        public ObservableCollection<DangelingConnectionViewModel> DangelingInputs { get; set; }
+        public ObservableCollection<DangelingConnectionViewModel> DangelingOutputs { get; set; }
         public Point Position { get; set; }
         public bool IsSelected { get; set; }
-        public List<ConnectionArrow> ArrowLinesStart { get; set; }
-        public List<ConnectionArrow> ArrowLinesEnd { get; set; }
         public double ActualWidth { get; set; }
         public double ActualHeight { get; set; }
         public Point InputPoint { get; set; }
         public Point OutputPoint { get; set; }
 
 
-        public void Move(double x, double y)
-        {
-            var pos = this.Position;
-            pos.X += x;
-            pos.Y += y;
-            this.Position = pos;
-            foreach (var arrowLine in ArrowLinesStart)
-            {
-                arrowLine.SetValue(Canvas.LeftProperty, pos.X);
-                arrowLine.SetValue(Canvas.TopProperty, pos.Y);
-                arrowLine.Arrow.X1 = OutputPoint.X;
-                arrowLine.Arrow.Y1 = OutputPoint.Y;
-            }
+        public Type DataType => typeof (ConnectionViewModel);
 
-            foreach (var arrowLine in ArrowLinesEnd)
+        public void Drop(object data, int index = -1)
+        {
+            var dangelingConnection = data as DangelingConnectionViewModel;
+          
+            if (dangelingConnection != null)
             {
-                //var width = (pos.X + InputPoint.X) - (double)arrowLine.GetValue(Canvas.LeftProperty);
-                //var height = (pos.Y + InputPoint.Y) - (double)arrowLine.GetValue(Canvas.TopProperty);
-                //arrowLine.Width = width;
-                //arrowLine.Height = height;
-                arrowLine.Arrow.X2 = pos.X+ InputPoint.X -(double)arrowLine.GetValue(Canvas.LeftProperty);
-                arrowLine.Arrow.Y2 = pos.Y+InputPoint.Y - (double)arrowLine.GetValue(Canvas.TopProperty); ;
+                MainViewModel.Instance().Connections.Add(
+                    new ConnectionViewModel(dangelingConnection.IOCellViewModel, this)
+                    {
+                        Name = dangelingConnection.Datanames
+                    });
             }
+//           this.Children = this.GetChildren();  //refresh view
         }
 
+
+        public void Move(double x, double y)
+        {
+            var pos = Position;
+            pos.X += x;
+            pos.Y += y;
+            Position = pos;
+        }
 
 
         public void Deselect()
         {
-            this.IsSelected = false;
+            IsSelected = false;
         }
 
 
         public void Select()
         {
-            this.IsSelected = true;
+            IsSelected = true;
         }
 
 
         public static IOCellViewModel Create(SoftwareCell cell)
         {
-            return new IOCellViewModel
+            var newIOCellViewModel = new IOCellViewModel();
+            newIOCellViewModel.Name = cell.Name;
+            cell.InputStreams.ToList().ForEach(stream =>
             {
-                Name = cell.Name,
-                Input = new StreamViewModel {
-                    Datanames = cell.InputStreams.FirstOrDefault()?.DataNames,
-                    Actionname = cell.InputStreams.FirstOrDefault()?.ActionName},
-                Output = new StreamViewModel
+                if (stream.Sources.Count != 0) return;
+                newIOCellViewModel.DangelingInputs.Add(new DangelingConnectionViewModel(newIOCellViewModel)
                 {
-                    Datanames = cell.OutputStreams.FirstOrDefault()?.DataNames,
-                    Actionname = cell.OutputStreams.FirstOrDefault()?.ActionName
-                },
+                    Datanames = stream.DataNames,
+                    Actionname = stream.ActionName
+                });
+            });
 
-            };
+            cell.OutputStreams.ToList().ForEach(stream =>
+            {
+                if (stream.Destinations.Count != 0) return;
+                newIOCellViewModel.DangelingOutputs.Add(new DangelingConnectionViewModel(newIOCellViewModel)
+                {
+                    Datanames = stream.DataNames,
+                    Actionname = stream.ActionName
+                });
+            });
+
+
+            return newIOCellViewModel;
+        }
+
+
+        public void RemoveDangelingConnection(DangelingConnectionViewModel dangelingConnectionViewModel)
+        {
+            DangelingInputs.Remove(dangelingConnectionViewModel);
+            DangelingOutputs.Remove(dangelingConnectionViewModel);
         }
     }
 }

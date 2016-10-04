@@ -1,37 +1,52 @@
-﻿<UserControl x:Class="SharpFlowDesign.Views.IOCell"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:converter="clr-namespace:SharpFlowDesign.Converter"
-             xmlns:views="clr-namespace:SharpFlowDesign.Views"
-             mc:Ignorable="d" 
-            >
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:views="clr-namespace:SharpFlowDesign.Views"
+    xmlns:viewModels="clr-namespace:SharpFlowDesign.ViewModels"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:behavior="clr-namespace:SharpFlowDesign.Behavior"
+    x:Class="SharpFlowDesign.Views.IOCell"
+    d:DataContext="{d:DesignInstance viewModels:IOCellViewModel, IsDesignTimeCreatable=True}"
+    mc:Ignorable="d">
 
     <UserControl.Resources>
-        <converter:IOCellSelectionConverter x:Key="SelectionConverter"/>
+        <ContextMenu x:Key="MyContextMenu">
+            <MenuItem Header="Add New Output" Click="NewOutput_click" />
+        </ContextMenu>
     </UserControl.Resources>
+
     <StackPanel SizeChanged="SizeChanged"
-        MinWidth="100" MinHeight="60"
-        Orientation="Horizontal" 
-        
-
-        ZIndex="100" 
-        >
-        <views:Stream x:Name="InputFlow" MouseEnter="UIElement_OnMouseEnter"  
-                    MouseUp="PreviewMouseUp" DataContext="{Binding Input}"></views:Stream>
-
-        <views:SoftwareCell x:Name="Fu"  LabelContent="{Binding Name}" 
-                                    Thumb.DragDelta="OnDragDelta" 
+                ContextMenu="{StaticResource MyContextMenu}"
+                MinHeight="60"
+                Orientation="Horizontal"
+                Panel.ZIndex="100">
+        <ItemsControl x:Name="InputFlow" ItemsSource="{Binding DangelingInputs}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <views:DangelingConnectionView MouseEnter="UIElement_OnMouseEnter"
+                                                   MouseUp="PreviewMouseUp" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <views:SoftwareCell x:Name="Fu" LabelContent="{Binding Name}"
+                            Thumb.DragDelta="OnDragDelta"
                             Thumb.DragStarted="Thumb_OnDragStarted"
                             Thumb.DragCompleted="Thumb_OnDragCompleted"
-                            PreviewMouseUp="PreviewMouseUp"
-                            SelectionColor="{Binding Path=IsSelected, Converter={StaticResource SelectionConverter}}" 
-                             >
-
-        </views:SoftwareCell>
-        <views:Stream  x:Name="OutputFlow" MouseUp="PreviewMouseUp" DataContext="{Binding Output}" RenderTransformOrigin="0,0.5"/>
-
+                            PreviewMouseUp="PreviewMouseUp" />
+        <ItemsControl x:Name="OutputFlow" ItemsSource="{Binding DangelingOutputs, Mode=TwoWay}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <views:DangelingConnectionView
+                        MouseEnter="UIElement_OnMouseEnter"
+                        MouseUp="PreviewMouseUp">
+                        <i:Interaction.Behaviors>
+                            <behavior:FrameworkElementDragBehavior />
+                        </i:Interaction.Behaviors>
+                    </views:DangelingConnectionView>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </StackPanel>
 </UserControl>
-

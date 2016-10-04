@@ -1,6 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows;
 using SharpFlowDesign.DebuggingHelper;
+using SharpFlowDesign.Model;
 
 namespace SharpFlowDesign
 {
@@ -15,6 +16,8 @@ namespace SharpFlowDesign
         private static extern bool AllocConsole();
 
 
+
+
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
@@ -22,8 +25,8 @@ namespace SharpFlowDesign
 
             AllocConsole();
 
-            var splitter = Mockdata.RomanNumbers();
-            DebugPrinter.PrintRecursive(splitter);
+            Mockdata.RomanNumbers();
+            DebugPrinter.PrintRecursive(FlowDesignManager.Root);
 
             var mainwindow = new MainWindow();
             mainwindow.Show();

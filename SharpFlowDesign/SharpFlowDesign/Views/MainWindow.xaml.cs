@@ -20,35 +20,20 @@ namespace SharpFlowDesign
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
-            var mainviewmodel = DataContext as MainViewModel;
-
-            Interactions.SetViewModel((MainViewModel)DataContext);
-
-            var splitter =  Mockdata.RomanNumbers();
-            mainviewmodel.AddToViewModelRecursive(splitter);
-
-
+            DataContext = MainViewModel.Instance();
+            //Interactions.SetViewModel((MainViewModel)DataContext);
 
         }
+
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
             var myWindow = GetWindow(this);
-            var transform = myWindow?.TransformToVisual(itemContainer);
-            var myUiElementPosition = transform.Transform(border.BeforeContextMenuPoint);
+            var transform = myWindow?.TransformToVisual(TheDrawingBoard.ItemContainer);
+            if (transform == null) return;
+            var myUiElementPosition = transform.Transform(TheZoomBorder.BeforeContextMenuPoint);
 
             Interactions.AddNewIOCell(myUiElementPosition);
-        }
-
-
-        private void UIElement_OnMouseUp(object sender, MouseButtonEventArgs e)
-        {
-            Debug.WriteLine("UIElement_OnMouseUp");
-            Keyboard.ClearFocus();
-
-            Interactions.DeselectAll();
-
         }
     }
 

@@ -20,22 +20,22 @@ namespace SharpFlowDesign.Model.Tests
         {
 
 
-            var romanNumbersConverter = new SoftwareCell { Name = "Roman Numbers Converter" };
-            romanNumbersConverter.AddInput("RomanNumber");
+            //var romanNumbersConverter = new SoftwareCell { Name = "Roman Numbers Converter" };
+            //romanNumbersConverter.AddInput("RomanNumber");
 
-            var splitter = new SoftwareCell { Name = "Splitt Roman Numerals" };
-            splitter.AddInput("RomanNumber");
-            romanNumbersConverter.SetIntegration(splitter);
+            //var splitter = new SoftwareCell { Name = "Splitt Roman Numerals" };
+            //splitter.AddInput("RomanNumber");
+            //romanNumbersConverter.SetIntegration(splitter);
 
-            var convertEach = new SoftwareCell { Name = "Convert to decimal" };
-            splitter.Connect(convertEach, "Roman Numeral*");
+            //var convertEach = new SoftwareCell { Name = "Convert to decimal" };
+            //splitter.Connect(convertEach, "Roman Numeral*");
 
-            var negatelogic = new SoftwareCell { Name = "Negate when larger" };
-            convertEach.Connect(negatelogic, "Decimal*");
+            //var negatelogic = new SoftwareCell { Name = "Negate when larger" };
+            //convertEach.Connect(negatelogic, "Decimal*");
 
-            DebugPrinter.PrintOutputs(romanNumbersConverter);
-            DebugPrinter.PrintIntegration(romanNumbersConverter);
-            DebugPrinter.PrintRecursive(splitter);
+            //DebugPrinter.PrintOutputs(romanNumbersConverter);
+            //DebugPrinter.PrintIntegration(romanNumbersConverter);
+            //DebugPrinter.PrintRecursive(splitter);
             Console.WriteLine(@"DONE");
 
         }
