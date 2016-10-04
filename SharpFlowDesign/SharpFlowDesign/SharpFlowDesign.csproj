@@ -68,6 +68,10 @@
     <Compile Include="Arrow\ArrowLineBase.cs" />
     <Compile Include="Arrow\ArrowPolyline.cs" />
     <Compile Include="Converter\Converter.cs" />
+    <Compile Include="CustomControls\MyControl.cs" />
+    <Compile Include="CustomControls\UserControl1.xaml.cs">
+      <DependentUpon>UserControl1.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DebuggingHelper\DebugPrinter.cs" />
     <Compile Include="Interactions.cs" />
     <Compile Include="DebuggingHelper\Mockdata.cs" />
@@ -92,6 +96,10 @@
     <Compile Include="ViewModels\IOCellViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="XML\XMLConverter.cs" />
+    <Page Include="CustomControls\UserControl1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ConnectionArrow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
