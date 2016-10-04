@@ -107,7 +107,6 @@
     <Compile Include="DebuggingHelper\Mockdata.cs" />
     <Compile Include="Model\FlowDesignManager.cs" />
     <Compile Include="Model\SoftwareCell.cs" />
-    <Compile Include="Model\Stream.cs" />
     <Compile Include="Model\ConnectionBase.cs" />
     <Compile Include="Properties\Annotations2.cs" />
     <Compile Include="Model\Connection.cs" />

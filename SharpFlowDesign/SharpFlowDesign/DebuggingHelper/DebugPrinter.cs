@@ -13,7 +13,7 @@ namespace SharpFlowDesign.DebuggingHelper
         public static void PrintRecursive(SoftwareCell cell)
         {
             PrintOutputs(cell);
-            var destinations = cell.OutputStreams.SelectMany(stream => stream.Destinations).ToList();
+            var destinations = cell.OutputConnections.SelectMany(stream => stream.Destinations).ToList();
             destinations.ForEach(PrintRecursive);
         }
 
@@ -21,7 +21,7 @@ namespace SharpFlowDesign.DebuggingHelper
         public static void PrintOutputs(SoftwareCell cell)
         {
             Console.WriteLine(@"// Outputs of " + cell.Name + ":");
-            cell.OutputStreams.ToList().ForEach(stream =>
+            cell.OutputConnections.ToList().ForEach(stream =>
             {
                 PrintStreamHeader(cell, stream);
                 stream.PrintDestinations();

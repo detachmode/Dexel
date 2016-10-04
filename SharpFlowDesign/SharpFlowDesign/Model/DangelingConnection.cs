@@ -11,9 +11,9 @@ namespace SharpFlowDesign.Model
     [ImplementPropertyChanged]
     public class DangelingConnection : ConnectionBase, IDragable, INotifyPropertyChanged
     {
-        public DangelingConnection(IOCellViewModel ioCellViewModel)
+        public DangelingConnection(SoftwareCell cell)
         {
-            IOCellViewModel = ioCellViewModel;
+            ConnectedToCell = cell;
         }
 
 
@@ -23,13 +23,13 @@ namespace SharpFlowDesign.Model
         }
 
 
-        public IOCellViewModel IOCellViewModel { get; set; }
+        public SoftwareCell ConnectedToCell { get; set; }
 
         Type IDragable.DataType => typeof (Connection);
 
         void IDragable.Remove(object i)
         {
-            IOCellViewModel.RemoveDangelingConnection(this);
+            ConnectedToCell.RemoveDangelingConnection(this);
         }
 
 

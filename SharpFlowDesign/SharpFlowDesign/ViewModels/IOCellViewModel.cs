@@ -49,14 +49,14 @@ namespace SharpFlowDesign.ViewModels
         {
             ModelSoftwareCell = model;
 
-            model.InputStreams.ToList().ForEach(stream =>
+            model.InputConnections.ToList().ForEach(stream =>
             {
                 if (stream.Sources.Count != 0) return;
                 DangelingInputs.Add(new DangelingConnection(this));
 
             });
 
-            model.OutputStreams.ToList().ForEach(stream =>
+            model.OutputConnections.ToList().ForEach(stream =>
             {
                 if (stream.Destinations.Count != 0) return;
                 DangelingOutputs.Add(new DangelingConnection(this));

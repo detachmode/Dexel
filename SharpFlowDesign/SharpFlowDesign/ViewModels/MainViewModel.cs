@@ -60,10 +60,10 @@ namespace SharpFlowDesign.ViewModels
             SoftwareCells.Add(cellvm);
             if (previous != null)
             {
-                Connections.Add(new Connection(previous, cellvm) { DataNames = cell.InputStreams.First().DataNames });
+                Connections.Add(new Connection(previous, cellvm) { DataNames = cell.InputConnections.First().DataNames });
             }
 
-            var destinations = cell.OutputStreams.SelectMany(stream => stream.Destinations).ToList();
+            var destinations = cell.OutputConnections.SelectMany(stream => stream.Destinations).ToList();
             destinations.ForEach(x => AddToViewModelRecursive(x, cellvm));
         }
 
