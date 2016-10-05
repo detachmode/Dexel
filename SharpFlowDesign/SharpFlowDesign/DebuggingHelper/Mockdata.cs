@@ -2,28 +2,25 @@
 
 namespace SharpFlowDesign
 {
-    static class Mockdata
+    public static class Mockdata
     {
  
-        public static void RomanNumbers()
+        public static MainModel RomanNumbers()
         {
 
-            var romanNumbersConverter =  FlowDesignManager.NewSoftwareCell("Roman Numbers Converter");
-            romanNumbersConverter.AddInput("RomanNumber");
+            //var romanNumbersConverter =  new SoftwareCell()#;
+            //romanNumbersConverter.AddInput("RomanNumber");
+            var mainModel = MainModel.Get();
+            var splitterID = Interactions.AddNewSoftwareCell("Splitt Roman Numerals", mainModel);
+            Interactions.AddNewInput(splitterID, "RomanNumber", mainModel);
 
+            var convertEachID = Interactions.AddNewSoftwareCell("Convert to decimal", mainModel);
+            Interactions.Connect(splitterID, convertEachID, "Roman Numeral*", mainModel, actionName:".eachSplitted");
 
-            var splitter = FlowDesignManager.NewSoftwareCell("Splitt Roman Numerals");
-            splitter.AddInput("RomanNumber");
-            romanNumbersConverter.SetIntegration(splitter);
+            var negatelogicID = Interactions.AddNewSoftwareCell("Negate when larger", mainModel);
+            Interactions.Connect(convertEachID, negatelogicID, "Decimal*", mainModel);
 
-            var convertEach = FlowDesignManager.NewSoftwareCell("Convert to decimal");
-            FlowDesignManager.Connect(splitter, convertEach, "Roman Numeral*", actionName:".eachSplitted");
-
-
-            var negatelogic = FlowDesignManager.NewSoftwareCell("Negate when larger");
-            FlowDesignManager.Connect(convertEach, negatelogic, "Decimal*");
-
-            FlowDesignManager.Root = splitter;
+            return mainModel;
 
         }
     }

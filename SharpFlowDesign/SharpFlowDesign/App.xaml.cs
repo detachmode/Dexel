@@ -25,8 +25,9 @@ namespace SharpFlowDesign
 
             AllocConsole();
 
-            Mockdata.RomanNumbers();
-            DebugPrinter.PrintRecursive(FlowDesignManager.Root);
+            //Mockdata.RomanNumbers();
+
+            //DebugPrinter.PrintRecursive();
 
             var mainwindow = new MainWindow();
             mainwindow.Show();

@@ -17,7 +17,7 @@
           Background="Transparent"
           DragOver="MainWindow_OnDragOver">
         
-        <customControls:Pointer Start="{Binding TemporaryConnection.Start.OutputPoint}" />
+        <!--<customControls:Pointer Start="{Binding TemporaryConnection.Start.OutputPoint}" />-->
         
         <!--Connections-->
         <ItemsControl ItemsPanel="{StaticResource DrawingBoardItemControl}" 
@@ -26,9 +26,9 @@
                 <DataTemplate>
                     <customControls:Pointer
                         FillColor="Red" 
-                        Text="{Binding DataNames, Mode=TwoWay}" 
-                        Start="{Binding Start.OutputPoint}"
-                        End="{Binding End.InputPoint}"
+                        Text="{Binding Model.DataNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                        Start="{Binding Start.Position}"
+                        End="{Binding End.Position}"
                         ArrowSize="30,15" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
@@ -42,10 +42,10 @@
                 <Style>
                     <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                     <Setter Property="Canvas.Left"
-                            Value="{Binding Position.X}" />
+                            Value="{Binding Model.Position.X}" />
                     <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                     <Setter Property="Canvas.Top"
-                            Value="{Binding Position.Y}" />
+                            Value="{Binding Model.Position.Y}" />
                 </Style>
             </ItemsControl.ItemContainerStyle>
             <ItemsControl.ItemTemplate>

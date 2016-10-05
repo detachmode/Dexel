@@ -1,26 +1,4 @@
-﻿/* MIT License
-
-Copyright (c) 2016 JetBrains http://www.jetbrains.com
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE. */
-
-using System;
+﻿using System;
 
 #pragma warning disable 1591
 // ReSharper disable UnusedMember.Global
@@ -46,8 +24,7 @@ namespace SharpFlowDesign.Annotations
   /// </code></example>
   [AttributeUsage(
     AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
-    AttributeTargets.Delegate | AttributeTargets.Field | AttributeTargets.Event |
-    AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.GenericParameter)]
+    AttributeTargets.Delegate | AttributeTargets.Field | AttributeTargets.Event)]
   public sealed class CanBeNullAttribute : Attribute { }
 
   /// <summary>
@@ -60,8 +37,7 @@ namespace SharpFlowDesign.Annotations
   /// </code></example>
   [AttributeUsage(
     AttributeTargets.Method | AttributeTargets.Parameter | AttributeTargets.Property |
-    AttributeTargets.Delegate | AttributeTargets.Field | AttributeTargets.Event |
-    AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.GenericParameter)]
+    AttributeTargets.Delegate | AttributeTargets.Field | AttributeTargets.Event)]
   public sealed class NotNullAttribute : Attribute { }
 
   /// <summary>
@@ -85,14 +61,6 @@ namespace SharpFlowDesign.Annotations
   public sealed class ItemCanBeNullAttribute : Attribute { }
 
   /// <summary>
-  /// Implicitly apply [NotNull]/[ItemNotNull] annotation to all the of type members and parameters
-  /// in particular scope where this annotation is used (type declaration or whole assembly).
-  /// </summary>
-  [AttributeUsage(
-    AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Assembly)]
-  public sealed class ImplicitNotNullAttribute : Attribute { }
-
-  /// <summary>
   /// Indicates that the marked method builds string by format pattern and (optional) arguments.
   /// Parameter, which contains format string, should be given in constructor. The format string
   /// should be in <see cref="string.Format(IFormatProvider,string,object[])"/>-like form.
@@ -113,12 +81,12 @@ namespace SharpFlowDesign.Annotations
     /// <param name="formatParameterName">
     /// Specifies which parameter of an annotated method should be treated as format-string
     /// </param>
-    public StringFormatMethodAttribute([NotNull] string formatParameterName)
+    public StringFormatMethodAttribute(string formatParameterName)
     {
       FormatParameterName = formatParameterName;
     }
 
-    [NotNull] public string FormatParameterName { get; private set; }
+    public string FormatParameterName { get; private set; }
   }
 
   /// <summary>
@@ -128,7 +96,7 @@ namespace SharpFlowDesign.Annotations
   [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.Field)]
   public sealed class ValueProviderAttribute : Attribute
   {
-    public ValueProviderAttribute([NotNull] string name)
+    public ValueProviderAttribute(string name)
     {
       Name = name;
     }
@@ -192,12 +160,12 @@ namespace SharpFlowDesign.Annotations
   public sealed class NotifyPropertyChangedInvocatorAttribute : Attribute
   {
     public NotifyPropertyChangedInvocatorAttribute() { }
-    public NotifyPropertyChangedInvocatorAttribute([NotNull] string parameterName)
+    public NotifyPropertyChangedInvocatorAttribute(string parameterName)
     {
       ParameterName = parameterName;
     }
 
-    [CanBeNull] public string ParameterName { get; private set; }
+    public string ParameterName { get; private set; }
   }
 
   /// <summary>
@@ -255,7 +223,7 @@ namespace SharpFlowDesign.Annotations
       ForceFullStates = forceFullStates;
     }
 
-    [NotNull] public string Contract { get; private set; }
+    public string Contract { get; private set; }
     public bool ForceFullStates { get; private set; }
   }
 
@@ -423,7 +391,7 @@ namespace SharpFlowDesign.Annotations
       Comment = comment;
     }
 
-    [CanBeNull] public string Comment { get; private set; }
+    public string Comment { get; private set; }
   }
 
   /// <summary>
@@ -460,7 +428,7 @@ namespace SharpFlowDesign.Annotations
       Justification = justification;
     }
 
-    [CanBeNull] public string Justification { get; private set; }
+    public string Justification { get; private set; }
   }
 
   /// <summary>
@@ -479,8 +447,8 @@ namespace SharpFlowDesign.Annotations
   /// }
   /// </code></example>
   [AttributeUsage(
-    AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Parameter | AttributeTargets.Method |
-    AttributeTargets.Class | AttributeTargets.Interface | AttributeTargets.Struct | AttributeTargets.GenericParameter)]
+    AttributeTargets.Field | AttributeTargets.Property | AttributeTargets.Parameter |
+    AttributeTargets.Method)]
   public sealed class ProvidesContextAttribute : Attribute { }
 
   /// <summary>
@@ -491,12 +459,12 @@ namespace SharpFlowDesign.Annotations
   public sealed class PathReferenceAttribute : Attribute
   {
     public PathReferenceAttribute() { }
-    public PathReferenceAttribute([NotNull, PathReference] string basePath)
+    public PathReferenceAttribute([PathReference] string basePath)
     {
       BasePath = basePath;
     }
 
-    [CanBeNull] public string BasePath { get; private set; }
+    public string BasePath { get; private set; }
   }
 
   /// <summary>
@@ -582,34 +550,34 @@ namespace SharpFlowDesign.Annotations
   [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
   public sealed class AspMvcAreaMasterLocationFormatAttribute : Attribute
   {
-    public AspMvcAreaMasterLocationFormatAttribute([NotNull] string format)
+    public AspMvcAreaMasterLocationFormatAttribute(string format)
     {
       Format = format;
     }
 
-    [NotNull] public string Format { get; private set; }
+    public string Format { get; private set; }
   }
 
   [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
   public sealed class AspMvcAreaPartialViewLocationFormatAttribute : Attribute
   {
-    public AspMvcAreaPartialViewLocationFormatAttribute([NotNull] string format)
+    public AspMvcAreaPartialViewLocationFormatAttribute(string format)
     {
       Format = format;
     }
 
-    [NotNull] public string Format { get; private set; }
+    public string Format { get; private set; }
   }
 
   [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
   public sealed class AspMvcAreaViewLocationFormatAttribute : Attribute
   {
-    public AspMvcAreaViewLocationFormatAttribute([NotNull] string format)
+    public AspMvcAreaViewLocationFormatAttribute(string format)
     {
       Format = format;
     }
 
-    [NotNull] public string Format { get; private set; }
+    public string Format { get; private set; }
   }
 
   [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
@@ -626,23 +594,23 @@ namespace SharpFlowDesign.Annotations
   [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
   public sealed class AspMvcPartialViewLocationFormatAttribute : Attribute
   {
-    public AspMvcPartialViewLocationFormatAttribute([NotNull] string format)
+    public AspMvcPartialViewLocationFormatAttribute(string format)
     {
       Format = format;
     }
 
-    [NotNull] public string Format { get; private set; }
+    public string Format { get; private set; }
   }
 
   [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
   public sealed class AspMvcViewLocationFormatAttribute : Attribute
   {
-    public AspMvcViewLocationFormatAttribute([NotNull] string format)
+    public AspMvcViewLocationFormatAttribute(string format)
     {
       Format = format;
     }
 
-    [NotNull] public string Format { get; private set; }
+    public string Format { get; private set; }
   }
 
   /// <summary>
@@ -655,12 +623,12 @@ namespace SharpFlowDesign.Annotations
   public sealed class AspMvcActionAttribute : Attribute
   {
     public AspMvcActionAttribute() { }
-    public AspMvcActionAttribute([NotNull] string anonymousProperty)
+    public AspMvcActionAttribute(string anonymousProperty)
     {
       AnonymousProperty = anonymousProperty;
     }
 
-    [CanBeNull] public string AnonymousProperty { get; private set; }
+    public string AnonymousProperty { get; private set; }
   }
 
   /// <summary>
@@ -672,12 +640,12 @@ namespace SharpFlowDesign.Annotations
   public sealed class AspMvcAreaAttribute : Attribute
   {
     public AspMvcAreaAttribute() { }
-    public AspMvcAreaAttribute([NotNull] string anonymousProperty)
+    public AspMvcAreaAttribute(string anonymousProperty)
     {
       AnonymousProperty = anonymousProperty;
     }
 
-    [CanBeNull] public string AnonymousProperty { get; private set; }
+    public string AnonymousProperty { get; private set; }
   }
 
   /// <summary>
@@ -690,12 +658,12 @@ namespace SharpFlowDesign.Annotations
   public sealed class AspMvcControllerAttribute : Attribute
   {
     public AspMvcControllerAttribute() { }
-    public AspMvcControllerAttribute([NotNull] string anonymousProperty)
+    public AspMvcControllerAttribute(string anonymousProperty)
     {
       AnonymousProperty = anonymousProperty;
     }
 
-    [CanBeNull] public string AnonymousProperty { get; private set; }
+    public string AnonymousProperty { get; private set; }
   }
 
   /// <summary>
@@ -792,12 +760,12 @@ namespace SharpFlowDesign.Annotations
   public sealed class HtmlElementAttributesAttribute : Attribute
   {
     public HtmlElementAttributesAttribute() { }
-    public HtmlElementAttributesAttribute([NotNull] string name)
+    public HtmlElementAttributesAttribute(string name)
     {
       Name = name;
     }
 
-    [CanBeNull] public string Name { get; private set; }
+    public string Name { get; private set; }
   }
 
   [AttributeUsage(AttributeTargets.Parameter | AttributeTargets.Field | AttributeTargets.Property)]
@@ -937,14 +905,14 @@ namespace SharpFlowDesign.Annotations
   [AttributeUsage(AttributeTargets.Class, AllowMultiple = true)]
   public sealed class AspChildControlTypeAttribute : Attribute
   {
-    public AspChildControlTypeAttribute([NotNull] string tagName, [NotNull] Type controlType)
+    public AspChildControlTypeAttribute(string tagName, Type controlType)
     {
       TagName = tagName;
       ControlType = controlType;
     }
 
-    [NotNull] public string TagName { get; private set; }
-    [NotNull] public Type ControlType { get; private set; }
+    public string TagName { get; private set; }
+    public Type ControlType { get; private set; }
   }
 
   [AttributeUsage(AttributeTargets.Property | AttributeTargets.Method)]
@@ -964,7 +932,7 @@ namespace SharpFlowDesign.Annotations
       Attribute = attribute;
     }
 
-    [NotNull] public string Attribute { get; private set; }
+    public string Attribute { get; private set; }
   }
 
   [AttributeUsage(AttributeTargets.Property)]
@@ -981,36 +949,25 @@ namespace SharpFlowDesign.Annotations
   [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
   public sealed class RazorImportNamespaceAttribute : Attribute
   {
-    public RazorImportNamespaceAttribute([NotNull] string name)
+    public RazorImportNamespaceAttribute(string name)
     {
       Name = name;
     }
 
-    [NotNull] public string Name { get; private set; }
+    public string Name { get; private set; }
   }
 
   [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
   public sealed class RazorInjectionAttribute : Attribute
   {
-    public RazorInjectionAttribute([NotNull] string type, [NotNull] string fieldName)
+    public RazorInjectionAttribute(string type, string fieldName)
     {
       Type = type;
       FieldName = fieldName;
     }
 
-    [NotNull] public string Type { get; private set; }
-    [NotNull] public string FieldName { get; private set; }
-  }
-
-  [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = true)]
-  public sealed class RazorDirectiveAttribute : Attribute
-  {
-    public RazorDirectiveAttribute([NotNull] string directive)
-    {
-      Directive = directive;
-    }
-
-    [NotNull] public string Directive { get; private set; }
+    public string Type { get; private set; }
+    public string FieldName { get; private set; }
   }
 
   [AttributeUsage(AttributeTargets.Method)]

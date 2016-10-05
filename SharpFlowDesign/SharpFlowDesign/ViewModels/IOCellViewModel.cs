@@ -1,43 +1,29 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using PropertyChanged;
-using SharpFlowDesign.Annotations;
 using SharpFlowDesign.Behavior;
-using SharpFlowDesign.Common;
 using SharpFlowDesign.Model;
 
 namespace SharpFlowDesign.ViewModels
 {
     [ImplementPropertyChanged]
-    public class IOCellViewModel : INotifyPropertyChanged, IDropable
+    public class IOCellViewModel : IDropable
     {
         public IOCellViewModel()
         {
-            DangelingInputs = new ObservableCollection<DangelingConnection>();
-            DangelingOutputs = new ObservableCollection<DangelingConnection>();
-
+            DangelingInputs = new ObservableCollection<DangelingConnectionViewModel>();
+            DangelingOutputs = new ObservableCollection<DangelingConnectionViewModel>();
         }
 
-        public static IOCellViewModel Create(SoftwareCell cell)
+        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-
-            var newIOCellViewModel = new IOCellViewModel();
-            newIOCellViewModel.LoadModel(cell);
-            return newIOCellViewModel;
+            
         }
-
-
-
-
-        public SoftwareCell ModelSoftwareCell { get; set; }
-        public ObservableCollection<DangelingConnection> DangelingInputs { get; set; }
-        public ObservableCollection<DangelingConnection> DangelingOutputs { get; set; }
-
-        public Point Position { get; set; }
+        public SoftwareCell Model { get; set; }
+        public ObservableCollection<DangelingConnectionViewModel> DangelingInputs { get; set; }
+        public ObservableCollection<DangelingConnectionViewModel> DangelingOutputs { get; set; }
         public bool IsSelected { get; set; }
         public double ActualWidth { get; set; }
         public double ActualHeight { get; set; }
@@ -45,73 +31,61 @@ namespace SharpFlowDesign.ViewModels
         public Point OutputPoint { get; set; }
 
 
-        private void LoadModel(SoftwareCell model)
-        {
-            ModelSoftwareCell = model;
-
-            model.InputConnections.ToList().ForEach(stream =>
-            {
-                if (stream.Sources.Count != 0) return;
-                DangelingInputs.Add(new DangelingConnection(this));
-
-            });
-
-            model.OutputConnections.ToList().ForEach(stream =>
-            {
-                if (stream.Destinations.Count != 0) return;
-                DangelingOutputs.Add(new DangelingConnection(this));
-            });
-        }
-
-
-
-        public Type DataType => typeof(Connection);
+        public Type DataType => typeof (ConnectionViewModel);
 
         public void Drop(object data, int index = -1)
         {
-            var dangelingConnection = data as DangelingConnection;
+            //var dangelingConnection = data as DangelingConnectionViewModel;
 
-            if (dangelingConnection == null) return;
-            MainViewModel.Instance().Connections.Add(
-                new Connection(dangelingConnection.IOCellViewModel, this));
-            //           this.Children = this.GetChildren();  //refresh view
+            //Interactions.ConnectDangelingConnection();
+            
+          
+            //if (dangelingConnection != null)
+            //{
+            //    MainViewModel.Instance().Connections.Add(
+            //        new ConnectionViewModel(dangelingConnection.IOCellViewModel, this)
+            //        {
+            //            DataNames = dangelingConnection.Datanames
+            //        });
+            //}
+//           this.Children = this.GetChildren();  //refresh view
         }
 
 
-        public void Move(double x, double y)
+
+
+        public void LoadFromModel(SoftwareCell modelSoftwareCell)
         {
-            var pos = Position;
-            pos.X += x;
-            pos.Y += y;
-            Position = pos;
+            Model = modelSoftwareCell;
+            Model.PropertyChanged += Model_PropertyChanged;
+
+            //this.Name = modelSoftwareCell.Name;
+            LoadDangelingInputs(modelSoftwareCell);
+            LoadDangelingOutputs(modelSoftwareCell);
         }
 
-
-        public void Deselect()
+        private void LoadDangelingInputs(SoftwareCell modelSoftwareCell)
         {
-            IsSelected = false;
+            DangelingInputs.Clear();
+            modelSoftwareCell.InputStreams.ToList().ForEach(dataStream =>
+            {
+                if (dataStream.Sources.Count != 0) return;
+                var vm = new DangelingConnectionViewModel();
+                vm.LoadFromModel(modelSoftwareCell,dataStream);
+                DangelingInputs.Add(vm);
+            });
         }
 
-
-        public void Select()
+        private void LoadDangelingOutputs(SoftwareCell modelSoftwareCell)
         {
-            IsSelected = true;
+            DangelingOutputs.Clear();
+            modelSoftwareCell.OutputStreams.ToList().ForEach(dataStream =>
+            {
+                if (dataStream.Destinations.Count != 0) return;
+                var vm = new DangelingConnectionViewModel();
+                vm.LoadFromModel(modelSoftwareCell, dataStream);
+                DangelingOutputs.Add(vm);
+            });
         }
-
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public void RemoveDangelingConnection(DangelingConnection dangelingConnection)
-        {
-            DangelingInputs.Remove(dangelingConnection);
-            DangelingOutputs.Remove(dangelingConnection);
-        }
-
     }
 }

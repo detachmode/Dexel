@@ -26,7 +26,7 @@ namespace SharpFlowDesign.Views
 
         private void IOCell_LayoutUpdated(object sender, System.EventArgs e)
         {
-            updateViewModel();
+            //updateViewModel();
         }
 
 
@@ -37,10 +37,10 @@ namespace SharpFlowDesign.Views
         private void OnDragDelta(object sender, DragDeltaEventArgs e)
         {
             var node = ((SoftwareCell)sender).DataContext as IOCellViewModel;
-            var pos = node.Position;
+            var pos = node.Model.Position;
             pos.X += e.HorizontalChange;
             pos.Y += e.VerticalChange;
-            node.Position = pos;
+            node.Model.Position = pos;
 
 //            Debug.WriteLine("onDragDelta");
 //
@@ -106,8 +106,8 @@ namespace SharpFlowDesign.Views
         private void updateViewModel()
         {
             var vm = GetDataContext();
-            vm.InputPoint = new Point(vm.Position.X + InputFlow.ActualWidth, vm.Position.Y + ActualHeight/2);
-            vm.OutputPoint = new Point(vm.Position.X + (ActualWidth - OutputFlow.ActualWidth), vm.Position.Y + (ActualHeight /2));
+            vm.InputPoint = new Point(vm.Model.Position.X + InputFlow.ActualWidth, vm.Model.Position.Y + ActualHeight/2);
+            vm.OutputPoint = new Point(vm.Model.Position.X + (ActualWidth - OutputFlow.ActualWidth), vm.Model.Position.Y + (ActualHeight /2));
         }
 
         private void Output_DragEnter(object sender, DragEventArgs e)
@@ -120,8 +120,8 @@ namespace SharpFlowDesign.Views
 
         private void NewOutput_click(object sender, RoutedEventArgs e)
         {
-            GetDataContext().DangelingOutputs.Add(new DangelingConnection(GetDataContext()));
-
+            Interactions.AddNewInput(GetDataContext().Model.ID, "params", MainModel.Get());
+            MainViewModel.Instance().LoadFromModel(MainModel.Get());
         }
     }
 }
