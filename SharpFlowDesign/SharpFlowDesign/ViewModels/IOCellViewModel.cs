@@ -17,10 +17,13 @@ namespace SharpFlowDesign.ViewModels
             DangelingOutputs = new ObservableCollection<DangelingConnectionViewModel>();
         }
 
-        public string Name { get; set; }
+        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            
+        }
+        public SoftwareCell Model { get; set; }
         public ObservableCollection<DangelingConnectionViewModel> DangelingInputs { get; set; }
         public ObservableCollection<DangelingConnectionViewModel> DangelingOutputs { get; set; }
-        public Point Position { get; set; }
         public bool IsSelected { get; set; }
         public double ActualWidth { get; set; }
         public double ActualHeight { get; set; }
@@ -32,74 +35,57 @@ namespace SharpFlowDesign.ViewModels
 
         public void Drop(object data, int index = -1)
         {
-            var dangelingConnection = data as DangelingConnectionViewModel;
+            //var dangelingConnection = data as DangelingConnectionViewModel;
+
+            //Interactions.ConnectDangelingConnection();
+            
           
-            if (dangelingConnection != null)
-            {
-                MainViewModel.Instance().Connections.Add(
-                    new ConnectionViewModel(dangelingConnection.IOCellViewModel, this)
-                    {
-                        Name = dangelingConnection.Datanames
-                    });
-            }
+            //if (dangelingConnection != null)
+            //{
+            //    MainViewModel.Instance().Connections.Add(
+            //        new ConnectionViewModel(dangelingConnection.IOCellViewModel, this)
+            //        {
+            //            DataNames = dangelingConnection.Datanames
+            //        });
+            //}
 //           this.Children = this.GetChildren();  //refresh view
         }
 
 
-        public void Move(double x, double y)
+
+
+        public void LoadFromModel(SoftwareCell modelSoftwareCell)
         {
-            var pos = Position;
-            pos.X += x;
-            pos.Y += y;
-            Position = pos;
+            Model = modelSoftwareCell;
+            Model.PropertyChanged += Model_PropertyChanged;
+
+            //this.Name = modelSoftwareCell.Name;
+            LoadDangelingInputs(modelSoftwareCell);
+            LoadDangelingOutputs(modelSoftwareCell);
         }
 
-
-        public void Deselect()
+        private void LoadDangelingInputs(SoftwareCell modelSoftwareCell)
         {
-            IsSelected = false;
-        }
-
-
-        public void Select()
-        {
-            IsSelected = true;
-        }
-
-
-        public static IOCellViewModel Create(SoftwareCell cell)
-        {
-            var newIOCellViewModel = new IOCellViewModel();
-            newIOCellViewModel.Name = cell.Name;
-            cell.InputStreams.ToList().ForEach(stream =>
+            DangelingInputs.Clear();
+            modelSoftwareCell.InputStreams.ToList().ForEach(dataStream =>
             {
-                if (stream.Sources.Count != 0) return;
-                newIOCellViewModel.DangelingInputs.Add(new DangelingConnectionViewModel(newIOCellViewModel)
-                {
-                    Datanames = stream.DataNames,
-                    Actionname = stream.ActionName
-                });
+                if (dataStream.Sources.Count != 0) return;
+                var vm = new DangelingConnectionViewModel();
+                vm.LoadFromModel(modelSoftwareCell,dataStream);
+                DangelingInputs.Add(vm);
             });
-
-            cell.OutputStreams.ToList().ForEach(stream =>
-            {
-                if (stream.Destinations.Count != 0) return;
-                newIOCellViewModel.DangelingOutputs.Add(new DangelingConnectionViewModel(newIOCellViewModel)
-                {
-                    Datanames = stream.DataNames,
-                    Actionname = stream.ActionName
-                });
-            });
-
-
-            return newIOCellViewModel;
         }
 
-
-        public void RemoveDangelingConnection(DangelingConnectionViewModel dangelingConnectionViewModel)
+        private void LoadDangelingOutputs(SoftwareCell modelSoftwareCell)
         {
-            DangelingInputs.Remove(dangelingConnectionViewModel);
-            DangelingOutputs.Remove(dangelingConnectionViewModel);
+            DangelingOutputs.Clear();
+            modelSoftwareCell.OutputStreams.ToList().ForEach(dataStream =>
+            {
+                if (dataStream.Destinations.Count != 0) return;
+                var vm = new DangelingConnectionViewModel();
+                vm.LoadFromModel(modelSoftwareCell, dataStream);
+                DangelingOutputs.Add(vm);
+            });
         }
     }
 }

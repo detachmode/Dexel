@@ -20,17 +20,17 @@ namespace SharpFlowDesign.Model.Tests
         {
 
 
-            //var romanNumbersConverter = new SoftwareCell { Name = "Roman Numbers Converter" };
+            //var romanNumbersConverter = new SoftwareCell { DataNames = "Roman Numbers Converter" };
             //romanNumbersConverter.AddInput("RomanNumber");
 
-            //var splitter = new SoftwareCell { Name = "Splitt Roman Numerals" };
+            //var splitter = new SoftwareCell { DataNames = "Splitt Roman Numerals" };
             //splitter.AddInput("RomanNumber");
             //romanNumbersConverter.SetIntegration(splitter);
 
-            //var convertEach = new SoftwareCell { Name = "Convert to decimal" };
+            //var convertEach = new SoftwareCell { DataNames = "Convert to decimal" };
             //splitter.Connect(convertEach, "Roman Numeral*");
 
-            //var negatelogic = new SoftwareCell { Name = "Negate when larger" };
+            //var negatelogic = new SoftwareCell { DataNames = "Negate when larger" };
             //convertEach.Connect(negatelogic, "Decimal*");
 
             //DebugPrinter.PrintOutputs(romanNumbersConverter);

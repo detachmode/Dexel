@@ -26,6 +26,7 @@ namespace SharpFlowDesign.Views
         public DrawingBoard()
         {
             InitializeComponent();
+            
         }
 
         private void UIElement_OnMouseUp(object sender, MouseButtonEventArgs e)
@@ -33,7 +34,7 @@ namespace SharpFlowDesign.Views
             Debug.WriteLine("UIElement_OnMouseUp");
             Keyboard.ClearFocus();
 
-            Interactions.DeselectAll();
+            //Interactions.DeselectAll();
 
         }
 
@@ -41,6 +42,8 @@ namespace SharpFlowDesign.Views
         {
             SetPointerToMousePosition(e);
         }
+
+       
 
         private void SetPointerToMousePosition(DragEventArgs e)
         {

@@ -21,15 +21,20 @@ namespace SharpFlowDesign.DebuggingHelper
         public static void PrintOutputs(SoftwareCell cell)
         {
             Console.WriteLine(@"// Outputs of " + cell.Name + ":");
-            cell.OutputStreams.ToList().ForEach(stream =>
+            cell.OutputStreams.ToList().ForEach(dataStream =>
             {
-                PrintStreamHeader(cell, stream);
-                stream.PrintDestinations();
+                PrintStreamHeader(cell, dataStream);
+                PrintDestinations(dataStream);
             });
         }
 
+        public static void PrintDestinations(DataStream dataStream)
+        {
+            dataStream.Destinations.ForEach(x => Console.WriteLine($"\t ->{x.Name}"));
+        }
 
-        private static void PrintStreamHeader(SoftwareCell cell, SoftwareCell.Stream stream)
+
+        private static void PrintStreamHeader(SoftwareCell cell, DataStream stream)
         {
             if (stream.ActionName != null)
                 Console.WriteLine(cell.Name + @" - " + stream.ActionName + @"( " + stream.DataNames + @" ) ->");

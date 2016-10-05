@@ -104,11 +104,13 @@
     <Compile Include="DebuggingHelper\DebugPrinter.cs" />
     <Compile Include="Interactions.cs" />
     <Compile Include="DebuggingHelper\Mockdata.cs" />
-    <Compile Include="Model\FlowDesignManager.cs" />
+    <Compile Include="Model\DataStream.cs" />
+    <Compile Include="Model\FlowAttribute.cs" />
     <Compile Include="Model\SoftwareCell.cs" />
-    <Compile Include="Model\Stream.cs" />
+    <Compile Include="Properties\Annotations2.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\DangelingConnectionViewModel.cs" />
+    <Compile Include="Model\MainModel.cs" />
     <Compile Include="Views\DrawingBoard.xaml.cs">
       <DependentUpon>DrawingBoard.xaml</DependentUpon>
     </Compile>
