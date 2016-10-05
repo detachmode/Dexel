@@ -17,7 +17,7 @@
         </ContextMenu>
     </UserControl.Resources>
 
-    <StackPanel SizeChanged="SizeChanged"
+    <StackPanel 
                 ContextMenu="{StaticResource MyContextMenu}"
                 MinHeight="60"
                 Orientation="Horizontal"
@@ -33,16 +33,13 @@
             </ItemsControl.RenderTransform>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <views:DangelingConnectionView MouseEnter="UIElement_OnMouseEnter"
-                                                   MouseUp="PreviewMouseUp" />
+                    <views:DangelingConnectionView MouseEnter="UIElement_OnMouseEnter"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
         <views:SoftwareCell x:Name="Fu" LabelContent="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Thumb.DragDelta="OnDragDelta"
-                            Thumb.DragStarted="Thumb_OnDragStarted"
-                            Thumb.DragCompleted="Thumb_OnDragCompleted"
-                            PreviewMouseUp="PreviewMouseUp" />
+                            />
         <ItemsControl VerticalAlignment="Center" HorizontalAlignment="Center" 
                       x:Name="OutputFlow" ItemsSource="{Binding DangelingOutputs, Mode=TwoWay}">
             <ItemsControl.ItemTemplate>

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using SharpFlowDesign.ViewModels;
@@ -31,14 +33,20 @@ namespace SharpFlowDesign.Behavior
         {
             if (isMouseClicked)
             {
+                Debug.WriteLine("\tAssociatedObject_MouseLeave");
                 //set the item's DataContext as the data to be transferred
                 var datacontext = this.AssociatedObject.DataContext;
                 var dragObject = datacontext as IDragable;
                 if (dragObject != null)
                 {
+                    var dangeling = (DangelingConnectionViewModel) dragObject;
+                    Debug.WriteLine("\t"+dangeling.ID);
+                    Debug.WriteLine("\t" + dangeling.DataNames);
                     DataObject data = new DataObject();
                     data.SetData(dragObject.DataType, this.AssociatedObject.DataContext);
+
                     System.Windows.DragDrop.DoDragDrop(this.AssociatedObject, data, DragDropEffects.Move);
+
                 }
             }
             isMouseClicked = false;

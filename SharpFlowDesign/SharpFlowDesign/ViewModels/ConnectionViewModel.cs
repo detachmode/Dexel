@@ -10,11 +10,12 @@ using SharpFlowDesign.Model;
 namespace SharpFlowDesign.ViewModels
 {
     [ImplementPropertyChanged]
-    public class ConnectionViewModel : INotifyPropertyChanged, IDragable
+    public class ConnectionViewModel : IDragable
     {
 
         public ConnectionViewModel()
         {
+            // Just For Designer purspose
             End = new Point(100,100);
         }
         public Guid ID;
@@ -33,27 +34,13 @@ namespace SharpFlowDesign.ViewModels
             Interactions.RemoveConnection(ID);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         public void LoadFromModel(DataStream modelDataStream)
         {
             Model = modelDataStream;
-            Model.PropertyChanged += ModelOnPropertyChanged;
             ID = modelDataStream.ID;
-            //Start = modelDataStream.Sources.First().;
-            //End = modelDataStream.Destinations.First();
         }
 
 
-        private void ModelOnPropertyChanged(object sender, PropertyChangedEventArgs propertyChangedEventArgs)
-        {
-          //  throw new NotImplementedException();
-        }
 
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }

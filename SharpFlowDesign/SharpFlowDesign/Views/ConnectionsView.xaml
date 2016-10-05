@@ -17,8 +17,8 @@
             Start="{Binding Start}"
             End="{Binding End}"
             ArrowSize="30,15" />
-        <StackPanel
-            
+        <StackPanel 
+            Background="#B2552020"
             x:Name="theGrid" Canvas.Left="{Binding Center.X}" Canvas.Top="{Binding Center.Y}" Orientation="Horizontal"  >
             <StackPanel.RenderTransform>
                 <TransformGroup>

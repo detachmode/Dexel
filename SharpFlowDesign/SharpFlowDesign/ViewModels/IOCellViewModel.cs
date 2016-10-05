@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
@@ -8,6 +9,7 @@ using SharpFlowDesign.Model;
 
 namespace SharpFlowDesign.ViewModels
 {
+
     [ImplementPropertyChanged]
     public class IOCellViewModel : IDropable
     {
@@ -17,53 +19,38 @@ namespace SharpFlowDesign.ViewModels
             DangelingOutputs = new ObservableCollection<DangelingConnectionViewModel>();
         }
 
-        private void Model_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            
-        }
+
         public SoftwareCell Model { get; set; }
         public ObservableCollection<DangelingConnectionViewModel> DangelingInputs { get; set; }
         public ObservableCollection<DangelingConnectionViewModel> DangelingOutputs { get; set; }
         public bool IsSelected { get; set; }
-        public double ActualWidth { get; set; }
-        public double ActualHeight { get; set; }
-        public Point InputPoint { get; set; }
-        public Point OutputPoint { get; set; }
 
 
-        public Type DataType => typeof (DangelingConnectionViewModel);
+        public List<Type> AllowedDropTypes => new List<Type>
+        {
+            typeof(DangelingConnectionViewModel)
+        };
+
 
         public void Drop(object data, int index = -1)
         {
             var dangelingConnection = data as DangelingConnectionViewModel;
+            if (dangelingConnection == null) return;
 
-            //Interactions.ConnectDangelingConnection();
-            
-          
-            if (dangelingConnection != null)
-            {
-                MainViewModel.Instance().Connections.Add(
-                    new ConnectionViewModel()
-                    {
-                        Model = new DataStream(),
-                       
-                    });
-            }
-            //           this.Children = this.GetChildren();  //refresh view
+
+            Interactions.ConnectDangelingConnection(dangelingConnection.Model, Model, MainModel.Get());
+
         }
 
-
-
+        #region Load Model
 
         public void LoadFromModel(SoftwareCell modelSoftwareCell)
         {
             Model = modelSoftwareCell;
-            Model.PropertyChanged += Model_PropertyChanged;
-
-            //this.Name = modelSoftwareCell.Name;
             LoadDangelingInputs(modelSoftwareCell);
             LoadDangelingOutputs(modelSoftwareCell);
         }
+
 
         private void LoadDangelingInputs(SoftwareCell modelSoftwareCell)
         {
@@ -72,10 +59,11 @@ namespace SharpFlowDesign.ViewModels
             {
                 if (dataStream.Sources.Count != 0) return;
                 var vm = new DangelingConnectionViewModel();
-                vm.LoadFromModel(modelSoftwareCell,dataStream);
+                vm.LoadFromModel(modelSoftwareCell, dataStream);
                 DangelingInputs.Add(vm);
             });
         }
+
 
         private void LoadDangelingOutputs(SoftwareCell modelSoftwareCell)
         {
@@ -88,5 +76,36 @@ namespace SharpFlowDesign.ViewModels
                 DangelingOutputs.Add(vm);
             });
         }
+
+        #endregion
+
+        #region update Connection Position when layout was updated ( size changed, position)
+
+        public void UpdateConnectionsPosition(Point inputPoint, Point outputPoint)
+        {
+            UpdateInputConnections(inputPoint);
+            UpdateOutputConnections(outputPoint);
+        }
+
+
+        private void UpdateInputConnections(Point inputPoint)
+        {
+            var inputIDs = Model.InputStreams.Select(x => x.ID).ToList();
+            var inputs = MainViewModel.Instance().Connections.Where(x => inputIDs.Contains(x.ID)).ToList();
+
+            inputs.ForEach(x => { x.End = inputPoint; });
+        }
+
+
+        private void UpdateOutputConnections(Point outputPoint)
+        {
+            var outputIDs = Model.OutputStreams.Select(x => x.ID).ToList();
+            var outputs = MainViewModel.Instance().Connections.Where(x => outputIDs.Contains(x.ID)).ToList();
+
+            outputs.ForEach(x => { x.Start = outputPoint; });
+        }
+
+        #endregion
     }
+
 }

@@ -1,13 +1,15 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace SharpFlowDesign.Behavior
 {
-    interface IDropable
+
+    public interface IDropable
     {
         /// <summary>
         /// Type of the data item
         /// </summary>
-        Type DataType { get; }
+        List<Type> AllowedDropTypes { get; }
 
         /// <summary>
         /// Drop data into the collection.

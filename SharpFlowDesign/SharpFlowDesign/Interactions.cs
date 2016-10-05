@@ -20,23 +20,28 @@ namespace SharpFlowDesign
 
         public static void AddNewIOCell(Point pos)
         {
-            var cell = new IOCellViewModel {IsSelected = true};
-
+            var softwareCell = SoftwareCellsManager.CreateNew();
             pos.X -= 100;
             pos.Y -= 20;
-            //cell.Position = new Point(pos.X, pos.Y);
+            softwareCell.Position  = new Point(pos.X, pos.Y);
 
-            MainViewModel.Instance().SoftwareCells.Add(cell);
+            MainModel.Get().SoftwareCells.Add(softwareCell);  
+            ViewRedraw();        
+        }
+
+
+        public static void ViewRedraw()
+        {
+            MainViewModel.Instance().LoadFromModel(MainModel.Get());
         }
 
 
         internal static void RemoveDangelingConnection(Guid softwareCellID, Guid dataStreamId)
         {
-            var softwareCell = SoftwareCellManager.GetFristByID(softwareCellID, MainModel.Get());
+            var softwareCell = SoftwareCellsManager.GetFristByID(softwareCellID, MainModel.Get());
             softwareCell.OutputStreams.RemoveAll(x => x.ID.Equals(dataStreamId));
             softwareCell.InputStreams.RemoveAll(x => x.ID.Equals(dataStreamId));
             MainViewModel.Instance().LoadFromModel(MainModel.Get());
-
         }
 
 
@@ -74,7 +79,7 @@ namespace SharpFlowDesign
 
         public static void RemoveConnection(Guid id)
         {
-            throw new NotImplementedException();
+            MainModel.Get().Connections.RemoveAll(x => x.ID.Equals(id));
         }
 
 
@@ -88,11 +93,16 @@ namespace SharpFlowDesign
         }
 
 
-        public static Guid AddNewInput(Guid softwareCellID, string datanames, MainModel mainModel)
+        public static void AddNewInput(Guid softwareCellID, string datanames, MainModel mainModel)
         {
-            var dataStream = DataStreamManager.CreateNew(datanames);
-            SoftwareCellsManager.GetAll(softwareCellID, mainModel).ToList().ForEach(x => x.InputStreams.Add(dataStream));
-            return dataStream.ID;
+            SoftwareCellsManager.GetAll(softwareCellID, mainModel).ToList()
+                .ForEach(softwareCell =>
+                {
+                    var dataStream = DataStreamManager.CreateNew(datanames);
+                    dataStream.Destinations.Add(softwareCell);
+                    softwareCell.InputStreams.Add(dataStream);
+
+                });      
         }
 
 
@@ -151,16 +161,41 @@ namespace SharpFlowDesign
         }
 
 
-        public static Guid AddNewOutput(Guid softwareCellID, string datanames, MainModel mainModel)
+        public static void AddNewOutput(Guid softwareCellID, string datanames, MainModel mainModel)
         {
-            var dataStream = DataStreamManager.CreateNew(datanames);
+          
             SoftwareCellsManager.GetAll(softwareCellID, mainModel).ToList()
-                .ForEach(x => x.OutputStreams.Add(dataStream));
-            return dataStream.ID;
+                .ForEach(softwareCell =>
+                {
+                    var dataStream = DataStreamManager.CreateNew(datanames);
+                    dataStream.Sources.Add(softwareCell);
+                    softwareCell.OutputStreams.Add(dataStream);
+                   
+                });
+
+            ViewRedraw();
+
         }
 
 
+        public static void MoveSoftwareCell(SoftwareCell model, double horizontalChange, double verticalChange)
+        {
+            var pos = model.Position;
+            pos.X += horizontalChange;
+            pos.Y += verticalChange;
+            model.Position = pos;
+        }
 
+
+        public static void ConnectDangelingConnection(DataStream dataStream, SoftwareCell softwareCell, MainModel mainModel)
+        {
+
+            softwareCell.InputStreams.Add(dataStream);
+            dataStream.Destinations.Add(softwareCell);          
+            mainModel.Connections.Add(dataStream);
+
+            ViewRedraw();
+        }
     }
 
 }

@@ -95,13 +95,14 @@
     <Compile Include="Arrow\ArrowLine.cs" />
     <Compile Include="Arrow\ArrowLineBase.cs" />
     <Compile Include="Arrow\ArrowPolyline.cs" />
+    <Compile Include="Behavior\DragDropManager.cs" />
     <Compile Include="Behavior\FrameworkElementDragBehavior.cs" />
     <Compile Include="Behavior\FrameworkElementDropBehavior.cs" />
     <Compile Include="Behavior\IDragable.cs" />
     <Compile Include="Behavior\IDropable.cs" />
     <Compile Include="Converter\Converter.cs" />
     <Compile Include="CustomControls\Pointer.cs" />
-    <Compile Include="DataStreamManager.cs" />
+    <Compile Include="Model\DataStreamManager.cs" />
     <Compile Include="DebuggingHelper\DebugPrinter.cs" />
     <Compile Include="Interactions.cs" />
     <Compile Include="DebuggingHelper\Mockdata.cs" />
@@ -109,8 +110,7 @@
     <Compile Include="Model\FlowAttribute.cs" />
     <Compile Include="Model\SoftwareCell.cs" />
     <Compile Include="Properties\Annotations2.cs" />
-    <Compile Include="SoftwareCellManager.cs" />
-    <Compile Include="SoftwareCellsManager.cs" />
+    <Compile Include="Model\SoftwareCellsManager.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\DangelingConnectionViewModel.cs" />
     <Compile Include="Model\MainModel.cs" />

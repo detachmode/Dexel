@@ -191,11 +191,11 @@ namespace SharpFlowDesign.CustomControls
             pts.Add(new Point(position.X, position.Y + ArrowSize.Y/2));
             figure.Segments.Add(new PolyLineSegment(pts, true));
 
-            SetShapeData(arrowShape,figure);
+            OverrideShapeData(arrowShape,figure);
         }
 
 
-        private void SetShapeData(Path shape, PathFigure figure)
+        private void OverrideShapeData(Path shape, PathFigure figure)
         {
             var path = new PathGeometry();
             path.Figures.Add(figure);
@@ -227,8 +227,8 @@ namespace SharpFlowDesign.CustomControls
             figure.StartPoint = start;
             figure.Segments.Add(new BezierSegment(startextend, endextend, end, true));
 
-            SetShapeData(pathShape, figure);
-            SetShapeData(outerPathShape, figure);
+            OverrideShapeData(pathShape, figure);
+            OverrideShapeData(outerPathShape, figure);
 
 
 

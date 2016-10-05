@@ -13,6 +13,7 @@ namespace SharpFlowDesign.ViewModels
             DataNames = "param";
         }
         public Guid ID;
+        public DataStream Model { get; set; }
         public SoftwareCell Parent { get; set; }
         public string DataNames { get; set; }
         public string Actionname { get; set; }
@@ -21,12 +22,13 @@ namespace SharpFlowDesign.ViewModels
 
         void IDragable.Remove(object i)
         {
-            Interactions.RemoveDangelingConnection(Parent.ID, ID);
+           // Interactions.RemoveDangelingConnection(Parent.ID, ID);
         }
 
         public void LoadFromModel(SoftwareCell parent, DataStream dataStream)
         {
             ID = dataStream.ID;
+            Model = dataStream;
             Parent = parent;
             DataNames = dataStream.DataNames;
             Actionname = dataStream.ActionName;

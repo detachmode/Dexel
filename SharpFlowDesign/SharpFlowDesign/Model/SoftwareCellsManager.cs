@@ -19,6 +19,20 @@ namespace SharpFlowDesign
         }
 
 
+        public static SoftwareCell GetFristByID(Guid destinationID, MainModel mainModel)
+        {
+            return mainModel.SoftwareCells.First(x => x.ID.Equals(destinationID));
+        }
+
+
+        public static SoftwareCell CreateNew(string name = "")
+        {
+            return new SoftwareCell()
+            {
+                ID = Guid.NewGuid(),
+                Name = name
+            };
+        }
     }
 
 }
