@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
@@ -12,6 +11,12 @@ namespace SharpFlowDesign
 
     public static class Interactions
     {
+        public enum DragMode
+        {
+            Single,
+            Multiple
+        }
+
 
         public static void AddNewIOCell(Point pos)
         {
@@ -24,9 +29,14 @@ namespace SharpFlowDesign
             MainViewModel.Instance().SoftwareCells.Add(cell);
         }
 
-        internal static void RemoveDangelingConnection(Guid iD1, Guid iD2)
+
+        internal static void RemoveDangelingConnection(Guid softwareCellID, Guid dataStreamId)
         {
-            throw new NotImplementedException();
+            var softwareCell = SoftwareCellManager.GetFristByID(softwareCellID, MainModel.Get());
+            softwareCell.OutputStreams.RemoveAll(x => x.ID.Equals(dataStreamId));
+            softwareCell.InputStreams.RemoveAll(x => x.ID.Equals(dataStreamId));
+            MainViewModel.Instance().LoadFromModel(MainModel.Get());
+
         }
 
 
@@ -40,11 +50,11 @@ namespace SharpFlowDesign
             //cellvm.Move(dragDeltaEventArgs.HorizontalChange, dragDeltaEventArgs.VerticalChange);
         }
 
+
         public static void DragSelection(DragDeltaEventArgs e)
         {
             //GetSelection().ToList().ForEach(c => c.Move(e.HorizontalChange,e.VerticalChange));
         }
-
 
 
         public static IEnumerable<IOCellViewModel> GetSelection()
@@ -53,25 +63,18 @@ namespace SharpFlowDesign
         }
 
 
-
-        public enum DragMode
-        {
-            Single,
-            Multiple
-        }
-
-
         public static void AddNewConnectionNoDestination(IOCellViewModel ioCellViewModel)
         {
-            MainViewModel.Instance().TemporaryConnection = new ConnectionViewModel()
+            MainViewModel.Instance().TemporaryConnection = new ConnectionViewModel
             {
                 IsDragging = true
             };
         }
 
+
         public static void RemoveConnection(Guid id)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
 
 
@@ -84,20 +87,19 @@ namespace SharpFlowDesign
             return softwareCell.ID;
         }
 
+
         public static Guid AddNewInput(Guid softwareCellID, string datanames, MainModel mainModel)
         {
-            var dataStream = new DataStream();
-            dataStream.ID = Guid.NewGuid();
-            dataStream.DataNames = datanames;
-            mainModel.SoftwareCells.Where( x => x.ID.Equals(softwareCellID)).ToList()
-                .ForEach( x => x.InputStreams.Add(dataStream));
+            var dataStream = DataStreamManager.CreateNew(datanames);
+            SoftwareCellsManager.GetAll(softwareCellID, mainModel).ToList().ForEach(x => x.InputStreams.Add(dataStream));
             return dataStream.ID;
         }
 
-        public static Guid CheckForStreamWithSameName(SoftwareCell source, SoftwareCell destination, 
+
+        public static Guid CheckForStreamWithSameName(SoftwareCell source, SoftwareCell destination,
             DataStream tempStream, MainModel mainModel,
-           Action<SoftwareCell, SoftwareCell, DataStream> onFound, 
-           Action<SoftwareCell,SoftwareCell, DataStream, MainModel> onNotFound)
+            Action<SoftwareCell, SoftwareCell, DataStream> onFound,
+            Action<SoftwareCell, SoftwareCell, DataStream, MainModel> onNotFound)
         {
             var found = source.OutputStreams.Where(x => x.DataNames.Equals(tempStream.DataNames)).ToList();
             if (found.Any())
@@ -105,30 +107,34 @@ namespace SharpFlowDesign
                 onFound(source, destination, found.First());
                 return found.First().ID;
             }
-            
+
             onNotFound(source, destination, tempStream, mainModel);
             return tempStream.ID;
         }
 
-        public static void AddToExistingConnection(SoftwareCell source,  SoftwareCell destination, DataStream foundStream)
+
+        public static void AddToExistingConnection(SoftwareCell source, SoftwareCell destination, DataStream foundStream)
         {
             foundStream.Sources.Add(source);
             foundStream.Destinations.Add(destination);
         }
 
 
-        public static void AddNewConnection(SoftwareCell source, SoftwareCell destination, DataStream dataStream, MainModel mainModel)
+        public static void AddNewConnection(SoftwareCell source, SoftwareCell destination, DataStream dataStream,
+            MainModel mainModel)
         {
             mainModel.Connections.Add(dataStream);
             dataStream.Destinations.Add(destination);
             dataStream.Sources.Add(source);
             destination.InputStreams.Add(dataStream);
-            source.OutputStreams.Add(dataStream);           
+            source.OutputStreams.Add(dataStream);
         }
 
-        public static Guid Connect(Guid sourceID, Guid destinationID, string datanames, MainModel mainModel, string actionName = null)
+
+        public static Guid Connect(Guid sourceID, Guid destinationID, string datanames, MainModel mainModel,
+            string actionName = null)
         {
-            var tempStream = new DataStream()
+            var tempStream = new DataStream
             {
                 ID = Guid.NewGuid(),
                 ActionName = actionName,
@@ -136,17 +142,25 @@ namespace SharpFlowDesign
             };
 
 
-            var source = mainModel.SoftwareCells.First(x => x.ID.Equals(sourceID));
-            var destination = mainModel.SoftwareCells.First(x => x.ID.Equals(destinationID));
+            var source = SoftwareCellsManager.GetFirst(sourceID, mainModel);
+            var destination = SoftwareCellsManager.GetFirst(destinationID, mainModel);
 
             return CheckForStreamWithSameName(source, destination, tempStream, mainModel,
-                onFound: AddToExistingConnection,
-                onNotFound: AddNewConnection);
-
+                AddToExistingConnection,
+                AddNewConnection);
         }
+
+
+        public static Guid AddNewOutput(Guid softwareCellID, string datanames, MainModel mainModel)
+        {
+            var dataStream = DataStreamManager.CreateNew(datanames);
+            SoftwareCellsManager.GetAll(softwareCellID, mainModel).ToList()
+                .ForEach(x => x.OutputStreams.Add(dataStream));
+            return dataStream.ID;
+        }
+
+
+
     }
-
-
-
 
 }

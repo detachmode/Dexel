@@ -8,12 +8,16 @@ namespace SharpFlowDesign.ViewModels
     [ImplementPropertyChanged]
     public class DangelingConnectionViewModel : IDragable
     {
+        public DangelingConnectionViewModel()
+        {
+            DataNames = "param";
+        }
         public Guid ID;
         public SoftwareCell Parent { get; set; }
-        public string Datanames { get; set; }
+        public string DataNames { get; set; }
         public string Actionname { get; set; }
 
-        Type IDragable.DataType => typeof (ConnectionViewModel);
+        Type IDragable.DataType => typeof (DangelingConnectionViewModel);
 
         void IDragable.Remove(object i)
         {
@@ -24,7 +28,7 @@ namespace SharpFlowDesign.ViewModels
         {
             ID = dataStream.ID;
             Parent = parent;
-            Datanames = dataStream.DataNames;
+            DataNames = dataStream.DataNames;
             Actionname = dataStream.ActionName;
         }
     }

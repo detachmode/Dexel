@@ -101,6 +101,7 @@
     <Compile Include="Behavior\IDropable.cs" />
     <Compile Include="Converter\Converter.cs" />
     <Compile Include="CustomControls\Pointer.cs" />
+    <Compile Include="DataStreamManager.cs" />
     <Compile Include="DebuggingHelper\DebugPrinter.cs" />
     <Compile Include="Interactions.cs" />
     <Compile Include="DebuggingHelper\Mockdata.cs" />
@@ -108,9 +109,14 @@
     <Compile Include="Model\FlowAttribute.cs" />
     <Compile Include="Model\SoftwareCell.cs" />
     <Compile Include="Properties\Annotations2.cs" />
+    <Compile Include="SoftwareCellManager.cs" />
+    <Compile Include="SoftwareCellsManager.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\DangelingConnectionViewModel.cs" />
     <Compile Include="Model\MainModel.cs" />
+    <Compile Include="Views\ConnectionsView.xaml.cs">
+      <DependentUpon>ConnectionsView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DrawingBoard.xaml.cs">
       <DependentUpon>DrawingBoard.xaml</DependentUpon>
     </Compile>
@@ -127,6 +133,10 @@
     <Compile Include="ViewModels\IOCellViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="XML\XMLConverter.cs" />
+    <Page Include="Views\ConnectionsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\DrawingBoard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

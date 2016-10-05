@@ -24,12 +24,7 @@
                       ItemsSource="{Binding Connections}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <customControls:Pointer
-                        FillColor="Red" 
-                        Text="{Binding Model.DataNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
-                        Start="{Binding Start.Position}"
-                        End="{Binding End.Position}"
-                        ArrowSize="30,15" />
+                    <local:ConnectionsView></local:ConnectionsView>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -26,7 +27,7 @@ namespace SharpFlowDesign.Views
 
         private void IOCell_LayoutUpdated(object sender, System.EventArgs e)
         {
-            //updateViewModel();
+            updateConnectionViewModels();
         }
 
 
@@ -86,8 +87,8 @@ namespace SharpFlowDesign.Views
 
         private IOCellViewModel GetDataContext()
         {
-            var dc = (IOCellViewModel) DataContext;
-            return dc;
+            var cellViewModel = DataContext as IOCellViewModel;
+            return cellViewModel ?? null;
         }
 
 
@@ -103,11 +104,31 @@ namespace SharpFlowDesign.Views
         }
 
 
-        private void updateViewModel()
+        private void updateConnectionViewModels()
         {
             var vm = GetDataContext();
-            vm.InputPoint = new Point(vm.Model.Position.X + InputFlow.ActualWidth, vm.Model.Position.Y + ActualHeight/2);
-            vm.OutputPoint = new Point(vm.Model.Position.X + (ActualWidth - OutputFlow.ActualWidth), vm.Model.Position.Y + (ActualHeight /2));
+            if (vm == null)
+            {
+                return;
+            }
+            var outputIDs =  vm.Model.OutputStreams.Select(x => x.ID).ToList();
+            var outputs = MainViewModel.Instance().Connections.Where(x => outputIDs.Contains(x.ID)).ToList();
+
+            outputs.ForEach(x =>
+            {
+                x.Start = new Point(vm.Model.Position.X + (ActualWidth - OutputFlow.ActualWidth), vm.Model.Position.Y + (ActualHeight / 2));
+               
+            });
+
+            var inputIDs = vm.Model.InputStreams.Select(x => x.ID).ToList();
+            var inputs = MainViewModel.Instance().Connections.Where(x => inputIDs.Contains(x.ID)).ToList();
+
+            inputs.ForEach(x =>
+            {
+                x.End = new Point(vm.Model.Position.X + InputFlow.ActualWidth, vm.Model.Position.Y + ActualHeight / 2);
+            });
+
+
         }
 
         private void Output_DragEnter(object sender, DragEventArgs e)
@@ -120,7 +141,7 @@ namespace SharpFlowDesign.Views
 
         private void NewOutput_click(object sender, RoutedEventArgs e)
         {
-            Interactions.AddNewInput(GetDataContext().Model.ID, "params", MainModel.Get());
+            Interactions.AddNewOutput(GetDataContext().Model.ID, "params", MainModel.Get());
             MainViewModel.Instance().LoadFromModel(MainModel.Get());
         }
     }

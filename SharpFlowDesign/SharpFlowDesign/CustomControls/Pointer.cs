@@ -23,15 +23,15 @@ namespace SharpFlowDesign.CustomControls
         public static readonly DependencyProperty FillColorProperty =
          DependencyProperty.Register("FillColor", typeof(SolidColorBrush), typeof(Pointer));
 
-        public static readonly DependencyProperty TextProperty =
- DependencyProperty.Register("Text", typeof(string), typeof(Pointer));
+        public static readonly DependencyProperty OuterFillColorProperty =
+        DependencyProperty.Register("OuterFillColor", typeof(SolidColorBrush), typeof(Pointer));
 
         //    public static readonly DependencyProperty TextBoxProperty =
         //DependencyProperty.Register("TextBox", typeof(ContentPresenter), typeof(Pointer));
 
         private readonly Path arrowShape;
         private readonly Path pathShape;
-        private readonly TextBox txtBox;
+        private readonly Path outerPathShape;
 
         private readonly double connectionExtensionLength = 100;
         private static bool IsDragging;
@@ -43,6 +43,12 @@ namespace SharpFlowDesign.CustomControls
             {
                 Stroke = FillColor,
                 StrokeThickness = 3
+            };
+
+            outerPathShape = new Path
+            {
+                Stroke = FillColor,
+                StrokeThickness = 35
             };
 
             arrowShape = new Path
@@ -58,17 +64,17 @@ namespace SharpFlowDesign.CustomControls
                 arrowShape.IsHitTestVisible = false;
                 pathShape.IsHitTestVisible = false;
                 IsDragging = true;
-                (DataContext as Connection).IsDragging = true;
+                (DataContext as ConnectionViewModel).IsDragging = true;
                 try
                 {
-                    (DataContext as Connection).End = null;
+                    (DataContext as ConnectionViewModel).End = null;
                     DragDrop.DoDragDrop((DependencyObject) args.Source, this, DragDropEffects.Move);
                 }
                 catch
                 {
                     // ignored
                 }
-                (DataContext as Connection).IsDragging = false;
+                (DataContext as ConnectionViewModel).IsDragging = false;
                 IsDragging = false;
                 arrowShape.IsHitTestVisible = true;
                 pathShape.IsHitTestVisible = true;
@@ -91,12 +97,10 @@ namespace SharpFlowDesign.CustomControls
 
 
 
-
-            txtBox = new TextBox();
-
+           
+            Children.Add(outerPathShape);
             Children.Add(pathShape);
             Children.Add(arrowShape);
-            Children.Add(txtBox);
 
             DependencyPropertyDescriptor
                 .FromProperty(EndProperty, typeof (Pointer))
@@ -116,7 +120,7 @@ namespace SharpFlowDesign.CustomControls
                 .AddValueChanged(this, (s, e) => Update());
 
             DependencyPropertyDescriptor
-                .FromProperty(TextProperty, typeof(Pointer))
+                .FromProperty(OuterFillColorProperty, typeof(Pointer))
                 .AddValueChanged(this, (s, e) => Update());
 
             //path.GetPointAtFractionLength(0.5, out centerPoint, out tg);
@@ -147,12 +151,11 @@ namespace SharpFlowDesign.CustomControls
             set { SetValue(FillColorProperty, value); }
         }
 
-        public string Text
+        public SolidColorBrush OuterFillColor
         {
-            get { return (string)GetValue(TextProperty); }
-            set { SetValue(TextProperty, value); }
+            get { return (SolidColorBrush)GetValue(OuterFillColorProperty); }
+            set { SetValue(OuterFillColorProperty, value); }
         }
-
 
 
         private void Update()
@@ -160,12 +163,18 @@ namespace SharpFlowDesign.CustomControls
             arrowShape.Stroke = FillColor;
             arrowShape.Fill = FillColor;
             pathShape.Stroke = FillColor;
+           
+            outerPathShape.Stroke = OuterFillColor;
 
+           
             UpdatePath();
-            UpdateTextbox();
+           
+            UpdateViewModel();
             UpdateArrowHead();
         }
 
+
+       
 
         private void UpdateArrowHead()
         {
@@ -194,12 +203,14 @@ namespace SharpFlowDesign.CustomControls
         }
 
 
-        private void UpdateTextbox()
+        private void UpdateViewModel()
         {
-            var centerPoint = GetCenterPoint();
-            txtBox.Text = Text;
-            Canvas.SetLeft(txtBox, centerPoint.X);
-            Canvas.SetTop(txtBox, centerPoint.Y);
+            var connectionViewModel = DataContext as ConnectionViewModel;
+            if (connectionViewModel != null)
+                connectionViewModel.Center = GetCenterPoint();
+            //txtBox.Text = Text;
+            //Canvas.SetLeft(txtBox, centerPoint.X);
+            //Canvas.SetTop(txtBox, centerPoint.Y);
         }
 
 
@@ -217,9 +228,22 @@ namespace SharpFlowDesign.CustomControls
             figure.Segments.Add(new BezierSegment(startextend, endextend, end, true));
 
             SetShapeData(pathShape, figure);
+            SetShapeData(outerPathShape, figure);
+
+
+
+            var figure2 = new PathFigure();
+            figure2.IsClosed = false;
+            figure2.StartPoint = end;
+            figure2.Segments.Add(new LineSegment(End, true));
+            ((PathGeometry)outerPathShape.Data).Figures.Add(figure2);
+
+
 
 
         }
+
+
 
 
         private Point GetCenterPoint()

@@ -31,24 +31,25 @@ namespace SharpFlowDesign.ViewModels
         public Point OutputPoint { get; set; }
 
 
-        public Type DataType => typeof (ConnectionViewModel);
+        public Type DataType => typeof (DangelingConnectionViewModel);
 
         public void Drop(object data, int index = -1)
         {
-            //var dangelingConnection = data as DangelingConnectionViewModel;
+            var dangelingConnection = data as DangelingConnectionViewModel;
 
             //Interactions.ConnectDangelingConnection();
             
           
-            //if (dangelingConnection != null)
-            //{
-            //    MainViewModel.Instance().Connections.Add(
-            //        new ConnectionViewModel(dangelingConnection.IOCellViewModel, this)
-            //        {
-            //            DataNames = dangelingConnection.Datanames
-            //        });
-            //}
-//           this.Children = this.GetChildren();  //refresh view
+            if (dangelingConnection != null)
+            {
+                MainViewModel.Instance().Connections.Add(
+                    new ConnectionViewModel()
+                    {
+                        Model = new DataStream(),
+                       
+                    });
+            }
+            //           this.Children = this.GetChildren();  //refresh view
         }
 
 

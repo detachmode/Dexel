@@ -5,22 +5,28 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:viewModels="clr-namespace:SharpFlowDesign.ViewModels"
     xmlns:model="clr-namespace:SharpFlowDesign.Model"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:behavior="clr-namespace:SharpFlowDesign.Behavior"
     x:Class="SharpFlowDesign.Views.DangelingConnectionView"
-    d:DataContext="{d:DesignInstance model:DangelingConnection, IsDesignTimeCreatable=True}"
+    d:DataContext="{d:DesignInstance viewModels:DangelingConnectionViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d"
-    d:DesignHeight="100" >
+     >
     
-    <Grid Background="#FF552020" Height="50">
+    <Grid Background="#FF552020" Height="36">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
+        <i:Interaction.Behaviors>
+            <behavior:FrameworkElementDragBehavior />
+        </i:Interaction.Behaviors>
         <StackPanel Margin="12,0,32,0" Orientation="Horizontal" HorizontalAlignment="Center"
                         VerticalAlignment="Bottom">
             <TextBlock Foreground="White" FontSize="14">
                     <Run Text="(" />
             </TextBlock>
-            <TextBox x:Name="DatanamesTextBox" Text="{Binding DataNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+            <TextBox x:Name="DatanamesTextBox" Height="24" Margin="0,-2,0,0" 
+                     Text="{Binding DataNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                          CaretBrush="Wheat" Background="{x:Null}"
                          Foreground="White" BorderBrush="{x:Null}" />
             <TextBlock Foreground="White" FontSize="14">
@@ -28,7 +34,7 @@
             </TextBlock>
         </StackPanel>
 
-        <Grid Grid.Row="1" Margin="0,-5,0,0">
+        <Grid Grid.Row="1" Margin="0,-7,0,0">
             <Grid VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
                 <Grid.RenderTransform>
                     <TransformGroup>
@@ -38,8 +44,8 @@
                         <TranslateTransform />
                     </TransformGroup>
                 </Grid.RenderTransform>
-                <Rectangle Fill="#FFFF2222" Height="3" VerticalAlignment="Top" Margin="29,6.5,0,0" />
-                <Path Fill="#FFFF2222"  VerticalAlignment="Top" Data="M30,1 L30,15 L1,7.5 L30,1" />
+                <Rectangle Fill="Red" Height="3" VerticalAlignment="Top" Margin="29,7,0,0" />
+                <Path Fill="Red"  VerticalAlignment="Top" Data="M30,1 L30,15 L1,8 L30,1" />
 
             </Grid>
             <TextBox x:Name="ActionNameTextBox" VerticalAlignment="Bottom" Text="{Binding ActionName}"
