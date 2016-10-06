@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Interactivity;
 using SharpFlowDesign.Model;
@@ -30,15 +32,19 @@ namespace SharpFlowDesign.Behavior
             CanItDropHere(e,
                 canDrop: () =>
                 {
-                    var ioCellViewModel = AssociatedObject.DataContext as IOCellViewModel;
-                    var dangelingConnectionViewModel = e.Data.GetData(typeof(DangelingConnectionViewModel)) as DangelingConnectionViewModel;
-                    Interactions.ConnectDangelingConnection(dangelingConnectionViewModel?.Model, ioCellViewModel?.Model,
-                        MainModel.Get());
+                    var type = allowedDropTypes.First(t => e.Data.GetDataPresent(t));
+                    var draggedItem = e.Data.GetData(type) as IDragable;
+
+                    var droppedOn = AssociatedObject.DataContext as IDropable;
+                    droppedOn?.Drop(draggedItem);                  
                 });
 
 
             e.Handled = true;
         }
+
+
+        
 
 
         private void AssociatedObject_DragLeave(object sender, DragEventArgs e)
@@ -49,6 +55,7 @@ namespace SharpFlowDesign.Behavior
 
         private void AssociatedObject_DragOver(object sender, DragEventArgs e)
         {
+           
             CanItDropHere(e,
                 canDrop: () => e.Effects = DragDropEffects.Move,
                 rejected:() => e.Effects = DragDropEffects.None);
@@ -60,7 +67,10 @@ namespace SharpFlowDesign.Behavior
         {
             if (allowedDropTypes != null &&
                 allowedDropTypes.Exists(type => dragEventArgs.Data.GetDataPresent(type)))
+            {
                 canDrop();
+                Debug.WriteLine("CanDrop");
+            }
             else
                 rejected?.Invoke();
         }

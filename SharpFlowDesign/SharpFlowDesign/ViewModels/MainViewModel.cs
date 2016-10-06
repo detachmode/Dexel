@@ -1,19 +1,21 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
 using System.Linq;
-using System.Windows.Navigation;
 using PropertyChanged;
+using SharpFlowDesign.Behavior;
+using SharpFlowDesign.CustomControls;
 using SharpFlowDesign.DebuggingHelper;
 using SharpFlowDesign.Model;
 
 namespace SharpFlowDesign.ViewModels
 {
+
     [ImplementPropertyChanged]
-    public class MainViewModel
+    public class MainViewModel : IDropable
     {
         private static MainViewModel self;
+
 
         public MainViewModel()
         {
@@ -29,11 +31,26 @@ namespace SharpFlowDesign.ViewModels
         public ConnectionViewModel TemporaryConnection { get; set; }
 
 
+        public List<Type> AllowedDropTypes => new List<Type>
+        {
+            typeof(ConnectionViewModel)
+        };
+
+
+        public void Drop(object data, int index = -1)
+        {
+            data.TryCast<ConnectionViewModel>(
+                connectionVM => Interactions.DeConnect(connectionVM.Model, MainModel.Get()));
+            Interactions.ViewRedraw();
+        }
+
+
         public void LoadFromModel(MainModel mainModel)
         {
             LoadConnection(mainModel.Connections);
             LoadSoftwareCells(mainModel.SoftwareCells);
         }
+
 
         private void LoadSoftwareCells(List<SoftwareCell> softwareCells)
         {
@@ -46,6 +63,7 @@ namespace SharpFlowDesign.ViewModels
             });
         }
 
+
         private void LoadConnection(List<DataStream> dataStreams)
         {
             Connections.Clear();
@@ -57,18 +75,6 @@ namespace SharpFlowDesign.ViewModels
             });
         }
 
-        //public void AddToViewModelRecursive(SoftwareCell cell, IOCellViewModel previous = null)
-        //{
-        //    var cellvm = IOCellViewModel.Create(cell);
-        //    SoftwareCells.Add(cellvm);
-        //    if (previous != null)
-        //    {
-        //        Connections.Add(new ConnectionViewModel(previous, cellvm) {DataNames = cell.InputStreams.First().DataNames});
-        //    }
-
-        //    var destinations = cell.OutputStreams.SelectMany(stream => stream.Destinations).ToList();
-        //    destinations.ForEach(x => AddToViewModelRecursive(x, cellvm));
-        //}
 
 
 
@@ -78,4 +84,5 @@ namespace SharpFlowDesign.ViewModels
             return self ?? (self = new MainViewModel());
         }
     }
+
 }

@@ -44,10 +44,7 @@ namespace SharpFlowDesign.Views
         }
 
 
-        private void UIElement_OnMouseEnter(object sender, MouseEventArgs e)
-        {
-            Cursor = Cursors.Hand;
-        }
+
 
         private void updateConnectionViewModels()
         {

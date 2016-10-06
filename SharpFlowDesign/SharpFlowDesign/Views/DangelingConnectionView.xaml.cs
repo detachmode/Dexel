@@ -1,4 +1,6 @@
-﻿namespace SharpFlowDesign.Views
+﻿using System.Windows.Interactivity;
+
+namespace SharpFlowDesign.Views
 {
 
     /// <summary>
@@ -9,17 +11,19 @@
         public DangelingConnectionView()
         {
             InitializeComponent();
-           
+            
         }
 
-
-        public void FocusTextBox()
+        public void SetFocus()
         {
-            //TextBox DatanamesTextBox = (TextBox)theThumb.Template.FindName("FUName", theThumb);
-            DatanamesTextBox.Focus();
-            DatanamesTextBox.SelectionStart = DatanamesTextBox.Text.Length; // add some logic if length is 0
-            DatanamesTextBox.SelectionLength = 0;
+            TheDataNamesControl.SetFocus();
         }
+
+
+        //private void EnableDrag()
+        //{
+        //    Interaction.GetBehaviors(ThePath).Clear();
+        //}
     }
 
 }

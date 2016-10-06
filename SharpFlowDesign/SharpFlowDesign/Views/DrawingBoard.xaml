@@ -6,6 +6,8 @@
              xmlns:local="clr-namespace:SharpFlowDesign.Views"
              xmlns:viewModels="clr-namespace:SharpFlowDesign.ViewModels"
              xmlns:customControls="clr-namespace:SharpFlowDesign.CustomControls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:behavior="clr-namespace:SharpFlowDesign.Behavior"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="700">
@@ -16,7 +18,10 @@
           IsHitTestVisible="True"
           Background="Transparent"
           DragOver="MainWindow_OnDragOver">
-        
+        <i:Interaction.Behaviors>
+            <behavior:FrameworkElementDropBehavior />
+        </i:Interaction.Behaviors>
+
         <!--<customControls:Pointer Start="{Binding TemporaryConnection.Start.OutputPoint}" />-->
         
         <!--Connections-->

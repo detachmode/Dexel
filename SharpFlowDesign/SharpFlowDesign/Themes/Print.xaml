@@ -9,7 +9,7 @@
     <SolidColorBrush x:Key="BorderSoftwareCellBrush" Color="Black"/>
     <SolidColorBrush x:Key="FillSoftwareCellBrush" Color="White"/>
     <SolidColorBrush x:Key="Foreground" Color="Black"/>
-    <Color x:Key="DropShadowColor">White</Color>
+    <Color x:Key="DropShadowColor">Transparent</Color>
 
     <System:Double x:Key="StrokeThickness">2</System:Double>
 

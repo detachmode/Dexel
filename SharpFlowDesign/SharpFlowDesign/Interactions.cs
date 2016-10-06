@@ -36,6 +36,24 @@ namespace SharpFlowDesign
         }
 
 
+        public static void ChangeConnectionDestination(DataStream dataStream, SoftwareCell newdestination, MainModel mainModel)
+        {
+            Interactions.RemoveConnection(dataStream, mainModel);
+            var originalSourceID = dataStream.Sources.First().ID;
+            Interactions.Connect(originalSourceID, newdestination.ID, dataStream.DataNames, mainModel,
+                actionName: dataStream.ActionName);
+            Interactions.ViewRedraw();
+        }
+
+
+
+        public static void ChangeConnectionDestination(Guid connectionID, Guid newdestinationID, MainModel mainModel)
+        {
+            var datastream = DataStreamManager.GetFirst(connectionID, mainModel);
+            
+
+        }
+
         internal static void RemoveDangelingConnection(Guid softwareCellID, Guid dataStreamId)
         {
             var softwareCell = SoftwareCellsManager.GetFristByID(softwareCellID, MainModel.Get());
@@ -77,9 +95,20 @@ namespace SharpFlowDesign
         }
 
 
-        public static void RemoveConnection(Guid id)
+        public static void RemoveConnection(Guid id, MainModel mainModel)
         {
-            MainModel.Get().Connections.RemoveAll(x => x.ID.Equals(id));
+            var datastream =  DataStreamManager.GetFirst(id, mainModel);
+            RemoveConnection(datastream, mainModel);
+
+
+        }
+
+        public static void RemoveConnection(DataStream dataStream, MainModel mainModel)
+        {
+            dataStream.Sources.ForEach(cell => cell.OutputStreams.RemoveAll(x => x.ID.Equals(dataStream.ID)));
+            dataStream.Destinations.ForEach(cell => cell.InputStreams.RemoveAll(x => x.ID.Equals(dataStream.ID)));
+            MainModel.Get().Connections.RemoveAll(x => x.ID.Equals(dataStream.ID));
+
         }
 
 
@@ -93,12 +122,12 @@ namespace SharpFlowDesign
         }
 
 
-        public static void AddNewInput(Guid softwareCellID, string datanames, MainModel mainModel)
+        public static void AddNewInput(Guid softwareCellID, string datanames, MainModel mainModel, string actionName = "")
         {
             SoftwareCellsManager.GetAll(softwareCellID, mainModel).ToList()
                 .ForEach(softwareCell =>
                 {
-                    var dataStream = DataStreamManager.CreateNew(datanames);
+                    var dataStream = DataStreamManager.CreateNew(datanames, actionName);
                     dataStream.Destinations.Add(softwareCell);
                     softwareCell.InputStreams.Add(dataStream);
 
@@ -194,6 +223,26 @@ namespace SharpFlowDesign
             dataStream.Destinations.Add(softwareCell);          
             mainModel.Connections.Add(dataStream);
 
+            ViewRedraw();
+        }
+
+
+        public static void DeConnect(DataStream dataStream, MainModel mainModel)
+        {
+            dataStream.Sources.ForEach( x => AddNewOutput(x.ID, dataStream.DataNames, mainModel));
+            dataStream.Destinations.ForEach(x => AddNewInput(x.ID, dataStream.DataNames, mainModel));
+            RemoveConnection(dataStream, mainModel);
+            ViewRedraw();
+        }
+
+
+        public static void ConnectTwoDangelingConnections(DataStream sourceDataStream, DataStream destinationDataStream, MainModel mainModel)
+        {
+            sourceDataStream.Sources.First().OutputStreams.RemoveAll(x => x.ID.Equals(sourceDataStream.ID));
+            destinationDataStream.Destinations.First().InputStreams.RemoveAll(x => x.ID.Equals(destinationDataStream.ID));
+
+            Connect(sourceDataStream.Sources.First().ID, destinationDataStream.Destinations.First().ID,
+                sourceDataStream.DataNames, mainModel, actionName: sourceDataStream.ActionName);
             ViewRedraw();
         }
     }

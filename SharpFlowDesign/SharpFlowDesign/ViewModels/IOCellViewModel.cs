@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using PropertyChanged;
 using SharpFlowDesign.Behavior;
+using SharpFlowDesign.CustomControls;
 using SharpFlowDesign.Model;
 
 namespace SharpFlowDesign.ViewModels
@@ -28,18 +29,17 @@ namespace SharpFlowDesign.ViewModels
 
         public List<Type> AllowedDropTypes => new List<Type>
         {
-            typeof(DangelingConnectionViewModel)
+            typeof(DangelingConnectionViewModel),
+            typeof(ConnectionViewModel)
         };
 
 
         public void Drop(object data, int index = -1)
         {
-            var dangelingConnection = data as DangelingConnectionViewModel;
-            if (dangelingConnection == null) return;
-
-
-            Interactions.ConnectDangelingConnection(dangelingConnection.Model, Model, MainModel.Get());
-
+            data.TryCast<DangelingConnectionViewModel>(
+                dangConnVM => Interactions.ConnectDangelingConnection(dangConnVM.Model, Model, MainModel.Get()));
+            data.TryCast<ConnectionViewModel>(
+                connVM => Interactions.ChangeConnectionDestination(connVM.Model, Model, MainModel.Get()));
         }
 
         #region Load Model
@@ -90,7 +90,7 @@ namespace SharpFlowDesign.ViewModels
 
         private void UpdateInputConnections(Point inputPoint)
         {
-            var inputIDs = Model.InputStreams.Select(x => x.ID).ToList();
+            var inputIDs = Model.InputStreams.Select(x => x?.ID).ToList();
             var inputs = MainViewModel.Instance().Connections.Where(x => inputIDs.Contains(x.ID)).ToList();
 
             inputs.ForEach(x => { x.End = inputPoint; });

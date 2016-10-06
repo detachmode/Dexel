@@ -32,7 +32,8 @@
             </ItemsControl.RenderTransform>
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <views:DangelingConnectionView MouseEnter="UIElement_OnMouseEnter"/>
+                    <views:DangelingConnectionView />
+                    
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
@@ -44,7 +45,9 @@
                       x:Name="OutputFlow" ItemsSource="{Binding DangelingOutputs, Mode=TwoWay}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <views:DangelingConnectionView/>
+                    <views:DangelingConnectionView>
+                       
+                    </views:DangelingConnectionView>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

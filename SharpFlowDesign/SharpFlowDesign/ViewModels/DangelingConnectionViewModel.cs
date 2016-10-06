@@ -1,12 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using PropertyChanged;
 using SharpFlowDesign.Behavior;
+using SharpFlowDesign.CustomControls;
 using SharpFlowDesign.Model;
 
 namespace SharpFlowDesign.ViewModels
 {
     [ImplementPropertyChanged]
-    public class DangelingConnectionViewModel : IDragable
+    public class DangelingConnectionViewModel : IDragable, IDropable
     {
         public DangelingConnectionViewModel()
         {
@@ -20,10 +22,6 @@ namespace SharpFlowDesign.ViewModels
 
         Type IDragable.DataType => typeof (DangelingConnectionViewModel);
 
-        void IDragable.Remove(object i)
-        {
-           // Interactions.RemoveDangelingConnection(Parent.ID, ID);
-        }
 
         public void LoadFromModel(SoftwareCell parent, DataStream dataStream)
         {
@@ -32,6 +30,13 @@ namespace SharpFlowDesign.ViewModels
             Parent = parent;
             DataNames = dataStream.DataNames;
             Actionname = dataStream.ActionName;
+        }
+
+
+        public List<Type> AllowedDropTypes => new List<Type> { typeof(DangelingConnectionViewModel)};
+        public void Drop(object data, int index = -1)
+        {
+            data.TryCast<DangelingConnectionViewModel>(dangConnVm => Interactions.ConnectTwoDangelingConnections(dangConnVm.Model, this.Model, MainModel.Get()));
         }
     }
 }

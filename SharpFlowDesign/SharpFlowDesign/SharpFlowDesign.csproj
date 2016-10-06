@@ -100,7 +100,12 @@
     <Compile Include="Behavior\FrameworkElementDropBehavior.cs" />
     <Compile Include="Behavior\IDragable.cs" />
     <Compile Include="Behavior\IDropable.cs" />
+    <Compile Include="Behavior\MouseHoverFeedBack.cs" />
     <Compile Include="Converter\Converter.cs" />
+    <Compile Include="CustomControls\DataNamesControl.xaml.cs">
+      <DependentUpon>DataNamesControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\Extensions.cs" />
     <Compile Include="CustomControls\Pointer.cs" />
     <Compile Include="Model\DataStreamManager.cs" />
     <Compile Include="DebuggingHelper\DebugPrinter.cs" />
@@ -133,6 +138,10 @@
     <Compile Include="ViewModels\IOCellViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="XML\XMLConverter.cs" />
+    <Page Include="CustomControls\DataNamesControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\DarkColorfull.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

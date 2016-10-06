@@ -14,8 +14,8 @@ namespace SharpFlowDesign.DebuggingHelper
             var mainModel = MainModel.Get();
             var splitterID = Interactions.AddNewSoftwareCell("Splitt Roman Numerals", mainModel);
             SoftwareCellsManager.GetFirst(splitterID,mainModel).Position = new Point(20,50);
-            Interactions.AddNewInput(splitterID, "RomanNumber", mainModel);
-
+           
+            Interactions.AddNewInput(splitterID, "RomanNumber", mainModel, actionName:".test");
             var convertEachID = Interactions.AddNewSoftwareCell("Convert to decimal", mainModel);
             SoftwareCellsManager.GetFirst(convertEachID, mainModel).Position = new Point(280, 250);
             Interactions.Connect(splitterID, convertEachID, "Roman Numeral*", mainModel, actionName:".eachSplitted");

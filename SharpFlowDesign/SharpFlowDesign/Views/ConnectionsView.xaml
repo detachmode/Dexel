@@ -9,7 +9,7 @@
              xmlns:converter="clr-namespace:SharpFlowDesign.Converter"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:ConnectionViewModel, IsDesignTimeCreatable=True}"
-             d:DesignHeight="100" d:DesignWidth="100">
+            >
     <Canvas>
         <customControls:Pointer
             FillColor="{DynamicResource FillPointerBrush}"
@@ -17,34 +17,22 @@
             Thickness="{DynamicResource StrokeThickness}"
             Start="{Binding Start}"
             End="{Binding End}"
-            ArrowSize="30,15" />
-        <StackPanel 
-            
-            x:Name="theGrid" Canvas.Left="{Binding Center.X}" Canvas.Top="{Binding Center.Y}" Orientation="Horizontal"  >
-            <StackPanel.RenderTransform>
+            ArrowSize="30,15">
+            </customControls:Pointer>
+
+
+        <Grid  x:Name="TheGrid" Canvas.Left="{Binding Center.X}" Canvas.Top="{Binding Center.Y}" >
+            <Grid.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
                     <SkewTransform/>
                     <RotateTransform/>
                     <TranslateTransform 
-                        Y="{Binding ActualHeight, ElementName=theGrid, Mode=OneWay,Converter={converter:PercentageConverter}, ConverterParameter='-1'}"
-                        X="{Binding ActualWidth, ElementName=theGrid, Mode=OneWay,Converter={converter:PercentageConverter}, ConverterParameter='-0,5'}"/>
+                        Y="{Binding ActualHeight, ElementName=TheGrid, Mode=OneWay,Converter={converter:PercentageConverter}, ConverterParameter='-1'}"
+                        X="{Binding ActualWidth, ElementName=TheGrid, Mode=OneWay,Converter={converter:PercentageConverter}, ConverterParameter='-0,5'}"/>
                 </TransformGroup>
-            </StackPanel.RenderTransform>
-            <TextBlock Foreground="{DynamicResource Foreground}" FontSize="14">
-                    <Run Text="(" />
-            </TextBlock>
-            <TextBox 
-                    CaretBrush="{DynamicResource Foreground}" Background="{x:Null}"
-                    Foreground="{DynamicResource Foreground}" BorderBrush="{x:Null}"
-                Text="{Binding Model.DataNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <TextBox.Effect>
-                    <DropShadowEffect BlurRadius="1" ShadowDepth="2" Color="{DynamicResource DropShadowColor}"/>
-                </TextBox.Effect>
-            </TextBox>
-            <TextBlock Foreground="{DynamicResource Foreground}" FontSize="14">
-                    <Run Text=")" />
-            </TextBlock>
-        </StackPanel>
+            </Grid.RenderTransform>
+            <customControls:DataNamesControl DataContext="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
     </Canvas>
 </UserControl>

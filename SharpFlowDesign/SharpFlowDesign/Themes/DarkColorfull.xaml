@@ -4,8 +4,8 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
     <SolidColorBrush x:Key="BG" Color="#FF383838"/>
     <SolidColorBrush x:Key="GridColor" Color="#FF404040" />
-    <SolidColorBrush x:Key="OuterFillPointerBrush" Color="#FF202B55"/>
-    <SolidColorBrush x:Key="FillPointerBrush" Color="#FF9C1111"/>
+    <SolidColorBrush x:Key="OuterFillPointerBrush" Color="Transparent"/>
+    <SolidColorBrush x:Key="FillPointerBrush" Color="DeepSkyBlue"/>
     <SolidColorBrush x:Key="BorderSoftwareCellBrush" Color="DeepSkyBlue"/>
     <SolidColorBrush x:Key="FillSoftwareCellBrush" Color="#FF303030"/>
     <SolidColorBrush x:Key="Foreground" Color="White"/>

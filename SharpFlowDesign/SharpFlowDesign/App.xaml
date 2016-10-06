@@ -4,16 +4,15 @@
              xmlns:converter="clr-namespace:SharpFlowDesign.Converter">
     <Application.Resources>
         <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Themes/Print.xaml"></ResourceDictionary>
-            </ResourceDictionary.MergedDictionaries>
-
             <converter:DebugConverter x:Key="DebugConverter" />
             <converter:IOCellSelectionConverter x:Key="SelectionConverter" />
 
             <ItemsPanelTemplate x:Key="DrawingBoardItemControl">
                 <Canvas />
             </ItemsPanelTemplate>
+
+
+  
 
             <VisualBrush x:Key="MyVisualBrush" TileMode="Tile" Viewport="0,0,15,15" ViewportUnits="Absolute"
                      Viewbox="0,0,15,15" ViewboxUnits="Absolute">
@@ -29,12 +28,14 @@
                 <Setter Property="Foreground" Value="Bisque" />
             </Style>
             <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BaseContentControlStyle}" />
+            
+            
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/DarkColorfull.xaml"></ResourceDictionary>
+                <!--<ResourceDictionary Source="Themes/Print.xaml"></ResourceDictionary>-->
+            </ResourceDictionary.MergedDictionaries>
 
         </ResourceDictionary>
-
-
-
-
-
     </Application.Resources>
 </Application>

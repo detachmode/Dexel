@@ -9,9 +9,5 @@ namespace SharpFlowDesign.Behavior
         /// </summary>
         Type DataType { get; }
 
-        /// <summary>
-        /// Remove the object from the collection
-        /// </summary>
-        void Remove(object i);
     }
 }

@@ -4,44 +4,42 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using SharpFlowDesign.Model;
 using SharpFlowDesign.ViewModels;
 
 namespace SharpFlowDesign.CustomControls
 {
+
     public class Pointer : Canvas
     {
         public static readonly DependencyProperty EndProperty =
-            DependencyProperty.Register("End", typeof (Point), typeof (Pointer));
+            DependencyProperty.Register("End", typeof(Point), typeof(Pointer));
 
         public static readonly DependencyProperty ArrowSizeProperty =
             DependencyProperty.Register("ArrowSize", typeof(Point), typeof(Pointer));
 
         public static readonly DependencyProperty ThicknessProperty =
-    DependencyProperty.Register("Thickness", typeof(double), typeof(Pointer));
+            DependencyProperty.Register("Thickness", typeof(double), typeof(Pointer));
 
         public static readonly DependencyProperty StartProperty =
             DependencyProperty.Register("Start", typeof(Point), typeof(Pointer));
 
         public static readonly DependencyProperty FillColorProperty =
-         DependencyProperty.Register("FillColor", typeof(SolidColorBrush), typeof(Pointer));
+            DependencyProperty.Register("FillColor", typeof(SolidColorBrush), typeof(Pointer));
 
         public static readonly DependencyProperty OuterFillColorProperty =
-        DependencyProperty.Register("OuterFillColor", typeof(SolidColorBrush), typeof(Pointer));
+            DependencyProperty.Register("OuterFillColor", typeof(SolidColorBrush), typeof(Pointer));
 
-        //    public static readonly DependencyProperty TextBoxProperty =
-        //DependencyProperty.Register("TextBox", typeof(ContentPresenter), typeof(Pointer));
+        private static bool IsDragging;
 
         private readonly Path arrowShape;
-        private readonly Path pathShape;
-        private readonly Path outerPathShape;
 
         private readonly double connectionExtensionLength = 100;
-        private static bool IsDragging;
+        private readonly Path outerPathShape;
+        private readonly Path pathShape;
+
 
         public Pointer()
         {
-
             pathShape = new Path
             {
                 Stroke = FillColor,
@@ -57,11 +55,10 @@ namespace SharpFlowDesign.CustomControls
             arrowShape = new Path
             {
                 Stroke = FillColor,
-                Fill = FillColor,               
+                Fill = FillColor,
                 StrokeThickness = 0
-
             };
-            
+
             arrowShape.MouseDown += (sender, args) =>
             {
                 arrowShape.IsHitTestVisible = false;
@@ -71,25 +68,23 @@ namespace SharpFlowDesign.CustomControls
                 try
                 {
                     (DataContext as ConnectionViewModel).End = null;
-                    DragDrop.DoDragDrop((DependencyObject) args.Source, this, DragDropEffects.Move);
+                    DataObject data = new DataObject();
+                    data.SetData(typeof(ConnectionViewModel), this.DataContext);
+                    DragDrop.DoDragDrop((DependencyObject) args.Source, data, DragDropEffects.Move);
                 }
                 catch
                 {
                     // ignored
                 }
-                (DataContext as ConnectionViewModel).IsDragging = false;
+                var connectionViewModel = DataContext as ConnectionViewModel;
+                if (connectionViewModel != null) connectionViewModel.IsDragging = false;
                 IsDragging = false;
                 arrowShape.IsHitTestVisible = true;
                 pathShape.IsHitTestVisible = true;
-
             };
 
-           
 
-            arrowShape.MouseEnter += (sender, args) =>
-            {
-                arrowShape.Fill = Brushes.Red;
-            };
+            arrowShape.MouseEnter += (sender, args) => { arrowShape.Fill = Brushes.Red; };
 
             arrowShape.MouseLeave += (sender, args) =>
             {
@@ -98,15 +93,12 @@ namespace SharpFlowDesign.CustomControls
             };
 
 
-
-
-           
             Children.Add(outerPathShape);
             Children.Add(pathShape);
             Children.Add(arrowShape);
 
             DependencyPropertyDescriptor
-                .FromProperty(EndProperty, typeof (Pointer))
+                .FromProperty(EndProperty, typeof(Pointer))
                 .AddValueChanged(this, (s, e) => Update());
 
             DependencyPropertyDescriptor
@@ -127,7 +119,6 @@ namespace SharpFlowDesign.CustomControls
                 .AddValueChanged(this, (s, e) => Update());
 
 
-
             DependencyPropertyDescriptor
                 .FromProperty(ThicknessProperty, typeof(Pointer))
                 .AddValueChanged(this, (s, e) => Update());
@@ -135,20 +126,19 @@ namespace SharpFlowDesign.CustomControls
             //path.GetPointAtFractionLength(0.5, out centerPoint, out tg);
         }
 
+
         public Point End
         {
-            get { return (Point)GetValue(EndProperty); }
+            get { return (Point) GetValue(EndProperty); }
             set { SetValue(EndProperty, value); }
         }
 
 
         public double Thickness
         {
-            get { return (double)GetValue(ThicknessProperty); }
+            get { return (double) GetValue(ThicknessProperty); }
             set { SetValue(ThicknessProperty, value); }
         }
-
-        
 
 
         public Point Start
@@ -165,13 +155,13 @@ namespace SharpFlowDesign.CustomControls
 
         public SolidColorBrush FillColor
         {
-            get { return (SolidColorBrush)GetValue(FillColorProperty); }
+            get { return (SolidColorBrush) GetValue(FillColorProperty); }
             set { SetValue(FillColorProperty, value); }
         }
 
         public SolidColorBrush OuterFillColor
         {
-            get { return (SolidColorBrush)GetValue(OuterFillColorProperty); }
+            get { return (SolidColorBrush) GetValue(OuterFillColorProperty); }
             set { SetValue(OuterFillColorProperty, value); }
         }
 
@@ -184,15 +174,13 @@ namespace SharpFlowDesign.CustomControls
             pathShape.StrokeThickness = Thickness;
             outerPathShape.Stroke = OuterFillColor;
 
-           
+
             UpdatePath();
-           
+
             UpdateViewModel();
             UpdateArrowHead();
         }
 
-
-       
 
         private void UpdateArrowHead()
         {
@@ -209,7 +197,7 @@ namespace SharpFlowDesign.CustomControls
             pts.Add(new Point(position.X, position.Y + ArrowSize.Y/2));
             figure.Segments.Add(new PolyLineSegment(pts, true));
 
-            OverrideShapeData(arrowShape,figure);
+            OverrideShapeData(arrowShape, figure);
         }
 
 
@@ -249,19 +237,12 @@ namespace SharpFlowDesign.CustomControls
             OverrideShapeData(outerPathShape, figure);
 
 
-
             var figure2 = new PathFigure();
             figure2.IsClosed = false;
             figure2.StartPoint = end;
             figure2.Segments.Add(new LineSegment(End, true));
-            ((PathGeometry)outerPathShape.Data).Figures.Add(figure2);
-
-
-
-
+            ((PathGeometry) outerPathShape.Data).Figures.Add(figure2);
         }
-
-
 
 
         private Point GetCenterPoint()
@@ -271,4 +252,5 @@ namespace SharpFlowDesign.CustomControls
             return centerPoint;
         }
     }
+
 }

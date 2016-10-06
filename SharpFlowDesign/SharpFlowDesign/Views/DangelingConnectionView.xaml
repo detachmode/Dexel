@@ -7,51 +7,41 @@
     xmlns:model="clr-namespace:SharpFlowDesign.Model"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:behavior="clr-namespace:SharpFlowDesign.Behavior"
+    xmlns:customControls="clr-namespace:SharpFlowDesign.CustomControls"
     x:Class="SharpFlowDesign.Views.DangelingConnectionView"
     d:DataContext="{d:DesignInstance viewModels:DangelingConnectionViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d"
-     >
-    
+    >
+
     <Grid Background="{DynamicResource OuterFillPointerBrush}" Height="36">
+        <i:Interaction.Behaviors>
+            <behavior:FrameworkElementDropBehavior  />
+        </i:Interaction.Behaviors>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
-        <i:Interaction.Behaviors>
-            <behavior:FrameworkElementDragBehavior />
-        </i:Interaction.Behaviors>
-        <StackPanel Margin="12,0,32,0" Orientation="Horizontal" HorizontalAlignment="Center"
-                        VerticalAlignment="Bottom">
-            <TextBlock Foreground="{DynamicResource Foreground}" FontSize="14" Background="{x:Null}">
-                    <Run Text="(" />
-            </TextBlock>
-            <TextBox x:Name="DatanamesTextBox" Height="24" Margin="0,-2,0,0" 
-                     Text="{Binding DataNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        <Grid.ColumnDefinitions>
+
+            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="5*"/>
+
+        </Grid.ColumnDefinitions>
+        <Rectangle Grid.Column="0" Grid.RowSpan="2" Fill="{DynamicResource FillPointerBrush}" Height="{DynamicResource StrokeThickness}" VerticalAlignment="Center"  />
+        <Path x:Name="ThePath" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2" Fill="{DynamicResource FillPointerBrush}" 
+              VerticalAlignment="Center" Data="M30,7.5 L0,0 L0,15 L30,7.5">
+            <i:Interaction.Behaviors>
+                <behavior:FrameworkElementDragBehavior  />
+                <behavior:MouseHoverFeedBack/>
+            </i:Interaction.Behaviors>
+        </Path>
+        <TextBox Grid.Row="1" FontSize="11"  Grid.Column="0" x:Name="ActionNameTextBox" VerticalAlignment="Top"
+                 Text="{Binding Model.ActionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Margin="0,-2,0,0"
                          CaretBrush="{DynamicResource Foreground}" Background="{x:Null}"
                          Foreground="{DynamicResource Foreground}" BorderBrush="{x:Null}" />
-            <TextBlock Foreground="{DynamicResource Foreground}" FontSize="14">
-                    <Run Text=")" />
-            </TextBlock>
-        </StackPanel>
 
-        <Grid Grid.Row="1" Margin="0,-7,0,0">
-            <Grid VerticalAlignment="Top" RenderTransformOrigin="0.5,0.5">
-                <Grid.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform />
-                        <SkewTransform />
-                        <RotateTransform Angle="180" />
-                        <TranslateTransform />
-                    </TransformGroup>
-                </Grid.RenderTransform>
-                <Rectangle Fill="{DynamicResource FillPointerBrush}" Height="{DynamicResource StrokeThickness}" VerticalAlignment="Top" Margin="29,7,0,0" />
-                <Path Fill="{DynamicResource FillPointerBrush}"  VerticalAlignment="Top" Data="M30,1 L30,15 L1,8 L30,1" />
-
-            </Grid>
-            <TextBox x:Name="ActionNameTextBox" VerticalAlignment="Bottom" Text="{Binding Model.ActionName}"
-                         CaretBrush="{DynamicResource Foreground}" Background="{x:Null}"
-                         Foreground="{DynamicResource Foreground}" BorderBrush="{x:Null}" />
-        </Grid>
+        <customControls:DataNamesControl x:Name="TheDataNamesControl" 
+            Grid.Row="0" Margin="0,-4,0,0" Grid.Column="0" DataContext="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></customControls:DataNamesControl>
 
 
     </Grid>
