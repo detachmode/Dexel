@@ -17,6 +17,9 @@ namespace SharpFlowDesign.ViewModels
         {
             // Just For Designer purspose
             End = new Point(100,100);
+
+            Model = new DataStream();
+            Model.DataNames = "string";
         }
         public Guid ID;
 

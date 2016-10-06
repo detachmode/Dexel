@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows.Navigation;
 using PropertyChanged;
+using SharpFlowDesign.DebuggingHelper;
 using SharpFlowDesign.Model;
 
 namespace SharpFlowDesign.ViewModels

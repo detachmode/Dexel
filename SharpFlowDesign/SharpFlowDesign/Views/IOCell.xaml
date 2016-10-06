@@ -5,8 +5,6 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:views="clr-namespace:SharpFlowDesign.Views"
     xmlns:viewModels="clr-namespace:SharpFlowDesign.ViewModels"
-    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-    xmlns:behavior="clr-namespace:SharpFlowDesign.Behavior"
     x:Class="SharpFlowDesign.Views.IOCell"
     d:DataContext="{d:DesignInstance viewModels:IOCellViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
@@ -18,11 +16,12 @@
     </UserControl.Resources>
 
     <StackPanel 
-                ContextMenu="{StaticResource MyContextMenu}"
-                MinHeight="60"
-                Orientation="Horizontal"
-                Panel.ZIndex="100">
-        <ItemsControl MinWidth="10" MinHeight="35" x:Name="InputFlow" ItemsSource="{Binding DangelingInputs}" RenderTransformOrigin="0.5,0.5">
+            ContextMenu="{StaticResource MyContextMenu}"
+            MinHeight="60"
+            Orientation="Horizontal"
+            Panel.ZIndex="100">
+        <ItemsControl MinWidth="10" MinHeight="35" x:Name="InputFlow" ItemsSource="{Binding DangelingInputs}" 
+                      RenderTransformOrigin="0.5,0.5">
             <ItemsControl.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform/>
@@ -37,7 +36,8 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        <views:SoftwareCell x:Name="Fu" LabelContent="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+        <views:SoftwareCell x:Name="Fu" 
+                            LabelContent="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Thumb.DragDelta="OnDragDelta"
                             />
         <ItemsControl VerticalAlignment="Center" HorizontalAlignment="Center" 

@@ -1,11 +1,11 @@
 //----------------------------------------------
 // ArrowPolyline.cs (c) 2007 by Charles Petzold
 //----------------------------------------------
-using System;
+
 using System.Windows;
 using System.Windows.Media;
 
-namespace Petzold.Media2D
+namespace SharpFlowDesign.Arrow
 {
     /// <summary>
     ///     Draws a series of connected straight lines with

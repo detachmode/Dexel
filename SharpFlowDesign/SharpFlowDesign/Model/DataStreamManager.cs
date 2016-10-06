@@ -1,7 +1,6 @@
 using System;
-using SharpFlowDesign.Model;
 
-namespace SharpFlowDesign
+namespace SharpFlowDesign.Model
 {
 
     public static class DataStreamManager

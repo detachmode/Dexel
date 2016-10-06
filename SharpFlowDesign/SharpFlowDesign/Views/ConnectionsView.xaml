@@ -12,13 +12,14 @@
              d:DesignHeight="100" d:DesignWidth="100">
     <Canvas>
         <customControls:Pointer
-            FillColor="Red"
-            OuterFillColor="#FF552020"
+            FillColor="{DynamicResource FillPointerBrush}"
+            OuterFillColor="{DynamicResource OuterFillPointerBrush}"
+            Thickness="{DynamicResource StrokeThickness}"
             Start="{Binding Start}"
             End="{Binding End}"
             ArrowSize="30,15" />
         <StackPanel 
-            Background="#B2552020"
+            
             x:Name="theGrid" Canvas.Left="{Binding Center.X}" Canvas.Top="{Binding Center.Y}" Orientation="Horizontal"  >
             <StackPanel.RenderTransform>
                 <TransformGroup>
@@ -30,15 +31,18 @@
                         X="{Binding ActualWidth, ElementName=theGrid, Mode=OneWay,Converter={converter:PercentageConverter}, ConverterParameter='-0,5'}"/>
                 </TransformGroup>
             </StackPanel.RenderTransform>
-            <TextBlock Foreground="White" FontSize="14">
+            <TextBlock Foreground="{DynamicResource Foreground}" FontSize="14">
                     <Run Text="(" />
             </TextBlock>
             <TextBox 
-                    CaretBrush="Wheat" Background="{x:Null}"
-                    Foreground="White" BorderBrush="{x:Null}"
+                    CaretBrush="{DynamicResource Foreground}" Background="{x:Null}"
+                    Foreground="{DynamicResource Foreground}" BorderBrush="{x:Null}"
                 Text="{Binding Model.DataNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                <TextBox.Effect>
+                    <DropShadowEffect BlurRadius="1" ShadowDepth="2" Color="{DynamicResource DropShadowColor}"/>
+                </TextBox.Effect>
             </TextBox>
-            <TextBlock Foreground="White" FontSize="14">
+            <TextBlock Foreground="{DynamicResource Foreground}" FontSize="14">
                     <Run Text=")" />
             </TextBlock>
         </StackPanel>

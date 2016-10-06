@@ -1,12 +1,12 @@
 //----------------------------------------------
 // ArrowLineBase.cs (c) 2007 by Charles Petzold
 //----------------------------------------------
-using System;
+
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
-namespace Petzold.Media2D
+namespace SharpFlowDesign.Arrow
 {
     /// <summary>
     ///     Provides a base class for ArrowLine and ArrowPolyline.

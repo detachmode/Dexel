@@ -12,7 +12,7 @@
     mc:Ignorable="d"
      >
     
-    <Grid Background="#FF552020" Height="36">
+    <Grid Background="{DynamicResource OuterFillPointerBrush}" Height="36">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
@@ -22,14 +22,14 @@
         </i:Interaction.Behaviors>
         <StackPanel Margin="12,0,32,0" Orientation="Horizontal" HorizontalAlignment="Center"
                         VerticalAlignment="Bottom">
-            <TextBlock Foreground="White" FontSize="14">
+            <TextBlock Foreground="{DynamicResource Foreground}" FontSize="14" Background="{x:Null}">
                     <Run Text="(" />
             </TextBlock>
             <TextBox x:Name="DatanamesTextBox" Height="24" Margin="0,-2,0,0" 
                      Text="{Binding DataNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                         CaretBrush="Wheat" Background="{x:Null}"
-                         Foreground="White" BorderBrush="{x:Null}" />
-            <TextBlock Foreground="White" FontSize="14">
+                         CaretBrush="{DynamicResource Foreground}" Background="{x:Null}"
+                         Foreground="{DynamicResource Foreground}" BorderBrush="{x:Null}" />
+            <TextBlock Foreground="{DynamicResource Foreground}" FontSize="14">
                     <Run Text=")" />
             </TextBlock>
         </StackPanel>
@@ -44,13 +44,13 @@
                         <TranslateTransform />
                     </TransformGroup>
                 </Grid.RenderTransform>
-                <Rectangle Fill="Red" Height="3" VerticalAlignment="Top" Margin="29,7,0,0" />
-                <Path Fill="Red"  VerticalAlignment="Top" Data="M30,1 L30,15 L1,8 L30,1" />
+                <Rectangle Fill="{DynamicResource FillPointerBrush}" Height="{DynamicResource StrokeThickness}" VerticalAlignment="Top" Margin="29,7,0,0" />
+                <Path Fill="{DynamicResource FillPointerBrush}"  VerticalAlignment="Top" Data="M30,1 L30,15 L1,8 L30,1" />
 
             </Grid>
-            <TextBox x:Name="ActionNameTextBox" VerticalAlignment="Bottom" Text="{Binding ActionName}"
-                         CaretBrush="Wheat" Background="{x:Null}"
-                         Foreground="White" BorderBrush="{x:Null}" />
+            <TextBox x:Name="ActionNameTextBox" VerticalAlignment="Bottom" Text="{Binding Model.ActionName}"
+                         CaretBrush="{DynamicResource Foreground}" Background="{x:Null}"
+                         Foreground="{DynamicResource Foreground}" BorderBrush="{x:Null}" />
         </Grid>
 
 

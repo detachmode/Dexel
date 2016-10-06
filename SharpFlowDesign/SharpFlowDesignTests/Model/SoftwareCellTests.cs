@@ -1,13 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SharpFlowDesign.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace SharpFlowDesign.Model.Tests
+namespace SharpFlowDesignTests.Model
 {
     [TestClass()]
     public class SoftwareCellTests

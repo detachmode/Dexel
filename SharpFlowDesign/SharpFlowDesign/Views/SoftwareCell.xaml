@@ -24,14 +24,15 @@
                         <ColumnDefinition Width="40*" />
                     </Grid.ColumnDefinitions>
                     <Grid Margin="20" Grid.ColumnSpan="2">
-                        <Ellipse Margin="-20" Fill="#FF484848" Stroke="DeepSkyBlue"
-                                StrokeThickness="3" />
+                        <Ellipse Margin="-20" Fill="{DynamicResource FillSoftwareCellBrush}" 
+                                Stroke="{DynamicResource BorderSoftwareCellBrush}"
+                                StrokeThickness="{DynamicResource StrokeThickness}" />
                         <TextBox x:Name="theTextBox"
                                  Text="{Binding Path=LabelContent, 
                                         UpdateSourceTrigger=PropertyChanged,
                                         RelativeSource={RelativeSource FindAncestor, 
                                         AncestorType=views:SoftwareCell,  AncestorLevel=1}}"
-                                 Foreground="White"
+                                 Foreground="{DynamicResource Foreground}"
                                  VerticalAlignment="Center"
                                  BorderBrush="{x:Null}" Background="{x:Null}" />
                     </Grid>

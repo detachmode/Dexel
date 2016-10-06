@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using SharpFlowDesign.Model;
 
-namespace SharpFlowDesign
+namespace SharpFlowDesign.Model
 {
 
     public static class SoftwareCellsManager

@@ -15,7 +15,10 @@ namespace SharpFlowDesign.CustomControls
             DependencyProperty.Register("End", typeof (Point), typeof (Pointer));
 
         public static readonly DependencyProperty ArrowSizeProperty =
-            DependencyProperty.Register("ArrowSize", typeof (Point), typeof (Pointer));
+            DependencyProperty.Register("ArrowSize", typeof(Point), typeof(Pointer));
+
+        public static readonly DependencyProperty ThicknessProperty =
+    DependencyProperty.Register("Thickness", typeof(double), typeof(Pointer));
 
         public static readonly DependencyProperty StartProperty =
             DependencyProperty.Register("Start", typeof(Point), typeof(Pointer));
@@ -42,7 +45,7 @@ namespace SharpFlowDesign.CustomControls
             pathShape = new Path
             {
                 Stroke = FillColor,
-                StrokeThickness = 3
+                StrokeThickness = Thickness
             };
 
             outerPathShape = new Path
@@ -123,14 +126,29 @@ namespace SharpFlowDesign.CustomControls
                 .FromProperty(OuterFillColorProperty, typeof(Pointer))
                 .AddValueChanged(this, (s, e) => Update());
 
+
+
+            DependencyPropertyDescriptor
+                .FromProperty(ThicknessProperty, typeof(Pointer))
+                .AddValueChanged(this, (s, e) => Update());
+
             //path.GetPointAtFractionLength(0.5, out centerPoint, out tg);
         }
 
         public Point End
         {
-            get { return (Point) GetValue(EndProperty); }
+            get { return (Point)GetValue(EndProperty); }
             set { SetValue(EndProperty, value); }
         }
+
+
+        public double Thickness
+        {
+            get { return (double)GetValue(ThicknessProperty); }
+            set { SetValue(ThicknessProperty, value); }
+        }
+
+        
 
 
         public Point Start
@@ -163,7 +181,7 @@ namespace SharpFlowDesign.CustomControls
             arrowShape.Stroke = FillColor;
             arrowShape.Fill = FillColor;
             pathShape.Stroke = FillColor;
-           
+            pathShape.StrokeThickness = Thickness;
             outerPathShape.Stroke = OuterFillColor;
 
            

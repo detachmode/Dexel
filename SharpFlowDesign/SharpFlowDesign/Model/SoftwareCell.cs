@@ -6,7 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using PropertyChanged;
-using SharpFlowDesign.Annotations;
+using SharpFlowDesign.Properties;
 
 namespace SharpFlowDesign.Model
 {

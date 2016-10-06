@@ -1,15 +1,7 @@
-﻿using System.Diagnostics;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
-using Petzold.Media2D;
-using SharpFlowDesign.Model;
+﻿using System.Windows;
 using SharpFlowDesign.ViewModels;
-using SharpFlowDesign.Views;
 
-namespace SharpFlowDesign
+namespace SharpFlowDesign.Views
 {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml

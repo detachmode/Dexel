@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using PropertyChanged;
-using SharpFlowDesign.Annotations;
+using SharpFlowDesign.Properties;
 
 namespace SharpFlowDesign.Model
 {

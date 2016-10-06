@@ -1,9 +1,10 @@
 //------------------------------------------
 // ArrowEnds.cs (c) 2007 by Charles Petzold
 //------------------------------------------
+
 using System;
 
-namespace Petzold.Media2D
+namespace SharpFlowDesign.Arrow
 {
     /// <summary>
     ///     Indicates which end of the line has an arrow.

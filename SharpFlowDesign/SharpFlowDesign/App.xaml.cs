@@ -29,7 +29,7 @@ namespace SharpFlowDesign
 
             //DebugPrinter.PrintRecursive();
 
-            var mainwindow = new MainWindow();
+            var mainwindow = new Views.MainWindow();
             mainwindow.Show();
         }
     }
