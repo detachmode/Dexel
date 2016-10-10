@@ -37,8 +37,8 @@ namespace SharpFlowDesign
         public static void ChangeConnectionDestination(DataStream dataStream, SoftwareCell newdestination,
             MainModel mainModel)
         {
-            MainModelManager.RemoveConnection(dataStream, mainModel);
-
+            //MainModelManager.RemoveConnection(dataStream, mainModel);
+            DeConnect(dataStream, mainModel);
             MainModelManager.Connect(dataStream.Sources.First().ID, newdestination.ID, dataStream.DataNames, mainModel,
                 dataStream.ActionName);
 

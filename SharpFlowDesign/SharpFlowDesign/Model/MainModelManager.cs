@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 
 namespace SharpFlowDesign.Model
 {
@@ -55,11 +56,15 @@ namespace SharpFlowDesign.Model
 
 
         public static Guid Connect(Guid sourceID, Guid destinationID, string datanames, MainModel mainModel,
-            string actionName = null)
+            string actionName = "")
         {
             var source = SoftwareCellsManager.GetFirst(sourceID, mainModel);
             var destination = SoftwareCellsManager.GetFirst(destinationID, mainModel);
-            return MainModelManager.AddNewConnection(source, destination, datanames, actionName, mainModel);
+
+            source.OutputStreams.RemoveAll(x => x.DataNames == datanames && x.ActionName == actionName);
+            destination.InputStreams.RemoveAll(x => x.DataNames == datanames && x.ActionName == actionName);
+
+            return AddNewConnection(source, destination, datanames, actionName, mainModel);
 
         }
 

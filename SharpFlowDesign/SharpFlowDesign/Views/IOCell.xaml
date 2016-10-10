@@ -16,19 +16,23 @@
         </ContextMenu>
     </UserControl.Resources>
     <Grid>
-        <ItemsControl Margin="0" MinWidth="10" MinHeight="35" x:Name="InputFlow" ItemsSource="{Binding DangelingInputs}" >
+        <ItemsControl MinHeight="35" x:Name="InputFlow" 
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Center"
+                      ItemsSource="{Binding DangelingInputs}" RenderTransformOrigin="0.5,0.5" >
+            <ItemsControl.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform X="{Binding ActualWidth, ConverterParameter=-1, Converter={StaticResource PercentageConverter}, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                </TransformGroup>
+            </ItemsControl.RenderTransform>
+
+
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <views:DangelingConnectionView RenderTransformOrigin="0.5,0.5" >
-                        <!--<views:DangelingConnectionView.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform/>
-                                <SkewTransform/>
-                                <RotateTransform/>
-                                <TranslateTransform X="{Binding ActualWidth, ElementName=InputFlow, Mode=OneWay,Converter={converter:PercentageConverter}, ConverterParameter='-1'}" Y="NaN"/>
-                            </TransformGroup>
-                        </views:DangelingConnectionView.RenderTransform>-->
-                    </views:DangelingConnectionView>
+                    <views:DangelingConnectionView />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

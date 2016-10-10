@@ -89,7 +89,7 @@ namespace SharpFlowDesign.Tests
 
             testModel = new MainModel();
             sA = SoftwareCellsManager.CreateNew("A");
-            sB = SoftwareCellsManager.CreateNew("B");           
+            sB = SoftwareCellsManager.CreateNew("B");
             testModel.SoftwareCells.Add(sA);
             testModel.SoftwareCells.Add(sB);
 
@@ -110,6 +110,33 @@ namespace SharpFlowDesign.Tests
 
 
 
+
+        }
+
+        [TestMethod()]
+        public void ChangeConnectionDestinationTest1()
+        {
+            var testModel = new MainModel();
+            var sA = SoftwareCellsManager.CreateNew("A");
+            var sB = SoftwareCellsManager.CreateNew("B");
+            var sC = SoftwareCellsManager.CreateNew("C");
+            testModel.SoftwareCells.Add(sA);
+            testModel.SoftwareCells.Add(sB);
+            testModel.SoftwareCells.Add(sC);
+            MainModelManager.Connect(sA.ID, sB.ID, "dataAB", testModel);
+
+            Interactions.ChangeConnectionDestination(testModel.Connections.First(), sC, testModel);
+
+            Assert.IsTrue(sA.OutputStreams.Count == 1);
+            Assert.IsTrue(sA.OutputStreams.First().Connected);
+            Assert.IsTrue(sB.InputStreams.Count == 1);
+            Assert.IsTrue(sB.InputStreams.First().Connected == false);
+            Assert.IsTrue(sC.InputStreams.Count == 1);
+            Assert.IsTrue(sC.InputStreams.First().Connected);
+
+            Assert.IsTrue(testModel.Connections.Count == 1);
+            Assert.IsTrue(testModel.Connections.First().Sources.First() == sA);
+            Assert.IsTrue(testModel.Connections.First().Destinations.First() == sC);
 
         }
     }

@@ -6,6 +6,7 @@
         <ResourceDictionary>
             <converter:DebugConverter x:Key="DebugConverter" />
             <converter:IOCellSelectionConverter x:Key="SelectionConverter" />
+            <converter:PercentageConverter x:Key="PercentageConverter" />
 
             <ItemsPanelTemplate x:Key="DrawingBoardItemControl">
                 <Canvas />
