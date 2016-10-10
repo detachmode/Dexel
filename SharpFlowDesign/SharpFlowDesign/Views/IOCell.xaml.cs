@@ -54,12 +54,12 @@ namespace SharpFlowDesign.Views
                 return;
             }
 
-            var outputPoint = new Point(vm.Model.Position.X + (ActualWidth - OutputFlow.ActualWidth),
+            var outputPoint = new Point(vm.Model.Position.X + Fu.ActualWidth,
                 vm.Model.Position.Y + ActualHeight / 2);
 
-            var inputPoint = new Point(vm.Model.Position.X + InputFlow.ActualWidth,
+            var inputPoint = new Point(vm.Model.Position.X,
                 vm.Model.Position.Y + ActualHeight / 2);
-
+        
             vm.UpdateConnectionsPosition(inputPoint, outputPoint);
 
         }

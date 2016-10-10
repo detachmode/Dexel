@@ -6,6 +6,7 @@
     xmlns:views="clr-namespace:SharpFlowDesign.Views"
     xmlns:viewModels="clr-namespace:SharpFlowDesign.ViewModels"
     x:Class="SharpFlowDesign.Views.IOCell"
+    xmlns:converter="clr-namespace:SharpFlowDesign.Converter"
     d:DataContext="{d:DesignInstance viewModels:IOCellViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
 
@@ -14,42 +15,44 @@
             <MenuItem Header="Add New Output" Click="NewOutput_click" />
         </ContextMenu>
     </UserControl.Resources>
-
-    <StackPanel 
-            ContextMenu="{StaticResource MyContextMenu}"
-            MinHeight="60"
-            Orientation="Horizontal"
-            Panel.ZIndex="100">
-        <ItemsControl MinWidth="10" MinHeight="35" x:Name="InputFlow" ItemsSource="{Binding DangelingInputs}" 
-                      RenderTransformOrigin="0.5,0.5">
-            <ItemsControl.RenderTransform>
-                <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform Angle="5"/>
-                    <TranslateTransform/>
-                </TransformGroup>
-            </ItemsControl.RenderTransform>
+    <Grid>
+        <ItemsControl Margin="0" MinWidth="10" MinHeight="35" x:Name="InputFlow" ItemsSource="{Binding DangelingInputs}" >
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <views:DangelingConnectionView />
-                    
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-        <views:SoftwareCell x:Name="Fu" 
-                            LabelContent="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                            Thumb.DragDelta="OnDragDelta"
-                            />
-        <ItemsControl VerticalAlignment="Center" HorizontalAlignment="Center" 
-                      x:Name="OutputFlow" ItemsSource="{Binding DangelingOutputs, Mode=TwoWay}">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <views:DangelingConnectionView>
-                       
+                    <views:DangelingConnectionView RenderTransformOrigin="0.5,0.5" >
+                        <!--<views:DangelingConnectionView.RenderTransform>
+                            <TransformGroup>
+                                <ScaleTransform/>
+                                <SkewTransform/>
+                                <RotateTransform/>
+                                <TranslateTransform X="{Binding ActualWidth, ElementName=InputFlow, Mode=OneWay,Converter={converter:PercentageConverter}, ConverterParameter='-1'}" Y="NaN"/>
+                            </TransformGroup>
+                        </views:DangelingConnectionView.RenderTransform>-->
                     </views:DangelingConnectionView>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-    </StackPanel>
+
+        <StackPanel 
+            ContextMenu="{StaticResource MyContextMenu}"
+            MinHeight="60"
+            Orientation="Horizontal"
+            Panel.ZIndex="100">
+
+            <views:SoftwareCell x:Name="Fu" 
+                            LabelContent="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            Thumb.DragDelta="OnDragDelta"/>
+
+            <ItemsControl VerticalAlignment="Center" HorizontalAlignment="Center" 
+                      x:Name="OutputFlow" ItemsSource="{Binding DangelingOutputs, Mode=TwoWay}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <views:DangelingConnectionView>
+
+                        </views:DangelingConnectionView>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+    </Grid>
 </UserControl>
