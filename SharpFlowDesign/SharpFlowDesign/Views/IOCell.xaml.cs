@@ -1,9 +1,5 @@
-﻿using System.Diagnostics;
-using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.Windows.Controls.Primitives;
-using System.Windows.Input;
 using SharpFlowDesign.Model;
 using SharpFlowDesign.ViewModels;
 
@@ -14,9 +10,6 @@ namespace SharpFlowDesign.Views
     /// </summary>
     public partial class IOCell
     {
-        private static bool _isDraggingMode;
-
-
         public IOCell()
         {
             InitializeComponent();
@@ -26,7 +19,7 @@ namespace SharpFlowDesign.Views
 
         private void IOCell_LayoutUpdated(object sender, System.EventArgs e)
         {
-            updateConnectionViewModels();
+            UpdateConnectionViewModels();
         }
 
         private void OnDragDelta(object sender, DragDeltaEventArgs e)
@@ -40,13 +33,13 @@ namespace SharpFlowDesign.Views
         private IOCellViewModel GetDataContext()
         {
             var cellViewModel = DataContext as IOCellViewModel;
-            return cellViewModel ?? null;
+            return cellViewModel;
         }
 
 
 
 
-        private void updateConnectionViewModels()
+        private void UpdateConnectionViewModels()
         {
             var vm = GetDataContext();
             if (vm == null)
