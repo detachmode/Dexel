@@ -18,7 +18,6 @@ namespace SharpFlowDesign.Model
         public Guid ID;
         public string ActionName { get; set; }
         public string DataNames { get; set; }
-        public bool Optional { get; set; }
         public List<SoftwareCell> Sources { get; }
         public List<SoftwareCell> Destinations { get; }
 

@@ -15,7 +15,7 @@ namespace SharpFlowDesign.ViewModels
             DataNames = "param";
         }
         public Guid ID;
-        public DataStream Model { get; set; }
+        public DataStreamDefinition Model { get; set; }
         public SoftwareCell Parent { get; set; }
         public string DataNames { get; set; }
         public string Actionname { get; set; }
@@ -23,7 +23,7 @@ namespace SharpFlowDesign.ViewModels
         Type IDragable.DataType => typeof (DangelingConnectionViewModel);
 
 
-        public void LoadFromModel(SoftwareCell parent, DataStream dataStream)
+        public void LoadFromModel(SoftwareCell parent, DataStreamDefinition dataStream)
         {
             ID = dataStream.ID;
             Model = dataStream;
@@ -36,7 +36,7 @@ namespace SharpFlowDesign.ViewModels
         public List<Type> AllowedDropTypes => new List<Type> { typeof(DangelingConnectionViewModel)};
         public void Drop(object data, int index = -1)
         {
-            data.TryCast<DangelingConnectionViewModel>(dangConnVm => Interactions.ConnectTwoDangelingConnections(dangConnVm.Model, this.Model, MainModel.Get()));
+            data.TryCast<DangelingConnectionViewModel>(dangConnVm => Interactions.ConnectTwoDangelingConnections(dangConnVm.Model, dangConnVm.Parent, this.Parent, MainModel.Get()));
         }
     }
 }

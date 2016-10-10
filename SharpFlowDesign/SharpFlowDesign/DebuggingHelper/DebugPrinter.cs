@@ -12,20 +12,20 @@ namespace SharpFlowDesign.DebuggingHelper
     {
         public static void PrintRecursive(SoftwareCell cell)
         {
-            PrintOutputs(cell);
-            var destinations = cell.OutputStreams.SelectMany(stream => stream.Destinations).ToList();
-            destinations.ForEach(PrintRecursive);
+            //PrintOutputs(cell);
+            //var destinations = cell.OutputStreams.SelectMany(stream => stream.Destinations).ToList();
+            //destinations.ForEach(PrintRecursive);
         }
 
 
         public static void PrintOutputs(SoftwareCell cell)
         {
-            Console.WriteLine(@"// Outputs of " + cell.Name + ":");
-            cell.OutputStreams.ToList().ForEach(dataStream =>
-            {
-                PrintStreamHeader(cell, dataStream);
-                PrintDestinations(dataStream);
-            });
+            //Console.WriteLine(@"// Outputs of " + cell.Name + ":");
+            //cell.OutputStreams.ToList().ForEach(dataStream =>
+            //{
+            //    PrintStreamHeader(cell, dataStream);
+            //    PrintDestinations(dataStream);
+            //});
         }
 
         public static void PrintDestinations(DataStream dataStream)

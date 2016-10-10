@@ -11,7 +11,7 @@ using SharpFlowDesign.Properties;
 namespace SharpFlowDesign.Model
 {
     [ImplementPropertyChanged]
-    public class SoftwareCell : INotifyPropertyChanged
+    public class SoftwareCell
     {
         public Guid ID;
         public string Name { get; set; }
@@ -20,16 +20,9 @@ namespace SharpFlowDesign.Model
         public Point Position { get; set; }
 
         // Inputs / Outputs
-        public  List<DataStream> InputStreams = new List<DataStream>();
-        public  List<DataStream> OutputStreams = new List<DataStream>();
+        public  List<DataStreamDefinition> InputStreams = new List<DataStreamDefinition>();
+        public  List<DataStreamDefinition> OutputStreams = new List<DataStreamDefinition>();
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 
 }
