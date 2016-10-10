@@ -1,10 +1,6 @@
-﻿using System.Diagnostics;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Interactivity;
+﻿using System.Windows.Interactivity;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using SharpFlowDesign.ViewModels;
 
 namespace SharpFlowDesign.Behavior
 {

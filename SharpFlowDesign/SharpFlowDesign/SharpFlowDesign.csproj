@@ -107,6 +107,8 @@
     </Compile>
     <Compile Include="CustomControls\Extensions.cs" />
     <Compile Include="CustomControls\Pointer.cs" />
+    <Compile Include="Model\MainModelManager.cs" />
+    <Compile Include="Model\DataStreamDefinition.cs" />
     <Compile Include="Model\DataStreamManager.cs" />
     <Compile Include="DebuggingHelper\DebugPrinter.cs" />
     <Compile Include="Interactions.cs" />

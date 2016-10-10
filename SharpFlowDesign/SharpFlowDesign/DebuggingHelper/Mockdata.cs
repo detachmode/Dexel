@@ -12,17 +12,17 @@ namespace SharpFlowDesign.DebuggingHelper
             //var romanNumbersConverter =  new SoftwareCell()#;
             //romanNumbersConverter.AddInput("RomanNumber");
             var mainModel = MainModel.Get();
-            var splitterID = Interactions.AddNewSoftwareCell("Splitt Roman Numerals", mainModel);
+            var splitterID = MainModelManager.AddNewSoftwareCell("Splitt Roman Numerals", mainModel);
             SoftwareCellsManager.GetFirst(splitterID,mainModel).Position = new Point(20,50);
            
             Interactions.AddNewInput(splitterID, "RomanNumber", mainModel, actionName:".test");
-            var convertEachID = Interactions.AddNewSoftwareCell("Convert to decimal", mainModel);
+            var convertEachID = MainModelManager.AddNewSoftwareCell("Convert to decimal", mainModel);
             SoftwareCellsManager.GetFirst(convertEachID, mainModel).Position = new Point(280, 250);
-            Interactions.Connect(splitterID, convertEachID, "Roman Numeral*", mainModel, actionName:".eachSplitted");
+            MainModelManager.Connect(splitterID, convertEachID, "Roman Numeral*", mainModel, actionName:".eachSplitted");
 
-            var negatelogicID = Interactions.AddNewSoftwareCell("Negate when larger", mainModel);
+            var negatelogicID = MainModelManager.AddNewSoftwareCell("Negate when larger", mainModel);
             SoftwareCellsManager.GetFirst(negatelogicID, mainModel).Position = new Point(540, 50);
-            Interactions.Connect(convertEachID, negatelogicID, "Decimal*", mainModel);
+            MainModelManager.Connect(convertEachID, negatelogicID, "Decimal*", mainModel);
 
             return mainModel;
 

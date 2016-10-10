@@ -1,6 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using SharpFlowDesign.ViewModels;
@@ -9,14 +7,14 @@ namespace SharpFlowDesign.Behavior
 {
     public class FrameworkElementDragBehavior : Behavior<FrameworkElement>
     {
-        private bool isMouseClicked = false;
+        private bool isMouseClicked;
 
         protected override void OnAttached()
         {
             base.OnAttached();
-            this.AssociatedObject.MouseLeftButtonDown += new MouseButtonEventHandler(AssociatedObject_MouseLeftButtonDown);
-            this.AssociatedObject.MouseLeftButtonUp += new MouseButtonEventHandler(AssociatedObject_MouseLeftButtonUp);
-            this.AssociatedObject.MouseLeave += new MouseEventHandler(AssociatedObject_MouseLeave);
+            AssociatedObject.MouseLeftButtonDown += AssociatedObject_MouseLeftButtonDown;
+            AssociatedObject.MouseLeftButtonUp += AssociatedObject_MouseLeftButtonUp;
+            AssociatedObject.MouseLeave += AssociatedObject_MouseLeave;
         }
 
         void AssociatedObject_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -35,15 +33,14 @@ namespace SharpFlowDesign.Behavior
             {
                
                 //set the item's DataContext as the data to be transferred
-                var datacontext = this.AssociatedObject.DataContext;
+                var datacontext = AssociatedObject.DataContext;
                 var dragObject = datacontext as IDragable;
                 if (dragObject != null)
                 {
-                    var dangeling = (DangelingConnectionViewModel) dragObject;
                     DataObject data = new DataObject();
-                    data.SetData(dragObject.DataType, this.AssociatedObject.DataContext);
+                    data.SetData(dragObject.DataType, AssociatedObject.DataContext);
 
-                    System.Windows.DragDrop.DoDragDrop(this.AssociatedObject, data, DragDropEffects.Move);
+                    DragDrop.DoDragDrop(AssociatedObject, data, DragDropEffects.Move);
 
                 }
             }

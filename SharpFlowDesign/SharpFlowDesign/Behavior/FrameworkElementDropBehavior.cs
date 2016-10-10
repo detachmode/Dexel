@@ -4,8 +4,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Interactivity;
-using SharpFlowDesign.Model;
-using SharpFlowDesign.ViewModels;
 
 namespace SharpFlowDesign.Behavior
 {

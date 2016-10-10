@@ -18,9 +18,7 @@
           IsHitTestVisible="True"
           Background="Transparent"
           DragOver="MainWindow_OnDragOver">
-        <i:Interaction.Behaviors>
-            <behavior:FrameworkElementDropBehavior />
-        </i:Interaction.Behaviors>
+
 
         <!--<customControls:Pointer Start="{Binding TemporaryConnection.Start.OutputPoint}" />-->
         

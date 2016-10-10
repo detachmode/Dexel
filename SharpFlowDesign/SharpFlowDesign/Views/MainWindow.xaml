@@ -5,6 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:customControls="clr-namespace:SharpFlowDesign.CustomControls"
         xmlns:views="clr-namespace:SharpFlowDesign.Views"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:behavior="clr-namespace:SharpFlowDesign.Behavior"
         mc:Ignorable="d"
         Title="Sharp Flow Design" Height="350" Width="825">
     <Window.Resources>
@@ -19,5 +21,8 @@
                                    Background="{StaticResource MyVisualBrush}">
             <views:DrawingBoard x:Name="TheDrawingBoard" />
         </customControls:ZoomBorder>
+        <i:Interaction.Behaviors>
+            <behavior:FrameworkElementDropBehavior />
+        </i:Interaction.Behaviors>
     </Grid>
 </Window>
