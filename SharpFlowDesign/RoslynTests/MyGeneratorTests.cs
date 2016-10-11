@@ -1,38 +1,34 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Roslyn;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.Editing;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SharpFlowDesign;
 using SharpFlowDesign.Model;
 
 namespace Roslyn.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class MyGeneratorTests
     {
         private readonly MyGenerator _gen = new MyGenerator();
-        [TestMethod()]
+        [TestMethod]
         public void GetReturnTypesTest()
         {
 
-            CollectionAssert.AreEqual(new string[] { "string" }, _gen.GetReturnTypes("string"));
-            CollectionAssert.AreEqual(new string[] { "string" }, _gen.GetReturnTypes("|string", pipePart:2));
-            CollectionAssert.AreEqual(new string[] { "string" }, _gen.GetReturnTypes("int|string", pipePart: 2));
-            CollectionAssert.AreEqual(new string[] { "string", "int" }, _gen.GetReturnTypes("int|string,int", pipePart: 2));
+            CollectionAssert.AreEqual(new[] { "string" }, _gen.ParseDataNames("string").Select(x=>x.Type).ToArray());
+            CollectionAssert.AreEqual(new[] { "string" }, _gen.ParseDataNames("|string", pipePart:2).Select(x => x.Type).ToArray());
+            CollectionAssert.AreEqual(new[] { "string" }, _gen.ParseDataNames("int|string", pipePart: 2).Select(x => x.Type).ToArray());
+            CollectionAssert.AreEqual(new[] { "string", "int" }, _gen.ParseDataNames("int|string,int", pipePart: 2).Select(x => x.Type).ToArray());
 
             // removes whitespace?
-            CollectionAssert.AreEqual(new string[] { "string", "int" }, _gen.GetReturnTypes("int| string , int", pipePart: 2));
+            CollectionAssert.AreEqual(new[] { "string", "int" }, _gen.ParseDataNames("int| string , int", pipePart: 2).Select(x => x.Type).ToArray());
 
             // named parameter
-            CollectionAssert.AreEqual(new string[] { "string", "int" }, _gen.GetReturnTypes("int| name:string , age:int", pipePart: 2));
+            CollectionAssert.AreEqual(new[] { "string", "int" }, _gen.ParseDataNames("int| name:string , age:int", pipePart: 2).Select(x => x.Type).ToArray());
+            CollectionAssert.AreEqual(new[] { "name", "age" }, _gen.ParseDataNames("int| name:string , age:int", pipePart: 2).Select(x => x.Name).ToArray());
+
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void MethodTest()
         {
             // string return value
@@ -61,7 +57,7 @@ namespace Roslyn.Tests
 
             var personID = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
             var person = SoftwareCellsManager.GetFirst(personID, testModel);
-            MainModelManager.Connect(alterID, personID, "int | ... string", testModel);
+            MainModelManager.Connect(alterID, personID, "int | int, string", testModel);
 
             var definition = DataStreamManager.CreateNewDefinition("Person");
             person.OutputStreams.Add(definition);
@@ -74,6 +70,20 @@ namespace Roslyn.Tests
             Assert.AreEqual("public int Random_Age()\r\n{\r\n}", alterMethod.NormalizeWhitespace().ToFullString());
 
             var personMethod = members[2];
+            Assert.AreEqual("public Person Create_Person(int param1, string param2)\r\n{\r\n}", personMethod.NormalizeWhitespace().ToFullString());
+
+            // Named Parameter
+            person.InputStreams.Clear();
+            person.InputStreams.Add(new DataStreamDefinition() {DataNames = "int | age:int, name:string"});
+            var personMethodNamedParams = _gen.Method(person);
+            Assert.AreEqual("public Person Create_Person(int age, string name)\r\n{\r\n}", 
+                personMethodNamedParams.NormalizeWhitespace().ToFullString());
+
+
+
+
+
+
 
         }
     }

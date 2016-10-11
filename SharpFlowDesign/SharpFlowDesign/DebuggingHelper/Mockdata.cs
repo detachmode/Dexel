@@ -51,5 +51,28 @@ namespace SharpFlowDesign.DebuggingHelper
             return testModel;
 
         }
+        public static MainModel MakeRandomPerson2()
+        {
+
+            var testModel = MainModel.Get();
+            var firstID = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            SoftwareCellsManager.GetFirst(firstID, testModel).Position = new Point(20, 50);
+            Interactions.AddNewInput(firstID, "", testModel);
+
+            var alterID = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
+            SoftwareCellsManager.GetFirst(alterID, testModel).Position = new Point(280, 50);
+            MainModelManager.Connect(firstID, alterID, "string | ", testModel);
+
+            var personID = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
+            SoftwareCellsManager.GetFirst(personID, testModel).Position = new Point(540, 50);
+            MainModelManager.Connect(alterID, personID, "int | age:int, name:string", testModel);
+            var person = SoftwareCellsManager.GetFirst(personID, testModel);
+            var definition = DataStreamManager.CreateNewDefinition("Person");
+            person.OutputStreams.Add(definition);
+
+
+            return testModel;
+
+        }
     }
 }
