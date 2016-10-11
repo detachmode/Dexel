@@ -93,7 +93,7 @@ namespace SharpFlowDesign.Tests
             testModel.SoftwareCells.Add(sA);
             testModel.SoftwareCells.Add(sB);
 
-            Interactions.AddNewOutput(sA.ID, "dataAB", testModel);
+            Interactions.AddNewOutput(sA, "dataAB");
             d1 = sA.OutputStreams.First();
 
             Interactions.ConnectDangelingConnectionAndSoftwareCell(d1, sA, sB, testModel);

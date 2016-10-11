@@ -12,8 +12,13 @@
     d:DataContext="{d:DesignInstance viewModels:DangelingConnectionViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d"
     >
+    <UserControl.Resources>
+        <ContextMenu x:Key="MyContextMenu">
+            <MenuItem Header="Delete Data Stream" Click="DeleteDataStreamDefinition" />
+        </ContextMenu>
+    </UserControl.Resources>
 
-    <Grid Background="{DynamicResource OuterFillPointerBrush}" Height="36">
+    <Grid Background="{DynamicResource OuterFillPointerBrush}" Height="36" ContextMenu="{StaticResource MyContextMenu}">
         <i:Interaction.Behaviors>
             <behavior:FrameworkElementDropBehavior  />
         </i:Interaction.Behaviors>

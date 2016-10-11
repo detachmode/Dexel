@@ -1,6 +1,10 @@
 using System;
+using System.Linq;
+using System.Windows;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
+using SharpFlowDesign;
+using SharpFlowDesign.Model;
 
 namespace Roslyn
 {
@@ -18,35 +22,37 @@ namespace Roslyn
             // Create using/Imports directives
             var usingDirectives = generator.NamespaceImportDeclaration("System");
 
+
+
             // Generate two private fields
-            var lastNameField = generator.FieldDeclaration("_lastName",
-                generator.TypeExpression(SpecialType.System_String),
-                Accessibility.Private);
-            var firstNameField = generator.FieldDeclaration("_firstName",
-                generator.TypeExpression(SpecialType.System_String),
-                Accessibility.Private);
+            //var lastNameField = generator.FieldDeclaration("_lastName",
+            //    generator.TypeExpression(SpecialType.System_String),
+            //    Accessibility.Private);
+            //var firstNameField = generator.FieldDeclaration("_firstName",
+            //    generator.TypeExpression(SpecialType.System_String),
+            //    Accessibility.Private);
 
 
             // Generate two properties with explicit get/set
-            var lastNameProperty = generator.PropertyDeclaration("LastName",
-                generator.TypeExpression(SpecialType.System_String), Accessibility.Public,
-                getAccessorStatements: new[]
-                {generator.ReturnStatement(generator.IdentifierName("_lastName"))},
-                setAccessorStatements: new[]
-                {
-                    generator.AssignmentStatement(generator.IdentifierName("_lastName"),
-                        generator.IdentifierName("value"))
-                });
-            var firstNameProperty = generator.PropertyDeclaration("FirstName",
-                generator.TypeExpression(SpecialType.System_String),
-                Accessibility.Public,
-                getAccessorStatements: new[]
-                {generator.ReturnStatement(generator.IdentifierName("_firstName"))},
-                setAccessorStatements: new[]
-                {
-                    generator.AssignmentStatement(generator.IdentifierName("_firstName"),
-                        generator.IdentifierName("value"))
-                });
+            //var lastNameProperty = generator.PropertyDeclaration("LastName",
+            //    generator.TypeExpression(SpecialType.System_String), Accessibility.Public,
+            //    getAccessorStatements: new[]
+            //    {generator.ReturnStatement(generator.IdentifierName("_lastName"))},
+            //    setAccessorStatements: new[]
+            //    {
+            //        generator.AssignmentStatement(generator.IdentifierName("_lastName"),
+            //            generator.IdentifierName("value"))
+            //    });
+            //var firstNameProperty = generator.PropertyDeclaration("FirstName",
+            //    generator.TypeExpression(SpecialType.System_String),
+            //    Accessibility.Public,
+            //    getAccessorStatements: new[]
+            //    {generator.ReturnStatement(generator.IdentifierName("_firstName"))},
+            //    setAccessorStatements: new[]
+            //    {
+            //        generator.AssignmentStatement(generator.IdentifierName("_firstName"),
+            //            generator.IdentifierName("value"))
+            //    });
             // Generate the method body for the Clone method
             var cloneMethodBody = generator.ReturnStatement(generator.
               InvocationExpression(generator.IdentifierName("MemberwiseClone")));
@@ -84,31 +90,67 @@ namespace Roslyn
               constructorParameters, Accessibility.Public,
               statements: constructorBody);
 
+            
+
             // An array of SyntaxNode as the class members
-            var members = new SyntaxNode[] { lastNameField,
-  firstNameField, lastNameProperty, firstNameProperty,
-  cloneMethodWithInterfaceType, constructor };
+            //          var members = new SyntaxNode[] { lastNameField,
+            //firstNameField, lastNameProperty, firstNameProperty,
+            //cloneMethodWithInterfaceType, constructor };
 
 
             // Generate the class
-            var classDefinition = generator.ClassDeclaration(
-              "Person", typeParameters: null,
-              accessibility: Accessibility.Public,
-              modifiers: DeclarationModifiers.Abstract,
-              baseType: null,
-              interfaceTypes: new SyntaxNode[] { ICloneableInterfaceType },
-              members: members);
+            //var classDefinition = generator.ClassDeclaration(
+            //  "Person", typeParameters: null,
+            //  accessibility: Accessibility.Public,
+            //  modifiers: DeclarationModifiers.Abstract,
+            //  baseType: null,
+            //  interfaceTypes: new SyntaxNode[] { ICloneableInterfaceType },
+            //  members: members);
 
             // Declare a namespace
-            var namespaceDeclaration = generator.NamespaceDeclaration("MyTypes", classDefinition);
+
+
+
+
+
+
+
+
+            //var nameField = generator.FieldDeclaration("Name",
+            //generator.TypeExpression(SpecialType.System_String),
+            //Accessibility.Public);
+
+            //var ageField = generator.FieldDeclaration("Age",
+            //  generator.TypeExpression(SpecialType.System_Int32),
+            //  Accessibility.Public);
+
+            //var personMembers = new SyntaxNode[] { nameField, ageField };
+            //var personClass = myGenerator.Class("Person", personMembers);
+
+
+            //var returtype =  generator.IdentifierName("Person");
+            //var bla = generator.MethodDeclaration("bla", null,
+            //   null, returtype,
+            //   Accessibility.Public,
+            //   DeclarationModifiers.None,
+            //   new SyntaxNode[] { });
+            //var myGenerator = new MyGenerator();
+
+            
+            //SyntaxNode[] members = testModel.SoftwareCells.Select(x => myGenerator.Method(x)).ToArray();
+
+
+            //var interactionsClass = myGenerator.Class("Interactions", members);
+            //var namespaceDeclaration = generator.NamespaceDeclaration("MyTypes", interactionsClass);
 
             // Get a CompilationUnit (code file) for the generated code
-            var newNode = generator.CompilationUnit(usingDirectives, namespaceDeclaration).
-              NormalizeWhitespace();
+            //var newNode = generator.CompilationUnit(usingDirectives, namespaceDeclaration).
+            //  NormalizeWhitespace();
 
-            var myGenerator = new MyGenerator();
-            var interactionsClass =  myGenerator.Class("Interactions", members);
-            Console.Write(interactionsClass.NormalizeWhitespace().ToFullString());
+           
+            //Console.Write(interactionsClass.NormalizeWhitespace().ToFullString());
+            //Console.Read();
+
 
 
 

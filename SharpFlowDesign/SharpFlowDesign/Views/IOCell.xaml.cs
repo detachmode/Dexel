@@ -29,7 +29,6 @@ namespace SharpFlowDesign.Views
         }
 
 
-
         private IOCellViewModel GetDataContext()
         {
             var cellViewModel = DataContext as IOCellViewModel;
@@ -47,12 +46,12 @@ namespace SharpFlowDesign.Views
                 return;
             }
 
-            var outputPoint = new Point(vm.Model.Position.X + Fu.ActualWidth,
+            var outputPoint = new Point(vm.Model.Position.X + (Fu.ActualWidth),
                 vm.Model.Position.Y + ActualHeight / 2);
 
             var inputPoint = new Point(vm.Model.Position.X,
                 vm.Model.Position.Y + ActualHeight / 2);
-        
+
             vm.UpdateConnectionsPosition(inputPoint, outputPoint);
 
         }
@@ -60,7 +59,12 @@ namespace SharpFlowDesign.Views
 
         private void NewOutput_click(object sender, RoutedEventArgs e)
         {
-            Interactions.AddNewOutput(GetDataContext().Model.ID, "params", MainModel.Get());
+            Interactions.AddNewOutput(GetDataContext().Model, "params");
+        }
+
+        private void NewInput_click(object sender, RoutedEventArgs e)
+        {
+            Interactions.AddNewInput(GetDataContext().Model, "params");
         }
     }
 }

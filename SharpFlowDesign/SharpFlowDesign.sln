@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpFlowDesignTests", "Sha
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roslyn", "Roslyn\Roslyn.csproj", "{3D0F668F-729A-4172-9E3E-0DC60503ECE8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoslynTests", "RoslynTests\RoslynTests.csproj", "{0CD23EB4-FAF4-46A6-A1CE-5ECFB3DD5FB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -37,6 +39,14 @@ Global
 		{3D0F668F-729A-4172-9E3E-0DC60503ECE8}.Debug|x64.ActiveCfg = Debug|x86
 		{3D0F668F-729A-4172-9E3E-0DC60503ECE8}.Release|Any CPU.ActiveCfg = Release|x86
 		{3D0F668F-729A-4172-9E3E-0DC60503ECE8}.Release|x64.ActiveCfg = Release|x86
+		{0CD23EB4-FAF4-46A6-A1CE-5ECFB3DD5FB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0CD23EB4-FAF4-46A6-A1CE-5ECFB3DD5FB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0CD23EB4-FAF4-46A6-A1CE-5ECFB3DD5FB9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0CD23EB4-FAF4-46A6-A1CE-5ECFB3DD5FB9}.Debug|x64.Build.0 = Debug|Any CPU
+		{0CD23EB4-FAF4-46A6-A1CE-5ECFB3DD5FB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0CD23EB4-FAF4-46A6-A1CE-5ECFB3DD5FB9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0CD23EB4-FAF4-46A6-A1CE-5ECFB3DD5FB9}.Release|x64.ActiveCfg = Release|Any CPU
+		{0CD23EB4-FAF4-46A6-A1CE-5ECFB3DD5FB9}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

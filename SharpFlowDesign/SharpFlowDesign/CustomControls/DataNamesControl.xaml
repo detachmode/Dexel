@@ -13,9 +13,7 @@
                 CaretBrush="{DynamicResource Foreground}" Background="{x:Null}"
                 Foreground="{DynamicResource Foreground}" BorderBrush="{x:Null}"
                 Text="{Binding DataNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
-            <TextBox.Effect>
-                <DropShadowEffect BlurRadius="1" ShadowDepth="2" Color="{DynamicResource DropShadowColor}"/>
-            </TextBox.Effect>
+
         </TextBox>
         <TextBlock Foreground="{DynamicResource Foreground}" FontSize="14">
                 <Run Text=")"/>

@@ -1,4 +1,7 @@
-﻿using System.Windows.Interactivity;
+﻿using System.Windows;
+using System.Windows.Interactivity;
+using SharpFlowDesign.Model;
+using SharpFlowDesign.ViewModels;
 
 namespace SharpFlowDesign.Views
 {
@@ -20,10 +23,11 @@ namespace SharpFlowDesign.Views
         }
 
 
-        //private void EnableDrag()
-        //{
-        //    Interaction.GetBehaviors(ThePath).Clear();
-        //}
+        private void DeleteDataStreamDefinition(object sender, RoutedEventArgs e)
+        {
+            var vm =  (DangelingConnectionViewModel) DataContext;
+            Interactions.DeleteDatastreamDefiniton(vm.Model, vm.Parent);
+        }
     }
 
 }

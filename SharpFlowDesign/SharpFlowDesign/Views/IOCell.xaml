@@ -12,6 +12,7 @@
 
     <UserControl.Resources>
         <ContextMenu x:Key="MyContextMenu">
+            <MenuItem Header="Add New Input" Click="NewInput_click" />
             <MenuItem Header="Add New Output" Click="NewOutput_click" />
         </ContextMenu>
     </UserControl.Resources>

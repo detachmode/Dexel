@@ -22,6 +22,8 @@ namespace SharpFlowDesign
             pos.X -= 100;
             pos.Y -= 20;
             softwareCell.Position = new Point(pos.X, pos.Y);
+            softwareCell.InputStreams.Add(DataStreamManager.CreateNewDefinition("input"));
+            softwareCell.OutputStreams.Add(DataStreamManager.CreateNewDefinition("output"));
 
             MainModel.Get().SoftwareCells.Add(softwareCell);
             ViewRedraw();
@@ -58,19 +60,19 @@ namespace SharpFlowDesign
         }
 
 
-        public static void AddNewOutput(Guid softwareCellID, string datanames, MainModel mainModel)
+        public static void AddNewOutput(SoftwareCell softwareCell, string datanames)
         {
-
-            SoftwareCellsManager.GetAll(softwareCellID, mainModel).ToList()
-                .ForEach(softwareCell =>
-                {
-                    var dataStream = DataStreamManager.CreateNewDefinition(datanames);
-                    softwareCell.OutputStreams.Add(dataStream);
-                });
-
+            var definition = DataStreamManager.CreateNewDefinition(datanames);
+            softwareCell.OutputStreams.Add(definition);
             ViewRedraw();
         }
 
+        internal static void AddNewInput(SoftwareCell softwareCell, string datanames)
+        {
+            var definition = DataStreamManager.CreateNewDefinition(datanames);
+            softwareCell.InputStreams.Add(definition);
+            ViewRedraw();
+        }
 
         public static void MoveSoftwareCell(SoftwareCell model, double horizontalChange, double verticalChange)
         {
@@ -124,6 +126,14 @@ namespace SharpFlowDesign
 
             MainModelManager.AddNewConnection(defintion, source, destination, mainModel);
 
+            ViewRedraw();
+        }
+
+
+        public static void DeleteDatastreamDefiniton(DataStreamDefinition dataStreamDefinition, SoftwareCell softwareCell)
+        {
+            softwareCell.InputStreams.RemoveAll(x => x == dataStreamDefinition);
+            softwareCell.OutputStreams.RemoveAll(x => x == dataStreamDefinition);
             ViewRedraw();
         }
     }

@@ -22,7 +22,8 @@ namespace SharpFlowDesign.ViewModels
         {
             SoftwareCells = new ObservableCollection<IOCellViewModel>();
             Connections = new ObservableCollection<ConnectionViewModel>();
-            LoadFromModel(Mockdata.RomanNumbers());
+            var model = Mockdata.MakeRandomPerson();
+            LoadFromModel(model);
             //AddToViewModelRecursive(FlowDesignManager.Root);
         }
 
