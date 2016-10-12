@@ -30,7 +30,7 @@ namespace SharpFlowDesign.DebuggingHelper
 
         public static void PrintDestinations(DataStream dataStream)
         {
-            dataStream.Destinations.ForEach(x => Console.WriteLine($"\t ->{x.Name}"));
+            dataStream.Destinations.ForEach(x => Console.WriteLine($"\t ->{x.Parent.Name}"));
         }
 
 
@@ -63,7 +63,7 @@ namespace SharpFlowDesign.DebuggingHelper
             Console.WriteLine(@"---------------------");
             mainModel.Connections.ForEach( 
                 x => 
-                Console.WriteLine(@"{0} - {1} -> {2} ", x.Sources.First().Name, x.DataNames, x.Destinations.First().Name));
+                Console.WriteLine(@"{0} - {1} -> {2} ", x.Sources.First().Parent.Name, x.DataNames, x.Destinations.First().Parent.Name));
         }
 
         public static void PrintSoftwareCells(MainModel mainModel)

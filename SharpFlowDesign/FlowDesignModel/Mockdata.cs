@@ -45,7 +45,7 @@ namespace FlowDesignModel
             SoftwareCellsManager.GetFirst(personID, testModel).Position = new Point(540, 50);
             MainModelManager.Connect(alterID, personID, "int | ... string", testModel);
             var person = SoftwareCellsManager.GetFirst(personID, testModel);
-            var definition = DataStreamManager.CreateNewDefinition("Person");
+            var definition = DataStreamManager.CreateNewDefinition(person, "Person");
             person.OutputStreams.Add(definition);
 
 
@@ -68,7 +68,7 @@ namespace FlowDesignModel
             SoftwareCellsManager.GetFirst(personID, testModel).Position = new Point(540, 50);
             MainModelManager.Connect(alterID, personID, "age:int | age:int, name:string", testModel);
             var person = SoftwareCellsManager.GetFirst(personID, testModel);
-            var definition = DataStreamManager.CreateNewDefinition("rndPerson:Person");
+            var definition = DataStreamManager.CreateNewDefinition(person, "rndPerson:Person");
             person.OutputStreams.Add(definition);
 
 

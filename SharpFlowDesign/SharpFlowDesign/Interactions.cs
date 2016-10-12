@@ -26,8 +26,8 @@ namespace SharpFlowDesign
             pos.X -= 100;
             pos.Y -= 20;
             softwareCell.Position = new Point(pos.X, pos.Y);
-            softwareCell.InputStreams.Add(DataStreamManager.CreateNewDefinition("input"));
-            softwareCell.OutputStreams.Add(DataStreamManager.CreateNewDefinition("output"));
+            softwareCell.InputStreams.Add(DataStreamManager.CreateNewDefinition(softwareCell, "input"));
+            softwareCell.OutputStreams.Add(DataStreamManager.CreateNewDefinition(softwareCell,"output"));
 
             MainModel.Get().SoftwareCells.Add(softwareCell);
             ViewRedraw();
@@ -45,7 +45,7 @@ namespace SharpFlowDesign
         {
             //MainModelManager.RemoveConnection(dataStream, mainModel);
             DeConnect(dataStream, mainModel);
-            MainModelManager.Connect(dataStream.Sources.First().ID, newdestination.ID, dataStream.DataNames, mainModel,
+            MainModelManager.Connect(dataStream.Sources.First().Parent.ID, newdestination.ID, dataStream.DataNames, mainModel,
                 dataStream.ActionName);
 
             ViewRedraw();
@@ -82,10 +82,10 @@ namespace SharpFlowDesign
 
         public static void DeConnect(DataStream dataStream, MainModel mainModel)
         {
-            dataStream.Sources.ForEach(softwareCell =>
-                DataStreamManager.DeConnect(softwareCell.OutputStreams, dataStream));
-            dataStream.Destinations.ForEach(softwareCell =>
-                DataStreamManager.DeConnect(softwareCell.InputStreams, dataStream));
+            dataStream.Sources.ForEach(streamDefinition =>
+                DataStreamManager.DeConnect(streamDefinition.Parent.OutputStreams, dataStream));
+            dataStream.Destinations.ForEach(streamDefinition =>
+                DataStreamManager.DeConnect(streamDefinition.Parent.InputStreams, dataStream));
 
             MainModelManager.RemoveConnection(dataStream, mainModel);
             ViewRedraw();
@@ -95,12 +95,6 @@ namespace SharpFlowDesign
         public static void ConnectTwoDangelingConnections(DataStreamDefinition defintion, SoftwareCell source,
             SoftwareCell destination, MainModel mainModel)
         {
-            DataStreamManager.FindExistingDefinition(defintion, source.OutputStreams,
-                def => def.Connected = true);
-
-            DataStreamManager.FindExistingDefinition(defintion, destination.InputStreams,
-                def => def.Connected = true);
-
 
             MainModelManager.AddNewConnection(defintion, source, destination, mainModel);
 
@@ -111,15 +105,15 @@ namespace SharpFlowDesign
         public static void ConnectDangelingConnectionAndSoftwareCell(DataStreamDefinition defintion, SoftwareCell source,
             SoftwareCell destination, MainModel mainModel)
         {
-            DataStreamManager.FindExistingDefinition(defintion, source.OutputStreams,
-                def => def.Connected = true,
-                () => source.OutputStreams.Add(DataStreamManager.CreateNewDefinition(defintion, connected: true))
-                );
+            //DataStreamManager.FindExistingDefinition(defintion, source.OutputStreams,
+            //    def => def.Connected = true,
+            //    () => source.OutputStreams.Add(DataStreamManager.CreateNewDefinition(source, defintion, connected: true))
+            //    );
 
-            DataStreamManager.FindExistingDefinition(defintion, destination.InputStreams,
-                def => def.Connected = true,
-                () => destination.InputStreams.Add(DataStreamManager.CreateNewDefinition(defintion, connected: true))
-                );
+            //DataStreamManager.FindExistingDefinition(defintion, destination.InputStreams,
+            //    def => def.Connected = true,
+            //    () => destination.InputStreams.Add(DataStreamManager.CreateNewDefinition(destination, defintion, connected: true))
+            //    );
 
             MainModelManager.AddNewConnection(defintion, source, destination, mainModel);
 

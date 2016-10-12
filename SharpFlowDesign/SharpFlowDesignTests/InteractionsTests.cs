@@ -25,8 +25,8 @@ namespace SharpFlowDesign.Tests
             Interactions.ConnectTwoDangelingConnections(d1, sA, sB, testModel);
 
             Assert.IsTrue(testModel.Connections.First().DataNames == "dataAB");
-            Assert.IsTrue(testModel.Connections.First().Sources.First() == sA);
-            Assert.IsTrue(testModel.Connections.First().Destinations.First() == sB);
+            Assert.IsTrue(testModel.Connections.First().Sources.First().Parent == sA);
+            Assert.IsTrue(testModel.Connections.First().Destinations.First().Parent== sB);
 
             Assert.IsTrue(sA.OutputStreams.First().Connected);
             Assert.IsTrue(sB.InputStreams.First().Connected);
@@ -75,8 +75,8 @@ namespace SharpFlowDesign.Tests
             Interactions.ConnectDangelingConnectionAndSoftwareCell(d1, sA, sB, testModel);
 
             Assert.IsTrue(testModel.Connections.First().DataNames == "dataAB");
-            Assert.IsTrue(testModel.Connections.First().Sources.First() == sA);
-            Assert.IsTrue(testModel.Connections.First().Destinations.First() == sB);
+            Assert.IsTrue(testModel.Connections.First().Sources.First().Parent== sA);
+            Assert.IsTrue(testModel.Connections.First().Destinations.First().Parent == sB);
 
             Assert.IsTrue(sA.OutputStreams.First().Connected);
             Assert.IsTrue(sA.OutputStreams.Count == 1);
@@ -98,8 +98,8 @@ namespace SharpFlowDesign.Tests
             Interactions.ConnectDangelingConnectionAndSoftwareCell(d1, sA, sB, testModel);
 
             Assert.IsTrue(testModel.Connections.First().DataNames == "dataAB");
-            Assert.IsTrue(testModel.Connections.First().Sources.First() == sA);
-            Assert.IsTrue(testModel.Connections.First().Destinations.First() == sB);
+            Assert.IsTrue(testModel.Connections.First().Sources.First().Parent == sA);
+            Assert.IsTrue(testModel.Connections.First().Destinations.First().Parent == sB);
 
             Assert.IsTrue(sA.OutputStreams.First().Connected);
             Assert.IsTrue(sA.OutputStreams.Count == 1);
@@ -134,8 +134,8 @@ namespace SharpFlowDesign.Tests
             Assert.IsTrue(sC.InputStreams.First().Connected);
 
             Assert.IsTrue(testModel.Connections.Count == 1);
-            Assert.IsTrue(testModel.Connections.First().Sources.First() == sA);
-            Assert.IsTrue(testModel.Connections.First().Destinations.First() == sC);
+            Assert.IsTrue(testModel.Connections.First().Sources.First().Parent == sA);
+            Assert.IsTrue(testModel.Connections.First().Destinations.First().Parent == sC);
 
         }
     }

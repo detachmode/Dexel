@@ -32,6 +32,14 @@ namespace FlowDesignModel
                 Name = name
             };
         }
+
+        public static void RemoveDefinitionsFromSourceAndDestination(DataStreamDefinition defintion, SoftwareCell source, SoftwareCell destination)
+        {
+            source.OutputStreams.RemoveAll(x => x.DataNames == defintion.DataNames && x.ActionName == defintion.ActionName);
+            destination.InputStreams.RemoveAll(x => x.DataNames == defintion.DataNames && x.ActionName == defintion.ActionName);
+        }
+        
+
     }
 
 }

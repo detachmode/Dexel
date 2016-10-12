@@ -83,8 +83,8 @@ namespace SharpFlowDesign.ViewModels
         #region Update Connection Position
         public void UpdateConnectionsPosition(Point inputPoint, Point outputPoint, IOCellViewModel ioCellViewModel)
         {
-            var allOutputs = Connections.Where(conn => conn.Model.Sources.Contains(ioCellViewModel.Model));
-            var allInputs = Connections.Where(conn => conn.Model.Destinations.Contains(ioCellViewModel.Model));
+            var allOutputs = Connections.Where(conn => conn.Model.Sources.Any(x => x.Parent == ioCellViewModel.Model));
+            var allInputs = Connections.Where(conn => conn.Model.Destinations.Any(x => x.Parent == ioCellViewModel.Model));
 
             allInputs.ToList().ForEach(x => x.End = inputPoint);
             allOutputs.ToList().ForEach(x => x.Start = outputPoint);

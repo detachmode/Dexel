@@ -86,21 +86,31 @@ namespace Roslyn
             return noParams.Select(x => LocalMethodCall(generator, x.OfSoftwareCell, null, generated)).ToList();
         }
 
+        private int methodsToGenerateCount = 0;
+
         private List<SyntaxNode> CreateAllDependenciesAvailable(SyntaxGenerator generator,
-            List<MethodWithParameterDependencies> methods, List<GeneratedLocalVariable> generated,
+            List<MethodWithParameterDependencies> methodsToGenerate, List<GeneratedLocalVariable> generated,
             IEnumerable<SyntaxNode> result)
         {
-            if (!methods.Any())
+            if (!methodsToGenerate.Any() || methodsToGenerate.Count == methodsToGenerateCount)
                 return result.ToList();
 
-            var nodes = methods.Where(
+            // to detect if no more methods can be generated 
+            methodsToGenerateCount = methodsToGenerate.Count;
+
+            var nodes = methodsToGenerate.Where(
                 methodWithParameterDependencies => CanBeGenerated(generated, methodWithParameterDependencies))
                 .Select(
                     methodWithParameterDependencies =>
                         GenerateLocalMethodCall(generator, generated, methodWithParameterDependencies)).ToList();
             var newresult = result.ToList();
             newresult.AddRange(nodes);
-            return newresult;
+
+            methodsToGenerate.RemoveAll(x => generated.Any(y => y.Source == x.OfSoftwareCell));
+            
+            
+            return CreateAllDependenciesAvailable(generator, methodsToGenerate, generated, newresult);
+
         }
 
         private static bool CanBeGenerated(List<GeneratedLocalVariable> generated,
@@ -173,25 +183,27 @@ namespace Roslyn
                 return new Parameter
                 {
                     FoundFlag = true,
-                    Source = dataStream.Sources.First()
+                    Source = dataStream.Sources.First().Parent
                 };
             }
 
-            return FindOneParameter(lookingForNameType, connections, dataStream.Sources.First());
+            return FindOneParameter(lookingForNameType, connections, dataStream.Sources.First().Parent);
         }
 
         private DataStream GetInputConnection(List<DataStream> connections, SoftwareCell ofSoftwareCell)
         {
-            var found = connections.Where(c => c.Destinations.Contains(ofSoftwareCell)).ToList();
+            var found = connections.Where(c => c.Destinations.Any(x => x.Parent == ofSoftwareCell)).ToList();
             return found.Any() ? found.First() : null;
         }
 
 
-        private SyntaxNode LocalMethodCall(SyntaxGenerator generator, SoftwareCell softwareCell, SyntaxNode[] parameter,
+        public SyntaxNode LocalMethodCall(SyntaxGenerator generator, SoftwareCell softwareCell, SyntaxNode[] parameter,
             List<GeneratedLocalVariable> generated)
         {
             var firstouttype = DataStreamParser.ParseDataNames(softwareCell.OutputStreams.First().DataNames).First();
 
+
+            
             var localType = DataTypeParser.ConvertToTypeExpression(generator, firstouttype.Type);
             var localName = firstouttype.Name ?? "a" + firstouttype.Type;
 
@@ -202,9 +214,15 @@ namespace Roslyn
                 Source = softwareCell
             });
 
-            return Generator.LocalDeclarationStatement(localType, localName,
+            var invocationExpression =
                 Generator.InvocationExpression(Generator.IdentifierName(Operations.GetMethodName(softwareCell)),
-                    parameter ?? new SyntaxNode[] {}));
+                    parameter ?? new SyntaxNode[] {});
+
+            if(firstouttype.Type == "")
+                return invocationExpression;
+
+            return Generator.LocalDeclarationStatement(localType, localName,invocationExpression
+                );
         }
     }
 

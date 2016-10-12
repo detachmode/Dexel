@@ -61,7 +61,7 @@ namespace Roslyn.Tests
             var person = SoftwareCellsManager.GetFirst(personID, testModel);
             MainModelManager.Connect(alterID, personID, "int | int, string", testModel);
 
-            var definition = DataStreamManager.CreateNewDefinition("Person");
+            var definition = DataStreamManager.CreateNewDefinition(person, "Person");
             person.OutputStreams.Add(definition);
 
             SyntaxNode[] members = testModel.SoftwareCells.Select(x => Operations.GenerateOperationMethod(_gen.Generator, x)).ToArray();
@@ -158,9 +158,23 @@ namespace Roslyn.Tests
             var personID = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
             var person = SoftwareCellsManager.GetFirst(personID, testModel);
             MainModelManager.Connect(alterID, personID, "int | int, string", testModel);
-            MainModelManager.AddNewOutput(person ,"Person");
+            MainModelManager.AddNewOutput(person, "Person");
 
-            var nodes =_gen.CreateIntegrationBody(_gen.Generator, testModel.Connections, testModel.SoftwareCells);
+            var nodes = _gen.CreateIntegrationBody(_gen.Generator, testModel.Connections, testModel.SoftwareCells);
+        }
+
+        [TestMethod()]
+        public void LocalMethodCallTest()
+        {
+            // void method call -> no local variable needed
+            var testModel = new MainModel();
+            var fooID = MainModelManager.AddNewSoftwareCell("foo", testModel);
+            var foo = SoftwareCellsManager.GetFirst(fooID, testModel);
+            MainModelManager.AddNewInput(foo, "");
+            MainModelManager.AddNewOutput(foo, "");
+           var nodes = _gen.LocalMethodCall(_gen.Generator, foo, null, new List<GeneratedLocalVariable>());
+           var fullstring =nodes.NormalizeWhitespace().ToFullString();
+            Assert.AreEqual("foo()", fullstring);
         }
     }
 }

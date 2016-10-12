@@ -13,7 +13,7 @@ namespace FlowDesignModel
 
         public static void AddNewOutput(SoftwareCell softwareCell, string datanames)
         {
-            var definition = DataStreamManager.CreateNewDefinition(datanames);
+            var definition = DataStreamManager.CreateNewDefinition(softwareCell, datanames);
             softwareCell.OutputStreams.Add(definition);
 
         }
@@ -24,7 +24,7 @@ namespace FlowDesignModel
             SoftwareCellsManager.GetAll(softwareCellID, mainModel).ToList()
                 .ForEach(softwareCell =>
                 {
-                    var dataStream = DataStreamManager.CreateNewDefinition(datanames, actionName);
+                    var dataStream = DataStreamManager.CreateNewDefinition(softwareCell, datanames, actionName);
                     softwareCell.InputStreams.Add(dataStream);
                 });
         }
@@ -32,7 +32,7 @@ namespace FlowDesignModel
 
         public static void AddNewInput(SoftwareCell softwareCell, string datanames)
         {
-            var definition = DataStreamManager.CreateNewDefinition(datanames);
+            var definition = DataStreamManager.CreateNewDefinition(softwareCell, datanames);
             softwareCell.InputStreams.Add(definition);
 
         }
@@ -40,7 +40,7 @@ namespace FlowDesignModel
 
         public static void RemoveConnection(Guid id, MainModel mainModel)
         {
-            var datastream =  DataStreamManager.GetFirst(id, mainModel);
+            var datastream = DataStreamManager.GetFirst(id, mainModel);
             MainModelManager.RemoveConnection(datastream, mainModel);
 
 
@@ -55,27 +55,28 @@ namespace FlowDesignModel
         }
 
 
-        public static Guid AddNewConnection(SoftwareCell source, SoftwareCell destination, 
+        public static Guid AddNewConnection(SoftwareCell source, SoftwareCell destination,
             string datanames, string actionname, MainModel mainModel)
         {
-            var def = DataStreamManager.CreateNewDefinition(datanames, actionname);
-            def.Connected = true;
-            source.OutputStreams.Add(def);
+            var sourceDef = DataStreamManager.CreateNewDefinition(source, datanames, actionname);
+            sourceDef.Connected = true;
+            source.OutputStreams.Add(sourceDef);
 
-            def = DataStreamManager.CreateNewDefinition(datanames, actionname);
-            def.Connected = true;
-            destination.InputStreams.Add(def);
+            var destinationDef = DataStreamManager.CreateNewDefinition(destination, datanames, actionname);
+            destinationDef.Connected = true;
+            destination.InputStreams.Add(destinationDef);
 
             var dataStream = DataStreamManager.CreateNew(datanames, actionname);
-            dataStream.Destinations.Add(destination);
-            dataStream.Sources.Add(source);
+            dataStream.Destinations.Add(destinationDef);
+            dataStream.Sources.Add(sourceDef);
 
             mainModel.Connections.Add(dataStream);
             return dataStream.ID;
         }
 
 
-        public static void Connect(Guid sourceID, Guid destinationID, DataStreamDefinition defintion, MainModel mainModel)
+        public static void Connect(Guid sourceID, Guid destinationID, DataStreamDefinition defintion,
+            MainModel mainModel)
         {
             Connect(sourceID, destinationID, defintion.DataNames, mainModel, actionName: defintion.ActionName);
         }
@@ -95,12 +96,24 @@ namespace FlowDesignModel
         }
 
 
-        public static void AddNewConnection(DataStreamDefinition defintion, SoftwareCell source, SoftwareCell destination,
-            MainModel mainModel)
+        public static void AddNewConnection(DataStreamDefinition defintion, SoftwareCell source,
+            SoftwareCell destination, MainModel mainModel)
         {
+            SoftwareCellsManager.RemoveDefinitionsFromSourceAndDestination(defintion, source, destination);
             var dataStream = DataStreamManager.CreateNew(defintion.DataNames, defintion.ActionName);
-            dataStream.Destinations.Add(destination);
-            dataStream.Sources.Add(source);
+
+            var outputDefinition = DataStreamManager.CreateNewDefinition(source, defintion);
+            outputDefinition.Connected = true;
+            source.OutputStreams.Add(outputDefinition);
+            dataStream.Sources.Add(outputDefinition);
+
+            var inputDefinition = DataStreamManager.CreateNewDefinition(destination, defintion);
+            inputDefinition.Connected = true;
+            destination.InputStreams.Add(inputDefinition);
+            dataStream.Destinations.Add(inputDefinition);
+
+
+
             mainModel.Connections.Add(dataStream);
         }
     }

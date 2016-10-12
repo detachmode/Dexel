@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using PropertyChanged;
 
@@ -11,14 +12,27 @@ namespace FlowDesignModel
     {
         public DataStream()
         {
-            Sources = new List<SoftwareCell>();
-            Destinations = new List<SoftwareCell>();
+            Sources = new List<DataStreamDefinition>();
+            Destinations = new List<DataStreamDefinition>();
+            PropertyChanged += OnPropertyChanged;
         }
+
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs args)
+        {
+            args.WhenProperty("DataNames", UpdateDataStreamDefinitions);
+        }
+
+        private void UpdateDataStreamDefinitions()
+        {
+           Sources.ForEach( x => x.DataNames = this.DataNames);
+           Destinations.ForEach(x => x.DataNames = this.DataNames);
+        }
+
         public Guid ID;
         public string ActionName { get; set; }
         public string DataNames { get; set; }
-        public List<SoftwareCell> Sources { get; }
-        public List<SoftwareCell> Destinations { get; }
+        public List<DataStreamDefinition> Sources { get; }
+        public List<DataStreamDefinition> Destinations { get; }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

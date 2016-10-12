@@ -16,11 +16,12 @@ namespace FlowDesignModel
             return dataStream;
         }
 
-        public static DataStreamDefinition CreateNewDefinition(string datanames, string actionsName = "", bool connected = false)
+        public static DataStreamDefinition CreateNewDefinition(SoftwareCell parent, string datanames, string actionsName = "", bool connected = false)
         {
             var dataStream = new DataStreamDefinition();
             dataStream.ID = Guid.NewGuid();
             dataStream.DataNames = datanames;
+            dataStream.Parent = parent;
             dataStream.ActionName = actionsName;
             dataStream.Connected = connected;
             return dataStream;
@@ -37,9 +38,9 @@ namespace FlowDesignModel
            return CreateNew(datastreamDefintion.DataNames, datastreamDefintion.ActionName);
         }
 
-        public static DataStreamDefinition CreateNewDefinition(DataStreamDefinition defintion, bool connected = false)
+        public static DataStreamDefinition CreateNewDefinition(SoftwareCell parent, DataStreamDefinition defintion, bool connected = false)
         {
-            return CreateNewDefinition(defintion.DataNames, defintion.ActionName, connected: connected);
+            return CreateNewDefinition(parent, defintion.DataNames, defintion.ActionName, connected: connected);
         }
 
 
@@ -55,15 +56,20 @@ namespace FlowDesignModel
         }
 
 
-        public static void FindExistingDefinition(DataStreamDefinition defintion, IEnumerable<DataStreamDefinition> definitions, Action<DataStreamDefinition> onFound, Action onNotFound = null   )
+        public static DataStreamDefinition FindExistingDefinition(DataStreamDefinition defintion, IEnumerable<DataStreamDefinition> definitions, Action<DataStreamDefinition> onFound, Action onNotFound = null   )
         {
             var found = definitions.Where(x => x.IsEquals(defintion));
             if (found.Any())
+            {
                 onFound(found.First());
+                return found.First();
+            }
             else
             {
                 onNotFound?.Invoke();
             }
+            return null;
+
         }
 
         public static bool IsEquals(this DataStreamDefinition def1, DataStream dataStream)

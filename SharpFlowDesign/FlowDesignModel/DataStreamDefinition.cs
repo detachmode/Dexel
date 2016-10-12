@@ -10,6 +10,6 @@ namespace FlowDesignModel
         public bool Connected { get; set; }
         public string ActionName { get; set; }
         public string DataNames { get; set; }
-
+        public SoftwareCell Parent { get; set; }
     }
 }
