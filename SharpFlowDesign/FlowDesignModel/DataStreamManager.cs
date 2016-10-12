@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SharpFlowDesign.Model
+namespace FlowDesignModel
 {
 
     public static class DataStreamManager
@@ -37,7 +37,7 @@ namespace SharpFlowDesign.Model
            return CreateNew(datastreamDefintion.DataNames, datastreamDefintion.ActionName);
         }
 
-        internal static DataStreamDefinition CreateNewDefinition(DataStreamDefinition defintion, bool connected = false)
+        public static DataStreamDefinition CreateNewDefinition(DataStreamDefinition defintion, bool connected = false)
         {
             return CreateNewDefinition(defintion.DataNames, defintion.ActionName, connected: connected);
         }

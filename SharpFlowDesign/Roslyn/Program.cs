@@ -2,11 +2,9 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using FlowDesignModel;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
-using SharpFlowDesign;
-using SharpFlowDesign.DebuggingHelper;
-using SharpFlowDesign.Model;
 
 namespace Roslyn
 {

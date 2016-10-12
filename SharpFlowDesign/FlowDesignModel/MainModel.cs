@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SharpFlowDesign.Model
+namespace FlowDesignModel
 {
     public class MainModel
     {
@@ -11,7 +11,7 @@ namespace SharpFlowDesign.Model
             return self ?? (self = new MainModel());
         }
 
-        public List<Model.DataStream> Connections = new List<DataStream>();
-        public List<Model.SoftwareCell> SoftwareCells = new List<SoftwareCell>();
+        public List<DataStream> Connections = new List<DataStream>();
+        public List<SoftwareCell> SoftwareCells = new List<SoftwareCell>();
     }
 }

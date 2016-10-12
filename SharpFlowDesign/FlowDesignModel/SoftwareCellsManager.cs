@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace SharpFlowDesign.Model
+namespace FlowDesignModel
 {
 
     public static class SoftwareCellsManager

@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Interactivity;
-using SharpFlowDesign.Model;
 using SharpFlowDesign.ViewModels;
 
 namespace SharpFlowDesign.Views

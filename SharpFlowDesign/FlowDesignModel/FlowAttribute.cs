@@ -1,4 +1,4 @@
-﻿namespace SharpFlowDesign.Model
+﻿namespace FlowDesignModel
 {
 
     public enum FlowAttributeType

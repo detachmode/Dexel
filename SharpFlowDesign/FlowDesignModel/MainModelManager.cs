@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 
-namespace SharpFlowDesign.Model
+namespace FlowDesignModel
 {
 
     public static class MainModelManager
@@ -9,6 +9,32 @@ namespace SharpFlowDesign.Model
         public static void RemoveConnection(DataStream dataStream, MainModel mainModel)
         {
             mainModel.Connections.RemoveAll(x => x.ID.Equals(dataStream.ID));
+        }
+
+        public static void AddNewOutput(SoftwareCell softwareCell, string datanames)
+        {
+            var definition = DataStreamManager.CreateNewDefinition(datanames);
+            softwareCell.OutputStreams.Add(definition);
+
+        }
+
+        public static void AddNewInput(Guid softwareCellID, string datanames, MainModel mainModel,
+            string actionName = "")
+        {
+            SoftwareCellsManager.GetAll(softwareCellID, mainModel).ToList()
+                .ForEach(softwareCell =>
+                {
+                    var dataStream = DataStreamManager.CreateNewDefinition(datanames, actionName);
+                    softwareCell.InputStreams.Add(dataStream);
+                });
+        }
+
+
+        public static void AddNewInput(SoftwareCell softwareCell, string datanames)
+        {
+            var definition = DataStreamManager.CreateNewDefinition(datanames);
+            softwareCell.InputStreams.Add(definition);
+
         }
 
 

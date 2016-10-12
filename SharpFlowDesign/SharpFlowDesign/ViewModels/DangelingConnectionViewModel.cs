@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using FlowDesignModel;
 using PropertyChanged;
 using SharpFlowDesign.Behavior;
 using SharpFlowDesign.CustomControls;
-using SharpFlowDesign.Model;
 
 namespace SharpFlowDesign.ViewModels
 {

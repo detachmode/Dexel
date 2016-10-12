@@ -1,7 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 using System.Windows;
 using SharpFlowDesign.DebuggingHelper;
-using SharpFlowDesign.Model;
 
 namespace SharpFlowDesign
 {

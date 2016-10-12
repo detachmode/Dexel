@@ -3,9 +3,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using FlowDesignModel;
 using PropertyChanged;
 using SharpFlowDesign.Behavior;
-using SharpFlowDesign.Model;
 
 namespace SharpFlowDesign.ViewModels
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Windows;
-using SharpFlowDesign.Model;
+using FlowDesignModel;
 using SharpFlowDesign.ViewModels;
 
 namespace SharpFlowDesign
@@ -51,26 +51,26 @@ namespace SharpFlowDesign
         public static void AddNewInput(Guid softwareCellID, string datanames, MainModel mainModel,
             string actionName = "")
         {
-            SoftwareCellsManager.GetAll(softwareCellID, mainModel).ToList()
-                .ForEach(softwareCell =>
-                {
-                    var dataStream = DataStreamManager.CreateNewDefinition(datanames, actionName);
-                    softwareCell.InputStreams.Add(dataStream);
-                });
+            //SoftwareCellsManager.GetAll(softwareCellID, mainModel).ToList()
+            //    .ForEach(softwareCell =>
+            //    {
+            //        var dataStream = DataStreamManager.CreateNewDefinition(datanames, actionName);
+            //        softwareCell.InputStreams.Add(dataStream);
+            //    });
         }
 
 
         public static void AddNewOutput(SoftwareCell softwareCell, string datanames)
         {
-            var definition = DataStreamManager.CreateNewDefinition(datanames);
-            softwareCell.OutputStreams.Add(definition);
+            //var definition = DataStreamManager.CreateNewDefinition(datanames);
+            //softwareCell.OutputStreams.Add(definition);
             ViewRedraw();
         }
 
         internal static void AddNewInput(SoftwareCell softwareCell, string datanames)
         {
-            var definition = DataStreamManager.CreateNewDefinition(datanames);
-            softwareCell.InputStreams.Add(definition);
+            //var definition = DataStreamManager.CreateNewDefinition(datanames);
+            //softwareCell.InputStreams.Add(definition);
             ViewRedraw();
         }
 
@@ -135,6 +135,12 @@ namespace SharpFlowDesign
             softwareCell.InputStreams.RemoveAll(x => x == dataStreamDefinition);
             softwareCell.OutputStreams.RemoveAll(x => x == dataStreamDefinition);
             ViewRedraw();
+        }
+
+        public static void ConsolePrintGeneratedCode(MainModel mainModel)
+        {
+            //MyGenerator gen = new MyGenerator();
+
         }
     }
 

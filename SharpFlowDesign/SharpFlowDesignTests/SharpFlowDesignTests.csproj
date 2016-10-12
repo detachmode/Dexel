@@ -74,6 +74,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FlowDesignModel\FlowDesignModel.csproj">
+      <Project>{C8694B16-924D-492F-8400-577D0DDE19FF}</Project>
+      <Name>FlowDesignModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\SharpFlowDesign\SharpFlowDesign.csproj">
       <Project>{3AE4EC04-B126-4F59-AD4B-FDD80AC50136}</Project>
       <Name>SharpFlowDesign</Name>

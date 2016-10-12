@@ -1,7 +1,6 @@
 ﻿using System.Windows;
-using SharpFlowDesign.Model;
 
-namespace SharpFlowDesign.DebuggingHelper
+namespace FlowDesignModel
 {
     public static class Mockdata
     {
@@ -15,7 +14,7 @@ namespace SharpFlowDesign.DebuggingHelper
             var splitterID = MainModelManager.AddNewSoftwareCell("Splitt Roman Numerals", mainModel);
             SoftwareCellsManager.GetFirst(splitterID,mainModel).Position = new Point(20,50);
            
-            Interactions.AddNewInput(splitterID, "RomanNumber", mainModel, actionName:".test");
+            MainModelManager.AddNewInput(splitterID, "RomanNumber", mainModel, actionName:".test");
             var convertEachID = MainModelManager.AddNewSoftwareCell("Convert to decimal", mainModel);
             SoftwareCellsManager.GetFirst(convertEachID, mainModel).Position = new Point(280, 250);
             MainModelManager.Connect(splitterID, convertEachID, "Roman Numeral*", mainModel, actionName:".eachSplitted");
@@ -36,7 +35,7 @@ namespace SharpFlowDesign.DebuggingHelper
             var testModel = MainModel.Get();
             var firstID = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
             SoftwareCellsManager.GetFirst(firstID, testModel).Position = new Point(20, 50);
-            Interactions.AddNewInput(firstID, "", testModel);
+            MainModelManager.AddNewInput(firstID, "", testModel);
 
             var alterID = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
             SoftwareCellsManager.GetFirst(alterID, testModel).Position = new Point(280, 50);
@@ -59,7 +58,7 @@ namespace SharpFlowDesign.DebuggingHelper
             var testModel = MainModel.Get();
             var firstID = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
             SoftwareCellsManager.GetFirst(firstID, testModel).Position = new Point(20, 50);
-            Interactions.AddNewInput(firstID, "", testModel);
+            MainModelManager.AddNewInput(firstID, "", testModel);
 
             var alterID = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
             SoftwareCellsManager.GetFirst(alterID, testModel).Position = new Point(280, 50);

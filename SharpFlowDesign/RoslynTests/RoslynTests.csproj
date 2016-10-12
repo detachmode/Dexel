@@ -88,13 +88,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FlowDesignModel\FlowDesignModel.csproj">
+      <Project>{c8694b16-924d-492f-8400-577d0dde19ff}</Project>
+      <Name>FlowDesignModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Roslyn\Roslyn.csproj">
       <Project>{3D0F668F-729A-4172-9E3E-0DC60503ECE8}</Project>
       <Name>Roslyn</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SharpFlowDesign\SharpFlowDesign.csproj">
-      <Project>{3AE4EC04-B126-4F59-AD4B-FDD80AC50136}</Project>
-      <Name>SharpFlowDesign</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using Roslyn;
 using System.Linq;
+using FlowDesignModel;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Roslyn.Common;
-using SharpFlowDesign;
-using SharpFlowDesign.Model;
 
 namespace Roslyn.Tests
 {
@@ -36,14 +35,14 @@ namespace Roslyn.Tests
         {
             // string return value
             var node = SoftwareCellsManager.CreateNew("Random Name");
-            Interactions.AddNewOutput(node, "string");
+            MainModelManager.AddNewOutput(node, "string");
 
             var methode = Operations.GenerateOperationMethod(_gen.Generator, node);
             Assert.AreEqual("public string Random_Name()\r\n{\r\n}", methode.NormalizeWhitespace().ToFullString());
 
             // Empty output => return void
             node = SoftwareCellsManager.CreateNew("Random Name");
-            Interactions.AddNewOutput(node, "");
+            MainModelManager.AddNewOutput(node, "");
 
             methode = Operations.GenerateOperationMethod(_gen.Generator, node);
             Assert.AreEqual("public void Random_Name()\r\n{\r\n}", methode.NormalizeWhitespace().ToFullString());
@@ -52,7 +51,7 @@ namespace Roslyn.Tests
             var testModel = new MainModel();
             var newNameID = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
             var newName = SoftwareCellsManager.GetFirst(newNameID, testModel);
-            Interactions.AddNewInput(newNameID, "", testModel);
+            MainModelManager.AddNewInput(newNameID, "", testModel);
 
             var alterID = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
             var alter = SoftwareCellsManager.GetFirst(alterID, testModel);
@@ -97,7 +96,7 @@ namespace Roslyn.Tests
             var testModel = new MainModel();
             var newNameID = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
             var newName = SoftwareCellsManager.GetFirst(newNameID, testModel);
-            Interactions.AddNewInput(newNameID, "", testModel);
+            MainModelManager.AddNewInput(newNameID, "", testModel);
 
             var alterID = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
             var alter = SoftwareCellsManager.GetFirst(alterID, testModel);
@@ -124,7 +123,7 @@ namespace Roslyn.Tests
             var testModel = new MainModel();
             var newNameID = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
             var newName = SoftwareCellsManager.GetFirst(newNameID, testModel);
-            Interactions.AddNewInput(newNameID, "", testModel);
+            MainModelManager.AddNewInput(newNameID, "", testModel);
 
             var alterID = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
             var alter = SoftwareCellsManager.GetFirst(alterID, testModel);
@@ -150,7 +149,7 @@ namespace Roslyn.Tests
             var testModel = new MainModel();
             var newNameID = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
             var newName = SoftwareCellsManager.GetFirst(newNameID, testModel);
-            Interactions.AddNewInput(newNameID, "", testModel);
+            MainModelManager.AddNewInput(newNameID, "", testModel);
 
             var alterID = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
             var alter = SoftwareCellsManager.GetFirst(alterID, testModel);
@@ -159,7 +158,7 @@ namespace Roslyn.Tests
             var personID = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
             var person = SoftwareCellsManager.GetFirst(personID, testModel);
             MainModelManager.Connect(alterID, personID, "int | int, string", testModel);
-            Interactions.AddNewOutput(person ,"Person");
+            MainModelManager.AddNewOutput(person ,"Person");
 
             var nodes =_gen.CreateIntegrationBody(_gen.Generator, testModel.Connections, testModel.SoftwareCells);
         }

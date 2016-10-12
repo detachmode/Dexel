@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using PropertyChanged;
-using SharpFlowDesign.Properties;
 
-namespace SharpFlowDesign.Model
+namespace FlowDesignModel
 {
     [ImplementPropertyChanged]
     public class DataStream : INotifyPropertyChanged
@@ -23,7 +22,8 @@ namespace SharpFlowDesign.Model
 
 
         public event PropertyChangedEventHandler PropertyChanged;
-        [NotifyPropertyChangedInvocator]
+
+
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

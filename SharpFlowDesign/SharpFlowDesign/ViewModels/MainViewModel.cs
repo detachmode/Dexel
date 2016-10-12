@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using FlowDesignModel;
 using PropertyChanged;
 using SharpFlowDesign.Behavior;
 using SharpFlowDesign.CustomControls;
-using SharpFlowDesign.DebuggingHelper;
-using SharpFlowDesign.Model;
+using Mockdata = FlowDesignModel.Mockdata;
 
 namespace SharpFlowDesign.ViewModels
 {

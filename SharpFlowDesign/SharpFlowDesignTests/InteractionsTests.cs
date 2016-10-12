@@ -1,8 +1,7 @@
 ﻿using System.Linq;
+using FlowDesignModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SharpFlowDesign;
-using SharpFlowDesign.DebuggingHelper;
-using SharpFlowDesign.Model;
+
 
 namespace SharpFlowDesign.Tests
 {
@@ -93,7 +92,7 @@ namespace SharpFlowDesign.Tests
             testModel.SoftwareCells.Add(sA);
             testModel.SoftwareCells.Add(sB);
 
-            Interactions.AddNewOutput(sA, "dataAB");
+            MainModelManager.AddNewOutput(sA, "dataAB");
             d1 = sA.OutputStreams.First();
 
             Interactions.ConnectDangelingConnectionAndSoftwareCell(d1, sA, sB, testModel);

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpFlowDesign", "SharpFlowDesign\SharpFlowDesign.csproj", "{3AE4EC04-B126-4F59-AD4B-FDD80AC50136}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roslyn", "Roslyn\Roslyn.csproj", "{3D0F668F-729A-4172-9E3E-0DC60503ECE8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoslynTests", "RoslynTests\RoslynTests.csproj", "{0CD23EB4-FAF4-46A6-A1CE-5ECFB3DD5FB9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlowDesignModel", "FlowDesignModel\FlowDesignModel.csproj", "{C8694B16-924D-492F-8400-577D0DDE19FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,14 @@ Global
 		{0CD23EB4-FAF4-46A6-A1CE-5ECFB3DD5FB9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0CD23EB4-FAF4-46A6-A1CE-5ECFB3DD5FB9}.Release|x64.ActiveCfg = Release|Any CPU
 		{0CD23EB4-FAF4-46A6-A1CE-5ECFB3DD5FB9}.Release|x64.Build.0 = Release|Any CPU
+		{C8694B16-924D-492F-8400-577D0DDE19FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8694B16-924D-492F-8400-577D0DDE19FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8694B16-924D-492F-8400-577D0DDE19FF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C8694B16-924D-492F-8400-577D0DDE19FF}.Debug|x64.Build.0 = Debug|Any CPU
+		{C8694B16-924D-492F-8400-577D0DDE19FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8694B16-924D-492F-8400-577D0DDE19FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8694B16-924D-492F-8400-577D0DDE19FF}.Release|x64.ActiveCfg = Release|Any CPU
+		{C8694B16-924D-492F-8400-577D0DDE19FF}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

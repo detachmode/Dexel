@@ -67,6 +67,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -107,20 +108,11 @@
     </Compile>
     <Compile Include="CustomControls\Extensions.cs" />
     <Compile Include="CustomControls\Pointer.cs" />
-    <Compile Include="Model\MainModelManager.cs" />
-    <Compile Include="Model\DataStreamDefinition.cs" />
-    <Compile Include="Model\DataStreamManager.cs" />
     <Compile Include="DebuggingHelper\DebugPrinter.cs" />
     <Compile Include="Interactions.cs" />
-    <Compile Include="DebuggingHelper\Mockdata.cs" />
-    <Compile Include="Model\DataStream.cs" />
-    <Compile Include="Model\FlowAttribute.cs" />
-    <Compile Include="Model\SoftwareCell.cs" />
     <Compile Include="Properties\Annotations2.cs" />
-    <Compile Include="Model\SoftwareCellsManager.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\DangelingConnectionViewModel.cs" />
-    <Compile Include="Model\MainModel.cs" />
     <Compile Include="Views\ConnectionsView.xaml.cs">
       <DependentUpon>ConnectionsView.xaml</DependentUpon>
     </Compile>
@@ -221,7 +213,12 @@
   <ItemGroup>
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\FlowDesignModel\FlowDesignModel.csproj">
+      <Project>{c8694b16-924d-492f-8400-577d0dde19ff}</Project>
+      <Name>FlowDesignModel</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

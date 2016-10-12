@@ -107,13 +107,13 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\SharpFlowDesign\SharpFlowDesign.csproj">
-      <Project>{3AE4EC04-B126-4F59-AD4B-FDD80AC50136}</Project>
-      <Name>SharpFlowDesign</Name>
-    </ProjectReference>
+    <Folder Include="bin\Debug\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="bin\Debug\" />
+    <ProjectReference Include="..\FlowDesignModel\FlowDesignModel.csproj">
+      <Project>{c8694b16-924d-492f-8400-577d0dde19ff}</Project>
+      <Name>FlowDesignModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

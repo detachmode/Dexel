@@ -4,7 +4,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:viewModels="clr-namespace:SharpFlowDesign.ViewModels"
-    xmlns:model="clr-namespace:SharpFlowDesign.Model"
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
     xmlns:behavior="clr-namespace:SharpFlowDesign.Behavior"
     xmlns:customControls="clr-namespace:SharpFlowDesign.CustomControls"

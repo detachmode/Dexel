@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using FlowDesignModel;
 using SharpFlowDesign.ViewModels;
 
 namespace SharpFlowDesign.Views
@@ -26,6 +27,11 @@ namespace SharpFlowDesign.Views
             var myUiElementPosition = transform.Transform(TheZoomBorder.BeforeContextMenuPoint);
 
             Interactions.AddNewIOCell(myUiElementPosition);
+        }
+
+        private void MenuItem_GenerateCode(object sender, RoutedEventArgs e)
+        {
+            Interactions.ConsolePrintGeneratedCode(MainModel.Get());
         }
     }
 

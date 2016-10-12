@@ -8,14 +8,19 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:behavior="clr-namespace:SharpFlowDesign.Behavior"
         mc:Ignorable="d"
+        
         Title="Sharp Flow Design" Height="350" Width="825">
     <Window.Resources>
+        
         <ContextMenu x:Key="MyContextMenu">
             <MenuItem Header="Add Celldaw" Click="MenuItem_Click" />
         </ContextMenu>
     </Window.Resources>
-
-    <Grid ContextMenu="{StaticResource MyContextMenu}">
+    <DockPanel>
+     <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Generate Code" Click="MenuItem_GenerateCode"/>
+     </Menu>
+    <Grid DockPanel.Dock="Top" ContextMenu="{StaticResource MyContextMenu}">
         <Label>Flow Design</Label>
         <customControls:ZoomBorder x:Name="TheZoomBorder" ClipToBounds="True"
                                    Background="{StaticResource MyVisualBrush}">
@@ -25,4 +30,5 @@
             <behavior:FrameworkElementDropBehavior />
         </i:Interaction.Behaviors>
     </Grid>
+    </DockPanel>
 </Window>

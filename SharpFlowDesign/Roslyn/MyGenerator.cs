@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FlowDesignModel;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
 using Roslyn.Common;
-using SharpFlowDesign.Model;
+
 
 namespace Roslyn
 {
