@@ -30,9 +30,9 @@ namespace FlowDesignModel
         }
 
 
-        public static void AddNewInput(SoftwareCell softwareCell, string datanames)
+        public static void AddNewInput(SoftwareCell softwareCell, string datanames, string actionName = null)
         {
-            var definition = DataStreamManager.CreateNewDefinition(softwareCell, datanames);
+            var definition = DataStreamManager.CreateNewDefinition(softwareCell, datanames, actionName);
             softwareCell.InputStreams.Add(definition);
 
         }
@@ -47,11 +47,11 @@ namespace FlowDesignModel
         }
 
 
-        public static Guid AddNewSoftwareCell(string name, MainModel mainModel)
+        public static SoftwareCell AddNewSoftwareCell(string name, MainModel mainModel)
         {
             var newcell = SoftwareCellsManager.CreateNew(name);
             mainModel.SoftwareCells.Add(newcell);
-            return newcell.ID;
+            return newcell;
         }
 
 
@@ -75,18 +75,19 @@ namespace FlowDesignModel
         }
 
 
-        public static void Connect(Guid sourceID, Guid destinationID, DataStreamDefinition defintion,
+        public static void Connect(SoftwareCell source, SoftwareCell destination, DataStreamDefinition defintion,
             MainModel mainModel)
         {
-            Connect(sourceID, destinationID, defintion.DataNames, mainModel, actionName: defintion.ActionName);
+            //var source = SoftwareCellsManager.GetFirst(sourceID, mainModel);
+            //var destination = SoftwareCellsManager.GetFirst(destinationID, mainModel);
+            Connect(source, destination, defintion.DataNames, mainModel, actionName: defintion.ActionName);
         }
 
 
-        public static Guid Connect(Guid sourceID, Guid destinationID, string datanames, MainModel mainModel,
+        public static Guid Connect(SoftwareCell source, SoftwareCell destination, string datanames, MainModel mainModel,
             string actionName = "")
         {
-            var source = SoftwareCellsManager.GetFirst(sourceID, mainModel);
-            var destination = SoftwareCellsManager.GetFirst(destinationID, mainModel);
+
 
             source.OutputStreams.RemoveAll(x => x.DataNames == datanames && x.ActionName == actionName);
             destination.InputStreams.RemoveAll(x => x.DataNames == datanames && x.ActionName == actionName);

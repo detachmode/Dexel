@@ -11,17 +11,14 @@ namespace FlowDesignModel
             //var romanNumbersConverter =  new SoftwareCell()#;
             //romanNumbersConverter.AddInput("RomanNumber");
             var mainModel = MainModel.Get();
-            var splitterID = MainModelManager.AddNewSoftwareCell("Splitt Roman Numerals", mainModel);
-            SoftwareCellsManager.GetFirst(splitterID,mainModel).Position = new Point(20,50);
+            var splitter= MainModelManager.AddNewSoftwareCell("Splitt Roman Numerals", mainModel);
            
-            MainModelManager.AddNewInput(splitterID, "RomanNumber", mainModel, actionName:".test");
-            var convertEachID = MainModelManager.AddNewSoftwareCell("Convert to decimal", mainModel);
-            SoftwareCellsManager.GetFirst(convertEachID, mainModel).Position = new Point(280, 250);
-            MainModelManager.Connect(splitterID, convertEachID, "Roman Numeral*", mainModel, actionName:".eachSplitted");
+            MainModelManager.AddNewInput(splitter, "RomanNumber", actionName:".test");
+            var convertEach = MainModelManager.AddNewSoftwareCell("Convert to decimal", mainModel);
+            MainModelManager.Connect(splitter, convertEach, "Roman Numeral*", mainModel, actionName:".eachSplitted");
 
             var negatelogicID = MainModelManager.AddNewSoftwareCell("Negate when larger", mainModel);
-            SoftwareCellsManager.GetFirst(negatelogicID, mainModel).Position = new Point(540, 50);
-            MainModelManager.Connect(convertEachID, negatelogicID, "Decimal*", mainModel);
+            MainModelManager.Connect(convertEach, negatelogicID, "Decimal*", mainModel);
             //var definition = DataStreamManager.CreateNewDefinition("Decimal*");
             //person.OutputStreams.Add(definition);
 
@@ -33,18 +30,17 @@ namespace FlowDesignModel
         {
 
             var testModel = MainModel.Get();
-            var firstID = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
-            SoftwareCellsManager.GetFirst(firstID, testModel).Position = new Point(20, 50);
-            MainModelManager.AddNewInput(firstID, "", testModel);
+            var first = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            first.Position = new Point(20, 50);
+            MainModelManager.AddNewInput(first, "");
 
-            var alterID = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            SoftwareCellsManager.GetFirst(alterID, testModel).Position = new Point(280, 50);
-            MainModelManager.Connect(firstID, alterID, "string | ", testModel);
+            var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
+             alter.Position = new Point(280, 50);
+            MainModelManager.Connect(first, alter, "string | ", testModel);
 
-            var personID = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            SoftwareCellsManager.GetFirst(personID, testModel).Position = new Point(540, 50);
-            MainModelManager.Connect(alterID, personID, "int | ... string", testModel);
-            var person = SoftwareCellsManager.GetFirst(personID, testModel);
+            var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
+            person.Position = new Point(540, 50);
+            MainModelManager.Connect(alter, person, "int | ... string", testModel);
             var definition = DataStreamManager.CreateNewDefinition(person, "Person");
             person.OutputStreams.Add(definition);
 
@@ -56,18 +52,17 @@ namespace FlowDesignModel
         {
 
             var testModel = MainModel.Get();
-            var firstID = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
-            SoftwareCellsManager.GetFirst(firstID, testModel).Position = new Point(20, 50);
-            MainModelManager.AddNewInput(firstID, "", testModel);
+            var first = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            first.Position = new Point(20, 50);
+            MainModelManager.AddNewInput(first, "");
 
-            var alterID = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            SoftwareCellsManager.GetFirst(alterID, testModel).Position = new Point(280, 50);
-            MainModelManager.Connect(firstID, alterID, "name:string | ", testModel);
+            var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
+            alter.Position = new Point(280, 50);
+            MainModelManager.Connect(first, alter, "name:string | ", testModel);
 
-            var personID = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            SoftwareCellsManager.GetFirst(personID, testModel).Position = new Point(540, 50);
-            MainModelManager.Connect(alterID, personID, "age:int | age:int, name:string", testModel);
-            var person = SoftwareCellsManager.GetFirst(personID, testModel);
+            var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
+            person.Position = new Point(540, 50);
+            MainModelManager.Connect(alter, person, "age:int | age:int, name:string", testModel);
             var definition = DataStreamManager.CreateNewDefinition(person, "rndPerson:Person");
             person.OutputStreams.Add(definition);
 

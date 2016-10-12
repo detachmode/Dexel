@@ -45,7 +45,7 @@ namespace SharpFlowDesign
         {
             //MainModelManager.RemoveConnection(dataStream, mainModel);
             DeConnect(dataStream, mainModel);
-            MainModelManager.Connect(dataStream.Sources.First().Parent.ID, newdestination.ID, dataStream.DataNames, mainModel,
+            MainModelManager.Connect(dataStream.Sources.First().Parent, newdestination, dataStream.DataNames, mainModel,
                 dataStream.ActionName);
 
             ViewRedraw();

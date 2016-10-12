@@ -16,7 +16,7 @@ namespace SharpFlowDesign.Tests
             var sB = SoftwareCellsManager.CreateNew("B");
             testModel.SoftwareCells.Add(sA);
             testModel.SoftwareCells.Add(sB);
-            MainModelManager.Connect(sA.ID, sB.ID, "dataAB", testModel);
+            MainModelManager.Connect(sA, sB, "dataAB", testModel);
 
             var fristconnection = testModel.Connections.First();
             Interactions.DeConnect(fristconnection, testModel);
@@ -41,7 +41,7 @@ namespace SharpFlowDesign.Tests
             var sB = SoftwareCellsManager.CreateNew("B");
             testModel.SoftwareCells.Add(sA);
             testModel.SoftwareCells.Add(sB);
-            MainModelManager.Connect(sA.ID, sB.ID, "dataAB", testModel);
+            MainModelManager.Connect(sA, sB, "dataAB", testModel);
 
             var fristconnection = testModel.Connections.First();
             Interactions.DeConnect(fristconnection, testModel);
@@ -65,7 +65,7 @@ namespace SharpFlowDesign.Tests
             var sB = SoftwareCellsManager.CreateNew("B");
             testModel.SoftwareCells.Add(sA);
             testModel.SoftwareCells.Add(sB);
-            MainModelManager.Connect(sA.ID, sB.ID, "dataAB", testModel);
+            MainModelManager.Connect(sA, sB, "dataAB", testModel);
 
             var firstConn = testModel.Connections.First();
             Interactions.DeConnect(firstConn, testModel);
@@ -122,7 +122,7 @@ namespace SharpFlowDesign.Tests
             testModel.SoftwareCells.Add(sA);
             testModel.SoftwareCells.Add(sB);
             testModel.SoftwareCells.Add(sC);
-            MainModelManager.Connect(sA.ID, sB.ID, "dataAB", testModel);
+            MainModelManager.Connect(sA, sB, "dataAB", testModel);
 
             Interactions.ChangeConnectionDestination(testModel.Connections.First(), sC, testModel);
 

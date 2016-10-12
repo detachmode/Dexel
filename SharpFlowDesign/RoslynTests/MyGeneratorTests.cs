@@ -49,17 +49,14 @@ namespace Roslyn.Tests
 
 
             var testModel = new MainModel();
-            var newNameID = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
-            var newName = SoftwareCellsManager.GetFirst(newNameID, testModel);
-            MainModelManager.AddNewInput(newNameID, "", testModel);
+            var newName = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            MainModelManager.AddNewInput(newName, "");
 
-            var alterID = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            var alter = SoftwareCellsManager.GetFirst(alterID, testModel);
-            MainModelManager.Connect(newNameID, alterID, "string | ", testModel);
+            var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
+            MainModelManager.Connect(newName, alter, "string | ", testModel);
 
-            var personID = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            var person = SoftwareCellsManager.GetFirst(personID, testModel);
-            MainModelManager.Connect(alterID, personID, "int | int, string", testModel);
+            var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
+            MainModelManager.Connect(alter, person, "int | int, string", testModel);
 
             var definition = DataStreamManager.CreateNewDefinition(person, "Person");
             person.OutputStreams.Add(definition);
@@ -94,17 +91,14 @@ namespace Roslyn.Tests
         {
 
             var testModel = new MainModel();
-            var newNameID = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
-            var newName = SoftwareCellsManager.GetFirst(newNameID, testModel);
-            MainModelManager.AddNewInput(newNameID, "", testModel);
+            var newName = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            MainModelManager.AddNewInput(newName, "");
 
-            var alterID = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            var alter = SoftwareCellsManager.GetFirst(alterID, testModel);
-            MainModelManager.Connect(newNameID, alterID, "string | ", testModel);
+            var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
+            MainModelManager.Connect(newName, alter, "string | ", testModel);
 
-            var personID = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            var person = SoftwareCellsManager.GetFirst(personID, testModel);
-            MainModelManager.Connect(alterID, personID, "int | int, string", testModel);
+            var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
+            MainModelManager.Connect(alter, person, "int | int, string", testModel);
 
 
             var expectedList = new List<Parameter>()
@@ -121,17 +115,14 @@ namespace Roslyn.Tests
         public void FindOneParameterTest()
         {
             var testModel = new MainModel();
-            var newNameID = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
-            var newName = SoftwareCellsManager.GetFirst(newNameID, testModel);
-            MainModelManager.AddNewInput(newNameID, "", testModel);
+            var newName = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            MainModelManager.AddNewInput(newName, "");
 
-            var alterID = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            var alter = SoftwareCellsManager.GetFirst(alterID, testModel);
-            MainModelManager.Connect(newNameID, alterID, "string | ", testModel);
+            var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
+            MainModelManager.Connect(newName, alter, "string | ", testModel);
 
-            var personID = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            var person = SoftwareCellsManager.GetFirst(personID, testModel);
-            MainModelManager.Connect(alterID, personID, "int | int, string", testModel);
+            var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
+            MainModelManager.Connect(alter, person, "int | int, string", testModel);
 
             var expected = new Parameter { FoundFlag = true, Source = alter };
             var lookingfor = new NameType { Name = null, Type = "int" };
@@ -147,17 +138,14 @@ namespace Roslyn.Tests
         public void CreateIntegrationBodyTest()
         {
             var testModel = new MainModel();
-            var newNameID = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
-            var newName = SoftwareCellsManager.GetFirst(newNameID, testModel);
-            MainModelManager.AddNewInput(newNameID, "", testModel);
+            var newName = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            MainModelManager.AddNewInput(newName, "");
 
-            var alterID = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            var alter = SoftwareCellsManager.GetFirst(alterID, testModel);
-            MainModelManager.Connect(newNameID, alterID, "string | ", testModel);
+            var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
+            MainModelManager.Connect(newName, alter, "string | ", testModel);
 
-            var personID = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            var person = SoftwareCellsManager.GetFirst(personID, testModel);
-            MainModelManager.Connect(alterID, personID, "int | int, string", testModel);
+            var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
+            MainModelManager.Connect(alter, person, "int | int, string", testModel);
             MainModelManager.AddNewOutput(person, "Person");
 
             var nodes = _gen.CreateIntegrationBody(_gen.Generator, testModel.Connections, testModel.SoftwareCells);
@@ -168,8 +156,7 @@ namespace Roslyn.Tests
         {
             // void method call -> no local variable needed
             var testModel = new MainModel();
-            var fooID = MainModelManager.AddNewSoftwareCell("foo", testModel);
-            var foo = SoftwareCellsManager.GetFirst(fooID, testModel);
+            var foo = MainModelManager.AddNewSoftwareCell("foo", testModel);
             MainModelManager.AddNewInput(foo, "");
             MainModelManager.AddNewOutput(foo, "");
            var nodes = _gen.LocalMethodCall(_gen.Generator, foo, null, new List<GeneratedLocalVariable>());
