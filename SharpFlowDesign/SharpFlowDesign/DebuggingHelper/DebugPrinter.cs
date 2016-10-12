@@ -55,5 +55,30 @@ namespace SharpFlowDesign.DebuggingHelper
         {
             Console.WriteLine(@"// " + cell.Name + @" is integrating: " + cell.Integration.Name);
         }
-    }
+
+        public static void PrintConnections(MainModel mainModel)
+        {
+            Console.WriteLine(@"---------------------");
+            Console.WriteLine(@"-- Connections ------");
+            Console.WriteLine(@"---------------------");
+            mainModel.Connections.ForEach( 
+                x => 
+                Console.WriteLine(@"{0} - {1} -> {2} ", x.Sources.First().Name, x.DataNames, x.Destinations.First().Name));
+        }
+
+        public static void PrintSoftwareCells(MainModel mainModel)
+        {
+            Console.WriteLine(@"---------------------");
+            Console.WriteLine(@"-- SoftwareCells ----");
+            Console.WriteLine(@"---------------------");
+            mainModel.SoftwareCells.ForEach(
+                x =>
+                {
+                    Console.WriteLine("\nName: {0}", x.Name);
+                    x.InputStreams.ForEach( i => Console.WriteLine("\t Input: {0}", i.DataNames));
+                    x.OutputStreams.ForEach(o => Console.WriteLine("\t Output: {0}", o.DataNames));
+
+                });
+        }
+}
 }

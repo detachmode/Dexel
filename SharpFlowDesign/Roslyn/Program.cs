@@ -53,44 +53,44 @@ namespace Roslyn
             //        generator.AssignmentStatement(generator.IdentifierName("_firstName"),
             //            generator.IdentifierName("value"))
             //    });
-  //          // Generate the method body for the Clone method
-  //          var cloneMethodBody = generator.ReturnStatement(generator.
-  //            InvocationExpression(generator.IdentifierName("MemberwiseClone")));
+            //          // Generate the method body for the Clone method
+            //          var cloneMethodBody = generator.ReturnStatement(generator.
+            //            InvocationExpression(generator.IdentifierName("MemberwiseClone")));
 
-  //          // Generate the Clone method declaration
-  //          var cloneMethoDeclaration = generator.MethodDeclaration("Clone", null,
-  //            null, null,
-  //            Accessibility.Public,
-  //            DeclarationModifiers.Virtual,
-  //            new SyntaxNode[] { cloneMethodBody });
+            //          // Generate the Clone method declaration
+            //          var cloneMethoDeclaration = generator.MethodDeclaration("Clone", null,
+            //            null, null,
+            //            Accessibility.Public,
+            //            DeclarationModifiers.Virtual,
+            //            new SyntaxNode[] { cloneMethodBody });
 
-  //          // Generate a SyntaxNode for the interface's name you want to implement
-  //          var ICloneableInterfaceType = generator.IdentifierName("ICloneable");
+            //          // Generate a SyntaxNode for the interface's name you want to implement
+            //          var ICloneableInterfaceType = generator.IdentifierName("ICloneable");
 
-  //          // Explicit ICloneable.Clone implemenation
-  //          var cloneMethodWithInterfaceType = generator.
-  //            AsPublicInterfaceImplementation(cloneMethoDeclaration,
-  //            ICloneableInterfaceType);
-  //          // Generate parameters for the class' constructor
-  //          var constructorParameters = new SyntaxNode[] {
-  //generator.ParameterDeclaration("LastName",
-  //generator.TypeExpression(SpecialType.System_String)),
-  //generator.ParameterDeclaration("FirstName",
-  //generator.TypeExpression(SpecialType.System_String)) };
+            //          // Explicit ICloneable.Clone implemenation
+            //          var cloneMethodWithInterfaceType = generator.
+            //            AsPublicInterfaceImplementation(cloneMethoDeclaration,
+            //            ICloneableInterfaceType);
+            //          // Generate parameters for the class' constructor
+            //          var constructorParameters = new SyntaxNode[] {
+            //generator.ParameterDeclaration("LastName",
+            //generator.TypeExpression(SpecialType.System_String)),
+            //generator.ParameterDeclaration("FirstName",
+            //generator.TypeExpression(SpecialType.System_String)) };
 
-  //          // Generate the constructor's method body
-  //          var constructorBody = new SyntaxNode[] {
-  //generator.AssignmentStatement(generator.IdentifierName("_lastName"),
-  //generator.IdentifierName("LastName")),
-  //generator.AssignmentStatement(generator.IdentifierName("_firstName"),
-  //generator.IdentifierName("FirstName"))};
+            //          // Generate the constructor's method body
+            //          var constructorBody = new SyntaxNode[] {
+            //generator.AssignmentStatement(generator.IdentifierName("_lastName"),
+            //generator.IdentifierName("LastName")),
+            //generator.AssignmentStatement(generator.IdentifierName("_firstName"),
+            //generator.IdentifierName("FirstName"))};
 
-  //          // Generate the class' constructor
-  //          var constructor = generator.ConstructorDeclaration("Person",
-  //            constructorParameters, Accessibility.Public,
-  //            statements: constructorBody);
+            //          // Generate the class' constructor
+            //          var constructor = generator.ConstructorDeclaration("Person",
+            //            constructorParameters, Accessibility.Public,
+            //            statements: constructorBody);
 
-            
+
 
             // An array of SyntaxNode as the class members
             //          var members = new SyntaxNode[] { lastNameField,
@@ -108,30 +108,9 @@ namespace Roslyn
             //  members: members);
 
             // Declare a namespace
-
-
-            var gen = new MyGenerator();
             var model = Mockdata.MakeRandomPerson2();
-            var methods = model.SoftwareCells.Select(softwareCell =>Operations.GenerateOperationMethod(gen.Generator, softwareCell)).ToList();
-            var body = gen.CreateIntegrationBody(gen.Generator,model.Connections, model.SoftwareCells);
-            var main = Operations.GenerateOperationMethod(gen.Generator,"main", body);
-            methods.Add(main);
-            var interactionsClass = gen.Class("Interactions", methods.ToArray());
-            
-
-            //Get a CompilationUnit(code file) for the generated code
-            var usingDirectives = generator.NamespaceImportDeclaration("System");
-            var namespaceDeclaration = generator.NamespaceDeclaration("AutoGenerated", interactionsClass);
-            var newNode = generator.CompilationUnit(usingDirectives, namespaceDeclaration).
-              NormalizeWhitespace();
-
-            File.WriteAllText(@"./test.cs", newNode.NormalizeWhitespace().ToFullString());
-            Console.Write(newNode.NormalizeWhitespace().ToFullString());
-            Console.Read();
-
-
-
-
+            MyGenerator myGenerator = new MyGenerator();
+            myGenerator.GenerateCodeAndPrint(model);
 
 
             //var nameField = generator.FieldDeclaration("Name",
@@ -164,6 +143,7 @@ namespace Roslyn
 
 
         }
+
     }
 
 }

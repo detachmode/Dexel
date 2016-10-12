@@ -1,12 +1,14 @@
 using System;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using FlowDesignModel;
+using Roslyn;
+using SharpFlowDesign.DebuggingHelper;
 using SharpFlowDesign.ViewModels;
 
 namespace SharpFlowDesign
 {
-
     public static class Interactions
     {
         public enum DragMode
@@ -14,6 +16,8 @@ namespace SharpFlowDesign
             Single,
             Multiple
         }
+
+        private static Timer aTimer;
 
 
         public static void AddNewIOCell(Point pos)
@@ -51,26 +55,19 @@ namespace SharpFlowDesign
         public static void AddNewInput(Guid softwareCellID, string datanames, MainModel mainModel,
             string actionName = "")
         {
-            //SoftwareCellsManager.GetAll(softwareCellID, mainModel).ToList()
-            //    .ForEach(softwareCell =>
-            //    {
-            //        var dataStream = DataStreamManager.CreateNewDefinition(datanames, actionName);
-            //        softwareCell.InputStreams.Add(dataStream);
-            //    });
+            MainModelManager.AddNewInput(softwareCellID, datanames, mainModel, actionName);
         }
 
 
         public static void AddNewOutput(SoftwareCell softwareCell, string datanames)
         {
-            //var definition = DataStreamManager.CreateNewDefinition(datanames);
-            //softwareCell.OutputStreams.Add(definition);
+            MainModelManager.AddNewOutput(softwareCell, datanames);
             ViewRedraw();
         }
 
         internal static void AddNewInput(SoftwareCell softwareCell, string datanames)
         {
-            //var definition = DataStreamManager.CreateNewDefinition(datanames);
-            //softwareCell.InputStreams.Add(definition);
+            MainModelManager.AddNewInput(softwareCell, datanames);
             ViewRedraw();
         }
 
@@ -116,12 +113,12 @@ namespace SharpFlowDesign
         {
             DataStreamManager.FindExistingDefinition(defintion, source.OutputStreams,
                 def => def.Connected = true,
-                () => source.OutputStreams.Add(DataStreamManager.CreateNewDefinition(defintion, connected:true))
+                () => source.OutputStreams.Add(DataStreamManager.CreateNewDefinition(defintion, connected: true))
                 );
 
             DataStreamManager.FindExistingDefinition(defintion, destination.InputStreams,
                 def => def.Connected = true,
-                () => destination.InputStreams.Add(DataStreamManager.CreateNewDefinition(defintion, connected:true))
+                () => destination.InputStreams.Add(DataStreamManager.CreateNewDefinition(defintion, connected: true))
                 );
 
             MainModelManager.AddNewConnection(defintion, source, destination, mainModel);
@@ -130,7 +127,8 @@ namespace SharpFlowDesign
         }
 
 
-        public static void DeleteDatastreamDefiniton(DataStreamDefinition dataStreamDefinition, SoftwareCell softwareCell)
+        public static void DeleteDatastreamDefiniton(DataStreamDefinition dataStreamDefinition,
+            SoftwareCell softwareCell)
         {
             softwareCell.InputStreams.RemoveAll(x => x == dataStreamDefinition);
             softwareCell.OutputStreams.RemoveAll(x => x == dataStreamDefinition);
@@ -139,9 +137,29 @@ namespace SharpFlowDesign
 
         public static void ConsolePrintGeneratedCode(MainModel mainModel)
         {
-            //MyGenerator gen = new MyGenerator();
+            var gen = new MyGenerator();
+            Console.Clear();
+            gen.GenerateCodeAndPrint(mainModel);
+        }
 
+
+        public static void DebugPrint(MainModel mainModel)
+        {
+            Console.Clear();
+            DebugPrinter.PrintConnections(mainModel);
+            DebugPrinter.PrintSoftwareCells(mainModel);
+        }
+
+        public static void AutoPrintOFF()
+        {
+            aTimer.Dispose();
+        }
+
+
+        public static void AutoPrint(MainModel mainModel, Action<MainModel> printAction)
+        {
+            aTimer?.Dispose();
+            aTimer = new Timer(state => { printAction(mainModel); }, null, 0, 200);
         }
     }
-
 }

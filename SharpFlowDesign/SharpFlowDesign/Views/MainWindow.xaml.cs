@@ -33,6 +33,31 @@ namespace SharpFlowDesign.Views
         {
             Interactions.ConsolePrintGeneratedCode(MainModel.Get());
         }
+
+        private void MenuItem_DebugPrint(object sender, RoutedEventArgs e)
+        {
+            Interactions.DebugPrint(MainModel.Get());
+        }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+            Interactions.AutoPrint(MainModel.Get(), Interactions.DebugPrint);
+        }
+
+        private void CheckBox_UnChecked(object sender, RoutedEventArgs e)
+        {
+            Interactions.AutoPrintOFF();
+        }
+
+        private void AutoGenerate_Checked(object sender, RoutedEventArgs e)
+        {
+            Interactions.AutoPrint(MainModel.Get(), Interactions.ConsolePrintGeneratedCode);
+        }
+
+        private void AutoGenerate_UnChecked(object sender, RoutedEventArgs e)
+        {
+            Interactions.AutoPrintOFF();
+        }
     }
 
 

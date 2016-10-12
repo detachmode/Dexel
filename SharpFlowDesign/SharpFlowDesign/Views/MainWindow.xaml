@@ -19,7 +19,10 @@
     <DockPanel>
      <Menu DockPanel.Dock="Top">
             <MenuItem Header="Generate Code" Click="MenuItem_GenerateCode"/>
-     </Menu>
+            <MenuItem Header="Debug Print" Click="MenuItem_DebugPrint"/>
+         <CheckBox Content="Auto Debug Print" Checked="CheckBox_Checked" Unchecked="CheckBox_UnChecked"  ></CheckBox>
+            <CheckBox Content="Auto Generate" Checked="AutoGenerate_Checked" Unchecked="AutoGenerate_UnChecked"  ></CheckBox>
+        </Menu>
     <Grid DockPanel.Dock="Top" ContextMenu="{StaticResource MyContextMenu}">
         <Label>Flow Design</Label>
         <customControls:ZoomBorder x:Name="TheZoomBorder" ClipToBounds="True"
