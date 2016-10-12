@@ -23,6 +23,8 @@ namespace SharpFlowDesign.DebuggingHelper
             var negatelogicID = MainModelManager.AddNewSoftwareCell("Negate when larger", mainModel);
             SoftwareCellsManager.GetFirst(negatelogicID, mainModel).Position = new Point(540, 50);
             MainModelManager.Connect(convertEachID, negatelogicID, "Decimal*", mainModel);
+            //var definition = DataStreamManager.CreateNewDefinition("Decimal*");
+            //person.OutputStreams.Add(definition);
 
             return mainModel;
 
@@ -61,13 +63,13 @@ namespace SharpFlowDesign.DebuggingHelper
 
             var alterID = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
             SoftwareCellsManager.GetFirst(alterID, testModel).Position = new Point(280, 50);
-            MainModelManager.Connect(firstID, alterID, "string | ", testModel);
+            MainModelManager.Connect(firstID, alterID, "name:string | ", testModel);
 
             var personID = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
             SoftwareCellsManager.GetFirst(personID, testModel).Position = new Point(540, 50);
-            MainModelManager.Connect(alterID, personID, "int | age:int, name:string", testModel);
+            MainModelManager.Connect(alterID, personID, "age:int | age:int, name:string", testModel);
             var person = SoftwareCellsManager.GetFirst(personID, testModel);
-            var definition = DataStreamManager.CreateNewDefinition("Person");
+            var definition = DataStreamManager.CreateNewDefinition("rndPerson:Person");
             person.OutputStreams.Add(definition);
 
 

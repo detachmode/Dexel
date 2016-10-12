@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using Microsoft.CodeAnalysis;
@@ -113,9 +114,9 @@ namespace Roslyn
 
             var gen = new MyGenerator();
             var model = Mockdata.MakeRandomPerson2();
-            var methods = model.SoftwareCells.Select(gen.Method).ToList();
-            var body = gen.CreateIntegrationBody(model.Connections, model.SoftwareCells.First());
-            var main = gen.Method("main", body);
+            var methods = model.SoftwareCells.Select(softwareCell =>Operations.GenerateOperationMethod(gen.Generator, softwareCell)).ToList();
+            var body = gen.CreateIntegrationBody(gen.Generator,model.Connections, model.SoftwareCells);
+            var main = Operations.GenerateOperationMethod(gen.Generator,"main", body);
             methods.Add(main);
             var interactionsClass = gen.Class("Interactions", methods.ToArray());
             
@@ -126,7 +127,7 @@ namespace Roslyn
             var newNode = generator.CompilationUnit(usingDirectives, namespaceDeclaration).
               NormalizeWhitespace();
 
-
+            File.WriteAllText(@"./test.cs", newNode.NormalizeWhitespace().ToFullString());
             Console.Write(newNode.NormalizeWhitespace().ToFullString());
             Console.Read();
 
@@ -156,7 +157,7 @@ namespace Roslyn
             //var myGenerator = new MyGenerator();
 
 
-            //SyntaxNode[] members = testModel.SoftwareCells.Select(x => myGenerator.Method(x)).ToArray();
+            //SyntaxNode[] members = testModel.SoftwareCells.Select(x => myGenerator.GenerateOperationMethod(x)).ToArray();
 
 
 

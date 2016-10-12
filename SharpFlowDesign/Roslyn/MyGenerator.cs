@@ -1,30 +1,29 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting.Messaging;
-using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Editing;
+using Roslyn.Common;
 using SharpFlowDesign.Model;
 
 namespace Roslyn
 {
     public class MyGenerator
     {
-        public SyntaxGenerator _generator;
+        public SyntaxGenerator Generator;
         public Workspace _workspace = new AdhocWorkspace();
 
 
         public MyGenerator()
         {
-            _generator = SyntaxGenerator.GetGenerator(_workspace, LanguageNames.CSharp);
+            Generator = SyntaxGenerator.GetGenerator(_workspace, LanguageNames.CSharp);
         }
+
 
         public SyntaxNode Class(string name, SyntaxNode[] members)
         {
             // Generate the class
-            var classDefinition = _generator.ClassDeclaration(
+            var classDefinition = Generator.ClassDeclaration(
                 name, typeParameters: null,
                 accessibility: Accessibility.Public,
                 modifiers: DeclarationModifiers.None,
@@ -36,183 +35,170 @@ namespace Roslyn
         }
 
 
-        public SyntaxNode Method(string createName, SyntaxNode[] body = null)
+        public SyntaxNode[] CreateIntegrationBody(SyntaxGenerator generator, List<DataStream> connections, List<SoftwareCell> integratedSoftwareCells)
         {
-            return _generator.MethodDeclaration(createName, null,
-                null, null,
-                Accessibility.Public,
-                DeclarationModifiers.None,
-                body ?? new SyntaxNode[] {});
+            var generated = new List<GeneratedLocalVariable>();
+
+            var methodWithParameterDependencieses = FindParameterDependencies(integratedSoftwareCells, connections);
+            return CreateAllDependenciesAvailable(generator, methodWithParameterDependencieses, generated).ToArray();
         }
 
-        public SyntaxNode Method(SoftwareCell softwareCell)
+        private List<SyntaxNode> CreateAllDependenciesAvailable(SyntaxGenerator generator,
+            List<MethodWithParameterDependencies> parameterDependencieses, List<GeneratedLocalVariable> generated)
         {
-            var methodName = GetMethodName(softwareCell);
-            var returntype = GetReturnPart(softwareCell);
-            var parameters = GetParameters(softwareCell);
+            var result = GenerateNoParameterMethods(generator, parameterDependencieses, generated);
+            result = CreateAllDependenciesAvailable(generator, parameterDependencieses, generated, result).ToList();
 
-            ////var constructorParameters = new SyntaxNode[] {
-            //      _generator.ParameterDeclaration("LastName",
-            //      _generator.TypeExpression(SpecialType.System_String)),
-
-
-            return _generator.MethodDeclaration(methodName, parameters,
-                null, returntype,
-                Accessibility.Public,
-                DeclarationModifiers.None,
-                new SyntaxNode[] {});
+            return result;
         }
 
-        private IEnumerable<SyntaxNode> GetParameters(SoftwareCell softwareCell)
+        private List<SyntaxNode> GenerateNoParameterMethods(SyntaxGenerator generator,
+            List<MethodWithParameterDependencies> parameterDependencies, List<GeneratedLocalVariable> generated)
         {
-            if (!softwareCell.InputStreams.Any())
-                return null;
-
-            var inputDataNames = softwareCell.InputStreams.First().DataNames;
-            var i = 0;
-            return ParseDataNames(inputDataNames, pipePart: 2)
-                    .Where(nameType => ConvertToTypeExpression(nameType.Type) != null)
-                    .Select(nametype =>
-                    {
-                        ++i;
-                        var name = nametype.Name ?? "param" + i;                    
-                        return _generator.ParameterDeclaration(name, ConvertToTypeExpression(nametype.Type));
-                    }).ToArray();
+            var noParams = parameterDependencies.Where(x => x.Parameters.Count == 0).ToList();
+            parameterDependencies.RemoveAll(x => x.Parameters.Count == 0);
+            return noParams.Select(x => LocalMethodCall(generator, x.OfSoftwareCell, null, generated)).ToList();
         }
 
-        private static string GetMethodName(SoftwareCell softwareCell)
+        private List<SyntaxNode> CreateAllDependenciesAvailable(SyntaxGenerator generator,
+            List<MethodWithParameterDependencies> methods, List<GeneratedLocalVariable> generated,
+            IEnumerable<SyntaxNode> result)
         {
-            return softwareCell.Name.Replace(' ', '_');
+            if (!methods.Any())
+                return result.ToList();
+
+            var nodes = methods.Where(
+                methodWithParameterDependencies => CanBeGenerated(generated, methodWithParameterDependencies))
+                .Select(
+                    methodWithParameterDependencies =>
+                        GenerateLocalMethodCall(generator, generated, methodWithParameterDependencies)).ToList();
+            var newresult = result.ToList();
+             newresult.AddRange(nodes);
+            return newresult;
         }
 
-        private SyntaxNode GetReturnPart(SoftwareCell softwareCell)
+        private static bool CanBeGenerated(List<GeneratedLocalVariable> generated,
+            MethodWithParameterDependencies methodWithParameterDependencies)
         {
-            var outputDataNames = softwareCell.OutputStreams.First().DataNames;
-            return ParseDataNames(outputDataNames, pipePart: 1)
-                .Select(nameType => ConvertToTypeExpression(nameType.Type))
-                .First();
+            return
+                methodWithParameterDependencies.Parameters.TrueForAll(
+                    param => generated.Any(c => c.Source == param.Source));
         }
 
-
-        public SyntaxNode ConvertToTypeExpression(string type)
+        private SyntaxNode GenerateLocalMethodCall(SyntaxGenerator generator, List<GeneratedLocalVariable> generated,
+            MethodWithParameterDependencies x)
         {
-            switch (type)
+            return LocalMethodCall(generator, x.OfSoftwareCell,
+                CreateParameterAssignment(generator, generated, x.Parameters),
+                generated);
+        }
+
+        private static SyntaxNode[] CreateParameterAssignment(SyntaxGenerator generator, List<GeneratedLocalVariable> generated, List<Parameter> parameters)
+        {
+            return parameters.Select(p =>
             {
-                case "":
-                    return null;
-                case "string":
-                    return _generator.TypeExpression(SpecialType.System_String);
-                case "int":
-                    return _generator.TypeExpression(SpecialType.System_Int32);
-                case "double":
-                    return _generator.TypeExpression(SpecialType.System_Double);
-                default:
-                    return _generator.IdentifierName(type);
-            }
+                var variablename = generated.First(x => x.Source == p.Source).VariableName;
+                return generator.IdentifierName(variablename);
+            }).ToArray();
         }
 
 
-        public IEnumerable<NameType> ParseDataNames(string dataNames, int pipePart = 1)
-        {
-            var datanames = GetPipePart(dataNames, pipePart);
-            return ConvertToNameTypes(datanames);
-        }
 
-        private static IEnumerable<NameType> ConvertToNameTypes(string datanames)
+        private List<MethodWithParameterDependencies> FindParameterDependencies(List<SoftwareCell> softwareCells,
+            List<DataStream> connections)
         {
-            return datanames.Split(',').Select(x =>
+            return softwareCells.Select(sc => new MethodWithParameterDependencies
             {
-                var splitted = x.Split(':');
-                return new NameType()
+                OfSoftwareCell = sc,
+                Parameters = FindParameters(connections, sc)
+            }).ToList();
+        }
+
+        public List<Parameter> FindParameters(List<DataStream> connections, SoftwareCell ofSoftwareCell)
+        {
+            var nameTypes = DataStreamParser.ParseDataNames(ofSoftwareCell.InputStreams.First().DataNames, pipePart: 2).ToList();
+            return nameTypes.Where(nt => nt.Type != "").Select(nt => FindOneParameter(nt, connections, ofSoftwareCell)).ToList();
+        }
+
+        public Parameter FindOneParameter(NameType lookingForNameType, List<DataStream> connections, SoftwareCell ofSoftwareCell)
+        {
+            var dataStream = GetInputConnection(connections, ofSoftwareCell);
+            if (dataStream == null)
+            {
+                return new Parameter
                 {
-                    Name = splitted.Length == 2 ? splitted[0].Trim() : null,
-                    Type = splitted.Length == 2 ? splitted[1].Trim() : splitted[0].Trim()
+                    FoundFlag = false,
+                    Source = null
                 };
-            });
-        }
+            }
 
-        private static string GetPipePart(string dataNames, int pipePart)
-        {
-            if (!dataNames.Contains("|")) return dataNames;
+            var outputNametypes = DataStreamParser.ParseDataNames(dataStream.DataNames, pipePart: 1).ToList();
 
-            var matches = Regex.Matches(dataNames, @"(.*)\|(.*)");
-            return matches[0].Groups[pipePart].Value;
-        }
-
-        public SyntaxNode[] CreateIntegrationBody(List<DataStream> connections, SoftwareCell startSoftwareCell)
-        {
-            List<Tuple<NameType,string>> existingLocals = new List<Tuple<NameType, string>>();
-           
-            var callfirst = LocalMethodCall(startSoftwareCell,connections, existingLocals);
-
-            var nextStreams = connections.Where(conn => conn.Sources.Any(y => y.ID == startSoftwareCell.ID));
-            var nextCalls = nextStreams.Select(x => LocalMethodCall(x.Destinations.First())).ToArray();
-
-
-            var result = new[]
+            var found = outputNametypes.Where(nt => nt.Type == lookingForNameType.Type && nt.Name == lookingForNameType.Name).ToList();
+            if (found.Any())
             {
-                callfirst,
-                //_generator.LocalDeclarationStatement(
-                //    _generator.TypeExpression(SpecialType.System_String),
-                //    "name",
-                //    _generator.LiteralExpression("hello")
-                //    ),
+                return new Parameter
+                {
+                    FoundFlag = true,
+                    Source = dataStream.Sources.First()
+                };
+            }
 
-                //_generator.LocalDeclarationStatement(
-                //    _generator.TypeExpression(SpecialType.System_String),
-                //    "name", _generator.InvocationExpression(_generator.IdentifierName("MemberwiseClone")))
-            }.ToList();
-
-            result.AddRange(nextCalls);
-
-
-
-            return result.ToArray();
-
-            //_generator.VariableDeclaration(
-            //   type: _generator.IdentifierName(_generator.Token(SyntaxKind.VarKeyword)),
-            //   variables: _generator.SeparatedList(
-            //       _generator.VariableDeclarator(
-            //           identifier: _generator.Identifier(name)))));
+            return FindOneParameter(lookingForNameType, connections, dataStream.Sources.First());
 
         }
 
-        private SyntaxNode[] GetArguments(SoftwareCell softwareCell, List<DataStream> connections, List<CreatedLocalMethod> existingLocals)
+        private DataStream GetInputConnection(List<DataStream> connections, SoftwareCell ofSoftwareCell)
         {
-            var end = connections.Where(x => x.Destinations.Contains(softwareCell));
-            var nodebefore = end.First().Sources.First();
-            existingLocals.Last(x => x.SoftwareCell == nodebefore).LocalName
-                            throw new NotImplementedException();
+            var found = connections.Where(c => c.Destinations.Contains(ofSoftwareCell)).ToList();
+            return found.Any() ? found.First() : null;
         }
 
-        private SyntaxNode LocalMethodCall(SoftwareCell softwareCell,List<DataStream>connections, List<CreatedLocalMethod> existingLocals)
+
+        private SyntaxNode LocalMethodCall(SyntaxGenerator generator, SoftwareCell softwareCell, SyntaxNode[] parameter,
+            List<GeneratedLocalVariable> generated)
         {
-            SyntaxNode[] arguments  = GetArguments(softwareCell,connections, existingLocals);
+            var firstouttype = DataStreamParser.ParseDataNames(softwareCell.OutputStreams.First().DataNames).First();
 
-
-            var firstouttype = ParseDataNames(softwareCell.OutputStreams.First().DataNames).First();
-
-            var localType = ConvertToTypeExpression(firstouttype.Type);
+            var localType = DataTypeParser.ConvertToTypeExpression(generator, firstouttype.Type);
             var localName = firstouttype.Name ?? "a" + firstouttype.Type;
-            var created = new CreatedLocalMethod
-            {
-                LocalName = localName,
-                LocalType = firstouttype.Type,
-                SoftwareCell = softwareCell
-            };
-            existingLocals.Add(created);
 
-            return _generator.LocalDeclarationStatement(localType,localName,
-                _generator.InvocationExpression(_generator.IdentifierName(GetMethodName(softwareCell)),
-                arguments ?? new SyntaxNode[] {}));
+
+            generated.Add(new GeneratedLocalVariable
+            {
+                VariableName = localName,
+                Source = softwareCell
+            });
+
+            return Generator.LocalDeclarationStatement(localType, localName,
+                Generator.InvocationExpression(Generator.IdentifierName(Operations.GetMethodName(softwareCell)),
+                    parameter ?? new SyntaxNode[] { }));
         }
+    }
+
+    public class GeneratedLocalVariable
+    {
+        public SoftwareCell Source;
+        public string VariableName;
     }
 
     internal class CreatedLocalMethod
     {
-        public string LocalName, LocalType;
+        public string LocalName;
+        public string LocalType;
         public SoftwareCell SoftwareCell;
+    }
 
+    public class MethodWithParameterDependencies
+    {
+        public SoftwareCell OfSoftwareCell;
+        public List<Parameter> Parameters = new List<Parameter>();
+    }
+
+    public class Parameter
+    {
+        public bool FoundFlag;
+        public SoftwareCell Source;
     }
 
 

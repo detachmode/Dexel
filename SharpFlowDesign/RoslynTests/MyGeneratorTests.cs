@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using Roslyn;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Roslyn.Common;
 using SharpFlowDesign;
 using SharpFlowDesign.Model;
 
@@ -14,17 +17,17 @@ namespace Roslyn.Tests
         public void GetReturnTypesTest()
         {
 
-            CollectionAssert.AreEqual(new[] { "string" }, _gen.ParseDataNames("string").Select(x=>x.Type).ToArray());
-            CollectionAssert.AreEqual(new[] { "string" }, _gen.ParseDataNames("|string", pipePart:2).Select(x => x.Type).ToArray());
-            CollectionAssert.AreEqual(new[] { "string" }, _gen.ParseDataNames("int|string", pipePart: 2).Select(x => x.Type).ToArray());
-            CollectionAssert.AreEqual(new[] { "string", "int" }, _gen.ParseDataNames("int|string,int", pipePart: 2).Select(x => x.Type).ToArray());
+            CollectionAssert.AreEqual(new[] { "string" }, DataStreamParser.ParseDataNames("string").Select(x => x.Type).ToArray());
+            CollectionAssert.AreEqual(new[] { "string" }, DataStreamParser.ParseDataNames("|string", pipePart: 2).Select(x => x.Type).ToArray());
+            CollectionAssert.AreEqual(new[] { "string" }, DataStreamParser.ParseDataNames("int|string", pipePart: 2).Select(x => x.Type).ToArray());
+            CollectionAssert.AreEqual(new[] { "string", "int" }, DataStreamParser.ParseDataNames("int|string,int", pipePart: 2).Select(x => x.Type).ToArray());
 
             // removes whitespace?
-            CollectionAssert.AreEqual(new[] { "string", "int" }, _gen.ParseDataNames("int| string , int", pipePart: 2).Select(x => x.Type).ToArray());
+            CollectionAssert.AreEqual(new[] { "string", "int" }, DataStreamParser.ParseDataNames("int| string , int", pipePart: 2).Select(x => x.Type).ToArray());
 
             // named parameter
-            CollectionAssert.AreEqual(new[] { "string", "int" }, _gen.ParseDataNames("int| name:string , age:int", pipePart: 2).Select(x => x.Type).ToArray());
-            CollectionAssert.AreEqual(new[] { "name", "age" }, _gen.ParseDataNames("int| name:string , age:int", pipePart: 2).Select(x => x.Name).ToArray());
+            CollectionAssert.AreEqual(new[] { "string", "int" }, DataStreamParser.ParseDataNames("int| name:string , age:int", pipePart: 2).Select(x => x.Type).ToArray());
+            CollectionAssert.AreEqual(new[] { "name", "age" }, DataStreamParser.ParseDataNames("int| name:string , age:int", pipePart: 2).Select(x => x.Name).ToArray());
 
         }
 
@@ -35,14 +38,14 @@ namespace Roslyn.Tests
             var node = SoftwareCellsManager.CreateNew("Random Name");
             Interactions.AddNewOutput(node, "string");
 
-            var methode = _gen.Method(node);
+            var methode = Operations.GenerateOperationMethod(_gen.Generator, node);
             Assert.AreEqual("public string Random_Name()\r\n{\r\n}", methode.NormalizeWhitespace().ToFullString());
 
             // Empty output => return void
             node = SoftwareCellsManager.CreateNew("Random Name");
             Interactions.AddNewOutput(node, "");
 
-            methode = _gen.Method(node);
+            methode = Operations.GenerateOperationMethod(_gen.Generator, node);
             Assert.AreEqual("public void Random_Name()\r\n{\r\n}", methode.NormalizeWhitespace().ToFullString());
 
 
@@ -62,7 +65,7 @@ namespace Roslyn.Tests
             var definition = DataStreamManager.CreateNewDefinition("Person");
             person.OutputStreams.Add(definition);
 
-            SyntaxNode[] members = testModel.SoftwareCells.Select(x => _gen.Method(x)).ToArray();
+            SyntaxNode[] members = testModel.SoftwareCells.Select(x => Operations.GenerateOperationMethod(_gen.Generator, x)).ToArray();
             var newNameMethod = members[0];
             Assert.AreEqual("public string Random_Name()\r\n{\r\n}", newNameMethod.NormalizeWhitespace().ToFullString());
 
@@ -74,9 +77,9 @@ namespace Roslyn.Tests
 
             // Named Parameter
             person.InputStreams.Clear();
-            person.InputStreams.Add(new DataStreamDefinition() {DataNames = "int | age:int, name:string"});
-            var personMethodNamedParams = _gen.Method(person);
-            Assert.AreEqual("public Person Create_Person(int age, string name)\r\n{\r\n}", 
+            person.InputStreams.Add(new DataStreamDefinition() { DataNames = "int | age:int, name:string" });
+            var personMethodNamedParams = Operations.GenerateOperationMethod(_gen.Generator, person);
+            Assert.AreEqual("public Person Create_Person(int age, string name)\r\n{\r\n}",
                 personMethodNamedParams.NormalizeWhitespace().ToFullString());
 
 
@@ -85,6 +88,80 @@ namespace Roslyn.Tests
 
 
 
+        }
+
+        [TestMethod()]
+        public void FindParametersTest()
+        {
+
+            var testModel = new MainModel();
+            var newNameID = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            var newName = SoftwareCellsManager.GetFirst(newNameID, testModel);
+            Interactions.AddNewInput(newNameID, "", testModel);
+
+            var alterID = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
+            var alter = SoftwareCellsManager.GetFirst(alterID, testModel);
+            MainModelManager.Connect(newNameID, alterID, "string | ", testModel);
+
+            var personID = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
+            var person = SoftwareCellsManager.GetFirst(personID, testModel);
+            MainModelManager.Connect(alterID, personID, "int | int, string", testModel);
+
+
+            var expectedList = new List<Parameter>()
+            {
+                new Parameter() {FoundFlag = true, Source = alter},
+                new Parameter() {FoundFlag = true, Source = newName}
+            };
+            var paramList = _gen.FindParameters(testModel.Connections, person);
+            Assert.IsTrue(expectedList[0].Compare(paramList[0]));
+            Assert.IsTrue(expectedList[1].Compare(paramList[1]));
+        }
+
+        [TestMethod()]
+        public void FindOneParameterTest()
+        {
+            var testModel = new MainModel();
+            var newNameID = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            var newName = SoftwareCellsManager.GetFirst(newNameID, testModel);
+            Interactions.AddNewInput(newNameID, "", testModel);
+
+            var alterID = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
+            var alter = SoftwareCellsManager.GetFirst(alterID, testModel);
+            MainModelManager.Connect(newNameID, alterID, "string | ", testModel);
+
+            var personID = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
+            var person = SoftwareCellsManager.GetFirst(personID, testModel);
+            MainModelManager.Connect(alterID, personID, "int | int, string", testModel);
+
+            var expected = new Parameter { FoundFlag = true, Source = alter };
+            var lookingfor = new NameType { Name = null, Type = "int" };
+            Assert.IsTrue(expected.Compare(_gen.FindOneParameter(lookingfor, testModel.Connections, person)));
+
+            expected = new Parameter { FoundFlag = true, Source = newName };
+            lookingfor = new NameType { Name = null, Type = "string" };
+            Assert.IsTrue(expected.Compare(_gen.FindOneParameter(lookingfor, testModel.Connections, person)));
+
+        }
+
+        [TestMethod()]
+        public void CreateIntegrationBodyTest()
+        {
+            var testModel = new MainModel();
+            var newNameID = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            var newName = SoftwareCellsManager.GetFirst(newNameID, testModel);
+            Interactions.AddNewInput(newNameID, "", testModel);
+
+            var alterID = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
+            var alter = SoftwareCellsManager.GetFirst(alterID, testModel);
+            MainModelManager.Connect(newNameID, alterID, "string | ", testModel);
+
+            var personID = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
+            var person = SoftwareCellsManager.GetFirst(personID, testModel);
+            MainModelManager.Connect(alterID, personID, "int | int, string", testModel);
+            Interactions.AddNewOutput(person ,"Person");
+
+            var nodes =_gen.CreateIntegrationBody(_gen.Generator, testModel.Connections, testModel.SoftwareCells);
         }
     }
 }
