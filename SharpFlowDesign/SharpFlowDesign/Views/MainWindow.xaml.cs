@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using FlowDesignModel;
 using SharpFlowDesign.ViewModels;
 
@@ -14,8 +15,6 @@ namespace SharpFlowDesign.Views
         {
             InitializeComponent();
             DataContext = MainViewModel.Instance();
-            //Interactions.SetViewModel((MainViewModel)DataContext);
-
         }
 
 

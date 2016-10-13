@@ -96,8 +96,8 @@
     <Compile Include="DataTypeParser.cs" />
     <Compile Include="Integrations.cs" />
     <Compile Include="MyGenerator.cs" />
-    <Compile Include="Operations.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="MethodsGenerator.cs" />
+    <Compile Include="ExampleProgramm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

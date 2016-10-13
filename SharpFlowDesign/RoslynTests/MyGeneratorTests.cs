@@ -16,17 +16,18 @@ namespace Roslyn.Tests
         public void GetReturnTypesTest()
         {
 
-            CollectionAssert.AreEqual(new[] { "string" }, DataStreamParser.ParseDataNames("string").Select(x => x.Type).ToArray());
-            CollectionAssert.AreEqual(new[] { "string" }, DataStreamParser.ParseDataNames("|string", pipePart: 2).Select(x => x.Type).ToArray());
-            CollectionAssert.AreEqual(new[] { "string" }, DataStreamParser.ParseDataNames("int|string", pipePart: 2).Select(x => x.Type).ToArray());
-            CollectionAssert.AreEqual(new[] { "string", "int" }, DataStreamParser.ParseDataNames("int|string,int", pipePart: 2).Select(x => x.Type).ToArray());
+            CollectionAssert.AreEqual(new[] { "string" }, DataStreamParser.GetInputPart("string").Select(x => x.Type).ToArray());
+            CollectionAssert.AreEqual(new[] { "string" }, DataStreamParser.GetOutputPart("string").Select(x => x.Type).ToArray());
+            CollectionAssert.AreEqual(new[] { "string" }, DataStreamParser.GetInputPart("|string").Select(x => x.Type).ToArray());
+            CollectionAssert.AreEqual(new[] { "string" }, DataStreamParser.GetInputPart("int|string").Select(x => x.Type).ToArray());
+            CollectionAssert.AreEqual(new[] { "string", "int" }, DataStreamParser.GetInputPart("int|string,int").Select(x => x.Type).ToArray());
 
             // removes whitespace?
-            CollectionAssert.AreEqual(new[] { "string", "int" }, DataStreamParser.ParseDataNames("int| string , int", pipePart: 2).Select(x => x.Type).ToArray());
+            CollectionAssert.AreEqual(new[] { "string", "int" }, DataStreamParser.GetInputPart("int| string , int").Select(x => x.Type).ToArray());
 
             // named parameter
-            CollectionAssert.AreEqual(new[] { "string", "int" }, DataStreamParser.ParseDataNames("int| name:string , age:int", pipePart: 2).Select(x => x.Type).ToArray());
-            CollectionAssert.AreEqual(new[] { "name", "age" }, DataStreamParser.ParseDataNames("int| name:string , age:int", pipePart: 2).Select(x => x.Name).ToArray());
+            CollectionAssert.AreEqual(new[] { "string", "int" }, DataStreamParser.GetInputPart("int| name:string , age:int").Select(x => x.Type).ToArray());
+            CollectionAssert.AreEqual(new[] { "name", "age" }, DataStreamParser.GetInputPart("int| name:string , age:int").Select(x => x.Name).ToArray());
 
         }
 
@@ -37,14 +38,14 @@ namespace Roslyn.Tests
             var node = SoftwareCellsManager.CreateNew("Random Name");
             MainModelManager.AddNewOutput(node, "string");
 
-            var methode = Operations.GenerateOperationMethod(_gen.Generator, node);
+            var methode = MethodsGenerator.GenerateMethod(_gen.Generator, node);
             Assert.AreEqual("public string Random_Name()\r\n{\r\n}", methode.NormalizeWhitespace().ToFullString());
 
             // Empty output => return void
             node = SoftwareCellsManager.CreateNew("Random Name");
             MainModelManager.AddNewOutput(node, "");
 
-            methode = Operations.GenerateOperationMethod(_gen.Generator, node);
+            methode = MethodsGenerator.GenerateMethod(_gen.Generator, node);
             Assert.AreEqual("public void Random_Name()\r\n{\r\n}", methode.NormalizeWhitespace().ToFullString());
 
 
@@ -61,7 +62,7 @@ namespace Roslyn.Tests
             var definition = DataStreamManager.CreateNewDefinition(person, "Person");
             person.OutputStreams.Add(definition);
 
-            SyntaxNode[] members = testModel.SoftwareCells.Select(x => Operations.GenerateOperationMethod(_gen.Generator, x)).ToArray();
+            SyntaxNode[] members = testModel.SoftwareCells.Select(x => MethodsGenerator.GenerateMethod(_gen.Generator, x)).ToArray();
             var newNameMethod = members[0];
             Assert.AreEqual("public string Random_Name()\r\n{\r\n}", newNameMethod.NormalizeWhitespace().ToFullString());
 
@@ -74,7 +75,7 @@ namespace Roslyn.Tests
             // Named Parameter
             person.InputStreams.Clear();
             person.InputStreams.Add(new DataStreamDefinition() { DataNames = "int | age:int, name:string" });
-            var personMethodNamedParams = Operations.GenerateOperationMethod(_gen.Generator, person);
+            var personMethodNamedParams = MethodsGenerator.GenerateMethod(_gen.Generator, person);
             Assert.AreEqual("public Person Create_Person(int age, string name)\r\n{\r\n}",
                 personMethodNamedParams.NormalizeWhitespace().ToFullString());
 
@@ -106,7 +107,7 @@ namespace Roslyn.Tests
                 new Parameter() {FoundFlag = true, Source = alter},
                 new Parameter() {FoundFlag = true, Source = newName}
             };
-            var paramList = _gen.FindParameters(testModel.Connections, person);
+            var paramList = Integrations.FindParameters(testModel.Connections, person);
             Assert.IsTrue(expectedList[0].Compare(paramList[0]));
             Assert.IsTrue(expectedList[1].Compare(paramList[1]));
         }
@@ -126,11 +127,11 @@ namespace Roslyn.Tests
 
             var expected = new Parameter { FoundFlag = true, Source = alter };
             var lookingfor = new NameType { Name = null, Type = "int" };
-            Assert.IsTrue(expected.Compare(_gen.FindOneParameter(lookingfor, testModel.Connections, person)));
+            Assert.IsTrue(expected.Compare(Integrations.FindOneParameter(lookingfor, testModel.Connections, person)));
 
             expected = new Parameter { FoundFlag = true, Source = newName };
             lookingfor = new NameType { Name = null, Type = "string" };
-            Assert.IsTrue(expected.Compare(_gen.FindOneParameter(lookingfor, testModel.Connections, person)));
+            Assert.IsTrue(expected.Compare(Integrations.FindOneParameter(lookingfor, testModel.Connections, person)));
 
         }
 
@@ -148,7 +149,7 @@ namespace Roslyn.Tests
             MainModelManager.Connect(alter, person, "int | int, string", testModel);
             MainModelManager.AddNewOutput(person, "Person");
 
-            var nodes = _gen.CreateIntegrationBody(_gen.Generator, testModel.Connections, testModel.SoftwareCells);
+            var nodes = Integrations.CreateIntegrationBody(_gen.Generator, testModel.Connections, testModel.SoftwareCells);
         }
 
         [TestMethod()]
@@ -159,7 +160,7 @@ namespace Roslyn.Tests
             var foo = MainModelManager.AddNewSoftwareCell("foo", testModel);
             MainModelManager.AddNewInput(foo, "");
             MainModelManager.AddNewOutput(foo, "");
-           var nodes = _gen.LocalMethodCall(_gen.Generator, foo, null, new List<GeneratedLocalVariable>());
+           var nodes = Integrations.LocalMethodCall(_gen.Generator, foo, null, new List<GeneratedLocalVariable>());
            var fullstring =nodes.NormalizeWhitespace().ToFullString();
             Assert.AreEqual("foo()", fullstring);
         }

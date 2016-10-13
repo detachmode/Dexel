@@ -16,29 +16,12 @@ namespace Roslyn
         public static SyntaxNode[] CreateIntegrationBody(SyntaxGenerator generator, List<DataStream> connections,
            List<SoftwareCell> integratedSoftwareCells)
         {
+            _methodsToGenerateCount = 0;
             var generated = new List<GeneratedLocalVariable>();
 
             var methodWithParameterDependencieses = FindParameterDependencies(integratedSoftwareCells, connections);
-            return CreateAllDependenciesAvailable(generator, methodWithParameterDependencieses, generated).ToArray();
-        }
-
-
-        private static List<SyntaxNode> CreateAllDependenciesAvailable(SyntaxGenerator generator,
-            List<MethodWithParameterDependencies> parameterDependencieses, List<GeneratedLocalVariable> generated)
-        {
-            var result = GenerateNoParameterMethods(generator, parameterDependencieses, generated);
-            result = CreateAllDependenciesAvailable(generator, parameterDependencieses, generated, result).ToList();
-
-            return result;
-        }
-
-
-        private static List<SyntaxNode> GenerateNoParameterMethods(SyntaxGenerator generator,
-            List<MethodWithParameterDependencies> parameterDependencies, List<GeneratedLocalVariable> generated)
-        {
-            var noParams = parameterDependencies.Where(x => x.Parameters.Count == 0).ToList();
-            parameterDependencies.RemoveAll(x => x.Parameters.Count == 0);
-            return noParams.Select(x => LocalMethodCall(generator, x.OfSoftwareCell, null, generated)).ToList();
+            return CreateAllDependenciesAvailable(generator, methodWithParameterDependencieses,
+                generated, new List<SyntaxNode>()).ToArray();
         }
 
 
@@ -108,7 +91,7 @@ namespace Roslyn
         public static List<Parameter> FindParameters(List<DataStream> connections, SoftwareCell ofSoftwareCell)
         {
             var nameTypes =
-                DataStreamParser.ParseDataNames(ofSoftwareCell.InputStreams.First().DataNames, pipePart: 2).ToList();
+                DataStreamParser.GetInputPart(ofSoftwareCell.InputStreams.First().DataNames).ToList();
             return
                 nameTypes.Where(nt => nt.Type != "")
                     .Select(nt => FindOneParameter(nt, connections, ofSoftwareCell))
@@ -147,8 +130,7 @@ namespace Roslyn
 
         private static List<NameType> FindTypeInDataStream(NameType lookingForNameType, DataStream dataStream)
         {
-            var outputNametypes = DataStreamParser.ParseDataNames(dataStream.DataNames, pipePart: 1).ToList();
-
+            var outputNametypes = DataStreamParser.GetOutputPart(dataStream.DataNames).ToList();
 
             var found = outputNametypes
                 .Where(nt => nt.Type == lookingForNameType.Type && nt.Name == lookingForNameType.Name)
@@ -167,7 +149,7 @@ namespace Roslyn
         public static SyntaxNode LocalMethodCall(SyntaxGenerator generator, SoftwareCell softwareCell, SyntaxNode[] parameter,
             List<GeneratedLocalVariable> generated)
         {
-            var firstouttype = DataStreamParser.ParseDataNames(softwareCell.OutputStreams.First().DataNames).First();
+            var firstouttype = DataStreamParser.GetOutputPart(softwareCell.OutputStreams.First().DataNames).First();
             var localType = DataTypeParser.ConvertToTypeExpression(generator, firstouttype.Type);
             var localName = GenerateLocalVariableName(firstouttype);
 
@@ -177,7 +159,7 @@ namespace Roslyn
                 Source = softwareCell
             });
 
-            var methodname = Operations.GetMethodName(softwareCell);
+            var methodname = MethodsGenerator.GetMethodName(softwareCell);
             return GenerateLocalMethodCall(generator, methodname, parameter, firstouttype, localType, localName);
         }
 

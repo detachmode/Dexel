@@ -17,7 +17,7 @@ namespace SharpFlowDesign
             Multiple
         }
 
-        private static Timer aTimer;
+        private static Timer _aTimer;
 
 
         public static void AddNewIOCell(Point pos)
@@ -105,18 +105,8 @@ namespace SharpFlowDesign
         public static void ConnectDangelingConnectionAndSoftwareCell(DataStreamDefinition defintion, SoftwareCell source,
             SoftwareCell destination, MainModel mainModel)
         {
-            //DataStreamManager.FindExistingDefinition(defintion, source.OutputStreams,
-            //    def => def.Connected = true,
-            //    () => source.OutputStreams.Add(DataStreamManager.CreateNewDefinition(source, defintion, connected: true))
-            //    );
-
-            //DataStreamManager.FindExistingDefinition(defintion, destination.InputStreams,
-            //    def => def.Connected = true,
-            //    () => destination.InputStreams.Add(DataStreamManager.CreateNewDefinition(destination, defintion, connected: true))
-            //    );
 
             MainModelManager.AddNewConnection(defintion, source, destination, mainModel);
-
             ViewRedraw();
         }
 
@@ -146,14 +136,14 @@ namespace SharpFlowDesign
 
         public static void AutoPrintOFF()
         {
-            aTimer.Dispose();
+            _aTimer.Dispose();
         }
 
 
         public static void AutoPrint(MainModel mainModel, Action<MainModel> printAction)
         {
-            aTimer?.Dispose();
-            aTimer = new Timer(state => { printAction(mainModel); }, null, 0, 200);
+            _aTimer?.Dispose();
+            _aTimer = new Timer(state => { printAction(mainModel); }, null, 0, 200);
         }
     }
 }

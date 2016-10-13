@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Editing;
 namespace Roslyn
 {
 
-    internal class Program
+    internal class ExampleProgramm
     {
         private static void Main(string[] args)
         {
@@ -134,7 +134,7 @@ namespace Roslyn
             //var myGenerator = new MyGenerator();
 
 
-            //SyntaxNode[] members = testModel.SoftwareCells.Select(x => myGenerator.GenerateOperationMethod(x)).ToArray();
+            //SyntaxNode[] members = testModel.SoftwareCells.Select(x => myGenerator.GenerateMethod(x)).ToArray();
 
 
 

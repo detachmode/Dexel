@@ -7,11 +7,18 @@ namespace Roslyn
     public  static class DataStreamParser
     {
 
-        public static IEnumerable<NameType> ParseDataNames(string dataNames, int pipePart = 1)
+        public static IEnumerable<NameType> GetOutputPart(string dataNames)
         {
-            var datanames = GetPipePart(dataNames, pipePart);
+            var datanames = GetPipePart(dataNames, 1);
             return ConvertToNameTypes(datanames);
         }
+
+        public static IEnumerable<NameType> GetInputPart(string dataNames)
+        {
+            var datanames = GetPipePart(dataNames, 2);
+            return ConvertToNameTypes(datanames);
+        }
+
 
         private static IEnumerable<NameType> ConvertToNameTypes(string datanames)
         {
