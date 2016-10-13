@@ -32,6 +32,7 @@
                         X="{Binding ActualWidth, ElementName=TheGrid, Mode=OneWay,Converter={converter:PercentageConverter}, ConverterParameter='-0,5'}"/>
                 </TransformGroup>
             </Grid.RenderTransform>
+            
             <customControls:DataNamesControl DataContext="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
         </Grid>
     </Canvas>

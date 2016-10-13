@@ -12,6 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Xml;
+using ICSharpCode.AvalonEdit;
+using ICSharpCode.AvalonEdit.Highlighting;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 
 namespace SharpFlowDesign.CustomControls
 {
@@ -20,9 +24,30 @@ namespace SharpFlowDesign.CustomControls
     /// </summary>
     public partial class DataNamesControl : UserControl
     {
+        private static XshdSyntaxDefinition _xshd;
+        private static readonly HighlightingManager Man = new HighlightingManager();
+
         public DataNamesControl()
         {
             InitializeComponent();
+
+
+            if (_xshd == null)
+            {
+               
+                using (XmlTextReader reader = new XmlTextReader(@"FlowDesignColor.xshd"))
+                {
+                    _xshd = HighlightingLoader.LoadXshd(reader);
+                }
+            }
+            TextBox.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
+            TextBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
+            TextBox.SyntaxHighlighting = HighlightingLoader.Load(_xshd, Man);
+            TextBox.TextChanged += (sender, args) =>
+            {
+              
+            };
+
         }
 
 

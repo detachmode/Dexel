@@ -1,9 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpFlowDesign", "SharpFlowDesign\SharpFlowDesign.csproj", "{3AE4EC04-B126-4F59-AD4B-FDD80AC50136}"
+	ProjectSection(ProjectDependencies) = postProject
+		{C8694B16-924D-492F-8400-577D0DDE19FF} = {C8694B16-924D-492F-8400-577D0DDE19FF}
+		{3D0F668F-729A-4172-9E3E-0DC60503ECE8} = {3D0F668F-729A-4172-9E3E-0DC60503ECE8}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpFlowDesignTests", "SharpFlowDesignTests\SharpFlowDesignTests.csproj", "{2C118163-5642-415D-9C41-B4F4BCE4B587}"
 EndProject

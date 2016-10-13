@@ -27,10 +27,10 @@ namespace Roslyn
 
         private static List<SyntaxNode> CreateAllDependenciesAvailable(SyntaxGenerator generator,
             List<MethodWithParameterDependencies> methodsToGenerate, List<GeneratedLocalVariable> generated,
-            IEnumerable<SyntaxNode> result)
+            List<SyntaxNode> result)
         {
             if (!methodsToGenerate.Any() || methodsToGenerate.Count == _methodsToGenerateCount)
-                return result.ToList();
+                return result;
 
             // to detect if no more methods can be generated 
             _methodsToGenerateCount = methodsToGenerate.Count;
@@ -39,13 +39,11 @@ namespace Roslyn
                 .Where(methodWithParameterDependencies => CanBeGenerated(generated, methodWithParameterDependencies))
                 .Select(methodWithParameterDependencies =>
                        GenerateLocalMethodCall(generator, generated, methodWithParameterDependencies)).ToList();
-            var newresult = result.ToList();
-            newresult.AddRange(nodes);
 
+            result.AddRange(nodes);
             methodsToGenerate.RemoveAll(x => generated.Any(y => y.Source == x.OfSoftwareCell));
 
-
-            return CreateAllDependenciesAvailable(generator, methodsToGenerate, generated, newresult);
+            return CreateAllDependenciesAvailable(generator, methodsToGenerate, generated, result);
         }
 
 
@@ -135,6 +133,7 @@ namespace Roslyn
             var found = outputNametypes
                 .Where(nt => nt.Type == lookingForNameType.Type && nt.Name == lookingForNameType.Name)
                 .ToList();
+
             return found;
         }
 
@@ -150,7 +149,7 @@ namespace Roslyn
             List<GeneratedLocalVariable> generated)
         {
             var firstouttype = DataStreamParser.GetOutputPart(softwareCell.OutputStreams.First().DataNames).First();
-            var localType = DataTypeParser.ConvertToTypeExpression(generator, firstouttype.Type);
+            var localType = DataTypeParser.ConvertToTypeExpression(generator, firstouttype);
             var localName = GenerateLocalVariableName(firstouttype);
 
             generated.Add(new GeneratedLocalVariable

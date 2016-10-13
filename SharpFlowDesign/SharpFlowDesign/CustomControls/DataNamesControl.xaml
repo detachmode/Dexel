@@ -4,18 +4,30 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" >
-    <StackPanel Orientation="Horizontal">
-        <TextBlock Foreground="{DynamicResource Foreground}" FontSize="14">
+    <Border Background="{StaticResource BG}" BorderBrush="{StaticResource FillPointerBrush}" BorderThickness="2"> 
+       
+        <StackPanel Orientation="Horizontal">
+        <!--<TextBlock Foreground="{DynamicResource Foreground}" FontSize="14">
                 <Run Text="("/>
-        </TextBlock>
-        <TextBox x:Name="TextBox"
-                CaretBrush="{DynamicResource Foreground}" Background="{x:Null}"
-                Foreground="{DynamicResource Foreground}" BorderBrush="{x:Null}"
-                Text="{Binding DataNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" >
+        </TextBlock>-->
+        <avalonEdit:TextEditor
+            Margin="2"
+            xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
+            x:Name="TextBox"
+           
+            Foreground="{DynamicResource Foreground}" 
+            BorderBrush="{x:Null}"
+            
+            Document="{Binding DataNames, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TextDocumentConverter}}"
+            FontFamily="Consolas"
+            Background="{StaticResource BG}"
+            SyntaxHighlighting="FlowDesign"
+            FontSize="10pt"/>
 
-        </TextBox>
-        <TextBlock Foreground="{DynamicResource Foreground}" FontSize="14">
+        <!--<TextBlock Foreground="{DynamicResource Foreground}" FontSize="14">
                 <Run Text=")"/>
-        </TextBlock>
+        </TextBlock>-->
+        <!--Text="{Binding DataNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
     </StackPanel>
+        </Border>
 </UserControl>

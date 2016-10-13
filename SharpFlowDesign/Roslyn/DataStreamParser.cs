@@ -4,6 +4,13 @@ using System.Text.RegularExpressions;
 
 namespace Roslyn
 {
+    public class NameType
+    {
+        public string Name, Type;
+        public bool IsArray;
+        public bool IsList;
+    }
+
     public  static class DataStreamParser
     {
 
@@ -24,11 +31,24 @@ namespace Roslyn
         {
             return datanames.Split(',').Select(x =>
             {
-                var splitted = x.Split(':');
+                bool isArray = false, isList = false;
+                var splitted = x.Split(':').Select(s =>
+                {
+                    if (s.Contains('*'))
+                        isList = true;
+
+                    if (s.Contains("[]"))
+                        isArray = true;
+                    string cleaned = Regex.Replace(s, "[@,\\.\";' \\[\\]\\\\]", string.Empty);
+                    return cleaned.Trim();
+
+                }).ToArray();
                 return new NameType()
                 {
-                    Name = splitted.Length == 2 ? splitted[0].Trim() : null,
-                    Type = splitted.Length == 2 ? splitted[1].Trim() : splitted[0].Trim()
+                    Name = splitted.Length == 2 ? splitted[0] : null,
+                    Type = splitted.Length == 2 ? splitted[1] : splitted[0],
+                    IsArray = isArray,
+                    IsList = isList
                 };
             });
         }

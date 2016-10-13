@@ -10,6 +10,7 @@ using System.Windows.Markup;
 using System.Windows.Media;
 using SharpFlowDesign.CustomControls;
 using static System.Windows.Media.ColorConverter;
+using ICSharpCode.AvalonEdit.Document;
 
 namespace SharpFlowDesign.Converter
 {
@@ -34,6 +35,24 @@ namespace SharpFlowDesign.Converter
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             return _instance ?? (_instance = new PercentageConverter());
+        }
+    }
+
+
+    public class TextDocumentConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var document = new ICSharpCode.AvalonEdit.Document.TextDocument();
+            document.Text = (string)value;
+            return document;
+            
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var document = (TextDocument)value;
+            return document.Text;
         }
     }
 

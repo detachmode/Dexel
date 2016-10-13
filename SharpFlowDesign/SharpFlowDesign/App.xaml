@@ -7,6 +7,8 @@
             <converter:DebugConverter x:Key="DebugConverter" />
             <converter:IOCellSelectionConverter x:Key="SelectionConverter" />
             <converter:PercentageConverter x:Key="PercentageConverter" />
+            <converter:TextDocumentConverter x:Key="TextDocumentConverter" />
+            
 
             <ItemsPanelTemplate x:Key="DrawingBoardItemControl">
                 <Canvas />

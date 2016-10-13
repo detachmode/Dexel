@@ -100,9 +100,6 @@ namespace Roslyn
     }
 
 
-    public class NameType
-    {
-        public string Name, Type;
-    }
+
 
 }

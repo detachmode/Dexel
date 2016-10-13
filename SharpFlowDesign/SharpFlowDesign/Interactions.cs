@@ -27,7 +27,7 @@ namespace SharpFlowDesign
             pos.Y -= 20;
             softwareCell.Position = new Point(pos.X, pos.Y);
             softwareCell.InputStreams.Add(DataStreamManager.CreateNewDefinition(softwareCell, "input"));
-            softwareCell.OutputStreams.Add(DataStreamManager.CreateNewDefinition(softwareCell,"output"));
+            softwareCell.OutputStreams.Add(DataStreamManager.CreateNewDefinition(softwareCell, "output"));
 
             MainModel.Get().SoftwareCells.Add(softwareCell);
             ViewRedraw();

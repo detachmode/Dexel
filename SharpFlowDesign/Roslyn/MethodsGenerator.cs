@@ -26,7 +26,7 @@ namespace Roslyn
         {
             var outputStream = softwareCell.OutputStreams.First();
             return DataStreamParser.GetOutputPart(outputStream.DataNames)
-                .Select(nameType => DataTypeParser.ConvertToTypeExpression(generator, nameType.Type))
+                .Select(nametype => DataTypeParser.ConvertToTypeExpression(generator, nametype))
                 .First();
         }
 
@@ -50,15 +50,24 @@ namespace Roslyn
 
             var inputDataNames = softwareCell.InputStreams.First().DataNames;
             var i = 0;
-            return DataStreamParser.GetInputPart(inputDataNames)
+            var nametypes = DataStreamParser.GetInputPart(inputDataNames);
+            return nametypes
                 .Where(nameType => DataTypeParser.ConvertToTypeExpression(generator,nameType.Type) != null)
                 .Select(nametype =>
                 {
                     ++i;
-                    var name = nametype.Name ?? "param" + i;                    
-                    return generator.ParameterDeclaration(name, DataTypeParser.ConvertToTypeExpression(generator,nametype.Type));
+                    var name = GenerateParameterName(nametype, i);
+                    var typeExpression = DataTypeParser.ConvertToTypeExpression(generator, nametype);                
+                    return generator.ParameterDeclaration(name, typeExpression);
                 }).ToArray();
         }
+
+
+        private static string GenerateParameterName(NameType nametype, int i)
+        {
+            return nametype.Name ?? "param" + i;
+        }
+
 
         public static string GetMethodName(SoftwareCell softwareCell)
         {
