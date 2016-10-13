@@ -94,6 +94,7 @@
     <Compile Include="Common\Extensions.cs" />
     <Compile Include="DataStreamParser.cs" />
     <Compile Include="DataTypeParser.cs" />
+    <Compile Include="Integrations.cs" />
     <Compile Include="MyGenerator.cs" />
     <Compile Include="Operations.cs" />
     <Compile Include="Program.cs" />
