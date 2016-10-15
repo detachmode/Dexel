@@ -40,8 +40,7 @@ namespace SharpFlowDesign.CustomControls
                     _xshd = HighlightingLoader.LoadXshd(reader);
                 }
             }
-            TextBox.VerticalScrollBarVisibility = ScrollBarVisibility.Hidden;
-            TextBox.HorizontalScrollBarVisibility = ScrollBarVisibility.Hidden;
+            TextBox.LostFocus += (sender, args) => TextBox.TextArea.ClearSelection();
             TextBox.SyntaxHighlighting = HighlightingLoader.Load(_xshd, Man);
             TextBox.TextChanged += (sender, args) =>
             {

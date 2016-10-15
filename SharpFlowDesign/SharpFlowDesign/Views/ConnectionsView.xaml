@@ -32,8 +32,9 @@
                         X="{Binding ActualWidth, ElementName=TheGrid, Mode=OneWay,Converter={converter:PercentageConverter}, ConverterParameter='-0,5'}"/>
                 </TransformGroup>
             </Grid.RenderTransform>
-            
-            <customControls:DataNamesControl DataContext="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-        </Grid>
+            <Border Canvas.ZIndex="999" Background="{StaticResource BG}" BorderBrush="{StaticResource FillPointerBrush}" BorderThickness="2">
+                <customControls:DataNamesControl Canvas.ZIndex="1000" DataContext="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </Border>
+            </Grid>
     </Canvas>
 </UserControl>

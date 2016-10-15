@@ -4,9 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" >
-    <Border Background="{StaticResource BG}" BorderBrush="{StaticResource FillPointerBrush}" BorderThickness="2"> 
-       
-        <StackPanel Orientation="Horizontal">
+
+
+    <StackPanel Orientation="Horizontal">
         <!--<TextBlock Foreground="{DynamicResource Foreground}" FontSize="14">
                 <Run Text="("/>
         </TextBlock>-->
@@ -14,20 +14,22 @@
             Margin="2"
             xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
             x:Name="TextBox"
-           
+            
+            MinWidth="12"
             Foreground="{DynamicResource Foreground}" 
             BorderBrush="{x:Null}"
-            
+            HorizontalScrollBarVisibility="Disabled"
+            VerticalScrollBarVisibility="Disabled"
             Document="{Binding DataNames, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TextDocumentConverter}}"
             FontFamily="Consolas"
             Background="{StaticResource BG}"
             SyntaxHighlighting="FlowDesign"
-            FontSize="10pt"/>
+            />
+        <!--FontSize="10pt"-->
 
         <!--<TextBlock Foreground="{DynamicResource Foreground}" FontSize="14">
                 <Run Text=")"/>
         </TextBlock>-->
         <!--Text="{Binding DataNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
     </StackPanel>
-        </Border>
 </UserControl>
