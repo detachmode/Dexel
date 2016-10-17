@@ -84,6 +84,9 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="DataStreamParserTests.cs" />
+    <Compile Include="DataTypeParserTests.cs" />
+    <Compile Include="IntegrationsTests.cs" />
     <Compile Include="MyGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

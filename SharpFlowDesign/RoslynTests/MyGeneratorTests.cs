@@ -133,24 +133,23 @@ namespace Roslyn.Tests
             lookingfor = new NameType { Name = null, Type = "string" };
             Assert.IsTrue(expected.Compare(Integrations.FindOneParameter(lookingfor, testModel.Connections, person)));
 
-        }
-
-        [TestMethod()]
-        public void CreateIntegrationBodyTest()
-        {
-            var testModel = new MainModel();
-            var newName = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            testModel = new MainModel();
+            newName = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
             MainModelManager.AddNewInput(newName, "");
 
-            var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
+            alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
             MainModelManager.Connect(newName, alter, "string | ", testModel);
 
-            var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            MainModelManager.Connect(alter, person, "int | int, string", testModel);
-            MainModelManager.AddNewOutput(person, "Person");
+            person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
+            MainModelManager.Connect(alter, person, "int | ... string", testModel);
 
-            var nodes = Integrations.CreateIntegrationBody(_gen.Generator, testModel.Connections, testModel.SoftwareCells);
+            lookingfor = new NameType { Name = null, Type = "int" };
+            Assert.IsTrue(Integrations.FindOneParameter(lookingfor, testModel.Connections, person).Source == alter);
+
+
         }
+
+      
 
         [TestMethod()]
         public void LocalMethodCallTest()

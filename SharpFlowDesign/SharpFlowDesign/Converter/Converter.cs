@@ -51,8 +51,9 @@ namespace SharpFlowDesign.Converter
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var document = (TextDocument)value;
-            return document.Text;
+            throw new NotImplementedException();
+            //var document = (TextDocument)value;
+            //return document.Text;
         }
     }
 

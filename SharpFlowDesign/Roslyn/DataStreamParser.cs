@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -9,49 +10,119 @@ namespace Roslyn
         public string Name, Type;
         public bool IsArray;
         public bool IsList;
+        public bool IsInsideStream;
     }
 
     public  static class DataStreamParser
     {
 
-        public static IEnumerable<NameType> GetOutputPart(string dataNames)
+        public static IEnumerable<NameType> GetOutputPart(string rawdatanames)
         {
-            var datanames = GetPipePart(dataNames, 1);
-            return ConvertToNameTypes(datanames);
+            var result = new List<NameType>();
+            var isInsideStream = IsStream(rawdatanames);
+            var insideParenthesis = GetInsideParenthesis(rawdatanames);
+
+            var firstdatanames = GetPipePart(insideParenthesis, 1);
+          
+            CommaSeparator(firstdatanames, onEach: s
+                => ConvertToNameType(s, isInsideStream, onNewNameType: nametype
+                    => result.Add(nametype)));
+
+            return result;
         }
 
-        public static IEnumerable<NameType> GetInputPart(string dataNames)
+
+        private static bool IsStream(string rawdatanames)
         {
-            var datanames = GetPipePart(dataNames, 2);
-            return ConvertToNameTypes(datanames);
+           return Regex.IsMatch(rawdatanames, @"^\(.*\)\*$");
         }
 
 
-        private static IEnumerable<NameType> ConvertToNameTypes(string datanames)
+        public static IEnumerable<NameType> GetInputPart(string rawdatanames)
         {
-            return datanames.Split(',').Select(x =>
+            var result = new List<NameType>();
+
+            HasThreeDotSyntax(rawdatanames, 
+                () => result = GetOutputPart(rawdatanames).ToList());
+
+            AddSecondPartDataNames(rawdatanames, result);
+
+            return result;
+        }
+
+
+        private static void AddSecondPartDataNames(string rawdatanames, ICollection<NameType> result)
+        {
+         
+            var isInsideStream = IsStream(rawdatanames);
+            var insideParenthesis = GetInsideParenthesis(rawdatanames);
+            var seconddatanames = GetPipePart(insideParenthesis, 2);
+            CommaSeparator(seconddatanames, onEach: s
+                => ConvertToNameType(s, isInsideStream, onNewNameType: result.Add));
+        }
+
+
+        private static string GetInsideParenthesis(string rawdatanames)
+        {
+            string result = rawdatanames;
+            var matches = Regex.Matches(rawdatanames, @"^\((.*)\)\*?$");
+            if (matches.Count == 1)
             {
-                bool isArray = false, isList = false;
-                var splitted = x.Split(':').Select(s =>
-                {
-                    if (s.Contains('*'))
-                        isList = true;
+                result = matches[0].Groups[1].Value;
+            }
+            
 
-                    if (s.Contains("[]"))
-                        isArray = true;
-                    string cleaned = Regex.Replace(s, "[@,\\.\";' \\[\\]\\\\]", string.Empty);
-                    return cleaned.Trim();
+            return result;
+        }
 
-                }).ToArray();
-                return new NameType()
-                {
-                    Name = splitted.Length == 2 ? splitted[0] : null,
-                    Type = splitted.Length == 2 ? splitted[1] : splitted[0],
-                    IsArray = isArray,
-                    IsList = isList
-                };
+
+        private static void HasThreeDotSyntax(string rawdatanames, Action onTrue)
+        {
+            var getAlsoLastOutput = Regex.IsMatch(rawdatanames, @"\|\s*\.{3}\s+");
+            if (getAlsoLastOutput)
+            {
+                onTrue();
+            }
+        }
+
+
+
+
+
+        private static void CommaSeparator(string datanames, Action<string> onEach)
+        {
+            datanames.Split(',').ToList().ForEach(onEach);
+        }
+
+
+        public static void ConvertToNameType(string singledataname, bool isInsideStream, Action<NameType> onNewNameType)
+        {
+            bool isArray = false, isList = false;
+
+           
+
+            var splitted = singledataname.Split(':').Select(s =>
+            {
+                if (s.Contains('*'))
+                    isList = true;
+
+                if (s.Contains("[]"))
+                    isArray = true;
+
+                var cleaned = Regex.Replace(s, "[@,\\.\";'*() \\[\\]\\\\]", string.Empty);
+                return cleaned.Trim();
+            }).ToArray();
+
+            onNewNameType(new NameType()
+            {
+                Name = splitted.Length == 2 ? splitted[0] : null,
+                Type = splitted.Length == 2 ? splitted[1] : splitted[0],
+                IsArray = isArray,
+                IsInsideStream = isInsideStream,
+                IsList = isList
             });
         }
+
 
         private static string GetPipePart(string dataNames, int pipePart)
         {

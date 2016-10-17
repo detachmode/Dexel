@@ -45,7 +45,8 @@
                          Foreground="{DynamicResource Foreground}" BorderBrush="{x:Null}" />
 
         <customControls:DataNamesControl x:Name="TheDataNamesControl" 
-            Grid.Row="0" Margin="4,-4,10,0" Grid.Column="0" DataContext="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></customControls:DataNamesControl>
+            Grid.Row="0" Margin="4,-4,10,0" Grid.Column="0"  
+           DataContext="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
 
     </Grid>

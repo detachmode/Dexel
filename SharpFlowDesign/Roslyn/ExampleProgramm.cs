@@ -20,10 +20,15 @@ namespace Roslyn
             // Get the SyntaxGenerator for the specified language
             var generator = SyntaxGenerator.GetGenerator(workspace, LanguageNames.CSharp);
             // Create using/Imports directives
+            //var test =  generator.ArrayTypeExpression(generator.TypeExpression(SpecialType.System_String));
+
+            //var test = generator.GenericName("IEnumerable", generator.TypeExpression(SpecialType.System_String));
+            //var stringtype = generator.TypeExpression(SpecialType.System_String);
 
 
 
 
+            //var resu = test.ToFullString();
             // Generate two private fields
             //var lastNameField = generator.FieldDeclaration("_lastName",
             //    generator.TypeExpression(SpecialType.System_String),

@@ -31,11 +31,20 @@ namespace Roslyn
         public static SyntaxNode ConvertToTypeExpression(SyntaxGenerator generator, NameType nametype)
         {
             var singletype = ConvertToTypeExpression(generator, nametype.Type);
+            if (nametype.IsInsideStream)
+            {
+                if (nametype.IsList == false && nametype.IsArray == false)
+                    return generator.GenericName("IEnumerable", singletype);
+                if (nametype.IsList == true && nametype.IsArray == false)
+                    return generator.GenericName("IEnumerable", generator.GenericName("List", singletype));
+                if (nametype.IsList == false && nametype.IsArray == true)
+                    return generator.GenericName("IEnumerable", generator.ArrayTypeExpression(singletype));
+            }
 
             if (nametype.IsArray)
                 return generator.ArrayTypeExpression(singletype);
-            //if (nametype.IsList)
-            //    return generator.(singletype);
+            if (nametype.IsList && nametype.IsArray == false)
+               return generator.GenericName("List", singletype);
 
             return singletype;
 

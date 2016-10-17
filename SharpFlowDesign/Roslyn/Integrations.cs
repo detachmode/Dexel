@@ -75,7 +75,7 @@ namespace Roslyn
         }
 
 
-        private static List<MethodWithParameterDependencies> FindParameterDependencies(List<SoftwareCell> softwareCells,
+        public static List<MethodWithParameterDependencies> FindParameterDependencies(List<SoftwareCell> softwareCells,
             List<DataStream> connections)
         {
             return softwareCells.Select(sc => new MethodWithParameterDependencies
@@ -131,10 +131,19 @@ namespace Roslyn
             var outputNametypes = DataStreamParser.GetOutputPart(dataStream.DataNames).ToList();
 
             var found = outputNametypes
-                .Where(nt => nt.Type == lookingForNameType.Type && nt.Name == lookingForNameType.Name)
+                .Where(nt => IsMatchingNameType(lookingForNameType, nt))
                 .ToList();
 
             return found;
+        }
+
+
+        private static bool IsMatchingNameType(NameType lookingForNameType, NameType nt)
+        {
+            return nt.Type == lookingForNameType.Type
+                && nt.IsArray == lookingForNameType.IsArray
+                && nt.IsList == lookingForNameType.IsList
+                && nt.Name == lookingForNameType.Name;
         }
 
 

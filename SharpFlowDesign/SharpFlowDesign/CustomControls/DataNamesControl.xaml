@@ -7,14 +7,11 @@
 
 
     <StackPanel Orientation="Horizontal">
-        <!--<TextBlock Foreground="{DynamicResource Foreground}" FontSize="14">
-                <Run Text="("/>
-        </TextBlock>-->
+
         <avalonEdit:TextEditor
             Margin="2"
             xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
             x:Name="TextBox"
-            
             MinWidth="12"
             Foreground="{DynamicResource Foreground}" 
             BorderBrush="{x:Null}"
@@ -25,11 +22,5 @@
             Background="{StaticResource BG}"
             SyntaxHighlighting="FlowDesign"
             />
-        <!--FontSize="10pt"-->
-
-        <!--<TextBlock Foreground="{DynamicResource Foreground}" FontSize="14">
-                <Run Text=")"/>
-        </TextBlock>-->
-        <!--Text="{Binding DataNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"-->
     </StackPanel>
 </UserControl>
