@@ -1,0 +1,54 @@
+﻿<UserControl x:Class="Dexel.Editor.Views.DrawingBoard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:views="clr-namespace:Dexel.Editor.Views"
+             xmlns:viewModels="clr-namespace:Dexel.Editor.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModels:MainViewModel, IsDesignTimeCreatable=True}"
+             d:DesignHeight="300" d:DesignWidth="700">
+
+    <Grid x:Name="TheCanvas" MouseUp="UIElement_OnMouseUp"
+          AllowDrop="True"
+          Canvas.ZIndex="100"
+          IsHitTestVisible="True"
+          Background="Transparent"
+          DragOver="MainWindow_OnDragOver">
+
+
+        <!--<customControls:Pointer Start="{Binding TemporaryConnection.Start.OutputPoint}" />-->
+        
+        <!--Connections-->
+        <ItemsControl ItemsPanel="{StaticResource DrawingBoardItemControl}" 
+                      ItemsSource="{Binding Connections}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <views:ConnectionsView></views:ConnectionsView>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        
+        <!--SoftwareCells-->
+        <ItemsControl Name="ItemContainer"
+                      ItemsPanel="{StaticResource DrawingBoardItemControl}" 
+                      ItemsSource="{Binding SoftwareCells}">
+            <ItemsControl.ItemContainerStyle>
+                <Style>
+                    <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+                    <Setter Property="Canvas.Left"
+                            Value="{Binding Model.Position.X}" />
+                    <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
+                    <Setter Property="Canvas.Top"
+                            Value="{Binding Model.Position.Y}" />
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <views:IOCell />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Grid>
+</UserControl>
