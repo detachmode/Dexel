@@ -11,40 +11,46 @@ namespace Dexel.Editor.CustomControls
     /// </summary>
     public partial class DataNamesControl : UserControl
     {
-        private static XshdSyntaxDefinition _xshd;
-        private static readonly HighlightingManager Man = new HighlightingManager();
+        
 
         public DataNamesControl()
         {
             InitializeComponent();
+            LoadColorSchema(@"FlowDesignColor.xshd");
 
-            LoadColorShema();
             TextBox.LostFocus += (sender, args) => TextBox.TextArea.ClearSelection();
            
             TextBox.TextChanged += (sender, args) =>
             {
                 var caret =  TextBox.SelectionStart;
-                var str = TextBox.Document.Text;
-                DataContext.TryCast<DataStream>(datastream => datastream.DataNames = str );
-                DataContext.TryCast<DataStreamDefinition>(dataStreamDefinition => dataStreamDefinition.DataNames = str);
+                var currentText = TextBox.Document.Text;
+
+                DataContext.TryCast<DataStream>(ds => Interactions.ChangeConnectionDatanames(ds, currentText));
+                DataContext.TryCast<DataStreamDefinition>(dsd => dsd.DataNames = currentText);
                 TextBox.SelectionStart = caret;
             };
 
         }
 
 
-        private void LoadColorShema()
+        #region load color schema
+        private static XshdSyntaxDefinition _xshd;
+        private static readonly HighlightingManager Man = new HighlightingManager();
+        private void LoadColorSchema(string url)
         {
             if (_xshd == null)
             {
-                using (var reader = new XmlTextReader(@"FlowDesignColor.xshd"))
+                using (var reader = new XmlTextReader(url))
                 {
                     _xshd = HighlightingLoader.LoadXshd(reader);
-                }                            
+                }
             }
 
             TextBox.SyntaxHighlighting = HighlightingLoader.Load(_xshd, Man);
         }
+
+        #endregion
+
 
 
         public void SetFocus()

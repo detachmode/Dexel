@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dexel.Editor.Tests", "Dexel
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dexel.Editor", "Dexel.Editor\Dexel.Editor.csproj", "{402C4811-C057-4A79-958D-DA31EB4A78EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dexel.Model.Tests", "Dexel.Model.Tests\Dexel.Model.Tests.csproj", "{21922B41-E90E-4B0E-B958-7190E49A4BDA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -68,6 +70,14 @@ Global
 		{402C4811-C057-4A79-958D-DA31EB4A78EE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{402C4811-C057-4A79-958D-DA31EB4A78EE}.Release|x64.ActiveCfg = Release|Any CPU
 		{402C4811-C057-4A79-958D-DA31EB4A78EE}.Release|x64.Build.0 = Release|Any CPU
+		{21922B41-E90E-4B0E-B958-7190E49A4BDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{21922B41-E90E-4B0E-B958-7190E49A4BDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{21922B41-E90E-4B0E-B958-7190E49A4BDA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{21922B41-E90E-4B0E-B958-7190E49A4BDA}.Debug|x64.Build.0 = Debug|Any CPU
+		{21922B41-E90E-4B0E-B958-7190E49A4BDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{21922B41-E90E-4B0E-B958-7190E49A4BDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{21922B41-E90E-4B0E-B958-7190E49A4BDA}.Release|x64.ActiveCfg = Release|Any CPU
+		{21922B41-E90E-4B0E-B958-7190E49A4BDA}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

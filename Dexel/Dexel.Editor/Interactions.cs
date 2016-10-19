@@ -167,5 +167,12 @@ namespace Dexel.Editor
             aTimer?.Dispose();
             aTimer = new Timer(state => { printAction(mainModel); }, null, 0, 200);
         }
+
+
+        public static void ChangeConnectionDatanames(IDataStream datastream, string newDatanames)
+        {
+            DataStreamManager.ChangeDatanames(datastream, newDatanames);
+            
+        }
     }
 }
