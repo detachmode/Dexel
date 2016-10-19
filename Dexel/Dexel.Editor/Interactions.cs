@@ -133,9 +133,9 @@ namespace Dexel.Editor
 
         public static void ConsolePrintGeneratedCode(IMainModel mainModel)
         {
-            //var gen = new MyGenerator();
-            //Console.Clear();
-            //gen.GenerateCodeAndPrint(mainModel);
+            var gen = new MyGenerator();
+            Console.Clear();
+            gen.GenerateCodeAndPrint(mainModel);
         }
 
 

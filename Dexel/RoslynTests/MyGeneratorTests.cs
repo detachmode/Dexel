@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Roslyn;
 using System.Linq;
+using Dexel.Model;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Roslyn.Common;
@@ -11,6 +11,10 @@ namespace Roslyn.Tests
     public class MyGeneratorTests
     {
         private readonly MyGenerator _gen = new MyGenerator();
+        private static readonly DataStreamManager DataStreamManager = new DataStreamManager();
+        private static readonly SoftwareCellsManager SoftwareCellsManager = new SoftwareCellsManager();
+        private static readonly MainModelManager MainModelManager = new MainModelManager(SoftwareCellsManager, DataStreamManager);
+
         [TestMethod]
         public void GetReturnTypesTest()
         {

@@ -7,22 +7,20 @@ using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
-using Dexel.Editor.Commands;
 using Dexel.Editor.ViewModels;
 using Dexel.Editor.Views;
 using Dexel.Model;
 
-namespace Dexel
+namespace Dexel.Editor
 {
     /// <summary>
-    /// Interaktionslogik für "App.xaml"
+    /// Interaction logic for App.xaml
     /// </summary>
     public partial class App : Application
     {
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool AllocConsole();
-
 
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -34,7 +32,7 @@ namespace Dexel
             var mainviewModel = MainViewModel.Instance();
             mainviewModel.LoadFromModel(mockMainModel);
 
-            var mainwindow = new MainWindow(mainviewModel);          
+            var mainwindow = new MainWindow(mainviewModel);
             mainwindow.Show();
 
             App.Current.DispatcherUnhandledException += AppOnDispatcherUnhandledException;
@@ -47,5 +45,6 @@ namespace Dexel
             if (inputDialog.ShowDialog() == true)
                 App.Current.Shutdown();
         }
+
     }
 }

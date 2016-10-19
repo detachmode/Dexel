@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
-using Dexel.Contracts.Model;
 using Dexel.Editor.Views;
+using Dexel.Contracts.Model;
 
 namespace Dexel.Editor.DebuggingHelper
 {

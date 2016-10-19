@@ -1,7 +1,7 @@
-﻿<Application x:Class="Dexel.App"
+﻿<Application x:Class="Dexel.Editor.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converter="clr-namespace:Dexel.Editor.Converter;assembly=Dexel.Editor">
+             xmlns:converter="clr-namespace:Dexel.Editor.Converter">
     <Application.Resources>
         <ResourceDictionary>
             <converter:DebugConverter x:Key="DebugConverter" />

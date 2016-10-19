@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Dexel.Editor;
 using Dexel.Model;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -8,15 +9,21 @@ namespace Dexel.Tests
     [TestClass()]
     public class InteractionsTests
     {
+        private static DataStreamManager _dataStreamManager = new DataStreamManager();
+        private static SoftwareCellsManager _softwareCellsManager = new SoftwareCellsManager();
+        private static MainModelManager _mainModelManager = new MainModelManager(_softwareCellsManager, _dataStreamManager);
+
+
+
         [TestMethod()]
         public void ConnectTwoDangelingConnectionsTest()
         {
             var testModel = new MainModel();
-            var sA = SoftwareCellsManager.CreateNew("A");
-            var sB = SoftwareCellsManager.CreateNew("B");
+            var sA = _softwareCellsManager.CreateNew("A");
+            var sB = _softwareCellsManager.CreateNew("B");
             testModel.SoftwareCells.Add(sA);
             testModel.SoftwareCells.Add(sB);
-            MainModelManager.Connect(sA, sB, "dataAB", testModel);
+            _mainModelManager.Connect(sA, sB, "dataAB", testModel);
 
             var fristconnection = testModel.Connections.First();
             Interactions.DeConnect(fristconnection, testModel);
@@ -37,11 +44,11 @@ namespace Dexel.Tests
         public void DeConnectTest()
         {
             var testModel = new MainModel();
-            var sA = SoftwareCellsManager.CreateNew("A");
-            var sB = SoftwareCellsManager.CreateNew("B");
+            var sA = _softwareCellsManager.CreateNew("A");
+            var sB = _softwareCellsManager.CreateNew("B");
             testModel.SoftwareCells.Add(sA);
             testModel.SoftwareCells.Add(sB);
-            MainModelManager.Connect(sA, sB, "dataAB", testModel);
+            _mainModelManager.Connect(sA, sB, "dataAB", testModel);
 
             var fristconnection = testModel.Connections.First();
             Interactions.DeConnect(fristconnection, testModel);
@@ -61,11 +68,11 @@ namespace Dexel.Tests
         public void ConnectDangelingConnectionAndSoftwareCellTest()
         {
             var testModel = new MainModel();
-            var sA = SoftwareCellsManager.CreateNew("A");
-            var sB = SoftwareCellsManager.CreateNew("B");
+            var sA = _softwareCellsManager.CreateNew("A");
+            var sB = _softwareCellsManager.CreateNew("B");
             testModel.SoftwareCells.Add(sA);
             testModel.SoftwareCells.Add(sB);
-            MainModelManager.Connect(sA, sB, "dataAB", testModel);
+            _mainModelManager.Connect(sA, sB, "dataAB", testModel);
 
             var firstConn = testModel.Connections.First();
             Interactions.DeConnect(firstConn, testModel);
@@ -87,12 +94,12 @@ namespace Dexel.Tests
             // Test connect to no-input cell
 
             testModel = new MainModel();
-            sA = SoftwareCellsManager.CreateNew("A");
-            sB = SoftwareCellsManager.CreateNew("B");
+            sA = _softwareCellsManager.CreateNew("A");
+            sB = _softwareCellsManager.CreateNew("B");
             testModel.SoftwareCells.Add(sA);
             testModel.SoftwareCells.Add(sB);
 
-            MainModelManager.AddNewOutput(sA, "dataAB");
+            _mainModelManager.AddNewOutput(sA, "dataAB");
             d1 = sA.OutputStreams.First();
 
             Interactions.ConnectDangelingConnectionAndSoftwareCell(d1, sA, sB, testModel);
@@ -116,13 +123,14 @@ namespace Dexel.Tests
         public void ChangeConnectionDestinationTest1()
         {
             var testModel = new MainModel();
-            var sA = SoftwareCellsManager.CreateNew("A");
-            var sB = SoftwareCellsManager.CreateNew("B");
-            var sC = SoftwareCellsManager.CreateNew("C");
+
+            var sA = _softwareCellsManager.CreateNew("A");
+            var sB = _softwareCellsManager.CreateNew("B");
+            var sC = _softwareCellsManager.CreateNew("C");
             testModel.SoftwareCells.Add(sA);
             testModel.SoftwareCells.Add(sB);
             testModel.SoftwareCells.Add(sC);
-            MainModelManager.Connect(sA, sB, "dataAB", testModel);
+            _mainModelManager.Connect(sA, sB, "dataAB", testModel);
 
             Interactions.ChangeConnectionDestination(testModel.Connections.First(), sC, testModel);
 
@@ -137,97 +145,22 @@ namespace Dexel.Tests
             Assert.IsTrue(testModel.Connections.First().Sources.First().Parent == sA);
             Assert.IsTrue(testModel.Connections.First().Destinations.First().Parent == sC);
 
-        }
-    }
-}
 
-namespace SharpFlowDesignTests
-{
-    [TestClass()]
-    public class InteractionsTests
-    {
-        [TestMethod()]
-        public void AddNewIOCellTest()
-        {
-            Assert.Fail();
-        }
 
-        [TestMethod()]
-        public void DragSelectionTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
-        public void GetSelectionTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
-        public void AddNewConnectionNoDestinationTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
-        public void RemoveConnectionTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
-        public void AddNewSoftwareCellTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
-        public void AddNewInputTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
-        public void CheckForStreamWithSameNameTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
-        public void AddToExistingConnectionTest()
-        {
-            Assert.Fail();
-        }
-
-        [TestMethod()]
-        public void AddNewConnectionTest()
-        {
-           var mainModel = new MainModel();
-            var source = new SoftwareCell();
-            var desination = new SoftwareCell();
-            var datastream = new DataStream();
-
-            //Interactions.AddNewConnection(source,desination, datastream, mainModel);
-            //Assert.IsTrue(datastream.Sources.Contains(source));
-            //Assert.IsTrue(datastream.Destinations.Contains(desination));
-            //Assert.IsTrue(desination.InputStreams.Contains( datastream));
-            //Assert.IsTrue(source.OutputStreams.Contains( datastream));
-            //Assert.IsTrue(mainModel.Connections.Contains(datastream));
-            
         }
 
         [TestMethod()]
         public void ConnectTest()
         {
             var mainModel = new MainModel();
-            var oneID = MainModelManager.AddNewSoftwareCell("one", mainModel);
-            var secondID = MainModelManager.AddNewSoftwareCell("second", mainModel);
-            MainModelManager.Connect(oneID, secondID, "testdata", mainModel);
+            var oneCell = _mainModelManager.AddNewSoftwareCell("one", mainModel);
+            var secondCell = _mainModelManager.AddNewSoftwareCell("second", mainModel);
+            _mainModelManager.Connect(oneCell, secondCell, "testdata", mainModel);
 
             Assert.IsTrue(mainModel.Connections.Any(x => x.DataNames.Equals("testdata")));
-            Assert.IsTrue(mainModel.Connections.Any(x => x.Sources.Any(y => y.ID.Equals(oneID))));
-            Assert.IsTrue(mainModel.Connections.Any(x => x.Destinations.Any(y => y.ID.Equals(secondID))));
+            Assert.IsTrue(mainModel.Connections.Any(x => x.Sources.Any(dsd => dsd.Parent == oneCell)));
+            Assert.IsTrue(mainModel.Connections.Any(x => x.Destinations.Any(dsd => dsd.Parent == secondCell)));
         }
     }
 }
+

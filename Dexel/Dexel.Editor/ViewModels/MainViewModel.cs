@@ -6,6 +6,7 @@ using System.Windows;
 using Dexel.Contracts.Model;
 using Dexel.Editor.Behavior;
 using Dexel.Editor.CustomControls;
+using Dexel.Model;
 using PropertyChanged;
 
 namespace Dexel.Editor.ViewModels
@@ -21,6 +22,7 @@ namespace Dexel.Editor.ViewModels
         {
             SoftwareCells = new ObservableCollection<IOCellViewModel>();
             Connections = new ObservableCollection<ConnectionViewModel>();
+            
         }
 
 
@@ -28,7 +30,7 @@ namespace Dexel.Editor.ViewModels
         public ObservableCollection<IOCellViewModel> SoftwareCells { get; set; }
         public ConnectionViewModel TemporaryConnection { get; set; }
 
-        public  IMainModel Model { get;}
+        public  IMainModel Model { get; set; }
 
 
 
@@ -69,13 +71,17 @@ namespace Dexel.Editor.ViewModels
 
         public void Reload()
         {
-            LoadFromModel(Model);
+            if (Model != null)
+            {
+                LoadFromModel(Model);
+            }           
         }
 
         #region Load Model
 
         public void LoadFromModel(IMainModel mainModel)
         {
+            Model = mainModel;
             LoadConnection(mainModel.Connections);
             LoadSoftwareCells(mainModel.SoftwareCells);
         }

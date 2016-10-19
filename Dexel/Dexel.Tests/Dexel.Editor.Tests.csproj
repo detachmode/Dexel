@@ -6,8 +6,8 @@
     <ProjectGuid>{2C118163-5642-415D-9C41-B4F4BCE4B587}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Dexel.Tests</RootNamespace>
-    <AssemblyName>Dexel.Tests</AssemblyName>
+    <RootNamespace>Dexel.Editor.Tests</RootNamespace>
+    <AssemblyName>Dexel.Editor.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -73,8 +73,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dexel.Contracts\Dexel.Contracts.csproj">
+      <Project>{fa518c4e-7669-4283-8ddc-fe9d2b0d57fe}</Project>
+      <Name>Dexel.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dexel.Editor\Dexel.Editor.csproj">
+      <Project>{402c4811-c057-4a79-958d-da31eb4a78ee}</Project>
+      <Name>Dexel.Editor</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dexel.Model\Dexel.Model.csproj">
-      <Project>{C8694B16-924D-492F-8400-577D0DDE19FF}</Project>
+      <Project>{c8694b16-924d-492f-8400-577d0dde19ff}</Project>
       <Name>Dexel.Model</Name>
     </ProjectReference>
   </ItemGroup>

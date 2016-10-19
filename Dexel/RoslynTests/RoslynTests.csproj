@@ -26,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -91,6 +92,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dexel.Contracts\Dexel.Contracts.csproj">
+      <Project>{fa518c4e-7669-4283-8ddc-fe9d2b0d57fe}</Project>
+      <Name>Dexel.Contracts</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dexel.Model\Dexel.Model.csproj">
+      <Project>{C8694B16-924D-492F-8400-577D0DDE19FF}</Project>
+      <Name>Dexel.Model</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Roslyn\Roslyn.csproj">
       <Project>{3D0F668F-729A-4172-9E3E-0DC60503ECE8}</Project>
       <Name>Roslyn</Name>

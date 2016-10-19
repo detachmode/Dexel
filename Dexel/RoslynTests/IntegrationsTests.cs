@@ -1,11 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Roslyn;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq;
 using Dexel.Model;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Roslyn.Tests
 {
@@ -13,6 +8,9 @@ namespace Roslyn.Tests
     public class IntegrationsTests
     {
         private readonly MyGenerator _gen = new MyGenerator();
+        private static readonly DataStreamManager DataStreamManager = new DataStreamManager();
+        private static readonly SoftwareCellsManager SoftwareCellsManager = new SoftwareCellsManager();
+        private static readonly MainModelManager MainModelManager = new MainModelManager(SoftwareCellsManager, DataStreamManager);
 
         [TestMethod()]
         public void CreateIntegrationBodyTest()
@@ -28,14 +26,9 @@ namespace Roslyn.Tests
             MainModelManager.Connect(alter, person, "int | int, string", testModel);
             MainModelManager.AddNewOutput(person, "Person");
 
-            var nodes = Integrations.CreateIntegrationBody(_gen.Generator, testModel.Connections, testModel.SoftwareCells);
+            Integrations.CreateIntegrationBody(_gen.Generator, testModel.Connections, testModel.SoftwareCells);
         }
 
-        [TestMethod()]
-        public void FindParameterDependenciesTest()
-        {
-           
-        }
 
         [TestMethod()]
         public void FindParametersTest()
