@@ -34,12 +34,15 @@ namespace Dexel.Editor.ViewModels
             typeof(ConnectionViewModel)
         };
 
-        public Action<object> Dropped;
+
 
 
         public void Drop(object data)
         {
-            Dropped?.Invoke(data);
+            data.TryCast<DangelingConnectionViewModel>(
+                 dangConnVM => Interactions.ConnectDangelingConnectionAndSoftwareCell(dangConnVM.Model, Model, MainViewModel.Instance().Model));
+            data.TryCast<ConnectionViewModel>(
+                connVM => Interactions.ChangeConnectionDestination(connVM.Model, Model, MainViewModel.Instance().Model));
         }
 
         #region Load Model

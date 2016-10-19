@@ -46,7 +46,6 @@ namespace Dexel.Editor.ViewModels
         {
             data.TryCast<ConnectionViewModel>(
                 connectionVM => Interactions.DeConnect(connectionVM.Model, Model));
-            Interactions.ViewRedraw();
         }
 
         #region Update Connection Position

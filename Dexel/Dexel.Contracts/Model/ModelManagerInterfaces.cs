@@ -63,7 +63,7 @@ namespace Dexel.Contracts.Model
         ISoftwareCell AddNewSoftwareCell(string name, IMainModel mainModel);
 
 
-        Guid AddNewConnection(ISoftwareCell source, ISoftwareCell destination,
+        Guid AddNewConnectionAndDSDs(ISoftwareCell source, ISoftwareCell destination,
             string datanames, string actionname, IMainModel mainModel);
 
 
@@ -75,7 +75,7 @@ namespace Dexel.Contracts.Model
             string actionName = "");
 
 
-        void AddNewConnection(IDataStreamDefinition defintion, ISoftwareCell source, ISoftwareCell destination,
+        void AddNewConnectionAndDSDs(IDataStreamDefinition defintion, ISoftwareCell source, ISoftwareCell destination,
             IMainModel mainModel);
     }
 

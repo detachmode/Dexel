@@ -52,7 +52,7 @@ namespace Dexel.Editor.Views
 
         private void CheckBox_UnChecked(object sender, RoutedEventArgs e)
         {
-            Interactions.AutoPrintOFF();
+            Interactions.AutoPrintOff();
         }
 
         private void AutoGenerate_Checked(object sender, RoutedEventArgs e)
@@ -62,7 +62,7 @@ namespace Dexel.Editor.Views
 
         private void AutoGenerate_UnChecked(object sender, RoutedEventArgs e)
         {
-            Interactions.AutoPrintOFF();
+            Interactions.AutoPrintOff();
         }
     }
 

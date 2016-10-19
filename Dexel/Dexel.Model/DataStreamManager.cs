@@ -63,12 +63,16 @@ namespace Dexel.Model
             return null;
         }
 
-        
+  
 
         public  void DeConnect(IEnumerable<IDataStreamDefinition> definitions, IDataStream dataStream)
         {
             definitions.Where( def => def.IsEquals(dataStream)).ToList()
-                .ForEach( def => def.Connected = false);
+                .ForEach(def =>
+                {
+                    
+                    def.Connected = false;
+                });
         }
 
 
@@ -85,6 +89,16 @@ namespace Dexel.Model
 
             onNotFound();
             return tempStream.ID;
+        }
+
+
+        public static string MergeDataNames(IDataStreamDefinition sourceDSD, IDataStreamDefinition destinationDSD)
+        {
+            if (destinationDSD == null)
+            {
+                return sourceDSD.DataNames + " | ";
+            }
+            return sourceDSD.DataNames + " | " + destinationDSD.DataNames;
         }
     }
 

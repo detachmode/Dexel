@@ -37,7 +37,8 @@ namespace Dexel.Editor.ViewModels
         public List<Type> AllowedDropTypes => new List<Type> { typeof(DangelingConnectionViewModel)};
         public void Drop(object data)
         {
-            data.TryCast<DangelingConnectionViewModel>(dangConnVm => Interactions.ConnectTwoDangelingConnections(dangConnVm.Model, dangConnVm.Parent, this.Parent, MainViewModel.Instance().Model));
+            data.TryCast<DangelingConnectionViewModel>(
+                dangConnVm => Interactions.ConnectTwoDangelingConnections(dangConnVm.Model, this.Model, MainViewModel.Instance().Model));
         }
     }
 }

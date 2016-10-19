@@ -20,11 +20,11 @@ namespace Dexel.Editor
 
 
 
-        private static Timer _aTimer;
+        private static Timer aTimer;
 
-        private static DataStreamManager _dataStreamManager = new DataStreamManager();
-        private static SoftwareCellsManager _softwareCellsManager = new SoftwareCellsManager();
-        private static MainModelManager _mainModelManager = new MainModelManager(_softwareCellsManager, _dataStreamManager);
+        private static readonly DataStreamManager DataStreamManager = new DataStreamManager();
+        private static readonly SoftwareCellsManager SoftwareCellsManager = new SoftwareCellsManager();
+        private static readonly MainModelManager MainModelManager = new MainModelManager(SoftwareCellsManager, DataStreamManager);
 
 
 
@@ -33,12 +33,12 @@ namespace Dexel.Editor
 
         public static void AddNewIOCell(Point pos, IMainModel mainModel)
         {
-            var softwareCell = _softwareCellsManager.CreateNew();
+            var softwareCell = SoftwareCellsManager.CreateNew();
             pos.X -= 100;
             pos.Y -= 20;
             softwareCell.Position = new Point(pos.X, pos.Y);
-            softwareCell.InputStreams.Add(_dataStreamManager.CreateNewDefinition(softwareCell, "input"));
-            softwareCell.OutputStreams.Add(_dataStreamManager.CreateNewDefinition(softwareCell, "output"));
+            softwareCell.InputStreams.Add(DataStreamManager.CreateNewDefinition(softwareCell, "input"));
+            softwareCell.OutputStreams.Add(DataStreamManager.CreateNewDefinition(softwareCell, "output"));
 
             mainModel.SoftwareCells.Add(softwareCell);
             ViewRedraw();
@@ -57,29 +57,23 @@ namespace Dexel.Editor
         {
             //MainModelManager.RemoveConnection(dataStream, mainModel);
             DeConnect(dataStream, mainModel);
-            _mainModelManager.Connect(dataStream.Sources.First().Parent, newdestination, dataStream.DataNames, mainModel,
+            MainModelManager.Connect(dataStream.Sources.First().Parent, newdestination, dataStream.DataNames, mainModel,
                 dataStream.ActionName);
 
             ViewRedraw();
         }
 
 
-        public static void AddNewInput(Guid softwareCellID, string datanames, IMainModel mainModel,
-            string actionName = "")
-        {
-            _mainModelManager.AddNewInput(softwareCellID, datanames, mainModel, actionName);
-        }
-
-
         public static void AddNewOutput(ISoftwareCell softwareCell, string datanames)
         {
-            _mainModelManager.AddNewOutput(softwareCell, datanames);
+            MainModelManager.AddNewOutput(softwareCell, datanames);
             ViewRedraw();
         }
 
-        internal static void AddNewInput(ISoftwareCell softwareCell, string datanames)
+
+        public static void AddNewInput(ISoftwareCell softwareCell, string datanames)
         {
-            _mainModelManager.AddNewInput(softwareCell, datanames);
+            MainModelManager.AddNewInput(softwareCell, datanames);
             ViewRedraw();
         }
 
@@ -94,31 +88,47 @@ namespace Dexel.Editor
 
         public static void DeConnect(IDataStream dataStream, IMainModel mainModel)
         {
-            dataStream.Sources.ForEach(streamDefinition =>
-                _dataStreamManager.DeConnect(streamDefinition.Parent.OutputStreams, dataStream));
-            dataStream.Destinations.ForEach(streamDefinition =>
-                _dataStreamManager.DeConnect(streamDefinition.Parent.InputStreams, dataStream));
 
-            _mainModelManager.RemoveConnection(dataStream, mainModel);
+            dataStream.Sources.ForEach(dsd => dsd.Connected = false);
+            dataStream.Destinations.ForEach(dsd => dsd.Connected = false);
+          
+            MainModelManager.RemoveConnection(dataStream, mainModel);
             ViewRedraw();
         }
 
 
-        public static void ConnectTwoDangelingConnections(IDataStreamDefinition defintion, ISoftwareCell source,
-            ISoftwareCell destination, IMainModel mainModel)
+        public static void ConnectTwoDangelingConnections(IDataStreamDefinition sourceDSD, IDataStreamDefinition destinationDSD, IMainModel mainModel)
         {
+            var datastream = DataStreamManager.CreateNew(DataStreamManager.MergeDataNames(sourceDSD, destinationDSD));
+            datastream.Sources.Add(sourceDSD);
+            datastream.Destinations.Add(destinationDSD);
+            mainModel.Connections.Add(datastream);
 
-            _mainModelManager.AddNewConnection(defintion, source, destination, mainModel);
+            destinationDSD.Connected = true;
+            sourceDSD.Connected = true;
 
             ViewRedraw();
         }
 
 
-        public static void ConnectDangelingConnectionAndSoftwareCell(IDataStreamDefinition defintion, ISoftwareCell source,
-            ISoftwareCell destination, IMainModel mainModel)
+        public static void ConnectDangelingConnectionAndSoftwareCell(IDataStreamDefinition defintionDSD, ISoftwareCell destination, IMainModel mainModel)
         {
 
-            _mainModelManager.AddNewConnection(defintion, source, destination, mainModel);
+            //SoftwareCellsManager.RemoveDefinitionsFromSourceAndDestination(defintion, source, destination);
+            var dataStream = DataStreamManager.CreateNew(DataStreamManager.MergeDataNames(defintionDSD, null), defintionDSD.ActionName);
+            mainModel.Connections.Add(dataStream);
+
+            defintionDSD.Connected = true;
+            dataStream.Sources.Add(defintionDSD);
+
+            var inputDefinition = DataStreamManager.CreateNewDefinition(destination, "");
+            inputDefinition.Connected = true;
+            destination.InputStreams.Add(inputDefinition);
+            dataStream.Destinations.Add(inputDefinition);
+
+
+
+
             ViewRedraw();
         }
 
@@ -146,16 +156,16 @@ namespace Dexel.Editor
             DebugPrinter.PrintSoftwareCells(mainModel);
         }
 
-        public static void AutoPrintOFF()
+        public static void AutoPrintOff()
         {
-            _aTimer.Dispose();
+            aTimer.Dispose();
         }
 
 
         public static void AutoPrint(IMainModel mainModel, Action<IMainModel> printAction)
         {
-            _aTimer?.Dispose();
-            _aTimer = new Timer(state => { printAction(mainModel); }, null, 0, 200);
+            aTimer?.Dispose();
+            aTimer = new Timer(state => { printAction(mainModel); }, null, 0, 200);
         }
     }
 }

@@ -66,7 +66,7 @@ namespace Dexel.Model
         }
 
 
-        public Guid AddNewConnection(ISoftwareCell source, ISoftwareCell destination,
+        public Guid AddNewConnectionAndDSDs(ISoftwareCell source, ISoftwareCell destination,
             string datanames, string actionname, IMainModel mainModel)
         {
             var sourceDef = _dataStreamManager.CreateNewDefinition(source, datanames, actionname);
@@ -101,12 +101,12 @@ namespace Dexel.Model
             source.OutputStreams.RemoveAll(x => x.DataNames == datanames && x.ActionName == actionName);
             destination.InputStreams.RemoveAll(x => x.DataNames == datanames && x.ActionName == actionName);
 
-            return AddNewConnection(source, destination, datanames, actionName, mainModel);
+            return AddNewConnectionAndDSDs(source, destination, datanames, actionName, mainModel);
 
         }
 
 
-        public void AddNewConnection(IDataStreamDefinition defintion, ISoftwareCell source,
+        public void AddNewConnectionAndDSDs(IDataStreamDefinition defintion, ISoftwareCell source,
             ISoftwareCell destination, IMainModel mainModel)
         {
             _softwareCellsManager.RemoveDefinitionsFromSourceAndDestination(defintion, source, destination);
@@ -117,7 +117,7 @@ namespace Dexel.Model
             source.OutputStreams.Add(outputDefinition);
             dataStream.Sources.Add(outputDefinition);
 
-            var inputDefinition = _dataStreamManager.CreateNewDefinition(destination, defintion);
+            var inputDefinition = _dataStreamManager.CreateNewDefinition(destination, "");
             inputDefinition.Connected = true;
             destination.InputStreams.Add(inputDefinition);
             dataStream.Destinations.Add(inputDefinition);
