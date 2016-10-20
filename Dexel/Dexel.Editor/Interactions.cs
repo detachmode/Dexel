@@ -19,16 +19,11 @@ namespace Dexel.Editor
         }
 
 
-
         private static Timer aTimer;
 
         private static readonly DataStreamManager DataStreamManager = new DataStreamManager();
         private static readonly SoftwareCellsManager SoftwareCellsManager = new SoftwareCellsManager();
         private static readonly MainModelManager MainModelManager = new MainModelManager(SoftwareCellsManager, DataStreamManager);
-
-
-
-
 
 
         public static void AddNewIOCell(Point pos, IMainModel mainModel)

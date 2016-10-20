@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Dexel.Editor.Views;
 using Dexel.Contracts.Model;
@@ -16,7 +17,7 @@ namespace Dexel.Editor.DebuggingHelper
         }
 
 
-        public static void PrintOutputs(ISoftwareCell cell)
+        public static void PrintOutputs(List<ISoftwareCell> cell)
         {
             //Console.WriteLine(@"// Outputs of " + cell.Name + ":");
             //cell.OutputStreams.ToList().ForEach(dataStream =>
@@ -51,7 +52,7 @@ namespace Dexel.Editor.DebuggingHelper
 
         private static void PrintIntegrationHeader(ISoftwareCell cell)
         {
-            Console.WriteLine(@"// " + cell.Name + @" is integrating: " + cell.Integration.Name);
+            Console.WriteLine(@"// " + cell.Name + @" is integrating: " + cell.Integration.First().Name);
         }
 
         public static void PrintConnections(IMainModel mainModel)

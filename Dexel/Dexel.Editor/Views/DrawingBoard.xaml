@@ -6,6 +6,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:views="clr-namespace:Dexel.Editor.Views"
              xmlns:viewModels="clr-namespace:Dexel.Editor.ViewModels"
+             xmlns:customControls="clr-namespace:Dexel.Editor.CustomControls"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel, IsDesignTimeCreatable=True}"
              d:DesignHeight="300" d:DesignWidth="700">
@@ -17,9 +18,34 @@
           Background="Transparent"
           DragOver="MainWindow_OnDragOver">
 
+        <ItemsControl ItemsPanel="{StaticResource DrawingBoardItemControl}" 
+                      ItemsSource="{Binding IntegrationBorders}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <customControls:IntegrationBorders 
+                        FillColor="{StaticResource FillPointerBrush}"
+                        Thickness="1"                    
+                        TopWidth="{Binding Width}"
+                        End="{Binding IntegrationEndPosition}"
+                        Start="{Binding IntegrationStartPosition}">
+                        <customControls:IntegrationBorders.TopPoint>
+                            <MultiBinding Converter="{StaticResource IntegrationBorderTopPointConverter}">
+                                <MultiBinding.Bindings>
+                                    <Binding Path="Model.Position" />
+                                    <Binding/>
+                                </MultiBinding.Bindings>
+                            </MultiBinding>
+                        </customControls:IntegrationBorders.TopPoint>
+
+                    </customControls:IntegrationBorders>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
+
 
         <!--<customControls:Pointer Start="{Binding TemporaryConnection.Start.OutputPoint}" />-->
-        
+
         <!--Connections-->
         <ItemsControl ItemsPanel="{StaticResource DrawingBoardItemControl}" 
                       ItemsSource="{Binding Connections}">
@@ -29,7 +55,7 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
-        
+
         <!--SoftwareCells-->
         <ItemsControl Name="ItemContainer"
                       ItemsPanel="{StaticResource DrawingBoardItemControl}" 

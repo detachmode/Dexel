@@ -19,6 +19,9 @@ namespace Dexel.Editor.Views
         private void IOCell_LayoutUpdated(object sender, System.EventArgs e)
         {
             UpdateConnectionViewModels();
+            GetDataContext().Width = ActualWidth;
+            GetDataContext().Height = ActualHeight;
+            MainViewModel.Instance().UpdateIntegrationBorderPositions();
         }
 
         private void OnDragDelta(object sender, DragDeltaEventArgs e)

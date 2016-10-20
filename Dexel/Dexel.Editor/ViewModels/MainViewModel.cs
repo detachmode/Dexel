@@ -6,7 +6,6 @@ using System.Windows;
 using Dexel.Contracts.Model;
 using Dexel.Editor.Behavior;
 using Dexel.Editor.CustomControls;
-using Dexel.Model;
 using PropertyChanged;
 
 namespace Dexel.Editor.ViewModels
@@ -22,18 +21,16 @@ namespace Dexel.Editor.ViewModels
         {
             SoftwareCells = new ObservableCollection<IOCellViewModel>();
             Connections = new ObservableCollection<ConnectionViewModel>();
-            
+            IntegrationBorders = new ObservableCollection<IOCellViewModel>();
         }
 
 
+        public ObservableCollection<IOCellViewModel> IntegrationBorders { get; set; }
         public ObservableCollection<ConnectionViewModel> Connections { get; set; }
         public ObservableCollection<IOCellViewModel> SoftwareCells { get; set; }
         public ConnectionViewModel TemporaryConnection { get; set; }
 
-        public  IMainModel Model { get; set; }
-
-
-
+        public IMainModel Model { get; set; }
 
 
         public List<Type> AllowedDropTypes => new List<Type>
@@ -48,7 +45,7 @@ namespace Dexel.Editor.ViewModels
                 connectionVM => Interactions.DeConnect(connectionVM.Model, Model));
         }
 
-        #region Update Connection Position
+        #region Update Positions
 
         public void UpdateConnectionsPosition(Point inputPoint, Point outputPoint, IOCellViewModel ioCellViewModel)
         {
@@ -58,6 +55,22 @@ namespace Dexel.Editor.ViewModels
 
             allInputs.ToList().ForEach(x => x.End = inputPoint);
             allOutputs.ToList().ForEach(x => x.Start = outputPoint);
+        }
+
+
+        public void UpdateIntegrationBorderPositions()
+        {
+            IntegrationBorders.ToList().ForEach(iocellvm =>
+            {
+                var tempIntegrations = iocellvm.Integration.OrderBy( cellvm1 => cellvm1.Model.Position.X + cellvm1.Width);
+                var min = tempIntegrations.First();
+                var max = tempIntegrations.Last();
+
+                tempIntegrations = iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.Y + cellvm1.Height);
+                var miny= tempIntegrations.First();
+                iocellvm.IntegrationStartPosition = new Point(min.Model.Position.X -60, miny.Model.Position.Y );             
+                iocellvm.IntegrationEndPosition = new Point(max.Model.Position.X + max.Width + 60, miny.Model.Position.Y );
+            });
         }
 
         #endregion
@@ -73,7 +86,7 @@ namespace Dexel.Editor.ViewModels
             if (Model != null)
             {
                 LoadFromModel(Model);
-            }           
+            }
         }
 
         #region Load Model
@@ -83,6 +96,19 @@ namespace Dexel.Editor.ViewModels
             Model = mainModel;
             LoadConnection(mainModel.Connections);
             LoadSoftwareCells(mainModel.SoftwareCells);
+            LoadIntegrations();
+        }
+
+
+        private void LoadIntegrations()
+        {
+            IntegrationBorders.Clear();
+            SoftwareCells.Where(x => x.Model.Integration.Count != 0).ToList().ForEach(hasIntegration =>
+            {
+                var integratedVMs = SoftwareCells.Where(otherVM => hasIntegration.Model.Integration.Contains(otherVM.Model));
+                integratedVMs.ToList().ForEach(hasIntegration.Integration.Add); 
+                IntegrationBorders.Add(hasIntegration);
+            });
         }
 
 

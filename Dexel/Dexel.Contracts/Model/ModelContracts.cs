@@ -49,7 +49,7 @@ namespace Dexel.Contracts.Model
     {
         Guid ID { get; set; }
         IFlowAttribute Attribute { get; set; }
-        ISoftwareCell Integration { get; }
+        List<ISoftwareCell> Integration { get; }
         string Name { get; set; }
         System.Windows.Point Position { get; set; }
         List<IDataStreamDefinition> InputStreams { get; set; }

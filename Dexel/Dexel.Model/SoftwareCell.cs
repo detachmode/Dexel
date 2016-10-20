@@ -15,13 +15,14 @@ namespace Dexel.Model
             // Inputs / Outputs
             InputStreams = new List<IDataStreamDefinition>();
             OutputStreams = new List<IDataStreamDefinition>();
+            Integration = new List<ISoftwareCell>();
         }
 
 
         public string Name { get; set; }
         public Guid ID { get; set; }
         public IFlowAttribute Attribute { get; set; } // Pyramide or Barrel
-        public ISoftwareCell Integration { get; private set; } // ZOOM into this Node. Start node of the integrated flow
+        public List<ISoftwareCell> Integration { get; private set; } // ZOOM into this Node. Start node of the integrated flow
         public Point Position { get; set; }
         public List<IDataStreamDefinition> InputStreams { get; set; }
         public List<IDataStreamDefinition> OutputStreams { get; set; }

@@ -57,6 +57,15 @@ namespace Dexel.Model
             first.Position = new Point(20, 50);
             MainModelManager.AddNewInput(first, "");
 
+            var firstOp = MainModelManager.AddNewSoftwareCell("Operation", testModel);
+            firstOp.Position = new Point(60, 100);
+            MainModelManager.AddNewInput(firstOp, "");
+           first.Integration.Add(firstOp);
+            var firstOp2 = MainModelManager.AddNewSoftwareCell("Operation", testModel);
+            firstOp2.Position = new Point(160, 100);
+            MainModelManager.AddNewInput(firstOp2, "");
+            first.Integration.Add(firstOp2);
+
             var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
             alter.Position = new Point(280, 50);
             MainModelManager.Connect(first, alter, "name:string | ", testModel);

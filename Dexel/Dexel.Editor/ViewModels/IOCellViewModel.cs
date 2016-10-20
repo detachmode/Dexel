@@ -6,7 +6,6 @@ using System.Windows;
 using Dexel.Contracts.Model;
 using Dexel.Editor.Behavior;
 using Dexel.Editor.CustomControls;
-using Dexel.Editor.Views;
 using PropertyChanged;
 
 namespace Dexel.Editor.ViewModels
@@ -19,6 +18,7 @@ namespace Dexel.Editor.ViewModels
         {
             DangelingInputs = new ObservableCollection<DangelingConnectionViewModel>();
             DangelingOutputs = new ObservableCollection<DangelingConnectionViewModel>();
+            Integration = new ObservableCollection<IOCellViewModel>();
         }
 
 
@@ -26,6 +26,9 @@ namespace Dexel.Editor.ViewModels
         public ObservableCollection<DangelingConnectionViewModel> DangelingInputs { get; set; }
         public ObservableCollection<DangelingConnectionViewModel> DangelingOutputs { get; set; }
         public bool IsSelected { get; set; }
+        public double Width { get; set; }
+        public double Height { get; set; }
+        public ObservableCollection<IOCellViewModel> Integration { get; set; }
 
 
         public List<Type> AllowedDropTypes => new List<Type>
@@ -34,15 +37,24 @@ namespace Dexel.Editor.ViewModels
             typeof(ConnectionViewModel)
         };
 
-
+        public Point IntegrationStartPosition { get; set; }
+        public Point IntegrationEndPosition { get; set; }
 
 
         public void Drop(object data)
         {
             data.TryCast<DangelingConnectionViewModel>(
-                 dangConnVM => Interactions.ConnectDangelingConnectionAndSoftwareCell(dangConnVM.Model, Model, MainViewModel.Instance().Model));
+                dangConnVM =>
+                    Interactions.ConnectDangelingConnectionAndSoftwareCell(dangConnVM.Model, Model,
+                        MainViewModel.Instance().Model));
             data.TryCast<ConnectionViewModel>(
                 connVM => Interactions.ChangeConnectionDestination(connVM.Model, Model, MainViewModel.Instance().Model));
+        }
+
+
+        public void UpdateConnectionsPosition(Point inputPoint, Point outputPoint)
+        {
+            MainViewModel.Instance().UpdateConnectionsPosition(inputPoint, outputPoint, this);
         }
 
         #region Load Model
@@ -52,6 +64,7 @@ namespace Dexel.Editor.ViewModels
             Model = modelSoftwareCell;
             LoadDangelingInputs(modelSoftwareCell);
             LoadDangelingOutputs(modelSoftwareCell);
+          
         }
 
 
@@ -81,15 +94,6 @@ namespace Dexel.Editor.ViewModels
         }
 
         #endregion
-
-
-
-        public void UpdateConnectionsPosition(Point inputPoint, Point outputPoint)
-        {
-            MainViewModel.Instance().UpdateConnectionsPosition(inputPoint, outputPoint, this);
-        }
-
-
     }
 
 }

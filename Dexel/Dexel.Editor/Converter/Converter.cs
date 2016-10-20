@@ -1,11 +1,35 @@
 ﻿using System;
 using System.Globalization;
+using System.Linq;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
+using Dexel.Contracts.Model;
+using Dexel.Editor.CustomControls;
+using Dexel.Editor.ViewModels;
+using Dexel.Editor.Views;
 
 namespace Dexel.Editor.Converter
 {
+
+    public class IntegrationBorderTopPointConverter : IMultiValueConverter
+    {
+
+        public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
+        {
+            Point pos = (Point) values[0];
+            IOCellViewModel cellvm = values[1] as IOCellViewModel;
+            return new Point(pos.X + cellvm.Width / 2, pos.Y+cellvm.Height);
+        }
+
+
+        public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class PercentageConverter : MarkupExtension, IValueConverter
     {
         private static PercentageConverter _instance;
