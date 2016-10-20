@@ -79,69 +79,11 @@ namespace Dexel.Editor.Tests
 
         }
 
+
+   
+
         [TestMethod()]
         public void ChangeConnectionDestinationTest()
-        {
-
-        }
-
-        [TestMethod()]
-        public void ConnectDangelingConnectionAndSoftwareCellTest()
-        {
-            var testModel = new MainModel();
-            var sA = _softwareCellsManager.CreateNew("A");
-            var sB = _softwareCellsManager.CreateNew("B");
-            testModel.SoftwareCells.Add(sA);
-            testModel.SoftwareCells.Add(sB);
-            _mainModelManager.Connect(sA, sB, "dataAB", testModel);
-
-            var firstConn = testModel.Connections.First();
-            Interactions.DeConnect(firstConn, testModel);
-
-            var d1 = sA.OutputStreams.First();
-
-            Interactions.ConnectDangelingConnectionAndSoftwareCell(d1, sB, testModel);
-
-            Assert.IsTrue(testModel.Connections.First().DataNames == "dataAB");
-            Assert.IsTrue(testModel.Connections.First().Sources.First().Parent == sA);
-            Assert.IsTrue(testModel.Connections.First().Destinations.First().Parent == sB);
-
-            Assert.IsTrue(sA.OutputStreams.First().Connected);
-            Assert.IsTrue(sA.OutputStreams.Count == 1);
-
-            Assert.IsTrue(sB.InputStreams.First().Connected);
-            Assert.IsTrue(sB.InputStreams.Count == 1);
-
-            // Test connect to no-input cell
-
-            testModel = new MainModel();
-            sA = _softwareCellsManager.CreateNew("A");
-            sB = _softwareCellsManager.CreateNew("B");
-            testModel.SoftwareCells.Add(sA);
-            testModel.SoftwareCells.Add(sB);
-
-            _mainModelManager.AddNewOutput(sA, "dataAB");
-            d1 = sA.OutputStreams.First();
-
-            Interactions.ConnectDangelingConnectionAndSoftwareCell(d1, sB, testModel);
-
-            Assert.IsTrue(testModel.Connections.First().DataNames == "dataAB");
-            Assert.IsTrue(testModel.Connections.First().Sources.First().Parent == sA);
-            Assert.IsTrue(testModel.Connections.First().Destinations.First().Parent == sB);
-
-            Assert.IsTrue(sA.OutputStreams.First().Connected);
-            Assert.IsTrue(sA.OutputStreams.Count == 1);
-
-            Assert.IsTrue(sB.InputStreams.First().Connected);
-            Assert.IsTrue(sB.InputStreams.Count == 1);
-
-
-
-
-        }
-
-        [TestMethod()]
-        public void ChangeConnectionDestinationTest1()
         {
             var testModel = new MainModel();
 
@@ -184,7 +126,7 @@ namespace Dexel.Editor.Tests
         }
 
         [TestMethod()]
-        public void ConnectDangelingConnectionAndSoftwareCellTest1()
+        public void ConnectDangelingConnectionAndSoftwareCellTest()
         {
             var mainModel = new MainModel();
             var oneCell = _mainModelManager.AddNewSoftwareCell("one", mainModel);
