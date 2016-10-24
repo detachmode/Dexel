@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows;
 using System.Threading.Tasks;
+using PropertyChanged;
 
 namespace Dexel.Contracts.Model
 {
@@ -14,45 +15,49 @@ namespace Dexel.Contracts.Model
         State
     }
 
-    public interface IMainModel
+    [ImplementPropertyChanged]
+    public abstract class IMainModel
     {
-        List<IDataStream> Connections { get; set; }
-        List<ISoftwareCell> SoftwareCells { get; set; }
+        public List<IDataStream> Connections { get; set; }
+        public List<ISoftwareCell> SoftwareCells { get; set; }
     }
 
-    public interface IFlowAttribute
+    [ImplementPropertyChanged]
+    public abstract class IFlowAttribute
     {
-        string Name { get; set; }
-        FlowAttributeType Type { get; set; }
+        public string Name { get; set; }
+        public FlowAttributeType Type { get; set; }
     }
 
-    public interface IDataStreamDefinition
+    [ImplementPropertyChanged]
+    public abstract class IDataStreamDefinition
     {
-        Guid ID { get; set; }
-        string ActionName { get; set; }
-        bool Connected { get; set; }
-        string DataNames { get; set; }
-        ISoftwareCell Parent { get; set; }
+        public Guid ID { get; set; }
+        public string ActionName { get; set; }
+        public bool Connected { get; set; }
+        public string DataNames { get; set; }
+        public ISoftwareCell Parent { get; set; }
     }
 
-
-    public interface IDataStream
+    [ImplementPropertyChanged]
+    public abstract class IDataStream
     {
-        Guid ID { get; set; }
-        string ActionName { get; set; }
-        string DataNames { get; set; }
-        List<IDataStreamDefinition> Sources { get; }
-        List<IDataStreamDefinition> Destinations { get; }
+        public Guid ID { get; set; }
+        public string ActionName { get; set; }
+        public string DataNames { get; set; }
+        public List<IDataStreamDefinition> Sources { get; set; }
+        public List<IDataStreamDefinition> Destinations { get; set; }
     }
 
-    public interface ISoftwareCell
+    [ImplementPropertyChanged]
+    public abstract class ISoftwareCell
     {
-        Guid ID { get; set; }
-        IFlowAttribute Attribute { get; set; }
-        List<ISoftwareCell> Integration { get; }
-        string Name { get; set; }
-        System.Windows.Point Position { get; set; }
-        List<IDataStreamDefinition> InputStreams { get; set; }
-        List<IDataStreamDefinition> OutputStreams { get; set; }
+        public Guid ID { get; set; }
+        public IFlowAttribute Attribute { get; set; }
+        public List<ISoftwareCell> Integration { get; set; }
+        public string Name { get; set; }
+        public Point Position { get; set; }
+        public List<IDataStreamDefinition> InputStreams { get; set; }
+        public List<IDataStreamDefinition> OutputStreams { get; set; }
     }
 }

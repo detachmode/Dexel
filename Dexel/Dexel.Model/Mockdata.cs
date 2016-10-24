@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Dexel.Model.DataTypes;
 
 namespace Dexel.Model
 {

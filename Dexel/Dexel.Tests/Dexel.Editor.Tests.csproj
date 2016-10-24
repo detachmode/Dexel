@@ -91,10 +91,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dexel.Contracts\Dexel.Contracts.csproj">
-      <Project>{fa518c4e-7669-4283-8ddc-fe9d2b0d57fe}</Project>
-      <Name>Dexel.Contracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dexel.Editor\Dexel.Editor.csproj">
       <Project>{402c4811-c057-4a79-958d-da31eb4a78ee}</Project>
       <Name>Dexel.Editor</Name>

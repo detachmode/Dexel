@@ -2,30 +2,25 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Dexel.Contracts.Model;
 using PropertyChanged;
 
-namespace Dexel.Model
+namespace Dexel.Model.DataTypes
 {
-
-
     [ImplementPropertyChanged]
-    public class DataStream : INotifyPropertyChanged, IDataStream
+    internal class DataStream : INotifyPropertyChanged
     {
+        internal Guid ID { get; set; }
+        internal string ActionName { get; set; }
+        internal string DataNames { get; set; }
+        internal List<DataStreamDefinition> Sources { get; set; }
+        internal List<DataStreamDefinition> Destinations { get; set; }
 
-        public DataStream()
+        internal DataStream()
         {
-            Sources = new List<IDataStreamDefinition>();
-            Destinations = new List<IDataStreamDefinition>();
+            Sources = new List<DataStreamDefinition>();
+            Destinations = new List<DataStreamDefinition>();
             PropertyChanged += OnPropertyChanged;
         }
-
-
-        public Guid ID { get; set; }
-        public string ActionName { get; set; }
-        public string DataNames { get; set; }
-        public List<IDataStreamDefinition> Sources { get; }
-        public List<IDataStreamDefinition> Destinations { get; }
 
 
         public event PropertyChangedEventHandler PropertyChanged;

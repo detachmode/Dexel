@@ -1,35 +1,35 @@
 using System;
 using System.Linq;
-using Dexel.Contracts.Model;
+using Dexel.Model.DataTypes;
 
 namespace Dexel.Model
 {
 
-    public class MainModelManager : IMainModelManager
+    public class MainModelManager
     {
-        private readonly ISoftwareCellsManager _softwareCellsManager;
-        private readonly IDataStreamManager _dataStreamManager;
+        private readonly SoftwareCellsManager _softwareCellsManager;
+        private readonly DataStreamManager _dataStreamManager;
 
-        public MainModelManager(ISoftwareCellsManager softwareCellsManager, IDataStreamManager dataStreamManager)
+        public MainModelManager(SoftwareCellsManager softwareCellsManager, DataStreamManager dataStreamManager)
         {
             _softwareCellsManager = softwareCellsManager;
             _dataStreamManager = dataStreamManager;
         }
 
 
-        public void RemoveConnection(IDataStream dataStream, IMainModel mainModel)
+        public void RemoveConnection(DataStream dataStream, MainModel mainModel)
         {
             mainModel.Connections.RemoveAll(x => x.ID.Equals(dataStream.ID));
         }
 
-        public void AddNewOutput(ISoftwareCell softwareCell, string datanames)
+        public void AddNewOutput(SoftwareCell softwareCell, string datanames)
         {
             var definition = _dataStreamManager.CreateNewDefinition(softwareCell, datanames);
             softwareCell.OutputStreams.Add(definition);
 
         }
 
-        public void AddNewInput(Guid softwareCellID, string datanames, IMainModel mainModel,
+        public void AddNewInput(Guid softwareCellID, string datanames, MainModel mainModel,
             string actionName = "")
         {
             _softwareCellsManager.GetAll(softwareCellID, mainModel).ToList()
@@ -41,7 +41,7 @@ namespace Dexel.Model
         }
 
 
-        public  void AddNewInput(ISoftwareCell softwareCell, string datanames, string actionName = null)
+        public  void AddNewInput(SoftwareCell softwareCell, string datanames, string actionName = null)
         {
             var definition = _dataStreamManager.CreateNewDefinition(softwareCell, datanames, actionName);
             softwareCell.InputStreams.Add(definition);
@@ -49,7 +49,7 @@ namespace Dexel.Model
         }
 
 
-        public  void RemoveConnection(Guid id, IMainModel mainModel)
+        public  void RemoveConnection(Guid id, MainModel mainModel)
         {
             var datastream = _dataStreamManager.GetFirst(id, mainModel);
             RemoveConnection(datastream, mainModel);
@@ -58,7 +58,7 @@ namespace Dexel.Model
         }
 
 
-        public ISoftwareCell AddNewSoftwareCell(string name, IMainModel mainModel)
+        public SoftwareCell AddNewSoftwareCell(string name, MainModel mainModel)
         {
             var newcell = _softwareCellsManager.CreateNew(name);
             mainModel.SoftwareCells.Add(newcell);
@@ -66,8 +66,8 @@ namespace Dexel.Model
         }
 
 
-        public Guid AddNewConnectionAndDSDs(ISoftwareCell source, ISoftwareCell destination,
-            string datanames, string actionname, IMainModel mainModel)
+        public Guid AddNewConnectionAndDSDs(SoftwareCell source, SoftwareCell destination,
+            string datanames, string actionname, MainModel mainModel)
         {
             var sourceDef = _dataStreamManager.CreateNewDefinition(source, datanames, actionname);
             sourceDef.Connected = true;
@@ -86,14 +86,14 @@ namespace Dexel.Model
         }
 
 
-        public void Connect(ISoftwareCell source, ISoftwareCell destination, IDataStreamDefinition defintion,
-            IMainModel mainModel)
+        public void Connect(SoftwareCell source, SoftwareCell destination, DataStreamDefinition defintion,
+            MainModel mainModel)
         {
             Connect(source, destination, defintion.DataNames, mainModel, actionName: defintion.ActionName);
         }
 
 
-        public Guid Connect(ISoftwareCell source, ISoftwareCell destination, string datanames, IMainModel mainModel,
+        public Guid Connect(SoftwareCell source, SoftwareCell destination, string datanames, MainModel mainModel,
             string actionName = "")
         {
 
@@ -106,8 +106,8 @@ namespace Dexel.Model
         }
 
 
-        public void AddNewConnectionAndDSDs(IDataStreamDefinition defintion, ISoftwareCell source,
-            ISoftwareCell destination, IMainModel mainModel)
+        public void AddNewConnectionAndDSDs(DataStreamDefinition defintion, SoftwareCell source,
+            SoftwareCell destination, MainModel mainModel)
         {
             _softwareCellsManager.RemoveDefinitionsFromSourceAndDestination(defintion, source, destination);
             var dataStream = _dataStreamManager.CreateNew(defintion.DataNames, defintion.ActionName);

@@ -73,10 +73,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Dexel.Contracts\Dexel.Contracts.csproj">
-      <Project>{FA518C4E-7669-4283-8DDC-FE9D2B0D57FE}</Project>
-      <Name>Dexel.Contracts</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dexel.Model\Dexel.Model.csproj">
       <Project>{C8694B16-924D-492F-8400-577D0DDE19FF}</Project>
       <Name>Dexel.Model</Name>

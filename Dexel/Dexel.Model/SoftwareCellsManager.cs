@@ -1,32 +1,32 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dexel.Contracts.Model;
+using Dexel.Model.DataTypes;
 
 namespace Dexel.Model
 {
 
-    public class SoftwareCellsManager : ISoftwareCellsManager
+    public class SoftwareCellsManager
     {
-        public IEnumerable<ISoftwareCell> GetAll(Guid softwareCellID, IMainModel mainModel)
+        public IEnumerable<SoftwareCell> GetAll(Guid softwareCellID, MainModel mainModel)
         {
             return mainModel.SoftwareCells.Where(x => x.ID.Equals(softwareCellID));
         }
 
 
-        public ISoftwareCell GetFirst(Guid destinationID, IMainModel mainModel)
+        public SoftwareCell GetFirst(Guid destinationID, MainModel mainModel)
         {
             return mainModel.SoftwareCells.First(x => x.ID.Equals(destinationID));
         }
 
 
-        public ISoftwareCell GetFristByID(Guid destinationID, IMainModel mainModel)
+        public SoftwareCell GetFristByID(Guid destinationID, MainModel mainModel)
         {
             return mainModel.SoftwareCells.First(x => x.ID.Equals(destinationID));
         }
 
 
-        public ISoftwareCell CreateNew(string name = "")
+        public SoftwareCell CreateNew(string name = "")
         {
             return new SoftwareCell
             {
@@ -36,8 +36,8 @@ namespace Dexel.Model
         }
 
 
-        public void RemoveDefinitionsFromSourceAndDestination(IDataStreamDefinition defintion, ISoftwareCell source,
-            ISoftwareCell destination)
+        public void RemoveDefinitionsFromSourceAndDestination(DataStreamDefinition defintion, SoftwareCell source,
+            SoftwareCell destination)
         {
             source.OutputStreams.RemoveAll(
                 x => x.DataNames == defintion.DataNames && x.ActionName == defintion.ActionName);

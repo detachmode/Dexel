@@ -1,6 +1,7 @@
 ﻿using System.Windows.Controls;
 using System.Xml;
 using Dexel.Model;
+using Dexel.Model.DataTypes;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 

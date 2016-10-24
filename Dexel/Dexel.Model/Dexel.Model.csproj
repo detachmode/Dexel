@@ -65,13 +65,13 @@
   <ItemGroup>
     <Compile Include="Extensions.cs" />
     <Compile Include="Mockdata.cs" />
-    <Compile Include="DataStream.cs" />
-    <Compile Include="DataStreamDefinition.cs" />
+    <Compile Include="DataTypes\DataStream.cs" />
+    <Compile Include="DataTypes\DataStreamDefinition.cs" />
     <Compile Include="DataStreamManager.cs" />
-    <Compile Include="FlowAttribute.cs" />
-    <Compile Include="MainModel.cs" />
+    <Compile Include="DataTypes\FlowAttribute.cs" />
+    <Compile Include="DataTypes\MainModel.cs" />
     <Compile Include="MainModelManager.cs" />
-    <Compile Include="SoftwareCell.cs" />
+    <Compile Include="DataTypes\SoftwareCell.cs" />
     <Compile Include="SoftwareCellsManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -80,12 +80,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dexel.Contracts\Dexel.Contracts.csproj">
-      <Project>{fa518c4e-7669-4283-8ddc-fe9d2b0d57fe}</Project>
-      <Name>Dexel.Contracts</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />

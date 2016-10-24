@@ -110,12 +110,6 @@
   <ItemGroup>
     <Folder Include="bin\Debug\" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Dexel.Contracts\Dexel.Contracts.csproj">
-      <Project>{fa518c4e-7669-4283-8ddc-fe9d2b0d57fe}</Project>
-      <Name>Dexel.Contracts</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

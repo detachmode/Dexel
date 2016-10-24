@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dexel.Contracts.Model;
+using Dexel.Model.DataTypes;
 
 namespace Dexel.Model
 {
@@ -12,17 +12,17 @@ namespace Dexel.Model
     {
 
 
-        public static bool IsDefinitionIn(this IDataStream defintion, IEnumerable<IDataStreamDefinition> enumerable)
+        public static bool IsDefinitionIn(this DataStream defintion, IEnumerable<DataStreamDefinition> enumerable)
         {
             return enumerable.Any(x => x.IsEquals(defintion));
         }
 
-        public static bool IsEquals(this IDataStreamDefinition def1, IDataStreamDefinition def2)
+        public static bool IsEquals(this DataStreamDefinition def1, DataStreamDefinition def2)
         {
             return def1.DataNames == def2.DataNames && def1.ActionName == def2.ActionName;
         }
 
-        public static bool IsEquals(this IDataStreamDefinition def1, IDataStream def2)
+        public static bool IsEquals(this DataStreamDefinition def1, DataStream def2)
         {
             return def1.DataNames == def2.DataNames && def1.ActionName == def2.ActionName;
         }

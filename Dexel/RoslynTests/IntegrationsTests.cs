@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Dexel.Model;
+using Dexel.Model.DataTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Roslyn.Tests

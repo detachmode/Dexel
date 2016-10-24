@@ -18,9 +18,13 @@ namespace Dexel.Editor.Views
 
         private void IOCell_LayoutUpdated(object sender, System.EventArgs e)
         {
-            UpdateConnectionViewModels();
-            GetDataContext().Width = ActualWidth;
-            GetDataContext().Height = ActualHeight;
+            if (GetDataContext() != null)
+            {
+                GetDataContext().Width = ActualWidth;
+                GetDataContext().Height = ActualHeight;
+            }
+
+            UpdateConnectionViewModels();          
             MainViewModel.Instance().UpdateIntegrationBorderPositions();
         }
 
