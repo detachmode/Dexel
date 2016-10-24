@@ -6,10 +6,6 @@ namespace Dexel.Model
     public static class Mockdata
     {
 
-        private static readonly DataStreamManager DataStreamManager = new DataStreamManager();
-        private static readonly SoftwareCellsManager SoftwareCellsManager = new SoftwareCellsManager();
-        private static readonly MainModelManager MainModelManager = new MainModelManager(SoftwareCellsManager, DataStreamManager);
-
         public static MainModel RomanNumbers()
         {
 
@@ -18,10 +14,10 @@ namespace Dexel.Model
 
             MainModelManager.AddNewInput(splitter, "RomanNumber", actionName:".test");
             var convertEach = MainModelManager.AddNewSoftwareCell("Convert to decimal", mainModel);
-            MainModelManager.Connect(splitter, convertEach, "Roman Numeral*", mainModel, actionName:".eachSplitted");
+            MainModelManager.ConnectTwoCells(splitter, convertEach, "Roman Numeral*", "Roman Numeral*", mainModel, actionName:".eachSplitted");
 
             var negatelogicID = MainModelManager.AddNewSoftwareCell("Negate when larger", mainModel);
-            MainModelManager.Connect(convertEach, negatelogicID, "Decimal*", mainModel);
+            MainModelManager.ConnectTwoCells(convertEach, negatelogicID, "Decimal*", "Decimal*", mainModel);
 
 
             return mainModel;
@@ -38,12 +34,12 @@ namespace Dexel.Model
 
             var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
              alter.Position = new Point(280, 50);
-            MainModelManager.Connect(first, alter, "string | ", testModel);
+            MainModelManager.ConnectTwoCells(first, alter, "string", "", testModel);
 
             var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
             person.Position = new Point(540, 50);
-            MainModelManager.Connect(alter, person, "int | ... string", testModel);
-            var definition = DataStreamManager.CreateNewDefinition(person, "Person");
+            MainModelManager.ConnectTwoCells(alter, person, "int ","int, string", testModel);
+            var definition = DataStreamManager.NewDefinition(person, "Person");
             person.OutputStreams.Add(definition);
 
 
@@ -69,12 +65,12 @@ namespace Dexel.Model
 
             var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
             alter.Position = new Point(280, 50);
-            MainModelManager.Connect(first, alter, "name:string | ", testModel);
+            MainModelManager.ConnectTwoCells(first, alter, "name:string", "", testModel);
 
             var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
             person.Position = new Point(540, 50);
-            MainModelManager.Connect(alter, person, "age:int | age:int, name:string", testModel);
-            var definition = DataStreamManager.CreateNewDefinition(person, "rndPerson:Person");
+            MainModelManager.ConnectTwoCells(alter, person, "age:int ","age:int, name:string", testModel);
+            var definition = DataStreamManager.NewDefinition(person, "rndPerson:Person");
             person.OutputStreams.Add(definition);
 
 

@@ -17,13 +17,20 @@ namespace Dexel.Model.DataTypes
         public List<DataStreamDefinition> InputStreams { get; set; }
         public List<DataStreamDefinition> OutputStreams { get; set; }
 
-        public SoftwareCell()
+        internal SoftwareCell()
         {
             // Inputs / Outputs
             InputStreams = new List<DataStreamDefinition>();
             OutputStreams = new List<DataStreamDefinition>();
             Integration = new List<SoftwareCell>();
         }
+    }
+
+
+    public enum FlowAttribute
+    {
+        State,
+        Provider
     }
 
 }

@@ -14,25 +14,24 @@ namespace Dexel.Model.Tests
         [TestMethod()]
         public void SolvePipeLogicTest()
         {
-            var datastreamManager = new DataStreamManager();
 
-            var ds = datastreamManager.CreateNew("(int)* | (... string)*");
-            var splitted = datastreamManager.SolvePipeLogic(ds);
+            var ds = DataStreamManager.NewDataStream("(int)* | (... string)*");
+            var splitted = DataStreamManager.SolvePipeLogic(ds);
             Assert.IsTrue(splitted[0].Trim() == "(int)*");
             Assert.IsTrue(splitted[1].Trim() == "(int, string)*");
 
-            ds = datastreamManager.CreateNew("int | ... string ");
-            splitted = datastreamManager.SolvePipeLogic(ds);
+            ds = DataStreamManager.NewDataStream("int | ... string ");
+            splitted = DataStreamManager.SolvePipeLogic(ds);
             Assert.IsTrue(splitted[0].Trim() == "int");
             Assert.IsTrue(splitted[1].Trim() == "int, string");
 
-            ds = datastreamManager.CreateNew("int | string ");
-            splitted = datastreamManager.SolvePipeLogic(ds);
+            ds = DataStreamManager.NewDataStream("int | string ");
+            splitted = DataStreamManager.SolvePipeLogic(ds);
             Assert.IsTrue(splitted[0].Trim() == "int");
             Assert.IsTrue(splitted[1].Trim() == "string");
 
-            ds = datastreamManager.CreateNew("int, string");
-            splitted = datastreamManager.SolvePipeLogic(ds);
+            ds = DataStreamManager.NewDataStream("int, string");
+            splitted = DataStreamManager.SolvePipeLogic(ds);
             Assert.IsTrue(splitted[0].Trim() == "int, string");
             Assert.IsTrue(splitted[1].Trim() == "int, string");
 

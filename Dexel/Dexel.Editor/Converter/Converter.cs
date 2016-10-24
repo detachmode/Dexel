@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
-using Dexel.Contracts.Model;
 using Dexel.Editor.CustomControls;
 using Dexel.Editor.ViewModels;
 using Dexel.Editor.Views;

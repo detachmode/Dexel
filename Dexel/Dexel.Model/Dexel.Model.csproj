@@ -63,12 +63,12 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataStreamParser.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Mockdata.cs" />
     <Compile Include="DataTypes\DataStream.cs" />
     <Compile Include="DataTypes\DataStreamDefinition.cs" />
     <Compile Include="DataStreamManager.cs" />
-    <Compile Include="DataTypes\FlowAttribute.cs" />
     <Compile Include="DataTypes\MainModel.cs" />
     <Compile Include="MainModelManager.cs" />
     <Compile Include="DataTypes\SoftwareCell.cs" />

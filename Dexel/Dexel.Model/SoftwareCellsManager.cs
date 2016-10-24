@@ -6,27 +6,27 @@ using Dexel.Model.DataTypes;
 namespace Dexel.Model
 {
 
-    public class SoftwareCellsManager
+    public static class SoftwareCellsManager
     {
-        public IEnumerable<SoftwareCell> GetAll(Guid softwareCellID, MainModel mainModel)
+        public static IEnumerable<SoftwareCell> GetAll(Guid softwareCellID, MainModel mainModel)
         {
             return mainModel.SoftwareCells.Where(x => x.ID.Equals(softwareCellID));
         }
 
 
-        public SoftwareCell GetFirst(Guid destinationID, MainModel mainModel)
+        public static SoftwareCell GetFirst(Guid destinationID, MainModel mainModel)
         {
             return mainModel.SoftwareCells.First(x => x.ID.Equals(destinationID));
         }
 
 
-        public SoftwareCell GetFristByID(Guid destinationID, MainModel mainModel)
+        public static SoftwareCell GetFristByID(Guid destinationID, MainModel mainModel)
         {
             return mainModel.SoftwareCells.First(x => x.ID.Equals(destinationID));
         }
 
 
-        public SoftwareCell CreateNew(string name = "")
+        public static SoftwareCell CreateNew(string name = "")
         {
             return new SoftwareCell
             {
@@ -36,13 +36,29 @@ namespace Dexel.Model
         }
 
 
-        public void RemoveDefinitionsFromSourceAndDestination(DataStreamDefinition defintion, SoftwareCell source,
+        public static void RemoveDefinitionsFromSourceAndDestination(DataStreamDefinition defintion, SoftwareCell source,
             SoftwareCell destination)
         {
             source.OutputStreams.RemoveAll(
                 x => x.DataNames == defintion.DataNames && x.ActionName == defintion.ActionName);
             destination.InputStreams.RemoveAll(
                 x => x.DataNames == defintion.DataNames && x.ActionName == defintion.ActionName);
+        }
+
+
+        public static DataStreamDefinition NewInputDef(SoftwareCell softwareCell, string datanames, string actionName)
+        {
+            var definition = DataStreamManager.NewDefinition(softwareCell, datanames, actionName);
+            softwareCell.InputStreams.Add(definition);
+            return definition;
+        }
+
+
+        public static DataStreamDefinition NewOutputDef(SoftwareCell softwareCell, string datanames, string actionName)
+        {
+            var definition = DataStreamManager.NewDefinition(softwareCell, datanames, actionName);
+            softwareCell.OutputStreams.Add(definition);
+            return definition;
         }
     }
 

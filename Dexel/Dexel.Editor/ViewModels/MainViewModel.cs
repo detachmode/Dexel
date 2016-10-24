@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using Dexel.Contracts.Model;
 using Dexel.Editor.Behavior;
 using Dexel.Editor.CustomControls;
+using Dexel.Model.DataTypes;
 using PropertyChanged;
 
 namespace Dexel.Editor.ViewModels
@@ -30,7 +30,7 @@ namespace Dexel.Editor.ViewModels
         public ObservableCollection<IOCellViewModel> SoftwareCells { get; set; }
         public ConnectionViewModel TemporaryConnection { get; set; }
 
-        public IMainModel Model { get; set; }
+        public MainModel Model { get; set; }
 
 
         public List<Type> AllowedDropTypes => new List<Type>
@@ -91,7 +91,7 @@ namespace Dexel.Editor.ViewModels
 
         #region Load Model
 
-        public void LoadFromModel(IMainModel mainModel)
+        public void LoadFromModel(MainModel mainModel)
         {
             Model = mainModel;
             LoadConnection(mainModel.Connections);
@@ -112,7 +112,7 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        private void LoadSoftwareCells(List<ISoftwareCell> softwareCells)
+        private void LoadSoftwareCells(List<SoftwareCell> softwareCells)
         {
             SoftwareCells.Clear();
             softwareCells.ForEach(modelSoftwareCell =>
@@ -124,7 +124,7 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        private void LoadConnection(List<IDataStream> dataStreams)
+        private void LoadConnection(List<DataStream> dataStreams)
         {
             Connections.Clear();
             dataStreams.Where(x => x.Sources.Any() && x.Destinations.Any()).ToList().ForEach(modelConnection =>

@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Dexel.Contracts.Model;
+using Dexel.Model;
+using Dexel.Model.DataTypes;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
 
@@ -13,8 +14,8 @@ namespace Roslyn
     {
         private static int _methodsToGenerateCount;
 
-        public static SyntaxNode[] CreateIntegrationBody(SyntaxGenerator generator, List<IDataStream> connections,
-           List<ISoftwareCell> integratedSoftwareCells)
+        public static SyntaxNode[] CreateIntegrationBody(SyntaxGenerator generator, List<DataStream> connections,
+           List<SoftwareCell> integratedSoftwareCells)
         {
             _methodsToGenerateCount = 0;
             var generated = new List<GeneratedLocalVariable>();
@@ -75,8 +76,8 @@ namespace Roslyn
         }
 
 
-        public static List<MethodWithParameterDependencies> FindParameterDependencies(List<ISoftwareCell> softwareCells,
-            List<IDataStream> connections)
+        public static List<MethodWithParameterDependencies> FindParameterDependencies(List<SoftwareCell> softwareCells,
+            List<DataStream> connections)
         {
             return softwareCells.Select(sc => new MethodWithParameterDependencies
             {
@@ -86,7 +87,7 @@ namespace Roslyn
         }
 
 
-        public static List<Parameter> FindParameters(List<IDataStream> connections, ISoftwareCell ofSoftwareCell)
+        public static List<Parameter> FindParameters(List<DataStream> connections, SoftwareCell ofSoftwareCell)
         {
             var nameTypes =
                 DataStreamParser.GetInputPart(ofSoftwareCell.InputStreams.First().DataNames).ToList();
@@ -97,7 +98,7 @@ namespace Roslyn
         }
 
 
-        public static Parameter FindOneParameter(NameType lookingForNameType, List<IDataStream> connections, ISoftwareCell ofSoftwareCell)
+        public static Parameter FindOneParameter(NameType lookingForNameType, List<DataStream> connections, SoftwareCell ofSoftwareCell)
         {
             var parameter = new Parameter
             {
@@ -126,7 +127,7 @@ namespace Roslyn
         }
 
 
-        private static List<NameType> FindTypeInDataStream(NameType lookingForNameType, IDataStream dataStream)
+        private static List<NameType> FindTypeInDataStream(NameType lookingForNameType, DataStream dataStream)
         {
             var outputNametypes = DataStreamParser.GetOutputPart(dataStream.DataNames).ToList();
 
@@ -147,14 +148,14 @@ namespace Roslyn
         }
 
 
-        private static IDataStream GetInputDataStream(List<IDataStream> connections, ISoftwareCell ofSoftwareCell)
+        private static DataStream GetInputDataStream(List<DataStream> connections, SoftwareCell ofSoftwareCell)
         {
             var found = connections.Where(c => c.Destinations.Any(x => x.Parent == ofSoftwareCell)).ToList();
             return found.Any() ? found.First() : null;
         }
 
 
-        public static SyntaxNode LocalMethodCall(SyntaxGenerator generator, ISoftwareCell softwareCell, SyntaxNode[] parameter,
+        public static SyntaxNode LocalMethodCall(SyntaxGenerator generator, SoftwareCell softwareCell, SyntaxNode[] parameter,
             List<GeneratedLocalVariable> generated)
         {
             var firstouttype = DataStreamParser.GetOutputPart(softwareCell.OutputStreams.First().DataNames).First();

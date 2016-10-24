@@ -1,3 +1,4 @@
+using Dexel.Model;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
 

@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using Dexel.Contracts.Model;
 using Dexel.Editor.Behavior;
 using Dexel.Editor.CustomControls;
+using Dexel.Model.DataTypes;
 using PropertyChanged;
 
 namespace Dexel.Editor.ViewModels
@@ -22,7 +22,7 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        public ISoftwareCell Model { get; set; }
+        public SoftwareCell Model { get; set; }
         public ObservableCollection<DangelingConnectionViewModel> DangelingInputs { get; set; }
         public ObservableCollection<DangelingConnectionViewModel> DangelingOutputs { get; set; }
         public bool IsSelected { get; set; }
@@ -59,7 +59,7 @@ namespace Dexel.Editor.ViewModels
 
         #region Load Model
 
-        public void LoadFromModel(ISoftwareCell modelSoftwareCell)
+        public void LoadFromModel(SoftwareCell modelSoftwareCell)
         {
             Model = modelSoftwareCell;
             LoadDangelingInputs(modelSoftwareCell);
@@ -68,7 +68,7 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        private void LoadDangelingInputs(ISoftwareCell modelSoftwareCell)
+        private void LoadDangelingInputs(SoftwareCell modelSoftwareCell)
         {
             DangelingInputs.Clear();
             modelSoftwareCell.InputStreams.ToList().ForEach(dataStreamDef =>
@@ -81,7 +81,7 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        private void LoadDangelingOutputs(ISoftwareCell modelSoftwareCell)
+        public void LoadDangelingOutputs(SoftwareCell modelSoftwareCell)
         {
             DangelingOutputs.Clear();
             modelSoftwareCell.OutputStreams.ToList().ForEach(dataStreamDef =>

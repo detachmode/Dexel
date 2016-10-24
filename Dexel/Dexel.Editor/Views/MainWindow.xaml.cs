@@ -1,7 +1,7 @@
 ﻿using System.Windows;
-using Dexel.Contracts.Model;
 using Dexel.Editor.ViewModels;
 using Dexel.Model;
+using Dexel.Model.DataTypes;
 
 namespace Dexel.Editor.Views
 {
@@ -39,7 +39,7 @@ namespace Dexel.Editor.Views
         }
 
 
-        private IMainModel getModelFromDataContext()
+        private MainModel getModelFromDataContext()
         {
             return (DataContext as MainViewModel).Model;
         }

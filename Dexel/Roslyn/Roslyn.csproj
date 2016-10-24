@@ -92,7 +92,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Extensions.cs" />
-    <Compile Include="DataStreamParser.cs" />
     <Compile Include="DataTypeParser.cs" />
     <Compile Include="Integrations.cs" />
     <Compile Include="MyGenerator.cs" />
@@ -109,6 +108,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dexel.Model\Dexel.Model.csproj">
+      <Project>{C8694B16-924D-492F-8400-577D0DDE19FF}</Project>
+      <Name>Dexel.Model</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

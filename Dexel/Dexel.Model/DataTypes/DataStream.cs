@@ -7,13 +7,13 @@ using PropertyChanged;
 namespace Dexel.Model.DataTypes
 {
     [ImplementPropertyChanged]
-    internal class DataStream : INotifyPropertyChanged
+    public class DataStream : INotifyPropertyChanged
     {
-        internal Guid ID { get; set; }
-        internal string ActionName { get; set; }
-        internal string DataNames { get; set; }
-        internal List<DataStreamDefinition> Sources { get; set; }
-        internal List<DataStreamDefinition> Destinations { get; set; }
+        public Guid ID { get; internal set; }
+        public string ActionName { get;  set; }
+        public string DataNames { get;  set; }
+        public List<DataStreamDefinition> Sources { get; internal set; }
+        public List<DataStreamDefinition> Destinations { get; internal set; }
 
         internal DataStream()
         {

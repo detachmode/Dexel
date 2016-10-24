@@ -12,9 +12,7 @@ namespace Roslyn.Tests
     public class MyGeneratorTests
     {
         private readonly MyGenerator _gen = new MyGenerator();
-        private static readonly DataStreamManager DataStreamManager = new DataStreamManager();
-        private static readonly SoftwareCellsManager SoftwareCellsManager = new SoftwareCellsManager();
-        private static readonly MainModelManager MainModelManager = new MainModelManager(SoftwareCellsManager, DataStreamManager);
+
 
         [TestMethod]
         public void GetReturnTypesTest()
@@ -58,12 +56,12 @@ namespace Roslyn.Tests
             MainModelManager.AddNewInput(newName, "");
 
             var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            MainModelManager.Connect(newName, alter, "string | ", testModel);
+            MainModelManager.ConnectTwoCells(newName, alter, "string", "", testModel);
 
             var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            MainModelManager.Connect(alter, person, "int | int, string", testModel);
+            MainModelManager.ConnectTwoCells(alter, person, "int", "int, string", testModel);
 
-            var definition = DataStreamManager.CreateNewDefinition(person, "Person");
+            var definition = DataStreamManager.NewDefinition(person, "Person");
             person.OutputStreams.Add(definition);
 
             SyntaxNode[] members = testModel.SoftwareCells.Select(x => MethodsGenerator.GenerateMethod(_gen.Generator, x)).ToArray();
@@ -78,7 +76,7 @@ namespace Roslyn.Tests
 
             // Named Parameter
             person.InputStreams.Clear();
-            person.InputStreams.Add(new DataStreamDefinition() { DataNames = "int | age:int, name:string" });
+            SoftwareCellsManager.NewInputDef(person, "int | age:int, name:string", "");
             var personMethodNamedParams = MethodsGenerator.GenerateMethod(_gen.Generator, person);
             Assert.AreEqual("public Person Create_Person(int age, string name)\r\n{\r\n}",
                 personMethodNamedParams.NormalizeWhitespace().ToFullString());
@@ -100,10 +98,10 @@ namespace Roslyn.Tests
             MainModelManager.AddNewInput(newName, "");
 
             var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            MainModelManager.Connect(newName, alter, "string | ", testModel);
+            MainModelManager.ConnectTwoCells(newName, alter, "string", "", testModel);
 
             var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            MainModelManager.Connect(alter, person, "int | int, string", testModel);
+            MainModelManager.ConnectTwoCells(alter, person, "int","int, string", testModel);
 
 
             var expectedList = new List<Parameter>()
@@ -124,10 +122,10 @@ namespace Roslyn.Tests
             MainModelManager.AddNewInput(newName, "");
 
             var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            MainModelManager.Connect(newName, alter, "string | ", testModel);
+            MainModelManager.ConnectTwoCells(newName, alter, "string", "", testModel);
 
             var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            MainModelManager.Connect(alter, person, "int | int, string", testModel);
+            MainModelManager.ConnectTwoCells(alter, person, "int","int, string", testModel);
 
             var expected = new Parameter { FoundFlag = true, Source = alter };
             var lookingfor = new NameType { Name = null, Type = "int" };
@@ -142,10 +140,10 @@ namespace Roslyn.Tests
             MainModelManager.AddNewInput(newName, "");
 
             alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            MainModelManager.Connect(newName, alter, "string | ", testModel);
+            MainModelManager.ConnectTwoCells(newName, alter, "string","", testModel);
 
             person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            MainModelManager.Connect(alter, person, "int | ... string", testModel);
+            MainModelManager.ConnectTwoCells(alter, person, "int","int, string", testModel);
 
             lookingfor = new NameType { Name = null, Type = "int" };
             Assert.IsTrue(Integrations.FindOneParameter(lookingfor, testModel.Connections, person).Source == alter);

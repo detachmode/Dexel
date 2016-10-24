@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Dexel.Contracts.Model;
+using Dexel.Model.DataTypes;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
 
@@ -19,7 +19,7 @@ namespace Roslyn
         }
 
 
-        public void GenerateCodeAndPrint(IMainModel model)
+        public void GenerateCodeAndPrint(MainModel model)
         {
             var methods = generateAllMethods(model);
             var interactionsClass = Class("Interactions", methods.ToArray());
@@ -30,7 +30,7 @@ namespace Roslyn
         }
 
 
-        private List<SyntaxNode> generateAllMethods(IMainModel model)
+        private List<SyntaxNode> generateAllMethods(MainModel model)
         {
             var methods = model.SoftwareCells
                 .Select(softwareCell => MethodsGenerator.GenerateMethod(Generator, softwareCell))
@@ -81,7 +81,7 @@ namespace Roslyn
 
     public class GeneratedLocalVariable
     {
-        public ISoftwareCell Source;
+        public SoftwareCell Source;
         public string VariableName;
     }
 
@@ -96,7 +96,7 @@ namespace Roslyn
 
     public class MethodWithParameterDependencies
     {
-        public ISoftwareCell OfSoftwareCell;
+        public SoftwareCell OfSoftwareCell;
         public List<Parameter> Parameters = new List<Parameter>();
     }
 
@@ -104,7 +104,7 @@ namespace Roslyn
     public class Parameter
     {
         public bool FoundFlag;
-        public ISoftwareCell Source;
+        public SoftwareCell Source;
     }
 
 

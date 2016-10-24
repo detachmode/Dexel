@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dexel.Contracts.Model;
 using Dexel.Editor.Behavior;
 using Dexel.Editor.CustomControls;
-using Dexel.Editor.Views;
+using Dexel.Model.DataTypes;
 using PropertyChanged;
 
 namespace Dexel.Editor.ViewModels
@@ -16,15 +15,15 @@ namespace Dexel.Editor.ViewModels
             DataNames = "param";
         }
         public Guid ID;
-        public IDataStreamDefinition Model { get; set; }
-        public ISoftwareCell Parent { get; set; }
+        public DataStreamDefinition Model { get; set; }
+        public SoftwareCell Parent { get; set; }
         public string DataNames { get; set; }
         public string Actionname { get; set; }
 
         Type IDragable.DataType => typeof (DangelingConnectionViewModel);
 
 
-        public void LoadFromModel(ISoftwareCell parent, IDataStreamDefinition dataStream)
+        public void LoadFromModel(SoftwareCell parent, DataStreamDefinition dataStream)
         {
             ID = dataStream.ID;
             Model = dataStream;

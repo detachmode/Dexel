@@ -9,12 +9,6 @@ namespace Dexel.Editor.Tests
     [TestClass]
     public class InteractionsTests
     {
-        private static readonly DataStreamManager DataStreamManager = new DataStreamManager();
-        private static readonly SoftwareCellsManager SoftwareCellsManager = new SoftwareCellsManager();
-
-        private static readonly MainModelManager MainModelManager = new MainModelManager(SoftwareCellsManager,
-            DataStreamManager);
-
 
         [TestMethod]
         public void ConnectTwoDangelingConnectionsTest()
@@ -48,7 +42,7 @@ namespace Dexel.Editor.Tests
             var sB = SoftwareCellsManager.CreateNew("B");
             testModel.SoftwareCells.Add(sA);
             testModel.SoftwareCells.Add(sB);
-            MainModelManager.Connect(sA, sB, "dataAB", testModel);
+            MainModelManager.ConnectTwoCells(sA, sB, "dataAB", "dataAB", testModel);
 
             var fristconnection = testModel.Connections.First();
             Interactions.DeConnect(fristconnection, testModel);
@@ -90,7 +84,7 @@ namespace Dexel.Editor.Tests
             testModel.SoftwareCells.Add(sA);
             testModel.SoftwareCells.Add(sB);
             testModel.SoftwareCells.Add(sC);
-            MainModelManager.Connect(sA, sB, "dataAB", testModel);
+            MainModelManager.ConnectTwoCells(sA, sB, "dataAB", "dataAB", testModel);
 
             Interactions.ChangeConnectionDestination(testModel.Connections.First(), sC, testModel);
 
@@ -113,7 +107,7 @@ namespace Dexel.Editor.Tests
             var mainModel = new MainModel();
             var oneCell = MainModelManager.AddNewSoftwareCell("one", mainModel);
             var secondCell = MainModelManager.AddNewSoftwareCell("second", mainModel);
-            MainModelManager.Connect(oneCell, secondCell, "testdata", mainModel);
+            MainModelManager.ConnectTwoCells(oneCell, secondCell, "testdata", "testdata", mainModel);
 
             Assert.IsTrue(mainModel.Connections.Any(x => x.DataNames.Equals("testdata")));
             Assert.IsTrue(mainModel.Connections.Any(x => x.Sources.Any(dsd => dsd.Parent == oneCell)));

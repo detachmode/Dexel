@@ -9,9 +9,6 @@ namespace Roslyn.Tests
     public class IntegrationsTests
     {
         private readonly MyGenerator _gen = new MyGenerator();
-        private static readonly DataStreamManager DataStreamManager = new DataStreamManager();
-        private static readonly SoftwareCellsManager SoftwareCellsManager = new SoftwareCellsManager();
-        private static readonly MainModelManager MainModelManager = new MainModelManager(SoftwareCellsManager, DataStreamManager);
 
         [TestMethod()]
         public void CreateIntegrationBodyTest()
@@ -21,10 +18,10 @@ namespace Roslyn.Tests
             MainModelManager.AddNewInput(newName, "");
 
             var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            MainModelManager.Connect(newName, alter, "string | ", testModel);
+            MainModelManager.ConnectTwoCells(newName, alter, "string", "", testModel);
 
             var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            MainModelManager.Connect(alter, person, "int | int, string", testModel);
+            MainModelManager.ConnectTwoCells(alter, person, "int ","int, string", testModel);
             MainModelManager.AddNewOutput(person, "Person");
 
             Integrations.CreateIntegrationBody(_gen.Generator, testModel.Connections, testModel.SoftwareCells);
@@ -40,10 +37,10 @@ namespace Roslyn.Tests
             MainModelManager.AddNewInput(newName, "");
 
             var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            MainModelManager.Connect(newName, alter, "string | ", testModel);
+            MainModelManager.ConnectTwoCells(newName, alter, "string", "", testModel);
 
             var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            MainModelManager.Connect(alter, person, "int | int, string", testModel);
+            MainModelManager.ConnectTwoCells(alter, person, "int","int, string", testModel);
             MainModelManager.AddNewOutput(person, "Person");
 
             var dependecies = Integrations.FindParameters(testModel.Connections, person);
@@ -56,10 +53,10 @@ namespace Roslyn.Tests
             MainModelManager.AddNewInput(newName, "");
 
             alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            MainModelManager.Connect(newName, alter, "string | ", testModel);
+            MainModelManager.ConnectTwoCells(newName, alter, "string", "", testModel);
 
             person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            MainModelManager.Connect(alter, person, "int | ... string", testModel);
+            MainModelManager.ConnectTwoCells(alter, person, "int", "int, string", testModel);
             MainModelManager.AddNewOutput(person, "Person");
 
             dependecies = Integrations.FindParameters(testModel.Connections, person);

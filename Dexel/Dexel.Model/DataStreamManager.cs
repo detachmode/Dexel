@@ -8,9 +8,9 @@ using PropertyChanged;
 namespace Dexel.Model
 {
     [ImplementPropertyChanged]
-    public class DataStreamManager
+    public static class DataStreamManager
     {
-        public DataStream CreateNew(string datanames, string actionsName = "")
+        public static DataStream NewDataStream(string datanames, string actionsName = "")
         {
             var dataStream = new DataStream();
             dataStream.ID = Guid.NewGuid();
@@ -20,7 +20,7 @@ namespace Dexel.Model
         }
 
 
-        public DataStreamDefinition CreateNewDefinition(SoftwareCell parent, string datanames, string actionsName = "",
+        public static DataStreamDefinition NewDefinition(SoftwareCell parent, string datanames, string actionsName = "",
             bool connected = false)
         {
             var dataStream = new DataStreamDefinition();
@@ -33,48 +33,35 @@ namespace Dexel.Model
         }
 
 
-        public DataStream GetFirst(Guid id, MainModel mainModel)
+        public static DataStream GetFirst(Guid id, MainModel mainModel)
         {
             return mainModel.Connections.First(x => x.ID.Equals(id));
         }
 
 
-        public DataStream CreateNew(DataStreamDefinition datastreamDefintion)
+        public static DataStream NewDataStream(DataStreamDefinition datastreamDefintion)
         {
-            return CreateNew(datastreamDefintion.DataNames, datastreamDefintion.ActionName);
+            return NewDataStream(datastreamDefintion.DataNames, datastreamDefintion.ActionName);
         }
 
 
-        public DataStreamDefinition CreateNewDefinition(SoftwareCell parent, DataStreamDefinition defintion,
+        public static DataStreamDefinition NewDefinition(SoftwareCell parent, DataStreamDefinition defintion,
             bool connected = false)
         {
-            return CreateNewDefinition(parent, defintion.DataNames, defintion.ActionName, connected: connected);
+            return NewDefinition(parent, defintion.DataNames, defintion.ActionName, connected: connected);
         }
 
 
-        public DataStreamDefinition FindExistingDefinition(DataStreamDefinition defintion,
-            IEnumerable<DataStreamDefinition> definitions, Action<DataStreamDefinition> onFound,
-            Action onNotFound = null)
+
+
+
+        public static void SetConnectedState(DataStream dataStream, bool state)
         {
-            var found = definitions.Where(x => x.IsEquals(defintion));
-            if (found.Any())
-            {
-                onFound(found.First());
-                return found.First();
-            }
-            onNotFound?.Invoke();
-            return null;
+            dataStream.Sources.ForEach(dsd => dsd.Connected = state);
+            dataStream.Destinations.ForEach(dsd => dsd.Connected = state);
         }
 
-
-        public void DeConnect(IEnumerable<DataStreamDefinition> definitions, DataStream dataStream)
-        {
-            definitions.Where(def => def.IsEquals(dataStream)).ToList()
-                .ForEach(def => { def.Connected = false; });
-        }
-
-
-        public Guid CheckForStreamWithSameName(SoftwareCell source, SoftwareCell destination,
+        public static Guid CheckForStreamWithSameName(SoftwareCell source, SoftwareCell destination,
             DataStream tempStream, MainModel mainModel,
             Action<DataStreamDefinition> onFound, Action onNotFound)
         {
@@ -92,13 +79,18 @@ namespace Dexel.Model
 
         public static string MergeDataNames(DataStreamDefinition sourceDSD, DataStreamDefinition destinationDSD)
         {
+           
             if (destinationDSD == null)
                 return sourceDSD.DataNames + " | ";
+
+            if (sourceDSD.DataNames == destinationDSD.DataNames)
+                return sourceDSD.DataNames;
+
             return sourceDSD.DataNames + " | " + destinationDSD.DataNames;
         }
 
 
-        public void ChangeDatanames(DataStream datastream, string newDatanames)
+        public static void ChangeDatanames(DataStream datastream, string newDatanames)
         {
             // update datanames of connection itself
             datastream.DataNames = newDatanames;
@@ -110,9 +102,7 @@ namespace Dexel.Model
         }
 
 
-
-
-        public string[] SolvePipeLogic(DataStream datastream)
+        public static string[] SolvePipeLogic(DataStream datastream)
         {
             var strings = SolveWithParenthesis(datastream.DataNames);
             strings = SolveNoParenthesis(datastream.DataNames, strings);
@@ -122,7 +112,7 @@ namespace Dexel.Model
         }
 
 
-        private string[] SolveNoPipe(string datanames, string[] strings)
+        private static string[] SolveNoPipe(string datanames, string[] strings)
         {
             return strings ?? new[] {datanames, datanames};
         }
@@ -157,7 +147,7 @@ namespace Dexel.Model
         }
 
 
-        private string[] SolveWithParenthesis(string datanames)
+        private static string[] SolveWithParenthesis(string datanames)
         {
             var withparenthesis =
                 new Regex(

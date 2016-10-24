@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dexel.Editor.Views;
-using Dexel.Contracts.Model;
+using Dexel.Model.DataTypes;
+
 
 namespace Dexel.Editor.DebuggingHelper
 {
 
     public static class DebugPrinter
     {
-        public static void PrintRecursive(ISoftwareCell cell)
+        public static void PrintRecursive(SoftwareCell cell)
         {
             //PrintOutputs(cell);
             //var destinations = cell.OutputStreams.SelectMany(stream => stream.Destinations).ToList();
@@ -17,7 +17,7 @@ namespace Dexel.Editor.DebuggingHelper
         }
 
 
-        public static void PrintOutputs(List<ISoftwareCell> cell)
+        public static void PrintOutputs(List<SoftwareCell> cell)
         {
             //Console.WriteLine(@"// Outputs of " + cell.Name + ":");
             //cell.OutputStreams.ToList().ForEach(dataStream =>
@@ -27,13 +27,13 @@ namespace Dexel.Editor.DebuggingHelper
             //});
         }
 
-        public static void PrintDestinations(IDataStream dataStream)
+        public static void PrintDestinations(DataStream dataStream)
         {
             dataStream.Destinations.ForEach(x => Console.WriteLine($"\t ->{x.Parent.Name}"));
         }
 
 
-        private static void PrintStreamHeader(SoftwareCell cell, IDataStream stream)
+        private static void PrintStreamHeader(SoftwareCell cell, DataStream stream)
         {
             if (stream.ActionName != null)
                 Console.WriteLine(cell.Name + @" - " + stream.ActionName + @"( " + stream.DataNames + @" ) ->");
@@ -42,7 +42,7 @@ namespace Dexel.Editor.DebuggingHelper
         }
 
 
-        public static void PrintIntegration(ISoftwareCell cell)
+        public static void PrintIntegration(SoftwareCell cell)
         {
             if (cell.Integration == null) return;
             PrintIntegrationHeader(cell);
@@ -50,12 +50,12 @@ namespace Dexel.Editor.DebuggingHelper
         }
 
 
-        private static void PrintIntegrationHeader(ISoftwareCell cell)
+        private static void PrintIntegrationHeader(SoftwareCell cell)
         {
             Console.WriteLine(@"// " + cell.Name + @" is integrating: " + cell.Integration.First().Name);
         }
 
-        public static void PrintConnections(IMainModel mainModel)
+        public static void PrintConnections(MainModel mainModel)
         {
             Console.WriteLine(@"---------------------");
             Console.WriteLine(@"-- Connections ------");
@@ -65,7 +65,7 @@ namespace Dexel.Editor.DebuggingHelper
                 Console.WriteLine(@"{0} - {1} -> {2} ", x.Sources.First().Parent.Name, x.DataNames, x.Destinations.First().Parent.Name));
         }
 
-        public static void PrintSoftwareCells(IMainModel mainModel)
+        public static void PrintSoftwareCells(MainModel mainModel)
         {
             Console.WriteLine(@"---------------------");
             Console.WriteLine(@"-- SoftwareCells ----");

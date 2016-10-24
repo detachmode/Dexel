@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
-using Dexel.Contracts.Model;
+using Dexel.Model;
+using Dexel.Model.DataTypes;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
 
@@ -20,7 +21,7 @@ namespace Roslyn
                 body ?? new SyntaxNode[] {});
         }
 
-        public static SyntaxNode GetReturnPart(SyntaxGenerator generator, ISoftwareCell softwareCell)
+        public static SyntaxNode GetReturnPart(SyntaxGenerator generator, SoftwareCell softwareCell)
         {
             var outputStream = softwareCell.OutputStreams.First();
             return DataStreamParser.GetOutputPart(outputStream.DataNames)
@@ -28,7 +29,7 @@ namespace Roslyn
                 .First();
         }
 
-        public static SyntaxNode GenerateMethod(SyntaxGenerator generator,ISoftwareCell softwareCell)
+        public static SyntaxNode GenerateMethod(SyntaxGenerator generator,SoftwareCell softwareCell)
         {
             var methodName = GetMethodName(softwareCell);
             var returntype = GetReturnPart(generator,softwareCell);
@@ -41,7 +42,7 @@ namespace Roslyn
                 new SyntaxNode[] {});
         }
 
-        public static IEnumerable<SyntaxNode> GetParameters(SyntaxGenerator generator, ISoftwareCell softwareCell)
+        public static IEnumerable<SyntaxNode> GetParameters(SyntaxGenerator generator, SoftwareCell softwareCell)
         {
             if (!softwareCell.InputStreams.Any())
                 return null;
@@ -67,7 +68,7 @@ namespace Roslyn
         }
 
 
-        public static string GetMethodName(ISoftwareCell softwareCell)
+        public static string GetMethodName(SoftwareCell softwareCell)
         {
             return softwareCell.Name.Replace(' ', '_');
         }

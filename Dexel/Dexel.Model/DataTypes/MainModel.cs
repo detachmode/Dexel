@@ -6,8 +6,8 @@ namespace Dexel.Model.DataTypes
     [ImplementPropertyChanged]
     public class MainModel
     {
-        public List<DataStream> Connections { get; set; }
-        public List<SoftwareCell> SoftwareCells { get; set; }
+        public List<DataStream> Connections { get; internal set; }
+        public List<SoftwareCell> SoftwareCells { get; internal set; }
         public MainModel()
         {
             Connections = new List<DataStream>();
