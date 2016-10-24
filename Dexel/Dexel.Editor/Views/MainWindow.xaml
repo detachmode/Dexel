@@ -11,27 +11,37 @@
         
         Title="Sharp Flow Design" Height="350" Width="825">
     <Window.Resources>
-        
+
         <ContextMenu x:Key="MyContextMenu">
             <MenuItem Header="Add Celldaw" Click="MenuItem_Click" />
         </ContextMenu>
     </Window.Resources>
     <DockPanel>
-     <Menu DockPanel.Dock="Top">
-            <MenuItem Header="Generate Code" Click="MenuItem_GenerateCode"/>
-            <MenuItem Header="Debug Print" Click="MenuItem_DebugPrint"/>
-         <CheckBox Content="Auto Debug Print" Checked="CheckBox_Checked" Unchecked="CheckBox_UnChecked"  ></CheckBox>
-            <CheckBox Content="Auto Generate" Checked="AutoGenerate_Checked" Unchecked="AutoGenerate_UnChecked"  ></CheckBox>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Save" Click="MenuItem_Save"></MenuItem>
+                <MenuItem Header="Load" Click="MenuItem_Load"></MenuItem>
+            </MenuItem>
+
+            <MenuItem Header="Output">
+                <MenuItem Header="Debug Print" Click="MenuItem_DebugPrint"/>
+                <MenuItem Header="Generate Code" Click="MenuItem_GenerateCode"/>
+                <Separator></Separator>
+                <RadioButton Content="Disabled" IsChecked="True" Unchecked="CheckBox_UnChecked" GroupName="Auto"/>
+                <RadioButton Content="Auto Debug Print" Checked="CheckBox_Checked" Unchecked="CheckBox_UnChecked" GroupName="Auto"/>
+                <RadioButton Content="Auto Generate" Checked="AutoGenerate_Checked" Unchecked="AutoGenerate_UnChecked" GroupName="Auto"/>
+            </MenuItem>
+
         </Menu>
-    <Grid DockPanel.Dock="Top" ContextMenu="{StaticResource MyContextMenu}">
-        <Label>Flow Design</Label>
-        <customControls:ZoomBorder x:Name="TheZoomBorder" ClipToBounds="True"
+        <Grid DockPanel.Dock="Top" ContextMenu="{StaticResource MyContextMenu}">
+            <Label>Flow Design</Label>
+            <customControls:ZoomBorder x:Name="TheZoomBorder" ClipToBounds="True"
                                    Background="{StaticResource MyVisualBrush}">
-            <views:DrawingBoard x:Name="TheDrawingBoard" />
-        </customControls:ZoomBorder>
-        <i:Interaction.Behaviors>
-            <behavior:FrameworkElementDropBehavior />
-        </i:Interaction.Behaviors>
-    </Grid>
+                <views:DrawingBoard x:Name="TheDrawingBoard" />
+            </customControls:ZoomBorder>
+            <i:Interaction.Behaviors>
+                <behavior:FrameworkElementDropBehavior />
+            </i:Interaction.Behaviors>
+        </Grid>
     </DockPanel>
 </Window>

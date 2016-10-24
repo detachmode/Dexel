@@ -1,7 +1,9 @@
-﻿using System.Windows;
+﻿using System.IO;
+using System.Windows;
 using Dexel.Editor.ViewModels;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
+using Microsoft.Win32;
 
 namespace Dexel.Editor.Views
 {
@@ -63,6 +65,22 @@ namespace Dexel.Editor.Views
         private void AutoGenerate_UnChecked(object sender, RoutedEventArgs e)
         {
             Interactions.AutoPrintOff();
+        }
+
+
+        private void MenuItem_Save(object sender, RoutedEventArgs e)
+        {
+            var saveFileDialog = new SaveFileDialog();
+            if (saveFileDialog.ShowDialog() == true)
+                Interactions.SaveToXML(saveFileDialog.FileName, getModelFromDataContext());
+        }
+
+
+        private void MenuItem_Load(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+                Interactions.LoadFromXml(openFileDialog.FileName, getModelFromDataContext());
         }
     }
 

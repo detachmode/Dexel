@@ -95,7 +95,7 @@ namespace Dexel.Editor
 
         public static void ConnectDangelingConnectionAndSoftwareCell(DataStreamDefinition defintionDSD, SoftwareCell destination, MainModel mainModel)
         {
-            var inputDefinition =  SoftwareCellsManager.NewInputDef(destination, "", null);
+            var inputDefinition = SoftwareCellsManager.NewInputDef(destination, "", null);
             MainModelManager.ConnectTwoDefintions(defintionDSD, inputDefinition, mainModel);
 
             ViewRedraw();
@@ -127,9 +127,11 @@ namespace Dexel.Editor
 
         public static void AutoPrintOff()
         {
-            aTimer.Dispose();
-        }
 
+            aTimer?.Dispose();
+
+
+        }
 
         public static void AutoPrint(MainModel mainModel, Action<MainModel> printAction)
         {
@@ -141,7 +143,19 @@ namespace Dexel.Editor
         public static void ChangeConnectionDatanames(DataStream datastream, string newDatanames)
         {
             DataStreamManager.ChangeDatanames(datastream, newDatanames);
-            
+
+        }
+
+
+        public static void SaveToXML(string fileName, MainModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+
+        public static void LoadFromXml(string fileName, MainModel model)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -143,6 +143,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CustomControls\HeaderedSeparator.cs" />
     <Compile Include="CustomControls\IntegrationBorders.cs" />
     <Compile Include="Interactions.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
