@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.IO;
+using System.Windows.Controls;
 using System.Xml;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
@@ -37,10 +38,15 @@ namespace Dexel.Editor.CustomControls
         #region load color schema
         private static XshdSyntaxDefinition _xshd;
         private static readonly HighlightingManager Man = new HighlightingManager();
+
         private void LoadColorSchema(string url)
         {
             if (_xshd == null)
             {
+                if (!File.Exists(url))
+                {
+                    return;
+                }
                 using (var reader = new XmlTextReader(url))
                 {
                     _xshd = HighlightingLoader.LoadXshd(reader);
