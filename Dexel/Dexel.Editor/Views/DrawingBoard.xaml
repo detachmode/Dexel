@@ -32,7 +32,8 @@
                             <MultiBinding Converter="{StaticResource IntegrationBorderTopPointConverter}">
                                 <MultiBinding.Bindings>
                                     <Binding Path="Model.Position" />
-                                    <Binding/>
+                                    <Binding Path="Width"/>
+                                    <Binding Path="Height"/>
                                 </MultiBinding.Bindings>
                             </MultiBinding>
                         </customControls:IntegrationBorders.TopPoint>

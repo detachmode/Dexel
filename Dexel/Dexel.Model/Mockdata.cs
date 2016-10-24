@@ -55,11 +55,14 @@ namespace Dexel.Model
             MainModelManager.AddNewInput(first, "");
 
             var firstOp = MainModelManager.AddNewSoftwareCell("Operation", testModel);
-            firstOp.Position = new Point(60, 100);
+            firstOp.Position = new Point(-60, 180);
+            MainModelManager.AddNewOutput(firstOp, "");
             MainModelManager.AddNewInput(firstOp, "");
-           first.Integration.Add(firstOp);
+            first.Integration.Add(firstOp);
             var firstOp2 = MainModelManager.AddNewSoftwareCell("Operation", testModel);
-            firstOp2.Position = new Point(160, 100);
+            
+            firstOp2.Position = new Point(160, 180);
+            MainModelManager.AddNewOutput(firstOp2, "");
             MainModelManager.AddNewInput(firstOp2, "");
             first.Integration.Add(firstOp2);
 

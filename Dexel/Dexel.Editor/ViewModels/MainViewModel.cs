@@ -22,6 +22,7 @@ namespace Dexel.Editor.ViewModels
             SoftwareCells = new ObservableCollection<IOCellViewModel>();
             Connections = new ObservableCollection<ConnectionViewModel>();
             IntegrationBorders = new ObservableCollection<IOCellViewModel>();
+           
         }
 
 
@@ -32,6 +33,21 @@ namespace Dexel.Editor.ViewModels
 
         public MainModel Model { get; set; }
 
+        public static MainViewModel Instance()
+        {
+            return self ?? (self = new MainViewModel());
+        }
+
+
+        public void Reload()
+        {
+            if (Model != null)
+            {
+                LoadFromModel(Model);
+            }
+        }
+
+        #region Drop
 
         public List<Type> AllowedDropTypes => new List<Type>
         {
@@ -44,6 +60,8 @@ namespace Dexel.Editor.ViewModels
             data.TryCast<ConnectionViewModel>(
                 connectionVM => Interactions.DeConnect(connectionVM.Model, Model));
         }
+
+        #endregion
 
         #region Update Positions
 
@@ -75,20 +93,6 @@ namespace Dexel.Editor.ViewModels
 
         #endregion
 
-        public static MainViewModel Instance()
-        {
-            return self ?? (self = new MainViewModel());
-        }
-
-
-        public void Reload()
-        {
-            if (Model != null)
-            {
-                LoadFromModel(Model);
-            }
-        }
-
         #region Load Model
 
         public void LoadFromModel(MainModel mainModel)
@@ -109,6 +113,7 @@ namespace Dexel.Editor.ViewModels
                 integratedVMs.ToList().ForEach(hasIntegration.Integration.Add); 
                 IntegrationBorders.Add(hasIntegration);
             });
+            UpdateIntegrationBorderPositions();
         }
 
 

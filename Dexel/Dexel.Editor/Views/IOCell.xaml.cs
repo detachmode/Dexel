@@ -11,9 +11,15 @@ namespace Dexel.Editor.Views
     {
         public IOCell()
         {
-            InitializeComponent();
-            Loaded += (sender, args) => Fu.FocusTextBox();
+            InitializeComponent();          
+            Loaded += (sender, args) =>
+            {
+                Fu.FocusTextBox();
+               
+            };
             LayoutUpdated += IOCell_LayoutUpdated;
+           
+            
         }
 
         private void IOCell_LayoutUpdated(object sender, System.EventArgs e)

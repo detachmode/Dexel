@@ -18,8 +18,9 @@ namespace Dexel.Editor.Converter
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             Point pos = (Point) values[0];
-            IOCellViewModel cellvm = values[1] as IOCellViewModel;
-            return new Point(pos.X + cellvm.Width / 2, pos.Y+cellvm.Height);
+            double width = (double)values[1];
+            double height = (double)values[2];
+            return new Point(pos.X +width / 2, pos.Y + height);
         }
 
 
