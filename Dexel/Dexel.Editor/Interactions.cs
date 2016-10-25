@@ -23,7 +23,7 @@ namespace Dexel.Editor
         private static Timer aTimer;
 
 
-        public static void AddNewIOCell(Point pos, MainModel mainModel)
+        public static SoftwareCell AddNewIOCell(Point pos, MainModel mainModel)
         {
             var softwareCell = SoftwareCellsManager.CreateNew();
             pos.X -= 100;
@@ -34,11 +34,19 @@ namespace Dexel.Editor
 
             mainModel.SoftwareCells.Add(softwareCell);
             ViewRedraw();
+            return softwareCell;
         }
 
 
         public static void ViewRedraw()
         {
+            MainViewModel.Instance().Reload();
+
+        }
+
+        public static void ViewRedraw(MainModel mainModel)
+        {
+            MainViewModel.Instance().Model = mainModel;
             MainViewModel.Instance().Reload();
 
         }
@@ -71,6 +79,11 @@ namespace Dexel.Editor
 
         public static void MoveSoftwareCell(SoftwareCell model, double horizontalChange, double verticalChange)
         {
+            if (model == null)
+            {
+                return;
+                
+            }
             var pos = model.Position;
             pos.X += horizontalChange;
             pos.Y += verticalChange;
@@ -80,8 +93,9 @@ namespace Dexel.Editor
 
         public static void DeConnect(DataStream dataStream, MainModel mainModel)
         {
-            DataStreamManager.SetConnectedState(dataStream, false);
+            DataStreamManager.SetConnectedState(dataStream, false);    
             MainModelManager.RemoveConnection(dataStream, mainModel);
+            MainModelManager.RemoveFromIntegrationIncludingChildren(dataStream, mainModel);
 
             ViewRedraw();
         }
@@ -126,12 +140,9 @@ namespace Dexel.Editor
             DebugPrinter.PrintSoftwareCells(mainModel);
         }
 
-        public static void AutoPrintOff()
+        public static void AutoOutputTimerDispose()
         {
-
             aTimer?.Dispose();
-
-
         }
 
         public static void AutoPrint(MainModel mainModel, Action<MainModel> printAction)
@@ -158,8 +169,12 @@ namespace Dexel.Editor
         public static void LoadFromXml(string fileName, MainModel model)
         {
             var loadedMainModel = XMLSaveLoad.FromXML<MainModel>(fileName);
-            model = loadedMainModel;
-            ViewRedraw();
+            
+            MainModelManager.SetParents(loadedMainModel);
+            MainModelManager.SolveConnectionReferences(loadedMainModel);
+            MainModelManager.SolveIntegrationReferences(loadedMainModel);
+
+            ViewRedraw(loadedMainModel);
         }
     }
 }

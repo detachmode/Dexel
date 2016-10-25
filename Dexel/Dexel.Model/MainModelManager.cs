@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using Dexel.Model.DataTypes;
 
 namespace Dexel.Model
@@ -42,14 +44,14 @@ namespace Dexel.Model
         public static void ConnectTwoCells(SoftwareCell source, SoftwareCell destination, DataStreamDefinition defintion,
             MainModel mainModel)
         {
-            ConnectTwoCells(source, destination, defintion.DataNames, "" ,  mainModel, defintion.ActionName);
+            ConnectTwoCells(source, destination, defintion.DataNames, "", mainModel, defintion.ActionName);
         }
 
 
-        public static DataStream ConnectTwoCells(SoftwareCell source, SoftwareCell destination, string outputs, string inputs,
+        public static DataStream ConnectTwoCells(SoftwareCell source, SoftwareCell destination, string outputs,
+            string inputs,
             MainModel mainModel, string actionName = "")
         {
-
             source.OutputStreams.RemoveAll(x => x.DataNames == outputs && x.ActionName == actionName);
             destination.InputStreams.RemoveAll(x => x.DataNames == inputs && x.ActionName == actionName);
 
@@ -73,9 +75,104 @@ namespace Dexel.Model
             destinationDSD.Connected = true;
             sourceDSD.Connected = true;
 
+            AddToIntegrationIncludingChildren(sourceDSD, destinationDSD, mainModel);
+
             return datastream;
         }
 
+
+        private static void AddToIntegrationIncludingChildren(DataStreamDefinition sourceDSD,
+            DataStreamDefinition destinationDSD,
+            MainModel mainModel)
+        {
+            FindIntegration(sourceDSD.Parent, foundIntegration =>
+            {
+                foundIntegration.Integration.Add(destinationDSD.Parent);
+                TraverseChildren(destinationDSD.Parent, child => foundIntegration.Integration.Add(child), mainModel);
+            }, mainModel);
+        }
+
+
+        public static void SetParents(MainModel loadedMainModel)
+        {
+            loadedMainModel.SoftwareCells.ForEach(sc =>
+            {
+                sc.InputStreams.ForEach(dsd => dsd.Parent = sc);
+                sc.OutputStreams.ForEach(dsd => dsd.Parent = sc);
+            });
+        }
+
+
+        public static void SolveConnectionReferences(MainModel loadedMainModel)
+        {
+            loadedMainModel.Connections.ForEach(c =>
+            {
+                var found =
+                    c.Sources.Select(dsd => DataStreamManager.GetDSDFromModel(dsd.ID, loadedMainModel.SoftwareCells))
+                        .ToList();
+                if (found.Any())
+                {
+                    c.Sources = found;
+                }
+
+                found =
+                    c.Destinations.Select(
+                        dsd => DataStreamManager.GetDSDFromModel(dsd.ID, loadedMainModel.SoftwareCells)).ToList();
+                if (found.Any())
+                {
+                    c.Destinations = found;
+                }
+            });
+        }
+
+
+        public static void SolveIntegrationReferences(MainModel loadedMainModel)
+        {
+            var lookupID = loadedMainModel.SoftwareCells.ToLookup(sc => sc.ID);
+            loadedMainModel.SoftwareCells.Where(sc => sc.Integration.Count != 0).ToList().ForEach(sc =>
+            {
+                var references = sc.Integration.SelectMany(iSc => lookupID[iSc.ID]).ToList();
+                sc.Integration = references;
+            });
+        }
+
+
+        public static void RemoveFromIntegrationIncludingChildren(DataStream dataStream, MainModel mainModel)
+        {
+            FindIntegration(dataStream.Destinations.First().Parent, foundIntegration =>
+            {
+                foundIntegration.Integration.RemoveAll(iSc => dataStream.Destinations.Any(dsd => dsd.Parent.ID == iSc.ID));
+                dataStream.Destinations.ForEach(
+                    dsd =>
+                        TraverseChildren(dsd.Parent, child => foundIntegration.Integration.RemoveAll(iSc => iSc.ID == child.ID),
+                            mainModel));
+            }, mainModel);
+        }
+
+
+        public static void TraverseChildren(SoftwareCell parent, Action<SoftwareCell> func, MainModel mainModel)
+        {
+            var foundConnections = mainModel.Connections.Where(c => c.Sources.Any(dsd => dsd.Parent == parent));
+            foreach (var connection in foundConnections)
+            {
+                connection.Destinations.ForEach(dsd =>
+                {
+                    func(dsd.Parent);
+                    TraverseChildren(dsd.Parent, func, mainModel);
+                });
+            }
+        }
+
+
+        private static void FindIntegration(SoftwareCell softwareCell, Action<SoftwareCell> onFound, MainModel mainModel)
+        {
+            var softwareCells = mainModel.SoftwareCells.Where(sc => sc.Integration.Any(iSc => iSc.ID == softwareCell.ID));
+            var integration = softwareCells as IList<SoftwareCell> ?? softwareCells.ToList();
+            if (integration.Any())
+            {
+                onFound(integration.First());
+            }
+        }
     }
 
 }

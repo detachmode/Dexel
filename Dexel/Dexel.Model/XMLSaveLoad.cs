@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -9,12 +10,15 @@ namespace Dexel.Model
         public static void SaveToXML<T>(this T obj, string path)
         {
             var xmlSerializer = new XmlSerializer(typeof(T));
-            var stringWriter = new StringWriter();
-            using (var writer = new XmlTextWriter(stringWriter) { Formatting = Formatting.Indented })
+            using (StreamWriter sw = new StreamWriter(path, false, Encoding.UTF8))
             {
-                xmlSerializer.Serialize(writer, obj);
-                File.WriteAllText(path, stringWriter.ToString());
+                xmlSerializer.Serialize(sw, obj);
             }
+            //using (var writer = new XmlTextWriter(path, Encoding.UTF8) { Formatting = Formatting.Indented })
+            //{
+            //    xmlSerializer.Serialize(writer, obj);
+            //    File.WriteAllText(path, stringWriter.ToString());
+            //}
         }
 
         public static T FromXML<T>(string path)

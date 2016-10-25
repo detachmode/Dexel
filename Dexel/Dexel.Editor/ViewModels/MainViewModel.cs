@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using Dexel.Editor.Behavior;
 using Dexel.Editor.CustomControls;
+using Dexel.Library;
 using Dexel.Model.DataTypes;
 using PropertyChanged;
 
@@ -78,8 +79,12 @@ namespace Dexel.Editor.ViewModels
 
         public void UpdateIntegrationBorderPositions()
         {
-            IntegrationBorders.ToList().ForEach(iocellvm =>
+            IntegrationBorders.ForEach(iocellvm =>
             {
+                if (iocellvm.Integration.Count == 0)
+                {
+                    return;
+                }
                 var tempIntegrations = iocellvm.Integration.OrderBy( cellvm1 => cellvm1.Model.Position.X + cellvm1.Width);
                 var min = tempIntegrations.First();
                 var max = tempIntegrations.Last();

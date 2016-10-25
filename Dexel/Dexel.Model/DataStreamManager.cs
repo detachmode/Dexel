@@ -172,5 +172,25 @@ namespace Dexel.Model
             }
             return null;
         }
+
+
+        public static DataStreamDefinition GetDSDFromModel(Guid id, List<SoftwareCell> softwareCells)
+        {
+            var inputDSDs = softwareCells.Select(sc => sc.InputStreams.FirstOrDefault(dsd => dsd.ID == id))
+                .Where(x => x != null).ToList();
+            if (inputDSDs.Any())
+            {
+                return inputDSDs.First();
+            }
+
+            var outputDSDs = softwareCells.Select(sc => sc.OutputStreams.FirstOrDefault(dsd => dsd.ID == id))
+                  .Where(x => x != null).ToList();
+            if (outputDSDs.Any())
+            {
+                return outputDSDs.First();
+            }
+            return null;
+
+        }
     }
 }

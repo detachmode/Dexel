@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using Dexel.Editor.ViewModels;
 
 namespace Dexel.Editor.Views
@@ -34,10 +35,24 @@ namespace Dexel.Editor.Views
             MainViewModel.Instance().UpdateIntegrationBorderPositions();
         }
 
+
+        private Model.DataTypes.SoftwareCell duplicated = null;
+
         private void OnDragDelta(object sender, DragDeltaEventArgs e)
         {
             var iocellViewModel = DataContext as IOCellViewModel;
-            Interactions.MoveSoftwareCell(iocellViewModel?.Model, e.HorizontalChange, e.VerticalChange);
+            if (duplicated == null && Keyboard.IsKeyDown(Key.LeftShift))
+            {
+                duplicated = Interactions.AddNewIOCell(iocellViewModel.Model.Position, MainViewModel.Instance().Model);
+            }
+
+            var modeltoMove = iocellViewModel?.Model;
+            if (duplicated != null)
+            {
+                modeltoMove = duplicated;
+            }
+            
+            Interactions.MoveSoftwareCell(modeltoMove, e.HorizontalChange, e.VerticalChange);
         }
 
 
