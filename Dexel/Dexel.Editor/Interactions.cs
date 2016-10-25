@@ -4,6 +4,7 @@ using System.Threading;
 using System.Windows;
 using Dexel.Editor.DebuggingHelper;
 using Dexel.Editor.ViewModels;
+using Dexel.Library;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
 using Roslyn;
@@ -149,13 +150,16 @@ namespace Dexel.Editor
 
         public static void SaveToXML(string fileName, MainModel model)
         {
-            throw new NotImplementedException();
+            model.SaveToXML(fileName);
+
         }
 
 
         public static void LoadFromXml(string fileName, MainModel model)
         {
-            throw new NotImplementedException();
+            var loadedMainModel = XMLSaveLoad.FromXML<MainModel>(fileName);
+            model = loadedMainModel;
+            ViewRedraw();
         }
     }
 }

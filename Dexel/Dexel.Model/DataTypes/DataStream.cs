@@ -6,16 +6,17 @@ using PropertyChanged;
 
 namespace Dexel.Model.DataTypes
 {
+    [Serializable]
     [ImplementPropertyChanged]
     public class DataStream : INotifyPropertyChanged
     {
-        public Guid ID { get; internal set; }
+        public Guid ID { get;  set; }
         public string ActionName { get;  set; }
         public string DataNames { get;  set; }
-        public List<DataStreamDefinition> Sources { get; internal set; }
-        public List<DataStreamDefinition> Destinations { get; internal set; }
+        public List<DataStreamDefinition> Sources { get;  set; }
+        public List<DataStreamDefinition> Destinations { get;  set; }
 
-        internal DataStream()
+        public DataStream()
         {
             Sources = new List<DataStreamDefinition>();
             Destinations = new List<DataStreamDefinition>();

@@ -5,7 +5,7 @@ using PropertyChanged;
 
 namespace Dexel.Model.DataTypes
 {
-
+    [Serializable]
     [ImplementPropertyChanged]
     public class SoftwareCell
     {
@@ -17,7 +17,7 @@ namespace Dexel.Model.DataTypes
         public List<DataStreamDefinition> InputStreams { get; set; }
         public List<DataStreamDefinition> OutputStreams { get; set; }
 
-        internal SoftwareCell()
+        public SoftwareCell()
         {
             // Inputs / Outputs
             InputStreams = new List<DataStreamDefinition>();

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Roslyn", "Roslyn\Roslyn.csproj", "{3D0F668F-729A-4172-9E3E-0DC60503ECE8}"
 EndProject
@@ -14,6 +14,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dexel.Editor", "Dexel.Editor\Dexel.Editor.csproj", "{402C4811-C057-4A79-958D-DA31EB4A78EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dexel.Model.Tests", "Dexel.Model.Tests\Dexel.Model.Tests.csproj", "{21922B41-E90E-4B0E-B958-7190E49A4BDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dexel.Library", "Dexel.Library\Dexel.Library.csproj", "{FA179C08-1C2A-4E4B-B708-020F235E1283}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,6 +46,10 @@ Global
 		{21922B41-E90E-4B0E-B958-7190E49A4BDA}.Debug|x86.Build.0 = Debug|x86
 		{21922B41-E90E-4B0E-B958-7190E49A4BDA}.Release|x86.ActiveCfg = Release|x86
 		{21922B41-E90E-4B0E-B958-7190E49A4BDA}.Release|x86.Build.0 = Release|x86
+		{FA179C08-1C2A-4E4B-B708-020F235E1283}.Debug|x86.ActiveCfg = Debug|x86
+		{FA179C08-1C2A-4E4B-B708-020F235E1283}.Debug|x86.Build.0 = Debug|x86
+		{FA179C08-1C2A-4E4B-B708-020F235E1283}.Release|x86.ActiveCfg = Release|Any CPU
+		{FA179C08-1C2A-4E4B-B708-020F235E1283}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
