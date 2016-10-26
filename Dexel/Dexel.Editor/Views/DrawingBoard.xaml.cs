@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Dexel.Editor.Behavior;
 using Dexel.Editor.CustomControls;
 using Dexel.Editor.ViewModels;
 
@@ -70,6 +71,7 @@ namespace Dexel.Editor.Views
 
         private void IOCell_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            Debug.WriteLine("- " + System.Reflection.MethodBase.GetCurrentMethod().Name);
             if (e.ChangedButton != MouseButton.Left)
             {
                 return;
@@ -122,8 +124,12 @@ namespace Dexel.Editor.Views
         }
 
 
+        public bool IgnoreCurrentMouseEvents = false;
+
+
         private void IOCell_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            Debug.WriteLine("- " + System.Reflection.MethodBase.GetCurrentMethod().Name);
             if (isLeftMouseDownOnRectangle)
             {
                 var rectangle = (FrameworkElement)sender;
@@ -192,6 +198,7 @@ namespace Dexel.Editor.Views
 
         private void IOCell_MouseMove(object sender, MouseEventArgs e)
         {
+            
             if (isDraggingRectangle)
             {
                 //
@@ -240,8 +247,14 @@ namespace Dexel.Editor.Views
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
+            Debug.WriteLine("- " + System.Reflection.MethodBase.GetCurrentMethod().Name);
             if (e.ChangedButton == MouseButton.Left)
             {
+                if (FrameworkElementDragBehavior.DragDropInProgressFlag)
+                {
+                    IgnoreCurrentMouseEvents = true;
+                    return;
+                }
                 //
                 //  Clear selection immediately when starting drag selection.
                 //
@@ -268,8 +281,14 @@ namespace Dexel.Editor.Views
 
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            Debug.WriteLine("- " + System.Reflection.MethodBase.GetCurrentMethod().Name);
             if (e.ChangedButton == MouseButton.Left)
             {
+                if (IgnoreCurrentMouseEvents)
+                {
+                    IgnoreCurrentMouseEvents = false;
+                    return;
+                }
                 bool wasDragSelectionApplied = false;
 
                 if (isDraggingSelectionRect)
@@ -306,6 +325,7 @@ namespace Dexel.Editor.Views
 
         private void Window_MouseMove(object sender, MouseEventArgs e)
         {
+          
             if (isDraggingSelectionRect)
             {
 

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 
@@ -7,6 +9,7 @@ namespace Dexel.Editor.Behavior
     public class FrameworkElementDragBehavior : Behavior<FrameworkElement>
     {
         private bool isMouseClicked;
+        public static bool DragDropInProgressFlag = false;
 
         protected override void OnAttached()
         {
@@ -18,16 +21,20 @@ namespace Dexel.Editor.Behavior
 
         void AssociatedObject_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
+         
+            DragDropInProgressFlag = true;
             isMouseClicked = true;
         }
 
         void AssociatedObject_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
+            DragDropInProgressFlag = false;
             isMouseClicked = false;
         }
 
         void AssociatedObject_MouseLeave(object sender, MouseEventArgs e)
         {
+
             if (isMouseClicked)
             {
                

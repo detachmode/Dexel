@@ -67,7 +67,6 @@ namespace Dexel.Editor.Behavior
                 allowedDropTypes.Exists(type => dragEventArgs.Data.GetDataPresent(type)))
             {
                 canDrop();
-                Debug.WriteLine("CanDrop");
             }
             else
                 rejected?.Invoke();
