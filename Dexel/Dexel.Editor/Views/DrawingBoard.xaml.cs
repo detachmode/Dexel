@@ -323,7 +323,7 @@ namespace Dexel.Editor.Views
                 if (dragDistance > DragThreshold)
                 {
                     //
-                    // When the mouse has been dragged more than the threshold value commence drag selection.
+                    // When the mouse has been dragged more than the threshold value drag selection will show up.
                     //
                     isDraggingSelectionRect = true;
                     InitDragSelectionRect(origMouseDownPoint, curMouseDownPoint);
@@ -397,13 +397,13 @@ namespace Dexel.Editor.Views
             // Inflate the drag selection-rectangle by 1/10 of its size to 
             // make sure the intended item is selected.
             //
-            dragRect.Inflate(newBounds.Width / 10, newBounds.Height / 10);
+            dragRect.Inflate(rect.Width / 10, rect.Height / 10);
 
             SoftwareCellsList.SelectedItems.Clear();
 
             foreach (IOCellViewModel IOCellViewModel in this.ViewModel.SoftwareCells)
             {
-                Rect itemRect = new Rect(IOCellViewModel.Model.Position.X, IOCellViewModel.Model.Position.Y, IOCellViewModel.Width, IOCellViewModel.Height);
+                Rect itemRect = new Rect(IOCellViewModel.Model.Position.X, IOCellViewModel.Model.Position.Y, IOCellViewModel.CellWidth, IOCellViewModel.CellHeight);
                 if (dragRect.Contains(itemRect))
                 {
                     SoftwareCellsList.SelectedItems.Add(IOCellViewModel);

@@ -33,16 +33,16 @@
                         <DataTemplate>
                             <customControls:IntegrationBorders
                                 FillColor="{StaticResource FillPointerBrush}"
-                                Thickness="1"
-                                TopWidth="{Binding Width}"
+                                Thickness="2"
+                                TopWidth="{Binding CellWidth}"
                                 End="{Binding IntegrationEndPosition}"
-                                Start="{Binding IntegrationStartPosition}">
+                                Start="{Binding IntegrationStartPosition}" Opacity="0.4">
                                 <customControls:IntegrationBorders.TopPoint>
                                     <MultiBinding Converter="{StaticResource IntegrationBorderTopPointConverter}">
                                         <MultiBinding.Bindings>
                                             <Binding Path="Model.Position" />
-                                            <Binding Path="Width" />
-                                            <Binding Path="Height" />
+                                            <Binding Path="CellWidth" />
+                                            <Binding Path="CellHeight" />
                                         </MultiBinding.Bindings>
                                     </MultiBinding>
                                 </customControls:IntegrationBorders.TopPoint>
@@ -77,7 +77,7 @@
                                 Margin="0,2,2,2">
                                 <views:IOCell
                                     Cursor="Hand"
-                                    Background="{Binding IsSelected, Converter={StaticResource SelectionConverter}}"
+                                   
                                     MouseDown="IOCell_MouseDown"
                                     MouseUp="IOCell_MouseUp"
                                     MouseMove="IOCell_MouseMove" />

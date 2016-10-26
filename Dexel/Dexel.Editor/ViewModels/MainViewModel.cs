@@ -85,14 +85,14 @@ namespace Dexel.Editor.ViewModels
                 {
                     return;
                 }
-                var tempIntegrations = iocellvm.Integration.OrderBy( cellvm1 => cellvm1.Model.Position.X + cellvm1.Width);
+                var tempIntegrations = iocellvm.Integration.OrderBy( cellvm1 => cellvm1.Model.Position.X + cellvm1.CellWidth);
                 var min = tempIntegrations.First();
                 var max = tempIntegrations.Last();
 
-                tempIntegrations = iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.Y + cellvm1.Height);
+                tempIntegrations = iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.Y + cellvm1.CellHeight);
                 var miny= tempIntegrations.First();
                 iocellvm.IntegrationStartPosition = new Point(min.Model.Position.X -60, miny.Model.Position.Y );             
-                iocellvm.IntegrationEndPosition = new Point(max.Model.Position.X + max.Width + 60, miny.Model.Position.Y );
+                iocellvm.IntegrationEndPosition = new Point(max.Model.Position.X + max.CellWidth + 60, miny.Model.Position.Y );
             });
         }
 

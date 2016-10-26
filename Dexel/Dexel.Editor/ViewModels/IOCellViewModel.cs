@@ -26,8 +26,8 @@ namespace Dexel.Editor.ViewModels
         public ObservableCollection<DangelingConnectionViewModel> DangelingInputs { get; set; }
         public ObservableCollection<DangelingConnectionViewModel> DangelingOutputs { get; set; }
         public bool IsSelected { get; set; }
-        public double Width { get; set; }
-        public double Height { get; set; }
+        public double CellWidth { get; set; }
+        public double CellHeight { get; set; }
         public ObservableCollection<IOCellViewModel> Integration { get; set; }
 
 

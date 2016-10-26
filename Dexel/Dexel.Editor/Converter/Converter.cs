@@ -87,7 +87,27 @@ namespace Dexel.Editor.Converter
         }
     }
 
+    public class VisibilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool selected = (bool)value;
+            if (selected)
+            {
 
+                return Visibility.Visible;
+            }
+
+            return Visibility.Hidden;
+
+        }
+
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
     public class IOCellSelectionConverter : IValueConverter
     {

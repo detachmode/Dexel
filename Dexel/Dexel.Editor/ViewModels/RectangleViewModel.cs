@@ -120,7 +120,7 @@ namespace Dexel.Editor.ViewModels
 
                 width = value;
 
-                OnPropertyChanged("Width");
+                OnPropertyChanged("CellWidth");
             }
         }
 
@@ -142,7 +142,7 @@ namespace Dexel.Editor.ViewModels
 
                 height = value;
 
-                OnPropertyChanged("Height");
+                OnPropertyChanged("CellHeight");
             }
         }
 

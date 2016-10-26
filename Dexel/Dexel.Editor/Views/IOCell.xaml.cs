@@ -25,10 +25,10 @@ namespace Dexel.Editor.Views
 
         private void IOCell_LayoutUpdated(object sender, System.EventArgs e)
         {
-            if (GetDataContext() != null)
+            if (ViewModel() != null)
             {
-                GetDataContext().Width = ActualWidth;
-                GetDataContext().Height = ActualHeight;
+                ViewModel().CellWidth = Fu.ActualWidth;
+                ViewModel().CellHeight = Fu.ActualHeight;
             }
 
             UpdateConnectionViewModels();          
@@ -56,7 +56,7 @@ namespace Dexel.Editor.Views
         }
 
 
-        private IOCellViewModel GetDataContext()
+        private IOCellViewModel ViewModel()
         {
             var cellViewModel = DataContext as IOCellViewModel;
             return cellViewModel;
@@ -67,7 +67,7 @@ namespace Dexel.Editor.Views
 
         private void UpdateConnectionViewModels()
         {
-            var vm = GetDataContext();
+            var vm = ViewModel();
             if (vm == null)
             {
                 return;
@@ -86,12 +86,12 @@ namespace Dexel.Editor.Views
 
         private void NewOutput_click(object sender, RoutedEventArgs e)
         {
-            Interactions.AddNewOutput(GetDataContext().Model, "params");
+            Interactions.AddNewOutput(ViewModel().Model, "params");
         }
 
         private void NewInput_click(object sender, RoutedEventArgs e)
         {
-            Interactions.AddNewInput(GetDataContext().Model, "params");
+            Interactions.AddNewInput(ViewModel().Model, "params");
         }
     }
 }
