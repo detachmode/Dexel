@@ -35,10 +35,8 @@
         </Menu>
         <Grid DockPanel.Dock="Top" ContextMenu="{StaticResource MyContextMenu}">
             <Label>Flow Design</Label>
-            <customControls:ZoomBorder x:Name="TheZoomBorder" ClipToBounds="True"
-                                   Background="{StaticResource MyVisualBrush}">
-                <views:DrawingBoard x:Name="TheDrawingBoard" />
-            </customControls:ZoomBorder>
+
+            <views:DrawingBoard x:Name="TheDrawingBoard" />
             <i:Interaction.Behaviors>
                 <behavior:FrameworkElementDropBehavior />
             </i:Interaction.Behaviors>

@@ -12,7 +12,7 @@ namespace Dexel.Editor.ViewModels
 {
 
     [ImplementPropertyChanged]
-    public class IOCellViewModel : IDropable
+    public class IOCellViewModel : IDropable, ISelectable
     {
         public IOCellViewModel()
         {

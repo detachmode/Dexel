@@ -10,7 +10,6 @@
             <converter:PercentageConverter x:Key="PercentageConverter" />
             <converter:TextDocumentConverter x:Key="TextDocumentConverter" />
             <converter:IntegrationBorderTopPointConverter x:Key="IntegrationBorderTopPointConverter" />
-
             <ItemsPanelTemplate x:Key="DrawingBoardItemControl">
                 <Canvas />
             </ItemsPanelTemplate>

@@ -25,8 +25,8 @@ namespace Dexel.Editor.Views
 
         public void FocusTextBox()
         {
-            TextBox textBox = (TextBox)TheThumb.Template.FindName("theTextBox", TheThumb);
-            textBox.Focus();
+            //TextBox textBox = (TextBox)TheThumb.Template.FindName("theTextBox", TheThumb);
+            //textBox.Focus();
         }
 
         public string LabelContent

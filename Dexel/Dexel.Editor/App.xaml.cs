@@ -33,6 +33,7 @@ namespace Dexel.Editor
             mainviewModel.LoadFromModel(mockMainModel);
 
             var mainwindow = new MainWindow(mainviewModel);
+            //var mainwindow = new TestWindow();
             mainwindow.Show();
 
             App.Current.DispatcherUnhandledException += AppOnDispatcherUnhandledException;

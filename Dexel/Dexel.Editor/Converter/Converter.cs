@@ -100,8 +100,7 @@ namespace Dexel.Editor.Converter
                 return new SolidColorBrush(Colors.DodgerBlue);
             }
 
-            Color color = (Color)ColorConverter.ConvertFromString("#7F484848");
-            return new SolidColorBrush(color); ;
+            return new  SolidColorBrush(Colors.Transparent);
 
         }
 

@@ -145,11 +145,14 @@
     </ApplicationDefinition>
     <Compile Include="CustomControls\HeaderedSeparator.cs" />
     <Compile Include="CustomControls\IntegrationBorders.cs" />
+    <Compile Include="CustomControls\PanZoomer.cs" />
+    <Compile Include="CustomControls\SelectionItemsControl.cs" />
     <Compile Include="Interactions.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\DangelingConnectionViewModel.cs" />
     <Compile Include="ViewModels\IOCellViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\RectangleViewModel.cs" />
     <Compile Include="Views\ConnectionsView.xaml.cs">
       <DependentUpon>ConnectionsView.xaml</DependentUpon>
     </Compile>

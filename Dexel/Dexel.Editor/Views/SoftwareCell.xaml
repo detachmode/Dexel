@@ -9,25 +9,23 @@
              mc:Ignorable="d"
              d:DesignHeight="100" d:DesignWidth="100">
 
-    <Thumb x:Name="TheThumb" HorizontalAlignment="Stretch"
+    <Grid x:Name="TheThumb" HorizontalAlignment="Stretch"
            Background="Transparent"
            IsHitTestVisible="True"
            VerticalAlignment="Stretch">
         <i:Interaction.Behaviors>
             <behavior:FrameworkElementDropBehavior />
         </i:Interaction.Behaviors>
-        <Thumb.Template>
-            <ControlTemplate>
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="40*" />
-                        <ColumnDefinition Width="40*" />
-                    </Grid.ColumnDefinitions>
-                    <Grid Margin="20" Grid.ColumnSpan="2">
-                        <Ellipse Margin="-20" Fill="{DynamicResource FillSoftwareCellBrush}" 
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="40*" />
+                <ColumnDefinition Width="40*" />
+            </Grid.ColumnDefinitions>
+            <Grid Margin="20" Grid.ColumnSpan="2">
+                <Ellipse Margin="-20" Fill="{DynamicResource FillSoftwareCellBrush}" 
                                 Stroke="{DynamicResource BorderSoftwareCellBrush}"
                                 StrokeThickness="{DynamicResource StrokeThickness}" />
-                        <TextBox x:Name="theTextBox"
+                <TextBox x:Name="theTextBox"
                                  Text="{Binding Path=LabelContent, 
                                         UpdateSourceTrigger=PropertyChanged,
                                         RelativeSource={RelativeSource FindAncestor, 
@@ -35,12 +33,10 @@
                                  Foreground="{DynamicResource Foreground}"
                                  VerticalAlignment="Center"
                                  BorderBrush="{x:Null}" Background="{x:Null}" />
-                    </Grid>
-                    <Rectangle Grid.Column="0"
+            </Grid>
+            <Rectangle Grid.Column="0"
                                Fill="Transparent"
                                IsHitTestVisible="True" />
-                </Grid>
-            </ControlTemplate>
-        </Thumb.Template>
-    </Thumb>
+        </Grid>
+    </Grid>
 </UserControl>
