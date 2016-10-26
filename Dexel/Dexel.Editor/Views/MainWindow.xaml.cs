@@ -71,16 +71,18 @@ namespace Dexel.Editor.Views
         private void MenuItem_Save(object sender, RoutedEventArgs e)
         {
             var saveFileDialog = new SaveFileDialog();
+            saveFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
             if (saveFileDialog.ShowDialog() == true)
-                Interactions.SaveToXML(saveFileDialog.FileName, getModelFromDataContext());
+                Interactions.SaveToFile(saveFileDialog.FileName, getModelFromDataContext());
         }
 
 
         private void MenuItem_Load(object sender, RoutedEventArgs e)
         {
             var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
-                Interactions.LoadFromXml(openFileDialog.FileName, getModelFromDataContext());
+                Interactions.LoadFromFile(openFileDialog.FileName, getModelFromDataContext());
         }
     }
 

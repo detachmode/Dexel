@@ -147,6 +147,7 @@
     <Compile Include="CustomControls\IntegrationBorders.cs" />
     <Compile Include="CustomControls\PanZoomer.cs" />
     <Compile Include="CustomControls\SelectionItemsControl.cs" />
+    <Compile Include="FileSaveLoad.cs" />
     <Compile Include="Interactions.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\DangelingConnectionViewModel.cs" />

@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -159,22 +160,25 @@ namespace Dexel.Editor
         }
 
 
-        public static void SaveToXML(string fileName, MainModel model)
+        public static void SaveToFile(string fileName, MainModel model)
         {
-            model.SaveToXML(fileName);
+            var saver = FileSaveLoad.GetFileSaver(fileName);
+            saver?.Invoke(fileName, model);
 
         }
 
-
-        public static void LoadFromXml(string fileName, MainModel model)
+        
+        public static void LoadFromFile(string fileName, MainModel model)
         {
-            var loadedMainModel = XMLSaveLoad.FromXML<MainModel>(fileName);
+            var loader = FileSaveLoad.GetFileLoader(fileName);
+            var loadedMainModel = loader?.Invoke(fileName);
             
-            MainModelManager.SetParents(loadedMainModel);
-            MainModelManager.SolveConnectionReferences(loadedMainModel);
-            MainModelManager.SolveIntegrationReferences(loadedMainModel);
 
-            ViewRedraw(loadedMainModel);
+            if (loadedMainModel != null)
+            {
+                ViewRedraw(loadedMainModel);
+            }
+           
         }
     }
 }

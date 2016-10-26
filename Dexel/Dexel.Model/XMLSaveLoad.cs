@@ -2,31 +2,31 @@
 using System.Text;
 using System.Xml;
 using System.Xml.Serialization;
+using Dexel.Model.DataTypes;
 
 namespace Dexel.Model
 {
     public static class XMLSaveLoad
     {
-        public static void SaveToXML<T>(this T obj, string path)
+        public static void SaveToXML( string path, MainModel mainModel)
         {
-            var xmlSerializer = new XmlSerializer(typeof(T));
+            var xmlSerializer = new XmlSerializer(typeof(MainModel));
             using (StreamWriter sw = new StreamWriter(path, false, Encoding.UTF8))
             {
-                xmlSerializer.Serialize(sw, obj);
+                xmlSerializer.Serialize(sw, mainModel);
             }
-            //using (var writer = new XmlTextWriter(path, Encoding.UTF8) { Formatting = Formatting.Indented })
-            //{
-            //    xmlSerializer.Serialize(writer, obj);
-            //    File.WriteAllText(path, stringWriter.ToString());
-            //}
         }
 
-        public static T FromXML<T>(string path)
+        public static MainModel LoadFromXml(string path)
         {
-            var xsSubmit = new XmlSerializer(typeof(T));
+            var xsSubmit = new XmlSerializer(typeof(MainModel));
             using (var reader = new FileStream(path, FileMode.Open))
             {
-                return (T)xsSubmit.Deserialize(reader);
+                var loadedMainModel = (MainModel)xsSubmit.Deserialize(reader);
+                MainModelManager.SetParents(loadedMainModel);
+                MainModelManager.SolveConnectionReferences(loadedMainModel);
+                MainModelManager.SolveIntegrationReferences(loadedMainModel);
+                return loadedMainModel;
             }
         }
     }

@@ -8,8 +8,9 @@ namespace Dexel.Model.DataTypes
     [ImplementPropertyChanged]
     public class MainModel
     {
+        public List<SoftwareCell> SoftwareCells { get; set; }
         public List<DataStream> Connections { get;  set; }
-        public List<SoftwareCell> SoftwareCells { get;  set; }
+        
         public MainModel()
         {
             Connections = new List<DataStream>();
