@@ -147,6 +147,7 @@
     <Compile Include="CustomControls\IntegrationBorders.cs" />
     <Compile Include="CustomControls\PanZoomer.cs" />
     <Compile Include="CustomControls\SelectionItemsControl.cs" />
+    <Compile Include="DragAndDrop\DragAndDropMediator.cs" />
     <Compile Include="FileSaveLoad.cs" />
     <Compile Include="Interactions.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
@@ -184,11 +185,11 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Behavior\FrameworkElementDragBehavior.cs" />
-    <Compile Include="Behavior\FrameworkElementDropBehavior.cs" />
-    <Compile Include="Behavior\IDragable.cs" />
-    <Compile Include="Behavior\IDropable.cs" />
-    <Compile Include="Behavior\MouseHoverFeedBack.cs" />
+    <Compile Include="DragAndDrop\FrameworkElementDragBehavior.cs" />
+    <Compile Include="DragAndDrop\FrameworkElementDropBehavior.cs" />
+    <Compile Include="DragAndDrop\IDragable.cs" />
+    <Compile Include="DragAndDrop\IDropable.cs" />
+    <Compile Include="DragAndDrop\MouseHoverFeedBack.cs" />
     <Compile Include="Converter\Converter.cs" />
     <Compile Include="CustomControls\DataNamesControl.xaml.cs">
       <DependentUpon>DataNamesControl.xaml</DependentUpon>

@@ -16,7 +16,7 @@ namespace Dexel.Model.Tests
         public void SaveToXMLTest()
         {
             var testmodel = Mockdata.MakeRandomPerson2();
-            testmodel.SaveToXML("test.xml");
+            //testmodel.SaveToXML("test.xml");
 
             var loadedTestModel = XMLSaveLoad.LoadFromXml("test.xml");
         }

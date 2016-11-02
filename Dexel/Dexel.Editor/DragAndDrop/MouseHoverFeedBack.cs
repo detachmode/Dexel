@@ -1,9 +1,8 @@
 ﻿using System.Windows.Controls;
 using System.Windows.Interactivity;
 using System.Windows.Media;
-using System.Windows.Shapes;
 
-namespace Dexel.Editor.Behavior
+namespace Dexel.Editor.DragAndDrop
 {
     public class MouseHoverFeedBack: Behavior<Grid>
     {

@@ -6,7 +6,7 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:customControls="clr-namespace:Dexel.Editor.CustomControls"
         xmlns:views="clr-namespace:Dexel.Editor.Views"
-        xmlns:behavior="clr-namespace:Dexel.Editor.Behavior"
+        xmlns:dragAndDrop="clr-namespace:Dexel.Editor.DragAndDrop"
         mc:Ignorable="d"
         
         Title="Sharp Flow Design" Height="350" Width="825">
@@ -38,7 +38,7 @@
 
             <views:DrawingBoard x:Name="TheDrawingBoard" />
             <i:Interaction.Behaviors>
-                <behavior:FrameworkElementDropBehavior />
+                <dragAndDrop:FrameworkElementDropBehavior />
             </i:Interaction.Behaviors>
         </Grid>
     </DockPanel>

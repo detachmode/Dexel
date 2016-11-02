@@ -22,12 +22,12 @@ namespace Dexel.Editor.Views
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            //var myWindow = GetWindow(this);
-            //var transform = myWindow?.TransformToVisual(TheDrawingBoard.SoftwareCellsList);
-            //if (transform == null) return;
-            //var myUiElementPosition = transform.Transform(TheZoomBorder.BeforeContextMenuPoint);
+           var myWindow = GetWindow(this);
+            var transform = myWindow?.TransformToVisual(TheDrawingBoard.SoftwareCellsList);
+            if (transform == null) return;
+           var myUiElementPosition = transform.Transform(TheDrawingBoard.TheZoomBorder.BeforeContextMenuPoint);
 
-            //Interactions.AddNewIOCell(myUiElementPosition, getModelFromDataContext());
+            Interactions.AddNewIOCell(myUiElementPosition, getModelFromDataContext());
         }
 
         private void MenuItem_GenerateCode(object sender, RoutedEventArgs e)

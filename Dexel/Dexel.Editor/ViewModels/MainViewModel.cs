@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using Dexel.Editor.Behavior;
 using Dexel.Editor.CustomControls;
+using Dexel.Editor.DragAndDrop;
 using Dexel.Library;
 using Dexel.Model.DataTypes;
 using PropertyChanged;
@@ -21,15 +21,23 @@ namespace Dexel.Editor.ViewModels
         public MainViewModel()
         {
             SoftwareCells = new ObservableCollection<IOCellViewModel>();
+            SelectedSoftwareCells = new ObservableCollection<IOCellViewModel>();
             Connections = new ObservableCollection<ConnectionViewModel>();
             IntegrationBorders = new ObservableCollection<IOCellViewModel>();
-           
+            SelectedSoftwareCells.CollectionChanged += (sender, args) => Update();
         }
 
+        private void Update()
+        {
+            SoftwareCells.ForEach(x => x.IsSelected = false);
+            SelectedSoftwareCells.ForEach(x => x.IsSelected = true);
+
+        }
 
         public ObservableCollection<IOCellViewModel> IntegrationBorders { get; set; }
         public ObservableCollection<ConnectionViewModel> Connections { get; set; }
         public ObservableCollection<IOCellViewModel> SoftwareCells { get; set; }
+        public ObservableCollection<IOCellViewModel> SelectedSoftwareCells { get; set; }
         public ConnectionViewModel TemporaryConnection { get; set; }
 
         public MainModel Model { get; set; }
@@ -46,6 +54,15 @@ namespace Dexel.Editor.ViewModels
             {
                 LoadFromModel(Model);
             }
+        }
+
+
+        public void SetSelection(IOCellViewModel ioCellViewModel)
+        {
+            if (SelectedSoftwareCells.Contains(ioCellViewModel)) return;
+
+            SelectedSoftwareCells.Clear();
+            SelectedSoftwareCells.Add(ioCellViewModel);
         }
 
         #region Drop
@@ -146,6 +163,69 @@ namespace Dexel.Editor.ViewModels
         }
 
         #endregion
+
+        public void SetSelectionCTRLMod(IOCellViewModel ioCellViewModel)
+        {
+            //
+            // Control key was held down.
+            // Toggle the selection.
+            //
+            if (SelectedSoftwareCells.Contains(ioCellViewModel))
+            {
+                //
+                // Item was already selected, control-click removes it from the selection.
+                //
+                SelectedSoftwareCells.Remove(ioCellViewModel);
+            }
+            else
+            {
+                // 
+                // Item was not already selected, control-click adds it to the selection.
+                //
+                SelectedSoftwareCells.Add(ioCellViewModel);
+            }
+        }
+
+
+        public void MoveSelectedIOCells(Vector dragDelta)
+        {
+            foreach (IOCellViewModel iocell in SelectedSoftwareCells)
+            {
+                var pt = iocell.Model.Position;
+                pt.X += dragDelta.X;
+                pt.Y += dragDelta.Y;
+                iocell.Model.Position = pt;
+            }
+        }
+
+
+        public void ShiftMoveSelection()
+        {
+            var copiedList = new List<Model.DataTypes.SoftwareCell>();
+            foreach (IOCellViewModel iocell in SelectedSoftwareCells)
+            {
+                var copiedModel = iocell.Model.DeepClone();
+                copiedList.Add(copiedModel);
+                Model.SoftwareCells.Add(copiedModel);
+
+            }
+            Reload();
+
+            SelectedSoftwareCells.Clear();
+            SoftwareCells.Where(sc => copiedList.Contains(sc.Model)).ForEach(vm => SelectedSoftwareCells.Add(vm));
+        }
+
+
+        public void ClearSelection()
+        {
+            SelectedSoftwareCells.Clear();
+        }
+
+
+        public void AddToSelection(IOCellViewModel ioCellViewModel)
+        {
+            SelectedSoftwareCells.Add(ioCellViewModel);
+        }
     }
 
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Dexel.Editor.Behavior
+namespace Dexel.Editor.DragAndDrop
 {
 
     public interface IDropable

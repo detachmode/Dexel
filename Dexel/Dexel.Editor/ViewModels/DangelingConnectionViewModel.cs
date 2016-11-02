@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dexel.Editor.Behavior;
 using Dexel.Editor.CustomControls;
+using Dexel.Editor.DragAndDrop;
 using Dexel.Model.DataTypes;
 using PropertyChanged;
 

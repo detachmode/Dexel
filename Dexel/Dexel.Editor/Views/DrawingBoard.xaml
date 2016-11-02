@@ -60,6 +60,7 @@
                                                       ItemsPanel="{StaticResource DrawingBoardItemControl}"
                                                       VerticalContentAlignment="Stretch"
                                                       HorizontalContentAlignment="Stretch"
+                                                    
                                                       ItemsSource="{Binding SoftwareCells}" BorderBrush="{x:Null}">
                     <customControls:SelectionItemsControl.ItemContainerStyle>
                         <Style>
@@ -76,8 +77,7 @@
                             <Grid
                                 Margin="0,2,2,2">
                                 <views:IOCell
-                                    Cursor="Hand"
-                                   
+                                    Cursor="Hand"                                 
                                     MouseDown="IOCell_MouseDown"
                                     MouseUp="IOCell_MouseUp"
                                     MouseMove="IOCell_MouseMove" />
@@ -85,9 +85,6 @@
                         </DataTemplate>
                     </customControls:SelectionItemsControl.ItemTemplate>
                 </customControls:SelectionItemsControl>
-
-
-               
 
                 <!--
 		        Connections
@@ -105,8 +102,8 @@
         </customControls:ZoomBorder>
 
         <!--
-		        Drag selection rectangle
-		        -->
+        Drag selection rectangle
+        -->
         <Canvas 
                         x:Name="DragSelectionCanvas"
                         HorizontalAlignment="Stretch"

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
-
-using Dexel.Editor.Behavior;
+using Dexel.Editor.DragAndDrop;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
 using PropertyChanged;

@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:behavior="clr-namespace:Dexel.Editor.Behavior"
              xmlns:views="clr-namespace:Dexel.Editor.Views"
+             xmlns:dragAndDrop="clr-namespace:Dexel.Editor.DragAndDrop"
              mc:Ignorable="d"
              d:DesignHeight="100" d:DesignWidth="100">
 
@@ -14,7 +14,7 @@
            IsHitTestVisible="True"
            VerticalAlignment="Stretch">
         <i:Interaction.Behaviors>
-            <behavior:FrameworkElementDropBehavior />
+            <dragAndDrop:FrameworkElementDropBehavior />
         </i:Interaction.Behaviors>
         <Grid>
             <Grid.ColumnDefinitions>

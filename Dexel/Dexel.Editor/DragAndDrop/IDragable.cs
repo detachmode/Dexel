@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Dexel.Editor.Behavior
+namespace Dexel.Editor.DragAndDrop
 {
     interface IDragable
     {

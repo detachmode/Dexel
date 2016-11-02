@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Interactivity;
 
-namespace Dexel.Editor.Behavior
+namespace Dexel.Editor.DragAndDrop
 {
 
     public class FrameworkElementDropBehavior : Behavior<FrameworkElement>

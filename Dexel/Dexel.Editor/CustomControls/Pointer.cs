@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using Dexel.Editor.DragAndDrop;
 using Dexel.Editor.ViewModels;
 
 namespace Dexel.Editor.CustomControls
@@ -61,9 +63,10 @@ namespace Dexel.Editor.CustomControls
 
             arrowShape.MouseDown += (sender, args) =>
             {
+                Debug.WriteLine("+-   arrowShape.MouseDown");
                 arrowShape.IsHitTestVisible = false;
                 pathShape.IsHitTestVisible = false;
-                IsDragging = true;
+                FrameworkElementDragBehavior.DragDropInProgressFlag = true;
                 (DataContext as ConnectionViewModel).IsDragging = true;
                 try
                 {
@@ -71,6 +74,7 @@ namespace Dexel.Editor.CustomControls
                     DataObject data = new DataObject();
                     data.SetData(typeof(ConnectionViewModel), this.DataContext);
                     DragDrop.DoDragDrop((DependencyObject) args.Source, data, DragDropEffects.Move);
+
                 }
                 catch
                 {
@@ -79,6 +83,7 @@ namespace Dexel.Editor.CustomControls
                 var connectionViewModel = DataContext as ConnectionViewModel;
                 if (connectionViewModel != null) connectionViewModel.IsDragging = false;
                 IsDragging = false;
+               
                 arrowShape.IsHitTestVisible = true;
                 pathShape.IsHitTestVisible = true;
             };

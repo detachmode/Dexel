@@ -44,6 +44,7 @@
             >
 
             <views:SoftwareCell x:Name="Fu"  Panel.ZIndex="2000"
+                                
                             LabelContent="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            />
 
