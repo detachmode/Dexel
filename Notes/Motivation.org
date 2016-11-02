@@ -1,0 +1,58 @@
+* Motivation
+Zur Zeit dieser Arbeit exisiteren keine ausgereiften Tools oder Hilfsprogrmme die speziell auf die Erstellung
+von Flow Design Entwürfen ausgelegt sind. Dies liegt möglicherweise an der
+geringen Bekanntheit und Verbreitung der Methodik.
+Ziel dieser Arbeit ist es erstmal dem Leser anschaulich zu erklären, um was
+es sich bei Flow Design im Detail handelt, sowie die dazugehörenden Implemtierungsregeln anhand von
+Codebeispielen in C# zu zeigen.
+Hat man einmal den Vorteil von Flow Design für sich entdeckt liegt es nahe als
+Programmierer sich Gedanken darüber zu machen wie ein Computerprogramm aussehen
+könnte, das einem bei der Verwendung der Methodik so
+gut es geht unterstützt. Da es solch ein Programm noch nicht gibt, geht es in
+dieser Arbeit einmal darum die Ansprüche eines solchen Programms im Detail
+herauszufinden, sowie nützliche Features aufzuzlisten. Ein weiterer großer Teil dieser
+Arbeit besteht darin einen Grundstein für solch ein Programm in Form eines
+ersten Prototypen zu legen und diesen auf Github als Open Source Projekt zu veröffentlichen.
+Dieser Protopype soll in C#  und in Teilen unter Verwendung von Flow Design selbst umgestetzt werden. 
+Am Ende soll die interessanten Teile des Codes hier dokumentiert und das Ergebnis vorgestellt werden.
+Endziel ist es, diesen Prototypen soweit zu bringen, dass für den Anwender einen klaren
+Vorteil spürbar ist in der Verwendung des Editors im Vergleich zu Stift und Papier
+, sowie die Produktivität und Komfort von der Verwendung von Flow Design in einem
+Projekt steigert wird. Unabhänig davon, ob diese Ziel erreicht wurde oder nicht sollen die gewonnen
+Erkenntnisse aus dem Versuch hier dokumentiert und ein Fazit daraus gezogen werden.
+
+** Der Editor
+Im Grunde geht es bei solch einem Editors vorallem darum die Vorteile aus der digitalen Welt mit
+der Methodik zu vereinen, ohne die Einfachheit der Methodik auf dem Papier zu
+verlieren. Im folgendem einige Kerngedanken über die Funktionalität des Editors:
+
+** Vorteile eines digitalen Editors 
+Flow Design ist eigentlich als Entwurfsmethode auf dem Papier gedacht.
+Jedoch hat ein Flow Design auf dem Papier einige Nachteile, die ein Editor am
+Computer aufheben könnte. Das wären vorallem folgende Punkte:
+*** einmal eingezeichnete Pfeile, Kreise und Beschriftungen lassen sich nicht so leicht mehr verändern.
+Während des kreativen Prozesses ein Programmierproblem zu lösen, bedarf es
+mehrer Iterationen und Veränderungen an dem Diagramm. Eine Möglichkeit Versionen
+abzuspeichern und Teile zu verschieben, umzubenennen und Umzustukturieren sind
+klare Vorteile von einem digitalen Editors.
+*** Unnötige Abtipparbeit ersparen.
+Oft ist es möglich aus den Beschriftungen die Variablennamen und
+Methoden Signaturen abzuleiten. Liegt das Diagramm in digitaler Form vor, wäre eine automatische Generierung von Quellcode naheliegend und
+würde einem zusätzliche Abtipparbeit ersparen.
+*** Generierung von Methoden-Bodies  
+Durch einige Implementierungsregeln von Flow Design lassen sich von einer
+bestimmten Art von Methoden sogar die komplette Implementierung aus dem Diagramm
+ableiten. Das wäre ein zustätzlicher Komfortgewinn von einem Editor.
+*** Roundtrip-Engineering
+Eine Möglichkeit aus einer bestehenden Codebasis ein Diagramm zu erstellen -
+wenn auch nur teilweise - würden die Produktivität beim Einsetzen von Flow
+Design in einem Projekt weiter steigern.
+
+** Vorteile von einem Entwurf auf dem Papier
+Ein Papier schränkt einen nicht ein und erlaubt es schnell und einfach Pfeile
+und Kreise zu zeichnen, Notizen einzufügen und ist einfach in der Bedienung.
+Bei dem Erstellen eine Editors muss deshalb ein besonders großes Augenmerk auf
+eine gute und intuitive Bedienung gelegt werden, damit einem das Programm bei der kreativen Arbeit nicht
+behindert und für den Anwender ein klaren Vorteil in der Verwendung des Editors
+erkennt im Vergleich zum Zeichnen auf dem Papier.
+
