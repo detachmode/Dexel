@@ -148,7 +148,7 @@
     <Compile Include="CustomControls\PanZoomer.cs" />
     <Compile Include="CustomControls\SelectionItemsControl.cs" />
     <Compile Include="DebuggingHelper\Extensions.cs" />
-    <Compile Include="DragAndDrop\DragAndDropMediator.cs" />
+    <Compile Include="DragAndDrop\MouseEventMediator.cs" />
     <Compile Include="FileSaveLoad.cs" />
     <Compile Include="Interactions.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />

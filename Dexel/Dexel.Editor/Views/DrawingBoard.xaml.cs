@@ -32,8 +32,8 @@ namespace Dexel.Editor.Views
 
         private void IOCell_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            DragAndDropMediator.OrigMouseDownPoint = GetAbsoluteMousePosition(e.GetPosition(this));
-            DragAndDropMediator.MouseDown(sender, e);          
+            MouseEventMediator.OrigMouseDownPoint = GetAbsoluteMousePosition(e.GetPosition(this));
+            MouseEventMediator.MouseDown(sender, e);          
         }
 
 
@@ -41,16 +41,16 @@ namespace Dexel.Editor.Views
 
         private void IOCell_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            DragAndDropMediator.MouseUp(sender, e);
+            MouseEventMediator.MouseUp(sender, e);
             
         }
 
 
         private void IOCell_MouseMove(object sender, MouseEventArgs e)
         {
-            DragAndDropMediator.ProjectedMousePosition =  GetAbsoluteMousePosition(e.GetPosition(this));
-            DragAndDropMediator.ScreenMousePosition = e.GetPosition(this);
-            DragAndDropMediator.MouseMove(sender, e);
+            MouseEventMediator.ProjectedMousePosition =  GetAbsoluteMousePosition(e.GetPosition(this));
+            MouseEventMediator.ScreenMousePosition = e.GetPosition(this);
+            MouseEventMediator.MouseMove(sender, e);
         }
 
         #endregion
@@ -59,8 +59,8 @@ namespace Dexel.Editor.Views
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            DragAndDropMediator.OrigMouseDownPoint = e.GetPosition(this);
-            DragAndDropMediator.MouseDown(sender, e);
+            MouseEventMediator.OrigMouseDownPoint = e.GetPosition(this);
+            MouseEventMediator.MouseDown(sender, e);
 
         }
 
@@ -76,15 +76,15 @@ namespace Dexel.Editor.Views
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
         {
 
-           DragAndDropMediator.MouseUp(sender, e);
+           MouseEventMediator.MouseUp(sender, e);
         }
 
 
         private void Window_MouseMove(object sender, MouseEventArgs e)
         {
-            DragAndDropMediator.ProjectedMousePosition = GetAbsoluteMousePosition(e.GetPosition(this));
-            DragAndDropMediator.ScreenMousePosition = e.GetPosition(this);
-            DragAndDropMediator.MouseMove(sender, e);
+            MouseEventMediator.ProjectedMousePosition = GetAbsoluteMousePosition(e.GetPosition(this));
+            MouseEventMediator.ScreenMousePosition = e.GetPosition(this);
+            MouseEventMediator.MouseMove(sender, e);
         }
 
         #endregion

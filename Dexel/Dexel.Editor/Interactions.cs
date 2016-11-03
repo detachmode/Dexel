@@ -180,5 +180,25 @@ namespace Dexel.Editor
             }
            
         }
+
+
+        public static SoftwareCell Duplicate(SoftwareCell softwareCell, MainModel mainModel)
+        {
+            var newmodel = SoftwareCellsManager.CreateNew(softwareCell.Name);
+            newmodel.Position = softwareCell.Position;
+            softwareCell.InputStreams.ForEach(dsd =>
+            {
+                var newdsd = DataStreamManager.NewDefinition(newmodel, dsd);
+                 newmodel.InputStreams.Add(newdsd);
+            });
+            softwareCell.OutputStreams.ForEach(dsd =>
+            {
+                var newdsd = DataStreamManager.NewDefinition(newmodel, dsd);
+                newmodel.OutputStreams.Add(newdsd);
+            });
+
+            return newmodel;
+            
+        }
     }
 }

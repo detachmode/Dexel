@@ -9,27 +9,26 @@ using Dexel.Editor.Views;
 namespace Dexel.Editor.DragAndDrop
 {
 
-    public static class DragAndDropMediator
+    public static class MouseEventMediator
     {
-        private static bool isLeftMouseButtonDownOnWindow;
+        private const double DragThreshold = 5;
+        private static bool _isLeftMouseButtonDownOnWindow;
 
         /// <summary>
         ///     Set to 'true' when dragging the 'selection rectangle'.
         ///     Dragging of the selection rectangle only starts when the left mouse-button is held down and the mouse-cursor
         ///     is moved more than a threshold distance.
         /// </summary>
-        private static bool isDraggingSelectionRect;
-        private static readonly double DragThreshold = 5;
+        private static bool _isDraggingSelectionRect;
 
         public static Point OrigMouseDownPoint;
         public static Point ProjectedMousePosition;
         public static Point ScreenMousePosition;
 
 
-
-        private static bool isLeftMouseDownOnIOCell;
-        private static bool isLeftMouseAndControlDownOnIOCell;
-        private static bool isDraggingIOCell;
+        private static bool _isLeftMouseDownOnIOCell;
+        private static bool _isLeftMouseAndControlDownOnIOCell;
+        private static bool _isDraggingIOCell;
 
 
         public static event Action<IOCellViewModel> MouseDownOnIOCell;
@@ -39,22 +38,21 @@ namespace Dexel.Editor.DragAndDrop
         {
             Debug.WriteLine("++MouseDOWN " + sender.GetType().Name);
 
-
             if (sender is IOCell)
             {
-                IOCellMouseDown(sender, e);
+                IOCellMouseDown((IOCell)sender, e);
                 e.Handled = true;
             }
 
             if (sender is DrawingBoard)
             {
-                DrawingBoardMouseDown(sender, e);
+                DrawingBoardMouseDown((DrawingBoard)sender, e);
                 e.Handled = true;
             }
         }
 
 
-        private static void DrawingBoardMouseDown(object sender, MouseButtonEventArgs e)
+        private static void DrawingBoardMouseDown(DrawingBoard sender, MouseButtonEventArgs e)
         {
             if (FrameworkElementDragBehavior.DragDropInProgressFlag)
             {
@@ -71,8 +69,8 @@ namespace Dexel.Editor.DragAndDrop
 
                 MainViewModel.Instance().ClearSelection();
 
-                isLeftMouseButtonDownOnWindow = true;
-                (sender as DrawingBoard).CaptureMouse();
+                _isLeftMouseButtonDownOnWindow = true;
+                sender.CaptureMouse();
             }
         }
 
@@ -86,32 +84,32 @@ namespace Dexel.Editor.DragAndDrop
             }
             if (sender is DrawingBoard)
             {
-                DrawingBoardMouseUp(sender, e);
+                DrawingBoardMouseUp((DrawingBoard)sender, e);
             }
         }
 
 
-        private static void DrawingBoardMouseUp(object sender, MouseButtonEventArgs e)
+        private static void DrawingBoardMouseUp(DrawingBoard sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton != MouseButton.Left) return;
 
-            if (isDraggingSelectionRect)
+            if (_isDraggingSelectionRect)
             {
                 //
                 // Drag selection has ended, apply the 'selection rectangle'.
                 //
-                isDraggingSelectionRect = false;
-                (sender as DrawingBoard).ApplyDragSelectionRect();
+                _isDraggingSelectionRect = false;
+                sender.ApplyDragSelectionRect();
             }
             else
             {
                 MainViewModel.Instance().ClearSelection();
             }
 
-            if (isLeftMouseButtonDownOnWindow)
+            if (_isLeftMouseButtonDownOnWindow)
             {
-                isLeftMouseButtonDownOnWindow = false;
-                (sender as DrawingBoard).ReleaseMouseCapture();
+                _isLeftMouseButtonDownOnWindow = false;
+                sender.ReleaseMouseCapture();
             }
         }
 
@@ -119,44 +117,41 @@ namespace Dexel.Editor.DragAndDrop
         public static void MouseMove(object sender, MouseEventArgs e)
         {
             MyDebug.WriteLineIfDifferent("++MouseMove " + sender.GetType().Name);
-            if (sender is IOCell || isLeftMouseDownOnIOCell)
+            if (sender is IOCell || _isLeftMouseDownOnIOCell)
             {
                 IOCellMouseMove(sender, e);
                 e.Handled = true;
             }
             if (sender is DrawingBoard)
             {
-                DrawingBoardMouseMove(sender, e);
+                DrawingBoardMouseMove((DrawingBoard)sender, e);
                 e.Handled = true;
             }
         }
 
 
-        private static void DrawingBoardMouseMove(object sender, MouseEventArgs e)
+        private static void DrawingBoardMouseMove(DrawingBoard drawingboard, MouseEventArgs e)
         {
-            var drawingboard = sender as DrawingBoard;
 
-            if (isDraggingSelectionRect)
+            if (_isDraggingSelectionRect)
             {
                 drawingboard.UpdateDragSelectionRect(OrigMouseDownPoint, ScreenMousePosition);
             }
-            else if (isLeftMouseButtonDownOnWindow)
+            else if (_isLeftMouseButtonDownOnWindow)
             {
                 var dragDelta = ScreenMousePosition - OrigMouseDownPoint;
                 var dragDistance = Math.Abs(dragDelta.Length);
                 if (dragDistance > DragThreshold)
                 {
-                    //
                     // When the mouse has been dragged more than the threshold value drag selection will show up.
-                    //
-                    isDraggingSelectionRect = true;
+                    _isDraggingSelectionRect = true;
                     drawingboard.InitDragSelectionRect(OrigMouseDownPoint, ScreenMousePosition);
                 }
             }
         }
 
 
-        private static void IOCellMouseDown(object sender, MouseButtonEventArgs e)
+        private static void IOCellMouseDown(IOCell iocell, MouseButtonEventArgs e)
         {
             if (FrameworkElementDragBehavior.DragDropInProgressFlag)
             {
@@ -166,20 +161,18 @@ namespace Dexel.Editor.DragAndDrop
             {
                 return;
             }
+            var ioCellViewModel = (IOCellViewModel)iocell.DataContext;
 
-            var iocell = (FrameworkElement) sender;
-            var IOCellViewModel = (IOCellViewModel) iocell.DataContext;
-
-            isLeftMouseDownOnIOCell = true;
+            _isLeftMouseDownOnIOCell = true;
 
             if ((Keyboard.Modifiers & ModifierKeys.Control) != 0)
             {
-                isLeftMouseAndControlDownOnIOCell = true;
+                _isLeftMouseAndControlDownOnIOCell = true;
             }
             else
             {
-                isLeftMouseAndControlDownOnIOCell = false;
-                MainViewModel.Instance().SetSelection(IOCellViewModel);
+                _isLeftMouseAndControlDownOnIOCell = false;
+                MainViewModel.Instance().SetSelection(ioCellViewModel);
             }
 
             iocell.CaptureMouse();
@@ -188,68 +181,67 @@ namespace Dexel.Editor.DragAndDrop
 
         private static void IOCellMouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (isLeftMouseDownOnIOCell)
+            if (_isLeftMouseDownOnIOCell)
             {
-                var iocell = (FrameworkElement) sender;
-                var IOCellViewModel = (IOCellViewModel) iocell.DataContext;
+                var iocell = (FrameworkElement)sender;
+                var ioCellViewModel = iocell.DataContext as IOCellViewModel;
+                if (ioCellViewModel == null)
+                    return;
 
-                if (!isDraggingIOCell)
+                if (!_isDraggingIOCell)
                 {
                     //
                     // Execute mouse up selection logic only if there was no drag operation.
                     //
-                    if (isLeftMouseAndControlDownOnIOCell)
+                    if (_isLeftMouseAndControlDownOnIOCell)
                     {
-                        MainViewModel.Instance().SetSelectionCTRLMod(IOCellViewModel);
+                        MainViewModel.Instance().SetSelectionCTRLMod(ioCellViewModel);
                     }
                     else
                     {
-                        MainViewModel.Instance().SetSelection(IOCellViewModel);
+                        MainViewModel.Instance().SetSelection(ioCellViewModel);
                     }
                 }
 
                 iocell.ReleaseMouseCapture();
-                isLeftMouseDownOnIOCell = false;
-                isLeftMouseAndControlDownOnIOCell = false;
+                _isLeftMouseDownOnIOCell = false;
+                _isLeftMouseAndControlDownOnIOCell = false;
 
                 e.Handled = true;
             }
 
-            isDraggingIOCell = false;
+            _isDraggingIOCell = false;
         }
 
 
         private static void IOCellMouseMove(object sender, MouseEventArgs e)
         {
-            if (isDraggingIOCell)
+            if (_isDraggingIOCell)
             {
-                //
                 // Drag-move selected IOCell.
-                //
-
                 var dragDelta = ProjectedMousePosition - OrigMouseDownPoint;
                 OrigMouseDownPoint = ProjectedMousePosition;
+
+
                 MainViewModel.Instance().MoveSelectedIOCells(dragDelta);
+
+
             }
-            else if (isLeftMouseDownOnIOCell)
+            else if (_isLeftMouseDownOnIOCell)
             {
-                //
                 // The user is left-dragging the IOCell,
                 // but don't initiate the drag operation until
                 // the mouse cursor has moved more than the threshold value.
-                //
+
                 var dragDelta = ProjectedMousePosition - OrigMouseDownPoint;
                 var dragDistance = Math.Abs(dragDelta.Length);
                 if (dragDistance > DragThreshold)
                 {
-                    //
                     // When the mouse has been dragged more than the threshold value commence dragging the rectangle.
-                    //
-                    isDraggingIOCell = true;
-
+                    _isDraggingIOCell = true;
                     if (Keyboard.IsKeyDown(Key.LeftShift))
                     {
-                        MainViewModel.Instance().ShiftMoveSelection();
+                        MainViewModel.Instance().DuplicateSelectionAndSelectNew();
                     }
                 }
 
