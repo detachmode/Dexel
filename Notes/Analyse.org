@@ -1,0 +1,162 @@
+* Analyse
+** Anforderungen
+*** Editor
+| Anforderungen                                                                                                       | Priorität    |
+|---------------------------------------------------------------------------------------------------------------------+--------------|
+| Erstellen von Softwarezellen, Benennen, Verschieben auf dem Canvas, Löschen, Duplizieren                            | must have    |
+| Selektieren von mehreren Softwarezellen um mehrere auf einmal zu bearbeiten                                         | must have    |
+| Definieren von Input und Output Datastreams, für eine Softwarezelle                                                 | must have    |
+| Verbinden eines Outputs einer Softwarezelle mit einem Input einer anderen                                           | must have    |
+| Zusammenlaufen von mehreren Datenflüssen in ein Input einer Softwarezelle                                           | must have    |
+| Softwarezelle(n) einer anderen unterordnen können, um Integrationen zu erstellen inklusive visuelle Kennzeichnung   | must have    |
+| Syntaxhighlighting für die Datentypen auf den Datenflüsen                                                           | nice to have |
+| Mehrere Themes: Dark, White (Print)                                                                                 | nice to have |
+| Keyboard Hotkeys / Tabstops                                                                                         | nice to have |
+| Kommentarboxen                                                                                                      | nice to have |
+| Automatisches Spacing                                                                                               | nice to have |
+| Untergeordenete Softwarezellen einer Integration an einer anderen Stelle definierbar machen, falls Platz knapp wird | nice to have |
+| Speichern und Laden in ein Dateiformat                                                                              | must have    |
+| Autosave                                                                                                            | must have    |
+| Undo / Redo System                                                                                                  | nice to have |
+| Definieren von State einer Softwarezelle                                                                            | nice to have |
+| Mouse-Hover zeigt Preview des erzeugten Codes für die Softwarezelle                                                 | nice to have |
+| Wiederverwenden von vorhandenen Softwarezellen                                                                      | nice to have |
+| Autocomplete auf dem Textfeld der Datenströme                                                                       | nice to have |
+| Definieren von neuen Datentypen                                                                                     | nice to have |
+| Validierung von Datenströmen                                                                                        | must have    |
+
+
+
+
+
+*** Generierung von Code
+| Anforderungen                                                                                      | Priorität    |
+|----------------------------------------------------------------------------------------------------+--------------|
+| Generierung von Methodensignaturen aus dem Namen und Input/Output Definitionen einer Softwarezelle | must have    |
+| Erzeugen des kompletten Methoden-Bodies einer Integration                                          | must have    |
+| Live-Generierung                                                                                   | nice to have |
+| Erzeugung von Klassen und Datentypen                                                               | nice to have |
+| Erzeugung von Namenspaces und Ausflösung von Usings                                                | nice to have |
+| Einstellungen  dem Benutzer zugänglich machen, um die Generierung zu konfigurieren                 | nice to have |
+
+**** Erzeugung des kompletten Methoden-Bodies einer Integration
+Hierbei muss erkannt werden, in welcher Reihenfolge die Methoden aufgerufen
+werden müssen, lokale Variablen erzeugt werden müssen und was einer Methode als Parameter
+übergeben werden muss. Dabei kommen IEnumerables und Lampdas zum Einsatz um
+Datenflüsse zu implementieren. 
+
+**** Einstellungen für die Generierung dem Benutzer zugänglich machen 
+Mögliche Optionen wären:
+- wie das Programm den Methoden-Body einer Operation 
+standardmässig befüllen soll: Leer, mit NotImplementedExeption oder mit einem
+QDefault return Ausdruck abhängig von der Methodensignatur. 
+- Ob innerhalb einer Integration der Rückgabewert einer Funktion erst in eine
+  lokale Variable gespeichert werden soll, oder direkt der Methodenaufruf an die
+  andere Methode weitergereicht wird. Beziehungsweise die Regel konfigurierbar
+  machen: Ab welcher Zeilenlänge, wie die Varibalen benannt werden sollen, etc.
+
+ 
+
+*** Generierung von Flow Design Diagrammen aus Code
+ 
+| Anforderungen                                                                                                                 | Priorität                                 |
+|-------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------|
+| Finden von Methoden und Erzeugen von Softwarezellen und ihre Input und Output Datenströme anhand der Methodensignatur im Code | must have                                 |
+| Erkennen, ob es sich bei der Methode um eine Operation oder Integration handelt                                               | must habe                                 |
+| Den Datenfluss einer Integration erkennen und ihn in ein Flow Design Diagramm übertragen                                      | must have                                 |
+| Umgang mit Methoden die nicht das IOSP befolgen                                                                               | nice to have                              |
+| Automatisches Spacing                                                                                                         | must have ( aber nicht unbedingt perfekt) |
+| Speichern der Inhalte, die nicht im Diagramm dargestellt werden können.                                                       | nice to have                              |
+
+**** Schwierigkeiten 
+Bei Verwendung von Events kann der Datenfluss möglicherweise nicht mehr
+nachvollzogen werden.
+
+** GUI Skizzen / Usabilityüberlegungen
+*** Minimalistischer Aufbau. Fokus auf Produktivtät.  
+- Keine unnötigen Menuleisten, Symbolleisten, etc. Besser kontextsensitive
+  Kontextmenus, oder Hotkeys,  damit die Strecke, die die Maus bewegt werden muss, gering
+  gehalten wird.
+- Tabulatorstops einbauen, damit schnell zwischen den Textfeldern, entlang des
+  Graphen, gesprungen werden kann.
+- Verwendung von Drag and Drop, um eine intuitive Bedienung zum Verknüpfen von
+  Softwarezellen zu ermöglichen. Die Flächen, die per Drag and Drop zu Bedienen
+  sind, sollen über ein Maus-Hover Feedback erkennbar sein. Außerdem sollen die
+  Flächen nicht zu klein sein, damit ein leichtes Treffen des Feldes
+  sichergestellt wird. Möglicherweise können auch unsichtbare Flächen verwendet
+  werden, um eine Drag and Drop Fläche künstlich leicht zu vergrößern und einfacher treffbar zu machen.
+- Rectangle Selection in Kombination mit Modifier-Keys um mehrere Softwarezellen
+  schnell und komfortable zu selektieren.
+- Shift + Drag : Schnelles Duplizieren der selektierten Objekte. Vorbild dieser
+  Funktion ist 3ds Max, das dieses Bedienkonzept an vielen Stellen einsetzt.
+  Einmal dararn gewöhnt, möchte man es nicht mehr missen. Anwendungsfälle:
+  Der Anwender möchte  schnell ein gesamtes Diagramm duplizieren und an ein andere Stelle schieben, um
+  dort eine weitere Iteration davon zu erstellen. Möglicherweise müssen solche
+  Duplikate vor der Generierung des Codes aus dem Diagramm gelöscht werden.
+  Ein andere Anwendungsfall von Duplizierten ist, dass der Anwender eine vorhandene
+  Zelle an einer anderen Stelle im Diagramm verwendet möchte. Damit
+  entstehen weitere Probleme, bei der Generierung des Codes, das gelöst werden
+  muss: Duplizierte Softwarezellen müssen erkannt und nur einmal generiert werden.
+- Ctrl + Drag einer Softwarezelle: Die Softwarezelle und alle ihre Kinder werden
+  Verschoben. Anwendungsfall ist: Der Anwender möchte etwas Platz schaffen
+  zwsichen zwei Softwarezellen. Mit einem Ctrl+ Drag der zweiten Softwarezelle,
+  kann er diese und alle nachkommenden Softwarezellen verschieben, ohne sie
+  vorher extra selektieren zu müssen. 
+
+**** Textfelder 
+Textfelder müssen waagerecht bleiben. Auf dem Papier schreibt man die Daten auf
+die Pfeile, somit wird Text auf einem schrägen Pfeil auch entlang des Striches
+geschrieben.
+Am Computer ist soetwas schlecht umzusetzen. Man kann Textfelder bei WPF drehen, dadurch
+entsteht jedoch eine ungewohnte Bedienung beim Markiern von Text. Ein Drehen
+beim Fokusieren/Defokusieren wäre auch möglich, damit wäre jedoch eine zustätzlicher
+Klick nötig, falls man Text markieren möchte: Ein Mausklick zum Fokusieren/Drehen
+der Textbox und ein weiterer um Text zu markieren / den Cursor zu platzieren.
+Die beste Lösung wäre aus Usability-Sicht, wenn Textfelder nicht gedreht werden,
+sondern immer waagerecht dargestellt werden. Somit muss hier die Notation an
+manchen Stellen etwas vom orginal Abweichen.
+- Mehrer Outputs
+- Pfeile zwischen zwei Softwarezellen, die auf unteschiedlichen Höhen platziert sind.
+
+**** Realisierung/ Darstellung von Joints 
+Datenströme können aus verschieden Quellen stammen und an einer Softwarezelle
+zusammenlaufen. Flow Design bietet hierfür die Pipe-Notation, oder die Joints
+an. 
+Vorteile der Pipe-Notation / Nachteile der Joints:
+- Einfacher zu realiseren auf GUI Seite ( Automatisches Spacing aufgrund der
+  wenigeren Pfeile einfacher umzusetzen
+- Pfeile müssen seltener große Distanzen überbrücken, was das Diagramm weniger
+  chaotisch wirken lässt
+Nachteile der Pipe-Notation / Vorteile der Joints:
+- Datenströme sind möglicherweise nicht mehr eindeutig zu interpretieren. Bei
+  der Verwendung von Joints ist die Herkunft eines Datenstroms eindeutig
+  ersichtlich. Bei der Pipe-Notation kann man diese Problem durch eine Benennung
+  der Datenströme lösen. Diese Erkenntnis legt eine Validierung - einschließlich
+  visuellem Feedback - der Datenströme auf eine eindeutige Interpretation nahe.
+  Eine andere Option wäre, dass man die erste Übereinstimmung nimmt.
+
+
+**** Validierung des Datenflusses 
+Der Validierungsprozess soll subtil sein. Ein Blockieren von verbinden zweier
+Softwarezellen soll nicht geschehen. Diese würde sonst dem Ziel entgegen stehen, 
+eine mögliche freie Gestaltung, wie beim Zeichnen auf dem Papier, zu
+gewährleisten. Der Anwender soll die Freiheit haben, nicht valide Verbindungen
+zu erstellen, die er möglicherweise nach dem Verbinden dann entsprechend
+anpasst. Eine dezente farbliche Hervorhebung soll als Feedback des
+Validierungsprozesses ( möglicherweise indem man den Pfeil einfärbt) ausreichen. Mögliche Validierungsfehler wären:
+- Pipe-Notation : Überschneidung von Datentypen.
+- Fehlende Daten : Nicht alle vom Input der Softwarezelle verlangten Daten
+  sind im Datenfluss enthalten.
+
+Im Grunde wäre jedoch auch eine Generierung von jeglichem Flow Design Diagrammen
+möglich, würde man folgende Regeln einführen:
+- Pipe-Notation: Der Graph wird zurück gelaufen, bis ein passender Datentype
+  gefunden wurde ( Das erste Vorkommen wird genommen). Falls der Datentyp nicht
+  gefunden wurde, wird er in der Integration als lokale Varibale deklariert und mit einem
+  Default-Wert initialisiert.
+
+**** Validierung der Syntax
+Die Notation der Daten der Datenflüssen besteht aus einer einfachen Syntax. Diese muss zwingend eingehalten
+ werden, damit eine Generierung des Codes möglich ist.
+ Eine rote gewellte Linie unterhalb des nicht validen Textes hilft dem Anwender
+ schnell Fehler zu erkennen.
