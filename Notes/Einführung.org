@@ -1,0 +1,33 @@
+* Einführung
+** Motivation
+Zur Zeit dieser Arbeit exisiteren keine ausgereiften Tools oder Hilfsprogramme die speziell auf die Erstellung
+von Flow Design Entwürfen ausgelegt sind. Dies liegt möglicherweise an der
+geringen Bekanntheit und Verbreitung der Methodik.
+Ziel dieser Arbeit ist es eine Anwendung zur Erstellung von Flow Design Graphen
+zu entwerfen und einen Prototypen zu implementieren. Diese Anwendung soll darüber hinaus auch
+Funktionen zu Generierung von Quellcode aus den erstellten Graphen bieten, damit
+der Einsatz von Flow Design in einem Projekt komfortabler und produktiver wird.
+Ein weiterer großer Teil dieser
+Arbeit besteht darin einen Grundstein für solch ein Programm in Form eines
+ersten Prototypen zu legen und diesen auf Github als Open Source Projekt zu veröffentlichen.
+Dieser Protopype soll in C#  und in Teilen unter Verwendung von Flow Design selbst umgestetzt werden.
+
+Unabhänig davon, ob dieses Ziel erreicht wurde oder nicht sollen die gewonnen
+Erkenntnisse aus dem Versuch hier dokumentiert und ein Fazit daraus gezogen werden.
+
+
+** Aufbau 
+Am Anfang dieser Arbeit soll dem Leser die Entwurfsmethodik Flow Design anschaulich erklärt
+und die Herkunft, den Grundgedanken dieser Methodik, sowie ihre Vor- und Nachteile herausgestellt werden.
+Dazu gehören auch, dass einige neue Prinzipien und Kürzel zu erklärt werden.
+
+Danach wird auf die für Flow Design speziellen, dazugehörenden Implemtierungsregeln eingegangen und
+von Codebeispielen in C# zu zeigen, sowie auf einige Sprachfeatures von C# einzugehen.
+
+Hat man einmal den Vorteil von Flow Design für sich entdeckt liegt es nahe als
+Programmierer sich Gedanken darüber zu machen wie ein Computerprogramm aussehen
+könnte, das einem bei der Verwendung der Methodik so
+gut es geht unterstützt. Da es solch ein Programm noch nicht gibt, geht es in
+dieser Arbeit einmal darum die Ansprüche eines solchen Programms im Detail
+herauszufinden, sowie nützliche Features aufzuzlisten.
+Am Ende soll die interessanten Teile des Codes hier dokumentiert und das Ergebnis vorgestellt werden.

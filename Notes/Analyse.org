@@ -1,6 +1,42 @@
-* Analyse
-** Anforderungen
-*** Editor
+
+* Vision
+Im Grunde geht es bei einem Editor für Flow Design vorallem darum die Vorteile aus der digitalen Welt mit
+der Methodik zu vereinen, ohne die Einfachheit der Methodik auf dem Papier zu
+verlieren. 
+
+** Vorteile eines digitalen Editors 
+Flow Design ist eigentlich als Entwurfsmethode auf dem Papier gedacht.
+Jedoch hat ein Flow Design auf dem Papier einige Nachteile, die ein Editor am
+Computer aufheben könnte. Das wären vorallem folgende Punkte:
+*** Einmal eingezeichnete Pfeile, Kreise und Beschriftungen lassen sich nicht so leicht mehr verändern.
+Während des kreativen Prozesses ein Programmierproblem zu lösen, bedarf es
+mehrer Iterationen und Veränderungen an dem Diagramm. Eine Möglichkeit Versionen
+abzuspeichern und Teile zu verschieben, umzubenennen und Umzustukturieren sind
+klare Vorteile von einem digitalen Editors.
+*** Unnötige Abtipparbeit ersparen.
+Oft ist es möglich aus den Beschriftungen die Variablennamen und
+Methoden Signaturen abzuleiten. Liegt das Diagramm in digitaler Form vor, wäre eine automatische Generierung von Quellcode naheliegend und
+würde einem zusätzliche Abtipparbeit ersparen.
+*** Generierung von Methoden-Bodies  
+Durch einige Implementierungsregeln von Flow Design lassen sich von
+Integrationen sogar die komplette Implementierung aus dem Diagramm
+ableiten. Das wäre ein zustätzlicher Komfortgewinn von einem Editor.
+*** Roundtrip-Engineering
+Eine Möglichkeit aus einer bestehenden Codebasis ein Diagramm zu erstellen -
+wenn auch nur teilweise - würden die Produktivität beim Einsetzen von Flow
+Design in einem Projekt weiter steigern.
+
+** Vorteile von einem Entwurf auf dem Papier
+Ein Papier schränkt einen nicht ein und erlaubt es schnell und einfach Pfeile
+und Kreise zu zeichnen, Notizen einzufügen und ist einfach in der Bedienung.
+Bei dem Erstellen eine Editors muss deshalb ein besonders großes Augenmerk auf
+eine gute und intuitive Bedienung gelegt werden, damit einem das Programm bei der kreativen Arbeit nicht
+behindert. Endziel wäre es, dass der Andwender von sich aus lieber zum Edtior
+greift, als zu Stift und Papier, weil ihm der Editor komfortableres und
+kreatives Arbeiten besser ermöglicht.
+
+* Anforderungen
+** Editor
 | Anforderungen                                                                                                       | Priorität    |
 |---------------------------------------------------------------------------------------------------------------------+--------------|
 | Erstellen von Softwarezellen, Benennen, Verschieben auf dem Canvas, Löschen, Duplizieren                            | must have    |
@@ -28,8 +64,7 @@
 
 
 
-
-*** Generierung von Code
+** Generierung von Code
 | Anforderungen                                                                                      | Priorität    |
 |----------------------------------------------------------------------------------------------------+--------------|
 | Generierung von Methodensignaturen aus dem Namen und Input/Output Definitionen einer Softwarezelle | must have    |
@@ -39,13 +74,13 @@
 | Erzeugung von Namenspaces und Ausflösung von Usings                                                | nice to have |
 | Einstellungen  dem Benutzer zugänglich machen, um die Generierung zu konfigurieren                 | nice to have |
 
-**** Erzeugung des kompletten Methoden-Bodies einer Integration
+*** Erzeugung des kompletten Methoden-Bodies einer Integration
 Hierbei muss erkannt werden, in welcher Reihenfolge die Methoden aufgerufen
 werden müssen, lokale Variablen erzeugt werden müssen und was einer Methode als Parameter
 übergeben werden muss. Dabei kommen IEnumerables und Lampdas zum Einsatz um
 Datenflüsse zu implementieren. 
 
-**** Einstellungen für die Generierung dem Benutzer zugänglich machen 
+*** Einstellungen für die Generierung dem Benutzer zugänglich machen 
 Mögliche Optionen wären:
 - wie das Programm den Methoden-Body einer Operation 
 standardmässig befüllen soll: Leer, mit NotImplementedExeption oder mit einem
@@ -55,9 +90,8 @@ QDefault return Ausdruck abhängig von der Methodensignatur.
   andere Methode weitergereicht wird. Beziehungsweise die Regel konfigurierbar
   machen: Ab welcher Zeilenlänge, wie die Varibalen benannt werden sollen, etc.
 
- 
 
-*** Generierung von Flow Design Diagrammen aus Code
+** Generierung von Flow Design Diagrammen aus Code
  
 | Anforderungen                                                                                                                 | Priorität                                 |
 |-------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------|
@@ -68,12 +102,16 @@ QDefault return Ausdruck abhängig von der Methodensignatur.
 | Automatisches Spacing                                                                                                         | must have ( aber nicht unbedingt perfekt) |
 | Speichern der Inhalte, die nicht im Diagramm dargestellt werden können.                                                       | nice to have                              |
 
-**** Schwierigkeiten 
+*** Schwierigkeiten 
 Bei Verwendung von Events kann der Datenfluss möglicherweise nicht mehr
 nachvollzogen werden.
 
-** GUI Skizzen / Usabilityüberlegungen
-*** Minimalistischer Aufbau. Fokus auf Produktivtät.  
+
+* GUI Skizzen / Usabilityüberlegungen
+
+** Minimalistischer Aufbau. Fokus auf Produktivtät.  
+Im folgendem einige Kerngedanken über die Funktionalität des Editors:
+
 - Keine unnötigen Menuleisten, Symbolleisten, etc. Besser kontextsensitive
   Kontextmenus, oder Hotkeys,  damit die Strecke, die die Maus bewegt werden muss, gering
   gehalten wird.
@@ -103,7 +141,7 @@ nachvollzogen werden.
   kann er diese und alle nachkommenden Softwarezellen verschieben, ohne sie
   vorher extra selektieren zu müssen. 
 
-**** Textfelder 
+** Textfelder 
 Textfelder müssen waagerecht bleiben. Auf dem Papier schreibt man die Daten auf
 die Pfeile, somit wird Text auf einem schrägen Pfeil auch entlang des Striches
 geschrieben.
@@ -118,7 +156,7 @@ manchen Stellen etwas vom orginal Abweichen.
 - Mehrer Outputs
 - Pfeile zwischen zwei Softwarezellen, die auf unteschiedlichen Höhen platziert sind.
 
-**** Realisierung/ Darstellung von Joints 
+** Realisierung/ Darstellung von Joints 
 Datenströme können aus verschieden Quellen stammen und an einer Softwarezelle
 zusammenlaufen. Flow Design bietet hierfür die Pipe-Notation, oder die Joints
 an. 
@@ -136,7 +174,7 @@ Nachteile der Pipe-Notation / Vorteile der Joints:
   Eine andere Option wäre, dass man die erste Übereinstimmung nimmt.
 
 
-**** Validierung des Datenflusses 
+** Validierung des Datenflusses 
 Der Validierungsprozess soll subtil sein. Ein Blockieren von verbinden zweier
 Softwarezellen soll nicht geschehen. Diese würde sonst dem Ziel entgegen stehen, 
 eine mögliche freie Gestaltung, wie beim Zeichnen auf dem Papier, zu
@@ -155,7 +193,7 @@ möglich, würde man folgende Regeln einführen:
   gefunden wurde, wird er in der Integration als lokale Varibale deklariert und mit einem
   Default-Wert initialisiert.
 
-**** Validierung der Syntax
+** Validierung der Syntax
 Die Notation der Daten der Datenflüssen besteht aus einer einfachen Syntax. Diese muss zwingend eingehalten
  werden, damit eine Generierung des Codes möglich ist.
  Eine rote gewellte Linie unterhalb des nicht validen Textes hilft dem Anwender

@@ -1,0 +1,18 @@
+\begin{thebibliography}{1}
+
+\bibitem{flow-design.org}
+flow design.org.
+\newblock http://flow-design.org/.
+\newblock [Online, abgefragt 1.10.2016].
+
+\bibitem{schummelzettel}
+Ralf Westphal.
+\newblock {\em The Architect's Napkin - Der Schummelzettel}.
+\newblock Leanpub, 2014.
+
+\bibitem{messaging}
+Ralf Westphal.
+\newblock {\em Messaging as a Programming Model}.
+\newblock Leanpub, 2016.
+
+\end{thebibliography}

@@ -1,0 +1,277 @@
+% Created 2016-11-08 Di 15:58
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{fixltx2e}
+\usepackage{graphicx}
+\usepackage{grffile}
+\usepackage{longtable}
+\usepackage{wrapfig}
+\usepackage{rotating}
+\usepackage[normalem]{ulem}
+\usepackage{amsmath}
+\usepackage{textcomp}
+\usepackage{amssymb}
+\usepackage{capt-of}
+\usepackage{hyperref}
+\date{\today}
+\title{}
+\hypersetup{
+ pdfauthor={},
+ pdftitle={},
+ pdfkeywords={},
+ pdfsubject={},
+ pdfcreator={Emacs 25.1.1 (Org mode 8.3.5)}, 
+ pdflang={English}}
+\begin{document}
+
+\tableofcontents
+
+\section{Vision}
+\label{sec:orgheadline7}
+Im Grunde geht es bei einem Editor für Flow Design vorallem darum die Vorteile aus der digitalen Welt mit
+der Methodik zu vereinen, ohne die Einfachheit der Methodik auf dem Papier zu
+verlieren. 
+
+\subsection{Vorteile eines digitalen Editors}
+\label{sec:orgheadline5}
+Flow Design ist eigentlich als Entwurfsmethode auf dem Papier gedacht.
+Jedoch hat ein Flow Design auf dem Papier einige Nachteile, die ein Editor am
+Computer aufheben könnte. Das wären vorallem folgende Punkte:
+\subsubsection{Einmal eingezeichnete Pfeile, Kreise und Beschriftungen lassen sich nicht so leicht mehr verändern.}
+\label{sec:orgheadline1}
+Während des kreativen Prozesses ein Programmierproblem zu lösen, bedarf es
+mehrer Iterationen und Veränderungen an dem Diagramm. Eine Möglichkeit Versionen
+abzuspeichern und Teile zu verschieben, umzubenennen und Umzustukturieren sind
+klare Vorteile von einem digitalen Editors.
+\subsubsection{Unnötige Abtipparbeit ersparen.}
+\label{sec:orgheadline2}
+Oft ist es möglich aus den Beschriftungen die Variablennamen und
+Methoden Signaturen abzuleiten. Liegt das Diagramm in digitaler Form vor, wäre eine automatische Generierung von Quellcode naheliegend und
+würde einem zusätzliche Abtipparbeit ersparen.
+\subsubsection{Generierung von Methoden-Bodies}
+\label{sec:orgheadline3}
+Durch einige Implementierungsregeln von Flow Design lassen sich von
+Integrationen sogar die komplette Implementierung aus dem Diagramm
+ableiten. Das wäre ein zustätzlicher Komfortgewinn von einem Editor.
+\subsubsection{Roundtrip-Engineering}
+\label{sec:orgheadline4}
+Eine Möglichkeit aus einer bestehenden Codebasis ein Diagramm zu erstellen -
+wenn auch nur teilweise - würden die Produktivität beim Einsetzen von Flow
+Design in einem Projekt weiter steigern.
+
+\subsection{Vorteile von einem Entwurf auf dem Papier}
+\label{sec:orgheadline6}
+Ein Papier schränkt einen nicht ein und erlaubt es schnell und einfach Pfeile
+und Kreise zu zeichnen, Notizen einzufügen und ist einfach in der Bedienung.
+Bei dem Erstellen eine Editors muss deshalb ein besonders großes Augenmerk auf
+eine gute und intuitive Bedienung gelegt werden, damit einem das Programm bei der kreativen Arbeit nicht
+behindert. Endziel wäre es, dass der Andwender von sich aus lieber zum Edtior
+greift, als zu Stift und Papier, weil ihm der Editor komfortableres und
+kreatives Arbeiten besser ermöglicht.
+
+\section{Anforderungen}
+\label{sec:orgheadline14}
+\subsection{Editor}
+\label{sec:orgheadline8}
+\begin{center}
+\begin{tabular}{ll}
+Anforderungen & Priorität\\
+\hline
+Erstellen von Softwarezellen, Benennen, Verschieben auf dem Canvas, Löschen, Duplizieren & must have\\
+Selektieren von mehreren Softwarezellen um mehrere auf einmal zu bearbeiten & must have\\
+Definieren von Input und Output Datastreams, für eine Softwarezelle & must have\\
+Verbinden eines Outputs einer Softwarezelle mit einem Input einer anderen & must have\\
+Zusammenlaufen von mehreren Datenflüssen in ein Input einer Softwarezelle & must have\\
+Softwarezelle(n) einer anderen unterordnen können, um Integrationen zu erstellen inklusive visuelle Kennzeichnung & must have\\
+Syntaxhighlighting für die Datentypen auf den Datenflüsen & nice to have\\
+Mehrere Themes: Dark, White (Print) & nice to have\\
+Keyboard Hotkeys / Tabstops & nice to have\\
+Kommentarboxen & nice to have\\
+Automatisches Spacing & nice to have\\
+Untergeordenete Softwarezellen einer Integration an einer anderen Stelle definierbar machen, falls Platz knapp wird & nice to have\\
+Speichern und Laden in ein Dateiformat & must have\\
+Autosave & must have\\
+Undo / Redo System & nice to have\\
+Definieren von State einer Softwarezelle & nice to have\\
+Mouse-Hover zeigt Preview des erzeugten Codes für die Softwarezelle & nice to have\\
+Wiederverwenden von vorhandenen Softwarezellen & nice to have\\
+Autocomplete auf dem Textfeld der Datenströme & nice to have\\
+Definieren von neuen Datentypen & nice to have\\
+Validierung von Datenströmen & must have\\
+\end{tabular}
+\end{center}
+
+
+
+
+\subsection{Generierung von Code}
+\label{sec:orgheadline11}
+\begin{center}
+\begin{tabular}{ll}
+Anforderungen & Priorität\\
+\hline
+Generierung von Methodensignaturen aus dem Namen und Input/Output Definitionen einer Softwarezelle & must have\\
+Erzeugen des kompletten Methoden-Bodies einer Integration & must have\\
+Live-Generierung & nice to have\\
+Erzeugung von Klassen und Datentypen & nice to have\\
+Erzeugung von Namenspaces und Ausflösung von Usings & nice to have\\
+Einstellungen  dem Benutzer zugänglich machen, um die Generierung zu konfigurieren & nice to have\\
+\end{tabular}
+\end{center}
+
+\subsubsection{Erzeugung des kompletten Methoden-Bodies einer Integration}
+\label{sec:orgheadline9}
+Hierbei muss erkannt werden, in welcher Reihenfolge die Methoden aufgerufen
+werden müssen, lokale Variablen erzeugt werden müssen und was einer Methode als Parameter
+übergeben werden muss. Dabei kommen IEnumerables und Lampdas zum Einsatz um
+Datenflüsse zu implementieren. 
+
+\subsubsection{Einstellungen für die Generierung dem Benutzer zugänglich machen}
+\label{sec:orgheadline10}
+Mögliche Optionen wären:
+\begin{itemize}
+\item wie das Programm den Methoden-Body einer Operation
+\end{itemize}
+standardmässig befüllen soll: Leer, mit NotImplementedExeption oder mit einem
+QDefault return Ausdruck abhängig von der Methodensignatur. 
+\begin{itemize}
+\item Ob innerhalb einer Integration der Rückgabewert einer Funktion erst in eine
+lokale Variable gespeichert werden soll, oder direkt der Methodenaufruf an die
+andere Methode weitergereicht wird. Beziehungsweise die Regel konfigurierbar
+machen: Ab welcher Zeilenlänge, wie die Varibalen benannt werden sollen, etc.
+\end{itemize}
+
+
+\subsection{Generierung von Flow Design Diagrammen aus Code}
+\label{sec:orgheadline13}
+
+\begin{center}
+\begin{tabular}{ll}
+Anforderungen & Priorität\\
+\hline
+Finden von Methoden und Erzeugen von Softwarezellen und ihre Input und Output Datenströme anhand der Methodensignatur im Code & must have\\
+Erkennen, ob es sich bei der Methode um eine Operation oder Integration handelt & must habe\\
+Den Datenfluss einer Integration erkennen und ihn in ein Flow Design Diagramm übertragen & must have\\
+Umgang mit Methoden die nicht das IOSP befolgen & nice to have\\
+Automatisches Spacing & must have ( aber nicht unbedingt perfekt)\\
+Speichern der Inhalte, die nicht im Diagramm dargestellt werden können. & nice to have\\
+\end{tabular}
+\end{center}
+
+\subsubsection{Schwierigkeiten}
+\label{sec:orgheadline12}
+Bei Verwendung von Events kann der Datenfluss möglicherweise nicht mehr
+nachvollzogen werden.
+
+
+\section{GUI Skizzen / Usabilityüberlegungen}
+\label{sec:orgheadline20}
+
+\subsection{Minimalistischer Aufbau. Fokus auf Produktivtät.}
+\label{sec:orgheadline15}
+Im folgendem einige Kerngedanken über die Funktionalität des Editors:
+
+\begin{itemize}
+\item Keine unnötigen Menuleisten, Symbolleisten, etc. Besser kontextsensitive
+Kontextmenus, oder Hotkeys,  damit die Strecke, die die Maus bewegt werden muss, gering
+gehalten wird.
+\item Tabulatorstops einbauen, damit schnell zwischen den Textfeldern, entlang des
+Graphen, gesprungen werden kann.
+\item Verwendung von Drag and Drop, um eine intuitive Bedienung zum Verknüpfen von
+Softwarezellen zu ermöglichen. Die Flächen, die per Drag and Drop zu Bedienen
+sind, sollen über ein Maus-Hover Feedback erkennbar sein. Außerdem sollen die
+Flächen nicht zu klein sein, damit ein leichtes Treffen des Feldes
+sichergestellt wird. Möglicherweise können auch unsichtbare Flächen verwendet
+werden, um eine Drag and Drop Fläche künstlich leicht zu vergrößern und einfacher treffbar zu machen.
+\item Rectangle Selection in Kombination mit Modifier-Keys um mehrere Softwarezellen
+schnell und komfortable zu selektieren.
+\item Shift + Drag : Schnelles Duplizieren der selektierten Objekte. Vorbild dieser
+Funktion ist 3ds Max, das dieses Bedienkonzept an vielen Stellen einsetzt.
+Einmal dararn gewöhnt, möchte man es nicht mehr missen. Anwendungsfälle:
+Der Anwender möchte  schnell ein gesamtes Diagramm duplizieren und an ein andere Stelle schieben, um
+dort eine weitere Iteration davon zu erstellen. Möglicherweise müssen solche
+Duplikate vor der Generierung des Codes aus dem Diagramm gelöscht werden.
+Ein andere Anwendungsfall von Duplizierten ist, dass der Anwender eine vorhandene
+Zelle an einer anderen Stelle im Diagramm verwendet möchte. Damit
+entstehen weitere Probleme, bei der Generierung des Codes, das gelöst werden
+muss: Duplizierte Softwarezellen müssen erkannt und nur einmal generiert werden.
+\item Ctrl + Drag einer Softwarezelle: Die Softwarezelle und alle ihre Kinder werden
+Verschoben. Anwendungsfall ist: Der Anwender möchte etwas Platz schaffen
+zwsichen zwei Softwarezellen. Mit einem Ctrl+ Drag der zweiten Softwarezelle,
+kann er diese und alle nachkommenden Softwarezellen verschieben, ohne sie
+vorher extra selektieren zu müssen.
+\end{itemize}
+
+\subsection{Textfelder}
+\label{sec:orgheadline16}
+Textfelder müssen waagerecht bleiben. Auf dem Papier schreibt man die Daten auf
+die Pfeile, somit wird Text auf einem schrägen Pfeil auch entlang des Striches
+geschrieben.
+Am Computer ist soetwas schlecht umzusetzen. Man kann Textfelder bei WPF drehen, dadurch
+entsteht jedoch eine ungewohnte Bedienung beim Markiern von Text. Ein Drehen
+beim Fokusieren/Defokusieren wäre auch möglich, damit wäre jedoch eine zustätzlicher
+Klick nötig, falls man Text markieren möchte: Ein Mausklick zum Fokusieren/Drehen
+der Textbox und ein weiterer um Text zu markieren / den Cursor zu platzieren.
+Die beste Lösung wäre aus Usability-Sicht, wenn Textfelder nicht gedreht werden,
+sondern immer waagerecht dargestellt werden. Somit muss hier die Notation an
+manchen Stellen etwas vom orginal Abweichen.
+\begin{itemize}
+\item Mehrer Outputs
+\item Pfeile zwischen zwei Softwarezellen, die auf unteschiedlichen Höhen platziert sind.
+\end{itemize}
+
+\subsection{Realisierung/ Darstellung von Joints}
+\label{sec:orgheadline17}
+Datenströme können aus verschieden Quellen stammen und an einer Softwarezelle
+zusammenlaufen. Flow Design bietet hierfür die Pipe-Notation, oder die Joints
+an. 
+Vorteile der Pipe-Notation / Nachteile der Joints:
+\begin{itemize}
+\item Einfacher zu realiseren auf GUI Seite ( Automatisches Spacing aufgrund der
+wenigeren Pfeile einfacher umzusetzen
+\item Pfeile müssen seltener große Distanzen überbrücken, was das Diagramm weniger
+chaotisch wirken lässt
+\end{itemize}
+Nachteile der Pipe-Notation / Vorteile der Joints:
+\begin{itemize}
+\item Datenströme sind möglicherweise nicht mehr eindeutig zu interpretieren. Bei
+der Verwendung von Joints ist die Herkunft eines Datenstroms eindeutig
+ersichtlich. Bei der Pipe-Notation kann man diese Problem durch eine Benennung
+der Datenströme lösen. Diese Erkenntnis legt eine Validierung - einschließlich
+visuellem Feedback - der Datenströme auf eine eindeutige Interpretation nahe.
+Eine andere Option wäre, dass man die erste Übereinstimmung nimmt.
+\end{itemize}
+
+
+\subsection{Validierung des Datenflusses}
+\label{sec:orgheadline18}
+Der Validierungsprozess soll subtil sein. Ein Blockieren von verbinden zweier
+Softwarezellen soll nicht geschehen. Diese würde sonst dem Ziel entgegen stehen, 
+eine mögliche freie Gestaltung, wie beim Zeichnen auf dem Papier, zu
+gewährleisten. Der Anwender soll die Freiheit haben, nicht valide Verbindungen
+zu erstellen, die er möglicherweise nach dem Verbinden dann entsprechend
+anpasst. Eine dezente farbliche Hervorhebung soll als Feedback des
+Validierungsprozesses ( möglicherweise indem man den Pfeil einfärbt) ausreichen. Mögliche Validierungsfehler wären:
+\begin{itemize}
+\item Pipe-Notation : Überschneidung von Datentypen.
+\item Fehlende Daten : Nicht alle vom Input der Softwarezelle verlangten Daten
+sind im Datenfluss enthalten.
+\end{itemize}
+
+Im Grunde wäre jedoch auch eine Generierung von jeglichem Flow Design Diagrammen
+möglich, würde man folgende Regeln einführen:
+\begin{itemize}
+\item Pipe-Notation: Der Graph wird zurück gelaufen, bis ein passender Datentype
+gefunden wurde ( Das erste Vorkommen wird genommen). Falls der Datentyp nicht
+gefunden wurde, wird er in der Integration als lokale Varibale deklariert und mit einem
+Default-Wert initialisiert.
+\end{itemize}
+
+\subsection{Validierung der Syntax}
+\label{sec:orgheadline19}
+Die Notation der Daten der Datenflüssen besteht aus einer einfachen Syntax. Diese muss zwingend eingehalten
+ werden, damit eine Generierung des Codes möglich ist.
+ Eine rote gewellte Linie unterhalb des nicht validen Textes hilft dem Anwender
+ schnell Fehler zu erkennen.
+\end{document}
