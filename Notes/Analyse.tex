@@ -1,4 +1,4 @@
-% Created 2016-11-08 Di 15:58
+% Created 2016-11-09 Mi 16:20
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -28,13 +28,13 @@
 \tableofcontents
 
 \section{Vision}
-\label{sec:orgheadline7}
+\label{sec:orgheadline8}
 Im Grunde geht es bei einem Editor für Flow Design vorallem darum die Vorteile aus der digitalen Welt mit
 der Methodik zu vereinen, ohne die Einfachheit der Methodik auf dem Papier zu
 verlieren. 
 
 \subsection{Vorteile eines digitalen Editors}
-\label{sec:orgheadline5}
+\label{sec:orgheadline6}
 Flow Design ist eigentlich als Entwurfsmethode auf dem Papier gedacht.
 Jedoch hat ein Flow Design auf dem Papier einige Nachteile, die ein Editor am
 Computer aufheben könnte. Das wären vorallem folgende Punkte:
@@ -42,26 +42,41 @@ Computer aufheben könnte. Das wären vorallem folgende Punkte:
 \label{sec:orgheadline1}
 Während des kreativen Prozesses ein Programmierproblem zu lösen, bedarf es
 mehrer Iterationen und Veränderungen an dem Diagramm. Eine Möglichkeit Versionen
-abzuspeichern und Teile zu verschieben, umzubenennen und Umzustukturieren sind
-klare Vorteile von einem digitalen Editors.
-\subsubsection{Unnötige Abtipparbeit ersparen.}
+abzuspeichern und Teile zu verschieben, umzubenennen und umzustukturieren sind
+klare Vorteile von einem digitalen Editor.
+\subsubsection{Automaische Validierungsprozesse}
 \label{sec:orgheadline2}
-Oft ist es möglich aus den Beschriftungen die Variablennamen und
-Methoden Signaturen abzuleiten. Liegt das Diagramm in digitaler Form vor, wäre eine automatische Generierung von Quellcode naheliegend und
-würde einem zusätzliche Abtipparbeit ersparen.
-\subsubsection{Generierung von Methoden-Bodies}
+Während der Erstellung des Flow Designs können im Hintergrund
+Validierungsprozesse beim Erstellen des Diagrammes Hilfestellung bieten.
+Autovervollständigungen könnten ebenfalls an einigen Stellen eingebaut werden,
+um das Tippen zu beschleunigen.
+\subsubsection{Unnötige Abtipparbeit ersparen.}
 \label{sec:orgheadline3}
-Durch einige Implementierungsregeln von Flow Design lassen sich von
-Integrationen sogar die komplette Implementierung aus dem Diagramm
-ableiten. Das wäre ein zustätzlicher Komfortgewinn von einem Editor.
-\subsubsection{Roundtrip-Engineering}
+Aus den Beschriftungen im Flow Design Diagramm lassen sich die Variablennamen und
+Methoden Signaturen leicht herleiten. Liegt das Diagramm in digitaler Form vor,
+wäre eine automatische Generierung von Quellcode naheliegend und
+würde dem Anwender unnötige Abtipparbeit ersparen.
+\subsubsection{Generierung von Methoden-Bodies}
 \label{sec:orgheadline4}
+Durch die strikten Implementierungsregeln von Integrationen lassen sich von
+diesen Methoden nicht nur die Signaturen, sonder sogar die komplette Implementierung aus dem Diagramm
+ableiten. Eine Generierung dieser Codezeilen wäre ein zustätzlicher Komfortgewinn von einem Editor.
+\subsubsection{Roundtrip-Engineering}
+\label{sec:orgheadline5}
 Eine Möglichkeit aus einer bestehenden Codebasis ein Diagramm zu erstellen -
 wenn auch nur teilweise - würden die Produktivität beim Einsetzen von Flow
-Design in einem Projekt weiter steigern.
+Design in einem Projekt weiter steigern. Aufgrund von Unterhaltungen mit meinem
+Anleiter Kevin Erath stellte sich heraus, dass ein perfekter Roundtrip umzusetzen keine triviale Aufgabe
+darstellt. Deswegen wird im Rahmen dieser Arbeit der Fokus auf jene Funktionalitäten
+gelegt, die leichter zu implementieren sind und doch dem Anwender möglichst viel
+Zeitersparniss einbringt. Ein Anwendungsfall wäre: Der Anwender möchte
+Teile seines Quellcodes in ein Flow Design überführen, um dann mit Hilfe des
+Flow Designs, diesen zu überarbeiten und anschließend neu zu generieren.
+Möglicherweise würde er die erstellten Codezeilen mit Copy-Paste in sein
+bestehendes Projekt übertragen.
 
 \subsection{Vorteile von einem Entwurf auf dem Papier}
-\label{sec:orgheadline6}
+\label{sec:orgheadline7}
 Ein Papier schränkt einen nicht ein und erlaubt es schnell und einfach Pfeile
 und Kreise zu zeichnen, Notizen einzufügen und ist einfach in der Bedienung.
 Bei dem Erstellen eine Editors muss deshalb ein besonders großes Augenmerk auf
@@ -71,14 +86,15 @@ greift, als zu Stift und Papier, weil ihm der Editor komfortableres und
 kreatives Arbeiten besser ermöglicht.
 
 \section{Anforderungen}
-\label{sec:orgheadline14}
+\label{sec:orgheadline21}
 \subsection{Editor}
-\label{sec:orgheadline8}
+\label{sec:orgheadline11}
 \begin{center}
 \begin{tabular}{ll}
 Anforderungen & Priorität\\
 \hline
 Erstellen von Softwarezellen, Benennen, Verschieben auf dem Canvas, Löschen, Duplizieren & must have\\
+Navigation ( Panning, Zooming ) & must have\\
 Selektieren von mehreren Softwarezellen um mehrere auf einmal zu bearbeiten & must have\\
 Definieren von Input und Output Datastreams, für eine Softwarezelle & must have\\
 Verbinden eines Outputs einer Softwarezelle mit einem Input einer anderen & must have\\
@@ -99,14 +115,26 @@ Wiederverwenden von vorhandenen Softwarezellen & nice to have\\
 Autocomplete auf dem Textfeld der Datenströme & nice to have\\
 Definieren von neuen Datentypen & nice to have\\
 Validierung von Datenströmen & must have\\
+Anfügen von Tests an Softwarezelle & nice to have\\
 \end{tabular}
 \end{center}
+
+\subsubsection{Anmerkungen}
+\label{sec:orgheadline10}
+\begin{enumerate}
+\item Navigation
+\label{sec:orgheadline9}
+Durch Inspiration aus Grafikandwendungen: Panning ( Verschieben der "Kamera" in
+der X- und Y-Achse mit Hilfe der Mittleren Maustaste. Zoomen in und aus dem
+Diagramm durch das Mausrad. Die Position der Maus bestimmt das Zentrum des
+Zooms.
+\end{enumerate}
 
 
 
 
 \subsection{Generierung von Code}
-\label{sec:orgheadline11}
+\label{sec:orgheadline16}
 \begin{center}
 \begin{tabular}{ll}
 Anforderungen & Priorität\\
@@ -117,18 +145,21 @@ Live-Generierung & nice to have\\
 Erzeugung von Klassen und Datentypen & nice to have\\
 Erzeugung von Namenspaces und Ausflösung von Usings & nice to have\\
 Einstellungen  dem Benutzer zugänglich machen, um die Generierung zu konfigurieren & nice to have\\
+Korrektes Einfügen / Integrieren von den generierten Codezeilen in die Codebasis eines bestehendes Softwareprojektes & nice to have\\
 \end{tabular}
 \end{center}
-
-\subsubsection{Erzeugung des kompletten Methoden-Bodies einer Integration}
-\label{sec:orgheadline9}
+\subsubsection{Anmerkungen}
+\label{sec:orgheadline15}
+\begin{enumerate}
+\item Erzeugung des kompletten Methoden-Bodies einer Integration
+\label{sec:orgheadline12}
 Hierbei muss erkannt werden, in welcher Reihenfolge die Methoden aufgerufen
 werden müssen, lokale Variablen erzeugt werden müssen und was einer Methode als Parameter
 übergeben werden muss. Dabei kommen IEnumerables und Lampdas zum Einsatz um
 Datenflüsse zu implementieren. 
 
-\subsubsection{Einstellungen für die Generierung dem Benutzer zugänglich machen}
-\label{sec:orgheadline10}
+\item Einstellungen für die Generierung dem Benutzer zugänglich machen
+\label{sec:orgheadline13}
 Mögliche Optionen wären:
 \begin{itemize}
 \item wie das Programm den Methoden-Body einer Operation
@@ -142,9 +173,26 @@ andere Methode weitergereicht wird. Beziehungsweise die Regel konfigurierbar
 machen: Ab welcher Zeilenlänge, wie die Varibalen benannt werden sollen, etc.
 \end{itemize}
 
+\item Einfügen von generierten Codezeilen in bestehende Codebasis
+\label{sec:orgheadline14}
+Notwendig hierfür wäre, dass bestehende Klassen gefunden werden müssten, usings korrekt
+eingefügt und schlussendlich die generierten Methoden und Datentypen in die
+jeweiligen Klassen / Dateien eingefügt werden. Dabei muss die Syntax
+berücksichtigt werden und möglicherweise Zugriffsberechtigungen erkannt und bei
+Problemen einen Dialog zur Korrektur dem Anwender anbieten. Weiteres Problem
+wäre die Überschneidung von Namen. Wenn automatisch der generierte Code bevorzugt
+  werden soll, dann könnten durch die Überschreibung von Datentypen und Methoden
+  bestehende Codezeilen plötzlich fehlerhaft werden. Ein extra Dialog wäre
+  möglich, würde jedoch den Aufwand zur Integration des Codes möglichweise stark
+  anheben. Ebenso wäre ein solcher Dialog aufwendig zu implementieren.
+  Eine andere Option wäre es, diese einfach einzufügen und die Erkennung und Lösung der
+  Probleme der IDE zu überlassen. Gerade bei C\# gibt es mit Resharper viele
+  Refactorisierungs-Tools, die einem bei der Lösung solcher Probleme unterstützen.
+\end{enumerate}
+
 
 \subsection{Generierung von Flow Design Diagrammen aus Code}
-\label{sec:orgheadline13}
+\label{sec:orgheadline20}
 
 \begin{center}
 \begin{tabular}{ll}
@@ -159,17 +207,29 @@ Speichern der Inhalte, die nicht im Diagramm dargestellt werden können. & nice 
 \end{tabular}
 \end{center}
 
-\subsubsection{Schwierigkeiten}
-\label{sec:orgheadline12}
+\subsubsection{Anmerkungen}
+\label{sec:orgheadline19}
+\begin{enumerate}
+\item Automatische Anordnung
+\label{sec:orgheadline17}
+Unbedingt notwendig, auch wenn es nur sehr rudimentär umgestetzt wird, ansonsten liegen
+alle Softwarezellen nach dem Erstellen unübersichtlich auf einem Punkt aufeinander.
+Falls das Automatische Spacing an manchen Stellen nicht perfekt funktionieren
+sollte, kann eine gute Usability ( Selektierungs- und Verschiebungsfeatures)
+hier dieser Imperfektion leichter verschmerzbarer machen.
+
+\item Schwierigkeiten
+\label{sec:orgheadline18}
 Bei Verwendung von Events kann der Datenfluss möglicherweise nicht mehr
 nachvollzogen werden.
+\end{enumerate}
 
 
 \section{GUI Skizzen / Usabilityüberlegungen}
-\label{sec:orgheadline20}
+\label{sec:orgheadline28}
 
 \subsection{Minimalistischer Aufbau. Fokus auf Produktivtät.}
-\label{sec:orgheadline15}
+\label{sec:orgheadline22}
 Im folgendem einige Kerngedanken über die Funktionalität des Editors:
 
 \begin{itemize}
@@ -204,7 +264,7 @@ vorher extra selektieren zu müssen.
 \end{itemize}
 
 \subsection{Textfelder}
-\label{sec:orgheadline16}
+\label{sec:orgheadline23}
 Textfelder müssen waagerecht bleiben. Auf dem Papier schreibt man die Daten auf
 die Pfeile, somit wird Text auf einem schrägen Pfeil auch entlang des Striches
 geschrieben.
@@ -218,34 +278,80 @@ sondern immer waagerecht dargestellt werden. Somit muss hier die Notation an
 manchen Stellen etwas vom orginal Abweichen.
 \begin{itemize}
 \item Mehrer Outputs
-\item Pfeile zwischen zwei Softwarezellen, die auf unteschiedlichen Höhen platziert sind.
+\item Pfeile zwischen zwei Softwarezellen, die auf unteschiedlichen Höhen platziert
+sind.
 \end{itemize}
 
+\subsection{Datentypen Organistation, Erstellung und Definition}
+\label{sec:orgheadline24}
+Da Flow Design auf Datenströmen arbeitet, ist das Definieren neuer Datentypen
+ein wesentlicher Bestandteil davon.
+Eine Möglichkeit wäre es, wie auf dem Papier, es zu erlauben an beliebigen
+Stellen im Diagramm eine Box zu erstellen, in der der Anwender einen neuen
+Datentyp benennen und seine Felder definieren kann. Vorteil davon wäre, dass der
+Anwender die nötige Information in der Nähe des Datenstroms schnell ersichtlich
+platzieren kann, wo die Daten auch vorkommen.
+Nachteil wäre, dass man beim automatischen Spacing zusätzlich komplizierter
+wird, da nun auch eine sinnvolle Platzierung der Datentypen nun mit
+berücksichtigen muss.
+Ein weiters Problem dieser Lösung taucht auf, wenn man an unterschiedlichen
+Positionen im Diagramm eine Datentypen verwendet. In diesem Fall müssten Doppelungen erlaubt
+sein, oder der Anwender würde an einer Stelle nicht die Information haben, worum
+es sich bei einem Datentyp handelt.
+Eine andere Option wäre es, die Datentypen nicht auf dem Drawing-Board zu
+platzieren, sondern seperate vom Flow Design getrennt in einem extra UI-Element
+darzustellen und dort die Defintion neuer Typen zu ermöglichen.
+Dieses UI-Element würde in Form einer Liste alle vorhanden Datentypen
+beinhalten. Zusätzliche Usability-Features wären, das Typen, die im Diagramm
+vorkommen, jedoch nicht zu den Basistypen der Sprache gehören und noch nicht in
+der Anwendung definiert wurden, erkannt und speziell hervorgehoben werden und
+den Anwender subtil auffordert diesen zu definieren.
+Um den Vorteil einer Box innerhalb des Diagrammes etwas zu entkräftigen, könnten
+die Einträge in der Liste kontextsensitiv sein: Wenn der Anwender in ein
+Textfeld eines Datenstromes klickt, könnte die Liste nur jene Datentypen
+anzeigen, die in dem Textfeld vorhanden sind. Beim klick auf eine leere Fläche (
+defokusieren des Textfeldes) würden wieder alle Datentypen im gesamten Diagramm
+angezeigt werden.
+Weitere Ideen wären: 
+\begin{itemize}
+\item Mouse-Hover über ein Datentype im Diagramm zeigt dieDefinition in einem Pop-Up
+über dem Mauszeiger an.
+\item Drag and Drop von Datentypen aus der Liste in das Drawing Board zu
+ermöglichen, falls der Anwender für einen Screenshot - oder aus einem anderen
+Grund - diese Information im Bild haben möchte.
+\end{itemize}
+
+
 \subsection{Realisierung/ Darstellung von Joints}
-\label{sec:orgheadline17}
+\label{sec:orgheadline25}
 Datenströme können aus verschieden Quellen stammen und an einer Softwarezelle
-zusammenlaufen. Flow Design bietet hierfür die Pipe-Notation, oder die Joints
+zusammenlaufen. Flow Design bietet hierfür die Pipe-Notation, oder die s.g. Joints
 an. 
+
 Vorteile der Pipe-Notation / Nachteile der Joints:
+
 \begin{itemize}
 \item Einfacher zu realiseren auf GUI Seite ( Automatisches Spacing aufgrund der
 wenigeren Pfeile einfacher umzusetzen
 \item Pfeile müssen seltener große Distanzen überbrücken, was das Diagramm weniger
 chaotisch wirken lässt
 \end{itemize}
+
 Nachteile der Pipe-Notation / Vorteile der Joints:
+
 \begin{itemize}
 \item Datenströme sind möglicherweise nicht mehr eindeutig zu interpretieren. Bei
 der Verwendung von Joints ist die Herkunft eines Datenstroms eindeutig
 ersichtlich. Bei der Pipe-Notation kann man diese Problem durch eine Benennung
 der Datenströme lösen. Diese Erkenntnis legt eine Validierung - einschließlich
 visuellem Feedback - der Datenströme auf eine eindeutige Interpretation nahe.
-Eine andere Option wäre, dass man die erste Übereinstimmung nimmt.
+Eine andere Option wäre, dass man beim Generieren den Datenstrom zurückläuft
+und das erste Vorkommen nimmt und nachfolgende Überschneidungen ignoriert.
 \end{itemize}
 
 
 \subsection{Validierung des Datenflusses}
-\label{sec:orgheadline18}
+\label{sec:orgheadline26}
 Der Validierungsprozess soll subtil sein. Ein Blockieren von verbinden zweier
 Softwarezellen soll nicht geschehen. Diese würde sonst dem Ziel entgegen stehen, 
 eine mögliche freie Gestaltung, wie beim Zeichnen auf dem Papier, zu
@@ -269,7 +375,7 @@ Default-Wert initialisiert.
 \end{itemize}
 
 \subsection{Validierung der Syntax}
-\label{sec:orgheadline19}
+\label{sec:orgheadline27}
 Die Notation der Daten der Datenflüssen besteht aus einer einfachen Syntax. Diese muss zwingend eingehalten
  werden, damit eine Generierung des Codes möglich ist.
  Eine rote gewellte Linie unterhalb des nicht validen Textes hilft dem Anwender

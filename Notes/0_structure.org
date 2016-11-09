@@ -1,82 +1,40 @@
 * Titelseite
+* Ehrenwörtliche Erklärung
 * Abstract
-* Danksagungen
+* Danksagung 
 * Inhaltsverzeichnis
+* Abkürzungsverzeichnis
+* Abbildungsverzeichnis, Listingsverzeichnis, Tablellenverzeichnis
+* Einführung (~ 2 Seiten)
+** Motivation
+** Aufbau
 
-
-
-# THEORYTEIL
-
-
-* Entstehung und Grundgedanke
-	zwei dinge sind damit gemeint. Skizze und Entwurfmethodik. Zusätzlich
-	dazu gibt es auch noch eine kleines Regelwerk, die man Einhalten soll,
-wenn man die Skizze in Programmcode implementiert.
+* Grundlagen Flow Design (~ 30 Seiten)
+** Entstehung und Grundgedanke
 ** Prinzipien
-   Kiss, und yagni noch hinzufügen
-   yagni, weil man software so gestaltet, dass man änderungen leicht zu machen sind, und es so leichter ist
-  dinge erst zu programmieren, wenn man es braucht.
+** Erklärung und Beispiele
+** Notationen
+** Implementation
+** Vor und Nachteile
+** Die Entwurfsmethode
 
-* Pfeile und Kreise
-** RomanNumbers Beispiel
-** "Aufmachen" einer Zelle
-
-* Notationen
-  Weitere Notationen kurz erklärt. Auch mit "Integrationen" aber noch nicht erklären, dass es ein Unterschied gibt.
-
-  Provider Dreieck.
-* Implementation
-Integrationen und Operationen (einzige Regel?)
-** Beispiel foreach und Funktionsaufruf als negativ Beispiel.
-** Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.
-   Rückgabewert entgegennehmen.
-** Warum macht man das? Sinn der Aufteilung. -> Ketten Bild
-   nochmal rückbesinnen auf CCD
-   Größtes übel funktionale Abhängigkeiten.
-   Wenn jemand seine Arbeit erst zuende machen kann, wenn ein anderer seine Arbeit getan hat.
-** Zusammenfassung - IODA Architekur -  Tabelle
-
-
-   Tabelle:
-   Daten - Methoden in Daten-Objekte aufrufen? Darf Operation die Methode kennen?
-   Daten - was bedeutet die eigentlich? Extra Funktionen? file open handlers?
-   Daten - Darf Integration wirklich Kontruktor aufrufen, das sind doch daten, oder gelten nur persistente daten?
-** Leserlichkeit / Kritik / Aufzeigen von Beispielen
-
-* Die Entwurfsmethode
-  endet mit Einteilen in Klassen, DLL, Anwendungen,...
-
-  Entwurf ist ein Interativer Prozess, somit wäre round trip super "Sinn des Systems SharpFlowDesign erläutern"
-
-
-#  PRAXISTEIL
-
-
-* Rekursive Eigenschaft 
-
-* Systemanalyse
+* Analyse (~ ca 10 Seiten) 
 ** Vision
-** Gedanken zur Machbarkeit, alternative Lösung von zu schwiergen Problemen, Einschränkungen
-   Attribute als Hilfe zum Identifizieren von Funktionen.
-** Was soll das Programm können.
-*** Zeichnen eines Flow Designs.
-    Gute Usability in Anlehnung an Node-basierte Grafik Anwendungen.
-    Erzeugen von Nodes, Selektieren, Beschriften, Bewegen,
-    Kopieren, Eingliedern von neuen Nodes in bestehende.
-    Anordenen, automatisches Spacing
-    Implementation Previewen mit Maus-over
-    Tests dranhängen an Node, Kommentare dranhängen,
-    Einkreisen/ Gruppieren in Klassen
-*** Generieren des Codes aus dem Flow Design
-*** Einlesen eines Csharp Files / Solution und generieren des Flow Design
-* Vorstellung Roslyn
-* Vorstellung was erreicht wurde
-* Schwierigkeiten, Ausblick und Fazit
+** Anforderungen
+** GUI Skizzen / Usabilityüberlegungen 
 
+* Realisierung ( ~ 20- 30 Seiten ) 
+** Der Editor
+** Generierung von Code aus Diagramm
+*** Vorstellung Roslyn
+** Generierung eines Diagrammes aus Code
 
+* Zusammenfassung ( ~ 2 Seiten )
+** Schwierigkeiten
+** Ausblick 
+** Fazit
 
-
-* Appendix
+* Appendix (~ 5 Seiten)
 ** Flow Design in anderen Sprachen
 *** Python
 *** MaxScript
