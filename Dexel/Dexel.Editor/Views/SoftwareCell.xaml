@@ -26,7 +26,7 @@
                 <Ellipse Margin="-20" Fill="{DynamicResource FillSoftwareCellBrush}" 
                                 Stroke="{DynamicResource BorderSoftwareCellBrush}"
                                 StrokeThickness="{DynamicResource StrokeThickness}" />
-                <Ellipse Margin="-20" Fill="DeepSkyBlue" 
+                <Ellipse Margin="-20" Fill="{StaticResource SelectionBG}" 
                           Visibility="{Binding IsSelected, Converter={StaticResource VisibilityConverter}}"
                                 Stroke="White"
                                 StrokeThickness="{DynamicResource StrokeThickness}" />

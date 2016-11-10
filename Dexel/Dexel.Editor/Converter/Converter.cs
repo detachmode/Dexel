@@ -117,7 +117,7 @@ namespace Dexel.Editor.Converter
             if (selected)
             {
 
-                return new SolidColorBrush(Colors.DodgerBlue);
+                return App.Current.FindResource("SelectionBG");
             }
 
             return new  SolidColorBrush(Colors.Transparent);

@@ -84,6 +84,14 @@ namespace Dexel.Editor.Views
             if (openFileDialog.ShowDialog() == true)
                 Interactions.LoadFromFile(openFileDialog.FileName, getModelFromDataContext());
         }
+
+        private void MenuItem_Merge(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+                Interactions.MergeFromFile(openFileDialog.FileName, getModelFromDataContext());
+        }
     }
 
 

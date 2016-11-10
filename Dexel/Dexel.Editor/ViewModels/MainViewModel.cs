@@ -6,6 +6,7 @@ using System.Windows;
 using Dexel.Editor.Behavior;
 using Dexel.Editor.CustomControls;
 using Dexel.Library;
+using Dexel.Model;
 using Dexel.Model.DataTypes;
 using PropertyChanged;
 
@@ -23,7 +24,7 @@ namespace Dexel.Editor.ViewModels
             SoftwareCells = new ObservableCollection<IOCellViewModel>();
             Connections = new ObservableCollection<ConnectionViewModel>();
             IntegrationBorders = new ObservableCollection<IOCellViewModel>();
-           
+            LoadFromModel(Mockdata.MakeRandomPerson2());
         }
 
 
