@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,16 @@ namespace Dexel.Library
             {
                 action(item);
             }
+        }
+
+        public static void AddUnique<T>(this List<T> enumeration, T element)
+        {
+            if (enumeration.Contains(element))
+            {
+                return;
+            }
+            enumeration.Add(element);
+           
         }
     }
 }

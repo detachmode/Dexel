@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Dexel.Library;
 using Dexel.Model.DataTypes;
 
 namespace Dexel.Model
@@ -10,6 +11,12 @@ namespace Dexel.Model
     {
         public static void RemoveConnection(DataStream dataStream, MainModel mainModel)
         {
+
+            dataStream.Sources.ForEach(dsds => dsds.Connected = false);
+            dataStream.Destinations.ForEach(dsds => dsds.Connected = false);
+
+           
+            RemoveFromIntegrationIncludingChildren(dataStream, mainModel);
             mainModel.Connections.RemoveAll(x => x.ID.Equals(dataStream.ID));
         }
 
@@ -87,8 +94,16 @@ namespace Dexel.Model
         {
             FindIntegration(sourceDSD.Parent, foundIntegration =>
             {
-                foundIntegration.Integration.Add(destinationDSD.Parent);
-                TraverseChildren(destinationDSD.Parent, child => foundIntegration.Integration.Add(child), mainModel);
+                foundIntegration.Integration.AddUnique(destinationDSD.Parent);
+                TraverseChildren(destinationDSD.Parent, child => foundIntegration.Integration.AddUnique(child),
+                    mainModel);
+            }, mainModel);
+
+            FindIntegration(destinationDSD.Parent, foundIntegration =>
+            {
+                foundIntegration.Integration.AddUnique(sourceDSD.Parent);
+                TraverseChildrenBackwards(sourceDSD.Parent, child => foundIntegration.Integration.AddUnique(child),
+                    mainModel);
             }, mainModel);
         }
 
@@ -139,13 +154,20 @@ namespace Dexel.Model
 
         public static void RemoveFromIntegrationIncludingChildren(DataStream dataStream, MainModel mainModel)
         {
+            
             FindIntegration(dataStream.Destinations.First().Parent, foundIntegration =>
             {
+                //foundIntegration.Integration.RemoveAll(iSc => dataStream.Sources.Any(dsd => dsd.Parent.ID == iSc.ID));
                 foundIntegration.Integration.RemoveAll(iSc => dataStream.Destinations.Any(dsd => dsd.Parent.ID == iSc.ID));
+
                 dataStream.Destinations.ForEach(
                     dsd =>
-                        TraverseChildren(dsd.Parent, child => foundIntegration.Integration.RemoveAll(iSc => iSc.ID == child.ID),
-                            mainModel));
+                    {
+                        foundIntegration.Integration.Remove(dsd.Parent);
+                        TraverseChildren(dsd.Parent,
+                            child => foundIntegration.Integration.RemoveAll(iSc => iSc.ID == child.ID),
+                            mainModel);
+                    });
             }, mainModel);
         }
 
@@ -156,6 +178,21 @@ namespace Dexel.Model
             foreach (var connection in foundConnections)
             {
                 connection.Destinations.ForEach(dsd =>
+                {
+                    func(dsd.Parent);
+                    TraverseChildren(dsd.Parent, func, mainModel);
+                });
+            }
+        }
+
+
+        public static void TraverseChildrenBackwards(SoftwareCell children, Action<SoftwareCell> func,
+            MainModel mainModel)
+        {
+            var foundConnections = mainModel.Connections.Where(c => c.Destinations.Any(dsd => dsd.Parent == children));
+            foreach (var connection in foundConnections)
+            {
+                connection.Sources.ForEach(dsd =>
                 {
                     func(dsd.Parent);
                     TraverseChildren(dsd.Parent, func, mainModel);

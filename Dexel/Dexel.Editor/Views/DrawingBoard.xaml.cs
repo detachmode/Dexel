@@ -20,8 +20,8 @@ namespace Dexel.Editor.Views
         {
             InitializeComponent();
 
-           
-            
+
+
         }
 
         private MainViewModel ViewModel => (MainViewModel)DataContext;
@@ -33,7 +33,7 @@ namespace Dexel.Editor.Views
         private void IOCell_MouseDown(object sender, MouseButtonEventArgs e)
         {
             MouseEventMediator.OrigMouseDownPoint = GetAbsoluteMousePosition(e.GetPosition(this));
-            MouseEventMediator.MouseDown(sender, e);          
+            MouseEventMediator.MouseDown(sender, e);
         }
 
 
@@ -42,13 +42,13 @@ namespace Dexel.Editor.Views
         private void IOCell_MouseUp(object sender, MouseButtonEventArgs e)
         {
             MouseEventMediator.MouseUp(sender, e);
-            
+
         }
 
 
         private void IOCell_MouseMove(object sender, MouseEventArgs e)
         {
-            MouseEventMediator.ProjectedMousePosition =  GetAbsoluteMousePosition(e.GetPosition(this));
+            MouseEventMediator.ProjectedMousePosition = GetAbsoluteMousePosition(e.GetPosition(this));
             MouseEventMediator.ScreenMousePosition = e.GetPosition(this);
             MouseEventMediator.MouseMove(sender, e);
         }
@@ -69,14 +69,14 @@ namespace Dexel.Editor.Views
         {
             var selectionRectangleProjection = TheCanvas.TransformToVisual(GridInsideZoomBorder);
             return selectionRectangleProjection.Transform(pt);
-           
+
         }
 
 
         private void Window_MouseUp(object sender, MouseButtonEventArgs e)
         {
 
-           MouseEventMediator.MouseUp(sender, e);
+            MouseEventMediator.MouseUp(sender, e);
         }
 
 
@@ -154,7 +154,7 @@ namespace Dexel.Editor.Views
             dragRect.Inflate(rect.Width / 10, rect.Height / 10);
 
             MainViewModel.Instance().ClearSelection();
-            
+
 
             foreach (IOCellViewModel IOCellViewModel in this.ViewModel.SoftwareCells)
             {
@@ -193,6 +193,8 @@ namespace Dexel.Editor.Views
 
         //    pointer.End = p2;
         //}
+
+
 
     }
 }

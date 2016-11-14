@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using Dexel.Editor;
+using System.Linq;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -133,6 +135,34 @@ namespace Dexel.Editor.Tests
 
             Assert.IsTrue(secondCell.InputStreams.First().Connected);
             Assert.IsTrue(secondCell.InputStreams.First().DataNames == "");
+        }
+
+
+        [TestMethod()]
+        public void DeleteTest()
+        {
+            var testModel = new MainModel();
+            var main = MainModelManager.AddNewSoftwareCell("Main", testModel);
+
+            var firstOp = MainModelManager.AddNewSoftwareCell("Operation 1", testModel);
+            var secondOp = MainModelManager.AddNewSoftwareCell("Operation 2", testModel);
+            var thirdOp = MainModelManager.AddNewSoftwareCell("Operation 3", testModel);
+            main.Integration.Add(firstOp);
+            MainModelManager.ConnectTwoCells(firstOp, secondOp, "", "", testModel);
+            MainModelManager.ConnectTwoCells(secondOp, thirdOp, "", "", testModel);
+
+            var selected = new List<SoftwareCell> {thirdOp};
+            Interactions.Delete(selected, testModel);
+            Assert.AreEqual(3, testModel.SoftwareCells.Count);
+            Assert.AreEqual(2, main.Integration.Count);
+            CollectionAssert.Contains(main.Integration, secondOp);
+            CollectionAssert.Contains(main.Integration, firstOp);
+
+            selected = new List<SoftwareCell> { firstOp };
+            Interactions.Delete(selected, testModel);
+            Assert.AreEqual(2, testModel.SoftwareCells.Count);
+            Assert.AreEqual(1, main.Integration.Count);
+            Assert.AreEqual(secondOp.Name, main.Integration.First().Name);
         }
     }
 

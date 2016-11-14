@@ -30,16 +30,15 @@ namespace Dexel.Model.Tests
         {
             var testModel = new MainModel();
             var main = MainModelManager.AddNewSoftwareCell("Main", testModel);
-          
-            var firstOp = MainModelManager.AddNewSoftwareCell("Operation", testModel);
-            var secondOp = MainModelManager.AddNewSoftwareCell("Operation", testModel);
-            var thirdOp = MainModelManager.AddNewSoftwareCell("Operation", testModel);
+
+            var firstOp = MainModelManager.AddNewSoftwareCell("Operation 1", testModel);
+            var secondOp = MainModelManager.AddNewSoftwareCell("Operation 2", testModel);
+            var thirdOp = MainModelManager.AddNewSoftwareCell("Operation 3", testModel);
+            main.Integration.Add(firstOp);
             MainModelManager.ConnectTwoCells(firstOp, secondOp, "", "", testModel);
             MainModelManager.ConnectTwoCells(secondOp, thirdOp, "", "", testModel);
 
-            main.Integration.Add(firstOp);
-            main.Integration.Add(secondOp);
-            main.Integration.Add(thirdOp);
+
 
             var found = new List<SoftwareCell>();
             MainModelManager.TraverseChildren(firstOp, cell => found.Add(cell), testModel);
@@ -49,9 +48,15 @@ namespace Dexel.Model.Tests
             var connectionToRemove = testModel.Connections.First(c => c.Sources.Any(dsd => dsd.Parent == firstOp));
             MainModelManager.RemoveFromIntegrationIncludingChildren(connectionToRemove, testModel);
 
-            Assert.IsTrue(main.Integration.Count == 1);
+            Assert.AreEqual(0, main.Integration.Count);
 
 
+        }
+
+        [TestMethod()]
+        public void RemoveConnectionTest()
+        {
+            Assert.Fail();
         }
     }
 }

@@ -1,5 +1,8 @@
-﻿using System.IO;
+﻿using System.Diagnostics;
+using System.IO;
+using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using Dexel.Editor.ViewModels;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
@@ -91,6 +94,15 @@ namespace Dexel.Editor.Views
             openFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
                 Interactions.MergeFromFile(openFileDialog.FileName, getModelFromDataContext());
+        }
+
+
+        private void MainWindow_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+                Interactions.Delete(MainViewModel.Instance().SelectedSoftwareCells.Select(x => x.Model), MainViewModel.Instance().Model);
+            }
         }
     }
 
