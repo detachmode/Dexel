@@ -22,13 +22,6 @@ namespace Dexel.Editor.Views
         }
 
 
-
-        public void FocusTextBox()
-        {
-            //TextBox textBox = (TextBox)TheThumb.Template.FindName("theTextBox", TheThumb);
-            //textBox.Focus();
-        }
-
         public string LabelContent
         {
             get { return (string)GetValue(LabelContentProperty); }

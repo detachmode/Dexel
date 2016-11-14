@@ -21,6 +21,7 @@
             <MenuItem Header="File">
                 <MenuItem Header="Save" Click="MenuItem_Save"></MenuItem>
                 <MenuItem Header="Load" Click="MenuItem_Load"></MenuItem>
+                <MenuItem Header="Merge" Click="MenuItem_Merge"></MenuItem>
             </MenuItem>
 
             <MenuItem Header="Output">

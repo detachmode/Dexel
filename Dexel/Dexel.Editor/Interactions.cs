@@ -200,5 +200,16 @@ namespace Dexel.Editor
             return newmodel;
             
         }
+
+        public static void MergeFromFile(string fileName, MainModel mainModel)
+        {
+            var loader = FileSaveLoad.GetFileLoader(fileName);
+            var loadedMainModel = loader?.Invoke(fileName);
+
+            mainModel.Connections.AddRange(loadedMainModel.Connections);
+            mainModel.SoftwareCells.AddRange(loadedMainModel.SoftwareCells);
+
+            ViewRedraw();
+        }
     }
 }

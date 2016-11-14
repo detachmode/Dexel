@@ -13,14 +13,8 @@ namespace Dexel.Editor.Views
         public IOCell()
         {
             InitializeComponent();          
-            Loaded += (sender, args) =>
-            {
-                Fu.FocusTextBox();
-               
-            };
             LayoutUpdated += IOCell_LayoutUpdated;
-           
-            
+  
         }
 
 
