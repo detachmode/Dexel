@@ -40,5 +40,14 @@ namespace Dexel.Editor.Views
         public static readonly DependencyProperty SelectionColorProperty =
           DependencyProperty.Register("SelectionColor", typeof(SolidColorBrush), typeof(SoftwareCell));
 
+
+        private void TheTextBox_OnLostFocus(object sender, RoutedEventArgs e)
+        {
+            ((TextBox)sender).Select(0,0);
+          
+        }
+
+
+        
     }
 }

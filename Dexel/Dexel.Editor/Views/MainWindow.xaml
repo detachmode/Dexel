@@ -8,12 +8,13 @@
         xmlns:views="clr-namespace:Dexel.Editor.Views"
         xmlns:dragAndDrop="clr-namespace:Dexel.Editor.DragAndDrop"
         mc:Ignorable="d"
+        Focusable="True"
         KeyDown="MainWindow_OnPreviewKeyDown"
         Title="Sharp Flow Design" Height="350" Width="825">
     <Window.Resources>
 
         <ContextMenu x:Key="MyContextMenu">
-            <MenuItem Header="Add Celldaw" Click="MenuItem_Click" />
+            <MenuItem Header="Add Celldaw" Click="AddNewCell_Click" />
         </ContextMenu>
     </Window.Resources>
     <DockPanel>
@@ -37,7 +38,7 @@
         <Grid DockPanel.Dock="Top" ContextMenu="{StaticResource MyContextMenu}">
             <Label>Flow Design</Label>
 
-            <views:DrawingBoard x:Name="TheDrawingBoard" />
+            <views:DrawingBoard x:Name="TheDrawingBoard" Focusable="True" />
             <i:Interaction.Behaviors>
                 <dragAndDrop:FrameworkElementDropBehavior />
             </i:Interaction.Behaviors>

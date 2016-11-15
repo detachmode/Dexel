@@ -1,5 +1,7 @@
 ﻿using System.IO;
+using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Xml;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
@@ -65,6 +67,17 @@ namespace Dexel.Editor.CustomControls
             TextBox.Focus();
             TextBox.SelectionStart = TextBox.Text.Length;
             TextBox.SelectionLength = 0;
+        }
+
+
+        private void TextBox_OnKeyDown(object sender, KeyEventArgs e)
+        {
+
+            if (e.Key == Key.Tab)
+            {
+                ((FrameworkElement)sender).MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
+                e.Handled = true;
+            }
         }
     }
 }

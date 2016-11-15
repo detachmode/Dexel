@@ -16,13 +16,13 @@
         <i:Interaction.Behaviors>
             <dragAndDrop:FrameworkElementDropBehavior />
         </i:Interaction.Behaviors>
-        <Grid>
+        <Grid >
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="40*" />
                 <ColumnDefinition Width="40*" />
             </Grid.ColumnDefinitions>
             <Grid Margin="20" Grid.ColumnSpan="2">
-               
+
                 <Ellipse Margin="-20" Fill="{DynamicResource FillSoftwareCellBrush}" 
                                 Stroke="{DynamicResource BorderSoftwareCellBrush}"
                                 StrokeThickness="{DynamicResource StrokeThickness}" />
@@ -30,18 +30,16 @@
                           Visibility="{Binding IsSelected, Converter={StaticResource VisibilityConverter}}"
                                 Stroke="White"
                                 StrokeThickness="{DynamicResource StrokeThickness}" />
-                <TextBox x:Name="theTextBox"
+                <TextBox MinWidth="22" IsTabStop="True" TabIndex="2" x:Name="theTextBox"   LostFocus="TheTextBox_OnLostFocus" 
+                         Background="{DynamicResource FillSoftwareCellBrush}" 
                                  Text="{Binding Path=LabelContent, 
                                         UpdateSourceTrigger=PropertyChanged,
                                         RelativeSource={RelativeSource FindAncestor, 
                                         AncestorType=views:SoftwareCell,  AncestorLevel=1}}"
                                  Foreground="{DynamicResource Foreground}"
                                  VerticalAlignment="Center"
-                                 BorderBrush="{x:Null}" Background="{x:Null}" />
+                                 BorderBrush="{x:Null}" />
             </Grid>
-            <Rectangle Grid.Column="0"
-                               Fill="Transparent"
-                               IsHitTestVisible="True" />
         </Grid>
     </Grid>
 </UserControl>

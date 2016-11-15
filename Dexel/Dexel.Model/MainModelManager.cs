@@ -148,11 +148,10 @@ namespace Dexel.Model
         }
 
 
-        public static void RemoveFromIntegrationIncludingChildren(DataStream dataStream, MainModel mainModel)
+        public static void RemoveFromIntegrationsIncludingChildren(DataStream dataStream, MainModel mainModel)
         {
             FindIntegration(dataStream.Destinations.First().Parent, foundIntegration =>
             {
-                //foundIntegration.Integration.RemoveAll(iSc => dataStream.Sources.Any(dsd => dsd.Parent.ID == iSc.ID));
                 foundIntegration.Integration.RemoveAll(
                     iSc => dataStream.Destinations.Any(dsd => dsd.Parent.ID == iSc.ID));
 
@@ -168,7 +167,7 @@ namespace Dexel.Model
         }
 
 
-        private static void RemoveFromIntegrationIncludingChildren(SoftwareCell softwareCell, MainModel mainModel)
+        private static void RemoveFromIntegrationsIncludingChildren(SoftwareCell softwareCell, MainModel mainModel)
         {
             FindIntegration(softwareCell, foundIntegration =>
             {
@@ -218,13 +217,20 @@ namespace Dexel.Model
         {
             // solve Integration logic
             AtleastOneInputConnected(softwareCell,
-                () => RemoveFromIntegrationIncludingChildren(softwareCell, mainModel),
-                InputsNotConnected:() =>
-                    FindIntegration(softwareCell, integratedByCell => integratedByCell.Integration.Remove(softwareCell), mainModel));
+                () => RemoveFromIntegrationsIncludingChildren(softwareCell, mainModel),
+                inputsNotConnected: () =>
+                    RemoveFromIntegrations(softwareCell, mainModel));
 
             RemoveAllConnectionsToCell(softwareCell, mainModel);
 
             mainModel.SoftwareCells.Remove(softwareCell);
+        }
+
+
+        private static void RemoveFromIntegrations(SoftwareCell softwareCell, MainModel mainModel)
+        {
+            FindIntegration(softwareCell, integratedByCell => integratedByCell.Integration.Remove(softwareCell),
+                mainModel);
         }
 
 
@@ -239,7 +245,8 @@ namespace Dexel.Model
         }
 
 
-        private static void AtleastOneInputConnected(SoftwareCell softwareCell, Action doAction, Action InputsNotConnected = null)
+        private static void AtleastOneInputConnected(SoftwareCell softwareCell, Action doAction,
+            Action inputsNotConnected = null)
         {
             if (softwareCell.InputStreams.Any(dsd => dsd.Connected))
             {
@@ -247,7 +254,7 @@ namespace Dexel.Model
             }
             else
             {
-                InputsNotConnected?.Invoke();
+                inputsNotConnected?.Invoke();
             }
         }
     }

@@ -97,7 +97,7 @@ namespace Dexel.Editor
         {
             DataStreamManager.SetConnectedState(dataStream, false);    
             MainModelManager.RemoveConnection(dataStream, mainModel);
-            MainModelManager.RemoveFromIntegrationIncludingChildren(dataStream, mainModel);
+            MainModelManager.RemoveFromIntegrationsIncludingChildren(dataStream, mainModel);
 
             ViewRedraw();
         }

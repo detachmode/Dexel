@@ -103,7 +103,11 @@ namespace Dexel.Editor.DragAndDrop
             }
             else
             {
+
                 MainViewModel.Instance().ClearSelection();
+                Keyboard.ClearFocus();
+                ((MainWindow)Application.Current.MainWindow).TheDrawingBoard.Focus();
+
             }
 
             if (_isLeftMouseButtonDownOnWindow)
@@ -239,7 +243,7 @@ namespace Dexel.Editor.DragAndDrop
                 {
                     // When the mouse has been dragged more than the threshold value commence dragging the rectangle.
                     _isDraggingIOCell = true;
-                    if (Keyboard.IsKeyDown(Key.LeftShift))
+                    if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
                     {
                         MainViewModel.Instance().DuplicateSelectionAndSelectNew();
                     }

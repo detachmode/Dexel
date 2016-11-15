@@ -17,8 +17,6 @@ namespace Dexel.Editor.Views
   
         }
 
-
-
         private void IOCell_LayoutUpdated(object sender, System.EventArgs e)
         {
             if (ViewModel() != null)

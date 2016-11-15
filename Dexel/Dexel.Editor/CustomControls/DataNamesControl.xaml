@@ -13,6 +13,8 @@
             xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
             x:Name="TextBox"
             MinWidth="12"
+           PreviewKeyDown="TextBox_OnKeyDown"
+            
             Foreground="{DynamicResource Foreground}" 
             BorderBrush="{x:Null}"
             HorizontalScrollBarVisibility="Disabled"

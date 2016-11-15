@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using Dexel.Editor.ViewModels;
 using Dexel.Model;
@@ -23,28 +24,59 @@ namespace Dexel.Editor.Views
         }
 
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        private void AddNewCell_Click(object sender, RoutedEventArgs e)
         {
-           var myWindow = GetWindow(this);
+            var myWindow = GetWindow(this);
             var transform = myWindow?.TransformToVisual(TheDrawingBoard.SoftwareCellsList);
             if (transform == null) return;
-           var myUiElementPosition = transform.Transform(TheDrawingBoard.TheZoomBorder.BeforeContextMenuPoint);
+            var myUiElementPosition = transform.Transform(TheDrawingBoard.TheZoomBorder.BeforeContextMenuPoint);
 
-            Interactions.AddNewIOCell(myUiElementPosition, getModelFromDataContext());
+            var newcellmodel = Interactions.AddNewIOCell(myUiElementPosition, ViewModel());
+            FocusCell(newcellmodel);
+
         }
+
+
+        private void FocusCell(Model.DataTypes.SoftwareCell newcellmodel)
+        {
+            //MainViewModel.Instance().ClearSelection();
+            //Keyboard.ClearFocus();
+            //var t2 =  ((MainWindow)Application.Current.MainWindow).TheDrawingBoard.Focus();
+
+            for (int i = 0; i < TheDrawingBoard.SoftwareCellsList.Items.Count; i++)
+            {
+                ContentPresenter c = (ContentPresenter)TheDrawingBoard.SoftwareCellsList.ItemContainerGenerator.ContainerFromIndex(i);
+                c.ApplyTemplate();
+
+                var item = c.ContentTemplate.FindName("IoCell", c) as IOCell;
+
+                var vm = (item.DataContext as IOCellViewModel);
+
+                if (vm.Model != newcellmodel)
+                    continue;
+
+
+
+                var t =  item.Fu.theTextBox.Focus();
+                //Keyboard.Focus(item.Fu.theTextBox);
+
+                vm.IsSelected = true;
+            }
+        }
+
 
         private void MenuItem_GenerateCode(object sender, RoutedEventArgs e)
         {
-            Interactions.ConsolePrintGeneratedCode(getModelFromDataContext());
+            Interactions.ConsolePrintGeneratedCode(ViewModel());
         }
 
         private void MenuItem_DebugPrint(object sender, RoutedEventArgs e)
         {
-            Interactions.DebugPrint(getModelFromDataContext());
+            Interactions.DebugPrint(ViewModel());
         }
 
 
-        private MainModel getModelFromDataContext()
+        private MainModel ViewModel()
         {
             return (DataContext as MainViewModel).Model;
         }
@@ -52,7 +84,7 @@ namespace Dexel.Editor.Views
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            Interactions.AutoPrint(getModelFromDataContext(), Interactions.DebugPrint);
+            Interactions.AutoPrint(ViewModel(), Interactions.DebugPrint);
         }
 
         private void CheckBox_UnChecked(object sender, RoutedEventArgs e)
@@ -62,7 +94,7 @@ namespace Dexel.Editor.Views
 
         private void AutoGenerate_Checked(object sender, RoutedEventArgs e)
         {
-            Interactions.AutoPrint(getModelFromDataContext(), Interactions.ConsolePrintGeneratedCode);
+            Interactions.AutoPrint(ViewModel(), Interactions.ConsolePrintGeneratedCode);
         }
 
         private void AutoGenerate_UnChecked(object sender, RoutedEventArgs e)
@@ -76,7 +108,7 @@ namespace Dexel.Editor.Views
             var saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
             if (saveFileDialog.ShowDialog() == true)
-                Interactions.SaveToFile(saveFileDialog.FileName, getModelFromDataContext());
+                Interactions.SaveToFile(saveFileDialog.FileName, ViewModel());
         }
 
 
@@ -85,7 +117,7 @@ namespace Dexel.Editor.Views
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
-                Interactions.LoadFromFile(openFileDialog.FileName, getModelFromDataContext());
+                Interactions.LoadFromFile(openFileDialog.FileName, ViewModel());
         }
 
         private void MenuItem_Merge(object sender, RoutedEventArgs e)
@@ -93,7 +125,7 @@ namespace Dexel.Editor.Views
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
-                Interactions.MergeFromFile(openFileDialog.FileName, getModelFromDataContext());
+                Interactions.MergeFromFile(openFileDialog.FileName, ViewModel());
         }
 
 

@@ -6,6 +6,7 @@
     xmlns:views="clr-namespace:Dexel.Editor.Views"
     xmlns:viewModels="clr-namespace:Dexel.Editor.ViewModels"
     x:Class="Dexel.Editor.Views.IOCell"
+    x:Name="TheIoCell"
     d:DataContext="{d:DesignInstance viewModels:IOCellViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
 
@@ -32,7 +33,7 @@
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <views:DangelingConnectionView />
+                    <views:DangelingConnectionView IsTabStop="True" TabIndex="1"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
@@ -43,8 +44,8 @@
             Orientation="Horizontal"
             >
 
-            <views:SoftwareCell x:Name="Fu"  Panel.ZIndex="2000"
-                                
+            <views:SoftwareCell x:Name="Fu" 
+                                Focusable="False"
                             LabelContent="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            />
 
@@ -52,7 +53,7 @@
                       x:Name="OutputFlow" ItemsSource="{Binding DangelingOutputs, Mode=TwoWay}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <views:DangelingConnectionView>
+                        <views:DangelingConnectionView IsTabStop="True">
 
                         </views:DangelingConnectionView>
                     </DataTemplate>
