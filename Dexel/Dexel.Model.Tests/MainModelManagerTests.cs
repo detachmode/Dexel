@@ -25,8 +25,10 @@ namespace Dexel.Model.Tests
             Assert.IsTrue(found.Any(sc => sc.Name == "Create Person"));
         }
 
+
+
         [TestMethod()]
-        public void RemoveFromIntegrationIncludingChildrenTest()
+        public void DeleteCellTest()
         {
             var testModel = new MainModel();
             var main = MainModelManager.AddNewSoftwareCell("Main", testModel);
@@ -35,28 +37,39 @@ namespace Dexel.Model.Tests
             var secondOp = MainModelManager.AddNewSoftwareCell("Operation 2", testModel);
             var thirdOp = MainModelManager.AddNewSoftwareCell("Operation 3", testModel);
             main.Integration.Add(firstOp);
+
             MainModelManager.ConnectTwoCells(firstOp, secondOp, "", "", testModel);
             MainModelManager.ConnectTwoCells(secondOp, thirdOp, "", "", testModel);
 
+            // first Cell in integration deleted -> assert that only this will get deleted
+            MainModelManager.DeleteCell(firstOp,testModel);
+
+            CollectionAssert.DoesNotContain(main.Integration, firstOp);
+            CollectionAssert.Contains(main.Integration, secondOp);
+            CollectionAssert.Contains(main.Integration, thirdOp);
 
 
-            var found = new List<SoftwareCell>();
-            MainModelManager.TraverseChildren(firstOp, cell => found.Add(cell), testModel);
-            Assert.IsTrue(found.Any(sc => sc == secondOp));
-            Assert.IsTrue(found.Any(sc => sc == thirdOp));
+            testModel = new MainModel();
+            main = MainModelManager.AddNewSoftwareCell("Main", testModel);
 
-            var connectionToRemove = testModel.Connections.First(c => c.Sources.Any(dsd => dsd.Parent == firstOp));
-            MainModelManager.RemoveFromIntegrationIncludingChildren(connectionToRemove, testModel);
+            firstOp = MainModelManager.AddNewSoftwareCell("Operation 1", testModel);
+            secondOp = MainModelManager.AddNewSoftwareCell("Operation 2", testModel);
+            thirdOp = MainModelManager.AddNewSoftwareCell("Operation 3", testModel);
+            main.Integration.Add(firstOp);
 
-            Assert.AreEqual(0, main.Integration.Count);
+            MainModelManager.ConnectTwoCells(firstOp, secondOp, "", "", testModel);
+            MainModelManager.ConnectTwoCells(secondOp, thirdOp, "", "", testModel);
+
+            // second Cell in integration deleted -> assert that all following will also be removed from integration
+            MainModelManager.DeleteCell(secondOp, testModel);
+
+            CollectionAssert.Contains(main.Integration, firstOp);
+            CollectionAssert.DoesNotContain(main.Integration, secondOp);
+            CollectionAssert.DoesNotContain(main.Integration, thirdOp);
 
 
-        }
 
-        [TestMethod()]
-        public void RemoveConnectionTest()
-        {
-            Assert.Fail();
+
         }
     }
 }

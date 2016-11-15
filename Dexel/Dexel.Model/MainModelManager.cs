@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using Dexel.Library;
 using Dexel.Model.DataTypes;
@@ -11,12 +10,9 @@ namespace Dexel.Model
     {
         public static void RemoveConnection(DataStream dataStream, MainModel mainModel)
         {
-
             dataStream.Sources.ForEach(dsds => dsds.Connected = false);
             dataStream.Destinations.ForEach(dsds => dsds.Connected = false);
 
-           
-            RemoveFromIntegrationIncludingChildren(dataStream, mainModel);
             mainModel.Connections.RemoveAll(x => x.ID.Equals(dataStream.ID));
         }
 
@@ -154,11 +150,11 @@ namespace Dexel.Model
 
         public static void RemoveFromIntegrationIncludingChildren(DataStream dataStream, MainModel mainModel)
         {
-            
             FindIntegration(dataStream.Destinations.First().Parent, foundIntegration =>
             {
                 //foundIntegration.Integration.RemoveAll(iSc => dataStream.Sources.Any(dsd => dsd.Parent.ID == iSc.ID));
-                foundIntegration.Integration.RemoveAll(iSc => dataStream.Destinations.Any(dsd => dsd.Parent.ID == iSc.ID));
+                foundIntegration.Integration.RemoveAll(
+                    iSc => dataStream.Destinations.Any(dsd => dsd.Parent.ID == iSc.ID));
 
                 dataStream.Destinations.ForEach(
                     dsd =>
@@ -168,6 +164,16 @@ namespace Dexel.Model
                             child => foundIntegration.Integration.RemoveAll(iSc => iSc.ID == child.ID),
                             mainModel);
                     });
+            }, mainModel);
+        }
+
+
+        private static void RemoveFromIntegrationIncludingChildren(SoftwareCell softwareCell, MainModel mainModel)
+        {
+            FindIntegration(softwareCell, foundIntegration =>
+            {
+                foundIntegration.Integration.Remove(softwareCell);
+                TraverseChildren(softwareCell, child => foundIntegration.Integration.Remove(child), mainModel);
             }, mainModel);
         }
 
@@ -203,11 +209,45 @@ namespace Dexel.Model
 
         private static void FindIntegration(SoftwareCell softwareCell, Action<SoftwareCell> onFound, MainModel mainModel)
         {
-            var softwareCells = mainModel.SoftwareCells.Where(sc => sc.Integration.Any(iSc => iSc.ID == softwareCell.ID));
-            var integration = softwareCells as IList<SoftwareCell> ?? softwareCells.ToList();
-            if (integration.Any())
+            mainModel.SoftwareCells.Where(sc => sc.Integration.Contains(softwareCell))
+                .ForEach(onFound);
+        }
+
+
+        public static void DeleteCell(SoftwareCell softwareCell, MainModel mainModel)
+        {
+            // solve Integration logic
+            AtleastOneInputConnected(softwareCell,
+                () => RemoveFromIntegrationIncludingChildren(softwareCell, mainModel),
+                InputsNotConnected:() =>
+                    FindIntegration(softwareCell, integratedByCell => integratedByCell.Integration.Remove(softwareCell), mainModel));
+
+            RemoveAllConnectionsToCell(softwareCell, mainModel);
+
+            mainModel.SoftwareCells.Remove(softwareCell);
+        }
+
+
+        private static void RemoveAllConnectionsToCell(SoftwareCell softwareCell, MainModel mainModel)
+        {
+            var sources =
+                mainModel.Connections.Where(c => c.Sources.Any(sc => softwareCell == sc.Parent));
+            var destinations =
+                mainModel.Connections.Where(c => c.Destinations.Any(sc => softwareCell == sc.Parent));
+            var todelete = destinations.Concat(sources).ToList();
+            todelete.ForEach(c => RemoveConnection(c, mainModel));
+        }
+
+
+        private static void AtleastOneInputConnected(SoftwareCell softwareCell, Action doAction, Action InputsNotConnected = null)
+        {
+            if (softwareCell.InputStreams.Any(dsd => dsd.Connected))
             {
-                onFound(integration.First());
+                doAction();
+            }
+            else
+            {
+                InputsNotConnected?.Invoke();
             }
         }
     }

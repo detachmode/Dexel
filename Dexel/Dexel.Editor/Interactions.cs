@@ -216,27 +216,13 @@ namespace Dexel.Editor
 
         public static void Delete(IEnumerable<SoftwareCell> softwareCells, MainModel mainModel)
         {
+            softwareCells.ForEach(sc => MainModelManager.DeleteCell(sc, mainModel));
 
-            var destinations =
-                mainModel.Connections.Where(c => c.Destinations.Any(sc => softwareCells.Contains(sc.Parent)));
-            var sources =
-                mainModel.Connections.Where(c => c.Sources.Any(sc => softwareCells.Contains(sc.Parent)));
-
-            var todelete = destinations.Concat(sources).ToList();
-
-            var enumerable = softwareCells as IList<SoftwareCell> ?? softwareCells.ToList();
-            enumerable.ForEach(sc =>
-            {
-                var found = mainModel.SoftwareCells.Where(sc2 => sc2.Integration.Contains(sc));
-                found.ForEach( sc2 => sc2.Integration.Remove(sc));
-            });
-          
-
-            todelete.ForEach(c => MainModelManager.RemoveConnection(c, mainModel));
-
-            enumerable.ForEach(sc => mainModel.SoftwareCells.Remove(sc));
 
             ViewRedraw();
         }
+
+
+       
     }
 }
