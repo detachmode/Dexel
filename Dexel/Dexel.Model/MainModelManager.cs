@@ -169,7 +169,18 @@ namespace Dexel.Model
         }
 
 
-        private static void RemoveFromIntegrationsIncludingChildren(SoftwareCell softwareCell, MainModel mainModel)
+        public static void RemoveAllConnectedFromIntegration(SoftwareCell softwareCell, MainModel mainModel)
+        {
+            FindIntegration(softwareCell, foundIntegration =>
+            {
+                foundIntegration.Integration.Remove(softwareCell);
+                TraverseChildren(softwareCell, child => foundIntegration.Integration.Remove(child), mainModel);
+                TraverseChildrenBackwards(softwareCell, child => foundIntegration.Integration.Remove(child), mainModel);
+            }, mainModel);
+        }
+
+
+        public static void RemoveFromIntegrationsIncludingChildren(SoftwareCell softwareCell, MainModel mainModel)
         {
             FindIntegration(softwareCell, foundIntegration =>
             {
@@ -363,6 +374,14 @@ namespace Dexel.Model
             MainModelManager.ReConnetCopiedCells(copiedList, softwareCells, mainModel);
             MainModelManager.SetIntegrationOfCopiedCells(copiedList, mainModel);
             return copiedList;
+        }
+
+
+        public static void MakeIntegrationIncludingAllConnected(SoftwareCell parentCell, SoftwareCell subCell, MainModel mainModel)
+        {
+            parentCell.Integration.AddUnique(subCell);
+            TraverseChildren(subCell, child => parentCell.Integration.AddUnique(child), mainModel);
+            TraverseChildrenBackwards(subCell, child => parentCell.Integration.AddUnique(child), mainModel);
         }
     }
 

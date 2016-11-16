@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls.Primitives;
@@ -7,19 +8,23 @@ using Dexel.Editor.ViewModels;
 
 namespace Dexel.Editor.Views
 {
+
     /// <summary>
     ///     Interaction logic for IOCell.xaml
     /// </summary>
     public partial class IOCell
     {
+        private Model.DataTypes.SoftwareCell duplicated;
+
+
         public IOCell()
         {
-            InitializeComponent();          
+            InitializeComponent();
             LayoutUpdated += IOCell_LayoutUpdated;
-  
         }
 
-        private void IOCell_LayoutUpdated(object sender, System.EventArgs e)
+
+        private void IOCell_LayoutUpdated(object sender, EventArgs e)
         {
             if (ViewModel() != null)
             {
@@ -27,12 +32,10 @@ namespace Dexel.Editor.Views
                 ViewModel().CellHeight = Fu.ActualHeight;
             }
 
-            UpdateConnectionViewModels();          
+            UpdateConnectionViewModels();
             MainViewModel.Instance().UpdateIntegrationBorderPositions();
         }
 
-
-        private Model.DataTypes.SoftwareCell duplicated = null;
 
         private void OnDragDelta(object sender, DragDeltaEventArgs e)
         {
@@ -47,7 +50,7 @@ namespace Dexel.Editor.Views
             {
                 modeltoMove = duplicated;
             }
-            
+
             Interactions.MoveSoftwareCell(modeltoMove, e.HorizontalChange, e.VerticalChange);
         }
 
@@ -59,8 +62,6 @@ namespace Dexel.Editor.Views
         }
 
 
-
-
         private void UpdateConnectionViewModels()
         {
             var vm = ViewModel();
@@ -69,14 +70,13 @@ namespace Dexel.Editor.Views
                 return;
             }
 
-            var outputPoint = new Point(vm.Model.Position.X + (Fu.ActualWidth),
-                vm.Model.Position.Y + ActualHeight / 2);
+            var outputPoint = new Point(vm.Model.Position.X + Fu.ActualWidth,
+                vm.Model.Position.Y + ActualHeight/2);
 
             var inputPoint = new Point(vm.Model.Position.X,
-                vm.Model.Position.Y + ActualHeight / 2);
+                vm.Model.Position.Y + ActualHeight/2);
 
             vm.UpdateConnectionsPosition(inputPoint, outputPoint);
-
         }
 
 
@@ -85,10 +85,12 @@ namespace Dexel.Editor.Views
             Interactions.AddNewOutput(ViewModel().Model, "params");
         }
 
+
         private void NewInput_click(object sender, RoutedEventArgs e)
         {
             Interactions.AddNewInput(ViewModel().Model, "params");
         }
+
 
         private void Copy_click(object sender, RoutedEventArgs e)
         {
@@ -104,12 +106,32 @@ namespace Dexel.Editor.Views
                 list.Add(ViewModel().Model);
             else
                 list = MainViewModel.Instance().SelectedSoftwareCells.Select(x => x.Model).ToList();
+
             return list;
         }
 
+
         private void Cut_click(object sender, RoutedEventArgs e)
         {
+        }
 
+
+        private void MakeIntegration_OnClick(object sender, RoutedEventArgs e)
+        {
+            Interactions.StartPickIntegration(ViewModel().Model);
+        }
+
+
+        private void RemoveFromIntegration_OnClick(object sender, RoutedEventArgs e)
+        {
+            Interactions.RemoveFromIntegration(ViewModel().Model, MainViewModel.Instance().Model);
+        }
+
+
+        private void Delete_click(object sender, RoutedEventArgs e)
+        {
+            Interactions.Delete(GetSelectionOrClickedOn(),MainViewModel.Instance().Model);
         }
     }
+
 }

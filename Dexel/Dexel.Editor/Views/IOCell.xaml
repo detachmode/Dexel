@@ -15,8 +15,13 @@
             <MenuItem Header="Add New Input" Click="NewInput_click" />
             <MenuItem Header="Add New Output" Click="NewOutput_click" />
             <Separator></Separator>
+            <MenuItem Header="Make Integration" Click="MakeIntegration_OnClick"></MenuItem>
+            <MenuItem Header="Remove from Integration" Click="RemoveFromIntegration_OnClick"></MenuItem>
+            <Separator></Separator>
+          
             <MenuItem Header="Copy" Click="Copy_click" />
             <MenuItem Header="Cut" Click="Cut_click" />
+            <MenuItem Header="Delete" Click="Delete_click" />
         </ContextMenu>
     </UserControl.Resources>
     <Grid>

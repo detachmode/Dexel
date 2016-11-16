@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Input;
 using Dexel.Editor.DebuggingHelper;
 using Dexel.Editor.ViewModels;
 using Dexel.Library;
@@ -200,8 +201,6 @@ namespace Dexel.Editor
         }
 
 
-       
-
 
         public static void MergeFromFile(string fileName, MainModel mainModel)
         {
@@ -218,13 +217,14 @@ namespace Dexel.Editor
         public static void Delete(IEnumerable<SoftwareCell> softwareCells, MainModel mainModel)
         {
             softwareCells.ForEach(sc => MainModelManager.DeleteCell(sc, mainModel));
-
-
             ViewRedraw();
         }
 
 
         private static List<SoftwareCell> _copiedCells = new List<SoftwareCell>();
+        public static bool PickState;
+
+
         public static void Copy(List<SoftwareCell> softwareCells, MainModel mainModel)
         {
             _copiedCells.Clear();
@@ -238,11 +238,34 @@ namespace Dexel.Editor
                 return;
 
             var copiedList = MainModelManager.Duplicate(_copiedCells, mainModel);
-
             MainModelManager.MoveCellsToClickedPosition(positionClicked, copiedList);
 
             ViewRedraw();
 
+        }
+
+
+        private static SoftwareCell StartPickingAt;
+        public static void StartPickIntegration(SoftwareCell softwareCell)
+        {
+            PickState = true;
+            Mouse.OverrideCursor = Cursors.Cross;
+            StartPickingAt = softwareCell;
+
+        }
+
+
+        public static void SetPickedIntegration(SoftwareCell softwareCell, MainModel mainModel)
+        {          
+            MainModelManager.MakeIntegrationIncludingAllConnected(StartPickingAt, softwareCell, mainModel);          
+            ViewRedraw();
+        }
+
+
+        public static void RemoveFromIntegration(SoftwareCell softwareCell, MainModel mainModel)
+        {
+            MainModelManager.RemoveAllConnectedFromIntegration(softwareCell, mainModel);
+            ViewRedraw();
         }
     }
 
