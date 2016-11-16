@@ -25,7 +25,7 @@ namespace Dexel.Editor.Tests
             Interactions.AddNewInput(sB, "");
 
 
-            Interactions.ConnectTwoDangelingConnections(sA.OutputStreams.First(), sB.InputStreams.First(), testModel);
+            Interactions.DragDroppedTwoDangelingConnections(sA.OutputStreams.First(), sB.InputStreams.First(), testModel);
 
             Assert.IsTrue(testModel.Connections.First().DataNames == "dataA | ");
             Assert.IsTrue(testModel.Connections.First().Sources.First().Parent == sA);

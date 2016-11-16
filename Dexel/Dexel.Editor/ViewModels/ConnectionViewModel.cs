@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using Dexel.Editor.DragAndDrop;
 using Dexel.Model;
@@ -36,8 +37,6 @@ namespace Dexel.Editor.ViewModels
             Model = modelDataStream;
             ID = modelDataStream.ID;
         }
-
-
 
     }
 }

@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using Dexel.Editor.ViewModels;
@@ -86,6 +88,28 @@ namespace Dexel.Editor.Views
         private void NewInput_click(object sender, RoutedEventArgs e)
         {
             Interactions.AddNewInput(ViewModel().Model, "params");
+        }
+
+        private void Copy_click(object sender, RoutedEventArgs e)
+        {
+            var list = GetSelectionOrClickedOn();
+            Interactions.Copy(list, MainViewModel.Instance().Model);
+        }
+
+
+        private List<Model.DataTypes.SoftwareCell> GetSelectionOrClickedOn()
+        {
+            var list = new List<Model.DataTypes.SoftwareCell>();
+            if (MainViewModel.Instance().SelectedSoftwareCells.Count == 0)
+                list.Add(ViewModel().Model);
+            else
+                list = MainViewModel.Instance().SelectedSoftwareCells.Select(x => x.Model).ToList();
+            return list;
+        }
+
+        private void Cut_click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

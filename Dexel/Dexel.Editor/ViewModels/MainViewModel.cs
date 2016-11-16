@@ -116,80 +116,17 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        private class CopiedCells
-        {
-            public Guid originGuid;
-            public SoftwareCell newCell;
-        }
+
 
         private List<SoftwareCell> Duplicate()
         {           
-            var copiedList = DuplicateSelection();
-            ReConnetCopiedCells(copiedList);
-            SetIntegrationOfCopiedCells(copiedList);
-
+            var copiedList = MainModelManager.Duplicate(SelectedSoftwareCells.Select(vm => vm.Model).ToList(), Model);
+            
             Reload();
             return copiedList.Select(x => x.newCell).ToList();
         }
 
-
-        private void SetIntegrationOfCopiedCells(List<CopiedCells> copiedList)
-        {
-            var allnew = copiedList.Select(x => x.newCell).ToList();
-            copiedList.ForEach(cc =>
-            {
-                var orginal = SoftwareCells.First(sc => sc.Model.ID == cc.originGuid);
-                orginal.Integration.ForEach(isc =>
-                {
-                    var incopied = copiedList.FirstOrDefault(x => x.originGuid == isc.Model.ID);
-                    if (incopied != null)
-                    {
-                        cc.newCell.Integration.Add(incopied.newCell);
-                    }
-                   
-                });
-            });
-        }
-
-
-        private void ReConnetCopiedCells(List<CopiedCells> copiedList)
-        {
-
-            var connectionsOfSelectedCells = Connections.Where(c =>
-               c.Model.Sources.Any(y => SelectedSoftwareCells.Any(x => x.Model == y.Parent))
-               &&
-               c.Model.Destinations.Any(y => SelectedSoftwareCells.Any(x => x.Model == y.Parent))
-               ).ToList();
-
-
-            connectionsOfSelectedCells.ForEach(x =>
-            {
-                var datastream = x.Model;
-                SoftwareCell destination = datastream.Destinations.Select(y => y.Parent).First();
-                SoftwareCell source = datastream.Sources.Select(y => y.Parent).First();
-
-                var sourcedsd = copiedList.First(y => y.originGuid == source.ID).newCell.OutputStreams.First(
-                    dsd => dsd.DataNames == datastream.Sources.First().DataNames);
-                var destinationdsd = copiedList.First(y => y.originGuid ==  destination.ID).newCell.InputStreams.First(
-                   dsd => dsd.DataNames == datastream.Destinations.First().DataNames);
-
-                var newConnection = MainModelManager.ConnectTwoDefintions(sourcedsd, destinationdsd, Model);
-            });
-        }
-
-
-        private List<CopiedCells> DuplicateSelection()
-        {
-            var copiedList = new List<CopiedCells>();
-            SelectedSoftwareCells.ForEach(iocellvm =>
-            {
-                var newCell = Interactions.Duplicate(iocellvm.Model, Model);
-                var copiedCell = new CopiedCells {originGuid = iocellvm.Model.ID, newCell = newCell};
-                copiedList.Add(copiedCell);
-                Model.SoftwareCells.Add(newCell);
-            });
-            return copiedList;
-        }
+        
 
 
         public void ClearSelection()

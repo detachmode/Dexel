@@ -15,10 +15,12 @@
 			 MouseMove="Window_MouseMove"
 			 d:DesignHeight="300" d:DesignWidth="700">
 
-	<Grid x:Name="TheCanvas"  
+
+    <Grid x:Name="TheCanvas"  
 		  AllowDrop="True"
 		  Canvas.ZIndex="100"
 		  IsHitTestVisible="True"
+         
 		  Background="Transparent">
 		
 		<customControls:ZoomBorder x:Name="TheZoomBorder" ClipToBounds="True"

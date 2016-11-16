@@ -15,6 +15,7 @@
 
         <ContextMenu x:Key="MyContextMenu">
             <MenuItem Header="Add Celldaw" Click="AddNewCell_Click" />
+            <MenuItem Header="Paste" Click="Paste_click" />
         </ContextMenu>
     </Window.Resources>
     <DockPanel>

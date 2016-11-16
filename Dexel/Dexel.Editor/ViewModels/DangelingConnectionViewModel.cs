@@ -14,6 +14,7 @@ namespace Dexel.Editor.ViewModels
         {
             DataNames = "param";
         }
+
         public Guid ID;
         public DataStreamDefinition Model { get; set; }
         public SoftwareCell Parent { get; set; }
@@ -31,13 +32,13 @@ namespace Dexel.Editor.ViewModels
             DataNames = dataStream.DataNames;
             Actionname = dataStream.ActionName;
         }
-
+        
 
         public List<Type> AllowedDropTypes => new List<Type> { typeof(DangelingConnectionViewModel)};
         public void Drop(object data)
         {
             data.TryCast<DangelingConnectionViewModel>(
-                dangConnVm => Interactions.ConnectTwoDangelingConnections(dangConnVm.Model, this.Model, MainViewModel.Instance().Model));
+                dangConnVm => Interactions.DragDroppedTwoDangelingConnections(dangConnVm.Model, this.Model, MainViewModel.Instance().Model));
         }
     }
 }

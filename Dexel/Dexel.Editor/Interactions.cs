@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -13,6 +12,7 @@ using Roslyn;
 
 namespace Dexel.Editor
 {
+
     public static class Interactions
     {
         public enum DragMode
@@ -43,14 +43,13 @@ namespace Dexel.Editor
         public static void ViewRedraw()
         {
             MainViewModel.Instance().Reload();
-
         }
+
 
         public static void ViewRedraw(MainModel mainModel)
         {
             MainViewModel.Instance().Model = mainModel;
             MainViewModel.Instance().Reload();
-
         }
 
 
@@ -59,7 +58,8 @@ namespace Dexel.Editor
         {
             //MainModelManager.RemoveConnection(dataStream, mainModel);
             DeConnect(dataStream, mainModel);
-            MainModelManager.ConnectTwoCells(dataStream.Sources.First().Parent, newdestination, dataStream.DataNames, "", mainModel,
+            MainModelManager.ConnectTwoCells(dataStream.Sources.First().Parent, newdestination, dataStream.DataNames, "",
+                mainModel,
                 dataStream.ActionName);
 
             ViewRedraw();
@@ -79,12 +79,12 @@ namespace Dexel.Editor
             ViewRedraw();
         }
 
+
         public static void MoveSoftwareCell(SoftwareCell model, double horizontalChange, double verticalChange)
         {
             if (model == null)
             {
                 return;
-                
             }
             var pos = model.Position;
             pos.X += horizontalChange;
@@ -95,7 +95,7 @@ namespace Dexel.Editor
 
         public static void DeConnect(DataStream dataStream, MainModel mainModel)
         {
-            DataStreamManager.SetConnectedState(dataStream, false);    
+            DataStreamManager.SetConnectedState(dataStream, false);
             MainModelManager.RemoveConnection(dataStream, mainModel);
             MainModelManager.RemoveFromIntegrationsIncludingChildren(dataStream, mainModel);
 
@@ -103,14 +103,31 @@ namespace Dexel.Editor
         }
 
 
-        public static void ConnectTwoDangelingConnections(DataStreamDefinition sourceDSD, DataStreamDefinition destinationDSD, MainModel mainModel)
+        public static void DragDroppedTwoDangelingConnections(DataStreamDefinition sourceDSD,
+            DataStreamDefinition destinationDSD, MainModel mainModel)
         {
-            MainModelManager.ConnectTwoDefintions(sourceDSD, destinationDSD, mainModel);
+            CheckAreBothInputs(sourceDSD, destinationDSD,
+                () => MainModelManager.MakeIntegrationIncludingChildren(sourceDSD.Parent, destinationDSD.Parent, mainModel),
+                () => MainModelManager.ConnectTwoDefintions(sourceDSD, destinationDSD, mainModel));
+
             ViewRedraw();
         }
 
 
-        public static void ConnectDangelingConnectionAndSoftwareCell(DataStreamDefinition defintionDSD, SoftwareCell destination, MainModel mainModel)
+        private static void CheckAreBothInputs(DataStreamDefinition sourceDSD, DataStreamDefinition destinationDSD,
+            Action isTrue, Action isFalse)
+        {
+            var sourceIsInput = sourceDSD.Parent.InputStreams.Contains(sourceDSD);
+            var destinationIsInput = destinationDSD.Parent.InputStreams.Contains(destinationDSD);
+            if (sourceIsInput && destinationIsInput)
+                isTrue();
+            else
+                isFalse();
+        }
+
+
+        public static void ConnectDangelingConnectionAndSoftwareCell(DataStreamDefinition defintionDSD,
+            SoftwareCell destination, MainModel mainModel)
         {
             var inputDefinition = SoftwareCellsManager.NewInputDef(destination, "", null);
             MainModelManager.ConnectTwoDefintions(defintionDSD, inputDefinition, mainModel);
@@ -127,6 +144,7 @@ namespace Dexel.Editor
             ViewRedraw();
         }
 
+
         public static void ConsolePrintGeneratedCode(MainModel mainModel)
         {
             var gen = new MyGenerator();
@@ -142,10 +160,12 @@ namespace Dexel.Editor
             DebugPrinter.PrintSoftwareCells(mainModel);
         }
 
+
         public static void AutoOutputTimerDispose()
         {
             aTimer?.Dispose();
         }
+
 
         public static void AutoPrint(MainModel mainModel, Action<MainModel> printAction)
         {
@@ -157,7 +177,6 @@ namespace Dexel.Editor
         public static void ChangeConnectionDatanames(DataStream datastream, string newDatanames)
         {
             DataStreamManager.ChangeDatanames(datastream, newDatanames);
-
         }
 
 
@@ -165,42 +184,24 @@ namespace Dexel.Editor
         {
             var saver = FileSaveLoad.GetFileSaver(fileName);
             saver?.Invoke(fileName, model);
-
         }
 
-        
+
         public static void LoadFromFile(string fileName, MainModel model)
         {
             var loader = FileSaveLoad.GetFileLoader(fileName);
             var loadedMainModel = loader?.Invoke(fileName);
-            
+
 
             if (loadedMainModel != null)
             {
                 ViewRedraw(loadedMainModel);
             }
-           
         }
 
 
-        public static SoftwareCell Duplicate(SoftwareCell softwareCell, MainModel mainModel)
-        {
-            var newmodel = SoftwareCellsManager.CreateNew(softwareCell.Name);
-            newmodel.Position = softwareCell.Position;
-            softwareCell.InputStreams.ForEach(dsd =>
-            {
-                var newdsd = DataStreamManager.NewDefinition(newmodel, dsd);
-                 newmodel.InputStreams.Add(newdsd);
-            });
-            softwareCell.OutputStreams.ForEach(dsd =>
-            {
-                var newdsd = DataStreamManager.NewDefinition(newmodel, dsd);
-                newmodel.OutputStreams.Add(newdsd);
-            });
+       
 
-            return newmodel;
-            
-        }
 
         public static void MergeFromFile(string fileName, MainModel mainModel)
         {
@@ -223,6 +224,26 @@ namespace Dexel.Editor
         }
 
 
-       
+        private static List<SoftwareCell> _copiedCells = new List<SoftwareCell>();
+        public static void Copy(List<SoftwareCell> softwareCells, MainModel mainModel)
+        {
+            _copiedCells.Clear();
+            softwareCells.ForEach(_copiedCells.Add);
+        }
+
+
+        public static void Paste(Point positionClicked, MainModel mainModel)
+        {
+            if (_copiedCells.Count == 0)
+                return;
+
+            var copiedList = MainModelManager.Duplicate(_copiedCells, mainModel);
+
+            MainModelManager.MoveCellsToClickedPosition(positionClicked, copiedList);
+
+            ViewRedraw();
+
+        }
     }
+
 }

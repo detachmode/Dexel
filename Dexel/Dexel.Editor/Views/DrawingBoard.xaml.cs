@@ -166,6 +166,11 @@ namespace Dexel.Editor.Views
             }
         }
 
+        private void Paste_click(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
         //private void UIElement_OnMouseUp(object sender, MouseButtonEventArgs e)
         //{
         //    Debug.WriteLine("UIElement_OnMouseUp");

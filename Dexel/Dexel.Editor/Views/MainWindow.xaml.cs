@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Navigation;
 using Dexel.Editor.ViewModels;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
@@ -26,14 +27,20 @@ namespace Dexel.Editor.Views
 
         private void AddNewCell_Click(object sender, RoutedEventArgs e)
         {
+            var positionClicked = GetClickedPosition();
+            if (positionClicked == null) return;
+
+            var newcellmodel = Interactions.AddNewIOCell(positionClicked.Value, ViewModel());
+            FocusCell(newcellmodel);
+        }
+
+
+        private Point? GetClickedPosition()
+        {
             var myWindow = GetWindow(this);
             var transform = myWindow?.TransformToVisual(TheDrawingBoard.SoftwareCellsList);
-            if (transform == null) return;
-            var myUiElementPosition = transform.Transform(TheDrawingBoard.TheZoomBorder.BeforeContextMenuPoint);
-
-            var newcellmodel = Interactions.AddNewIOCell(myUiElementPosition, ViewModel());
-            FocusCell(newcellmodel);
-
+            var positionClicked = transform?.Transform(TheDrawingBoard.TheZoomBorder.BeforeContextMenuPoint);
+            return positionClicked;
         }
 
 
@@ -135,6 +142,14 @@ namespace Dexel.Editor.Views
             {
                 Interactions.Delete(MainViewModel.Instance().SelectedSoftwareCells.Select(x => x.Model), MainViewModel.Instance().Model);
             }
+        }
+
+        private void Paste_click(object sender, RoutedEventArgs e)
+        {
+            var positionClicked = GetClickedPosition();
+            if (positionClicked == null) return;
+
+            Interactions.Paste(positionClicked.Value, MainViewModel.Instance().Model);
         }
     }
 
