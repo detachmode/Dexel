@@ -31,29 +31,26 @@ namespace Dexel.Editor.DragAndDrop
         private static bool _isDraggingIOCell;
 
 
-        public static event Action<IOCellViewModel> MouseDownOnIOCell;
-
-
         public static void MouseDown(object sender, MouseButtonEventArgs e)
         {
             Debug.WriteLine("++MouseDOWN " + sender.GetType().Name);
 
             if (sender is IOCell)
             {
-                IOCellMouseDown((IOCell)sender, e);
-                e.Handled = true;                         
+                IOCellMouseDown((IOCell) sender, e);
+                e.Handled = true;
             }
 
             if (sender is DrawingBoard)
             {
-                DrawingBoardMouseDown((DrawingBoard)sender, e);
+                DrawingBoardMouseDown((DrawingBoard) sender, e);
                 e.Handled = true;
                 Interactions.PickState = false;
                 Mouse.OverrideCursor = Cursors.Arrow;
             }
 
             Interactions.PickState = false;
-            Mouse.OverrideCursor = Cursors.Arrow;
+            Mouse.OverrideCursor = null;
         }
 
 
@@ -89,7 +86,7 @@ namespace Dexel.Editor.DragAndDrop
             }
             if (sender is DrawingBoard)
             {
-                DrawingBoardMouseUp((DrawingBoard)sender, e);
+                DrawingBoardMouseUp((DrawingBoard) sender, e);
             }
         }
 
@@ -108,11 +105,9 @@ namespace Dexel.Editor.DragAndDrop
             }
             else
             {
-
                 MainViewModel.Instance().ClearSelection();
                 Keyboard.ClearFocus();
-                ((MainWindow)Application.Current.MainWindow).TheDrawingBoard.Focus();
-
+                ((MainWindow) Application.Current.MainWindow).TheDrawingBoard.Focus();
             }
 
             if (_isLeftMouseButtonDownOnWindow)
@@ -133,7 +128,7 @@ namespace Dexel.Editor.DragAndDrop
             }
             if (sender is DrawingBoard)
             {
-                DrawingBoardMouseMove((DrawingBoard)sender, e);
+                DrawingBoardMouseMove((DrawingBoard) sender, e);
                 e.Handled = true;
             }
         }
@@ -141,7 +136,6 @@ namespace Dexel.Editor.DragAndDrop
 
         private static void DrawingBoardMouseMove(DrawingBoard drawingboard, MouseEventArgs e)
         {
-
             if (_isDraggingSelectionRect)
             {
                 drawingboard.UpdateDragSelectionRect(OrigMouseDownPoint, ScreenMousePosition);
@@ -171,14 +165,9 @@ namespace Dexel.Editor.DragAndDrop
                 return;
             }
 
-            var ioCellViewModel = (IOCellViewModel)iocell.DataContext;
+            var ioCellViewModel = (IOCellViewModel) iocell.DataContext;
             _isLeftMouseDownOnIOCell = true;
 
-            if (Interactions.PickState)
-            {
-                Interactions.SetPickedIntegration(ioCellViewModel.Model, MainViewModel.Instance().Model);
-                return;
-            }
 
             if ((Keyboard.Modifiers & ModifierKeys.Control) != 0)
             {
@@ -191,6 +180,11 @@ namespace Dexel.Editor.DragAndDrop
             }
 
             iocell.CaptureMouse();
+
+            if (Interactions.PickState)
+            {
+                Interactions.SetPickedIntegration(ioCellViewModel.Model, MainViewModel.Instance().Model);
+            }
         }
 
 
@@ -198,7 +192,7 @@ namespace Dexel.Editor.DragAndDrop
         {
             if (_isLeftMouseDownOnIOCell)
             {
-                var iocell = (FrameworkElement)sender;
+                var iocell = (FrameworkElement) sender;
                 var ioCellViewModel = iocell.DataContext as IOCellViewModel;
                 if (ioCellViewModel == null)
                     return;
@@ -239,8 +233,6 @@ namespace Dexel.Editor.DragAndDrop
 
 
                 MainViewModel.Instance().MoveSelectedIOCells(dragDelta);
-
-
             }
             else if (_isLeftMouseDownOnIOCell)
             {
