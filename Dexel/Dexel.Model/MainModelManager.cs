@@ -271,57 +271,51 @@ namespace Dexel.Model
             }
         }
 
-        public class CopiedCells
-        {
-            public Guid originGuid;
-            public SoftwareCell newCell;
-        }
 
         private static void SetIntegrationOfCopiedCells(List<CopiedCells> copiedList, MainModel mainModel)
         {
-            var allnew = copiedList.Select(x => x.newCell).ToList();
             copiedList.ForEach(cc =>
             {
-                var orginal = mainModel.SoftwareCells.First(sc => sc.ID == cc.originGuid);
+                var orginal = mainModel.SoftwareCells.First(sc => sc.ID == cc.OriginGuid);
                 orginal.Integration.ForEach(isc =>
                 {
-                    var incopied = copiedList.FirstOrDefault(x => x.originGuid == isc.ID);
+                    var incopied = copiedList.FirstOrDefault(x => x.OriginGuid == isc.ID);
                     if (incopied != null)
                     {
-                        cc.newCell.Integration.Add(incopied.newCell);
+                        cc.NewCell.Integration.Add(incopied.NewCell);
                     }
-
                 });
             });
         }
 
 
-        private static void ReConnetCopiedCells(List<CopiedCells> copiedList, List<SoftwareCell> original, MainModel mainModel)
+        private static void ReConnetCopiedCells(List<CopiedCells> copiedList, List<SoftwareCell> original,
+            MainModel mainModel)
         {
-
             var connectionsOfSelectedCells = mainModel.Connections.Where(c =>
-               c.Sources.Any(y => original.Any(x => x == y.Parent))
-               &&
-               c.Destinations.Any(y => original.Any(x => x == y.Parent))
-               ).ToList();
+                c.Sources.Any(y => original.Any(x => x == y.Parent))
+                &&
+                c.Destinations.Any(y => original.Any(x => x == y.Parent))
+                ).ToList();
 
 
             connectionsOfSelectedCells.ForEach(c =>
             {
                 var datastream = c;
-                SoftwareCell destination = datastream.Destinations.Select(y => y.Parent).First();
-                SoftwareCell source = datastream.Sources.Select(y => y.Parent).First();
+                var destination = datastream.Destinations.Select(y => y.Parent).First();
+                var source = datastream.Sources.Select(y => y.Parent).First();
 
-                var sourcedsd = copiedList.First(y => y.originGuid == source.ID).newCell.OutputStreams.First(
+                var sourcedsd = copiedList.First(y => y.OriginGuid == source.ID).NewCell.OutputStreams.First(
                     dsd => dsd.DataNames == datastream.Sources.First().DataNames);
-                var destinationdsd = copiedList.First(y => y.originGuid == destination.ID).newCell.InputStreams.First(
-                   dsd => dsd.DataNames == datastream.Destinations.First().DataNames);
+                var destinationdsd = copiedList.First(y => y.OriginGuid == destination.ID).NewCell.InputStreams.First(
+                    dsd => dsd.DataNames == datastream.Destinations.First().DataNames);
 
-                var newConnection = ConnectTwoDefintions(sourcedsd, destinationdsd, mainModel);
+                ConnectTwoDefintions(sourcedsd, destinationdsd, mainModel);
             });
         }
 
-        private static SoftwareCell Duplicate(SoftwareCell softwareCell, MainModel mainModel)
+
+        private static SoftwareCell Duplicate(SoftwareCell softwareCell)
         {
             var newmodel = SoftwareCellsManager.CreateNew(softwareCell.Name);
             newmodel.Position = softwareCell.Position;
@@ -345,8 +339,8 @@ namespace Dexel.Model
             var copiedList = new List<CopiedCells>();
             softwareCells.ForEach(sc =>
             {
-                var newCell = Duplicate(sc, mainModel);
-                var copiedCell = new CopiedCells { originGuid = sc.ID, newCell = newCell };
+                var newCell = Duplicate(sc);
+                var copiedCell = new CopiedCells {OriginGuid = sc.ID, NewCell = newCell};
                 copiedList.Add(copiedCell);
                 mainModel.SoftwareCells.Add(newCell);
             });
@@ -354,7 +348,8 @@ namespace Dexel.Model
         }
 
 
-        public static void MakeIntegrationIncludingChildren(SoftwareCell parentCell, SoftwareCell subCell, MainModel mainModel)
+        public static void MakeIntegrationIncludingChildren(SoftwareCell parentCell, SoftwareCell subCell,
+            MainModel mainModel)
         {
             parentCell.Integration.AddUnique(subCell);
             TraverseChildren(subCell, child => parentCell.Integration.AddUnique(child), mainModel);
@@ -363,25 +358,50 @@ namespace Dexel.Model
 
         public static void MoveCellsToClickedPosition(Point positionClicked, List<CopiedCells> copiedList)
         {
-            var delta = positionClicked - copiedList.First().newCell.Position;
-            copiedList.ForEach(x => x.newCell.Position += delta);
+            var delta = positionClicked - copiedList.First().NewCell.Position;
+            copiedList.ForEach(x => x.NewCell.Position += delta);
         }
 
 
-        public static List<MainModelManager.CopiedCells> Duplicate( List<SoftwareCell> softwareCells, MainModel mainModel)
+        public static List<CopiedCells> Duplicate(List<SoftwareCell> softwareCells, MainModel mainModel)
         {
-            var copiedList = MainModelManager.DuplicateMany(softwareCells, mainModel);
-            MainModelManager.ReConnetCopiedCells(copiedList, softwareCells, mainModel);
-            MainModelManager.SetIntegrationOfCopiedCells(copiedList, mainModel);
+            var copiedList = DuplicateMany(softwareCells, mainModel);
+            ReConnetCopiedCells(copiedList, softwareCells, mainModel);
+            SetIntegrationOfCopiedCells(copiedList, mainModel);
             return copiedList;
         }
 
 
-        public static void MakeIntegrationIncludingAllConnected(SoftwareCell parentCell, SoftwareCell subCell, MainModel mainModel)
+        public static void MakeIntegrationIncludingAllConnected(SoftwareCell parentCell, SoftwareCell subCell,
+            MainModel mainModel)
         {
             parentCell.Integration.AddUnique(subCell);
             TraverseChildren(subCell, child => parentCell.Integration.AddUnique(child), mainModel);
             TraverseChildrenBackwards(subCell, child => parentCell.Integration.AddUnique(child), mainModel);
+        }
+
+
+        public static List<SoftwareCell> GetChildrenAndIntegrated(SoftwareCell softwareCell, List<SoftwareCell> found,
+            MainModel mainModel)
+        {
+            found.AddUnique(softwareCell);
+            softwareCell.Integration.ForEach(isc => GetChildrenAndIntegrated(isc, found, mainModel));
+
+            TraverseChildren(softwareCell, child =>
+            {
+                found.AddUnique(child);
+                child.Integration.ForEach(isc => GetChildrenAndIntegrated(isc, found, mainModel));
+            }, mainModel);
+
+           
+            return found;
+        }
+
+
+        public class CopiedCells
+        {
+            public SoftwareCell NewCell;
+            public Guid OriginGuid;
         }
     }
 

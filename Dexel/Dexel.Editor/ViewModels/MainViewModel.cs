@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
 using Dexel.Editor.CustomControls;
 using Dexel.Editor.DragAndDrop;
+using Dexel.Editor.Views;
 using Dexel.Library;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
 using PropertyChanged;
+using SoftwareCell = Dexel.Model.DataTypes.SoftwareCell;
 
 namespace Dexel.Editor.ViewModels
 {
@@ -116,31 +117,28 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-
-
         private List<SoftwareCell> Duplicate()
-        {           
+        {
             var copiedList = MainModelManager.Duplicate(SelectedSoftwareCells.Select(vm => vm.Model).ToList(), Model);
-            
-            Reload();
-            return copiedList.Select(x => x.newCell).ToList();
-        }
 
-        
+            Reload();
+            return copiedList.Select(x => x.NewCell).ToList();
+        }
 
 
         public void ClearSelection()
         {
             SelectedSoftwareCells.Clear();
-           
         }
-
 
 
         public void AddToSelection(IOCellViewModel ioCellViewModel)
         {
             SelectedSoftwareCells.Add(ioCellViewModel);
         }
+
+
+       
 
         #region Drop
 

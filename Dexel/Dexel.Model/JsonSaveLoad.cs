@@ -1,12 +1,10 @@
 ﻿using System.IO;
-using System.Linq;
 using Dexel.Model.DataTypes;
 using Newtonsoft.Json;
-using YamlDotNet.Serialization;
-using YamlDotNet.Serialization.NodeDeserializers;
 
 namespace Dexel.Model
 {
+
     public static class JsonSaveLoad
     {
         public static void SaveToJson(string path, MainModel mainModel)
@@ -26,6 +24,7 @@ namespace Dexel.Model
             }
         }
 
+
         public static MainModel LoadFromJson(string path)
         {
             //var settings = new JsonSerializerSettings
@@ -36,4 +35,5 @@ namespace Dexel.Model
             return ret;
         }
     }
+
 }

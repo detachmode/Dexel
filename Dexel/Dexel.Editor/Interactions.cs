@@ -26,6 +26,13 @@ namespace Dexel.Editor
         private static Timer aTimer;
 
 
+        private static readonly List<SoftwareCell> _copiedCells = new List<SoftwareCell>();
+        public static bool PickState;
+
+
+        private static SoftwareCell StartPickingAt;
+
+
         public static SoftwareCell AddNewIOCell(Point pos, MainModel mainModel)
         {
             var softwareCell = SoftwareCellsManager.CreateNew();
@@ -108,7 +115,8 @@ namespace Dexel.Editor
             DataStreamDefinition destinationDSD, MainModel mainModel)
         {
             CheckAreBothInputs(sourceDSD, destinationDSD,
-                () => MainModelManager.MakeIntegrationIncludingChildren(sourceDSD.Parent, destinationDSD.Parent, mainModel),
+                () =>
+                    MainModelManager.MakeIntegrationIncludingChildren(sourceDSD.Parent, destinationDSD.Parent, mainModel),
                 () => MainModelManager.ConnectTwoDefintions(sourceDSD, destinationDSD, mainModel));
 
             ViewRedraw();
@@ -201,7 +209,6 @@ namespace Dexel.Editor
         }
 
 
-
         public static void MergeFromFile(string fileName, MainModel mainModel)
         {
             var loader = FileSaveLoad.GetFileLoader(fileName);
@@ -221,10 +228,6 @@ namespace Dexel.Editor
         }
 
 
-        private static List<SoftwareCell> _copiedCells = new List<SoftwareCell>();
-        public static bool PickState;
-
-
         public static void Copy(List<SoftwareCell> softwareCells, MainModel mainModel)
         {
             _copiedCells.Clear();
@@ -241,23 +244,34 @@ namespace Dexel.Editor
             MainModelManager.MoveCellsToClickedPosition(positionClicked, copiedList);
 
             ViewRedraw();
-
         }
 
 
-        private static SoftwareCell StartPickingAt;
         public static void StartPickIntegration(SoftwareCell softwareCell)
         {
             PickState = true;
             Mouse.OverrideCursor = Cursors.Cross;
             StartPickingAt = softwareCell;
+        }
+
+
+        private static List<SoftwareCell> _toMove = new List<SoftwareCell>();
+
+        public static void MoveIOCellIncludingChildrenAndIntegrated(SoftwareCell softwareCell, Vector dragDelta,
+            MainModel mainModel)
+        {
+            _toMove.Clear();
+            _toMove = MainModelManager.GetChildrenAndIntegrated(softwareCell, _toMove, mainModel);
+
+            _toMove.ForEach(sc => sc.MovePosition(dragDelta));
+
 
         }
 
 
         public static void SetPickedIntegration(SoftwareCell softwareCell, MainModel mainModel)
-        {          
-            MainModelManager.MakeIntegrationIncludingAllConnected(StartPickingAt, softwareCell, mainModel);          
+        {
+            MainModelManager.MakeIntegrationIncludingAllConnected(StartPickingAt, softwareCell, mainModel);
             ViewRedraw();
         }
 

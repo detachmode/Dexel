@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using Dexel.Model.DataTypes;
 
 namespace Dexel.Model
@@ -19,6 +20,13 @@ namespace Dexel.Model
             return mainModel.SoftwareCells.First(x => x.ID.Equals(destinationID));
         }
 
+        public static void MovePosition(this SoftwareCell softwareCell, Vector dragDelta)
+        {
+            var pt = softwareCell.Position;
+            pt.X += dragDelta.X;
+            pt.Y += dragDelta.Y;
+            softwareCell.Position = pt;
+        }
 
         public static SoftwareCell GetFristByID(Guid destinationID, MainModel mainModel)
         {

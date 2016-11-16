@@ -5,8 +5,10 @@ using System.Text.RegularExpressions;
 using Dexel.Model.DataTypes;
 using PropertyChanged;
 
+
 namespace Dexel.Model
 {
+
     [ImplementPropertyChanged]
     public static class DataStreamManager
     {
@@ -48,11 +50,8 @@ namespace Dexel.Model
         public static DataStreamDefinition NewDefinition(SoftwareCell parent, DataStreamDefinition defintion,
             bool connected = false)
         {
-            return NewDefinition(parent, defintion.DataNames, defintion.ActionName, connected: connected);
+            return NewDefinition(parent, defintion.DataNames, defintion.ActionName, connected);
         }
-
-
-
 
 
         public static void SetConnectedState(DataStream dataStream, bool state)
@@ -60,6 +59,7 @@ namespace Dexel.Model
             dataStream.Sources.ForEach(dsd => dsd.Connected = state);
             dataStream.Destinations.ForEach(dsd => dsd.Connected = state);
         }
+
 
         public static Guid CheckForStreamWithSameName(SoftwareCell source, SoftwareCell destination,
             DataStream tempStream, MainModel mainModel,
@@ -79,7 +79,6 @@ namespace Dexel.Model
 
         public static string MergeDataNames(DataStreamDefinition sourceDSD, DataStreamDefinition destinationDSD)
         {
-           
             if (destinationDSD == null)
                 return sourceDSD.DataNames + " | ";
 
@@ -94,7 +93,7 @@ namespace Dexel.Model
         {
             // update datanames of connection itself
             datastream.DataNames = newDatanames;
-            
+
             // update datanames of DSDs
             var splitted = SolvePipeLogic(datastream);
             datastream.Sources.ForEach(dsd => dsd.DataNames = splitted[0].Trim());
@@ -129,6 +128,7 @@ namespace Dexel.Model
             var matches = withoutparenthesis.Matches(datanames);
             if (matches.Count == 1)
             {
+                // ReSharper disable once RedundantAssignment
                 string input = "", output = "";
                 var grps = matches[0].Groups;
 
@@ -137,11 +137,10 @@ namespace Dexel.Model
 
 
                 if (!grps["dots"].Success)
-                    return new[] { output, input };
+                    return new[] {output, input};
 
                 input = grps["output"].Value.Trim() + ", " + grps["input"].Value.Trim();
-                return new[] { output, input };
-
+                return new[] {output, input};
             }
             return null;
         }
@@ -184,13 +183,13 @@ namespace Dexel.Model
             }
 
             var outputDSDs = softwareCells.Select(sc => sc.OutputStreams.FirstOrDefault(dsd => dsd.ID == id))
-                  .Where(x => x != null).ToList();
+                .Where(x => x != null).ToList();
             if (outputDSDs.Any())
             {
                 return outputDSDs.First();
             }
             return null;
-
         }
     }
+
 }
