@@ -47,8 +47,7 @@ namespace Dexel.Editor.DragAndDrop
             {
                 DrawingBoardMouseDown((DrawingBoard) sender, e);
                 e.Handled = true;
-                Interactions.PickState = false;
-                Mouse.OverrideCursor = Cursors.Arrow;
+
             }
 
             Interactions.PickState = false;
@@ -168,7 +167,18 @@ namespace Dexel.Editor.DragAndDrop
                 return;
             }
 
-            var ioCellViewModel = (IOCellViewModel) iocell.DataContext;
+
+            var ioCellViewModel = (IOCellViewModel)iocell.DataContext;
+
+
+            if (Interactions.PickState)
+            {
+                Interactions.SetPickedIntegration(ioCellViewModel.Model, MainViewModel.Instance().Model);
+                return;
+            }
+
+
+           
             _isLeftMouseDownOnIOCell = true;
 
 
@@ -184,10 +194,7 @@ namespace Dexel.Editor.DragAndDrop
 
             iocell.CaptureMouse();
 
-            if (Interactions.PickState)
-            {
-                Interactions.SetPickedIntegration(ioCellViewModel.Model, MainViewModel.Instance().Model);
-            }
+
         }
 
 
