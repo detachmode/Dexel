@@ -27,7 +27,7 @@ namespace Dexel.Editor.ViewModels
             SelectedSoftwareCells = new ObservableCollection<IOCellViewModel>();
             Connections = new ObservableCollection<ConnectionViewModel>();
             IntegrationBorders = new ObservableCollection<IOCellViewModel>();
-            FontSizeCell = 14;
+            FontSizeCell = 12;
             VisibilityDatanames = Visibility.Visible;
             VisibilityBlockTextBox = Visibility.Hidden;
             
