@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Dexel.Editor.ViewModels;
 
 namespace Dexel.Editor.CustomControls
 {
@@ -118,6 +119,8 @@ namespace Dexel.Editor.CustomControls
             var tt = GetTranslateTransform(child);
 
             double zoom = e.Delta > 0 ? .2 : -.2;
+
+            
             if (!(e.Delta > 0) && (st.ScaleX < .3 || st.ScaleY < .3))
                 return;
 

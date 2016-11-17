@@ -15,7 +15,7 @@
             <ItemsPanelTemplate x:Key="DrawingBoardItemControl">
                 <Canvas />
             </ItemsPanelTemplate>
-
+            
 
             <VisualBrush x:Key="MyVisualBrush" TileMode="Tile" Viewport="0,0,15,15" ViewportUnits="Absolute"
                  Viewbox="0,0,15,15" ViewboxUnits="Absolute">

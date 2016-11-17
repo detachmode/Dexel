@@ -30,7 +30,8 @@
                           Visibility="{Binding IsSelected, Converter={StaticResource VisibilityConverter}}"
                                 Stroke="White"
                                 StrokeThickness="{DynamicResource StrokeThickness}" />
-                <TextBox MinWidth="22" IsTabStop="True" TabIndex="2" x:Name="theTextBox"   LostFocus="TheTextBox_OnLostFocus" 
+                <TextBox MinWidth="22" 
+                         FontSize="{Binding DataContext.FontSizeCell, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:DrawingBoard}}}"  x:Name="theTextBox"   LostFocus="TheTextBox_OnLostFocus" 
                          Background="{DynamicResource FillSoftwareCellBrush}" 
                                  Text="{Binding Path=LabelContent, 
                                         UpdateSourceTrigger=PropertyChanged,
@@ -39,6 +40,8 @@
                                  Foreground="{DynamicResource Foreground}"
                                  VerticalAlignment="Center"
                                  BorderBrush="{x:Null}" />
+                <Ellipse Margin="-20" Fill="Transparent"
+                         Visibility="{Binding DataContext.VisibilityBlockTextBox, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:DrawingBoard}}}"/>
             </Grid>
         </Grid>
     </Grid>

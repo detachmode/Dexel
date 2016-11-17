@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Dexel.Editor.Views.ConnectionsView"
+﻿<UserControl
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -6,8 +6,9 @@
              xmlns:customControls="clr-namespace:Dexel.Editor.CustomControls"
              xmlns:converter="clr-namespace:Dexel.Editor.Converter"
              xmlns:viewModels="clr-namespace:Dexel.Editor.ViewModels"
+             xmlns:local="clr-namespace:Dexel.Editor.Views" x:Class="Dexel.Editor.Views.ConnectionsView"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance viewModels:ConnectionViewModel, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance {x:Type viewModels:ConnectionViewModel}, IsDesignTimeCreatable=True}"
             >
     <Canvas>
         <customControls:Pointer
@@ -16,8 +17,7 @@
             Thickness="{DynamicResource StrokeThickness}"
             Start="{Binding Start}"
             End="{Binding End}"
-            ArrowSize="30,15">
-        </customControls:Pointer>
+            ArrowSize="30,15"/>
 
 
         <Grid  x:Name="TheGrid" Canvas.Left="{Binding Center.X}" Canvas.Top="{Binding Center.Y}" >
@@ -27,15 +27,15 @@
                     <SkewTransform/>
                     <RotateTransform/>
                     <TranslateTransform 
-                        Y="{Binding ActualHeight, ElementName=TheGrid, Mode=OneWay,Converter={converter:PercentageConverter}, ConverterParameter='-1'}"
-                        X="{Binding ActualWidth, ElementName=TheGrid, Mode=OneWay,Converter={converter:PercentageConverter}, ConverterParameter='-0,5'}"/>
+                        Y="{Binding ActualHeight, ConverterParameter=-1, Converter={converter:PercentageConverter}, ElementName=TheGrid, Mode=OneWay}"
+                        X="{Binding ActualWidth, ConverterParameter=-0\,5, Converter={converter:PercentageConverter}, ElementName=TheGrid, Mode=OneWay}"/>
                 </TransformGroup>
             </Grid.RenderTransform>
 
-            <Border Canvas.ZIndex="999" Background="{StaticResource BG}" BorderBrush="{StaticResource FillPointerBrush}" BorderThickness="2">
-                <customControls:DataNamesControl x:Name="DataNamesControl" Canvas.ZIndex="1000" DataContext="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Border Visibility="{Binding DataContext.VisibilityDatanames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DrawingBoard}}}" Panel.ZIndex="999" Background="{StaticResource BG}" BorderBrush="{StaticResource FillPointerBrush}" BorderThickness="2">
+                <customControls:DataNamesControl x:Name="DataNamesControl" Panel.ZIndex="1000" DataContext="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Border>
-          
+
         </Grid>
     </Canvas>
 </UserControl>

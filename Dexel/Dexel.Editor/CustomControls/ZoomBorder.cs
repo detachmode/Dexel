@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using Dexel.Editor.ViewModels;
 
 namespace Dexel.Editor.CustomControls
 {
@@ -91,7 +93,11 @@ namespace Dexel.Editor.CustomControls
                 var st = GetScaleTransform(child);
                 var tt = GetTranslateTransform(child);
 
-                double zoom = e.Delta > 0 ? .2 : -.2;
+
+
+                double zoom = e.Delta > 0 ? .1 : -.1;
+
+
                 if (!(e.Delta > 0) && (st.ScaleX < .3 || st.ScaleY < .3))
                     return;
 
@@ -104,6 +110,32 @@ namespace Dexel.Editor.CustomControls
 
                 st.ScaleX += zoom;
                 st.ScaleY += zoom;
+
+                Debug.WriteLine(st.ScaleX);
+                if (st.ScaleX < 0.21 || st.ScaleY < 0.21)
+                {
+                    MainViewModel.Instance().FontSizeCell = 32;
+                    MainViewModel.Instance().VisibilityBlockTextBox = Visibility.Visible;
+                    MainViewModel.Instance().VisibilityDatanames = Visibility.Hidden;
+                }
+                if (st.ScaleX < 0.51 || st.ScaleY < 0.51)
+                {
+                    MainViewModel.Instance().FontSizeCell = 22;
+                    MainViewModel.Instance().VisibilityBlockTextBox = Visibility.Visible;
+                    MainViewModel.Instance().VisibilityDatanames = Visibility.Hidden;
+                }
+                else if (st.ScaleX < 0.7 || st.ScaleY < 0.7)
+                {
+                    MainViewModel.Instance().FontSizeCell = 14;
+                    MainViewModel.Instance().VisibilityDatanames = Visibility.Hidden;
+                    MainViewModel.Instance().VisibilityBlockTextBox = Visibility.Visible;
+                }
+                else
+                {
+                    MainViewModel.Instance().FontSizeCell = 11;
+                    MainViewModel.Instance().VisibilityBlockTextBox = Visibility.Hidden;
+                    MainViewModel.Instance().VisibilityDatanames = Visibility.Visible;
+                }
 
                 tt.X = abosuluteX - relative.X * st.ScaleX;
                 tt.Y = abosuluteY - relative.Y * st.ScaleY;
