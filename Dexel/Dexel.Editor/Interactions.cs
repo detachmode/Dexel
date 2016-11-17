@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using Dexel.Editor.CustomControls;
 using Dexel.Editor.DebuggingHelper;
 using Dexel.Editor.ViewModels;
 using Dexel.Library;
@@ -280,6 +281,35 @@ namespace Dexel.Editor
         {
             MainModelManager.RemoveAllConnectedFromIntegration(softwareCell, mainModel);
             ViewRedraw();
+        }
+
+
+        public static object TabStopGetNext(object focusedModel, MainModel mainModel)
+        {
+            object result = null;
+            focusedModel.TryCast<SoftwareCell>(cell =>
+            {
+                if (cell.OutputStreams.Any(dsd => dsd.Connected))
+                {
+                    var connectedDsd = cell.OutputStreams.First(dsd => dsd.Connected);
+                    result = mainModel.Connections.First(c => c.Sources.Contains(connectedDsd));
+                }
+                else if (cell.OutputStreams.Any())
+                {
+                    result = cell.OutputStreams.First();
+                }
+            });
+
+            focusedModel.TryCast<DataStream>(stream =>
+            {
+                if (stream.Destinations.Any())
+                    result = stream.Destinations.First().Parent;
+            });
+
+
+
+
+            return result;
         }
     }
 

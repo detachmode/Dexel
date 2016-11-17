@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml;
+using Dexel.Editor.Views;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
 using ICSharpCode.AvalonEdit.Highlighting;
@@ -72,12 +73,8 @@ namespace Dexel.Editor.CustomControls
 
         private void TextBox_OnKeyDown(object sender, KeyEventArgs e)
         {
+            MainWindow.Get().MainWindow_OnPreviewKeyDown(sender, e);
 
-            if (e.Key == Key.Tab)
-            {
-                ((FrameworkElement)sender).MoveFocus(new TraversalRequest(FocusNavigationDirection.First));
-                e.Handled = true;
-            }
         }
     }
 }

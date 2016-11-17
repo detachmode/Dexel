@@ -93,11 +93,11 @@
 				<!--
 				Connections
 				-->
-				<ItemsControl ItemsPanel="{StaticResource DrawingBoardItemControl}"
+				<ItemsControl x:Name="ConnectionsList" ItemsPanel="{StaticResource DrawingBoardItemControl}"
 							  ItemsSource="{Binding Connections}">
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
-							<views:ConnectionsView />
+							<views:ConnectionsView x:Name="TheConnectionsView"/>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>

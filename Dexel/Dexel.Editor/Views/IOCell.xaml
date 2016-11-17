@@ -41,7 +41,7 @@
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <views:DangelingConnectionView IsTabStop="True" TabIndex="1"/>
+                    <views:DangelingConnectionView  x:Name="DangelingConnectionView"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
@@ -61,7 +61,7 @@
                       x:Name="OutputFlow" ItemsSource="{Binding DangelingOutputs, Mode=TwoWay}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <views:DangelingConnectionView IsTabStop="True">
+                        <views:DangelingConnectionView x:Name="DangelingConnectionView">
 
                         </views:DangelingConnectionView>
                     </DataTemplate>
