@@ -41,7 +41,7 @@
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <views:DangelingConnectionView  x:Name="DangelingConnectionView"/>
+                    <views:DangelingConnectionView  x:Name="DangelingConnectionView" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

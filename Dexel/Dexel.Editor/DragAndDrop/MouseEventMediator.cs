@@ -124,7 +124,7 @@ namespace Dexel.Editor.DragAndDrop
             MyDebug.WriteLineIfDifferent("++MouseMove " + sender.GetType().Name);
             if (sender is IOCell || _isLeftMouseDownOnIOCell)
             {
-                IOCellMouseMove(sender, e);
+                IOCellMouseMove(sender as IOCell, e);
                 e.Handled = true;
             }
             if (sender is DrawingBoard)
@@ -234,8 +234,10 @@ namespace Dexel.Editor.DragAndDrop
         }
 
 
-        private static void IOCellMouseMove(object sender, MouseEventArgs e)
+        private static void IOCellMouseMove(IOCell sender, MouseEventArgs e)
         {
+            bool shiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            bool ctrlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 
             if (_isCTRLDraggingIOCell)
             {          
@@ -262,13 +264,20 @@ namespace Dexel.Editor.DragAndDrop
                 var dragDelta = ProjectedMousePosition - OrigMouseDownPoint;
                 var dragDistance = Math.Abs(dragDelta.Length);
 
-                if (Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift))
+                if (ctrlDown && shiftDown)
+                {
+                    _isCTRLDraggingIOCell = true;
+                    var softwarecell  = MainViewModel.Instance().DuplicateIncludingChildrenAndIntegrated((sender.DataContext as IOCellViewModel).Model);
+
+                }
+
+                else if (shiftDown)
                 {
                     _isDraggingIOCell = true;
                     MainViewModel.Instance().DuplicateSelectionAndSelectNew();
                 }
 
-                if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                else if (ctrlDown)
                     _isCTRLDraggingIOCell = true;
 
 
