@@ -128,6 +128,24 @@ namespace Dexel.Editor.Views
                     }
                 }
             }
+
+            for (int i = 0; i < frameworkelement.InputFlow.Items.Count; i++)
+            {
+                ContentPresenter c = (ContentPresenter)frameworkelement.InputFlow.ItemContainerGenerator.ContainerFromIndex(i);
+                c.ApplyTemplate();
+
+                var dsdView = (DangelingConnectionView)c.ContentTemplate.FindName("DangelingConnectionView", c);
+                if (dsdView != null)
+                {
+                    var dsdViewModel = (DangelingConnectionViewModel)dsdView.DataContext;
+                    if (dsdViewModel.Model == dsd)
+                    {
+                        dsdView.TheDataNamesControl.TextBox.Focus();
+                        break;
+
+                    }
+                }
+            }
         }
 
 
@@ -220,45 +238,50 @@ namespace Dexel.Editor.Views
 
         public void MainWindow_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
+            bool ShiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            //bool CtrlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 
             if (e.Key == Key.Delete)
             {
                 Interactions.Delete(MainViewModel.Instance().SelectedSoftwareCells.Select(x => x.Model), MainViewModel.Instance().Model);
             }
 
-            //if (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))
-            //{
-            //    return;
-            //}
             switch (e.Key)
             {
-                case Key.Tab:
-
-                    var focusedElement = Keyboard.FocusedElement;
-                    TryGetDataContext<IOCellViewModel> (focusedElement, vm =>
-                    {
-                        var focusedcell = vm.Model;
-                        var nextmodel = Interactions.TabStopGetNext(focusedcell, ViewModel());
-                        SetFocusOnObject(nextmodel);
-                    });
-
-                    TryGetDataContext<DataStream>(focusedElement, focusedDataStream =>
-                    {
-                        var nextmodel =  Interactions.TabStopGetNext(focusedDataStream, ViewModel());
-                        SetFocusOnObject(nextmodel);
-                    });
-
-                    TryGetDataContext<DataStreamDefinition>(focusedElement, vm =>
-                    {
-                        var nextmodel = Interactions.TabStopGetNext(vm, ViewModel());
-                        SetFocusOnObject(nextmodel);
-                    });
-
-
+                case Key.Tab:                 
+                    if (ShiftDown)
+                        TabStopMove(Interactions.TabStopGetPrevious);
+                    else
+                        TabStopMove(Interactions.TabStopGetNext);
                     e.Handled = true;
                     break;
             }
         }
+
+
+        private void TabStopMove(Func<object, MainModel, object> tabstopFunc )
+        {
+            var focusedElement = Keyboard.FocusedElement;
+            TryGetDataContext<IOCellViewModel>(focusedElement, vm =>
+            {
+                var focusedcell = vm.Model;
+                var nextmodel = tabstopFunc(focusedcell, ViewModel());
+                SetFocusOnObject(nextmodel);
+            });
+
+            TryGetDataContext<DataStream>(focusedElement, focusedDataStream =>
+            {
+                var nextmodel = tabstopFunc(focusedDataStream, ViewModel());
+                SetFocusOnObject(nextmodel);
+            });
+
+            TryGetDataContext<DataStreamDefinition>(focusedElement, vm =>
+            {
+                var nextmodel = tabstopFunc(vm, ViewModel());
+                SetFocusOnObject(nextmodel);
+            });
+        }
+
 
 
         private void SetFocusOnObject(object nextmodel)

@@ -306,11 +306,84 @@ namespace Dexel.Editor
                     result = stream.Destinations.First().Parent;
             });
 
+            focusedModel.TryCast<DataStreamDefinition>(dsd =>
+            {
+                var softwareCell = dsd.Parent;
+
+                if (dsd.IsInput())
+                    result = softwareCell;
+
+                if (dsd.IsOutput())
+                    if (softwareCell.InputStreams.Any(x => x.Connected))
+                        MainModelManager.TraverseChildrenBackwards(softwareCell, cell =>
+                        {
+                            if (cell.InputStreams.Any())
+                                result = cell.InputStreams.First();
+                            else
+                                result = cell;
+
+                        }, mainModel);
 
 
+                    else if (softwareCell.InputStreams.Any())
+                        result = softwareCell.InputStreams.First();
+
+            });
 
             return result;
         }
+
+        public static object TabStopGetPrevious(object focusedModel, MainModel mainModel)
+        {
+            object result = null;
+            focusedModel.TryCast<SoftwareCell>(cell =>
+            {
+                if (cell.InputStreams.Any(dsd => dsd.Connected))
+                {
+                    var connectedDsd = cell.InputStreams.First(dsd => dsd.Connected);
+                    result = mainModel.Connections.First(c => c.Destinations.Contains(connectedDsd));
+                }
+                else if (cell.InputStreams.Any())
+                {
+                    result = cell.InputStreams.First();
+                }
+            });
+
+            focusedModel.TryCast<DataStream>(stream =>
+            {
+                if (stream.Sources.Any())
+                    result = stream.Sources.First().Parent;
+            });
+
+            focusedModel.TryCast<DataStreamDefinition>(dsd =>
+            {
+                var softwareCell = dsd.Parent;
+
+                if (dsd.IsOutput())
+                    result = softwareCell;
+
+                if (dsd.IsInput())
+                    if (softwareCell.OutputStreams.Any(x => x.Connected))
+                        MainModelManager.TraverseChildren(softwareCell, cell =>
+                        {
+                            if (cell.OutputStreams.Any())
+                                result = cell.OutputStreams.First();
+                            else
+                                result = cell;
+
+                        }, mainModel);
+
+
+                    else if (softwareCell.OutputStreams.Any())
+                        result = softwareCell.OutputStreams.First();
+
+            });
+
+            return result;
+        }
+
+
+
     }
 
 }

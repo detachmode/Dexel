@@ -21,6 +21,16 @@ namespace Dexel.Model
             return dataStream;
         }
 
+        public static bool IsInput(this DataStreamDefinition dsd)
+        {
+            return dsd.Parent.InputStreams.Contains(dsd);
+        }
+
+        public static bool IsOutput(this DataStreamDefinition dsd)
+        {
+            return dsd.Parent.OutputStreams.Contains(dsd);
+        }
+
 
         public static DataStreamDefinition NewDefinition(SoftwareCell parent, string datanames, string actionsName = "",
             bool connected = false)

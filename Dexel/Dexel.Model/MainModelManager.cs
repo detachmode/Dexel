@@ -213,7 +213,7 @@ namespace Dexel.Model
                 connection.Sources.ForEach(dsd =>
                 {
                     func(dsd.Parent);
-                    TraverseChildren(dsd.Parent, func, mainModel);
+                    TraverseChildrenBackwards(dsd.Parent, func, mainModel);
                 });
             }
         }

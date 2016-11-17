@@ -73,7 +73,8 @@ namespace Dexel.Editor.CustomControls
 
         private void TextBox_OnKeyDown(object sender, KeyEventArgs e)
         {
-            MainWindow.Get().MainWindow_OnPreviewKeyDown(sender, e);
+            if (e.Key != Key.Delete)
+                MainWindow.Get().MainWindow_OnPreviewKeyDown(sender, e);
 
         }
     }
