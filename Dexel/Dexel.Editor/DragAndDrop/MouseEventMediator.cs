@@ -177,7 +177,7 @@ namespace Dexel.Editor.DragAndDrop
 
 
             ModifiersKeysState(
-                DoCtrlShiftDraggingIOCells,
+                ctrlAndShift: DoCtrlShiftDraggingIOCells,
                 onlyShift: DoShiftDraggingIOCells,
                 onlyCtrl: () => _isCTRLDraggingIOCell = true
                 );
@@ -200,10 +200,9 @@ namespace Dexel.Editor.DragAndDrop
             _isCTRLDraggingIOCell = true;
 
 
-            _mouseDownOnSoftwareCell = Interactions.DuplicateIOCellIncludingChildrenAndIntegrated(_mouseDownOnSoftwareCell, MainViewModel.Instance().Model);
-
-            
-
+            _mouseDownOnSoftwareCell =
+                Interactions.DuplicateIOCellIncludingChildrenAndIntegrated(_mouseDownOnSoftwareCell,
+                    MainViewModel.Instance().Model);
         }
 
 
