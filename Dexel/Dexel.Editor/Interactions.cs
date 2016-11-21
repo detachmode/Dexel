@@ -397,7 +397,16 @@ namespace Dexel.Editor
         }
 
 
+        public static void Cut(List<SoftwareCell> softwareCells, MainModel mainModel)
+        {
+            
+            _copiedCells.Clear();
+            softwareCells.ForEach(_copiedCells.Add);
+
+            softwareCells.ForEach(sc => MainModelManager.DeleteCell(sc, mainModel));
+            ViewRedraw();
 
     }
+}
 
 }

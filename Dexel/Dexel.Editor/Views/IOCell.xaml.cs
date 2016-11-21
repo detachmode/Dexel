@@ -94,8 +94,7 @@ namespace Dexel.Editor.Views
 
         private void Copy_click(object sender, RoutedEventArgs e)
         {
-            var list = GetSelectionOrClickedOn();
-            Interactions.Copy(list, MainViewModel.Instance().Model);
+            Interactions.Copy(GetSelectionOrClickedOn(), MainViewModel.Instance().Model);
         }
 
 
@@ -113,6 +112,7 @@ namespace Dexel.Editor.Views
 
         private void Cut_click(object sender, RoutedEventArgs e)
         {
+            Interactions.Cut(GetSelectionOrClickedOn(), MainViewModel.Instance().Model);
         }
 
 
