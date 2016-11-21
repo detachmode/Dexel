@@ -55,7 +55,7 @@ namespace Dexel.Editor.Views
         }
 
 
-        private IOCellViewModel ViewModel()
+        public IOCellViewModel ViewModel()
         {
             var cellViewModel = DataContext as IOCellViewModel;
             return cellViewModel;

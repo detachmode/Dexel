@@ -257,7 +257,6 @@ namespace Dexel.Editor
 
 
         private static List<SoftwareCell> _toMove = new List<SoftwareCell>();
-
         public static void MoveIOCellIncludingChildrenAndIntegrated(SoftwareCell softwareCell, Vector dragDelta,
             MainModel mainModel)
         {
@@ -268,6 +267,21 @@ namespace Dexel.Editor
 
 
         }
+
+       
+        public static SoftwareCell DuplicateIOCellIncludingChildrenAndIntegrated(SoftwareCell softwareCell,MainModel mainModel)
+        {
+            _toMove.Clear();
+            _toMove = MainModelManager.GetChildrenAndIntegrated(softwareCell, _toMove, mainModel);
+
+            var copiedcells =  MainModelManager.Duplicate(_toMove, mainModel);
+
+            ViewRedraw();
+
+            return copiedcells.First(x => x.OriginGuid == softwareCell.ID).NewCell;
+        }
+
+
 
 
         public static void SetPickedIntegration(SoftwareCell softwareCell, MainModel mainModel)

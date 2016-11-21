@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-        xmlns:customControls="clr-namespace:Dexel.Editor.CustomControls"
         xmlns:views="clr-namespace:Dexel.Editor.Views"
         xmlns:dragAndDrop="clr-namespace:Dexel.Editor.DragAndDrop"
         mc:Ignorable="d"
@@ -25,7 +24,6 @@
                 <MenuItem Header="Load" Click="MenuItem_Load"></MenuItem>
                 <MenuItem Header="Merge" Click="MenuItem_Merge"></MenuItem>
             </MenuItem>
-
             <MenuItem Header="Output">
                 <MenuItem Header="Debug Print" Click="MenuItem_DebugPrint"/>
                 <MenuItem Header="Generate Code" Click="MenuItem_GenerateCode"/>
@@ -38,7 +36,6 @@
         </Menu>
         <Grid DockPanel.Dock="Top" ContextMenu="{StaticResource MyContextMenu}">
             <Label>Flow Design</Label>
-
             <views:DrawingBoard x:Name="TheDrawingBoard" Focusable="True" />
             <i:Interaction.Behaviors>
                 <dragAndDrop:FrameworkElementDropBehavior />

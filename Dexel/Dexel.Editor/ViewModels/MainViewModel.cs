@@ -5,12 +5,10 @@ using System.Linq;
 using System.Windows;
 using Dexel.Editor.CustomControls;
 using Dexel.Editor.DragAndDrop;
-using Dexel.Editor.Views;
 using Dexel.Library;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
 using PropertyChanged;
-using SoftwareCell = Dexel.Model.DataTypes.SoftwareCell;
 
 namespace Dexel.Editor.ViewModels
 {
@@ -18,7 +16,7 @@ namespace Dexel.Editor.ViewModels
     [ImplementPropertyChanged]
     public class MainViewModel : IDropable
     {
-        private static MainViewModel self;
+        private static MainViewModel _self;
 
 
         public MainViewModel()
@@ -30,8 +28,8 @@ namespace Dexel.Editor.ViewModels
             FontSizeCell = 12;
             VisibilityDatanames = Visibility.Visible;
             VisibilityBlockTextBox = Visibility.Hidden;
-            
-            SelectedSoftwareCells.CollectionChanged += (sender, args) => Update();
+            SelectedSoftwareCells.CollectionChanged += (sender, args) => UpdateSelectionState();
+
         }
 
 
@@ -40,37 +38,22 @@ namespace Dexel.Editor.ViewModels
         public ObservableCollection<IOCellViewModel> SoftwareCells { get; set; }
         public ObservableCollection<IOCellViewModel> SelectedSoftwareCells { get; set; }
         public ConnectionViewModel TemporaryConnection { get; set; }
-
         public MainModel Model { get; set; }
-
         public int FontSizeCell { get; set; }
         public Visibility VisibilityDatanames { get; set; }
         public Visibility VisibilityBlockTextBox { get; set; }
-        
 
 
-        private void Update()
+        public static MainViewModel Instance() => _self ?? (_self = new MainViewModel());
+
+
+        #region Modify Selection
+
+        private void UpdateSelectionState()
         {
-           
             SoftwareCells.ForEach(x => x.IsSelected = false);
             SelectedSoftwareCells.ForEach(x => x.IsSelected = true);
         }
-
-
-        public static MainViewModel Instance()
-        {
-            return self ?? (self = new MainViewModel());
-        }
-
-
-        public void Reload()
-        {
-            if (Model != null)
-            {
-                LoadFromModel(Model);
-            }
-        }
-
 
         public void SetSelection(IOCellViewModel ioCellViewModel)
         {
@@ -83,51 +66,34 @@ namespace Dexel.Editor.ViewModels
 
         public void SetSelectionCTRLMod(IOCellViewModel ioCellViewModel)
         {
-            //
-            // Control key was held down.
-            // Toggle the selection.
-            //
             if (SelectedSoftwareCells.Contains(ioCellViewModel))
-            {
-                //
-                // Item was already selected, control-click removes it from the selection.
-                //
                 SelectedSoftwareCells.Remove(ioCellViewModel);
-            }
             else
-            {
-                // 
-                // Item was not already selected, control-click adds it to the selection.
-                //
                 SelectedSoftwareCells.Add(ioCellViewModel);
-            }
         }
 
 
         public void MoveSelectedIOCells(Vector dragDelta)
         {
-            foreach (var iocell in SelectedSoftwareCells)
-            {
-                var pt = iocell.Model.Position;
-                pt.X += dragDelta.X;
-                pt.Y += dragDelta.Y;
-                iocell.Model.Position = pt;
-            }
+            SelectedSoftwareCells.ForEach(sc => Interactions.MoveSoftwareCell(sc.Model, dragDelta.X, dragDelta.Y));
         }
 
 
         public void DuplicateSelectionAndSelectNew()
         {
-            var duplicted = Duplicate();
+            var duplicted = DuplicateSelection();
+            Select(duplicted);
+        }
 
 
-            // select the duplicated
+        private void Select(List<SoftwareCell> duplicted)
+        {
             SelectedSoftwareCells.Clear();
             SoftwareCells.Where(sc => duplicted.Contains(sc.Model)).ForEach(vm => SelectedSoftwareCells.Add(vm));
         }
 
 
-        private List<SoftwareCell> Duplicate()
+        private List<SoftwareCell> DuplicateSelection()
         {
             var copiedList = MainModelManager.Duplicate(SelectedSoftwareCells.Select(vm => vm.Model).ToList(), Model);
 
@@ -147,8 +113,7 @@ namespace Dexel.Editor.ViewModels
             SelectedSoftwareCells.Add(ioCellViewModel);
         }
 
-
-       
+        #endregion
 
         #region Drop
 
@@ -166,7 +131,7 @@ namespace Dexel.Editor.ViewModels
 
         #endregion
 
-        #region Update Positions
+        #region UpdateSelectionState Positions
 
         public void UpdateConnectionsPosition(Point inputPoint, Point outputPoint, IOCellViewModel ioCellViewModel)
         {
@@ -203,6 +168,15 @@ namespace Dexel.Editor.ViewModels
         #endregion
 
         #region Load Model
+
+        public void Reload()
+        {
+            if (Model != null)
+            {
+                LoadFromModel(Model);
+            }
+        }
+
 
         public void LoadFromModel(MainModel mainModel)
         {
