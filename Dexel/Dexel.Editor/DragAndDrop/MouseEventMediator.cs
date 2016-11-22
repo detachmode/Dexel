@@ -173,8 +173,8 @@ namespace Dexel.Editor.DragAndDrop
             if (!_isLeftMouseDownOnIOCell) return;
             e.Handled = true;
 
-            if (!DragThresholdReached()) return;
 
+            //if (!DragThresholdReached()) return;
 
             ModifiersKeysState(
                 ctrlAndShift: DoCtrlShiftDraggingIOCells,
@@ -236,6 +236,7 @@ namespace Dexel.Editor.DragAndDrop
         {
             if (_isDraggingIOCell)
                 return;
+           
 
             MainViewModel.Instance().DuplicateSelectionAndSelectNew();
         }

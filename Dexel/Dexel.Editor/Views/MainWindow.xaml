@@ -20,6 +20,7 @@
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
+                <MenuItem Header="New" Click="MenuItem_New"></MenuItem>
                 <MenuItem Header="Save" Click="MenuItem_Save"></MenuItem>
                 <MenuItem Header="Load" Click="MenuItem_Load"></MenuItem>
                 <MenuItem Header="Merge" Click="MenuItem_Merge"></MenuItem>

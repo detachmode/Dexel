@@ -365,16 +365,17 @@ namespace Dexel.Editor.Views
         }
 
 
-        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
-        {
-
-        }
 
 
         private void help_OnClicked(object sender, RoutedEventArgs e)
         {
             var helpdia = new HelpWindow();
             helpdia.ShowDialog();
+        }
+
+        private void MenuItem_New(object sender, RoutedEventArgs e)
+        {         
+             MainViewModel.Instance().LoadFromModel(new MainModel());
         }
     }
 
