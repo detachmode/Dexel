@@ -20,7 +20,7 @@
             <Separator></Separator>
           
             <MenuItem Header="Copy" Click="Copy_click" />
-            <MenuItem Header="Cut" Click="Cut_click" />
+            <!--<MenuItem Header="Cut" Click="Cut_click" />-->
             <MenuItem Header="Delete" Click="Delete_click" />
         </ContextMenu>
     </UserControl.Resources>

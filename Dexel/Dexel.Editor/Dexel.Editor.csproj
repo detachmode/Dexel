@@ -165,6 +165,9 @@
     <Compile Include="Views\DrawingBoard.xaml.cs">
       <DependentUpon>DrawingBoard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\HelpWindow.xaml.cs">
+      <DependentUpon>HelpWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\IOCell.xaml.cs">
       <DependentUpon>IOCell.xaml</DependentUpon>
     </Compile>
@@ -218,6 +221,10 @@
     <Page Include="Views\DrawingBoard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\HelpWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\IOCell.xaml">
       <Generator>MSBuild:Compile</Generator>

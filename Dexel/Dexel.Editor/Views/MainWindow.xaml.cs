@@ -62,8 +62,7 @@ namespace Dexel.Editor.Views
                     e.Handled = true;
                     break;
                 case Key.Return:
-                    if (ctrlDown)
-                        NewOrFirstIntegrated();
+                    NewOrFirstIntegrated();
                     e.Handled = true;
                     break;
             }
@@ -123,7 +122,11 @@ namespace Dexel.Editor.Views
             if (viewmodel == null)
                 return;
 
-            Action a = () => frameworkelement.Fu.theTextBox.Focus();
+            Action a = () =>
+            {
+                frameworkelement.Fu.theTextBox.Focus();
+                frameworkelement.Fu.theTextBox.SelectionStart = frameworkelement.Fu.theTextBox.Text.Length;
+            };
             frameworkelement.Fu.theTextBox.Dispatcher.BeginInvoke(DispatcherPriority.Background, a);
 
             viewmodel.IsSelected = true;
@@ -141,38 +144,29 @@ namespace Dexel.Editor.Views
             if (viewmodel == null)
                 return;
 
-            for (var i = 0; i < frameworkelement.OutputFlow.Items.Count; i++)
+            FocusTextbox(dsd, frameworkelement.OutputFlow);
+            FocusTextbox(dsd, frameworkelement.InputFlow);
+        }
+
+
+        private static void FocusTextbox(DataStreamDefinition dsd, ItemsControl itemsControl)
+        {
+            for (var i = 0; i < itemsControl.Items.Count; i++)
             {
-                var c = (ContentPresenter) frameworkelement.OutputFlow.ItemContainerGenerator.ContainerFromIndex(i);
+                var c = (ContentPresenter)itemsControl.ItemContainerGenerator.ContainerFromIndex(i);
                 c.ApplyTemplate();
 
                 var dsdView = (DangelingConnectionView) c.ContentTemplate.FindName("DangelingConnectionView", c);
-                if (dsdView != null)
-                {
-                    var dsdViewModel = (DangelingConnectionViewModel) dsdView.DataContext;
-                    if (dsdViewModel.Model == dsd)
-                    {
-                        dsdView.TheDataNamesControl.TextBox.Focus();
-                        break;
-                    }
-                }
-            }
+                if (dsdView == null) continue;
+                var dsdViewModel = (DangelingConnectionViewModel) dsdView.DataContext;
+                if (dsdViewModel.Model != dsd) continue;
 
-            for (var i = 0; i < frameworkelement.InputFlow.Items.Count; i++)
-            {
-                var c = (ContentPresenter) frameworkelement.InputFlow.ItemContainerGenerator.ContainerFromIndex(i);
-                c.ApplyTemplate();
-
-                var dsdView = (DangelingConnectionView) c.ContentTemplate.FindName("DangelingConnectionView", c);
-                if (dsdView != null)
-                {
-                    var dsdViewModel = (DangelingConnectionViewModel) dsdView.DataContext;
-                    if (dsdViewModel.Model == dsd)
-                    {
-                        dsdView.TheDataNamesControl.TextBox.Focus();
-                        break;
-                    }
-                }
+                dsdView.TheDataNamesControl.TextBox.Focus();
+                dsdView.TheDataNamesControl.TextBox.SelectionStart = dsdView.TheDataNamesControl.TextBox.Text.First()
+                    .Equals('(')
+                    ? 1
+                    : 0;
+                break;
             }
         }
 
@@ -374,6 +368,13 @@ namespace Dexel.Editor.Views
         private void MenuItem_OnClick(object sender, RoutedEventArgs e)
         {
 
+        }
+
+
+        private void help_OnClicked(object sender, RoutedEventArgs e)
+        {
+            var helpdia = new HelpWindow();
+            helpdia.ShowDialog();
         }
     }
 

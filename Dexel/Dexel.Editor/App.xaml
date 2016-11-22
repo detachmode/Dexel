@@ -28,7 +28,7 @@
             </VisualBrush>
 
             <Style x:Key="BaseContentControlStyle" TargetType="{x:Type ContentControl}">
-                <Setter Property="Foreground" Value="Bisque" />
+                <Setter Property="Foreground" Value="WhiteSmoke" />
             </Style>
             <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BaseContentControlStyle}" />
 

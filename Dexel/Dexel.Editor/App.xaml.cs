@@ -28,7 +28,7 @@ namespace Dexel.Editor
 
             AllocConsole();
 
-            var mockMainModel = Mockdata.MakeRandomPerson2();
+            var mockMainModel = Mockdata.StartMainModel();
             var mainviewModel = MainViewModel.Instance();
             mainviewModel.LoadFromModel(mockMainModel);
 

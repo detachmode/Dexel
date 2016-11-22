@@ -32,7 +32,8 @@
                 <RadioButton Content="Auto Debug Print" Checked="CheckBox_Checked" Unchecked="CheckBox_UnChecked" GroupName="Auto"/>
                 <RadioButton Content="Auto Generate" Checked="AutoGenerate_Checked" Unchecked="AutoGenerate_UnChecked" GroupName="Auto"/>
             </MenuItem>
-            <MenuItem Header="Test" Click="MenuItem_OnClick"></MenuItem>
+            <MenuItem Header="Shortcuts cheatsheet" Click="help_OnClicked"></MenuItem>
+            <!--<MenuItem Header="Test" Click="MenuItem_OnClick"></MenuItem>-->
 
         </Menu>
         <Grid DockPanel.Dock="Top" ContextMenu="{StaticResource MyContextMenu}">

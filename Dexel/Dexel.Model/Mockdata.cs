@@ -80,5 +80,32 @@ namespace Dexel.Model
             return testModel;
 
         }
+
+        public static MainModel StartMainModel()
+        {
+
+            var testModel = new MainModel();
+            var first = MainModelManager.AddNewSoftwareCell("foo", testModel);
+            first.Position = new Point(80, 50);
+            MainModelManager.AddNewInput(first, "()");
+
+            var firstOp = MainModelManager.AddNewSoftwareCell("subbar", testModel);
+            firstOp.Position = new Point(80, 180);
+            MainModelManager.AddNewInput(firstOp, "()");
+            MainModelManager.AddNewOutput(firstOp, "(age:int)");
+            first.Integration.Add(firstOp);
+
+
+
+            var person = MainModelManager.AddNewSoftwareCell("create person", testModel);
+            person.Position = new Point(400, 50);
+            MainModelManager.ConnectTwoCells(first, person, "(age:int ", "age:int, name:string)", testModel);
+            MainModelManager.AddNewOutput(person, "(rndPerson:Person)");
+
+
+
+            return testModel;
+
+        }
     }
 }
