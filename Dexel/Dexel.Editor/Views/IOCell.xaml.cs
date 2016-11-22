@@ -14,7 +14,12 @@ namespace Dexel.Editor.Views
     /// </summary>
     public partial class IOCell
     {
-        private Model.DataTypes.SoftwareCell duplicated;
+
+        public IOCellViewModel ViewModel()
+        {
+            var cellViewModel = DataContext as IOCellViewModel;
+            return cellViewModel;
+        }
 
 
         public IOCell()
@@ -22,6 +27,8 @@ namespace Dexel.Editor.Views
             InitializeComponent();
             LayoutUpdated += IOCell_LayoutUpdated;
         }
+
+
 
 
         private void IOCell_LayoutUpdated(object sender, EventArgs e)
@@ -37,29 +44,8 @@ namespace Dexel.Editor.Views
         }
 
 
-        private void OnDragDelta(object sender, DragDeltaEventArgs e)
-        {
-            var iocellViewModel = DataContext as IOCellViewModel;
-            if (duplicated == null && Keyboard.IsKeyDown(Key.LeftShift))
-            {
-                duplicated = Interactions.AddNewIOCell(iocellViewModel.Model.Position, MainViewModel.Instance().Model);
-            }
-
-            var modeltoMove = iocellViewModel?.Model;
-            if (duplicated != null)
-            {
-                modeltoMove = duplicated;
-            }
-
-            Interactions.MoveSoftwareCell(modeltoMove, e.HorizontalChange, e.VerticalChange);
-        }
 
 
-        public IOCellViewModel ViewModel()
-        {
-            var cellViewModel = DataContext as IOCellViewModel;
-            return cellViewModel;
-        }
 
 
         private void UpdateConnectionViewModels()
@@ -80,6 +66,8 @@ namespace Dexel.Editor.Views
         }
 
 
+        #region Context menu click events
+
         private void NewOutput_click(object sender, RoutedEventArgs e)
         {
             Interactions.AddNewOutput(ViewModel().Model, "params");
@@ -96,19 +84,6 @@ namespace Dexel.Editor.Views
         {
             Interactions.Copy(GetSelectionOrClickedOn(), MainViewModel.Instance().Model);
         }
-
-
-        private List<Model.DataTypes.SoftwareCell> GetSelectionOrClickedOn()
-        {
-            var list = new List<Model.DataTypes.SoftwareCell>();
-            if (MainViewModel.Instance().SelectedSoftwareCells.Count == 0)
-                list.Add(ViewModel().Model);
-            else
-                list = MainViewModel.Instance().SelectedSoftwareCells.Select(x => x.Model).ToList();
-
-            return list;
-        }
-
 
         private void Cut_click(object sender, RoutedEventArgs e)
         {
@@ -130,8 +105,26 @@ namespace Dexel.Editor.Views
 
         private void Delete_click(object sender, RoutedEventArgs e)
         {
-            Interactions.Delete(GetSelectionOrClickedOn(),MainViewModel.Instance().Model);
+            Interactions.Delete(GetSelectionOrClickedOn(), MainViewModel.Instance().Model);
         }
+
+        #endregion
+
+
+
+        private List<Model.DataTypes.SoftwareCell> GetSelectionOrClickedOn()
+        {
+            var list = new List<Model.DataTypes.SoftwareCell>();
+            if (MainViewModel.Instance().SelectedSoftwareCells.Count == 0)
+                list.Add(ViewModel().Model);
+            else
+                list = MainViewModel.Instance().SelectedSoftwareCells.Select(x => x.Model).ToList();
+
+            return list;
+        }
+
+
+       
     }
 
 }

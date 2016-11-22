@@ -20,6 +20,7 @@ namespace Dexel.Editor.ViewModels
         public SoftwareCell Parent { get; set; }
         public string DataNames { get; set; }
         public string Actionname { get; set; }
+        public double Width { get; set; }
 
         Type IDragable.DataType => typeof (DangelingConnectionViewModel);
 
@@ -35,6 +36,9 @@ namespace Dexel.Editor.ViewModels
         
 
         public List<Type> AllowedDropTypes => new List<Type> { typeof(DangelingConnectionViewModel)};
+       
+
+
         public void Drop(object data)
         {
             data.TryCast<DangelingConnectionViewModel>(

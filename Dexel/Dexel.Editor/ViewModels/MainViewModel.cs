@@ -46,6 +46,8 @@ namespace Dexel.Editor.ViewModels
 
         public static MainViewModel Instance() => _self ?? (_self = new MainViewModel());
 
+        
+
 
         #region Modify Selection
 

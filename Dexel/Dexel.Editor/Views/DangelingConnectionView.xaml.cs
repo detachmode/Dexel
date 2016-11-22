@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using Dexel.Editor.ViewModels;
 
 namespace Dexel.Editor.Views
@@ -12,13 +13,20 @@ namespace Dexel.Editor.Views
         public DangelingConnectionView()
         {
             InitializeComponent();
-            
+            LayoutUpdated += OnLayoutUpdated;
         }
 
-        public void SetFocus()
+
+        private void OnLayoutUpdated(object sender, EventArgs eventArgs)
         {
-            TheDataNamesControl.SetFocus();
+            if (ViewModel() == null) return;
+            ViewModel().Width = ActualWidth;
         }
+
+
+        public DangelingConnectionViewModel ViewModel() => DataContext as DangelingConnectionViewModel;
+
+        public void SetFocus() => TheDataNamesControl.SetFocus();
 
 
         private void DeleteDataStreamDefinition(object sender, RoutedEventArgs e)

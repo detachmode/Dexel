@@ -386,8 +386,6 @@ namespace Dexel.Editor
                                 result = cell;
 
                         }, mainModel);
-
-
                     else if (softwareCell.OutputStreams.Any())
                         result = softwareCell.OutputStreams.First();
 
@@ -407,6 +405,25 @@ namespace Dexel.Editor
             ViewRedraw();
 
     }
-}
+
+
+        public static object AppendNewCell(SoftwareCell focusedcell, double width, DataStreamDefinition dataStreamDefinition, MainModel mainModel)
+        {
+            var softwareCell = SoftwareCellsManager.CreateNew();
+
+            var  pos = focusedcell.Position;
+            pos.X += width;
+            softwareCell.Position = pos;
+
+            softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, dataStreamDefinition));
+            softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "output"));
+
+            MainModelManager.ConnectTwoDefintions(dataStreamDefinition, softwareCell.InputStreams.First(), mainModel);
+
+            mainModel.SoftwareCells.Add(softwareCell);
+            ViewRedraw();
+            return softwareCell;
+        }
+    }
 
 }

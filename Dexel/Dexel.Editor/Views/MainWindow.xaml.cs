@@ -1,36 +1,39 @@
 ﻿using System;
-using System.CodeDom;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Navigation;
+using System.Windows.Threading;
 using Dexel.Editor.CustomControls;
 using Dexel.Editor.ViewModels;
-using Dexel.Model;
 using Dexel.Model.DataTypes;
 using Microsoft.Win32;
 
 namespace Dexel.Editor.Views
 {
+
     /// <summary>
-    /// Interaktionslogik für MainWindow.xaml
+    ///     Interaktionslogik für MainWindow.xaml
     /// </summary>
     public partial class MainWindow
     {
-        private static MainWindow instance = null;
-        public static MainWindow Get()
-        {
-            return instance;
-        }
+        private static MainWindow instance;
+
+
+        private object test;
+
 
         public MainWindow(MainViewModel vm)
         {
             instance = this;
             InitializeComponent();
             DataContext = vm;
+        }
+
+
+        public static MainWindow Get()
+        {
+            return instance;
         }
 
 
@@ -41,7 +44,6 @@ namespace Dexel.Editor.Views
 
             var newcellmodel = Interactions.AddNewIOCell(positionClicked.Value, ViewModel());
             FocusCell(newcellmodel);
-            
         }
 
 
@@ -53,35 +55,36 @@ namespace Dexel.Editor.Views
             return positionClicked;
         }
 
+
         private void FocusDataStream(DataStream dataStream)
         {
             MainViewModel.Instance().SelectedSoftwareCells.Clear();
 
             ConnectionsView frameworkelement = null;
             ConnectionViewModel viewmodel = null;
-            for (int i = 0; i < TheDrawingBoard.ConnectionsList.Items.Count; i++)
+            for (var i = 0; i < TheDrawingBoard.ConnectionsList.Items.Count; i++)
             {
-                ContentPresenter c = (ContentPresenter)TheDrawingBoard.ConnectionsList.ItemContainerGenerator.ContainerFromIndex(i);
+                var c = (ContentPresenter) TheDrawingBoard.ConnectionsList.ItemContainerGenerator.ContainerFromIndex(i);
                 c.ApplyTemplate();
 
-                frameworkelement = (ConnectionsView)c.ContentTemplate.FindName("TheConnectionsView", c);
+                frameworkelement = (ConnectionsView) c.ContentTemplate.FindName("TheConnectionsView", c);
 
                 if (frameworkelement != null)
                 {
-                    viewmodel = (ConnectionViewModel)frameworkelement.DataContext;
+                    viewmodel = (ConnectionViewModel) frameworkelement.DataContext;
                     if (viewmodel.Model == dataStream)
                     {
                         break;
                     }
                 }
-            } 
+            }
 
             if (viewmodel == null)
                 return;
 
             frameworkelement.DataNamesControl.TextBox.Focus();
-
         }
+
 
         private void FocusCell(Model.DataTypes.SoftwareCell cellModel)
         {
@@ -95,12 +98,14 @@ namespace Dexel.Editor.Views
             if (viewmodel == null)
                 return;
 
-            frameworkelement.Fu.theTextBox.Focus();
+            Action a = () => frameworkelement.Fu.theTextBox.Focus();
+            frameworkelement.Fu.theTextBox.Dispatcher.BeginInvoke(DispatcherPriority.Background, a);
+
             viewmodel.IsSelected = true;
         }
 
 
-        private void FocusDefinition(Model.DataTypes.DataStreamDefinition dsd)
+        private void FocusDefinition(DataStreamDefinition dsd)
         {
             MainViewModel.Instance().SelectedSoftwareCells.Clear();
             IOCell frameworkelement = null;
@@ -111,49 +116,48 @@ namespace Dexel.Editor.Views
             if (viewmodel == null)
                 return;
 
-            for (int i = 0; i < frameworkelement.OutputFlow.Items.Count; i++)
+            for (var i = 0; i < frameworkelement.OutputFlow.Items.Count; i++)
             {
-                ContentPresenter c = (ContentPresenter) frameworkelement.OutputFlow.ItemContainerGenerator.ContainerFromIndex(i);
+                var c = (ContentPresenter) frameworkelement.OutputFlow.ItemContainerGenerator.ContainerFromIndex(i);
                 c.ApplyTemplate();
 
                 var dsdView = (DangelingConnectionView) c.ContentTemplate.FindName("DangelingConnectionView", c);
                 if (dsdView != null)
                 {
-                    var dsdViewModel = (DangelingConnectionViewModel)dsdView.DataContext;
+                    var dsdViewModel = (DangelingConnectionViewModel) dsdView.DataContext;
                     if (dsdViewModel.Model == dsd)
                     {
                         dsdView.TheDataNamesControl.TextBox.Focus();
                         break;
-                       
                     }
                 }
             }
 
-            for (int i = 0; i < frameworkelement.InputFlow.Items.Count; i++)
+            for (var i = 0; i < frameworkelement.InputFlow.Items.Count; i++)
             {
-                ContentPresenter c = (ContentPresenter)frameworkelement.InputFlow.ItemContainerGenerator.ContainerFromIndex(i);
+                var c = (ContentPresenter) frameworkelement.InputFlow.ItemContainerGenerator.ContainerFromIndex(i);
                 c.ApplyTemplate();
 
-                var dsdView = (DangelingConnectionView)c.ContentTemplate.FindName("DangelingConnectionView", c);
+                var dsdView = (DangelingConnectionView) c.ContentTemplate.FindName("DangelingConnectionView", c);
                 if (dsdView != null)
                 {
-                    var dsdViewModel = (DangelingConnectionViewModel)dsdView.DataContext;
+                    var dsdViewModel = (DangelingConnectionViewModel) dsdView.DataContext;
                     if (dsdViewModel.Model == dsd)
                     {
                         dsdView.TheDataNamesControl.TextBox.Focus();
                         break;
-
                     }
                 }
             }
         }
 
 
-        private void GetCell(Model.DataTypes.SoftwareCell newcellmodel, ref IOCell frameworkelement, ref IOCellViewModel viewmodel)
+        private void GetCell(Model.DataTypes.SoftwareCell newcellmodel, ref IOCell frameworkelement,
+            ref IOCellViewModel viewmodel)
         {
-            for (int i = 0; i < TheDrawingBoard.SoftwareCellsList.Items.Count; i++)
+            for (var i = 0; i < TheDrawingBoard.SoftwareCellsList.Items.Count; i++)
             {
-                ContentPresenter c =
+                var c =
                     (ContentPresenter) TheDrawingBoard.SoftwareCellsList.ItemContainerGenerator.ContainerFromIndex(i);
                 c.ApplyTemplate();
 
@@ -168,7 +172,6 @@ namespace Dexel.Editor.Views
                     }
                 }
             }
-           
         }
 
 
@@ -176,6 +179,7 @@ namespace Dexel.Editor.Views
         {
             Interactions.ConsolePrintGeneratedCode(ViewModel());
         }
+
 
         private void MenuItem_DebugPrint(object sender, RoutedEventArgs e)
         {
@@ -194,15 +198,18 @@ namespace Dexel.Editor.Views
             Interactions.AutoPrint(ViewModel(), Interactions.DebugPrint);
         }
 
+
         private void CheckBox_UnChecked(object sender, RoutedEventArgs e)
         {
             Interactions.AutoOutputTimerDispose();
         }
 
+
         private void AutoGenerate_Checked(object sender, RoutedEventArgs e)
         {
             Interactions.AutoPrint(ViewModel(), Interactions.ConsolePrintGeneratedCode);
         }
+
 
         private void AutoGenerate_UnChecked(object sender, RoutedEventArgs e)
         {
@@ -227,6 +234,7 @@ namespace Dexel.Editor.Views
                 Interactions.LoadFromFile(openFileDialog.FileName, ViewModel());
         }
 
+
         private void MenuItem_Merge(object sender, RoutedEventArgs e)
         {
             var openFileDialog = new OpenFileDialog();
@@ -238,18 +246,21 @@ namespace Dexel.Editor.Views
 
         public void MainWindow_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            bool ShiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
-            //bool CtrlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+            var shiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            var ctrlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 
             if (e.Key == Key.Delete)
             {
-                Interactions.Delete(MainViewModel.Instance().SelectedSoftwareCells.Select(x => x.Model), MainViewModel.Instance().Model);
+                Interactions.Delete(MainViewModel.Instance().SelectedSoftwareCells.Select(x => x.Model),
+                    MainViewModel.Instance().Model);
             }
 
             switch (e.Key)
             {
-                case Key.Tab:                 
-                    if (ShiftDown)
+                case Key.Tab:
+                    if (ctrlDown)
+                        AppendNewCell();
+                    else if (shiftDown)
                         TabStopMove(Interactions.TabStopGetPrevious);
                     else
                         TabStopMove(Interactions.TabStopGetNext);
@@ -259,7 +270,35 @@ namespace Dexel.Editor.Views
         }
 
 
-        private void TabStopMove(Func<object, MainModel, object> tabstopFunc )
+        private void AppendNewCell()
+        {
+            TryGetDataContext<IOCellViewModel>(Keyboard.FocusedElement, vm
+                => AppendNewCellBehind(vm, vm.DangelingOutputs.First()));
+
+            TryGetDataContext<DataStreamDefinition>(Keyboard.FocusedElement, dsd
+                =>
+            {
+                var cellVM = MainViewModel.Instance().SoftwareCells.First(iocell => iocell.Model == dsd.Parent);
+                var vm = cellVM.DangelingOutputs.First(dsdVM => dsdVM.Model == dsd);
+                AppendNewCellBehind(cellVM, vm);
+            });
+        }
+
+
+        private void AppendNewCellBehind(IOCellViewModel vm, DangelingConnectionViewModel dangelingConnectionViewModel)
+        {
+            var width = dangelingConnectionViewModel.Width;
+            width += vm.CellWidth/2 + 100;
+            var focusedcell = vm.Model;
+            var nextmodel = Interactions.AppendNewCell(focusedcell, width, dangelingConnectionViewModel.Model,
+                ViewModel());
+            ApplyTemplate();
+            test = nextmodel;
+            SetFocusOnObject(nextmodel);
+        }
+
+
+        private void TabStopMove(Func<object, MainModel, object> tabstopFunc)
         {
             var focusedElement = Keyboard.FocusedElement;
             TryGetDataContext<IOCellViewModel>(focusedElement, vm =>
@@ -283,12 +322,11 @@ namespace Dexel.Editor.Views
         }
 
 
-
         private void SetFocusOnObject(object nextmodel)
         {
             nextmodel.TryCast<Model.DataTypes.SoftwareCell>(FocusCell);
-            nextmodel.TryCast<Model.DataTypes.DataStream>(FocusDataStream);
-            nextmodel.TryCast<Model.DataTypes.DataStreamDefinition>(FocusDefinition);
+            nextmodel.TryCast<DataStream>(FocusDataStream);
+            nextmodel.TryCast<DataStreamDefinition>(FocusDefinition);
         }
 
 
@@ -296,7 +334,7 @@ namespace Dexel.Editor.Views
         {
             try
             {
-                var frameworkelement = (FrameworkElement)element;
+                var frameworkelement = (FrameworkElement) element;
                 var vm = (T) frameworkelement.DataContext;
                 doAction(vm);
             }
@@ -314,9 +352,12 @@ namespace Dexel.Editor.Views
 
             Interactions.Paste(positionClicked.Value, MainViewModel.Instance().Model);
         }
+
+
+        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            SetFocusOnObject(test);
+        }
     }
 
-
-
 }
-
