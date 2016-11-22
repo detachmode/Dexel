@@ -17,15 +17,12 @@ namespace Dexel.Editor.Views
     /// </summary>
     public partial class MainWindow
     {
-        private static MainWindow instance;
-
-
-        private object test;
+        private static MainWindow _instance;
 
 
         public MainWindow(MainViewModel vm)
         {
-            instance = this;
+            _instance = this;
             InitializeComponent();
             DataContext = vm;
         }
@@ -33,28 +30,58 @@ namespace Dexel.Editor.Views
 
         public static MainWindow Get()
         {
-            return instance;
+            return _instance;
         }
 
-
-        private void AddNewCell_Click(object sender, RoutedEventArgs e)
+        private MainModel ViewModel()
         {
-            var positionClicked = GetClickedPosition();
-            if (positionClicked == null) return;
-
-            var newcellmodel = Interactions.AddNewIOCell(positionClicked.Value, ViewModel());
-            FocusCell(newcellmodel);
+            return (DataContext as MainViewModel)?.Model;
         }
 
 
-        private Point? GetClickedPosition()
+        public void MainWindow_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            var myWindow = GetWindow(this);
-            var transform = myWindow?.TransformToVisual(TheDrawingBoard.SoftwareCellsList);
-            var positionClicked = transform?.Transform(TheDrawingBoard.TheZoomBorder.BeforeContextMenuPoint);
-            return positionClicked;
+            var shiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            var ctrlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
+
+            if (e.Key == Key.Delete)
+            {
+                Interactions.Delete(MainViewModel.Instance().SelectedSoftwareCells.Select(x => x.Model),
+                    MainViewModel.Instance().Model);
+            }
+
+            switch (e.Key)
+            {
+                case Key.Tab:
+                    if (ctrlDown)
+                        AppendNewCell();
+                    else if (shiftDown)
+                        TabStopMove(Interactions.TabStopGetPrevious);
+                    else
+                        TabStopMove(Interactions.TabStopGetNext);
+                    e.Handled = true;
+                    break;
+                case Key.Return:
+                    if (ctrlDown)
+                        NewOrFirstIntegrated();
+                    e.Handled = true;
+                    break;
+            }
         }
 
+
+        private void NewOrFirstIntegrated()
+        {
+            TryGetDataContext<IOCellViewModel>(Keyboard.FocusedElement, vm =>
+            {
+                var nextmodel = Interactions.NewOrFirstIntegrated(vm.Model, ViewModel());
+                SetFocusOnObject(nextmodel);
+
+            });
+           
+        }
+
+        #region focus methods
 
         private void FocusDataStream(DataStream dataStream)
         {
@@ -69,20 +96,18 @@ namespace Dexel.Editor.Views
 
                 frameworkelement = (ConnectionsView) c.ContentTemplate.FindName("TheConnectionsView", c);
 
-                if (frameworkelement != null)
-                {
-                    viewmodel = (ConnectionViewModel) frameworkelement.DataContext;
-                    if (viewmodel.Model == dataStream)
-                    {
-                        break;
-                    }
-                }
+                if (frameworkelement == null) continue;
+
+                viewmodel = (ConnectionViewModel) frameworkelement.DataContext;
+
+                if (viewmodel.Model == dataStream)
+                    break;
             }
 
             if (viewmodel == null)
                 return;
 
-            frameworkelement.DataNamesControl.TextBox.Focus();
+            frameworkelement?.DataNamesControl.TextBox.Focus();
         }
 
 
@@ -174,6 +199,9 @@ namespace Dexel.Editor.Views
             }
         }
 
+        #endregion
+
+
 
         private void MenuItem_GenerateCode(object sender, RoutedEventArgs e)
         {
@@ -187,9 +215,22 @@ namespace Dexel.Editor.Views
         }
 
 
-        private MainModel ViewModel()
+        private void AddNewCell_Click(object sender, RoutedEventArgs e)
         {
-            return (DataContext as MainViewModel).Model;
+            var positionClicked = GetClickedPosition();
+            if (positionClicked == null) return;
+
+            var newcellmodel = Interactions.AddNewIOCell(positionClicked.Value, ViewModel());
+            FocusCell(newcellmodel);
+        }
+
+
+        private Point? GetClickedPosition()
+        {
+            var myWindow = GetWindow(this);
+            var transform = myWindow?.TransformToVisual(TheDrawingBoard.SoftwareCellsList);
+            var positionClicked = transform?.Transform(TheDrawingBoard.TheZoomBorder.BeforeContextMenuPoint);
+            return positionClicked;
         }
 
 
@@ -244,30 +285,7 @@ namespace Dexel.Editor.Views
         }
 
 
-        public void MainWindow_OnPreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            var shiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
-            var ctrlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-
-            if (e.Key == Key.Delete)
-            {
-                Interactions.Delete(MainViewModel.Instance().SelectedSoftwareCells.Select(x => x.Model),
-                    MainViewModel.Instance().Model);
-            }
-
-            switch (e.Key)
-            {
-                case Key.Tab:
-                    if (ctrlDown)
-                        AppendNewCell();
-                    else if (shiftDown)
-                        TabStopMove(Interactions.TabStopGetPrevious);
-                    else
-                        TabStopMove(Interactions.TabStopGetNext);
-                    e.Handled = true;
-                    break;
-            }
-        }
+       
 
 
         private void AppendNewCell()
@@ -292,8 +310,7 @@ namespace Dexel.Editor.Views
             var focusedcell = vm.Model;
             var nextmodel = Interactions.AppendNewCell(focusedcell, width, dangelingConnectionViewModel.Model,
                 ViewModel());
-            ApplyTemplate();
-            test = nextmodel;
+
             SetFocusOnObject(nextmodel);
         }
 
@@ -356,7 +373,7 @@ namespace Dexel.Editor.Views
 
         private void MenuItem_OnClick(object sender, RoutedEventArgs e)
         {
-            SetFocusOnObject(test);
+
         }
     }
 

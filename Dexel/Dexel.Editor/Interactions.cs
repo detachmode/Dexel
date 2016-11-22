@@ -40,8 +40,8 @@ namespace Dexel.Editor
             pos.X -= 100;
             pos.Y -= 20;
             softwareCell.Position = new Point(pos.X, pos.Y);
-            softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "input"));
-            softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "output"));
+            softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
+            softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
 
             mainModel.SoftwareCells.Add(softwareCell);
             ViewRedraw();
@@ -416,13 +416,35 @@ namespace Dexel.Editor
             softwareCell.Position = pos;
 
             softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, dataStreamDefinition));
-            softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "output"));
+            softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
 
             MainModelManager.ConnectTwoDefintions(dataStreamDefinition, softwareCell.InputStreams.First(), mainModel);
 
             mainModel.SoftwareCells.Add(softwareCell);
             ViewRedraw();
             return softwareCell;
+        }
+
+
+        public static object NewOrFirstIntegrated(SoftwareCell focusedcell, MainModel mainModel)
+        {
+            if (focusedcell.Integration.Any())
+                return focusedcell.Integration.First();
+
+            var softwareCell = SoftwareCellsManager.CreateNew();
+            var pos = focusedcell.Position;
+            pos.Y += 100;
+            softwareCell.Position = pos;
+
+            softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, focusedcell.InputStreams.First()));
+            softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
+
+            focusedcell.Integration.AddUnique(softwareCell);
+            mainModel.SoftwareCells.Add(softwareCell);
+
+            ViewRedraw();
+            return softwareCell;
+            
         }
     }
 
