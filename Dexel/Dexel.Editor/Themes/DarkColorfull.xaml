@@ -12,6 +12,4 @@
     <SolidColorBrush x:Key="Foreground" Color="White"/>
     <system:Double x:Key="StrokeThickness">3</system:Double>
 
-   
-
 </ResourceDictionary>

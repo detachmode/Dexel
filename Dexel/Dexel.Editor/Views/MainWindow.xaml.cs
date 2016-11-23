@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -82,17 +83,15 @@ namespace Dexel.Editor.Views
 
             ConnectionsView frameworkelement = null;
             ConnectionViewModel viewmodel = null;
+
             for (var i = 0; i < TheDrawingBoard.ConnectionsList.Items.Count; i++)
             {
                 var c = (ContentPresenter) TheDrawingBoard.ConnectionsList.ItemContainerGenerator.ContainerFromIndex(i);
                 c.ApplyTemplate();
 
                 frameworkelement = (ConnectionsView) c.ContentTemplate.FindName("TheConnectionsView", c);
-
                 if (frameworkelement == null) continue;
-
                 viewmodel = (ConnectionViewModel) frameworkelement.DataContext;
-
                 if (viewmodel.Model == dataStream)
                     break;
             }
@@ -100,7 +99,12 @@ namespace Dexel.Editor.Views
             if (viewmodel == null)
                 return;
 
+
             frameworkelement?.DataNamesControl.TextBox.Focus();
+            frameworkelement.DataNamesControl.TextBox.SelectionStart = frameworkelement.DataNamesControl.TextBox.Text.First()
+                    .Equals('(')
+                    ? 1
+                    : 0;
         }
 
 

@@ -151,7 +151,7 @@ namespace Dexel.Editor.Tests
             MainModelManager.ConnectTwoCells(firstOp, secondOp, "", "", testModel);
             MainModelManager.ConnectTwoCells(secondOp, thirdOp, "", "", testModel);
 
-            var selected = new List<SoftwareCell> {thirdOp};
+            var selected = new List<SoftwareCell> { thirdOp };
             Interactions.Delete(selected, testModel);
             Assert.AreEqual(3, testModel.SoftwareCells.Count);
             Assert.AreEqual(2, main.Integration.Count);
@@ -164,6 +164,8 @@ namespace Dexel.Editor.Tests
             Assert.AreEqual(1, main.Integration.Count);
             Assert.AreEqual(secondOp.Name, main.Integration.First().Name);
         }
+
+      
     }
 
 }
