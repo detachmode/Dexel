@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using Dexel.Editor.CustomControls;
@@ -57,6 +58,7 @@ namespace Dexel.Editor.DragAndDrop
         {
             sender.TryCast<IOCell>(cell => IOCellMouseUp(cell, e));
             sender.TryCast<DrawingBoard>(board => DrawingBoardMouseUp(board, e));
+            DraggingOFF();
         }
 
 
@@ -64,21 +66,25 @@ namespace Dexel.Editor.DragAndDrop
         {
             if (e.ChangedButton != MouseButton.Left) return;
 
+            MainViewModel.Instance().ClearSelection();
+            ResetFocus();
+
             if (_isDraggingSelectionRect)
             {
                 _isDraggingSelectionRect = false;
                 sender.ApplyDragSelectionRect();
             }
-            else
-            {
-                MainViewModel.Instance().ClearSelection();
-                Keyboard.ClearFocus();
-                ((MainWindow) Application.Current.MainWindow).TheDrawingBoard.Focus();
-            }
-
+            
             if (!_isLeftMouseButtonDownOnWindow) return;
             _isLeftMouseButtonDownOnWindow = false;
             sender.ReleaseMouseCapture();
+        }
+
+
+        private static void ResetFocus()
+        {
+            Keyboard.ClearFocus();
+            ((MainWindow) Application.Current.MainWindow).TheDrawingBoard.Focus();
         }
 
 
@@ -109,6 +115,7 @@ namespace Dexel.Editor.DragAndDrop
 
         private static void IOCellMouseDown(IOCell iocell, MouseButtonEventArgs e)
         {
+            DebuggingHelper.MyDebug.WriteLineIfDifferent("-----------\nIOCellMouseDown");
             e.Handled = true;
             _mouseDownOnSoftwareCell = iocell.ViewModel().Model;
 
@@ -143,6 +150,7 @@ namespace Dexel.Editor.DragAndDrop
         {
             if (_isLeftMouseDownOnIOCell)
             {
+                ResetFocus();
                 var iocell = (FrameworkElement) sender;
                 var ioCellViewModel = iocell.DataContext as IOCellViewModel;
                 if (ioCellViewModel == null)
@@ -155,7 +163,7 @@ namespace Dexel.Editor.DragAndDrop
                     else
                         MainViewModel.Instance().SetSelection(ioCellViewModel);
                 }
-
+               
                 iocell.ReleaseMouseCapture();
                 _isLeftMouseDownOnIOCell = false;
                 _isLeftMouseAndControlDownOnIOCell = false;
@@ -163,18 +171,26 @@ namespace Dexel.Editor.DragAndDrop
                 e.Handled = true;
             }
 
+          
+        }
+
+
+        private static void DraggingOFF()
+        {
+            DebuggingHelper.MyDebug.WriteLineIfDifferent("DraggingOFF");
             _isDraggingIOCell = false;
+            _isLeftMouseDownOnIOCell = false;
             _isCTRLDraggingIOCell = false;
         }
 
 
-        private static void IOCellMouseMove(IOCell sender, MouseEventArgs e)
+        private static void IOCellMouseMove(object sender, MouseEventArgs e)
         {
             if (!_isLeftMouseDownOnIOCell) return;
             e.Handled = true;
 
 
-            //if (!DragThresholdReached()) return;
+            //if (DragThresholdReached()) _isDraggingIOCell = true;
 
             ModifiersKeysState(
                 ctrlAndShift: DoCtrlShiftDraggingIOCells,
@@ -252,6 +268,7 @@ namespace Dexel.Editor.DragAndDrop
 
         private static void DraggingSelectedIOCells()
         {
+            DebuggingHelper.MyDebug.WriteLineIfDifferent($"DraggingSelectedIOCells {_isDraggingIOCell}");
             var dragDelta = ProjectedMousePosition - OrigMouseDownPoint;
             OrigMouseDownPoint = ProjectedMousePosition;
 
