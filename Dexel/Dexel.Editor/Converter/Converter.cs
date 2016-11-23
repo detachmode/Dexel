@@ -87,6 +87,27 @@ namespace Dexel.Editor.Converter
         }
     }
 
+    public class SoftwareCellTextfieldBG : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var visibility =  (Visibility)value;
+            if (visibility == Visibility.Visible)
+            {
+                return Brushes.Transparent;
+                
+            }
+            return Application.Current.Resources["FillSoftwareCellBrush"];
+        }
+
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
     public class VisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

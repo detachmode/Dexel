@@ -219,9 +219,6 @@ namespace Dexel.Editor.CustomControls
             var connectionViewModel = DataContext as ConnectionViewModel;
             if (connectionViewModel != null)
                 connectionViewModel.Center = GetCenterPoint();
-            //txtBox.Text = Text;
-            //Canvas.SetLeft(txtBox, centerPoint.X);
-            //Canvas.SetTop(txtBox, centerPoint.Y);
         }
 
 

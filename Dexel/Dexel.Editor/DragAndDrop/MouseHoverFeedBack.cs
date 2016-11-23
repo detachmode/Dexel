@@ -8,11 +8,16 @@ namespace Dexel.Editor.DragAndDrop
     {
 
         private SolidColorBrush defaultColor;
+        private SolidColorBrush hoverBrush;
         protected override void OnAttached()
         {
             base.OnAttached();
+
             defaultColor = (SolidColorBrush) AssociatedObject.Background;
-            AssociatedObject.MouseEnter += (sender, args) => AssociatedObject.Background = Brushes.AliceBlue;
+            hoverBrush = new SolidColorBrush(Color.FromArgb(25, 255, 255, 255));
+
+            
+            AssociatedObject.MouseEnter += (sender, args) => AssociatedObject.Background = hoverBrush;
             AssociatedObject.MouseLeave += (sender, args) => AssociatedObject.Background = defaultColor;
         }
     }

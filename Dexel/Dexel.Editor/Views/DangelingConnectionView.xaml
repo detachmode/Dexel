@@ -33,7 +33,7 @@
 
         </Grid.ColumnDefinitions>
         <Rectangle Grid.Column="0" Grid.RowSpan="2" Fill="{DynamicResource FillPointerBrush}" Height="{DynamicResource StrokeThickness}" VerticalAlignment="Center"  />
-        <Grid  Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
+        <Grid Background="Transparent" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
             <i:Interaction.Behaviors>
                 <dragAndDrop:FrameworkElementDragBehavior  />
                 <dragAndDrop:MouseHoverFeedBack/>

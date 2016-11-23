@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+            
              xmlns:views="clr-namespace:Dexel.Editor.Views"
              xmlns:dragAndDrop="clr-namespace:Dexel.Editor.DragAndDrop"
              mc:Ignorable="d"
@@ -32,7 +33,7 @@
                                 StrokeThickness="{DynamicResource StrokeThickness}" />
                 <TextBox MinWidth="22" 
                          FontSize="{Binding DataContext.FontSizeCell, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:DrawingBoard}}}"  x:Name="theTextBox"   LostFocus="TheTextBox_OnLostFocus" 
-                         Background="{DynamicResource FillSoftwareCellBrush}" 
+                         Background="{Binding DataContext.VisibilityBlockTextBox, Converter={StaticResource SoftwareCellTextfieldBG}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:DrawingBoard}}}" 
                                  Text="{Binding Path=LabelContent, 
                                         UpdateSourceTrigger=PropertyChanged,
                                         RelativeSource={RelativeSource FindAncestor, 

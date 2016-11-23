@@ -98,8 +98,8 @@ namespace Dexel.Model
 
 
             var person = MainModelManager.AddNewSoftwareCell("create person", testModel);
-            person.Position = new Point(400, 50);
-            MainModelManager.ConnectTwoCells(first, person, "(age:int ", "age:int, name:string)", testModel);
+            person.Position = new Point(450, 50);
+            MainModelManager.ConnectTwoCells(first, person, "(age:int)", "(age:int, name:string)", testModel);
             MainModelManager.AddNewOutput(person, "(rndPerson:Person)");
 
 

@@ -11,6 +11,8 @@
             <converter:TextDocumentConverter x:Key="TextDocumentConverter" />
             <converter:IntegrationBorderTopPointConverter x:Key="IntegrationBorderTopPointConverter" />
             <converter:VisibilityConverter x:Key="VisibilityConverter" />
+            <converter:SoftwareCellTextfieldBG x:Key="SoftwareCellTextfieldBG" />
+            
             
             <ItemsPanelTemplate x:Key="DrawingBoardItemControl">
                 <Canvas />
