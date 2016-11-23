@@ -168,7 +168,7 @@ namespace Dexel.Editor.DragAndDrop
         }
 
 
-        private static void IOCellMouseMove(object sender, MouseEventArgs e)
+        private static void IOCellMouseMove(IOCell sender, MouseEventArgs e)
         {
             if (!_isLeftMouseDownOnIOCell) return;
             e.Handled = true;

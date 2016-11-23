@@ -94,6 +94,14 @@ namespace Dexel.Editor.ViewModels
             SoftwareCells.Where(sc => duplicted.Contains(sc.Model)).ForEach(vm => SelectedSoftwareCells.Add(vm));
         }
 
+        public SoftwareCell DuplicateIncludingChildrenAndIntegrated(SoftwareCell softwareCell)
+        {
+            var list = MainModelManager.GetChildrenAndIntegrated(softwareCell, new List<SoftwareCell>(), Model);
+            var copiedlist = MainModelManager.Duplicate(list, Model);
+            var first = copiedlist.First(x => x.OriginGuid == softwareCell.ID);
+            return first.NewCell;
+        }
+
 
         private List<SoftwareCell> DuplicateSelection()
         {
@@ -227,6 +235,8 @@ namespace Dexel.Editor.ViewModels
         }
 
         #endregion
+
+
     }
 
 }
