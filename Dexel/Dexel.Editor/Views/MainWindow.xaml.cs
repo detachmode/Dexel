@@ -27,16 +27,10 @@ namespace Dexel.Editor.Views
             DataContext = vm;
         }
 
+        public static MainWindow Get() => _instance;
 
-        public static MainWindow Get()
-        {
-            return _instance;
-        }
 
-        private MainModel ViewModel()
-        {
-            return (DataContext as MainViewModel)?.Model;
-        }
+        private MainModel ViewModel() => (DataContext as MainViewModel)?.Model;
 
 
         public void MainWindow_OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -279,8 +273,6 @@ namespace Dexel.Editor.Views
         }
 
 
-       
-
 
         private void AppendNewCell()
         {
@@ -333,11 +325,11 @@ namespace Dexel.Editor.Views
         }
 
 
-        private void SetFocusOnObject(object nextmodel)
+        private void SetFocusOnObject(object model)
         {
-            nextmodel.TryCast<Model.DataTypes.SoftwareCell>(FocusCell);
-            nextmodel.TryCast<DataStream>(FocusDataStream);
-            nextmodel.TryCast<DataStreamDefinition>(FocusDefinition);
+            model.TryCast<Model.DataTypes.SoftwareCell>(FocusCell);
+            model.TryCast<DataStream>(FocusDataStream);
+            model.TryCast<DataStreamDefinition>(FocusDefinition);
         }
 
 
