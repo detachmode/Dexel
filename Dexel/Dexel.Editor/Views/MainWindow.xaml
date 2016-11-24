@@ -10,13 +10,6 @@
         Focusable="True"
         KeyDown="MainWindow_OnPreviewKeyDown"
         Title="Sharp Flow Design" Height="350" Width="825">
-    <Window.Resources>
-
-        <ContextMenu x:Key="MyContextMenu">
-            <MenuItem Header="Add Celldaw" Click="AddNewCell_Click" />
-            <MenuItem Header="Paste" Click="Paste_click" />
-        </ContextMenu>
-    </Window.Resources>
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
@@ -37,7 +30,7 @@
             <!--<MenuItem Header="Test" Click="MenuItem_OnClick"></MenuItem>-->
 
         </Menu>
-        <Grid DockPanel.Dock="Top" ContextMenu="{StaticResource MyContextMenu}">
+        <Grid DockPanel.Dock="Top">
             <Label>Flow Design</Label>
             <views:DrawingBoard x:Name="TheDrawingBoard" Focusable="True" />
             <i:Interaction.Behaviors>

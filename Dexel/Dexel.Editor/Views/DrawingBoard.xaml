@@ -14,13 +14,18 @@
 			 MouseUp="Window_MouseUp"
 			 MouseMove="Window_MouseMove"
 			 d:DesignHeight="300" d:DesignWidth="700">
-
+    <UserControl.Resources>
+        <ContextMenu x:Key="MyContextMenu">
+            <MenuItem Header="Add Celldaw" Click="AddNewCell_Click" />
+            <MenuItem Header="Paste" Click="Paste_click" />
+        </ContextMenu>
+    </UserControl.Resources>
 
     <Grid x:Name="TheCanvas"  
 		  AllowDrop="True"
 		  Canvas.ZIndex="100"
 		  IsHitTestVisible="True"
-         
+          ContextMenu="{StaticResource MyContextMenu}"
 		  Background="Transparent">
 		
 		<customControls:ZoomBorder x:Name="TheZoomBorder" ClipToBounds="True"

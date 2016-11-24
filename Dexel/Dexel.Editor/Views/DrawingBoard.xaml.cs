@@ -1,13 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Dexel.Editor.CustomControls;
 using Dexel.Editor.DragAndDrop;
 using Dexel.Editor.ViewModels;
 using Dexel.Library;
+using Dexel.Model.DataTypes;
 
 namespace Dexel.Editor.Views
 {
@@ -25,7 +28,7 @@ namespace Dexel.Editor.Views
         }
 
         private MainViewModel ViewModel => (MainViewModel)DataContext;
-
+        private MainModel ViewModelModel() => (DataContext as MainViewModel)?.Model;
 
 
         #region IOCell mouse events
@@ -167,7 +170,236 @@ namespace Dexel.Editor.Views
         }
 
 
-       
+        #region focus methods
+
+        private void FocusDataStream(DataStream dataStream)
+        {
+            MainViewModel.Instance().SelectedSoftwareCells.Clear();
+
+            ConnectionsView frameworkelement = null;
+            ConnectionViewModel viewmodel = null;
+
+            for (var i = 0; i < ConnectionsList.Items.Count; i++)
+            {
+                var c = (ContentPresenter)ConnectionsList.ItemContainerGenerator.ContainerFromIndex(i);
+                c.ApplyTemplate();
+
+                frameworkelement = (ConnectionsView)c.ContentTemplate.FindName("TheConnectionsView", c);
+                if (frameworkelement == null) continue;
+                viewmodel = (ConnectionViewModel)frameworkelement.DataContext;
+                if (viewmodel.Model == dataStream)
+                    break;
+            }
+
+            if (viewmodel == null)
+                return;
+
+
+            frameworkelement?.DataNamesControl.TextBox.Focus();
+            frameworkelement.DataNamesControl.TextBox.SelectionStart = frameworkelement.DataNamesControl.TextBox.Text.First()
+                    .Equals('(')
+                    ? 1
+                    : 0;
+        }
+
+
+        private void FocusCell(Model.DataTypes.SoftwareCell cellModel)
+        {
+            MainViewModel.Instance().SelectedSoftwareCells.Clear();
+
+            IOCell frameworkelement = null;
+            IOCellViewModel viewmodel = null;
+
+            GetCell(cellModel, ref frameworkelement, ref viewmodel);
+
+            if (viewmodel == null)
+                return;
+
+            Action a = () =>
+            {
+                frameworkelement.Fu.theTextBox.Focus();
+                frameworkelement.Fu.theTextBox.SelectionStart = frameworkelement.Fu.theTextBox.Text.Length;
+            };
+            frameworkelement.Fu.theTextBox.Dispatcher.BeginInvoke(DispatcherPriority.Background, a);
+
+            viewmodel.IsSelected = true;
+        }
+
+
+        private void FocusDefinition(DataStreamDefinition dsd)
+        {
+            MainViewModel.Instance().SelectedSoftwareCells.Clear();
+            IOCell frameworkelement = null;
+            IOCellViewModel viewmodel = null;
+
+            GetCell(dsd.Parent, ref frameworkelement, ref viewmodel);
+
+            if (viewmodel == null)
+                return;
+
+            FocusTextbox(dsd, frameworkelement.OutputFlow);
+            FocusTextbox(dsd, frameworkelement.InputFlow);
+        }
+
+
+        private static void FocusTextbox(DataStreamDefinition dsd, ItemsControl itemsControl)
+        {
+            for (var i = 0; i < itemsControl.Items.Count; i++)
+            {
+                var c = (ContentPresenter)itemsControl.ItemContainerGenerator.ContainerFromIndex(i);
+                c.ApplyTemplate();
+
+                var dsdView = (DangelingConnectionView)c.ContentTemplate.FindName("DangelingConnectionView", c);
+                if (dsdView == null) continue;
+                var dsdViewModel = (DangelingConnectionViewModel)dsdView.DataContext;
+                if (dsdViewModel.Model != dsd) continue;
+
+                dsdView.TheDataNamesControl.TextBox.Focus();
+                dsdView.TheDataNamesControl.TextBox.SelectionStart = dsdView.TheDataNamesControl.TextBox.Text.First()
+                    .Equals('(')
+                    ? 1
+                    : 0;
+                break;
+            }
+        }
+
+
+        private void GetCell(Model.DataTypes.SoftwareCell newcellmodel, ref IOCell frameworkelement,
+            ref IOCellViewModel viewmodel)
+        {
+            for (var i = 0; i < SoftwareCellsList.Items.Count; i++)
+            {
+                var c =
+                    (ContentPresenter)SoftwareCellsList.ItemContainerGenerator.ContainerFromIndex(i);
+                c.ApplyTemplate();
+
+                frameworkelement = (IOCell)c.ContentTemplate.FindName("IoCell", c);
+
+                if (frameworkelement != null)
+                {
+                    viewmodel = (IOCellViewModel)frameworkelement.DataContext;
+                    if (viewmodel.Model == newcellmodel)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        #endregion
+
+
+
+        private void AddNewCell_Click(object sender, RoutedEventArgs e)
+        {
+            var positionClicked = GetClickedPosition();
+            if (positionClicked == null) return;
+
+            var newcellmodel = Interactions.AddNewIOCell(positionClicked.Value, ViewModelModel());
+            FocusCell(newcellmodel);
+        }
+
+        private void Paste_click(object sender, RoutedEventArgs e)
+        {
+            var positionClicked = GetClickedPosition();
+            if (positionClicked == null) return;
+
+            Interactions.Paste(positionClicked.Value, MainViewModel.Instance().Model);
+        }
+
+
+        private Point? GetClickedPosition()
+        {
+            var transform = Application.Current.MainWindow.TransformToVisual(SoftwareCellsList);
+            var positionClicked = transform?.Transform(TheZoomBorder.BeforeContextMenuPoint);
+            return positionClicked;
+        }
+
+
+        public void AppendNewCell()
+        {
+            TryGetDataContext<IOCellViewModel>(Keyboard.FocusedElement, vm
+                => AppendNewCellBehind(vm, vm.DangelingOutputs.First()));
+
+            TryGetDataContext<DataStreamDefinition>(Keyboard.FocusedElement, dsd
+                =>
+            {
+                var cellVM = MainViewModel.Instance().SoftwareCells.First(iocell => iocell.Model == dsd.Parent);
+                var vm = cellVM.DangelingOutputs.First(dsdVM => dsdVM.Model == dsd);
+                AppendNewCellBehind(cellVM, vm);
+            });
+        }
+
+
+        private void AppendNewCellBehind(IOCellViewModel vm, DangelingConnectionViewModel dangelingConnectionViewModel)
+        {
+            var width = dangelingConnectionViewModel.Width;
+            width += vm.CellWidth / 2 + 100;
+            var focusedcell = vm.Model;
+            var nextmodel = Interactions.AppendNewCell(focusedcell, width, dangelingConnectionViewModel.Model,
+                ViewModelModel());
+
+            SetFocusOnObject(nextmodel);
+        }
+
+
+        public void TabStopMove(Func<object, MainModel, object> tabstopFunc)
+        {
+            var focusedElement = Keyboard.FocusedElement;
+            TryGetDataContext<IOCellViewModel>(focusedElement, vm =>
+            {
+                var focusedcell = vm.Model;
+                var nextmodel = tabstopFunc(focusedcell, ViewModelModel());
+                SetFocusOnObject(nextmodel);
+            });
+
+            TryGetDataContext<DataStream>(focusedElement, focusedDataStream =>
+            {
+                var nextmodel = tabstopFunc(focusedDataStream, ViewModelModel());
+                SetFocusOnObject(nextmodel);
+            });
+
+            TryGetDataContext<DataStreamDefinition>(focusedElement, vm =>
+            {
+                var nextmodel = tabstopFunc(vm, ViewModelModel());
+                SetFocusOnObject(nextmodel);
+            });
+        }
+
+
+        public void NewOrFirstIntegrated()
+        {
+            TryGetDataContext<IOCellViewModel>(Keyboard.FocusedElement, vm =>
+            {
+                var nextmodel = Interactions.NewOrFirstIntegrated(vm.Model, ViewModelModel());
+                SetFocusOnObject(nextmodel);
+
+            });
+
+        }
+
+
+        private void SetFocusOnObject(object model)
+        {
+            model.TryCast<Model.DataTypes.SoftwareCell>(FocusCell);
+            model.TryCast<DataStream>(FocusDataStream);
+            model.TryCast<DataStreamDefinition>(FocusDefinition);
+        }
+
+
+        private static void TryGetDataContext<T>(object element, Action<T> doAction)
+        {
+            try
+            {
+                var frameworkelement = (FrameworkElement)element;
+                var vm = (T)frameworkelement.DataContext;
+                doAction(vm);
+            }
+            catch
+            {
+                // ignored
+            }
+        }
 
 
     }

@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataStreamParser.cs" />
+    <Compile Include="DataTypes\DataType.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="JsonSaveLoad.cs" />
     <Compile Include="Mockdata.cs" />
