@@ -151,34 +151,41 @@
     <Compile Include="Interactions.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\DangelingConnectionViewModel.cs" />
+    <Compile Include="Views\DataTypeEditor\DataTypeCard.xaml.cs">
+      <DependentUpon>DataTypeCard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="ViewModels\DataTypeViewModel.cs" />
     <Compile Include="ViewModels\IOCellViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\RectangleViewModel.cs" />
-    <Compile Include="Views\ConnectionsView.xaml.cs">
+    <Compile Include="Views\DrawingBoard\ConnectionsView.xaml.cs">
       <DependentUpon>ConnectionsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DangelingConnectionView.xaml.cs">
+    <Compile Include="Views\DrawingBoard\DangelingConnectionView.xaml.cs">
       <DependentUpon>DangelingConnectionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DrawingBoard.xaml.cs">
+    <Compile Include="Views\DataTypeEditor\DataTypesEditor.xaml.cs">
+      <DependentUpon>DataTypesEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\DrawingBoard\DrawingBoard.xaml.cs">
       <DependentUpon>DrawingBoard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Extensions.cs" />
     <Compile Include="Views\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\IOCell.xaml.cs">
+    <Compile Include="Views\DrawingBoard\IOCell.xaml.cs">
       <DependentUpon>IOCell.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\SoftwareCell.xaml.cs">
+    <Compile Include="Views\DrawingBoard\SoftwareCell.xaml.cs">
       <DependentUpon>SoftwareCell.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UnkownErrorDialog.xaml.cs">
       <DependentUpon>UnkownErrorDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="XML\XMLConverter.cs" />
     <Page Include="CustomControls\DataNamesControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -208,15 +215,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\ConnectionsView.xaml">
+    <Page Include="Views\DataTypeEditor\DataTypeCard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DrawingBoard\ConnectionsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DangelingConnectionView.xaml">
+    <Page Include="Views\DrawingBoard\DangelingConnectionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DrawingBoard.xaml">
+    <Page Include="Views\DataTypeEditor\DataTypesEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DrawingBoard\DrawingBoard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -224,7 +239,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\IOCell.xaml">
+    <Page Include="Views\DrawingBoard\IOCell.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -232,7 +247,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\SoftwareCell.xaml">
+    <Page Include="Views\DrawingBoard\SoftwareCell.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -271,11 +286,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="XML\TestFlowDesign.xml">
-      <SubType>Designer</SubType>
-    </Resource>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="FodyWeavers.xml" />

@@ -446,6 +446,28 @@ namespace Dexel.Editor
             return softwareCell;
             
         }
+
+
+        public static void DeleteDataTypeDefinition(DataType dataType, MainModel mainModel)
+        {
+            mainModel.DataTypes.Remove(dataType);
+            ViewRedraw();
+        }
+
+
+        public static DataType AddDataTypeDefinition(MainModel mainModel)
+        {
+            var dataType = new DataType
+            {
+                Name = "",
+                DataTypes = null
+            };
+
+            mainModel.DataTypes.Add(dataType);
+
+            ViewRedraw();
+            return dataType;
+        }
     }
 
 }

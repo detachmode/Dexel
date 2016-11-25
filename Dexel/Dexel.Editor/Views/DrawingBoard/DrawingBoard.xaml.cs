@@ -310,7 +310,7 @@ namespace Dexel.Editor.Views
 
         private Point? GetClickedPosition()
         {
-            var transform = Application.Current.MainWindow.TransformToVisual(SoftwareCellsList);
+            var transform = this.TransformToVisual(SoftwareCellsList);
             var positionClicked = transform?.Transform(TheZoomBorder.BeforeContextMenuPoint);
             return positionClicked;
         }
@@ -318,11 +318,9 @@ namespace Dexel.Editor.Views
 
         public void AppendNewCell()
         {
-            TryGetDataContext<IOCellViewModel>(Keyboard.FocusedElement, vm
-                => AppendNewCellBehind(vm, vm.DangelingOutputs.First()));
+            Keyboard.FocusedElement.TryGetDataContext<IOCellViewModel>(vm => AppendNewCellBehind(vm, vm.DangelingOutputs.First()));
 
-            TryGetDataContext<DataStreamDefinition>(Keyboard.FocusedElement, dsd
-                =>
+            Keyboard.FocusedElement.TryGetDataContext<DataStreamDefinition>(dsd =>
             {
                 var cellVM = MainViewModel.Instance().SoftwareCells.First(iocell => iocell.Model == dsd.Parent);
                 var vm = cellVM.DangelingOutputs.First(dsdVM => dsdVM.Model == dsd);
@@ -345,21 +343,21 @@ namespace Dexel.Editor.Views
 
         public void TabStopMove(Func<object, MainModel, object> tabstopFunc)
         {
-            var focusedElement = Keyboard.FocusedElement;
-            TryGetDataContext<IOCellViewModel>(focusedElement, vm =>
+           
+            Keyboard.FocusedElement.TryGetDataContext<IOCellViewModel>(vm =>
             {
                 var focusedcell = vm.Model;
                 var nextmodel = tabstopFunc(focusedcell, ViewModelModel());
                 SetFocusOnObject(nextmodel);
             });
 
-            TryGetDataContext<DataStream>(focusedElement, focusedDataStream =>
+            Keyboard.FocusedElement.TryGetDataContext<DataStream>(focusedDataStream =>
             {
                 var nextmodel = tabstopFunc(focusedDataStream, ViewModelModel());
                 SetFocusOnObject(nextmodel);
             });
 
-            TryGetDataContext<DataStreamDefinition>(focusedElement, vm =>
+            Keyboard.FocusedElement.TryGetDataContext<DataStreamDefinition>(vm =>
             {
                 var nextmodel = tabstopFunc(vm, ViewModelModel());
                 SetFocusOnObject(nextmodel);
@@ -369,7 +367,7 @@ namespace Dexel.Editor.Views
 
         public void NewOrFirstIntegrated()
         {
-            TryGetDataContext<IOCellViewModel>(Keyboard.FocusedElement, vm =>
+            Keyboard.FocusedElement.TryGetDataContext<IOCellViewModel>(vm =>
             {
                 var nextmodel = Interactions.NewOrFirstIntegrated(vm.Model, ViewModelModel());
                 SetFocusOnObject(nextmodel);
@@ -385,22 +383,5 @@ namespace Dexel.Editor.Views
             model.TryCast<DataStream>(FocusDataStream);
             model.TryCast<DataStreamDefinition>(FocusDefinition);
         }
-
-
-        private static void TryGetDataContext<T>(object element, Action<T> doAction)
-        {
-            try
-            {
-                var frameworkelement = (FrameworkElement)element;
-                var vm = (T)frameworkelement.DataContext;
-                doAction(vm);
-            }
-            catch
-            {
-                // ignored
-            }
-        }
-
-
     }
 }

@@ -17,7 +17,6 @@ namespace Dexel.Model.DataTypes
             Connections = new List<DataStream>();
             SoftwareCells = new List<SoftwareCell>();
             DataTypes = new List<DataType>();
-
         }
 
     }

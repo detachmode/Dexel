@@ -45,9 +45,6 @@ namespace Dexel.Editor.Views
 
 
 
-
-
-
         private void UpdateConnectionViewModels()
         {
             var vm = ViewModel();

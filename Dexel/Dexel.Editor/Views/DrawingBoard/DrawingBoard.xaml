@@ -7,6 +7,7 @@
 			 xmlns:views="clr-namespace:Dexel.Editor.Views"
 			 xmlns:viewModels="clr-namespace:Dexel.Editor.ViewModels"
 			 xmlns:customControls="clr-namespace:Dexel.Editor.CustomControls"
+			 xmlns:dragAndDrop="clr-namespace:Dexel.Editor.DragAndDrop"
 			 mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance viewModels:MainViewModel, IsDesignTimeCreatable=True}"
 		   
@@ -27,8 +28,11 @@
 		  IsHitTestVisible="True"
           ContextMenu="{StaticResource MyContextMenu}"
 		  Background="Transparent">
-		
-		<customControls:ZoomBorder x:Name="TheZoomBorder" ClipToBounds="True"
+        <i:Interaction.Behaviors>
+            <dragAndDrop:FrameworkElementDropBehavior />
+        </i:Interaction.Behaviors>
+
+        <customControls:ZoomBorder x:Name="TheZoomBorder" ClipToBounds="True"
 								   Background="{StaticResource MyVisualBrush}">
 			<Grid x:Name="GridInsideZoomBorder">
 

@@ -1,0 +1,33 @@
+﻿<UserControl x:Class="Dexel.Editor.Views.DataTypesEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Dexel.Editor.Views"
+             xmlns:dataTypes="clr-namespace:Dexel.Model.DataTypes;assembly=Dexel.Model"
+             xmlns:customControls="clr-namespace:Dexel.Editor.CustomControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="300" d:DataContext="{d:DesignData MainModel}">
+    <UserControl.Resources>
+        <ContextMenu x:Key="MyContextMenu">
+            <MenuItem Header="Add Data Type" Click="AddNewDataTypeDefinition" />
+        </ContextMenu>
+    </UserControl.Resources>
+
+    <Border Background="{StaticResource BG}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" >
+        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Background="{StaticResource BGDarker}"  Margin="6">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <ItemsControl   x:Name="DataTypeList" ItemsSource="{Binding DataTypes}" Background="Transparent" ContextMenu="{StaticResource MyContextMenu}">
+                <ItemsControl.ItemTemplate >
+                    <DataTemplate>
+                        <local:DataTypeCard  x:Name="TheDataTypeCard"></local:DataTypeCard>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+                </ScrollViewer>
+
+        </Border>
+
+    </Border>
+
+</UserControl>

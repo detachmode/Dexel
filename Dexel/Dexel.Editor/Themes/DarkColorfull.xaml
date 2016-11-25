@@ -3,8 +3,12 @@
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
                     xmlns:local="clr-namespace:Dexel.Editor.CustomControls">
 
-    <SolidColorBrush x:Key="BG" Color="#FF383838"/>
-    <SolidColorBrush x:Key="GridColor" Color="#FF404040" />
+    <SolidColorBrush x:Key="BG" Color="#2d2d30"/>
+    <SolidColorBrush x:Key="BGBrighter" Color="#3e3e40"/>
+    <SolidColorBrush x:Key="BGDarker" Color="#252526"/>
+    
+    <SolidColorBrush x:Key="GridColor" Color="#353538" />
+    <SolidColorBrush x:Key="BorderBrush" Color="#3e3e40" />
     <SolidColorBrush x:Key="OuterFillPointerBrush" Color="Transparent"/>
     <SolidColorBrush x:Key="FillPointerBrush" Color="DeepSkyBlue"/>
     <SolidColorBrush x:Key="BorderSoftwareCellBrush" Color="DeepSkyBlue"/>

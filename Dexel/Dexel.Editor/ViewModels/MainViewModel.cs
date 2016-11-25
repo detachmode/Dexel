@@ -25,6 +25,7 @@ namespace Dexel.Editor.ViewModels
             SelectedSoftwareCells = new ObservableCollection<IOCellViewModel>();
             Connections = new ObservableCollection<ConnectionViewModel>();
             IntegrationBorders = new ObservableCollection<IOCellViewModel>();
+            DataTypes = new ObservableCollection<DataTypeViewModel>();
             FontSizeCell = 12;
             VisibilityDatanames = Visibility.Visible;
             VisibilityBlockTextBox = Visibility.Hidden;
@@ -32,7 +33,7 @@ namespace Dexel.Editor.ViewModels
 
         }
 
-
+        public ObservableCollection<DataTypeViewModel> DataTypes { get; set; }
         public ObservableCollection<IOCellViewModel> IntegrationBorders { get; set; }
         public ObservableCollection<ConnectionViewModel> Connections { get; set; }
         public ObservableCollection<IOCellViewModel> SoftwareCells { get; set; }
@@ -46,7 +47,7 @@ namespace Dexel.Editor.ViewModels
 
         public static MainViewModel Instance() => _self ?? (_self = new MainViewModel());
 
-        
+
 
 
         #region Modify Selection
@@ -194,6 +195,27 @@ namespace Dexel.Editor.ViewModels
             LoadConnection(mainModel.Connections);
             LoadSoftwareCells(mainModel.SoftwareCells);
             LoadIntegrations();
+            LoadDataTypes(mainModel.DataTypes);
+        }
+
+
+        private void LoadDataTypes(List<DataType> dataTypes)
+        {
+            DataTypes.Clear();
+            dataTypes.ForEach(dataType =>
+            {
+                var vm = new DataTypeViewModel();
+                vm.Model = dataType;
+
+                if (dataType.DataTypes == null)
+                    vm.Definitions = "";
+                else
+                    vm.Definitions = dataType.DataTypes
+                        .Select(x => $"{x.Name}:{x.Type}")
+                        .Aggregate((str, type) => str + "\n" + type);
+
+                DataTypes.Add(vm);
+            });
         }
 
 
@@ -238,5 +260,4 @@ namespace Dexel.Editor.ViewModels
 
 
     }
-
 }

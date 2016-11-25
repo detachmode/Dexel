@@ -9,7 +9,7 @@
         mc:Ignorable="d"
         Focusable="True"
         KeyDown="MainWindow_OnPreviewKeyDown"
-        Title="Sharp Flow Design" Height="350" Width="825">
+        Title="Sharp Flow Design" Height="850" Width="1225">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
@@ -28,14 +28,10 @@
             </MenuItem>
             <MenuItem Header="Shortcuts cheatsheet" Click="help_OnClicked"></MenuItem>
             <!--<MenuItem Header="Test" Click="MenuItem_OnClick"></MenuItem>-->
-
         </Menu>
-        <Grid DockPanel.Dock="Top">
-            <Label>Flow Design</Label>
-            <views:DrawingBoard x:Name="TheDrawingBoard" Focusable="True" />
-            <i:Interaction.Behaviors>
-                <dragAndDrop:FrameworkElementDropBehavior />
-            </i:Interaction.Behaviors>
-        </Grid>
+        
+        <views:DataTypesEditor DockPanel.Dock="Left" Width="250"></views:DataTypesEditor>
+        <views:DrawingBoard DockPanel.Dock="Top" x:Name="TheDrawingBoard" Focusable="True" />
+
     </DockPanel>
 </Window>

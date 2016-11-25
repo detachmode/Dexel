@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
 using Dexel.Model.DataTypes;
 
 namespace Dexel.Model
@@ -95,7 +96,10 @@ namespace Dexel.Model
             MainModelManager.AddNewOutput(firstOp, "(age:int)");
             first.Integration.Add(firstOp);
 
-
+            var inttype = new DataType { Name = "age", Type = "int" };
+            var nametype = new DataType { Name = "name", Type = "string" };
+            var sublist = new List<DataType> { inttype, nametype };
+            testModel.DataTypes.Add(new DataType() { Name = "Person", DataTypes = sublist });
 
             var person = MainModelManager.AddNewSoftwareCell("create person", testModel);
             person.Position = new Point(450, 50);
