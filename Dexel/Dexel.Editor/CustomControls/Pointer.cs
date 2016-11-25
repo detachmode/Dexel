@@ -7,6 +7,7 @@ using System.Windows.Media;
 using System.Windows.Shapes;
 using Dexel.Editor.DragAndDrop;
 using Dexel.Editor.ViewModels;
+using Dexel.Editor.ViewModels.DrawingBoard;
 
 namespace Dexel.Editor.CustomControls
 {

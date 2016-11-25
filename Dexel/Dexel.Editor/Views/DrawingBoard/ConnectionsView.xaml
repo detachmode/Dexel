@@ -7,9 +7,10 @@
              xmlns:converter="clr-namespace:Dexel.Editor.Converter"
              xmlns:viewModels="clr-namespace:Dexel.Editor.ViewModels"
              xmlns:drawingBoard="clr-namespace:Dexel.Editor.Views.DrawingBoard"
+             xmlns:viewModels1="clr-namespace:Dexel.Editor.ViewModels.DrawingBoard"
              x:Class="Dexel.Editor.Views.DrawingBoard.ConnectionsView"
              mc:Ignorable="d"
-             d:DataContext="{d:DesignInstance {x:Type viewModels:ConnectionViewModel}, IsDesignTimeCreatable=True}"
+             d:DataContext="{d:DesignInstance {x:Type viewModels1:ConnectionViewModel}, IsDesignTimeCreatable=True}"
             >
     <Canvas>
         <customControls:Pointer

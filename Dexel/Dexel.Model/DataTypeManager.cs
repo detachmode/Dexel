@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Dexel.Library;
 using Dexel.Model.DataTypes;
 
 namespace Dexel.Model
@@ -20,9 +21,7 @@ namespace Dexel.Model
         public static IEnumerable<string> CollectAllTypesFromDsds(MainModel mainmodel)
         {
             var alldsds = mainmodel.SoftwareCells.SelectMany(sc => sc.InputStreams.Concat(sc.OutputStreams).ToList());
-            return alldsds.SelectMany(dsd =>
-                DataStreamParser.GetInputPart(dsd.DataNames)
-                    .Concat(DataStreamParser.GetOutputPart(dsd.DataNames))).Select(x => x.Type);
+            return alldsds.SelectMany(dsd => DataStreamParser.GetInputAndOutput(dsd.DataNames).Select(x => x.Type));
         }
 
         public static List<string> FilterOut(List<string> types, MainModel mainmodel)
@@ -55,5 +54,13 @@ namespace Dexel.Model
             return mainmodel.DataTypes.Where(x => x.DataTypes != null).SelectMany(dt => dt.DataTypes.Select(subDt => subDt.Type.Trim()));
         }
 
+
+        public static List<DataType> GetTypesRecursive(List<DataType> found, MainModel mainModel)
+        {
+            var count = found.Count;
+            var subtypes = found.Select(dt => dt.DataTypes.SelectMany(x => x.Type));
+            mainModel.DataTypes.Where(dt => subtypes.Contains(dt.Name)).ForEach(found.AddUnique);
+            return found.Count == count ? found : GetTypesRecursive(found, mainModel);
+        }
     }
 }

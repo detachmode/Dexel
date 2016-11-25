@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
 using Dexel.Editor.DragAndDrop;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
 using PropertyChanged;
 
-namespace Dexel.Editor.ViewModels
+namespace Dexel.Editor.ViewModels.DrawingBoard
 {
     [ImplementPropertyChanged]
     public class ConnectionViewModel : IDragable

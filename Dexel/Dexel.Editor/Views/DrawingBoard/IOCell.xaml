@@ -4,11 +4,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:views="clr-namespace:Dexel.Editor.Views"
-    xmlns:viewModels="clr-namespace:Dexel.Editor.ViewModels"
     xmlns:drawingBoard="clr-namespace:Dexel.Editor.Views.DrawingBoard"
+    xmlns:drawingBoard1="clr-namespace:Dexel.Editor.ViewModels.DrawingBoard"
     x:Class="Dexel.Editor.Views.DrawingBoard.IOCell"
     x:Name="TheIoCell"
-    d:DataContext="{d:DesignInstance viewModels:IOCellViewModel, IsDesignTimeCreatable=True}"
+    d:DataContext="{d:DesignInstance drawingBoard1:IOCellViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
 
     <UserControl.Resources>

@@ -150,15 +150,15 @@
     <Compile Include="FileSaveLoad.cs" />
     <Compile Include="Interactions.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="ViewModels\ConnectionViewModel.cs" />
-    <Compile Include="ViewModels\DangelingConnectionViewModel.cs" />
+    <Compile Include="ViewModels\DrawingBoard\ConnectionViewModel.cs" />
+    <Compile Include="ViewModels\DrawingBoard\DangelingConnectionViewModel.cs" />
     <Compile Include="Views\DataTypeEditor\DataTypeCard.xaml.cs">
       <DependentUpon>DataTypeCard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\DataTypeViewModel.cs" />
-    <Compile Include="ViewModels\IOCellViewModel.cs" />
+    <Compile Include="ViewModels\DataTypeEditor\DataTypeViewModel.cs" />
+    <Compile Include="ViewModels\DrawingBoard\IOCellViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
-    <Compile Include="ViewModels\RectangleViewModel.cs" />
+    <Compile Include="ViewModels\DrawingBoard\RectangleViewModel.cs" />
     <Compile Include="Views\DrawingBoard\ConnectionsView.xaml.cs">
       <DependentUpon>ConnectionsView.xaml</DependentUpon>
     </Compile>

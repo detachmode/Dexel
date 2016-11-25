@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using Dexel.Editor.CustomControls;
 using Dexel.Editor.ViewModels;
+using Dexel.Editor.ViewModels.DrawingBoard;
 using Dexel.Editor.Views;
 using Dexel.Editor.Views.DrawingBoard;
 using SoftwareCell = Dexel.Model.DataTypes.SoftwareCell;

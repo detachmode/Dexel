@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Media;
 
-namespace Dexel.Editor.ViewModels
+namespace Dexel.Editor.ViewModels.DrawingBoard
 {
     /// <summary>
     /// Defines the view-model for a simple displayable rectangle.

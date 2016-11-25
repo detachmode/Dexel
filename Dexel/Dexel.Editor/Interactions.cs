@@ -490,6 +490,15 @@ namespace Dexel.Editor
         {
             MainViewModel.Instance().MissingDataTypes = DataTypeManager.GetUndefinedTypenames(mainModel).Count;
         }
+
+
+        public static IEnumerable<string> GetFocusedDataTypes(string datanames, MainModel mainModel)
+        {
+            var types = DataStreamParser.GetInputAndOutput(datanames).Select(x => x.Type);
+            var res = mainModel.DataTypes.Where(dt => types.Contains(dt.Name)).SelectMany(x => x.DataTypes).ToList();
+            res = DataTypeManager.GetTypesRecursive(res, mainModel);
+            return res.Select(x => x.Name);
+        }
     }
 
 }

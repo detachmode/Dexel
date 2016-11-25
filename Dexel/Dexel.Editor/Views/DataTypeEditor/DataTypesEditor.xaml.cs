@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using Dexel.Editor.ViewModels;
+using Dexel.Editor.ViewModels.DataTypeEditor;
 using Dexel.Model.DataTypes;
 
 namespace Dexel.Editor.Views.DataTypeEditor

@@ -5,7 +5,7 @@ using Dexel.Editor.DragAndDrop;
 using Dexel.Model.DataTypes;
 using PropertyChanged;
 
-namespace Dexel.Editor.ViewModels
+namespace Dexel.Editor.ViewModels.DrawingBoard
 {
     [ImplementPropertyChanged]
     public class DangelingConnectionViewModel : IDragable, IDropable

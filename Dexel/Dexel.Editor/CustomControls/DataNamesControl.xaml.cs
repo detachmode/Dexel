@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -24,8 +25,17 @@ namespace Dexel.Editor.CustomControls
             InitializeComponent();
             LoadColorSchema(@"FlowDesignColor.xshd");
 
-            TextBox.LostFocus += (sender, args) => TextBox.TextArea.ClearSelection();
-           
+            TextBox.LostFocus += (sender, args) =>
+            {
+                TextBox.TextArea.ClearSelection();
+                //MainViewModel.Instance().SetDataTypeFilter(null);
+            };
+
+            //TextBox.GotFocus += (sender, args) =>
+            //{
+            //    GetDataNamesFromDataContext(sender, datanames => MainViewModel.Instance().SetDataTypeFilter(datanames));
+            //};
+
             TextBox.TextChanged += (sender, args) =>
             {
                 var caret =  TextBox.SelectionStart;
@@ -33,12 +43,21 @@ namespace Dexel.Editor.CustomControls
 
                 DataContext.TryCast<DataStream>(ds => Interactions.ChangeConnectionDatanames(ds, currentText));
                 DataContext.TryCast<DataStreamDefinition>(dsd => dsd.DataNames = currentText);
+                //GetDataNamesFromDataContext(sender, datanames => MainViewModel.Instance().SetDataTypeFilter(datanames));
                 Interactions.UpdateMissingDataTypesCounter(MainViewModel.Instance().Model);
                 TextBox.SelectionStart = caret;
             };
 
+            
+
         }
 
+
+        private static void GetDataNamesFromDataContext(object sender, Action<string> doAction )
+        {
+            sender.TryGetDataContext<DataStreamDefinition>(dsd => doAction(dsd.DataNames));
+            sender.TryGetDataContext<DataStream>(ds => doAction(ds.DataNames));
+        }
 
         #region load color schema
         private static XshdSyntaxDefinition _xshd;

@@ -15,6 +15,10 @@ namespace Dexel.Model
 
     public  static class DataStreamParser
     {
+        public static IEnumerable<NameType> GetInputAndOutput(string rawdatanames)
+        {
+            return GetInputPart(rawdatanames).Concat(GetOutputPart(rawdatanames));
+        }
 
         public static IEnumerable<NameType> GetOutputPart(string rawdatanames)
         {

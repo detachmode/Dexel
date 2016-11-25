@@ -5,6 +5,8 @@ using System.Linq;
 using System.Windows;
 using Dexel.Editor.CustomControls;
 using Dexel.Editor.DragAndDrop;
+using Dexel.Editor.ViewModels.DataTypeEditor;
+using Dexel.Editor.ViewModels.DrawingBoard;
 using Dexel.Library;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
@@ -26,6 +28,7 @@ namespace Dexel.Editor.ViewModels
             Connections = new ObservableCollection<ConnectionViewModel>();
             IntegrationBorders = new ObservableCollection<IOCellViewModel>();
             DataTypes = new ObservableCollection<DataTypeViewModel>();
+            VisibileDataTypes = new ObservableCollection<DataTypeViewModel>();
             FontSizeCell = 12;
             VisibilityDatanames = Visibility.Visible;
             VisibilityBlockTextBox = Visibility.Hidden;
@@ -38,6 +41,7 @@ namespace Dexel.Editor.ViewModels
         public ObservableCollection<ConnectionViewModel> Connections { get; set; }
         public ObservableCollection<IOCellViewModel> SoftwareCells { get; set; }
         public ObservableCollection<IOCellViewModel> SelectedSoftwareCells { get; set; }
+        public ObservableCollection<DataTypeViewModel> VisibileDataTypes { get; set; }
         public ConnectionViewModel TemporaryConnection { get; set; }
         public MainModel Model { get; set; }
         public int FontSizeCell { get; set; }
@@ -133,7 +137,7 @@ namespace Dexel.Editor.ViewModels
             typeof(ConnectionViewModel)
         };
 
-        
+       
 
 
         public void Drop(object data)
@@ -213,10 +217,11 @@ namespace Dexel.Editor.ViewModels
                     vm.Definitions = "";
                 else 
                     vm.Definitions = dataType.DataTypes
-                        .Select(x => $"{x.Name}:{x.Type}")
+                        .Select(x => string.IsNullOrEmpty(x.Name) ? x.Type : $"{x.Name}:{x.Type}")
                         .Aggregate((str, type) => str + "\n" + type);
 
                 DataTypes.Add(vm);
+
             });
         }
 
@@ -260,6 +265,19 @@ namespace Dexel.Editor.ViewModels
 
         #endregion
 
+        public void SetDataTypeFilter(string datanames)
+        {
+            if (datanames == null)
+            {
+                VisibileDataTypes.Clear();
+                DataTypes.ForEach(vm => VisibileDataTypes.Add(vm));
+                return;
+            }
 
+            var types = Interactions.GetFocusedDataTypes(datanames, Model);
+
+            VisibileDataTypes.Clear();
+            DataTypes.Where( x => types.Any(y => x.Model.Name == y)).ForEach(vm => VisibileDataTypes.Add(vm));
+        }
     }
 }

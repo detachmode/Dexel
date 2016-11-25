@@ -1,15 +1,8 @@
-using System.CodeDom;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using Dexel.Editor.Annotations;
-using Dexel.Library;
 using Dexel.Model.DataTypes;
 using PropertyChanged;
 
-namespace Dexel.Editor.ViewModels
+namespace Dexel.Editor.ViewModels.DataTypeEditor
 {
     [ImplementPropertyChanged]
     public class DataTypeViewModel
@@ -24,11 +17,19 @@ namespace Dexel.Editor.ViewModels
         {
             Model.DataTypes = text.Split('\n').Where(x => !string.IsNullOrEmpty(x)).Select(s =>
             {
-                var str = s.Split(':');              
+                var splitted = s.Split(':');
+                if (splitted.Length == 1)
+                {
+                    return new DataType
+                    {
+                        Name = "",
+                        Type = splitted.Last()
+                    };
+                }             
                 return new DataType
                 {
-                    Name = str.First(),
-                    Type = str.Last()
+                    Name = splitted.First(),
+                    Type = splitted.Last()
                 };
             }).ToList();
         }
