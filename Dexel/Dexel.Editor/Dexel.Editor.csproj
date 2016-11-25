@@ -149,6 +149,7 @@
     <Compile Include="DragAndDrop\MouseEventMediator.cs" />
     <Compile Include="FileSaveLoad.cs" />
     <Compile Include="Interactions.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\DangelingConnectionViewModel.cs" />
     <Compile Include="Views\DataTypeEditor\DataTypeCard.xaml.cs">

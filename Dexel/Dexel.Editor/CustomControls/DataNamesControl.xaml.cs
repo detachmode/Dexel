@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml;
+using Dexel.Editor.ViewModels;
 using Dexel.Editor.Views;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
@@ -32,6 +33,7 @@ namespace Dexel.Editor.CustomControls
 
                 DataContext.TryCast<DataStream>(ds => Interactions.ChangeConnectionDatanames(ds, currentText));
                 DataContext.TryCast<DataStreamDefinition>(dsd => dsd.DataNames = currentText);
+                Interactions.UpdateMissingDataTypesCounter(MainViewModel.Instance().Model);
                 TextBox.SelectionStart = caret;
             };
 

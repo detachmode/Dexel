@@ -6,7 +6,8 @@
              xmlns:customControls="clr-namespace:Dexel.Editor.CustomControls"
              xmlns:converter="clr-namespace:Dexel.Editor.Converter"
              xmlns:viewModels="clr-namespace:Dexel.Editor.ViewModels"
-             xmlns:local="clr-namespace:Dexel.Editor.Views" x:Class="Dexel.Editor.Views.ConnectionsView"
+             xmlns:drawingBoard="clr-namespace:Dexel.Editor.Views.DrawingBoard"
+             x:Class="Dexel.Editor.Views.DrawingBoard.ConnectionsView"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance {x:Type viewModels:ConnectionViewModel}, IsDesignTimeCreatable=True}"
             >
@@ -32,7 +33,7 @@
                 </TransformGroup>
             </Grid.RenderTransform>
 
-            <Border Visibility="{Binding DataContext.VisibilityDatanames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:DrawingBoard}}}" Panel.ZIndex="999" Background="{StaticResource BG}" BorderBrush="{StaticResource FillPointerBrush}" BorderThickness="2">
+            <Border Visibility="{Binding DataContext.VisibilityDatanames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}" Panel.ZIndex="999" Background="{StaticResource BG}" BorderBrush="{StaticResource FillPointerBrush}" BorderThickness="2">
                 <customControls:DataNamesControl x:Name="DataNamesControl" Panel.ZIndex="1000" DataContext="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Border>
 

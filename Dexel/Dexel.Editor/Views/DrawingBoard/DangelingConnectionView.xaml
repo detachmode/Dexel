@@ -8,7 +8,8 @@
     xmlns:viewModels="clr-namespace:Dexel.Editor.ViewModels"
     xmlns:dragAndDrop="clr-namespace:Dexel.Editor.DragAndDrop"
     xmlns:views="clr-namespace:Dexel.Editor.Views"
-    x:Class="Dexel.Editor.Views.DangelingConnectionView"
+    xmlns:drawingBoard="clr-namespace:Dexel.Editor.Views.DrawingBoard"
+    x:Class="Dexel.Editor.Views.DrawingBoard.DangelingConnectionView"
     d:DataContext="{d:DesignInstance viewModels:DangelingConnectionViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d"
     >
@@ -44,14 +45,14 @@
         </Path>
         </Grid>
         <TextBox Grid.Row="1" FontSize="11" 
-                 Visibility="{Binding DataContext.VisibilityDatanames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:DrawingBoard}}}"
+                 Visibility="{Binding DataContext.VisibilityDatanames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"
                  Grid.Column="0" x:Name="ActionNameTextBox" VerticalAlignment="Top"
                  Text="{Binding Model.ActionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Margin="0,-2,0,0"
                          CaretBrush="{DynamicResource Foreground}" Background="{x:Null}"
                          Foreground="{DynamicResource Foreground}" BorderBrush="{x:Null}" />
 
         <customControls:DataNamesControl 
-            Visibility="{Binding DataContext.VisibilityDatanames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:DrawingBoard}}}"
+            Visibility="{Binding DataContext.VisibilityDatanames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"
             x:Name="TheDataNamesControl" 
             Grid.Row="0" Margin="4,-4,10,0" Grid.Column="0"  
            DataContext="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Dexel.Editor.Views.DataTypesEditor"
+﻿<UserControl x:Class="Dexel.Editor.Views.DataTypeEditor.DataTypesEditor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -6,28 +6,42 @@
              xmlns:local="clr-namespace:Dexel.Editor.Views"
              xmlns:dataTypes="clr-namespace:Dexel.Model.DataTypes;assembly=Dexel.Model"
              xmlns:customControls="clr-namespace:Dexel.Editor.CustomControls"
+             xmlns:dataTypeEditor="clr-namespace:Dexel.Editor.Views.DataTypeEditor"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="300" d:DataContext="{d:DesignData MainModel}">
     <UserControl.Resources>
         <ContextMenu x:Key="MyContextMenu">
-            <MenuItem Header="Add Data Type" Click="AddNewDataTypeDefinition" />
+            <MenuItem Header="New" Click="AddNewDataTypeDefinition" />
         </ContextMenu>
     </UserControl.Resources>
 
     <Border Background="{StaticResource BG}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" >
-        <Border BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Background="{StaticResource BGDarker}"  Margin="6">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <ItemsControl   x:Name="DataTypeList" ItemsSource="{Binding DataTypes}" Background="Transparent" ContextMenu="{StaticResource MyContextMenu}">
-                <ItemsControl.ItemTemplate >
-                    <DataTemplate>
-                        <local:DataTypeCard  x:Name="TheDataTypeCard"></local:DataTypeCard>
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="39*"/>
+                <RowDefinition Height="445*"/>
+            </Grid.RowDefinitions>
+            <Button 
+                    Height="26"
+                    Background="{StaticResource BGBrighter}" Foreground="{StaticResource Foreground}"
+                    Content="{Binding MissingDataTypes, Converter={StaticResource MissingTypesButtonText}}"  Click="CreateMissingTypes_click" Grid.Row="0"></Button>
+            <Border  Grid.Row="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Background="{StaticResource BGDarker}"  Margin="6">
+           
+
+               
+                <ScrollViewer VerticalScrollBarVisibility="Auto">
+                    <ItemsControl   x:Name="DataTypeList" ItemsSource="{Binding DataTypes}" Background="Transparent" ContextMenu="{StaticResource MyContextMenu}">
+                        <ItemsControl.ItemTemplate >
+                            <DataTemplate>
+                                <dataTypeEditor:DataTypeCard  x:Name="TheDataTypeCard"></dataTypeEditor:DataTypeCard>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
                 </ScrollViewer>
-
+          
         </Border>
-
+        </Grid>
     </Border>
 
 </UserControl>
+

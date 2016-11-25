@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dexel.Model;
@@ -64,13 +65,24 @@ namespace Roslyn
 
         private static string GenerateParameterName(NameType nametype, int i)
         {
-            return nametype.Name ?? "param" + i;
+            var lower = nametype.Type.ToLower();
+            if (nametype.IsArray || nametype.IsList)
+            {
+                lower += "s";
+            }
+            return nametype.Name ?? lower;
         }
 
+        public static string FirstCharToUpper(string input)
+        {
+            if (String.IsNullOrEmpty(input))
+                throw new ArgumentException("ARGH!");
+            return input.First().ToString().ToUpper() + input.Substring(1);
+        }
 
         public static string GetMethodName(SoftwareCell softwareCell)
         {
-            return softwareCell.Name.Replace(' ', '_');
+            return softwareCell.Name.Split(' ').Where(s => !string.IsNullOrEmpty(s)).Select(s => FirstCharToUpper(s)).Aggregate((s, s2) => s + s2);
         }
     }
 }

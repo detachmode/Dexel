@@ -468,6 +468,28 @@ namespace Dexel.Editor
             ViewRedraw();
             return dataType;
         }
+
+
+        public static void AddMissingDataTypes(MainModel mainModel)
+        {
+            var res = DataTypeManager.GetUndefinedTypenames(mainModel);
+            res.ForEach(name =>
+            {
+                var dataType = new DataType
+                {
+                    Name = name,
+                    DataTypes = null
+                };
+                mainModel.DataTypes.Add(dataType);
+            });
+            ViewRedraw();
+        }
+
+
+        public static void UpdateMissingDataTypesCounter(MainModel mainModel)
+        {
+            MainViewModel.Instance().MissingDataTypes = DataTypeManager.GetUndefinedTypenames(mainModel).Count;
+        }
     }
 
 }

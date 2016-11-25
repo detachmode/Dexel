@@ -1,0 +1,96 @@
+SoftwareCells:
+- &o3
+  Position:
+    X: 361.58034540411052
+    Y: -300.78814856388055
+  Name: get undefined typenames
+  ID: eaea7ecf-9490-4e75-af39-8c067ae98e6b
+  Integration:
+  - &o0
+    Position:
+      X: -44.586321262556126
+      Y: -204.54455882029083
+    Name: collect all types from Dsds
+    ID: e5853499-cf14-4829-bafa-6b1be14a7239
+    Integration: []
+    InputStreams:
+    - ActionName: ''
+      DataNames: (MainModel)
+      ID: cbe81585-55ec-47a5-9573-1bda742a65f5
+      Parent: *o0
+    OutputStreams:
+    - &o4
+      ActionName: ''
+      DataNames: (types:string*)
+      ID: 5ce68723-a984-4a8e-a487-9b2a58ab8af4
+      Connected: true
+      Parent: *o0
+  - &o1
+    Position:
+      X: 439.91367873744366
+      Y: -200.21122548695746
+    Name: 'collect all subtypes '
+    ID: bf04fddc-8034-4e02-a6f7-023d7115f6c6
+    Integration: []
+    InputStreams:
+    - &o5
+      ActionName: ''
+      DataNames: (MainModel)
+      ID: 4ffec90b-89f1-4258-a4a0-670016b72405
+      Connected: true
+      Parent: *o1
+    OutputStreams:
+    - &o6
+      ActionName: ''
+      DataNames: (types:string*)
+      ID: 6cbfec15-a516-4c5c-bfbb-7cfc6e171871
+      Connected: true
+      Parent: *o1
+  - &o2
+    Position:
+      X: 959.99393514769861
+      Y: -198.83943061516257
+    Name: filter out defined
+    ID: 37f70b14-848c-4a6d-97e0-a81c6d4aa63a
+    Integration: []
+    InputStreams:
+    - &o7
+      ActionName: ''
+      DataNames: (types:string*, MainModel)
+      ID: 05efdcdf-be36-4199-a314-b79aeea0820a
+      Connected: true
+      Parent: *o2
+    OutputStreams:
+    - ActionName: ''
+      DataNames: (types:string*)
+      ID: 1b0f7efc-a904-45d7-a004-9c2b56862c40
+      Parent: *o2
+  InputStreams:
+  - ActionName: ''
+    DataNames: (MainModel)
+    ID: cec9e268-96e5-4fa4-9477-9a058309f803
+    Parent: *o3
+  OutputStreams:
+  - ActionName: ''
+    DataNames: (string*)
+    ID: 3af9b255-0754-42f5-9fa3-784b8216db36
+    Parent: *o3
+- *o0
+- *o2
+- *o1
+Connections:
+- DataNames: (types:string*) | (MainModel)
+  ID: 98c8b2af-2ade-41e1-88ea-8b1e7bde1c83
+  ActionName: ''
+  Sources:
+  - *o4
+  Destinations:
+  - *o5
+- DataNames: (types:string*) | (types:string*, MainModel)
+  ID: ede2e41a-f6fb-4b15-9aea-d0da46b0979f
+  ActionName: ''
+  Sources:
+  - *o6
+  Destinations:
+  - *o7
+DataTypes: []

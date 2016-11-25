@@ -87,6 +87,24 @@ namespace Dexel.Editor.Converter
         }
     }
 
+    public class MissingTypesButtonText : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if ((int) value == 0)
+            {
+                return "All Types Defined";
+            }
+            return $"Create Missing Types ({value})";
+        }
+
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
     public class SoftwareCellTextfieldBG : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

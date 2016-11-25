@@ -1,22 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using Dexel.Editor.ViewModels;
 using Dexel.Model.DataTypes;
 
-namespace Dexel.Editor.Views
+namespace Dexel.Editor.Views.DataTypeEditor
 {
     /// <summary>
     /// Interaction logic for DataTypesEditor.xaml
@@ -32,7 +21,7 @@ namespace Dexel.Editor.Views
         {
             MainViewModel.Instance().SelectedSoftwareCells.Clear();
 
-            DataTypeCard frameworkelement = null;
+            DataTypeEditor.DataTypeCard frameworkelement = null;
             DataTypeViewModel viewmodel = null;
 
             for (var i = 0; i < DataTypeList.Items.Count; i++)
@@ -40,7 +29,7 @@ namespace Dexel.Editor.Views
                 var c = (ContentPresenter)DataTypeList.ItemContainerGenerator.ContainerFromIndex(i);
                 c.ApplyTemplate();
 
-                frameworkelement = (DataTypeCard)c.ContentTemplate.FindName("TheDataTypeCard", c);
+                frameworkelement = (DataTypeEditor.DataTypeCard)c.ContentTemplate.FindName("TheDataTypeCard", c);
                 if (frameworkelement == null) continue;
                 viewmodel = (DataTypeViewModel)frameworkelement.DataContext;
                 if (viewmodel.Model == dataType)
@@ -64,6 +53,12 @@ namespace Dexel.Editor.Views
         {
             var newDataType = Interactions.AddDataTypeDefinition(MainViewModel.Instance().Model);
             FocusDataType(newDataType);
+        }
+
+
+        private void CreateMissingTypes_click(object sender, RoutedEventArgs e)
+        {
+            Interactions.AddMissingDataTypes(MainViewModel.Instance().Model);
         }
     }
 }

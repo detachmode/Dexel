@@ -6,6 +6,8 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:views="clr-namespace:Dexel.Editor.Views"
         xmlns:dragAndDrop="clr-namespace:Dexel.Editor.DragAndDrop"
+        xmlns:dataTypeEditor="clr-namespace:Dexel.Editor.Views.DataTypeEditor"
+        xmlns:drawingBoard="clr-namespace:Dexel.Editor.Views.DrawingBoard"
         mc:Ignorable="d"
         Focusable="True"
         KeyDown="MainWindow_OnPreviewKeyDown"
@@ -27,11 +29,11 @@
                 <RadioButton Content="Auto Generate" Checked="AutoGenerate_Checked" Unchecked="AutoGenerate_UnChecked" GroupName="Auto"/>
             </MenuItem>
             <MenuItem Header="Shortcuts cheatsheet" Click="help_OnClicked"></MenuItem>
-            <!--<MenuItem Header="Test" Click="MenuItem_OnClick"></MenuItem>-->
+            <MenuItem Header="Test" Click="MenuItem_OnClick"></MenuItem>
         </Menu>
         
-        <views:DataTypesEditor DockPanel.Dock="Left" Width="250"></views:DataTypesEditor>
-        <views:DrawingBoard DockPanel.Dock="Top" x:Name="TheDrawingBoard" Focusable="True" />
+        <dataTypeEditor:DataTypesEditor DockPanel.Dock="Left" Width="250"></dataTypeEditor:DataTypesEditor>
+        <drawingBoard:DrawingBoard DockPanel.Dock="Top" x:Name="TheDrawingBoard" Focusable="True" />
 
     </DockPanel>
 </Window>

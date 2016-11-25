@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace Dexel.Editor.Views
+namespace Dexel.Editor.Views.DrawingBoard
 {
     /// <summary>
     /// Interaktionslogik für SoftwareCell.xaml

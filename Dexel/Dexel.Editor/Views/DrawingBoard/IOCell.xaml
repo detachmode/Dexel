@@ -5,7 +5,8 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:views="clr-namespace:Dexel.Editor.Views"
     xmlns:viewModels="clr-namespace:Dexel.Editor.ViewModels"
-    x:Class="Dexel.Editor.Views.IOCell"
+    xmlns:drawingBoard="clr-namespace:Dexel.Editor.Views.DrawingBoard"
+    x:Class="Dexel.Editor.Views.DrawingBoard.IOCell"
     x:Name="TheIoCell"
     d:DataContext="{d:DesignInstance viewModels:IOCellViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
@@ -41,7 +42,7 @@
 
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <views:DangelingConnectionView  x:Name="DangelingConnectionView" />
+                    <drawingBoard:DangelingConnectionView  x:Name="DangelingConnectionView" />
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
@@ -52,7 +53,7 @@
             Orientation="Horizontal"
             >
 
-            <views:SoftwareCell x:Name="Fu" 
+            <drawingBoard:SoftwareCell x:Name="Fu" 
                                 Focusable="False"
                             LabelContent="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            />
@@ -61,9 +62,9 @@
                       x:Name="OutputFlow" ItemsSource="{Binding DangelingOutputs, Mode=TwoWay}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <views:DangelingConnectionView x:Name="DangelingConnectionView">
+                        <drawingBoard:DangelingConnectionView x:Name="DangelingConnectionView">
 
-                        </views:DangelingConnectionView>
+                        </drawingBoard:DangelingConnectionView>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

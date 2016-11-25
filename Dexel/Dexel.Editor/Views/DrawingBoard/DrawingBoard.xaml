@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Dexel.Editor.Views.DrawingBoard"
+﻿<UserControl x:Class="Dexel.Editor.Views.DrawingBoard.DrawingBoard"
 			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -8,6 +8,7 @@
 			 xmlns:viewModels="clr-namespace:Dexel.Editor.ViewModels"
 			 xmlns:customControls="clr-namespace:Dexel.Editor.CustomControls"
 			 xmlns:dragAndDrop="clr-namespace:Dexel.Editor.DragAndDrop"
+			 xmlns:drawingBoard="clr-namespace:Dexel.Editor.Views.DrawingBoard"
 			 mc:Ignorable="d"
 			 d:DataContext="{d:DesignInstance viewModels:MainViewModel, IsDesignTimeCreatable=True}"
 		   
@@ -88,7 +89,7 @@
 						<DataTemplate>
 							<Grid
 								Margin="0,2,2,2">
-								<views:IOCell x:Name="IoCell"
+								<drawingBoard:IOCell x:Name="IoCell"
 									Cursor="Hand"
 								   
 									MouseDown="IOCell_MouseDown"
@@ -106,7 +107,7 @@
 							  ItemsSource="{Binding Connections}">
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
-							<views:ConnectionsView x:Name="TheConnectionsView"/>
+							<drawingBoard:ConnectionsView x:Name="TheConnectionsView"/>
 						</DataTemplate>
 					</ItemsControl.ItemTemplate>
 				</ItemsControl>

@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Dexel.Editor.Views.SoftwareCell"
+﻿<UserControl x:Class="Dexel.Editor.Views.DrawingBoard.SoftwareCell"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -7,6 +7,7 @@
             
              xmlns:views="clr-namespace:Dexel.Editor.Views"
              xmlns:dragAndDrop="clr-namespace:Dexel.Editor.DragAndDrop"
+             xmlns:drawingBoard="clr-namespace:Dexel.Editor.Views.DrawingBoard"
              mc:Ignorable="d"
              d:DesignHeight="100" d:DesignWidth="100">
 
@@ -32,17 +33,17 @@
                                 Stroke="White"
                                 StrokeThickness="{DynamicResource StrokeThickness}" />
                 <TextBox MinWidth="22" 
-                         FontSize="{Binding DataContext.FontSizeCell, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:DrawingBoard}}}"  x:Name="theTextBox"   LostFocus="TheTextBox_OnLostFocus" 
-                         Background="{Binding DataContext.VisibilityBlockTextBox, Converter={StaticResource SoftwareCellTextfieldBG}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:DrawingBoard}}}" 
+                         FontSize="{Binding DataContext.FontSizeCell, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"  x:Name="theTextBox"   LostFocus="TheTextBox_OnLostFocus" 
+                         Background="{Binding DataContext.VisibilityBlockTextBox, Converter={StaticResource SoftwareCellTextfieldBG}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}" 
                                  Text="{Binding Path=LabelContent, 
                                         UpdateSourceTrigger=PropertyChanged,
                                         RelativeSource={RelativeSource FindAncestor, 
-                                        AncestorType=views:SoftwareCell,  AncestorLevel=1}}"
+                                        AncestorType=drawingBoard:SoftwareCell,  AncestorLevel=1}}"
                                  Foreground="{DynamicResource Foreground}"
                                  VerticalAlignment="Center"
                                  BorderBrush="{x:Null}" />
                 <Ellipse Margin="-20" Fill="Transparent"
-                         Visibility="{Binding DataContext.VisibilityBlockTextBox, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type views:DrawingBoard}}}"/>
+                         Visibility="{Binding DataContext.VisibilityBlockTextBox, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"/>
             </Grid>
         </Grid>
     </Grid>

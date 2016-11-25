@@ -43,7 +43,7 @@ namespace Dexel.Editor.ViewModels
         public int FontSizeCell { get; set; }
         public Visibility VisibilityDatanames { get; set; }
         public Visibility VisibilityBlockTextBox { get; set; }
-
+        public int MissingDataTypes { get; set; }
 
         public static MainViewModel Instance() => _self ?? (_self = new MainViewModel());
 
@@ -133,6 +133,8 @@ namespace Dexel.Editor.ViewModels
             typeof(ConnectionViewModel)
         };
 
+        
+
 
         public void Drop(object data)
         {
@@ -207,9 +209,9 @@ namespace Dexel.Editor.ViewModels
                 var vm = new DataTypeViewModel();
                 vm.Model = dataType;
 
-                if (dataType.DataTypes == null)
+                if (dataType.DataTypes == null || !dataType.DataTypes.Any())
                     vm.Definitions = "";
-                else
+                else 
                     vm.Definitions = dataType.DataTypes
                         .Select(x => $"{x.Name}:{x.Type}")
                         .Aggregate((str, type) => str + "\n" + type);

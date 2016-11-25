@@ -12,6 +12,8 @@
             <converter:IntegrationBorderTopPointConverter x:Key="IntegrationBorderTopPointConverter" />
             <converter:VisibilityConverter x:Key="VisibilityConverter" />
             <converter:SoftwareCellTextfieldBG x:Key="SoftwareCellTextfieldBG" />
+            <converter:MissingTypesButtonText x:Key="MissingTypesButtonText" />
+            
             
             
             <ItemsPanelTemplate x:Key="DrawingBoardItemControl">

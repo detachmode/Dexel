@@ -7,6 +7,7 @@ using System.Windows.Input;
 using System.Windows.Threading;
 using Dexel.Editor.CustomControls;
 using Dexel.Editor.ViewModels;
+using Dexel.Model;
 using Dexel.Model.DataTypes;
 using Microsoft.Win32;
 
@@ -143,6 +144,12 @@ namespace Dexel.Editor.Views
         private void MenuItem_New(object sender, RoutedEventArgs e)
         {         
              MainViewModel.Instance().LoadFromModel(new MainModel());
+        }
+
+        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            Interactions.AddMissingDataTypes(MainViewModel.Instance().Model);
+
         }
     }
 

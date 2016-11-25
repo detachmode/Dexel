@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,10 +7,9 @@ using System.Windows.Threading;
 using Dexel.Editor.CustomControls;
 using Dexel.Editor.DragAndDrop;
 using Dexel.Editor.ViewModels;
-using Dexel.Library;
 using Dexel.Model.DataTypes;
 
-namespace Dexel.Editor.Views
+namespace Dexel.Editor.Views.DrawingBoard
 {
     /// <summary>
     /// Interaktionslogik für DrawingBoard.xaml
@@ -343,21 +340,21 @@ namespace Dexel.Editor.Views
 
         public void TabStopMove(Func<object, MainModel, object> tabstopFunc)
         {
-           
-            Keyboard.FocusedElement.TryGetDataContext<IOCellViewModel>(vm =>
+            var focusedelement = Keyboard.FocusedElement;
+            focusedelement.TryGetDataContext<IOCellViewModel>(vm =>
             {
                 var focusedcell = vm.Model;
                 var nextmodel = tabstopFunc(focusedcell, ViewModelModel());
                 SetFocusOnObject(nextmodel);
             });
 
-            Keyboard.FocusedElement.TryGetDataContext<DataStream>(focusedDataStream =>
+            focusedelement.TryGetDataContext<DataStream>(focusedDataStream =>
             {
                 var nextmodel = tabstopFunc(focusedDataStream, ViewModelModel());
                 SetFocusOnObject(nextmodel);
             });
 
-            Keyboard.FocusedElement.TryGetDataContext<DataStreamDefinition>(vm =>
+            focusedelement.TryGetDataContext<DataStreamDefinition>(vm =>
             {
                 var nextmodel = tabstopFunc(vm, ViewModelModel());
                 SetFocusOnObject(nextmodel);

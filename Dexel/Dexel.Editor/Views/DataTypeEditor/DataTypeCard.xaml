@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Dexel.Editor.Views.DataTypeCard"
+﻿<UserControl x:Class="Dexel.Editor.Views.DataTypeEditor.DataTypeCard"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -9,8 +9,8 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <ContextMenu x:Key="MyContextMenu">
-            <MenuItem Header="Delete Data Type" Click="DeleteDataTypeDefinition" />
-            <MenuItem Header="Add Data Type" Click="AddNewDataTypeDefinition" />
+            <MenuItem Header="New" Click="AddNewDataTypeDefinition" />
+            <MenuItem Header="Delete" Click="DeleteDataTypeDefinition" />
         </ContextMenu>
     </UserControl.Resources>
 
@@ -23,21 +23,17 @@
                         d:DataContext="{d:DesignData DataTypeViewModel}">
                 <TextBox
                     x:Name="TheNameTextBox"
-                    IsTabStop="True"
-                    TabIndex="1"
                     Background="{StaticResource BGBrighter}"
                     BorderBrush="{StaticResource BGBrighter}"
                     ContextMenu="{StaticResource MyContextMenu}"
                     FontSize="14"
                     Foreground="{StaticResource Foreground}" Text="{Binding Model.Name, Mode=TwoWay}" />
                 <avalonEdit:TextEditor
-                     x:Name="TheDefinitionTextBox"
-                    IsTabStop="True"
-                    TabIndex="2"
-                    Margin="2"
-                    xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"
-                 
+                     x:Name="TheDefinitionTextBox"                   
+                    Margin="2,6"
+                    xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"               
                     ShowLineNumbers="True"
+                    LineNumbersForeground="{StaticResource BG}"
                     MinWidth="12"
                     FontSize="14"
                     Foreground="{DynamicResource Foreground}"

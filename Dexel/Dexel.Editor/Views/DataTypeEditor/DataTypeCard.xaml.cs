@@ -7,7 +7,7 @@ using Dexel.Editor.ViewModels;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 
-namespace Dexel.Editor.Views
+namespace Dexel.Editor.Views.DataTypeEditor
 {
     /// <summary>
     /// Interaction logic for DataTypeCard.xaml
@@ -20,16 +20,23 @@ namespace Dexel.Editor.Views
             InitializeComponent();
             LoadColorSchema(@"FlowDesignColor.xshd");
 
+
+            
+
             TheDefinitionTextBox.TextChanged += (sender, args) =>
             {
                 var caret = TheDefinitionTextBox.SelectionStart;
                 var currentText = TheDefinitionTextBox.Document.Text;
 
                 sender.TryGetDataContext<DataTypeViewModel>(vm => vm.UpdateModel(currentText));
-
+                Interactions.UpdateMissingDataTypesCounter(MainViewModel.Instance().Model);
                 TheDefinitionTextBox.SelectionStart = caret;
             };
         }
+
+
+              
+       
 
         #region load color schema
         private static XshdSyntaxDefinition _xshd;
