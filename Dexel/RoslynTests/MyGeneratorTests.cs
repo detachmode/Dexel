@@ -41,14 +41,14 @@ namespace Roslyn.Tests
             MainModelManager.AddNewOutput(node, "string");
 
             var methode = MethodsGenerator.GenerateStaticMethod(_gen.Generator, node);
-            Assert.AreEqual("public string Random_Name()\r\n{\r\n}", methode.NormalizeWhitespace().ToFullString());
+            Assert.AreEqual("public static string RandomName()\r\n{\r\n}", methode.NormalizeWhitespace().ToFullString());
 
             // Empty output => return void
             node = SoftwareCellsManager.CreateNew("Random Name");
             MainModelManager.AddNewOutput(node, "");
 
             methode = MethodsGenerator.GenerateStaticMethod(_gen.Generator, node);
-            Assert.AreEqual("public void Random_Name()\r\n{\r\n}", methode.NormalizeWhitespace().ToFullString());
+            Assert.AreEqual("public static void RandomName()\r\n{\r\n}", methode.NormalizeWhitespace().ToFullString());
 
 
             var testModel = new MainModel();
@@ -66,19 +66,19 @@ namespace Roslyn.Tests
 
             SyntaxNode[] members = testModel.SoftwareCells.Select(x => MethodsGenerator.GenerateStaticMethod(_gen.Generator, x)).ToArray();
             var newNameMethod = members[0];
-            Assert.AreEqual("public string Random_Name()\r\n{\r\n}", newNameMethod.NormalizeWhitespace().ToFullString());
+            Assert.AreEqual("public static string RandomName()\r\n{\r\n}", newNameMethod.NormalizeWhitespace().ToFullString());
 
             var alterMethod = members[1];
-            Assert.AreEqual("public int Random_Age()\r\n{\r\n}", alterMethod.NormalizeWhitespace().ToFullString());
+            Assert.AreEqual("public static int RandomAge()\r\n{\r\n}", alterMethod.NormalizeWhitespace().ToFullString());
 
             var personMethod = members[2];
-            Assert.AreEqual("public Person Create_Person(int param1, string param2)\r\n{\r\n}", personMethod.NormalizeWhitespace().ToFullString());
+            Assert.AreEqual("public static Person CreatePerson(int @int, string @string)\r\n{\r\n}", personMethod.NormalizeWhitespace().ToFullString());
 
             // Named Parameter
             person.InputStreams.Clear();
             SoftwareCellsManager.NewInputDef(person, "int | age:int, name:string", "");
             var personMethodNamedParams = MethodsGenerator.GenerateStaticMethod(_gen.Generator, person);
-            Assert.AreEqual("public Person Create_Person(int age, string name)\r\n{\r\n}",
+            Assert.AreEqual("public static Person CreatePerson(int age, string name)\r\n{\r\n}",
                 personMethodNamedParams.NormalizeWhitespace().ToFullString());
 
 
@@ -94,24 +94,43 @@ namespace Roslyn.Tests
         {
 
             var testModel = new MainModel();
-            var newName = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
-            MainModelManager.AddNewInput(newName, "");
+            var main = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            MainModelManager.AddNewInput(main, "");
 
             var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            MainModelManager.ConnectTwoCells(newName, alter, "string", "", testModel);
+            MainModelManager.ConnectTwoCells(main, alter, "string", "", testModel);
 
             var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
             MainModelManager.ConnectTwoCells(alter, person, "int","int, string", testModel);
 
 
-            var expectedList = new List<Parameter>()
+             var expectedList = new List<Parameter>()
             {
                 new Parameter() {FoundFlag = true, Source = alter},
-                new Parameter() {FoundFlag = true, Source = newName}
+                new Parameter() {FoundFlag = true, Source = main}
             };
-            var paramList = Integrations.FindParameters(testModel.Connections, person);
+            var paramList = Integrations.FindParameters(testModel.Connections, main, person);
             Assert.IsTrue(expectedList[0].Compare(paramList[0]));
             Assert.IsTrue(expectedList[1].Compare(paramList[1]));
+
+            // test find parameter from parent method arguments
+            testModel = new MainModel();
+            main = MainModelManager.AddNewSoftwareCell("convert roman number", testModel);
+            MainModelManager.AddNewInput(main, "string");
+            MainModelManager.AddNewOutput(main, "int");
+
+
+
+            var splitter = MainModelManager.AddNewSoftwareCell("split", testModel);
+            MainModelManager.AddNewInput(splitter, "string");
+            MainModelManager.AddNewOutput(splitter, "char*");
+
+            main.Integration.Add(splitter);
+
+
+            paramList = Integrations.FindParameters(testModel.Connections, main, splitter);
+            Assert.IsTrue(paramList.Count == 0);
+
         }
 
         [TestMethod()]
@@ -129,11 +148,11 @@ namespace Roslyn.Tests
 
             var expected = new Parameter { FoundFlag = true, Source = alter };
             var lookingfor = new NameType { Name = null, Type = "int" };
-            Assert.IsTrue(expected.Compare(Integrations.FindOneParameter(lookingfor, testModel.Connections, person)));
+            Assert.IsTrue(expected.Compare(Integrations.FindOneParameter(lookingfor, null,testModel.Connections, person)));
 
             expected = new Parameter { FoundFlag = true, Source = newName };
             lookingfor = new NameType { Name = null, Type = "string" };
-            Assert.IsTrue(expected.Compare(Integrations.FindOneParameter(lookingfor, testModel.Connections, person)));
+            Assert.IsTrue(expected.Compare(Integrations.FindOneParameter(lookingfor,null ,testModel.Connections, person)));
 
             testModel = new MainModel();
             newName = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
@@ -146,7 +165,7 @@ namespace Roslyn.Tests
             MainModelManager.ConnectTwoCells(alter, person, "int","int, string", testModel);
 
             lookingfor = new NameType { Name = null, Type = "int" };
-            Assert.IsTrue(Integrations.FindOneParameter(lookingfor, testModel.Connections, person).Source == alter);
+            Assert.IsTrue(Integrations.FindOneParameter(lookingfor,null, testModel.Connections, person).Source == alter);
 
 
         }
@@ -163,7 +182,7 @@ namespace Roslyn.Tests
             MainModelManager.AddNewOutput(foo, "");
            var nodes = Integrations.LocalMethodCall(_gen.Generator, foo, null, new List<GeneratedLocalVariable>());
            var fullstring =nodes.NormalizeWhitespace().ToFullString();
-            Assert.AreEqual("foo()", fullstring);
+            Assert.AreEqual("Foo()", fullstring);
         }
     }
 }

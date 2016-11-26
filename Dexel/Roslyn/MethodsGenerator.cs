@@ -56,14 +56,14 @@ namespace Roslyn
                 .Select(nametype =>
                 {
                     ++i;
-                    var name = GenerateParameterName(nametype, i);
+                    var name = GenerateParameterName(nametype);
                     var typeExpression = DataTypeParser.ConvertToTypeExpression(generator, nametype);                
                     return generator.ParameterDeclaration(name, typeExpression);
                 }).ToArray();
         }
 
 
-        private static string GenerateParameterName(NameType nametype, int i)
+        public static string GenerateParameterName(NameType nametype)
         {
             var lower = nametype.Type.ToLower();
             if (nametype.IsArray || nametype.IsList)

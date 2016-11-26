@@ -10,23 +10,7 @@ namespace Roslyn.Tests
     {
         private readonly MyGenerator _gen = new MyGenerator();
 
-        [TestMethod()]
-        public void CreateIntegrationBodyTest()
-        {
-            var testModel = new MainModel();
-            var newName = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
-            MainModelManager.AddNewInput(newName, "");
-
-            var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            MainModelManager.ConnectTwoCells(newName, alter, "string", "", testModel);
-
-            var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            MainModelManager.ConnectTwoCells(alter, person, "int ","int, string", testModel);
-            MainModelManager.AddNewOutput(person, "Person");
-
-            Integrations.CreateIntegrationBody(_gen.Generator, testModel.Connections, testModel.SoftwareCells);
-        }
-
+        
 
         [TestMethod()]
         public void FindParametersTest()
@@ -43,7 +27,7 @@ namespace Roslyn.Tests
             MainModelManager.ConnectTwoCells(alter, person, "int","int, string", testModel);
             MainModelManager.AddNewOutput(person, "Person");
 
-            var dependecies = Integrations.FindParameters(testModel.Connections, person);
+            var dependecies = Integrations.FindParameters(testModel.Connections, newName, person);
             Assert.IsTrue(dependecies.Any(x => x.Source == alter));
             Assert.IsTrue(dependecies.Any(x => x.Source == newName));
 
@@ -59,7 +43,7 @@ namespace Roslyn.Tests
             MainModelManager.ConnectTwoCells(alter, person, "int", "int, string", testModel);
             MainModelManager.AddNewOutput(person, "Person");
 
-            dependecies = Integrations.FindParameters(testModel.Connections, person);
+            dependecies = Integrations.FindParameters(testModel.Connections, newName, person);
             Assert.IsTrue(dependecies.Any(x => x.Source == alter));
             Assert.IsTrue(dependecies.Any(x => x.Source == newName));
         }

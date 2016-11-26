@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Editing;
 
 namespace Roslyn
@@ -14,21 +15,18 @@ namespace Roslyn
     {
         private static int _methodsToGenerateCount;
 
-        public static SyntaxNode[] CreateIntegrationBody(SyntaxGenerator generator, List<DataStream> connections,
-           List<SoftwareCell> integratedSoftwareCells)
+        public static SyntaxNode[] CreateIntegrationBody(SyntaxGenerator generator, List<DataStream> connections, SoftwareCell integration)
         {
             _methodsToGenerateCount = 0;
             var generated = new List<GeneratedLocalVariable>();
 
-            var methodWithParameterDependencieses = FindParameterDependencies(integratedSoftwareCells, connections);
-            return CreateAllDependenciesAvailable(generator, methodWithParameterDependencieses,
+            var methodWithParameterDependencieses = FindParameterDependencies(integration, connections);
+            return CreateAllDependenciesAvailable(generator, integration, methodWithParameterDependencieses,
                 generated, new List<SyntaxNode>()).ToArray();
         }
 
 
-        private static List<SyntaxNode> CreateAllDependenciesAvailable(SyntaxGenerator generator,
-            List<MethodWithParameterDependencies> methodsToGenerate, List<GeneratedLocalVariable> generated,
-            List<SyntaxNode> result)
+        private static List<SyntaxNode> CreateAllDependenciesAvailable(SyntaxGenerator generator, SoftwareCell integration, List<MethodWithParameterDependencies> methodsToGenerate, List<GeneratedLocalVariable> generated, List<SyntaxNode> result)
         {
             if (!methodsToGenerate.Any() || methodsToGenerate.Count == _methodsToGenerateCount)
                 return result;
@@ -44,7 +42,7 @@ namespace Roslyn
             result.AddRange(nodes);
             methodsToGenerate.RemoveAll(x => generated.Any(y => y.Source == x.OfSoftwareCell));
 
-            return CreateAllDependenciesAvailable(generator, methodsToGenerate, generated, result);
+            return CreateAllDependenciesAvailable(generator, integration, methodsToGenerate, generated, result);
         }
 
 
@@ -52,7 +50,7 @@ namespace Roslyn
             MethodWithParameterDependencies methodWithParameterDependencies)
         {
             return methodWithParameterDependencies.Parameters.TrueForAll(
-                    param => generated.Any(c => c.Source == param.Source));
+                    param => param.Source == null || generated.Any(c => c.Source == param.Source));
         }
 
 
@@ -70,41 +68,62 @@ namespace Roslyn
         {
             return parameters.Select(p =>
             {
-                var variablename = generated.First(x => x.Source == p.Source).VariableName;
+                var variablename = p.Source == null ? MethodsGenerator.GenerateParameterName(p.NameType)
+                    : generated.First(x => x.Source == p.Source).VariableName;
+
                 return generator.IdentifierName(variablename);
             }).ToArray();
         }
 
 
-        public static List<MethodWithParameterDependencies> FindParameterDependencies(List<SoftwareCell> softwareCells,
+        public static List<MethodWithParameterDependencies> FindParameterDependencies(SoftwareCell integration,
             List<DataStream> connections)
         {
-            return softwareCells.Select(sc => new MethodWithParameterDependencies
+            return integration.Integration.Select(sc => new MethodWithParameterDependencies
             {
                 OfSoftwareCell = sc,
-                Parameters = FindParameters(connections, sc)
+                Parameters = FindParameters(connections,integration, sc)
             }).ToList();
         }
 
 
-        public static List<Parameter> FindParameters(List<DataStream> connections, SoftwareCell ofSoftwareCell)
+        public static List<Parameter> FindParameters(List<DataStream> connections, SoftwareCell integration, SoftwareCell ofSoftwareCell)
         {
             var nameTypes =
-                DataStreamParser.GetInputPart(ofSoftwareCell.InputStreams.First().DataNames).ToList();
+                DataStreamParser.GetInputPart(ofSoftwareCell.InputStreams.First().DataNames);
+
             return
                 nameTypes.Where(nt => nt.Type != "")
-                    .Select(nt => FindOneParameter(nt, connections, ofSoftwareCell))
+                    .Select(nt => FindOneParameter(nt, integration, connections, ofSoftwareCell))
                     .ToList();
         }
 
 
-        public static Parameter FindOneParameter(NameType lookingForNameType, List<DataStream> connections, SoftwareCell ofSoftwareCell)
+        public static Parameter FindOneParameter(NameType lookingForNameType, SoftwareCell parent, List<DataStream> connections, SoftwareCell ofSoftwareCell)
         {
             var parameter = new Parameter
             {
-                FoundFlag = false,
+                FoundFlag = false,   
+                NameType = lookingForNameType,            
                 Source = null
             };
+
+            var foundInParent =  parent?.InputStreams.Select(dsd =>
+            {
+                var inputnametypes = DataStreamParser.GetOutputPart(dsd.DataNames).ToList();
+                var found = inputnametypes
+                    .Where(nt => IsMatchingNameType(lookingForNameType, nt))
+                    .ToList();
+
+                return found.Any() ? found.First() : null;
+            }).Where(x => x != null).ToList();
+
+            if (foundInParent != null && foundInParent.Any())
+            {
+                parameter.FoundFlag = true;
+                return parameter;               
+            }
+
 
             while (true)
             {            

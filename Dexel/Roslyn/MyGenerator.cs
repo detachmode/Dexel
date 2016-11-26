@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Dexel.Model;
 using Dexel.Model.DataTypes;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
@@ -39,20 +40,34 @@ namespace Roslyn
 
         public List<SyntaxNode> GenerateAllMethods(MainModel model)
         {
-            var operationBody = MethodsGenerator.GetNotImplementatedException(Generator);
-            var methods = model.SoftwareCells
-                .Select(softwareCell => MethodsGenerator.GenerateStaticMethod(Generator, softwareCell, operationBody))
-                .ToList();
-
-            // One main Integration is implicitly integrating all operations
-            var body = Integrations.CreateIntegrationBody(Generator, model.Connections, model.SoftwareCells);
-            var main = MethodsGenerator.GenerateStaticMethod(Generator, "main", body);
-            methods.Add(main);
-            return methods;
+            var operations = GeneratedOperations(model);
+            return GenerateIntegrations(operations, model);
         }
 
 
-       
+
+
+        private List<SyntaxNode> GenerateIntegrations(List<SyntaxNode> operations, MainModel model)
+        {
+            model.SoftwareCells.Where(sc => sc.Integration.Count > 0).ToList().ForEach(isc =>
+            {
+                var body = Integrations.CreateIntegrationBody(Generator, model.Connections, isc);
+                var main = MethodsGenerator.GenerateStaticMethod(Generator, isc, body);
+                operations.Add(main);
+            });
+            return operations;
+        }
+
+
+        private List<SyntaxNode> GeneratedOperations(MainModel mainModel)
+        {
+            var operationBody = MethodsGenerator.GetNotImplementatedException(Generator);
+            return mainModel.SoftwareCells
+                .Where(softwareCell => softwareCell.Integration.Count == 0)
+                .Select(softwareCell => MethodsGenerator.GenerateStaticMethod(Generator, softwareCell, operationBody))
+                .ToList();
+
+        }
 
 
         public string CompileToString(List<SyntaxNode> nodes)
@@ -123,6 +138,7 @@ namespace Roslyn
     {
         public bool FoundFlag;
         public SoftwareCell Source;
+        public NameType NameType;
     }
 
 
