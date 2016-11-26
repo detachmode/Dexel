@@ -151,6 +151,11 @@ namespace Dexel.Editor.Views
             Interactions.AddMissingDataTypes(MainViewModel.Instance().Model);
 
         }
+
+        private void MenuItem_GenerateCodeToClipboard(object sender, RoutedEventArgs e)
+        {
+            Interactions.GenerateCodeToClipboard(MainViewModel.Instance().Model);
+        }
     }
 
 }

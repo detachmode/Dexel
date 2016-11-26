@@ -40,14 +40,14 @@ namespace Roslyn.Tests
             var node = SoftwareCellsManager.CreateNew("Random Name");
             MainModelManager.AddNewOutput(node, "string");
 
-            var methode = MethodsGenerator.GenerateMethod(_gen.Generator, node);
+            var methode = MethodsGenerator.GenerateStaticMethod(_gen.Generator, node);
             Assert.AreEqual("public string Random_Name()\r\n{\r\n}", methode.NormalizeWhitespace().ToFullString());
 
             // Empty output => return void
             node = SoftwareCellsManager.CreateNew("Random Name");
             MainModelManager.AddNewOutput(node, "");
 
-            methode = MethodsGenerator.GenerateMethod(_gen.Generator, node);
+            methode = MethodsGenerator.GenerateStaticMethod(_gen.Generator, node);
             Assert.AreEqual("public void Random_Name()\r\n{\r\n}", methode.NormalizeWhitespace().ToFullString());
 
 
@@ -64,7 +64,7 @@ namespace Roslyn.Tests
             var definition = DataStreamManager.NewDefinition(person, "Person");
             person.OutputStreams.Add(definition);
 
-            SyntaxNode[] members = testModel.SoftwareCells.Select(x => MethodsGenerator.GenerateMethod(_gen.Generator, x)).ToArray();
+            SyntaxNode[] members = testModel.SoftwareCells.Select(x => MethodsGenerator.GenerateStaticMethod(_gen.Generator, x)).ToArray();
             var newNameMethod = members[0];
             Assert.AreEqual("public string Random_Name()\r\n{\r\n}", newNameMethod.NormalizeWhitespace().ToFullString());
 
@@ -77,7 +77,7 @@ namespace Roslyn.Tests
             // Named Parameter
             person.InputStreams.Clear();
             SoftwareCellsManager.NewInputDef(person, "int | age:int, name:string", "");
-            var personMethodNamedParams = MethodsGenerator.GenerateMethod(_gen.Generator, person);
+            var personMethodNamedParams = MethodsGenerator.GenerateStaticMethod(_gen.Generator, person);
             Assert.AreEqual("public Person Create_Person(int age, string name)\r\n{\r\n}",
                 personMethodNamedParams.NormalizeWhitespace().ToFullString());
 

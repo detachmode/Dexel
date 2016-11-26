@@ -163,6 +163,13 @@ namespace Dexel.Editor
         }
 
 
+        public static void GenerateCodeToClipboard(MainModel mainModel)
+        {
+            var gen = new MyGenerator();           
+            Clipboard.SetText(gen.GenerateMethods(mainModel));
+        }
+
+
         public static void DebugPrint(MainModel mainModel)
         {
             Console.Clear();

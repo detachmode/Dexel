@@ -13,12 +13,12 @@ namespace Roslyn
     public static class MethodsGenerator
     {
 
-        public static SyntaxNode GenerateMethod(SyntaxGenerator generator, string createName, SyntaxNode[] body = null)
+        public static SyntaxNode GenerateStaticMethod(SyntaxGenerator generator, string createName, SyntaxNode[] body = null)
         {
             return generator.MethodDeclaration(createName, null,
                 null, null,
                 Accessibility.Public,
-                DeclarationModifiers.None,
+                DeclarationModifiers.Static,
                 body ?? new SyntaxNode[] {});
         }
 
@@ -30,7 +30,7 @@ namespace Roslyn
                 .First();
         }
 
-        public static SyntaxNode GenerateMethod(SyntaxGenerator generator,SoftwareCell softwareCell)
+        public static SyntaxNode GenerateStaticMethod(SyntaxGenerator generator,SoftwareCell softwareCell , SyntaxNode[] body = null)
         {
             var methodName = GetMethodName(softwareCell);
             var returntype = GetReturnPart(generator,softwareCell);
@@ -39,8 +39,8 @@ namespace Roslyn
             return generator.MethodDeclaration(methodName, parameters,
                 null, returntype,
                 Accessibility.Public,
-                DeclarationModifiers.None,
-                new SyntaxNode[] {});
+                DeclarationModifiers.Static,
+                body ?? new SyntaxNode[] { });
         }
 
         public static IEnumerable<SyntaxNode> GetParameters(SyntaxGenerator generator, SoftwareCell softwareCell)
@@ -73,16 +73,26 @@ namespace Roslyn
             return nametype.Name ?? lower;
         }
 
+
         public static string FirstCharToUpper(string input)
         {
             if (String.IsNullOrEmpty(input))
-                throw new ArgumentException("ARGH!");
+                throw new ArgumentException("");
             return input.First().ToString().ToUpper() + input.Substring(1);
         }
 
         public static string GetMethodName(SoftwareCell softwareCell)
         {
             return softwareCell.Name.Split(' ').Where(s => !string.IsNullOrEmpty(s)).Select(s => FirstCharToUpper(s)).Aggregate((s, s2) => s + s2);
+        }
+
+
+        public static SyntaxNode[] GetNotImplementatedException(SyntaxGenerator generator)
+        {
+            return new []
+            {
+                generator.ThrowStatement(generator.IdentifierName(" new NotImplementedException()"))
+            };
         }
     }
 }

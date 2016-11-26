@@ -23,6 +23,8 @@
             <MenuItem Header="Output">
                 <MenuItem Header="Debug Print" Click="MenuItem_DebugPrint"/>
                 <MenuItem Header="Generate Code" Click="MenuItem_GenerateCode"/>
+                <MenuItem Header="Generate Code to Clipboard" Click="MenuItem_GenerateCodeToClipboard"/>
+
                 <Separator></Separator>
                 <RadioButton Content="Disabled" IsChecked="True" Unchecked="CheckBox_UnChecked" GroupName="Auto"/>
                 <RadioButton Content="Auto Debug Print" Checked="CheckBox_Checked" Unchecked="CheckBox_UnChecked" GroupName="Auto"/>
