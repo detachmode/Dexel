@@ -117,7 +117,8 @@ namespace Dexel.Editor
         {
             CheckAreBothInputs(sourceDSD, destinationDSD,
                 () =>
-                    MainModelManager.MakeIntegrationIncludingChildren(sourceDSD.Parent, destinationDSD.Parent, mainModel),
+                    MainModelManager.MakeIntegrationIncludingChildren(sourceDSD.Parent, destinationDSD.Parent,
+                        mainModel),
                 () => MainModelManager.ConnectTwoDefintions(sourceDSD, destinationDSD, mainModel));
 
             ViewRedraw();
@@ -155,11 +156,20 @@ namespace Dexel.Editor
         }
 
 
+
+
         public static void ConsolePrintGeneratedCode(MainModel mainModel)
         {
-            var gen = new MyGenerator();
-            Console.Clear();
-            gen.GenerateCodeAndPrint(mainModel);
+            try
+            {
+                var gen = new MyGenerator();
+                Console.Clear();
+                gen.GenerateCodeAndPrint(mainModel);
+            }
+            catch
+            {
+                Console.WriteLine("ERROR");
+            }
         }
 
 

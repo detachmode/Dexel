@@ -116,6 +116,7 @@ namespace Roslyn
     {
         public SoftwareCell Source;
         public string VariableName;
+        public NameType NameType;
     }
 
 
