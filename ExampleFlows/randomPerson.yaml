@@ -1,16 +1,16 @@
 SoftwareCells:
-- &o1
+- &o2
   Position:
-    X: 80
-    Y: 50
-  Name: foo
+    X: -67.5
+    Y: 73.75
+  Name: Get random age
   ID: ceb78d7c-2d6c-4086-854f-a8528b1f4387
   Integration:
   - &o0
     Position:
-      X: 80
+      X: -291.25
       Y: 180
-    Name: subbar
+    Name: get seed
     ID: 77c7085c-e191-4518-b71c-015495e695de
     Integration: []
     InputStreams:
@@ -18,46 +18,122 @@ SoftwareCells:
       ID: 30bdeae8-85c7-4aae-8acd-e2a08d4e0dc1
       Parent: *o0
     OutputStreams:
-    - DataNames: (age:int)
+    - &o8
+      DataNames: (seed:int)
       ID: 327dd546-477f-4e7c-83ec-20953a8497d4
+      Connected: true
       Parent: *o0
+  - &o1
+    Position:
+      X: -28.578333333333376
+      Y: 180
+    Name: create random int
+    ID: 8b1bc5be-5f8a-46fd-8fbd-d332699edb27
+    Integration: []
+    InputStreams:
+    - &o9
+      DataNames: (seed:int)
+      ID: b4ee34a5-59e4-426a-8ab2-112a879b55d7
+      Connected: true
+      Parent: *o1
+    OutputStreams:
+    - ActionName: ''
+      DataNames: (age:int)
+      ID: cc6b4aa2-aca8-40b4-ad2c-9cf7bb7d9a35
+      Parent: *o1
   InputStreams:
   - DataNames: ()
     ID: 6031235e-7090-4ade-9f8e-628c7fe23763
-    Parent: *o1
+    Parent: *o2
   OutputStreams:
-  - &o3
+  - &o6
     ActionName: ''
     DataNames: (age:int)
     ID: cb0afac6-ef45-4706-8d5c-349f6ba365aa
     Connected: true
-    Parent: *o1
+    Parent: *o2
 - *o0
-- &o2
+- &o3
   Position:
-    X: 450
-    Y: 50
+    X: 682.75
+    Y: 71.25
   Name: create person
   ID: ad31ded7-baed-4815-8915-6f64e285a30f
   Integration: []
   InputStreams:
-  - &o4
+  - &o11
     DataNames: (age:int, name:string)
     ID: bb076c5d-69ba-4e17-8e92-fa5c4b139016
     Connected: true
-    Parent: *o2
+    Parent: *o3
   OutputStreams:
   - DataNames: (rndPerson:Person)
     ID: b2b4b897-3a8b-42a3-bbd4-5c52ac4dfd50
-    Parent: *o2
+    Parent: *o3
+- &o5
+  Position:
+    X: 184
+    Y: -105.96000000000004
+  Name: Create random person
+  ID: b0bdb956-bfd2-4ddd-aff2-4ee287093f0f
+  Integration:
+  - &o4
+    Position:
+      X: 208.92166666666668
+      Y: 73.75
+    Name: get random name
+    ID: 4c2a19f1-9449-4007-9dbe-fa59c49cadfb
+    Integration: []
+    InputStreams:
+    - &o7
+      ActionName: ''
+      DataNames: ()
+      ID: 32e1f084-3664-46b5-9abc-9f8bde08c2c1
+      Connected: true
+      Parent: *o4
+    OutputStreams:
+    - &o10
+      ActionName: ''
+      DataNames: (name:string)
+      ID: 0258984e-9587-41d9-ac63-e0a7d81d2516
+      Connected: true
+      Parent: *o4
+  - *o3
+  - *o2
+  InputStreams:
+  - ActionName: ''
+    DataNames: ()
+    ID: 9cae2fd5-e44a-4fac-9eb5-1826ccdd5ad1
+    Parent: *o5
+  OutputStreams:
+  - ActionName: ''
+    DataNames: (rndPerson:Person)
+    ID: a7a016d7-4945-4311-917b-e92fa47ef00b
+    Parent: *o5
+- *o4
+- *o1
 Connections:
-- DataNames: (age:int) | (age:int, name:string)
-  ID: 9003d993-28a6-4132-a8e9-75972bf1423c
+- DataNames: (age:int) | ()
+  ID: cf659d02-7770-4e4a-82cf-a60a1744dac9
   ActionName: ''
   Sources:
-  - *o3
+  - *o6
   Destinations:
-  - *o4
+  - *o7
+- DataNames: (seed:int)
+  ID: 3ef3162d-7e75-4182-92ab-88baa0b9d762
+  ActionName: ''
+  Sources:
+  - *o8
+  Destinations:
+  - *o9
+- DataNames: (name:string) | (age:int, name:string)
+  ID: 227452ac-d19b-47b9-b898-299bb9c955ed
+  ActionName: ''
+  Sources:
+  - *o10
+  Destinations:
+  - *o11
 DataTypes:
 - Name: Person
   DataTypes:

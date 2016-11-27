@@ -166,17 +166,33 @@ namespace Dexel.Editor
                 Console.Clear();
                 gen.GenerateCodeAndPrint(mainModel);
             }
-            catch
+            catch(Exception ex)
             {
-                Console.WriteLine("ERROR");
+                PrintError(ex);
             }
+        }
+
+
+        private static void PrintError(Exception exception)
+        {
+            Console.WriteLine(exception.Message);
         }
 
 
         public static void GenerateCodeToClipboard(MainModel mainModel)
         {
-            var gen = new MyGenerator();           
-            Clipboard.SetText(gen.GenerateMethods(mainModel));
+            try
+            {
+                var gen = new MyGenerator();
+                var methods = gen.GenerateAllMethods(mainModel);
+                var datatypes = gen.GenerateDataTypes(mainModel);
+                var text = gen.CompileToString(datatypes.Concat(methods).ToList());
+                Clipboard.SetText(text);
+            }
+            catch (Exception ex)
+            {
+                PrintError(ex);                
+            }
         }
 
 

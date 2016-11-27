@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
 using Microsoft.CodeAnalysis;
@@ -74,16 +75,13 @@ namespace Roslyn
         }
 
 
-        public static string FirstCharToUpper(string input)
-        {
-            if (String.IsNullOrEmpty(input))
-                throw new ArgumentException("");
-            return input.First().ToString().ToUpper() + input.Substring(1);
-        }
-
         public static string GetMethodName(SoftwareCell softwareCell)
         {
-            return softwareCell.Name.Split(' ').Where(s => !string.IsNullOrEmpty(s)).Select(s => FirstCharToUpper(s)).Aggregate((s, s2) => s + s2);
+            if (string.IsNullOrEmpty(softwareCell.Name))
+            {
+                throw new Exception("SoftwareCell has no name");
+            }
+            return softwareCell.Name.Split(' ').Where(s => !string.IsNullOrEmpty(s)).Select(s => Helper.FirstCharToUpper(s)).Aggregate((s, s2) => s + s2);
         }
 
 

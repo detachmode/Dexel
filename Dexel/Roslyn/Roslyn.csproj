@@ -93,6 +93,8 @@
   <ItemGroup>
     <Compile Include="Common\Extensions.cs" />
     <Compile Include="DataTypeParser.cs" />
+    <Compile Include="DataTypesGenerator.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="Integrations.cs" />
     <Compile Include="MyGenerator.cs" />
     <Compile Include="MethodsGenerator.cs" />

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Roslyn;
+using System.Collections.Generic;
 using System.Linq;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
@@ -101,10 +102,10 @@ namespace Roslyn.Tests
             MainModelManager.ConnectTwoCells(main, alter, "string", "", testModel);
 
             var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            MainModelManager.ConnectTwoCells(alter, person, "int","int, string", testModel);
+            MainModelManager.ConnectTwoCells(alter, person, "int", "int, string", testModel);
 
 
-             var expectedList = new List<Parameter>()
+            var expectedList = new List<Parameter>()
             {
                 new Parameter() {FoundFlag = true, Source = alter},
                 new Parameter() {FoundFlag = true, Source = main}
@@ -144,33 +145,33 @@ namespace Roslyn.Tests
             MainModelManager.ConnectTwoCells(newName, alter, "string", "", testModel);
 
             var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            MainModelManager.ConnectTwoCells(alter, person, "int","int, string", testModel);
+            MainModelManager.ConnectTwoCells(alter, person, "int", "int, string", testModel);
 
             var expected = new Parameter { FoundFlag = true, Source = alter };
             var lookingfor = new NameType { Name = null, Type = "int" };
-            Assert.IsTrue(expected.Compare(Integrations.FindOneParameter(lookingfor, null,testModel.Connections, person)));
+            Assert.IsTrue(expected.Compare(Integrations.FindOneParameter(lookingfor, null, testModel.Connections, person)));
 
             expected = new Parameter { FoundFlag = true, Source = newName };
             lookingfor = new NameType { Name = null, Type = "string" };
-            Assert.IsTrue(expected.Compare(Integrations.FindOneParameter(lookingfor,null ,testModel.Connections, person)));
+            Assert.IsTrue(expected.Compare(Integrations.FindOneParameter(lookingfor, null, testModel.Connections, person)));
 
             testModel = new MainModel();
             newName = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
             MainModelManager.AddNewInput(newName, "");
 
             alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            MainModelManager.ConnectTwoCells(newName, alter, "string","", testModel);
+            MainModelManager.ConnectTwoCells(newName, alter, "string", "", testModel);
 
             person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            MainModelManager.ConnectTwoCells(alter, person, "int","int, string", testModel);
+            MainModelManager.ConnectTwoCells(alter, person, "int", "int, string", testModel);
 
             lookingfor = new NameType { Name = null, Type = "int" };
-            Assert.IsTrue(Integrations.FindOneParameter(lookingfor,null, testModel.Connections, person).Source == alter);
+            Assert.IsTrue(Integrations.FindOneParameter(lookingfor, null, testModel.Connections, person).Source == alter);
 
 
         }
 
-      
+
 
         [TestMethod()]
         public void LocalMethodCallTest()
@@ -180,9 +181,29 @@ namespace Roslyn.Tests
             var foo = MainModelManager.AddNewSoftwareCell("foo", testModel);
             MainModelManager.AddNewInput(foo, "");
             MainModelManager.AddNewOutput(foo, "");
-           var nodes = Integrations.LocalMethodCall(_gen.Generator, foo, null, new List<GeneratedLocalVariable>());
-           var fullstring =nodes.NormalizeWhitespace().ToFullString();
+            var nodes = Integrations.LocalMethodCall(_gen.Generator, foo, null, new List<GeneratedLocalVariable>());
+            var fullstring = nodes.NormalizeWhitespace().ToFullString();
             Assert.AreEqual("Foo()", fullstring);
+        }
+
+        [TestMethod()]
+        public void GenerateDataTypesTest()
+        {
+            var testModel = new MainModel();
+            var dt = new DataType {Name = "Person"};
+            var subdt = new DataType
+            {
+                Name = "Name",
+                Type = "string"
+            };
+            dt.DataTypes = new List<DataType> {subdt};
+            testModel.DataTypes.Add(dt);
+
+            var gen = new MyGenerator();
+            var res = gen.GenerateDataTypes(testModel);
+            var str = gen.CompileToString(res.ToList());
+            Assert.AreEqual("public class Person\r\n{\r\n    public string Name;\r\n}",str);
+
         }
     }
 }
