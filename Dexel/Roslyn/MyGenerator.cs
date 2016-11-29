@@ -164,7 +164,7 @@ namespace Roslyn
         public Found FoundFlag;
         public SoftwareCell Source;
         public NameType NeededNameType;
-        public bool AsAction { get; set; }
+        public bool FromAction { get; set; }
     }
 
 

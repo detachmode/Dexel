@@ -40,13 +40,13 @@ namespace Roslyn.Tests
         [TestMethod()]
         public void ConvertToTypeExpressionTest()
         {
-            Assert.AreEqual("char", DataTypeParser.ConvertToTypeExpression(_gen.Generator, "char").ToFullString());
-            Assert.AreEqual("string", DataTypeParser.ConvertToTypeExpression(_gen.Generator, "sTring").ToFullString());
-            Assert.AreEqual("double", DataTypeParser.ConvertToTypeExpression(_gen.Generator, "Double").ToFullString());
-            Assert.AreEqual("Point", DataTypeParser.ConvertToTypeExpression(_gen.Generator, "Point").ToFullString());
-            Assert.AreEqual("int", DataTypeParser.ConvertToTypeExpression(_gen.Generator, "int").ToFullString());
+            Assert.AreEqual("char", DataTypeParser.ConvertToType(_gen.Generator, "char").ToFullString());
+            Assert.AreEqual("string", DataTypeParser.ConvertToType(_gen.Generator, "sTring").ToFullString());
+            Assert.AreEqual("double", DataTypeParser.ConvertToType(_gen.Generator, "Double").ToFullString());
+            Assert.AreEqual("Point", DataTypeParser.ConvertToType(_gen.Generator, "Point").ToFullString());
+            Assert.AreEqual("int", DataTypeParser.ConvertToType(_gen.Generator, "int").ToFullString());
             
-           Assert.AreEqual("DateTime", DataTypeParser.ConvertToTypeExpression(_gen.Generator, "datetime").ToFullString());
+           Assert.AreEqual("DateTime", DataTypeParser.ConvertToType(_gen.Generator, "datetime").ToFullString());
 
 
         }

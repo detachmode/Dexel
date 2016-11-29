@@ -31,7 +31,7 @@ namespace Roslyn
                 isNotStream: () =>
                 {
                     var outputStream = softwareCell.OutputStreams.First();
-                    result = DataTypeParser.ConvertToTypeExpression(generator,
+                    result = DataTypeParser.ConvertToType(generator,
                         DataStreamParser.GetOutputPart(outputStream.DataNames));
                 });
 
@@ -58,7 +58,7 @@ namespace Roslyn
         {
             var result = new List<SyntaxNode>();
             DataTypeParser.OutputIsStream(softwareCell,
-                isStream: () => { MethodParameterSignatureForStreamOutput(generator, softwareCell, result); },
+                isStream: () => MethodParameterSignatureForStreamOutput(generator, softwareCell, result),
                 isNotStream: () => MethodParameterSignatureFromInputs(generator, softwareCell, result));
 
             return result;
@@ -89,9 +89,7 @@ namespace Roslyn
             var inputDataNames = softwareCell.InputStreams.First().DataNames;
             var i = 0;
             var nametypes = DataStreamParser.GetInputPart(inputDataNames);
-            nametypes
-                .Where(nameType => DataTypeParser.ConvertToTypeExpression(generator, nameType.Type) != null)
-                .ToList().ForEach(nametype =>
+            nametypes.ToList().ForEach(nametype =>
                 {
                     ++i;
                     var name = GenerateParameterName(nametype);
@@ -121,7 +119,7 @@ namespace Roslyn
             return
                 softwareCell.Name.Split(' ')
                     .Where(s => !string.IsNullOrEmpty(s))
-                    .Select(s => Helper.FirstCharToUpper(s))
+                    .Select(Helper.FirstCharToUpper)
                     .Aggregate((s, s2) => s + s2);
         }
 

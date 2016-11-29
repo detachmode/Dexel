@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Text.RegularExpressions;
+using Dexel.Library;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -72,14 +73,22 @@ namespace Roslyn.Tests
 
             var addAge = MainModelManager.AddNewSoftwareCell("Add Age", testModel);
             MainModelManager.AddNewInput(addAge, "(Person)*");
-            MainModelManager.AddNewOutput(addAge, "(int)");
+            MainModelManager.AddNewOutput(addAge, "()");
+
+            var addName = MainModelManager.AddNewSoftwareCell("Add Name", testModel);
+            MainModelManager.AddNewInput(addName, "(Person)*");
+            MainModelManager.AddNewOutput(addName, "()");
 
 
             MainModelManager.ConnectTwoDefintions(createPersons.OutputStreams.First(),
                 addAge.InputStreams.First(), testModel);
 
-            x.Integration.Add(createPersons);
-            x.Integration.Add(addAge);
+            MainModelManager.ConnectTwoDefintions(addAge.OutputStreams.First(),
+                addName.InputStreams.First(), testModel);
+
+            x.Integration.AddUnique(createPersons);
+            x.Integration.AddUnique(addAge);
+            x.Integration.AddUnique(addName);
 
 
             var res = Integrations.CreateIntegrationBody(_mygen.Generator, testModel.Connections, x);

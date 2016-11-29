@@ -12,7 +12,7 @@ namespace Roslyn
     {
 
 
-        public static SyntaxNode ConvertToTypeExpression(SyntaxGenerator generator, string type)
+        public static SyntaxNode ConvertToType(SyntaxGenerator generator, string type)
         {
             if (type.ToLower() == "datetime")   // bug in roslyn?        
                 return generator.IdentifierName("DateTime");
@@ -53,7 +53,7 @@ namespace Roslyn
 
         public static SyntaxNode ConvertNameTypeToTypeExpression(SyntaxGenerator generator, NameType nametype)
         {
-            var singletype = ConvertToTypeExpression(generator, nametype.Type);
+            var singletype = ConvertToType(generator, nametype.Type);
             //if (nametype.IsInsideStream)
             //{
             //    if (nametype.IsList == false && nametype.IsArray == false)
@@ -74,7 +74,7 @@ namespace Roslyn
         }
 
 
-        public static SyntaxNode ConvertToTypeExpression(SyntaxGenerator generator, IEnumerable<NameType> nametypes)
+        public static SyntaxNode ConvertToType(SyntaxGenerator generator, IEnumerable<NameType> nametypes)
         {
             var alltypes = nametypes.ToList();
             if (alltypes.Count == 0)
