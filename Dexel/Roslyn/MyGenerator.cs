@@ -132,7 +132,7 @@ namespace Roslyn
     {
         public SoftwareCell Source;
         public string VariableName;
-        public NameType NameType;
+        public IEnumerable<NameType> NameTypes;
     }
 
 
@@ -151,11 +151,20 @@ namespace Roslyn
     }
 
 
+    public enum Found
+    {
+        NotFound,
+        FromParent,
+        FoundInPreviousChild
+    }
+
+
     public class Parameter
     {
-        public bool FoundFlag;
+        public Found FoundFlag;
         public SoftwareCell Source;
-        public NameType NameType;
+        public NameType NeededNameType;
+        public bool AsAction { get; set; }
     }
 
 

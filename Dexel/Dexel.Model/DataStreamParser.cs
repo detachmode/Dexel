@@ -13,21 +13,21 @@ namespace Dexel.Model
         public bool IsInsideStream;
     }
 
-    public  static class DataStreamParser
+    public static class DataStreamParser
     {
         public static IEnumerable<NameType> GetInputAndOutput(string rawdatanames)
         {
             return GetInputPart(rawdatanames).Concat(GetOutputPart(rawdatanames));
         }
 
-        public static IEnumerable<NameType> GetOutputPart(string rawdatanames)
+        public static List<NameType> GetOutputPart(string rawdatanames)
         {
             var result = new List<NameType>();
             var isInsideStream = IsStream(rawdatanames);
             var insideParenthesis = GetInsideParenthesis(rawdatanames);
 
             var firstdatanames = GetPipePart(insideParenthesis, 1);
-          
+
             CommaSeparator(firstdatanames, onEach: s
                 => ConvertToNameType(s, isInsideStream, onNewNameType: nametype
                     => result.Add(nametype)));
@@ -36,9 +36,19 @@ namespace Dexel.Model
         }
 
 
-        private static bool IsStream(string rawdatanames)
+        public static bool IsStream(string rawdatanames)
         {
-           return Regex.IsMatch(rawdatanames, @"^\(.*\)\*$");
+            return Regex.IsMatch(rawdatanames, @"^\(.*\)\*$");
+        }
+
+        public static void IsStream(string rawdatanames, Action isStream = null, Action isNotStream = null)
+        {
+            if (Regex.IsMatch(rawdatanames, @"^\(.*\)\*$"))
+                isStream?.Invoke();
+            else
+            {
+                isNotStream?.Invoke();
+            }
         }
 
 
@@ -46,7 +56,7 @@ namespace Dexel.Model
         {
             var result = new List<NameType>();
 
-            HasThreeDotSyntax(rawdatanames, 
+            HasThreeDotSyntax(rawdatanames,
                 () => result = GetOutputPart(rawdatanames).ToList());
 
             AddSecondPartDataNames(rawdatanames, result);
@@ -57,7 +67,7 @@ namespace Dexel.Model
 
         private static void AddSecondPartDataNames(string rawdatanames, ICollection<NameType> result)
         {
-         
+
             var isInsideStream = IsStream(rawdatanames);
             var insideParenthesis = GetInsideParenthesis(rawdatanames);
             var seconddatanames = GetPipePart(insideParenthesis, 2);
@@ -74,7 +84,7 @@ namespace Dexel.Model
             {
                 result = matches[0].Groups[1].Value;
             }
-            
+
 
             return result;
         }
@@ -95,6 +105,8 @@ namespace Dexel.Model
 
         private static void CommaSeparator(string datanames, Action<string> onEach)
         {
+            if (string.IsNullOrEmpty(datanames.Trim()))
+                return;
             datanames.Split(',').ToList().ForEach(onEach);
         }
 

@@ -14,9 +14,9 @@ namespace Roslyn.Tests
     {
         private readonly MyGenerator _gen = new MyGenerator();
         [TestMethod()]
-        public void ConvertToTypeExpressionTest()
+        public void ConvertNameTypeToTypeExpressionTest()
         {
-            var test = DataTypeParser.ConvertToTypeExpression(_gen.Generator, new NameType
+            var test = DataTypeParser.ConvertNameTypeToTypeExpression(_gen.Generator, new NameType
             {
                 IsList = true,
                 Name = "zahlen",
@@ -26,7 +26,7 @@ namespace Roslyn.Tests
             Assert.AreEqual("List<int>", fullstring);
 
 
-            test = DataTypeParser.ConvertToTypeExpression(_gen.Generator, new NameType
+            test = DataTypeParser.ConvertNameTypeToTypeExpression(_gen.Generator, new NameType
             {
                 IsArray = true,
                 Name = "zahlen",
