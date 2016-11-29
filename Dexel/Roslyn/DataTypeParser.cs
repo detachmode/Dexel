@@ -12,25 +12,43 @@ namespace Roslyn
     {
 
 
-        public static SyntaxNode ConvertToTypeExpression(SyntaxGenerator generator,string type)
+        public static SyntaxNode ConvertToTypeExpression(SyntaxGenerator generator, string type)
+        {
+            if (type.ToLower() == "datetime")   // bug in roslyn?        
+                return generator.IdentifierName("DateTime");
+
+            var res = generator.IdentifierName(type);
+            
+            Convert(type, specialType => res = generator.TypeExpression(specialType));
+            return res;
+
+        }
+
+        private static void Convert(string type, Action<SpecialType> onConverted)
         {
             switch (type)
             {
-                case "":
-                    return null;
-                case "string":
-                    return generator.TypeExpression(SpecialType.System_String);
+                case "bool":
+                    onConverted(SpecialType.System_Boolean);
+                    return;
                 case "int":
-                    return generator.TypeExpression(SpecialType.System_Int32);
-                case "double":
-                    return generator.TypeExpression(SpecialType.System_Double);
+                    onConverted(SpecialType.System_Int32);
+                    return;
 
-                default:
-                    return generator.IdentifierName(type);
             }
+
+            SpecialType outType;
+            var success = Enum.TryParse($"system_{type}", true, out outType);
+            if (success)
+                onConverted(outType);
         }
 
-
+        public static bool IsSystemType(string type)
+        {
+            bool success = false;
+            Convert(type, specialType => success = true);
+            return success;
+        }
 
 
         public static SyntaxNode ConvertNameTypeToTypeExpression(SyntaxGenerator generator, NameType nametype)
@@ -49,7 +67,7 @@ namespace Roslyn
             if (nametype.IsArray)
                 return generator.ArrayTypeExpression(singletype);
             if (nametype.IsList && nametype.IsArray == false)
-               return generator.GenericName("List", singletype);
+                return generator.GenericName("List", singletype);
 
             return singletype;
 
@@ -68,7 +86,6 @@ namespace Roslyn
                 if (alltypes.Count > 1)
                 {
                     return
-
                         generator.GenericName("IEnumerable",
                             generator.GenericName("Tupel",
                                 generator.IdentifierName(
