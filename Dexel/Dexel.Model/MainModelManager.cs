@@ -218,6 +218,20 @@ namespace Dexel.Model
             }
         }
 
+        public static void TraverseChildrenBackwards(SoftwareCell children, Action<SoftwareCell, DataStream> func,
+            List<DataStream> connections)
+        {
+            var foundConnections = connections.Where(c => c.Destinations.Any(dsd => dsd.Parent == children));
+            foreach (var connection in foundConnections)
+            {
+                connection.Sources.ForEach(dsd =>
+                {
+                    func(dsd.Parent, connection);
+                    TraverseChildrenBackwards(dsd.Parent, func, connections);
+                });
+            }
+        }
+
 
         private static void FindIntegration(SoftwareCell softwareCell, Action<SoftwareCell> onFound, MainModel mainModel)
         {

@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.Editing;
 
 namespace Roslyn
 {
+
     public static class MethodsGenerator
     {
         public static SyntaxNode GenerateStaticMethod(SyntaxGenerator generator, string createName,
@@ -23,10 +24,18 @@ namespace Roslyn
 
         public static SyntaxNode GetReturnPart(SyntaxGenerator generator, SoftwareCell softwareCell)
         {
-            var outputStream = softwareCell.OutputStreams.First();
-            return DataStreamParser.GetOutputPart(outputStream.DataNames)
-                .Select(nametype => DataTypeParser.ConvertToTypeExpression(generator, nametype))
-                .First();
+            SyntaxNode result = null;
+
+            DataTypeParser.OutputIsStream(softwareCell,
+                isStream: () => { },
+                isNotStream: () =>
+                {
+                    var outputStream = softwareCell.OutputStreams.First();
+                    result = DataTypeParser.ConvertToType(generator,
+                        DataStreamParser.GetOutputPart(outputStream.DataNames));
+                });
+
+            return result;
         }
 
 
@@ -45,50 +54,46 @@ namespace Roslyn
         }
 
 
-        public static SyntaxNode[] GetParameters(SyntaxGenerator generator, SoftwareCell softwareCell)
+        public static IEnumerable<SyntaxNode> GetParameters(SyntaxGenerator generator, SoftwareCell softwareCell)
         {
-            var resultSyntaxNodes = new List<SyntaxNode>();
-            DetermineParameterGenerator(softwareCell, resultSyntaxNodes,
-                nametypes => StreamParameter(generator, resultSyntaxNodes, nametypes),
-                nametypes => NonStreamParameter(generator, resultSyntaxNodes, nametypes));
+            var result = new List<SyntaxNode>();
+            DataTypeParser.OutputIsStream(softwareCell,
+                isStream: () => MethodParameterSignatureForStreamOutput(generator, softwareCell, result),
+                isNotStream: () => MethodParameterSignatureFromInputs(generator, softwareCell, result));
 
-            return resultSyntaxNodes.ToArray();
+            return result;
         }
 
 
-        public static void DetermineParameterGenerator(SoftwareCell softwareCell, List<SyntaxNode> result,
-            Action<IEnumerable<NameType>> isStream, Action<IEnumerable<NameType>> isNotStream)
+        private static void MethodParameterSignatureForStreamOutput(SyntaxGenerator generator, SoftwareCell softwareCell,
+            List<SyntaxNode> result)
+        {
+            MethodParameterSignatureFromInputs(generator, softwareCell, result);
+            var outgoingDataNames = softwareCell.OutputStreams.First().DataNames;
+            var nametypes = DataStreamParser.GetOutputPart(outgoingDataNames);
+            nametypes.Where(nt => nt != null).ToList().ForEach(nt =>
+                {
+                    var name = nt.Name != null ? $"on{Helper.FirstCharToUpper(nt.Name)}" : $"on{nt.Type}";
+                    var typeExpression = generator.IdentifierName($"Action<{nt.Type}>");
+                    result.Add(generator.ParameterDeclaration(name, typeExpression));
+                });
+        }
+
+
+        private static void MethodParameterSignatureFromInputs(SyntaxGenerator generator, SoftwareCell softwareCell,
+            List<SyntaxNode> result)
         {
             if (!softwareCell.InputStreams.Any())
                 return;
 
             var inputDataNames = softwareCell.InputStreams.First().DataNames;
-            var nametypes = DataStreamParser.GetInputPart(inputDataNames).ToList();
-
-            if (nametypes.Any(x => x.IsInsideStream))
-                isStream(nametypes);
-            else
-                isNotStream(nametypes);
-        }
-
-
-        public static void StreamParameter(SyntaxGenerator generator,
-            List<SyntaxNode> resultSyntaxNodes, IEnumerable<NameType> nametypes)
-        {
-            throw new NotImplementedException();
-        }
-
-
-        private static void NonStreamParameter(SyntaxGenerator generator, List<SyntaxNode> resultSyntaxNodes,
-            IEnumerable<NameType> nametypes)
-        {
-            nametypes
-                .Where(nameType => DataTypeParser.ConvertToTypeExpression(generator, nameType.Type) != null).ToList()
-                .ForEach(nametype =>
+            var i = 0;
+            var nametypes = DataStreamParser.GetInputPart(inputDataNames);
+            nametypes.ToList().ForEach(nametype =>
                 {
                     var name = GenerateParameterName(nametype);
-                    var typeExpression = DataTypeParser.ConvertToTypeExpression(generator, nametype);
-                    resultSyntaxNodes.Add(item: generator.ParameterDeclaration(name, typeExpression));
+                    var typeExpression = DataTypeParser.ConvertNameTypeToTypeExpression(generator, nametype);
+                    result.Add(generator.ParameterDeclaration(name, typeExpression));
                 });
         }
 
@@ -106,10 +111,11 @@ namespace Roslyn
         {
             if (string.IsNullOrEmpty(softwareCell.Name))
                 throw new Exception("SoftwareCell has no name");
+            }
             return
                 softwareCell.Name.Split(' ')
                     .Where(s => !string.IsNullOrEmpty(s))
-                    .Select(s => Helper.FirstCharToUpper(s))
+                    .Select(Helper.FirstCharToUpper)
                     .Aggregate((s, s2) => s + s2);
         }
 
@@ -122,4 +128,5 @@ namespace Roslyn
             };
         }
     }
+
 }

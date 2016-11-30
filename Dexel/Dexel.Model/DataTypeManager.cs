@@ -14,7 +14,7 @@ namespace Dexel.Model
         {
             var list = CollectAllTypesFromDsds(mainmodel);
             var alltypes = list.Concat(CollectAllSubtypes(mainmodel)).ToList();
-            alltypes = FilterOut(alltypes, mainmodel);
+            alltypes = FilterOutDuplicatesAndCustomTypes(alltypes, mainmodel);
             return alltypes;
         }
 
@@ -24,10 +24,9 @@ namespace Dexel.Model
             return alldsds.SelectMany(dsd => DataStreamParser.GetInputAndOutput(dsd.DataNames).Select(x => x.Type));
         }
 
-        public static List<string> FilterOut(List<string> types, MainModel mainmodel)
+        public static List<string> FilterOutDuplicatesAndCustomTypes(List<string> types, MainModel mainmodel)
         {
             types = types.Distinct().ToList();
-            types.RemoveAll(IsPrimitiveType);
             types.RemoveAll(t => mainmodel.DataTypes.Any(dt => dt.Name == t));
             types.RemoveAll(string.IsNullOrEmpty);
             return types;
@@ -35,18 +34,6 @@ namespace Dexel.Model
         }
 
 
-        private static readonly List<string> Primitives = new List<string>
-        {
-            "int",
-            "string",
-            "double",
-            "float"
-        };
-
-        private static bool IsPrimitiveType(string str)
-        {
-           return Primitives.Contains(str);
-        }
 
 
         public static IEnumerable<string> CollectAllSubtypes(MainModel mainmodel)

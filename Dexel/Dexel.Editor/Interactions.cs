@@ -505,7 +505,7 @@ namespace Dexel.Editor
 
         public static void AddMissingDataTypes(MainModel mainModel)
         {
-            var res = DataTypeManager.GetUndefinedTypenames(mainModel);
+            var res = DataTypeManager.GetUndefinedTypenames(mainModel).Where(x => !DataTypeParser.IsSystemType(x));
             res.ForEach(name =>
             {
                 var dataType = new DataType
@@ -521,7 +521,7 @@ namespace Dexel.Editor
 
         public static void UpdateMissingDataTypesCounter(MainModel mainModel)
         {
-            MainViewModel.Instance().MissingDataTypes = DataTypeManager.GetUndefinedTypenames(mainModel).Count;
+            MainViewModel.Instance().MissingDataTypes = DataTypeManager.GetUndefinedTypenames(mainModel).Where(x => !DataTypeParser.IsSystemType(x)).ToList().Count;
         }
 
 

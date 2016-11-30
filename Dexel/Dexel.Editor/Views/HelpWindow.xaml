@@ -15,7 +15,7 @@
         <Label></Label>
         <Label>Keyboard:</Label>
         <Label>Ctrl + Tab : append new software cell</Label>
-        <Label>Enter  : new/first software cell as integration</Label>
+        <Label>Enter  : new/first software cell as parent</Label>
         <Label>Delete : delete selected software cells</Label>
         <Label>Tab : cycle through text fields</Label>
         <Label>Shift + Tab : Cycle through text fields backwards</Label>
