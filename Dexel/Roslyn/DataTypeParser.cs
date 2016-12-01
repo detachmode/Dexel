@@ -86,14 +86,13 @@ namespace Roslyn
                 if (alltypes.Count > 1)
                 {
                     return
-                        generator.GenericName("IEnumerable",
                             generator.GenericName("Tupel",
                                 generator.IdentifierName(
                                     alltypes.Select(nt => ConvertNameTypeToTypeExpression(generator, nt).ToFullString())
-                                        .Aggregate((f, s) => f + "," + s))));
+                                        .Aggregate((f, s) => f + "," + s)));
 
                 }
-                return generator.GenericName("IEnumerable", ConvertNameTypeToTypeExpression(generator, alltypes.First()));
+                return ConvertNameTypeToTypeExpression(generator, alltypes.First());
 
             }
             if (alltypes.Count > 1)
@@ -115,6 +114,24 @@ namespace Roslyn
         public static void OutputIsStream(SoftwareCell softwareCell, Action isStream = null, Action isNotStream = null)
         {
             DataStreamParser.IsStream(softwareCell.OutputStreams.First().DataNames, isStream, isNotStream);
+        }
+
+
+        public static void OutputOrInputIsStream(SoftwareCell softwareCell, Action bothAreStreams = null, Action onInputIsStream = null, Action onOutputIsStream = null, Action noStream = null )
+        {
+            var outputIsStream = false;
+            var inputIsStream = false;
+            DataStreamParser.IsStream(softwareCell.OutputStreams.First().DataNames, () => outputIsStream = true );
+            DataStreamParser.IsStream(softwareCell.InputStreams.First().DataNames, () => inputIsStream = true);
+
+            if (outputIsStream && inputIsStream)
+                bothAreStreams?.Invoke();
+            else if (inputIsStream)
+                onInputIsStream?.Invoke();
+            else if (outputIsStream)
+                onOutputIsStream?.Invoke();
+            else
+                noStream?.Invoke();
         }
     }
 }
