@@ -21,6 +21,9 @@ namespace Dexel.Editor.Views.DrawingBoard
         private void OnLayoutUpdated(object sender, EventArgs eventArgs)
         {
             if (ViewModel() == null) return;
+            if (MainViewModel.Instance().LoadingModelFlag)
+                return;
+
             ViewModel().Width = ActualWidth;
         }
 

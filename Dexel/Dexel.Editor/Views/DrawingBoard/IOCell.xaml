@@ -52,18 +52,15 @@
             MinHeight="60"
             Orientation="Horizontal"
             >
-
             <drawingBoard:SoftwareCell x:Name="Fu" 
                                 Focusable="False"
                             LabelContent="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                            />
-
             <ItemsControl VerticalAlignment="Center" HorizontalAlignment="Center"  Panel.ZIndex="20"
                       x:Name="OutputFlow" ItemsSource="{Binding DangelingOutputs, Mode=TwoWay}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <drawingBoard:DangelingConnectionView x:Name="DangelingConnectionView">
-
                         </drawingBoard:DangelingConnectionView>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

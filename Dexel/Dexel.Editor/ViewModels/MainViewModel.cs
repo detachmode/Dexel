@@ -19,6 +19,7 @@ namespace Dexel.Editor.ViewModels
     public class MainViewModel : IDropable
     {
         private static MainViewModel _self;
+        public bool LoadingModelFlag = false;
 
 
         public MainViewModel()
@@ -161,25 +162,28 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        public void UpdateIntegrationBorderPositions()
+        public void UpdateIntegrationBorderPositions(ObservableCollection<IOCellViewModel> integrationsBorders )
         {
-            IntegrationBorders.ForEach(iocellvm =>
-            {
-                if (iocellvm.Integration.Count == 0)
-                {
-                    return;
-                }
-                var tempIntegrations =
-                    iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.X + cellvm1.CellWidth);
-                var min = tempIntegrations.First();
-                var max = tempIntegrations.Last();
+            integrationsBorders.ForEach(UpdateIntegrationBorderPosition);
+        }
 
-                tempIntegrations = iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.Y + cellvm1.CellHeight);
-                var miny = tempIntegrations.First();
-                iocellvm.IntegrationStartPosition = new Point(min.Model.Position.X - 60, miny.Model.Position.Y);
-                iocellvm.IntegrationEndPosition = new Point(max.Model.Position.X + max.CellWidth + 60,
-                    miny.Model.Position.Y);
-            });
+
+        public void UpdateIntegrationBorderPosition(IOCellViewModel iocellvm)
+        {
+            if (iocellvm.Integration.Count == 0)
+            {
+                return;
+            }
+            var tempIntegrations =
+                iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.X + cellvm1.CellWidth);
+            var min = tempIntegrations.First();
+            var max = tempIntegrations.Last();
+
+            tempIntegrations = iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.Y + cellvm1.CellHeight);
+            var miny = tempIntegrations.First();
+            iocellvm.IntegrationStartPosition = new Point(min.Model.Position.X - 60, miny.Model.Position.Y);
+            iocellvm.IntegrationEndPosition = new Point(max.Model.Position.X + max.CellWidth + 60,
+                miny.Model.Position.Y);
         }
 
         #endregion
@@ -197,11 +201,20 @@ namespace Dexel.Editor.ViewModels
 
         public void LoadFromModel(MainModel mainModel)
         {
-            Model = mainModel;
-            LoadConnection(mainModel.Connections);
-            LoadSoftwareCells(mainModel.SoftwareCells);
-            LoadIntegrations();
-            LoadDataTypes(mainModel.DataTypes);
+            LoadingModelFlag = true;
+            try
+            {
+                Model = mainModel;
+                LoadConnection(mainModel.Connections);
+                LoadSoftwareCells(mainModel.SoftwareCells);
+                LoadIntegrations();
+                LoadDataTypes(mainModel.DataTypes);
+            }
+            finally
+            {
+                LoadingModelFlag = false;
+            }
+           
         }
 
 
@@ -228,39 +241,45 @@ namespace Dexel.Editor.ViewModels
 
         private void LoadIntegrations()
         {
-            IntegrationBorders.Clear();
+            var newcollection = new ObservableCollection<IOCellViewModel>();
             SoftwareCells.Where(x => x.Model.Integration.Count != 0).ToList().ForEach(hasIntegration =>
             {
                 var integratedVMs =
                     SoftwareCells.Where(otherVM => hasIntegration.Model.Integration.Contains(otherVM.Model));
-                integratedVMs.ToList().ForEach(hasIntegration.Integration.Add);
-                IntegrationBorders.Add(hasIntegration);
+                var list = new ObservableCollection<IOCellViewModel>();
+                integratedVMs.ToList().ForEach(list.Add);
+                hasIntegration.Integration = list;
+                newcollection.Add(hasIntegration);
             });
-            UpdateIntegrationBorderPositions();
+           
+            UpdateIntegrationBorderPositions(newcollection);
+            IntegrationBorders = newcollection;
         }
 
 
         private void LoadSoftwareCells(List<SoftwareCell> softwareCells)
         {
-            SoftwareCells.Clear();
+            var newcollection = new ObservableCollection<IOCellViewModel>();
             softwareCells.ForEach(modelSoftwareCell =>
             {
                 var vm = new IOCellViewModel();
                 vm.LoadFromModel(modelSoftwareCell);
-                SoftwareCells.Add(vm);
+                newcollection.Add(vm);
             });
+            SoftwareCells = newcollection;
         }
 
 
         private void LoadConnection(List<DataStream> dataStreams)
         {
-            Connections.Clear();
+            var newcollection = new ObservableCollection<ConnectionViewModel>();
             dataStreams.Where(x => x.Sources.Any() && x.Destinations.Any()).ToList().ForEach(modelConnection =>
             {
                 var vm = new ConnectionViewModel();
                 vm.LoadFromModel(modelConnection);
-                Connections.Add(vm);
+                newcollection.Add(vm);
             });
+            Connections = newcollection;
         }
 
         #endregion
