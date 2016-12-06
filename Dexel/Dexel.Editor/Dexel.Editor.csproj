@@ -151,8 +151,8 @@
     <Compile Include="Interactions.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\DrawingBoard\ConnectionViewModel.cs" />
+    <Compile Include="ViewModels\DrawingBoard\ConnectionAdapterViewModel.cs" />
     <Compile Include="ViewModels\DrawingBoard\DangelingConnectionViewModel.cs" />
-    <Compile Include="ViewModels\DrawingBoard\IViewModelOfModel.cs" />
     <Compile Include="Views\DataTypeEditor\DataTypeCard.xaml.cs">
       <DependentUpon>DataTypeCard.xaml</DependentUpon>
     </Compile>
@@ -163,6 +163,9 @@
     <Compile Include="Views\DrawingBoard\ConnectionsView.xaml.cs">
       <DependentUpon>ConnectionsView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\DrawingBoard\ConnectionAdapterView.xaml.cs">
+      <DependentUpon>ConnectionAdapterView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\DrawingBoard\DangelingConnectionView.xaml.cs">
       <DependentUpon>DangelingConnectionView.xaml</DependentUpon>
     </Compile>
@@ -172,6 +175,7 @@
     <Compile Include="Views\DrawingBoard\DrawingBoard.xaml.cs">
       <DependentUpon>DrawingBoard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ViewModels\DrawingBoard\IInputOutputViewModel.cs" />
     <Compile Include="Views\Extensions.cs" />
     <Compile Include="Views\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
@@ -222,6 +226,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DrawingBoard\ConnectionsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\DrawingBoard\ConnectionAdapterView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

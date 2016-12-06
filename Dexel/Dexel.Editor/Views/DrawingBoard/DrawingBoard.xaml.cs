@@ -316,13 +316,19 @@ namespace Dexel.Editor.Views.DrawingBoard
 
         public void AppendNewCell()
         {
-            Keyboard.FocusedElement.TryGetDataContext<IOCellViewModel>(vm => AppendNewCellBehind(vm, vm.DangelingOutputs.First()));
+            Keyboard.FocusedElement.TryGetDataContext<IOCellViewModel>(vm =>
+                {
+                    var unnconnected = vm.Outputs.First(x => !x.Model.Connected);
+                    if (unnconnected != null)
+                        AppendNewCellBehind(vm, (DangelingConnectionViewModel) unnconnected);
+                }
+            );
 
             Keyboard.FocusedElement.TryGetDataContext<DataStreamDefinition>(dsd =>
             {
                 var cellVM = MainViewModel.Instance().SoftwareCells.First(iocell => iocell.Model == dsd.Parent);
-                var vm = cellVM.DangelingOutputs.First(dsdVM => dsdVM.Model == dsd);
-                AppendNewCellBehind(cellVM, vm);
+                var vm = cellVM.Outputs.First(dsdVM => dsdVM.Model == dsd);
+                AppendNewCellBehind(cellVM, (DangelingConnectionViewModel)vm);
             });
         }
 

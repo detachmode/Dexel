@@ -162,7 +162,7 @@ namespace Dexel.Editor.ViewModels
 
         #endregion
 
-        #region UpdateSelectionState Positions
+        #region Update Positions
 
         public void UpdateConnectionsPosition(Point inputPoint, Point outputPoint, IOCellViewModel ioCellViewModel)
         {
@@ -170,8 +170,32 @@ namespace Dexel.Editor.ViewModels
             var allInputs =
                 Connections.Where(conn => conn.Model.Destinations.Any(x => x.Parent == ioCellViewModel.Model));
 
-            allInputs.ToList().ForEach(x => x.End = inputPoint);
-            allOutputs.ToList().ForEach(x => x.Start = outputPoint);
+           
+
+            allInputs.ToList().ForEach(connVM =>
+            {
+                var index = ioCellViewModel.Model.InputStreams.IndexOf(connVM.Model.Destinations.First());
+                var count = ioCellViewModel.Model.InputStreams.Count;
+                const int dsdHeight = 42;
+                inputPoint.Y -= (count-1)* (dsdHeight /2);
+                inputPoint.Y += index * dsdHeight +2;
+
+                var inputVM = (ConnectionAdapterViewModel)ioCellViewModel.Inputs.First(ioVM => ioVM.Model == connVM.Model.Destinations.First());
+                inputPoint.X -= inputVM.Width -5;
+                connVM.End = inputPoint;
+            });
+            allOutputs.ToList().ForEach(connVM =>
+            {
+                var index = ioCellViewModel.Model.OutputStreams.IndexOf(connVM.Model.Sources.First());
+                var count = ioCellViewModel.Model.OutputStreams.Count;
+                const int dsdHeight = 42;
+                outputPoint.Y -= (count - 1) * (dsdHeight / 2);
+                outputPoint.Y += index * dsdHeight + 2;
+
+                var outputVM = (ConnectionAdapterViewModel)ioCellViewModel.Outputs.First(ioVM => ioVM.Model == connVM.Model.Sources.First());
+                outputPoint.X += outputVM.Width - 5;
+                connVM.Start = outputPoint;
+            });
         }
 
 

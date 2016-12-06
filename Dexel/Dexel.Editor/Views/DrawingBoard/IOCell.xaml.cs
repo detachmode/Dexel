@@ -54,6 +54,7 @@ namespace Dexel.Editor.Views.DrawingBoard
                 return;
             }
 
+
             var outputPoint = new Point(vm.Model.Position.X + Fu.ActualWidth,
                 vm.Model.Position.Y + ActualHeight/2);
 
