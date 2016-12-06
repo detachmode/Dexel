@@ -25,10 +25,12 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         public SoftwareCell Model { get; set; }
         public ObservableCollection<DangelingConnectionViewModel> DangelingInputs { get; set; }
         public ObservableCollection<DangelingConnectionViewModel> DangelingOutputs { get; set; }
-        public bool IsSelected { get; set; }
         public double CellWidth { get; set; }
         public double CellHeight { get; set; }
         public ObservableCollection<IOCellViewModel> Integration { get; set; }
+
+        public Point IntegrationStartPosition { get; set; }
+        public Point IntegrationEndPosition { get; set; }
 
 
         public List<Type> AllowedDropTypes => new List<Type>
@@ -36,9 +38,6 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
             typeof(DangelingConnectionViewModel),
             typeof(ConnectionViewModel)
         };
-
-        public Point IntegrationStartPosition { get; set; }
-        public Point IntegrationEndPosition { get; set; }
 
 
         public void Drop(object data)
@@ -50,6 +49,9 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
             data.TryCast<ConnectionViewModel>(
                 connVM => Interactions.ChangeConnectionDestination(connVM.Model, Model, MainViewModel.Instance().Model));
         }
+
+
+        public bool IsSelected { get; set; }
 
 
         public void UpdateConnectionsPosition(Point inputPoint, Point outputPoint)
@@ -64,12 +66,14 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
             Model = modelSoftwareCell;
             LoadDangelingInputs(modelSoftwareCell);
             LoadDangelingOutputs(modelSoftwareCell);
-
         }
+
+
         public static void LoadFromModel(IOCellViewModel vm, SoftwareCell modelSoftwareCell)
         {
             vm.LoadFromModel(modelSoftwareCell);
         }
+
 
         private void LoadDangelingInputs(SoftwareCell modelSoftwareCell)
         {
@@ -79,52 +83,61 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
 
 
         private void UpdateOrAdd(SoftwareCell modelSoftwareCell,
-            List<DataStreamDefinition> streamDefinitions, 
+            List<DataStreamDefinition> streamDefinitions,
             ObservableCollection<DangelingConnectionViewModel> dangelingConnectionViewModels)
         {
             var lookup = dangelingConnectionViewModels.ToLookup(x => x.Model.ID, x => x);
-            streamDefinitions.ForEach(dataStreamDef => FindViewModel(lookup, dataStreamDef,
-                onFound: viewModel =>
-                {
-                    if (dataStreamDef.Connected)
-                        dangelingConnectionViewModels.Remove(viewModel);
-                    else
-                        DangelingConnectionViewModel.LoadFromModel(viewModel, modelSoftwareCell, dataStreamDef);
-                },
-                onNotFound: () =>
-                {
-                    if (dataStreamDef.Connected) return;
-                    var vm = new DangelingConnectionViewModel();
-                    vm.LoadFromModel(modelSoftwareCell, dataStreamDef);
-                    dangelingConnectionViewModels.Add(vm);
-                }));
+            streamDefinitions.ForEach(dataStreamDef => FindDangelingConnectionViewModel(lookup, dataStreamDef,
+                onFound: viewModel => UpdateExisting(modelSoftwareCell, dangelingConnectionViewModels, dataStreamDef, viewModel),
+                onNotFound: () => AddNewDangelingConnectionViewModel(modelSoftwareCell, dangelingConnectionViewModels, dataStreamDef)));
         }
 
 
-        private void FindViewModel(ILookup<Guid, DangelingConnectionViewModel> lookup, DataStreamDefinition model, Action<DangelingConnectionViewModel> onFound, Action onNotFound)
+        private static void UpdateExisting(SoftwareCell modelSoftwareCell,
+            ObservableCollection<DangelingConnectionViewModel> dangelingConnectionViewModels,
+            DataStreamDefinition dataStreamDef, DangelingConnectionViewModel viewModel)
+        {
+            if (dataStreamDef.Connected)
+                dangelingConnectionViewModels.Remove(viewModel);
+            else
+                DangelingConnectionViewModel.LoadFromModel(viewModel, modelSoftwareCell, dataStreamDef);
+        }
+
+
+        private static void AddNewDangelingConnectionViewModel(SoftwareCell modelSoftwareCell,
+            ObservableCollection<DangelingConnectionViewModel> dangelingConnectionViewModels,
+            DataStreamDefinition dataStreamDef)
+        {
+            if (dataStreamDef.Connected) return;
+            var vm = new DangelingConnectionViewModel();
+            vm.LoadFromModel(modelSoftwareCell, dataStreamDef);
+            dangelingConnectionViewModels.Add(vm);
+        }
+
+
+        private void FindDangelingConnectionViewModel(ILookup<Guid, DangelingConnectionViewModel> lookup, DataStreamDefinition model,
+            Action<DangelingConnectionViewModel> onFound, Action onNotFound)
         {
             var found = lookup[model.ID].ToList();
             if (found.Any())
-            {
                 onFound(found.First());
-            }
             else
-            {
                 onNotFound();
-            }
         }
 
 
-        private void RemoveDeleted(List<DataStreamDefinition> dsdToLoad, ObservableCollection<DangelingConnectionViewModel> observableCollection)
+        private void RemoveDeleted(List<DataStreamDefinition> dsdToLoad,
+            ObservableCollection<DangelingConnectionViewModel> observableCollection)
         {
             var todelte = observableCollection.Where(vm => dsdToLoad.All(dsd => dsd.ID != vm.Model.ID)).ToList();
             todelte.ForEach(vm => observableCollection.Remove(vm));
         }
 
+
         public void LoadDangelingOutputs(SoftwareCell modelSoftwareCell)
         {
             RemoveDeleted(modelSoftwareCell.OutputStreams, DangelingOutputs);
-            UpdateOrAdd(modelSoftwareCell, modelSoftwareCell.OutputStreams, DangelingOutputs);          
+            UpdateOrAdd(modelSoftwareCell, modelSoftwareCell.OutputStreams, DangelingOutputs);
         }
 
         #endregion
