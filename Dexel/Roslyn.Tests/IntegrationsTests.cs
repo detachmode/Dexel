@@ -62,6 +62,9 @@ namespace Roslyn.Tests
         [TestMethod]
         public void InnerStreamOnly()
         {
+
+
+
             var testModel = new MainModel();
             var x = MainModelManager.AddNewSoftwareCell("X", testModel);
             MainModelManager.AddNewInput(x, "()");
@@ -79,6 +82,10 @@ namespace Roslyn.Tests
             MainModelManager.AddNewInput(addName, "(Person)*");
             MainModelManager.AddNewOutput(addName, "()");
 
+            var sumAges = MainModelManager.AddNewSoftwareCell("Sum Ages", testModel);
+            MainModelManager.AddNewInput(sumAges, "(Person)*");
+            MainModelManager.AddNewOutput(sumAges, "(int)");
+
 
             MainModelManager.ConnectTwoDefintions(createPersons.OutputStreams.First(),
                 addAge.InputStreams.First(), testModel);
@@ -89,7 +96,7 @@ namespace Roslyn.Tests
             x.Integration.AddUnique(createPersons);
             x.Integration.AddUnique(addAge);
             x.Integration.AddUnique(addName);
-
+            x.Integration.AddUnique(sumAges);
 
             var res = Integrations.CreateIntegrationBody(_mygen.Generator, testModel.Connections, x);
             var formatted = _mygen.CompileToString(res.ToList());
@@ -102,8 +109,14 @@ namespace Roslyn.Tests
             Assert.IsTrue(
                 Regex.IsMatch(
                     formatted,
-                    @".*CreatePersons\(x =>.*\S* aPerson = AddAge\(x\);.*onPerson\(aPerson\);.*",
+                    @".*CreatePersons\(person =>.*\S* AddAge\(person\);.*AddName\(person\);.*",
                     RegexOptions.Singleline));
+
+            Assert.IsTrue(
+               Regex.IsMatch(
+                   formatted,
+                   @".*CreatePersons\(person =>.*\S* AddAge\(person\);.*AddName\(person\);.*AddName\(person\);.*",
+                   RegexOptions.Singleline));
         }
 
         [TestMethod]
@@ -112,7 +125,7 @@ namespace Roslyn.Tests
             var testModel = new MainModel();
             var x = MainModelManager.AddNewSoftwareCell("X", testModel);
             MainModelManager.AddNewInput(x, "()");
-            MainModelManager.AddNewOutput(x, "(Person)*");
+            MainModelManager.AddNewOutput(x, "(onPerson:Person)*");
 
             var createPersons = MainModelManager.AddNewSoftwareCell("Create Persons", testModel);
             MainModelManager.AddNewInput(createPersons, "()");
@@ -139,9 +152,16 @@ namespace Roslyn.Tests
                     @".*CreatePersons.*AddAge.*", RegexOptions.Singleline));
 
             Assert.IsTrue(
+               Regex.IsMatch(
+                   formatted,
+                   @".*CreatePersons\(person =>.*\S* aPerson = AddAge\(person\);.*",
+                   RegexOptions.Singleline));
+
+            // finds matching outgoing Action of Integration
+            Assert.IsTrue(
                 Regex.IsMatch(
                     formatted,
-                    @".*CreatePersons\(x =>.*\S* aPerson = AddAge\(x\);.*onPerson\(aPerson\);.*",
+                    @".*CreatePersons\(person =>.*\S* aPerson = AddAge\(person\);.*onPerson\(aPerson\);.*",
                     RegexOptions.Singleline));
         }
     }

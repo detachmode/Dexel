@@ -32,25 +32,28 @@ namespace Dexel.Editor.Views.DrawingBoard
 
         private void IOCell_LayoutUpdated(object sender, EventArgs e)
         {
-            if (ViewModel() != null)
-            {
-                ViewModel().CellWidth = Fu.ActualWidth;
-                ViewModel().CellHeight = Fu.ActualHeight;
-            }
+            if (MainViewModel.Instance().LoadingModelFlag)
+                return;
+            if (ViewModel() == null) return;
 
+            ViewModel().CellWidth = Fu.ActualWidth;
+            ViewModel().CellHeight = Fu.ActualHeight;
+
+            MainViewModel.Instance().UpdateIntegrationBorderPosition(ViewModel());
             UpdateConnectionViewModels();
-            MainViewModel.Instance().UpdateIntegrationBorderPositions();
         }
 
 
 
         private void UpdateConnectionViewModels()
         {
+
             var vm = ViewModel();
             if (vm == null)
             {
                 return;
             }
+
 
             var outputPoint = new Point(vm.Model.Position.X + Fu.ActualWidth,
                 vm.Model.Position.Y + ActualHeight/2);

@@ -19,6 +19,7 @@ namespace Dexel.Editor.ViewModels
     public class MainViewModel : IDropable
     {
         private static MainViewModel _self;
+        public bool LoadingModelFlag;
 
 
         public MainViewModel()
@@ -33,8 +34,8 @@ namespace Dexel.Editor.ViewModels
             VisibilityDatanames = Visibility.Visible;
             VisibilityBlockTextBox = Visibility.Hidden;
             SelectedSoftwareCells.CollectionChanged += (sender, args) => UpdateSelectionState();
-
         }
+
 
         public ObservableCollection<DataTypeViewModel> DataTypes { get; set; }
         public ObservableCollection<IOCellViewModel> IntegrationBorders { get; set; }
@@ -52,7 +53,20 @@ namespace Dexel.Editor.ViewModels
         public static MainViewModel Instance() => _self ?? (_self = new MainViewModel());
 
 
+        public void SetDataTypeFilter(string datanames)
+        {
+            if (datanames == null)
+            {
+                VisibileDataTypes.Clear();
+                DataTypes.ForEach(vm => VisibileDataTypes.Add(vm));
+                return;
+            }
 
+            var types = Interactions.GetFocusedDataTypes(datanames, Model);
+
+            VisibileDataTypes.Clear();
+            DataTypes.Where(x => types.Any(y => x.Model.Name == y)).ForEach(vm => VisibileDataTypes.Add(vm));
+        }
 
         #region Modify Selection
 
@@ -61,6 +75,7 @@ namespace Dexel.Editor.ViewModels
             SoftwareCells.ForEach(x => x.IsSelected = false);
             SelectedSoftwareCells.ForEach(x => x.IsSelected = true);
         }
+
 
         public void SetSelection(IOCellViewModel ioCellViewModel)
         {
@@ -98,6 +113,7 @@ namespace Dexel.Editor.ViewModels
             SelectedSoftwareCells.Clear();
             SoftwareCells.Where(sc => duplicted.Contains(sc.Model)).ForEach(vm => SelectedSoftwareCells.Add(vm));
         }
+
 
         public SoftwareCell DuplicateIncludingChildrenAndIntegrated(SoftwareCell softwareCell)
         {
@@ -137,8 +153,6 @@ namespace Dexel.Editor.ViewModels
             typeof(ConnectionViewModel)
         };
 
-       
-
 
         public void Drop(object data)
         {
@@ -148,7 +162,7 @@ namespace Dexel.Editor.ViewModels
 
         #endregion
 
-        #region UpdateSelectionState Positions
+        #region Update Positions
 
         public void UpdateConnectionsPosition(Point inputPoint, Point outputPoint, IOCellViewModel ioCellViewModel)
         {
@@ -156,30 +170,55 @@ namespace Dexel.Editor.ViewModels
             var allInputs =
                 Connections.Where(conn => conn.Model.Destinations.Any(x => x.Parent == ioCellViewModel.Model));
 
-            allInputs.ToList().ForEach(x => x.End = inputPoint);
-            allOutputs.ToList().ForEach(x => x.Start = outputPoint);
+           
+
+            allInputs.ToList().ForEach(connVM =>
+            {
+                var index = ioCellViewModel.Model.InputStreams.IndexOf(connVM.Model.Destinations.First());
+                var count = ioCellViewModel.Model.InputStreams.Count;
+                const int dsdHeight = 42;
+                inputPoint.Y -= (count-1)* (dsdHeight /2);
+                inputPoint.Y += index * dsdHeight +2;
+
+                var inputVM = (ConnectionAdapterViewModel)ioCellViewModel.Inputs.First(ioVM => ioVM.Model == connVM.Model.Destinations.First());
+                inputPoint.X -= inputVM.Width -5;
+                connVM.End = inputPoint;
+            });
+            allOutputs.ToList().ForEach(connVM =>
+            {
+                var index = ioCellViewModel.Model.OutputStreams.IndexOf(connVM.Model.Sources.First());
+                var count = ioCellViewModel.Model.OutputStreams.Count;
+                const int dsdHeight = 42;
+                outputPoint.Y -= (count - 1) * (dsdHeight / 2);
+                outputPoint.Y += index * dsdHeight + 2;
+
+                var outputVM = (ConnectionAdapterViewModel)ioCellViewModel.Outputs.First(ioVM => ioVM.Model == connVM.Model.Sources.First());
+                outputPoint.X += outputVM.Width - 5;
+                connVM.Start = outputPoint;
+            });
         }
 
 
-        public void UpdateIntegrationBorderPositions()
+        public void UpdateIntegrationBorderPositions(ObservableCollection<IOCellViewModel> integrationsBorders)
         {
-            IntegrationBorders.ForEach(iocellvm =>
-            {
-                if (iocellvm.Integration.Count == 0)
-                {
-                    return;
-                }
-                var tempIntegrations =
-                    iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.X + cellvm1.CellWidth);
-                var min = tempIntegrations.First();
-                var max = tempIntegrations.Last();
+            integrationsBorders.ForEach(UpdateIntegrationBorderPosition);
+        }
 
-                tempIntegrations = iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.Y + cellvm1.CellHeight);
-                var miny = tempIntegrations.First();
-                iocellvm.IntegrationStartPosition = new Point(min.Model.Position.X - 60, miny.Model.Position.Y);
-                iocellvm.IntegrationEndPosition = new Point(max.Model.Position.X + max.CellWidth + 60,
-                    miny.Model.Position.Y);
-            });
+
+        public void UpdateIntegrationBorderPosition(IOCellViewModel iocellvm)
+        {
+            if (iocellvm.Integration.Count == 0)
+                return;
+            var tempIntegrations =
+                iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.X + cellvm1.CellWidth);
+            var min = tempIntegrations.First();
+            var max = tempIntegrations.Last();
+
+            tempIntegrations = iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.Y + cellvm1.CellHeight);
+            var miny = tempIntegrations.First();
+            iocellvm.IntegrationStartPosition = new Point(min.Model.Position.X - 60, miny.Model.Position.Y);
+            iocellvm.IntegrationEndPosition = new Point(max.Model.Position.X + max.CellWidth + 60,
+                miny.Model.Position.Y);
         }
 
         #endregion
@@ -189,19 +228,25 @@ namespace Dexel.Editor.ViewModels
         public void Reload()
         {
             if (Model != null)
-            {
                 LoadFromModel(Model);
-            }
         }
 
 
         public void LoadFromModel(MainModel mainModel)
         {
-            Model = mainModel;
-            LoadConnection(mainModel.Connections);
-            LoadSoftwareCells(mainModel.SoftwareCells);
-            LoadIntegrations();
-            LoadDataTypes(mainModel.DataTypes);
+            LoadingModelFlag = true;
+            try
+            {
+                Model = mainModel;
+                LoadSoftwareCells(mainModel.SoftwareCells);
+                LoadConnection(mainModel.Connections);               
+                LoadIntegrations();
+                LoadDataTypes(mainModel.DataTypes);
+            }
+            finally
+            {
+                LoadingModelFlag = false;
+            }
         }
 
 
@@ -213,71 +258,110 @@ namespace Dexel.Editor.ViewModels
                 var vm = new DataTypeViewModel();
                 vm.Model = dataType;
 
-                if (dataType.DataTypes == null || !dataType.DataTypes.Any())
+                if ((dataType.DataTypes == null) || !dataType.DataTypes.Any())
                     vm.Definitions = "";
-                else 
+                else
                     vm.Definitions = dataType.DataTypes
                         .Select(x => string.IsNullOrEmpty(x.Name) ? x.Type : $"{x.Name}:{x.Type}")
                         .Aggregate((str, type) => str + "\n" + type);
 
                 DataTypes.Add(vm);
-
             });
         }
 
 
         private void LoadIntegrations()
         {
-            IntegrationBorders.Clear();
+            var newcollection = new ObservableCollection<IOCellViewModel>();
             SoftwareCells.Where(x => x.Model.Integration.Count != 0).ToList().ForEach(hasIntegration =>
             {
                 var integratedVMs =
                     SoftwareCells.Where(otherVM => hasIntegration.Model.Integration.Contains(otherVM.Model));
-                integratedVMs.ToList().ForEach(hasIntegration.Integration.Add);
-                IntegrationBorders.Add(hasIntegration);
+                var list = new ObservableCollection<IOCellViewModel>();
+                integratedVMs.ToList().ForEach(list.Add);
+                hasIntegration.Integration = list;
+                newcollection.Add(hasIntegration);
             });
-            UpdateIntegrationBorderPositions();
+
+            UpdateIntegrationBorderPositions(newcollection);
+            IntegrationBorders = newcollection;
         }
 
 
-        private void LoadSoftwareCells(List<SoftwareCell> softwareCells)
+        private void LoadSoftwareCells(List<SoftwareCell> softwareCellsToLoad)
         {
-            SoftwareCells.Clear();
-            softwareCells.ForEach(modelSoftwareCell =>
-            {
-                var vm = new IOCellViewModel();
-                vm.LoadFromModel(modelSoftwareCell);
-                SoftwareCells.Add(vm);
-            });
+            RemoveDeletedSoftwareCells(softwareCellsToLoad);
+
+            var lookup = SoftwareCells.ToLookup(x => x.Model.ID, x => x);
+            softwareCellsToLoad.ForEach(model => FindIOCellViewModel(lookup, model,
+                onFound: viewModel => IOCellViewModel.LoadFromModel(viewModel, model),
+                onNotFound: () => AddNewSoftwareCell(model)));
         }
 
 
-        private void LoadConnection(List<DataStream> dataStreams)
+        private void AddNewSoftwareCell(SoftwareCell model)
         {
-            Connections.Clear();
-            dataStreams.Where(x => x.Sources.Any() && x.Destinations.Any()).ToList().ForEach(modelConnection =>
-            {
-                var vm = new ConnectionViewModel();
-                vm.LoadFromModel(modelConnection);
-                Connections.Add(vm);
-            });
+            var vm = new IOCellViewModel();
+            vm.LoadFromModel(model);
+            SoftwareCells.Add(vm);
+        }
+
+
+        private void FindIOCellViewModel(ILookup<Guid, IOCellViewModel> lookup, SoftwareCell model,
+            Action<IOCellViewModel> onFound, Action onNotFound)
+        {
+            var found = lookup[model.ID].ToList();
+            if (found.Any())
+                onFound(found.First());
+            else
+                onNotFound();
+        }
+
+
+        private void FindConnectionViewModel(ILookup<Guid, ConnectionViewModel> lookup, DataStream model,
+            Action<ConnectionViewModel> onFound, Action onNotFound)
+        {
+            var found = lookup[model.ID].ToList();
+            if (found.Any())
+                onFound(found.First());
+            else
+                onNotFound();
+        }
+
+
+        private void RemoveDeletedSoftwareCells(List<SoftwareCell> softwareCellsToLoad)
+        {
+            var todelte = SoftwareCells.Where(vm => softwareCellsToLoad.All(cell => cell.ID != vm.Model.ID)).ToList();
+            todelte.ForEach(vm => SoftwareCells.Remove(vm));
+        }
+
+
+        private void LoadConnection(List<DataStream> datastreamsToLoad)
+        {
+            RemoveDeletedConnections(datastreamsToLoad);
+
+            var lookup = Connections.ToLookup(x => x.Model.ID, x => x);
+            datastreamsToLoad.ForEach(model => FindConnectionViewModel(lookup, model,
+                onFound: viewModel => ConnectionViewModel.LoadFromModel(viewModel, model),
+                onNotFound: () => AddNewConnection(model)));
+        }
+
+
+        private void AddNewConnection(DataStream model)
+        {
+            var vm = new ConnectionViewModel();
+            vm.LoadFromModel(model);
+            Connections.Add(vm);
+        }
+
+
+        private void RemoveDeletedConnections(List<DataStream> datastreamsToLoad)
+        {
+            var todelte = Connections.Where(vm => datastreamsToLoad.All(cell => cell.ID != vm.Model.ID)).ToList();
+            todelte.ForEach(vm => Connections.Remove(vm));
         }
 
         #endregion
-
-        public void SetDataTypeFilter(string datanames)
-        {
-            if (datanames == null)
-            {
-                VisibileDataTypes.Clear();
-                DataTypes.ForEach(vm => VisibileDataTypes.Add(vm));
-                return;
-            }
-
-            var types = Interactions.GetFocusedDataTypes(datanames, Model);
-
-            VisibileDataTypes.Clear();
-            DataTypes.Where( x => types.Any(y => x.Model.Name == y)).ForEach(vm => VisibileDataTypes.Add(vm));
-        }
     }
+
 }

@@ -111,7 +111,7 @@ namespace Roslyn
         {
             if (string.IsNullOrEmpty(softwareCell.Name))
                 throw new Exception("SoftwareCell has no name");
-            
+           
             return
                 softwareCell.Name.Split(' ')
                     .Where(s => !string.IsNullOrEmpty(s))

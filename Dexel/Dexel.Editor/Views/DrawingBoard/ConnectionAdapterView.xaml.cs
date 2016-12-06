@@ -9,9 +9,9 @@ namespace Dexel.Editor.Views.DrawingBoard
     /// <summary>
     ///     Interaktionslogik für Stream.xaml
     /// </summary>
-    public partial class DangelingConnectionView
+    public partial class ConnectionAdapterView
     {
-        public DangelingConnectionView()
+        public ConnectionAdapterView()
         {
             InitializeComponent();
             LayoutUpdated += OnLayoutUpdated;
@@ -28,16 +28,10 @@ namespace Dexel.Editor.Views.DrawingBoard
         }
 
 
-        public DangelingConnectionViewModel ViewModel() => DataContext as DangelingConnectionViewModel;
-
-        public void SetFocus() => TheDataNamesControl.SetFocus();
+        public ConnectionAdapterViewModel ViewModel() => DataContext as ConnectionAdapterViewModel;
 
 
-        private void DeleteDataStreamDefinition(object sender, RoutedEventArgs e)
-        {
-            var vm =  (DangelingConnectionViewModel) DataContext;
-            Interactions.DeleteDatastreamDefiniton(vm.Model, vm.Parent);
-        }
+      
     }
 
 }

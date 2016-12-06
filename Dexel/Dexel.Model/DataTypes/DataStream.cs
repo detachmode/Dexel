@@ -8,9 +8,9 @@ namespace Dexel.Model.DataTypes
 {
     [Serializable]
     [ImplementPropertyChanged]
-    public class DataStream : INotifyPropertyChanged
+    public class DataStream : INotifyPropertyChanged, IModelWithID
     {
-        public Guid ID { get;  set; }
+        public Guid ID { get; set; }
         public string ActionName { get;  set; }
         public string DataNames { get;  set; }
         public List<DataStreamDefinition> Sources { get;  set; }
@@ -44,6 +44,9 @@ namespace Dexel.Model.DataTypes
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+
+        
     }
 
 }

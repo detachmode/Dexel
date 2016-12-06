@@ -37,5 +37,8 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
             ID = modelDataStream.ID;
         }
 
+
+        public static void LoadFromModel(ConnectionViewModel vm, DataStream model) => vm.LoadFromModel(model);
+
     }
 }

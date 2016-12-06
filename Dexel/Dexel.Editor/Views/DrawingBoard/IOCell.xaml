@@ -15,58 +15,66 @@
         <ContextMenu x:Key="MyContextMenu">
             <MenuItem Header="Add New Input" Click="NewInput_click" />
             <MenuItem Header="Add New Output" Click="NewOutput_click" />
-            <Separator></Separator>
-            <MenuItem Header="Make Integration" Click="MakeIntegration_OnClick"></MenuItem>
-            <MenuItem Header="Remove from Integration" Click="RemoveFromIntegration_OnClick"></MenuItem>
-            <Separator></Separator>
-          
+            <Separator />
+            <MenuItem Header="Make Integration" Click="MakeIntegration_OnClick" />
+            <MenuItem Header="Remove from Integration" Click="RemoveFromIntegration_OnClick" />
+            <Separator />
+
             <MenuItem Header="Copy" Click="Copy_click" />
             <!--<MenuItem Header="Cut" Click="Cut_click" />-->
             <MenuItem Header="Delete" Click="Delete_click" />
         </ContextMenu>
+
+
+
+
+
     </UserControl.Resources>
     <Grid>
-        <ItemsControl MinHeight="35" x:Name="InputFlow" 
+        <ItemsControl MinHeight="35" x:Name="InputFlow"
+                                
                       HorizontalAlignment="Left"
                       VerticalAlignment="Center"
-                      ItemsSource="{Binding DangelingInputs}" RenderTransformOrigin="0.5,0.5" >
+                      ItemsSource="{Binding Inputs}" RenderTransformOrigin="0.5,0.5">
             <ItemsControl.RenderTransform>
                 <TransformGroup>
-                    <ScaleTransform/>
-                    <SkewTransform/>
-                    <RotateTransform/>
-                    <TranslateTransform X="{Binding ActualWidth, ConverterParameter=-1, Converter={StaticResource PercentageConverter}, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}"/>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform />
+                    <TranslateTransform
+                        X="{Binding ActualWidth, ConverterParameter=-1, Converter={StaticResource PercentageConverter}, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" />
                 </TransformGroup>
             </ItemsControl.RenderTransform>
-
-
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <drawingBoard:DangelingConnectionView  x:Name="DangelingConnectionView" />
+            <ItemsControl.Resources>
+                <!-- Do NOT set the x:Key -->
+                <DataTemplate DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
+                    <drawingBoard:DangelingConnectionView x:Name="DangelingConnectionView" />
                 </DataTemplate>
-            </ItemsControl.ItemTemplate>
+                <DataTemplate DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
+                    <drawingBoard:ConnectionAdapterView x:Name="ConnectionAdapterView" />
+                </DataTemplate>
+            </ItemsControl.Resources>
         </ItemsControl>
 
-        <StackPanel 
+        <StackPanel
             ContextMenu="{StaticResource MyContextMenu}"
             MinHeight="60"
-            Orientation="Horizontal"
-            >
-
-            <drawingBoard:SoftwareCell x:Name="Fu" 
-                                Focusable="False"
-                            LabelContent="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                           />
-
-            <ItemsControl VerticalAlignment="Center" HorizontalAlignment="Center"  Panel.ZIndex="20"
-                      x:Name="OutputFlow" ItemsSource="{Binding DangelingOutputs, Mode=TwoWay}">
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate>
-                        <drawingBoard:DangelingConnectionView x:Name="DangelingConnectionView">
-
-                        </drawingBoard:DangelingConnectionView>
+            Orientation="Horizontal">
+            <drawingBoard:SoftwareCell x:Name="Fu"
+                                       Focusable="False"
+                                       LabelContent="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <ItemsControl VerticalAlignment="Center"                         
+                          HorizontalAlignment="Center" Panel.ZIndex="20"
+                          x:Name="OutputFlow" ItemsSource="{Binding Outputs, Mode=TwoWay}" >
+                <ItemsControl.Resources>
+                    <!-- Do NOT set the x:Key -->
+                    <DataTemplate DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
+                        <drawingBoard:DangelingConnectionView x:Name="DangelingConnectionView" />
                     </DataTemplate>
-                </ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
+                        <drawingBoard:ConnectionAdapterView x:Name="ConnectionAdapterView" />
+                    </DataTemplate>
+                </ItemsControl.Resources>
             </ItemsControl>
         </StackPanel>
     </Grid>

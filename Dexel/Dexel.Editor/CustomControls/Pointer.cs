@@ -245,6 +245,8 @@ namespace Dexel.Editor.CustomControls
             figure2.StartPoint = end;
             figure2.Segments.Add(new LineSegment(End, true));
             ((PathGeometry) outerPathShape.Data).Figures.Add(figure2);
+
+
         }
 
 

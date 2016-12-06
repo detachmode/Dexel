@@ -99,13 +99,14 @@ namespace Roslyn.Tests
             var testModel = new MainModel();
             var main = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
             MainModelManager.AddNewInput(main, "");
+            MainModelManager.AddNewOutput(main, "");
 
             var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
             MainModelManager.ConnectTwoCells(main, alter, "string", "", testModel);
 
             var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
             MainModelManager.ConnectTwoCells(alter, person, "int", "int, string", testModel);
-
+            MainModelManager.AddNewOutput(person, "person");
 
             var expectedList = new List<Parameter>()
             {
@@ -132,7 +133,7 @@ namespace Roslyn.Tests
 
 
             paramList = Integrations.FindParameters(splitter, testModel.Connections, main);
-            Assert.IsTrue(paramList.First().FoundFlag == Found.FoundInPreviousChild && paramList.First().Source == null);
+            Assert.IsTrue(paramList.First().FoundFlag == Found.FromParent && paramList.First().Source == main);
 
 
             testModel = new MainModel();
@@ -168,11 +169,11 @@ namespace Roslyn.Tests
 
             var expected = new Parameter { FoundFlag = Found.FoundInPreviousChild, Source = alter };
             var lookingfor = new NameType { Name = null, Type = "int" };
-            Assert.IsTrue(expected.Compare(Integrations.FindOneParameter(lookingfor, null, testModel.Connections, person)));
+            Assert.IsTrue(expected.Compare(Integrations.FindOneParameter(lookingfor, null, testModel.Connections, person, true)));
 
             expected = new Parameter { FoundFlag = Found.FoundInPreviousChild, Source = newName };
             lookingfor = new NameType { Name = null, Type = "string" };
-            Assert.IsTrue(expected.Compare(Integrations.FindOneParameter(lookingfor, null, testModel.Connections, person)));
+            Assert.IsTrue(expected.Compare(Integrations.FindOneParameter(lookingfor, null, testModel.Connections, person, true)));
 
             testModel = new MainModel();
             newName = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
@@ -185,25 +186,12 @@ namespace Roslyn.Tests
             MainModelManager.ConnectTwoCells(alter, person, "int", "int, string", testModel);
 
             lookingfor = new NameType { Name = null, Type = "int" };
-            Assert.IsTrue(Integrations.FindOneParameter(lookingfor, null, testModel.Connections, person).Source == alter);
+            Assert.IsTrue(Integrations.FindOneParameter(lookingfor, null, testModel.Connections, person, true).Source == alter);
 
 
         }
 
 
-
-        [TestMethod()]
-        public void LocalMethodCallTest()
-        {
-            // void method call -> no local variable needed
-            var testModel = new MainModel();
-            var foo = MainModelManager.AddNewSoftwareCell("foo", testModel);
-            MainModelManager.AddNewInput(foo, "");
-            MainModelManager.AddNewOutput(foo, "");
-            var nodes = Integrations.LocalMethodCall(_mygen.Generator, foo, null, new List<GeneratedLocalVariable>());
-            var fullstring = nodes.NormalizeWhitespace().ToFullString();
-            Assert.AreEqual("Foo()", fullstring);
-        }
 
         [TestMethod()]
         public void GenerateDataTypesTest()
