@@ -31,8 +31,7 @@
 
     </UserControl.Resources>
     <Grid>
-        <ItemsControl MinHeight="35" x:Name="InputFlow"
-                                
+        <ItemsControl MinHeight="35" x:Name="InputFlow"                               
                       HorizontalAlignment="Left"
                       VerticalAlignment="Center"
                       ItemsSource="{Binding Inputs}" RenderTransformOrigin="0.5,0.5">

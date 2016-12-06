@@ -50,7 +50,7 @@
                  Grid.Column="0" x:Name="ActionNameTextBox" VerticalAlignment="Top"
                  Text="{Binding Model.ActionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Margin="0,-2,0,0"
                          CaretBrush="{DynamicResource Foreground}" Background="{x:Null}"
-                         Foreground="{DynamicResource Foreground}" BorderBrush="{x:Null}" />
+                            Foreground="DarkGray" BorderBrush="{x:Null}" />
 
         <customControls:DataNamesControl  Height="20" VerticalAlignment="Bottom"
             Visibility="{Binding DataContext.VisibilityDatanames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"

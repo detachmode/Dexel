@@ -166,36 +166,70 @@ namespace Dexel.Editor.ViewModels
 
         public void UpdateConnectionsPosition(Point inputPoint, Point outputPoint, IOCellViewModel ioCellViewModel)
         {
+
+
             var allOutputs = Connections.Where(conn => conn.Model.Sources.Any(x => x.Parent == ioCellViewModel.Model));
-            var allInputs =
-                Connections.Where(conn => conn.Model.Destinations.Any(x => x.Parent == ioCellViewModel.Model));
+            var allInputs = Connections.Where(conn => conn.Model.Destinations.Any(x => x.Parent == ioCellViewModel.Model));
 
-           
-
-            allInputs.ToList().ForEach(connVM =>
+            allInputs.ToList().ForEach(connVm =>
             {
-                var index = ioCellViewModel.Model.InputStreams.IndexOf(connVM.Model.Destinations.First());
-                var count = ioCellViewModel.Model.InputStreams.Count;
-                const int dsdHeight = 42;
-                inputPoint.Y -= (count-1)* (dsdHeight /2);
-                inputPoint.Y += index * dsdHeight +2;
-
-                var inputVM = (ConnectionAdapterViewModel)ioCellViewModel.Inputs.First(ioVM => ioVM.Model == connVM.Model.Destinations.First());
-                inputPoint.X -= inputVM.Width -5;
-                connVM.End = inputPoint;
+                SetInputPosition(inputPoint, connVm, ioCellViewModel);
             });
-            allOutputs.ToList().ForEach(connVM =>
+
+            allOutputs.ToList().ForEach(connVm =>
             {
-                var index = ioCellViewModel.Model.OutputStreams.IndexOf(connVM.Model.Sources.First());
-                var count = ioCellViewModel.Model.OutputStreams.Count;
-                const int dsdHeight = 42;
-                outputPoint.Y -= (count - 1) * (dsdHeight / 2);
-                outputPoint.Y += index * dsdHeight + 2;
-
-                var outputVM = (ConnectionAdapterViewModel)ioCellViewModel.Outputs.First(ioVM => ioVM.Model == connVM.Model.Sources.First());
-                outputPoint.X += outputVM.Width - 5;
-                connVM.Start = outputPoint;
+                SetOutputPosition(outputPoint, connVm, ioCellViewModel);
             });
+        }
+
+
+        private void SetInputPosition(Point point, ConnectionViewModel connVm, IOCellViewModel ioCellViewModel)
+        {
+            var inputVm = (ConnectionAdapterViewModel)ioCellViewModel.Inputs.First(ioVm => ioVm.Model == connVm.Model.Destinations.First());
+            var index = ioCellViewModel.Inputs.IndexOf(inputVm);
+            var count = ioCellViewModel.Inputs.Count;
+
+            var pt = OffsetPos(point, count, index, inputVm, isOutput:false);
+
+            connVm.End = pt;
+        }
+
+
+        private void SetOutputPosition(Point point, ConnectionViewModel connVm, IOCellViewModel ioCellViewModel)
+        {
+            var outputVm = (ConnectionAdapterViewModel)ioCellViewModel.Outputs.First(ioVm => ioVm.Model == connVm.Model.Sources.First());
+            var index = ioCellViewModel.Outputs.IndexOf(outputVm);
+            var count = ioCellViewModel.Outputs.Count;
+
+            var pt = OffsetPos(point, count, index, outputVm);
+
+            connVm.Start = pt;
+        }
+
+
+        private static Point OffsetPos(Point point, int count, int index, ConnectionAdapterViewModel adapterViewModel, bool isOutput = true)
+        {
+            const int dsdHeight = 42;
+
+            var pt = new Point
+            {
+                X = point.X,
+                Y = point.Y
+            };
+
+            pt.Y -= (count - 1)*(dsdHeight/2);
+            pt.Y += index*dsdHeight + 2;
+
+            if (isOutput)
+            {
+                pt.X += adapterViewModel.Width - 1;
+            }
+            else
+            {
+                pt.X -= adapterViewModel.Width - 5;
+            }
+
+            return pt;
         }
 
 

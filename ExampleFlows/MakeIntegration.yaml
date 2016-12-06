@@ -1,5 +1,5 @@
 SoftwareCells:
-- &o17
+- &o16
   Position:
     X: 493.0306915306918
     Y: -260.4860295260292
@@ -19,21 +19,21 @@ SoftwareCells:
       ID: 73e576e1-e41c-4fff-aab7-e24309a4051e
       Parent: *o0
     OutputStreams:
-    - &o37
-      ActionName: ''
-      DataNames: isStream:(Body, streamingCell:SoftwareCell, result)
+    - &o34
+      ActionName: isStream
+      DataNames: (Body, streamingCell:SoftwareCell, result)
       ID: f8cd344d-8169-4c12-9fe9-998d45297a6e
       Connected: true
       Parent: *o0
-    - &o25
-      DataNames: isNotStream:(Body,SoftwareCell)
+    - &o24
+      ActionName: isNotStream
+      DataNames: (Body,SoftwareCell)
       ID: 61dfc90e-fcc0-4dc8-aa9d-2191a27d9e8b
       Connected: true
       Parent: *o0
-    - &o35
-      DataNames: noNextCell:()
+    - ActionName: noNextCell
+      DataNames: ()
       ID: 74368b2d-7c11-4d61-94c9-3e9bcda9c2ed
-      Connected: true
       Parent: *o0
   - &o7
     Position:
@@ -55,7 +55,7 @@ SoftwareCells:
         ID: 807ad621-fff9-4878-8c69-bb4cacabe0d0
         Parent: *o1
       OutputStreams:
-      - &o39
+      - &o36
         ActionName: ''
         DataNames: (Body)
         ID: d99fd35d-e284-4972-bef0-e3d72ef4dc0f
@@ -81,7 +81,7 @@ SoftwareCells:
           ID: 1b15c0a8-7003-4727-9e93-36c326ad61da
           Parent: *o2
         OutputStreams:
-        - &o41
+        - &o38
           ActionName: ''
           DataNames: (parameter:SyntaxNode*)
           ID: f50e2272-63ca-4da0-b16e-735157477f25
@@ -95,14 +95,14 @@ SoftwareCells:
         ID: bd162257-a1d7-4894-a311-4617a1d6a0a4
         Integration: []
         InputStreams:
-        - &o42
+        - &o39
           ActionName: ''
           DataNames: (SoftwareCell)
           ID: 434eb197-4d86-436c-8c86-fd94fa2670c9
           Connected: true
           Parent: *o3
         OutputStreams:
-        - &o43
+        - &o40
           ActionName: ''
           DataNames: (methodname:string)
           ID: 7963de7f-8e20-4486-9638-4d599eeae7bc
@@ -116,14 +116,14 @@ SoftwareCells:
         ID: 345c0a18-1f26-4b1f-8fdc-76bec67f8738
         Integration: []
         InputStreams:
-        - &o44
+        - &o41
           ActionName: ''
           DataNames: (generated:LocalVariable*,SoftwareCell)
           ID: 038bbd39-ee3c-4d58-a5df-bb6a44bd0111
           Connected: true
           Parent: *o4
         OutputStreams:
-        - &o45
+        - &o42
           ActionName: ''
           DataNames: (assignTo:SyntaxNode)
           ID: a908c509-287b-4411-8e70-11ac3ee87390
@@ -137,7 +137,7 @@ SoftwareCells:
         ID: e4a87baf-5ab0-4f1b-9046-265fad78da1e
         Integration: []
         InputStreams:
-        - &o46
+        - &o43
           ActionName: ''
           DataNames: (parameter:SyntaxNode*, softwareCell)
           ID: afad1c90-bcec-4a07-9c23-6c10337732f4
@@ -149,7 +149,7 @@ SoftwareCells:
           ID: f3e84584-0dae-4a3c-9b49-6eb140887f7b
           Parent: *o5
       InputStreams:
-      - &o40
+      - &o37
         ActionName: ''
         DataNames: (generated:LocalVariable*, SoftwareCell)
         ID: 1a07b0a5-2a60-466f-8114-f79204b6f0b2
@@ -161,14 +161,14 @@ SoftwareCells:
         ID: eb22287d-076d-477e-a14d-2e101023068f
         Parent: *o6
     InputStreams:
-    - &o26
+    - &o25
       ActionName: ''
-      DataNames: isNotStream:(Body,SoftwareCell)
+      DataNames: (Body,SoftwareCell)
       ID: 998642b3-14dc-4bdc-bfbd-8e9f6bef13a6
       Connected: true
       Parent: *o7
     OutputStreams:
-    - &o31
+    - &o30
       ActionName: ''
       DataNames: (SyntaxNode)
       ID: 84879266-b4f5-4318-9971-95dab8a20ed5
@@ -182,7 +182,7 @@ SoftwareCells:
     ID: 80afb517-8b33-4e4a-9d71-deed2ddb7fd6
     Integration: []
     InputStreams:
-    - &o32
+    - &o31
       ActionName: ''
       DataNames: (SyntaxNode, result)
       ID: c65237ee-0200-4019-93dc-178e05b6b36a
@@ -193,33 +193,14 @@ SoftwareCells:
       DataNames: (result)
       ID: 2f3734dc-5fa8-4860-b6ac-404329e1c5fa
       Parent: *o8
-  - &o9
+  - &o14
     Position:
-      X: 258.27973472135284
-      Y: -157.31098975311033
-    Name: 'return '
-    ID: aa48047b-c2dd-4b8f-82b7-816e3367f16d
-    Integration: []
-    InputStreams:
-    - &o36
-      ActionName: ''
-      DataNames: noNextCell:()
-      ID: ee0384fd-bf97-4767-88f9-3f60fbb68b7f
-      Connected: true
-      Parent: *o9
-    OutputStreams:
-    - ActionName: ''
-      DataNames: (SyntaxNode*)
-      ID: 47b750de-07cc-4ab9-94db-76a35c024b3b
-      Parent: *o9
-  - &o15
-    Position:
-      X: 885.19620712620758
-      Y: -62.027821067820639
+      X: 875.19620712620758
+      Y: -62.936911976911517
     Name: create method call with lambda
     ID: f1f27dc0-e360-4c0f-8c3a-94b7e3dbb530
     Integration:
-    - &o10
+    - &o9
       Position:
         X: 546.0556341806348
         Y: 90.123219743220318
@@ -230,15 +211,15 @@ SoftwareCells:
       - ActionName: ''
         DataNames: (Body, SoftwareCell)
         ID: 9c70a33b-d07e-4b6c-9b20-22663bb8ab83
-        Parent: *o10
+        Parent: *o9
       OutputStreams:
-      - &o27
+      - &o26
         ActionName: ''
         DataNames: (Body)
         ID: 37bca821-8d57-4dea-996c-469d420864cd
         Connected: true
-        Parent: *o10
-    - &o11
+        Parent: *o9
+    - &o10
       Position:
         X: 1100.3393055745994
         Y: 89.854421547953166
@@ -246,20 +227,20 @@ SoftwareCells:
       ID: b844550d-49dd-4587-a06e-3d9b17d811bf
       Integration: []
       InputStreams:
-      - &o28
+      - &o27
         ActionName: ''
         DataNames: (SoftwareCell, Body)
         ID: d79173c2-3586-433c-bc85-8c06b0d61cc6
         Connected: true
-        Parent: *o11
+        Parent: *o10
       OutputStreams:
-      - &o29
+      - &o28
         ActionName: ''
         DataNames: (Body)
         ID: ec0dae9c-bd48-40c9-8814-ccdcdb0dbed9
         Connected: true
-        Parent: *o11
-    - &o12
+        Parent: *o10
+    - &o11
       Position:
         X: 1634.2422299922307
         Y: 89.97550893550914
@@ -267,20 +248,20 @@ SoftwareCells:
       ID: b31f5e41-a48f-4a88-b346-d4a3d16721da
       Integration: []
       InputStreams:
-      - &o30
+      - &o29
         ActionName: ''
         DataNames: (Body, subresult:SyntaxNode*)
         ID: fc18ce9b-8893-4b0c-8d3a-a19e0ddd8c40
         Connected: true
-        Parent: *o12
+        Parent: *o11
       OutputStreams:
-      - &o47
+      - &o44
         ActionName: ''
         DataNames: (lambdaBody:SyntaxNode*)
         ID: fc70ba94-9b77-4f73-af3d-6ab4c127a348
         Connected: true
-        Parent: *o12
-    - &o13
+        Parent: *o11
+    - &o12
       Position:
         X: 2096.3402143272669
         Y: 88.890702602439376
@@ -288,20 +269,20 @@ SoftwareCells:
       ID: 579bdbff-cd50-4e1f-ac21-c225c9c02079
       Integration: []
       InputStreams:
-      - &o48
+      - &o45
         ActionName: ''
         DataNames: (SoftwareCell, Body)
         ID: 708ec43c-46b1-4cd8-8bcf-d23b73f10376
         Connected: true
-        Parent: *o13
+        Parent: *o12
       OutputStreams:
-      - &o49
+      - &o46
         ActionName: ''
         DataNames: (lambdaParameter:SyntaxNode*)
         ID: e480d9f9-864e-456d-b147-dca83a578e55
         Connected: true
-        Parent: *o13
-    - &o14
+        Parent: *o12
+    - &o13
       Position:
         X: 3035.0249442822992
         Y: 88.467255609316169
@@ -309,32 +290,32 @@ SoftwareCells:
       ID: 8b22740c-7e70-4540-84e4-9de0b4cc4ad0
       Integration: []
       InputStreams:
-      - &o50
+      - &o47
         ActionName: ''
         DataNames: (lambdaBody:SyntaxNode*, lambdaParameter:SyntaxNode*, SoftwareCell)
         ID: dae748fd-7ffd-49f0-9a39-cdf58c916509
         Connected: true
-        Parent: *o14
+        Parent: *o13
       OutputStreams:
       - ActionName: ''
         DataNames: (SyntaxNode)
         ID: 7b181195-fdb2-489b-a268-0bcfac925c8b
-        Parent: *o14
+        Parent: *o13
     InputStreams:
-    - &o38
+    - &o35
       ActionName: ''
-      DataNames: isStream:(Body, streamingCell:SoftwareCell, result)
+      DataNames: (Body, streamingCell:SoftwareCell, result)
       ID: 3d2de09d-ac0c-4fd8-a662-0321a82729a5
       Connected: true
-      Parent: *o15
+      Parent: *o14
     OutputStreams:
-    - &o33
+    - &o32
       ActionName: ''
       DataNames: (SyntaxNode)
       ID: ce177a5f-e0e8-43fc-9096-da59e3f31365
       Connected: true
-      Parent: *o15
-  - &o16
+      Parent: *o14
+  - &o15
     Position:
       X: 1476.4035656609203
       Y: -61.760183618123165
@@ -342,38 +323,38 @@ SoftwareCells:
     ID: 96275e7f-9dcb-4437-b142-6785f0d12536
     Integration: []
     InputStreams:
-    - &o34
+    - &o33
       ActionName: ''
       DataNames: (SyntaxNode, result)
       ID: 2951e089-195b-4b5b-8140-36386dba5a64
       Connected: true
-      Parent: *o16
+      Parent: *o15
     OutputStreams:
     - ActionName: ''
       DataNames: (result)
       ID: 683e5319-6a82-493e-ab2d-a73d11688a61
-      Parent: *o16
+      Parent: *o15
   InputStreams:
-  - &o24
+  - &o23
     ActionName: ''
     DataNames: (Body, result:SyntaxNode*)
     ID: ec379b08-a77b-4728-8728-e8c4b33cda95
     Connected: true
-    Parent: *o17
+    Parent: *o16
   OutputStreams:
   - ActionName: ''
     DataNames: (SyntaxNode*)
     ID: 3c6a9c05-ee47-4c6b-a3ea-2b3539a925c8
-    Parent: *o17
+    Parent: *o16
 - *o0
-- &o20
+- &o19
   Position:
     X: -116.88461538461536
     Y: -478.30615384615373
   Name: make integration body
   ID: f9d463ab-a82a-443b-a209-19182d03b7b0
   Integration:
-  - &o18
+  - &o17
     Position:
       X: -176.23504273504267
       Y: -253.89162393162386
@@ -381,20 +362,20 @@ SoftwareCells:
     ID: 2de5eb88-8ec2-40a6-8c1c-355acd924f6f
     Integration: []
     InputStreams:
-    - &o22
+    - &o21
       ActionName: ''
       DataNames: (Body)
       ID: f2c15943-0121-41f9-a7e4-137cf85a3469
       Connected: true
-      Parent: *o18
+      Parent: *o17
     OutputStreams:
-    - &o23
+    - &o22
       ActionName: ''
       DataNames: (Body)
       ID: 9ff7aaed-b313-4d8e-9436-a0fd758b5303
       Connected: true
-      Parent: *o18
-  - &o19
+      Parent: *o17
+  - &o18
     Position:
       X: -563.35042735042725
       Y: -252.6523076923076
@@ -405,187 +386,171 @@ SoftwareCells:
     - ActionName: ''
       DataNames: (Generator, SoftwareCell, MainModel)
       ID: abf8e48d-c780-4b64-84a2-754029dbb0c4
-      Parent: *o19
+      Parent: *o18
     OutputStreams:
-    - &o21
+    - &o20
       ActionName: ''
       DataNames: (Body)
       ID: 04019e86-7c79-4346-93e3-477052103423
       Connected: true
-      Parent: *o19
-  - *o17
+      Parent: *o18
+  - *o16
   InputStreams:
   - ActionName: ''
     DataNames: (Generator, SoftwareCell, MainModel)
     ID: 8929f03f-9f2c-4257-8293-8863c793bdaa
-    Parent: *o20
+    Parent: *o19
   OutputStreams:
   - ActionName: ''
     DataNames: (SyntaxNode*)
     ID: 3d632076-52f7-4bbd-82ed-352a9cd375c1
-    Parent: *o20
+    Parent: *o19
+- *o17
 - *o18
-- *o19
-- *o15
-- *o7
-- *o12
-- *o10
 - *o14
+- *o7
 - *o11
-- *o16
-- *o8
 - *o9
+- *o13
+- *o10
+- *o15
+- *o8
 - *o1
 - *o6
 - *o2
 - *o5
 - *o3
 - *o4
-- *o13
+- *o12
 Connections:
 - DataNames: (Body)
   ID: b03dbb7e-b3a2-4ce5-bd99-5156db6414ef
   ActionName: ''
   Sources:
-  - *o21
+  - *o20
   Destinations:
-  - *o22
+  - *o21
 - DataNames: (Body) | (Body, result:SyntaxNode*)
   ID: a8fe50c3-8519-4584-a922-b58a855f7170
   ActionName: ''
   Sources:
-  - *o23
+  - *o22
   Destinations:
-  - *o24
-- DataNames: isNotStream:(Body,SoftwareCell)
+  - *o23
+- DataNames: (Body,SoftwareCell)
   ID: f7509465-32e5-484b-87d6-9eee4eaf75e0
   ActionName: ''
   Sources:
-  - *o25
+  - *o24
   Destinations:
-  - *o26
+  - *o25
 - DataNames: (Body) | (SoftwareCell, Body)
   ID: 210b20da-c16e-465c-abf5-37c742ddf64b
   ActionName: ''
   Sources:
-  - *o27
+  - *o26
   Destinations:
-  - *o28
+  - *o27
 - DataNames: (Body) | (Body, subresult:SyntaxNode*)
   ID: 8073ac00-cf2a-40bf-977a-9135b7ec1264
   ActionName: ''
   Sources:
-  - *o29
+  - *o28
   Destinations:
-  - *o30
+  - *o29
 - DataNames: (SyntaxNode) | (SyntaxNode, result)
   ID: 78b3ad2f-c734-45e4-9bfd-26c842fb6b6e
   ActionName: ''
   Sources:
-  - *o31
+  - *o30
   Destinations:
-  - *o32
+  - *o31
 - DataNames: (SyntaxNode) | (SyntaxNode, result)
   ID: a18ae0a9-9667-445a-9f7b-a469e3664081
   ActionName: ''
   Sources:
+  - *o32
+  Destinations:
   - *o33
-  Destinations:
-  - *o34
-- DataNames: noNextCell:()
-  ID: 9ebc5c24-b9f6-458f-ab41-413342502cec
-  ActionName: ''
-  Sources:
-  - *o35
-  Destinations:
-  - *o36
-- DataNames: isStream:(Body, streamingCell:SoftwareCell, result)
+- DataNames: (Body, streamingCell:SoftwareCell, result)
   ID: a02b0404-68ee-414e-96ef-fe46bdec481c
   ActionName: ''
   Sources:
-  - *o37
+  - *o34
   Destinations:
-  - *o38
+  - *o35
 - DataNames: (Body) | (generated:LocalVariable*, SoftwareCell)
   ID: 69904a5c-ca72-4846-9b2b-6676115e46e4
   ActionName: ''
   Sources:
-  - *o39
+  - *o36
   Destinations:
-  - *o40
+  - *o37
 - DataNames: (parameter:SyntaxNode*) | (SoftwareCell)
   ID: 443c9f4b-5389-41e0-902e-d6db72c8a517
   ActionName: ''
   Sources:
-  - *o41
+  - *o38
   Destinations:
-  - *o42
+  - *o39
 - DataNames: (methodname:string)|(generated:LocalVariable*,SoftwareCell)
   ID: e7ede975-d1c5-4913-bc94-0b92f25d4c86
   ActionName: ''
   Sources:
-  - *o43
+  - *o40
   Destinations:
-  - *o44
+  - *o41
 - DataNames: (assignTo:SyntaxNode) | (parameter:SyntaxNode*, softwareCell)
   ID: 352ed06b-8edb-4da4-a506-c4ba15e0aa03
   ActionName: ''
   Sources:
-  - *o45
+  - *o42
   Destinations:
-  - *o46
+  - *o43
 - DataNames: (lambdaBody:SyntaxNode*) | (SoftwareCell, Body)
   ID: b7c6df35-6fb8-431c-9f58-5f791437e397
   ActionName: ''
   Sources:
-  - *o47
+  - *o44
   Destinations:
-  - *o48
+  - *o45
 - DataNames: (lambdaParameter:SyntaxNode*) | (lambdaBody:SyntaxNode*, lambdaParameter:SyntaxNode*, SoftwareCell)
   ID: 50c16348-c59e-402e-8c18-32350d8bc316
   ActionName: ''
   Sources:
-  - *o49
+  - *o46
   Destinations:
-  - *o50
+  - *o47
 DataTypes:
 - Name: Body
   DataTypes:
   - Name: Generator
-    Type: >
-      SyntaxGenerator
+    Type: SyntaxGenerator
   - Name: Generated
-    Type: >
-      LocalVariable*
+    Type: LocalVariable*
   - Name: Parent
-    Type: >
-      SoftwareCell
+    Type: SoftwareCell
   - Name: CellDependencies
-    Type: >
-      CellDependency*
+    Type: CellDependency*
   - Name: Connections
     Type: DataStream*
 - Name: LocalVariable
   DataTypes:
   - Name: VariableName
-    Type: >
-      SoftwareCell
+    Type: SoftwareCell
   - Name: Source
-    Type: >
-      SoftwareCell
+    Type: SoftwareCell
   - Name: NameTyps
     Type: NameType*
 - Name: CallDependency
   DataTypes:
   - Name: OfSoftwareCell
-    Type: >
-      SoftwareCell
+    Type: SoftwareCell
   - Name: Source
     Type: SoftwareCell
 - Name: NameType
   DataTypes:
   - Name: Name
-    Type: >
-      string
+    Type: string
   - Name: Type
     Type: string
