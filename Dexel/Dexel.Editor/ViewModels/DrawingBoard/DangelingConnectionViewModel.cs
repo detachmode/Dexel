@@ -33,7 +33,13 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
             DataNames = dataStream.DataNames;
             Actionname = dataStream.ActionName;
         }
-        
+
+
+        public static void LoadFromModel(DangelingConnectionViewModel vm, SoftwareCell parent,
+            DataStreamDefinition dataStream)
+        {
+            vm.LoadFromModel(parent, dataStream);
+        }
 
         public List<Type> AllowedDropTypes => new List<Type> { typeof(DangelingConnectionViewModel)};
        

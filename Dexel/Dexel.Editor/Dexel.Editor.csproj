@@ -152,6 +152,7 @@
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\DrawingBoard\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\DrawingBoard\DangelingConnectionViewModel.cs" />
+    <Compile Include="ViewModels\DrawingBoard\IViewModelOfModel.cs" />
     <Compile Include="Views\DataTypeEditor\DataTypeCard.xaml.cs">
       <DependentUpon>DataTypeCard.xaml</DependentUpon>
     </Compile>

@@ -7,7 +7,7 @@ namespace Dexel.Model.DataTypes
 {
     [Serializable]
     [ImplementPropertyChanged]
-    public class SoftwareCell
+    public class SoftwareCell : IModelWithID
     {
         public Guid ID { get; set; }
         public FlowAttribute Attribute { get; set; }

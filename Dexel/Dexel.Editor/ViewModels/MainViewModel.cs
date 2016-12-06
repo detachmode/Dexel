@@ -257,16 +257,40 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        private void LoadSoftwareCells(List<SoftwareCell> softwareCells)
+        private void LoadSoftwareCells(List<SoftwareCell> softwareCellsToLoad)
         {
-            var newcollection = new ObservableCollection<IOCellViewModel>();
-            softwareCells.ForEach(modelSoftwareCell =>
+            RemoveDeleted(softwareCellsToLoad);
+
+            var lookup = SoftwareCells.ToLookup(x => x.Model.ID, x => x);
+            softwareCellsToLoad.ForEach(model => FindViewModel(lookup, model, 
+                onFound:viewModel => IOCellViewModel.LoadFromModel(viewModel, model), 
+                onNotFound:() =>
+                {
+                    var vm = new IOCellViewModel();
+                    vm.LoadFromModel(model);
+                    SoftwareCells.Add(vm);
+                }));
+        }
+
+
+        private void FindViewModel(ILookup<Guid, IOCellViewModel> lookup, SoftwareCell model, Action<IOCellViewModel> onFound, Action onNotFound  )
+        {
+            var found = lookup[model.ID].ToList();
+            if (found.Any())
             {
-                var vm = new IOCellViewModel();
-                vm.LoadFromModel(modelSoftwareCell);
-                newcollection.Add(vm);
-            });
-            SoftwareCells = newcollection;
+                onFound(found.First());
+            }
+            else
+            {
+                onNotFound();
+            }
+        }
+
+
+        private void RemoveDeleted(List<SoftwareCell> softwareCellsToLoad)
+        {
+            var todelte = SoftwareCells.Where(vm => softwareCellsToLoad.All(cell => cell.ID != vm.Model.ID)).ToList();
+            todelte.ForEach(vm => SoftwareCells.Remove(vm));
         }
 
 
