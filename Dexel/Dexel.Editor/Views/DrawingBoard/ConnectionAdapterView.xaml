@@ -30,7 +30,7 @@
                 <dragAndDrop:MouseHoverFeedBack/>
             </i:Interaction.Behaviors>
         </Grid>
-        <TextBox Grid.Row="1" FontSize="11" MinWidth="10"
+        <TextBox Grid.Row="1" FontSize="11" MinWidth="20"
                  Visibility="{Binding DataContext.VisibilityDatanames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"
                  Grid.Column="0" x:Name="ActionNameTextBox" VerticalAlignment="Top"
                  Text="{Binding Model.ActionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Margin="0,-2,0,0"

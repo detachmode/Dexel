@@ -38,7 +38,7 @@ namespace Dexel.Editor.CustomControls
 
             TextBox.TextChanged += (sender, args) =>
             {
-                var caret =  TextBox.SelectionStart;
+                var caret = TextBox.SelectionStart;
                 var currentText = TextBox.Document.Text;
 
                 DataContext.TryCast<DataStream>(ds => Interactions.ChangeConnectionDatanames(ds, currentText));
@@ -48,7 +48,7 @@ namespace Dexel.Editor.CustomControls
                 TextBox.SelectionStart = caret;
             };
 
-            
+
 
         }
 
@@ -94,7 +94,8 @@ namespace Dexel.Editor.CustomControls
 
         private void TextBox_OnKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key != Key.Delete)
+
+            if (e.Key != Key.Delete && e.Key != Key.Return)
                 MainWindow.Get().MainWindow_OnPreviewKeyDown(sender, e);
 
         }

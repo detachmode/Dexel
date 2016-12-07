@@ -19,10 +19,19 @@
             BorderBrush="{x:Null}"
             HorizontalScrollBarVisibility="Disabled"
             VerticalScrollBarVisibility="Disabled"
-            Document="{Binding DataNames, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TextDocumentConverter}}"
+           
             FontFamily="Consolas"
             Background="{StaticResource BG}"
             SyntaxHighlighting="FlowDesign"
-            />
+            >
+            <avalonEdit:TextEditor.Document>
+                <MultiBinding>
+                    <MultiBinding.Bindings>
+                        <Binding Source="{Binding DataNames, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TextDocumentConverter}}"/>
+                    </MultiBinding.Bindings>
+                  
+                </MultiBinding>
+            </avalonEdit:TextEditor.Document>
+            </avalonEdit:TextEditor>
     </StackPanel>
 </UserControl>

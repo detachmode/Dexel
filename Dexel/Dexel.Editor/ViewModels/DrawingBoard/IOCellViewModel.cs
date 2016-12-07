@@ -79,6 +79,7 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         {
             RemoveDeleted(modelSoftwareCell.InputStreams, Inputs);
             UpdateOrAdd(modelSoftwareCell, modelSoftwareCell.InputStreams, Inputs);
+
         }
 
 
@@ -176,7 +177,33 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         public void LoadDangelingOutputs(SoftwareCell modelSoftwareCell)
         {
             RemoveDeleted(modelSoftwareCell.OutputStreams, Outputs);
-            UpdateOrAdd(modelSoftwareCell, modelSoftwareCell.OutputStreams, Outputs);
+            CheckOrderCorrect(modelSoftwareCell.OutputStreams, Outputs, 
+                onCorrectOrder: () => UpdateOrAdd(modelSoftwareCell, modelSoftwareCell.OutputStreams, Outputs),
+                onWrongOrder: () =>
+                {
+                    Outputs.Clear();
+                    modelSoftwareCell.OutputStreams.ForEach(dsd => NewViewModel(dsd.Parent, dsd, Outputs.Add));
+                });
+        }
+
+
+
+
+
+        private void CheckOrderCorrect(List<DataStreamDefinition> modelDataStreamDefinitions, ObservableCollection<IInputOutputViewModel> viewmodels, Action onCorrectOrder, Action onWrongOrder)
+        {
+
+            int idx = -1;
+            var correct = viewmodels.All(vm =>
+            {
+                ++idx;
+                return vm.Model == modelDataStreamDefinitions[idx];
+            });
+
+            if (correct)
+                onCorrectOrder();
+            else
+                onWrongOrder();
         }
 
         #endregion

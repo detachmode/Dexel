@@ -200,6 +200,36 @@ namespace Dexel.Model
             }
             return null;
         }
+
+
+        public static void IsInSameCollection(DataStreamDefinition dsd1, DataStreamDefinition dsd2, Action<List<DataStreamDefinition>> onTrue, Action onFalse = null
+            )
+        {
+            if (dsd1.Parent.InputStreams.Contains(dsd2) && dsd1.Parent.InputStreams.Contains(dsd1))
+            {
+                onTrue(dsd1.Parent.InputStreams);
+            }
+            else if (dsd1.Parent.OutputStreams.Contains(dsd2) && dsd1.Parent.OutputStreams.Contains(dsd1))
+            {
+                onTrue(dsd1.Parent.OutputStreams);
+            }
+            else
+            {
+                onFalse?.Invoke();
+            }
+
+        }
+
+
+        public static void SwapDataStreamDefinitons(DataStreamDefinition dsd1, DataStreamDefinition dsd2, List<DataStreamDefinition> list)
+        {
+            var dsd1Index = list.IndexOf(dsd1);
+            var dsd2Index = list.IndexOf(dsd2);
+
+
+            list[dsd1Index] = dsd2;
+            list[dsd2Index] = dsd1;
+        }
     }
 
 }

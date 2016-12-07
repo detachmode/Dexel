@@ -19,6 +19,10 @@ SoftwareCells:
       ID: 73e576e1-e41c-4fff-aab7-e24309a4051e
       Parent: *o0
     OutputStreams:
+    - ActionName: noNextCell
+      DataNames: ()
+      ID: 74368b2d-7c11-4d61-94c9-3e9bcda9c2ed
+      Parent: *o0
     - &o34
       ActionName: isStream
       DataNames: (Body, streamingCell:SoftwareCell, result)
@@ -30,10 +34,6 @@ SoftwareCells:
       DataNames: (Body,SoftwareCell)
       ID: 61dfc90e-fcc0-4dc8-aa9d-2191a27d9e8b
       Connected: true
-      Parent: *o0
-    - ActionName: noNextCell
-      DataNames: ()
-      ID: 74368b2d-7c11-4d61-94c9-3e9bcda9c2ed
       Parent: *o0
   - &o7
     Position:
@@ -195,15 +195,15 @@ SoftwareCells:
       Parent: *o8
   - &o14
     Position:
-      X: 875.19620712620758
-      Y: -62.936911976911517
+      X: 877.19620712620758
+      Y: -19.936911976911517
     Name: create method call with lambda
     ID: f1f27dc0-e360-4c0f-8c3a-94b7e3dbb530
     Integration:
     - &o9
       Position:
-        X: 546.0556341806348
-        Y: 90.123219743220318
+        X: 548.0556341806348
+        Y: 133.12321974322032
       Name: remove cell and connections from body
       ID: 921557f7-8be5-4e7c-9664-c396c7b44bf9
       Integration: []
@@ -221,8 +221,8 @@ SoftwareCells:
         Parent: *o9
     - &o10
       Position:
-        X: 1100.3393055745994
-        Y: 89.854421547953166
+        X: 1102.3393055745994
+        Y: 132.85442154795317
       Name: set body parent
       ID: b844550d-49dd-4587-a06e-3d9b17d811bf
       Integration: []
@@ -242,8 +242,8 @@ SoftwareCells:
         Parent: *o10
     - &o11
       Position:
-        X: 1634.2422299922307
-        Y: 89.97550893550914
+        X: 1636.2422299922307
+        Y: 132.97550893550914
       Name: create body
       ID: b31f5e41-a48f-4a88-b346-d4a3d16721da
       Integration: []
@@ -263,8 +263,8 @@ SoftwareCells:
         Parent: *o11
     - &o12
       Position:
-        X: 2096.3402143272669
-        Y: 88.890702602439376
+        X: 2098.3402143272669
+        Y: 131.89070260243938
       Name: make lambda parameter
       ID: 579bdbff-cd50-4e1f-ac21-c225c9c02079
       Integration: []
@@ -284,8 +284,8 @@ SoftwareCells:
         Parent: *o12
     - &o13
       Position:
-        X: 3035.0249442822992
-        Y: 88.467255609316169
+        X: 3037.0249442822992
+        Y: 131.46725560931617
       Name: methodcall  lambda
       ID: 8b22740c-7e70-4540-84e4-9de0b4cc4ad0
       Integration: []
@@ -317,8 +317,8 @@ SoftwareCells:
       Parent: *o14
   - &o15
     Position:
-      X: 1476.4035656609203
-      Y: -61.760183618123165
+      X: 1478.4035656609203
+      Y: -18.760183618123165
     Name: add to result
     ID: 96275e7f-9dcb-4437-b142-6785f0d12536
     Integration: []

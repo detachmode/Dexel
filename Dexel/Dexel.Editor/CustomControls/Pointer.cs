@@ -37,7 +37,7 @@ namespace Dexel.Editor.CustomControls
 
         private readonly Path arrowShape;
 
-        private readonly double connectionExtensionLength = 100;
+        private double connectionExtensionLength = 100;
         private readonly Path outerPathShape;
         private readonly Path pathShape;
         private bool isMouseClicked;
@@ -235,6 +235,9 @@ namespace Dexel.Editor.CustomControls
 
         private void UpdatePath()
         {
+            var length = (Start - End).Length;
+            connectionExtensionLength = length/2.0;
+
             var end = End;
             var start = Start;
             end.X -= ArrowSize.X;

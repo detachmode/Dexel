@@ -41,7 +41,7 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
             vm.LoadFromModel(parent, dataStream);
         }
 
-        public List<Type> AllowedDropTypes => new List<Type> { typeof(DangelingConnectionViewModel)};
+        public List<Type> AllowedDropTypes => new List<Type> { typeof(DangelingConnectionViewModel), typeof(ConnectionAdapterViewModel)};
        
 
 
@@ -49,6 +49,8 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         {
             data.TryCast<DangelingConnectionViewModel>(
                 dangConnVm => Interactions.DragDroppedTwoDangelingConnections(dangConnVm.Model, this.Model, MainViewModel.Instance().Model));
+            data.TryCast<ConnectionAdapterViewModel>(
+               dangConnVm => Interactions.SwapDataStreamOrder(dangConnVm.Model, this.Model, MainViewModel.Instance().Model));
         }
     }
 }

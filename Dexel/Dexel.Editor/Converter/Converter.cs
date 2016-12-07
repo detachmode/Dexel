@@ -8,6 +8,7 @@ using System.Windows.Media;
 using Dexel.Editor.CustomControls;
 using Dexel.Editor.ViewModels;
 using Dexel.Editor.Views;
+using ICSharpCode.AvalonEdit.Document;
 
 namespace Dexel.Editor.Converter
 {
@@ -59,7 +60,9 @@ namespace Dexel.Editor.Converter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
+
             var document = new ICSharpCode.AvalonEdit.Document.TextDocument();
+
             document.Text = (string)value;
             return document;
             
