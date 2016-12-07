@@ -33,11 +33,7 @@ namespace Dexel.Editor.Views.DrawingBoard
         public void SetFocus() => TheDataNamesControl.SetFocus();
 
 
-        private void DeleteDataStreamDefinition(object sender, RoutedEventArgs e)
-        {
-            var vm =  (DangelingConnectionViewModel) DataContext;
-            Interactions.DeleteDatastreamDefiniton(vm.Model, vm.Parent);
-        }
+
     }
 
 }

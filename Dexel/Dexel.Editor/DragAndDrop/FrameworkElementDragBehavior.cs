@@ -20,21 +20,18 @@ namespace Dexel.Editor.DragAndDrop
 
         void AssociatedObject_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            Debug.WriteLine("-- AssociatedObject_MouseLeftButtonDown");
             DragDropInProgressFlag = true;
             isMouseClicked = true;
         }
 
         void AssociatedObject_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            Debug.WriteLine("-- AssociatedObject_MouseLeftButtonUp");
+        {           
             DragDropInProgressFlag = false;
             isMouseClicked = false;
         }
 
         void AssociatedObject_MouseLeave(object sender, MouseEventArgs e)
         {
-            Debug.WriteLine("-- AssociatedObject_MouseLeave");
             if (isMouseClicked)
             {
                

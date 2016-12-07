@@ -21,7 +21,6 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
 
         public Guid ID { get; set; }
         public DataStream Model { get; set; }
-        public bool IsDragging { get; set; }
         public Point Start { get; set; }
         public Point? End { get; set; }
         public Point Center { get; set; }

@@ -123,7 +123,11 @@ namespace Dexel.Editor.Views.DrawingBoard
         }
 
 
-       
+        private void DeleteDataStreamDefinition(object sender, RoutedEventArgs e)
+        {
+            var vm = (DangelingConnectionViewModel)((FrameworkElement)sender).DataContext;
+            Interactions.DeleteDatastreamDefiniton(vm.Model, vm.Parent);
+        }
     }
 
 }

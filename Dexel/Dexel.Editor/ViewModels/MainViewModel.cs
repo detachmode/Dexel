@@ -221,13 +221,8 @@ namespace Dexel.Editor.ViewModels
             pt.Y += index*dsdHeight + 2;
 
             if (isOutput)
-            {
                 pt.X += adapterViewModel.Width - 1;
-            }
-            else
-            {
-                pt.X -= adapterViewModel.Width - 5;
-            }
+
 
             return pt;
         }

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using Dexel.Editor.DragAndDrop;
@@ -39,7 +40,7 @@ namespace Dexel.Editor.CustomControls
         private readonly double connectionExtensionLength = 100;
         private readonly Path outerPathShape;
         private readonly Path pathShape;
-
+        private bool isMouseClicked;
 
         public Pointer()
         {
@@ -62,31 +63,40 @@ namespace Dexel.Editor.CustomControls
                 StrokeThickness = 0
             };
 
-            arrowShape.MouseDown += (sender, args) =>
+            arrowShape.MouseLeave += (sender, args) =>
             {
-                Debug.WriteLine("+-   arrowShape.MouseDown");
-                arrowShape.IsHitTestVisible = false;
-                pathShape.IsHitTestVisible = false;
+                if (!isMouseClicked) return;
+
                 FrameworkElementDragBehavior.DragDropInProgressFlag = true;
-                (DataContext as ConnectionViewModel).IsDragging = true;
+
                 try
                 {
                     (DataContext as ConnectionViewModel).End = null;
                     DataObject data = new DataObject();
                     data.SetData(typeof(ConnectionViewModel), this.DataContext);
-                    DragDrop.DoDragDrop((DependencyObject) args.Source, data, DragDropEffects.Move);
+                    DragDrop.DoDragDrop((DependencyObject)args.Source, data, DragDropEffects.Move);
 
                 }
                 catch
                 {
                     // ignored
                 }
-                var connectionViewModel = DataContext as ConnectionViewModel;
-                if (connectionViewModel != null) connectionViewModel.IsDragging = false;
+
+                FrameworkElementDragBehavior.DragDropInProgressFlag = false;
                 IsDragging = false;
-               
-                arrowShape.IsHitTestVisible = true;
-                pathShape.IsHitTestVisible = true;
+                isMouseClicked = false;
+            };
+
+            arrowShape.MouseDown += (sender, args) =>
+            {
+                isMouseClicked = true;
+                args.Handled = true;
+            };
+
+            arrowShape.MouseUp += (sender, args) =>
+            {
+                isMouseClicked = false;
+                args.Handled = true;
             };
 
 

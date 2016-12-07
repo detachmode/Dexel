@@ -13,7 +13,7 @@
 
     <UserControl.Resources>
         <ContextMenu x:Key="MyContextMenu">
-            <MenuItem Header="Add New Input" Click="NewInput_click" />
+            <!--<MenuItem Header="Add New Input" Click="NewInput_click" />-->
             <MenuItem Header="Add New Output" Click="NewOutput_click" />
             <Separator />
             <MenuItem Header="Make Integration" Click="MakeIntegration_OnClick" />
@@ -24,7 +24,10 @@
             <!--<MenuItem Header="Cut" Click="Cut_click" />-->
             <MenuItem Header="Delete" Click="Delete_click" />
         </ContextMenu>
-
+        
+        <ContextMenu x:Key="MyContextMenuOutput">
+            <MenuItem Header="Delete Data Stream" Click="DeleteDataStreamDefinition"  />
+        </ContextMenu>
 
 
 
@@ -45,12 +48,11 @@
                 </TransformGroup>
             </ItemsControl.RenderTransform>
             <ItemsControl.Resources>
-                <!-- Do NOT set the x:Key -->
                 <DataTemplate DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
                     <drawingBoard:DangelingConnectionView x:Name="DangelingConnectionView" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
-                    <drawingBoard:ConnectionAdapterView x:Name="ConnectionAdapterView" />
+                   <Canvas Height="42"></Canvas> 
                 </DataTemplate>
             </ItemsControl.Resources>
         </ItemsControl>
@@ -68,7 +70,9 @@
                 <ItemsControl.Resources>
                     <!-- Do NOT set the x:Key -->
                     <DataTemplate DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
-                        <drawingBoard:DangelingConnectionView x:Name="DangelingConnectionView" />
+                        <drawingBoard:DangelingConnectionView 
+                            ContextMenu="{StaticResource MyContextMenuOutput}"
+                            x:Name="DangelingConnectionView" />
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
                         <drawingBoard:ConnectionAdapterView x:Name="ConnectionAdapterView" />
