@@ -143,6 +143,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CustomControls\Class1.cs" />
     <Compile Include="CustomControls\IntegrationBorders.cs" />
     <Compile Include="CustomControls\SelectionItemsControl.cs" />
     <Compile Include="DebuggingHelper\Extensions.cs" />

@@ -25,16 +25,8 @@ namespace Dexel.Editor.CustomControls
             InitializeComponent();
             LoadColorSchema(@"FlowDesignColor.xshd");
 
-            TextBox.LostFocus += (sender, args) =>
-            {
-                TextBox.TextArea.ClearSelection();
-                //MainViewModel.Instance().SetDataTypeFilter(null);
-            };
+            TextBox.LostFocus += (sender, args) => TextBox.TextArea.ClearSelection();
 
-            //TextBox.GotFocus += (sender, args) =>
-            //{
-            //    GetDataNamesFromDataContext(sender, datanames => MainViewModel.Instance().SetDataTypeFilter(datanames));
-            //};
 
             TextBox.TextChanged += (sender, args) =>
             {
@@ -43,7 +35,6 @@ namespace Dexel.Editor.CustomControls
 
                 DataContext.TryCast<DataStream>(ds => Interactions.ChangeConnectionDatanames(ds, currentText));
                 DataContext.TryCast<DataStreamDefinition>(dsd => dsd.DataNames = currentText);
-                //GetDataNamesFromDataContext(sender, datanames => MainViewModel.Instance().SetDataTypeFilter(datanames));
                 Interactions.UpdateMissingDataTypesCounter(MainViewModel.Instance().Model);
                 TextBox.SelectionStart = caret;
             };
