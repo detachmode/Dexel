@@ -197,7 +197,7 @@ http://clean-code-developer.de/die-grade/roter-grad/
 Das nachfolgende Beispiel soll auf einfache Weise zeigen, wie ein Flow Design Diagramm aufgebaut ist.
 Das Programm/Unterprogramm soll eine römische Zahl in eine Dezimalzahl konvertieren.
 
-Alle eingekreisten Namen sind Funktionseinheiten, oder auch Softwarezelle genannt.
+Alle eingekreisten Namen sind Funktionseinheiten.
 Diese werden in den meisten Fällen im Code als Methoden implementiert.
 Die Pfeile zeigen den Datenstrom. Links die Inputs und rechts die Outputs.
 
@@ -210,11 +210,11 @@ Am Ende wird der Datenstrom einer Funktionseinheit übergeben, die alle Zahlen a
 Das Ergebnis ist die Summe aller Zahlen.
 
 ** MISSING IMAGES Hierarchische Datenflüsse
-Das Flow Design unterstützt die Funktion in eine Softwarezelle sozusagen hineinzuzoomen.
-Hier erkennt man die rekursive Eigenschaft der Softwarezellen. Eine Softwarezelle kann wiederum aus mehreren Softwarezellen bestehen,
-die zusammen die Aufgabe erledigen, die die übergeordnete Softwarezelle
-beschreibt. Eine solche übergeordnete Softwarezelle wird als Integration
-bezeichnet. Hat eine Softwarezelle keine untergeordneten Softwarezellen wird sie
+Das Flow Design unterstützt die Funktion in eine Funktionseinheit sozusagen hineinzuzoomen.
+Hier erkennt man die rekursive Eigenschaft der Funktionseinheitn. Eine Funktionseinheit kann wiederum aus mehreren Funktionseinheiten bestehen,
+die zusammen die Aufgabe erledigen, die die übergeordnete Funktionseinheit
+beschreibt. Eine solche übergeordnete Funktionseinheit wird als Integration
+bezeichnet. Hat eine Funktionseinheit keine untergeordneten Funktionseinheiten wird sie
 als Operation bezeichnet. Was es mit dieser Aufteilung genau auf sich hat, wird im
 Kaptiel 4 erläutert.
 
@@ -280,8 +280,8 @@ einen eigenen Datentyp, der alle Output-Daten beinhaltet.
 
 [[./img/diagramJoin.png]]
 
-Falls der Output mehrere Softwarezellen in einen Datenstrom zusammenlaufen
-sollen und dieser dann als Input in eine anderen Softwarezelle hineinfließen
+Falls der Output mehrere Funktionseinheiten in einen Datenstrom zusammenlaufen
+sollen und dieser dann als Input in eine anderen Funktionseinheit hineinfließen
 soll , wird das mit Hilfe eines s.g. Joints dargestellt. 
 Dieser wird als Linie dargestellt an die mehrere Inputs zusammenlaufen.
 
@@ -903,38 +903,27 @@ gibt, da man jedem Ausgang einen sinnvollen Namen geben kann).
 
   #+END_SRC
 
- Wie in diesem Beipsiel zu erkennen ist, ist es möglich innerhalb der
+ Wie in diesem Beipsiel zu erkennen ist, ist es möglich innerhalb eines
  Lambdas auf lokale Variablen der übergeordneten Methode zuzugreifen. Dies
  erlaubt es der Integration einer nachfolgenden Operation (hier =SaveStringToFile=) Parameter zu übergeben,
  die die erste Operation (hier =CheckIsCorrectFormat=) selbst nicht kennt (hier
  =filename= und auch =inputstring=). Die Operation ruft eine Action ohne
- Parameter auf. Die Integration kann dadruch innerhalb des Lambda-Bodies frei
+ Parameter auf. Die Integration kann dadruch innerhalb des Lambda-Bodys frei
  bestimmen, welche Methoden als nächstes aufgerufen werden.
- Dadruch schränkt man die möglichen nachfolgenden
- Methodenaufrufe nicht durch die Operation ein. In Sprachen die dieses Feature
+ Dadruch schränkt man die möglichen nachfolgenden Methodenaufrufe nicht durch
+ die Operation ein. In Sprachen die dieses Feature
  nicht unterstützen, macht das die Umsetung von Flow Design deutlich umständlicher.
  Dazu mehr im Anhang "Flow Design in anderen Sprachen".
 
-*** mit und/oder den Kontrollfluss notieren.
-
-
-FRAGE;
-1) XOR , OR ,...
-2) Kann man eine Implementationsregel davon ableiten?
-   Wenn ich ein UND habe, dann kann der Strom als Tupel/Datentyp realisiert
-   werden. Dann muss die Integration einfach nur den ersten Teil an die eine
-   Methode weiterreichen und den zweiten Teil an die andere.
-   Wenn es es ODER ist, dann sind gelten ähnliche Regeln, wie für Optionale
-   Outpute.
-   Ich muss eine Action mitgeben. (Oder Datentypen, die null sein dürfen?)
 
 ** Weitere Beispiele was erlaubt ist und was nicht erlaubt ist.
-*** DONE Rückgabewert erwarten von Funktion als Parameter übergeben.
-CLOSED: [2016-09-08 Do 14:08]
-In C# gibt es neben den =Actions=, die keine Rückgabewerte erlauben, auch Funktionszeiger, die einen Rückgabewert erlauben.
+*** Rückgabewert erwarten von Funktion als Parameter übergeben.
+In C# gibt es neben den =Actions= Methodenzeiger, die keine Rückgabewerte erlauben, auch Methodenzeiger, die einen Rückgabewert erlauben.
 Diese werden mit =Func<Parameter,...,Rückgabewert>= deklariert.
-Die Func würde zwar das IOSP erfüllen, die Operation würde die andere Funktion nicht kennen,
-jedoch würde trotzdem eine funktionale Abhängigkeit entstehen und somit ist die untenstehende Funktion nicht Flow Design konform.
+Eine Methode die eine andere Methode über ein =Func= Methodenzeiger aufruft,
+würde zwar das IOSP erfüllen - die Operation würde die andere Funktion nicht
+kennen - jedoch würde trotzdem eine funktionale Abhängigkeit entstehen.
+Aus diesem Grund ist das nachfolgende Beispiel nicht Flow Design konform.
 
 #+BEGIN_SRC cpp
 static List<string> FormatStrings(List<string> lines , Func<string,string> formatFunc )
@@ -952,181 +941,156 @@ static List<string> FormatStrings(List<string> lines , Func<string,string> forma
 #+END_SRC
 
 
-*** FRAGEN API-Aufruf, Filehandling?, Daten in Integrationen?
-
-Was ist erlaubt in Integrationen?
-
-#+BEGIN_SRC cpp
-static void Foo ()
-{
-
-   var json = http.get(adress);
-
-   Person p = new Person();
-   p.name = "Peter"
-
-   with (var f = File.Open(path))
-   {
-      dosomething();
-   }
-   OtherFunc();
-}
-
-#+END_SRC
-
-** Warum macht man das? Sinn der Aufteilung.
-*** DRAFT Die Perlenkette
-Die Codebasis, die nach IOSP implementiert wurde, so bildlich gesprochen einer
+** Nutzen von IOSP
+Im diesem Kapitel wird versucht zu erschließen was der Mehraufwand für die
+Einhaltung des IOSP in der Praxis für einen Nutzen hat.
+*** Die Perlenkette
+Die Codebasis, die nach IOSP implementiert wurde, soll bildlich gesprochen einer
 Perlenkette ähneln. Der Code besteht aus aneinandergereihte Funktionseinheiten,
 die zusammen ein großes Ganzes bilden. Möchte man Änderungen an dem Programm
 vornehmen, so brauch man nur an einer Stelle die Kette zu öffnen und etwas
 hinzufügen oder entfernen. Danach schließt man die Kette wieder und das Programm
-läuft wieder. Beim einfügen oder entfernen ist nur darauf zu achten, dass die
-Eingänge und Ausgänge zueinander passen. Ist das nicht der Fall, so kann man das
-entweder durch eine weitere dazwischengeschoben "Adapter"-Funktionseinheit
-beheben, oder man ändern die anschließenden Funktionseinheiten und deren
-Eingänge und Ausgänge entsprechend um.
+läuft wieder. Beim Einfügen oder Entfernen ist nur darauf zu achten, dass die
+Eingänge und Ausgänge zueinander passen. Ist das nicht der Fall, so gibt es auch
+die Möglichkeit eine s.g "Adapter"-Funktionseinheit zwischenzuschalten die die inkompatiblen
+Ein- und Ausgänge zu korrigieren.Eine weitere Option wäre, die betroffenen
+Funktionseinheiten und deren
+ein- und ausgehenden Datentypen entsprechend abzuändern und die
+Funktionseinheiten anzupassen.
 Die erste Variante bringt möglicherweise einen Performanceverlust mit sich.
 In vielen Stellen des Codes, ist dies jedoch meistens kein Problem.
-Falls die Funktionseinheiten an anderer Stelle verwendet werden, ist
-möglicherweise auch eine Abänderung nicht einfach umzusetzen.
+Falls die Funktionseinheiten an anderer Stelle verwendet werden, oder sie zu
+einer externen API gehören, ist möglicherweise eine Abänderung nicht
+einfach umsetzbar. Dann bleibt nur die Option eine Adpater-Funktionseinheit zu verwenden.
 
-*** FRAGEN Größtes Übel funktionale Abhängigkeiten.
-Funktionale Abhängigkeiten sind im echten Leben auch ein Problem, wenn es um
-produktive Arbeitsabläufe geht.
-Wenn jemand seine Arbeit erst zu Ende bringen kann, wenn ein anderer seine Arbeit
-getan hat, ist das schlecht.
-Besser ist es, wenn eine Person sich von einem Pool an Aufgaben bedienen kann,
-sie unabhängig von anderen Personen erledigen kann und dann das Ergebnis wieder
-in ein Pool zurückgibt, von denen sich andere wieder bedienen können.
+*** Funktionale Abhängigkeiten
+Funktionale Abhängigkeiten sind auch in anderen Gebieten außerhalb von der
+Softwareentwicklung ein Problem. Dann wenn es darum geht produktive
+Arbeitsabläufe zu gestalten.
+Wenn jemand oder etwas seine Arbeit erst abchließen kann, wenn eine anderer
+ihre Aufgabe erledigt hat, dann entsteht eine funktionale Abhängigkeit.
+Solch eine Eigenschaft gilt es wenn möglich zu verhindern.
+Besser ist es, wenn es Pool an Aufgaben gibt von dem sich jeder bedienen kann,
+diese unabhängig von anderen Einheiten erledigen kann und dann das Ergebnis wieder
+in ein Pool zurückgibt, von denen sich andere wiederum bedienen können.
+Flow Design untersagt solche funktionale Abhängigkeiten in Operationen.
+In der Praxis bewirkt das, dass die Operationen eine klare Aufgabe haben, welches
+sie leichter zu testen macht.
+Außerdem bleibt die Codebasis auch mit zunehmender Größe evolvierbar. Das
+Zusammenspiel der Operationen bleibt leichter zu modifizieren, wodurch die
+Codebasis an geänderte Anforderungen besser angepasst werden kann.
 
-
-*** Optional
--  nochmal rückbesinnen auf CCD
-** DRAFT Ausnahmen
-Generell gilt die Regel, wenn ich mich bewusst an einer Stelle gegen die IOSP
-Regel entscheide, ist dann in Ordnung, solange ich es gut begründen kann.
-Es gibt jedoch bereits einige Fälle, wo sich ein Aufheben der Regel als gut
+** Ausnahmen
+Generell gilt  wenn eine bewusste Entscheidung getroffen wird an einer Stelle gegen die IOSP
+Regel zu verstoßen, ist das dann in Ordnung, solange sie gut überlegt ist und
+die Auswirkungen in dem Fall keinen großen Einfluss haben.
+Es gibt jedoch bereits einige Fälle, bei denen sich ein Aufheben der Regel als gut
 herausgestellt hat.
-*** FRAGEN Rekursion
-Operationen dürfen sich selber aufrufen.
-Was ist mit einer Kette von Operationen, wo die letzte Operation die Rekursion startet?
-*** DONE Integrationen
-CLOSED: [2016-09-08 Do 14:08]
-**** DONE Try / Catch
-CLOSED: [2016-09-08 Do 14:08]
-Oft braucht man auf oberster Ebene, einen Try/Catch, der alle Exceptions abfangen soll, und eine generelle Fehlerbehandlungsroutine
-startet. Hier bleibt einem nichts anderes übrig, als die Regel keine Logik in den Integrationen zu haben, etwas aufzuweichen.
+*** Rekursion
+Operationen ist es erlaubt sich selbst aufzurufen und wiedrum auf das Ergebnis
+zu warten. Besteht die Rekursion aus Kette aus Operationen, so muss die letzte
+Operation die erste Operation aufrufen und auf ihr Ergebnis warten.
+*** LINQ / Standard-Library Methoden
+Eine Koppelung an Methoden, die die Sprache selbst bereitstellt, hat keine
+großen negativen Auswirkungen. Würde diese Ausnahme nicht gemacht werden, hätte
+das zur Folge, dass unnötig viele Actions einer Methode mitgegeben werden
+müssten. Beispiele von Methoden aus der Standardbibliothek von C#:
+=int.TryParse= , =List<>.Sort=, =Dictionary<>.Insert=, etc.
 
-**** DONE LINQ / Standard-Library Funktionen
-CLOSED: [2016-09-08 Do 14:08]
-Manche Funktionalitäten, die die Sprache selbst bereitstellt, können streng genommen als API-Aufrufe bezeichnet werden
-. Jedoch gilt hier eine Ausnahme. Man darf auch in Integrationen diese Funktionalität verwenden.
-Beispiele aus C#:
-=int.TryParse= , =List<>.Sort=, =Dictionary<>.Insert=, ...
+*** UI-Logik
+Die UI-Logik ist von sich aus sehr state-behaftet und dadurch hat ein
+konsequentes Einhalten des IOSP und Arbeiten mit Datenflüssen innerhalb des UI-Frameworks oft nur eine
+Verkomplizierung des Codes zur Folge, ohne die Vorteile von IOSP wirklich zu
+erhalten. Die Alternative besteht darin, die UI von der Businessdomäne/-logik zu
+entkoppeln, so dass der Einfluss einer Nichteinhaltung keine Konsequenzen auf
+die Businessdomäne hat.
+
+Eine Herangehensweise besteht darin, die so genannte /Interaktionen/ des
+UIs zu identifizieren. Diese Interaktionen bilden  die Schnittstelle
+zwischen UI und Businessdomäne. Jede dieser Interaktionen stellt ein eigenes
+Flow Design dar. Die Interaktionen und nachfolgende Methoden sind deshalb IOSP
+konform. Das aktuelle Model des UIs wird einer Interaktion übergeben.
+Dieses Model wird durch ein Flow Design modelierten Datenstrom modifziert und am
+Ende an die UI zurückgegeben. 
+Die Aufgabe der UI-Logik besteht dann anschließend darin das Ergebnis der Modifikation des Models darzustellen.
 
 
-** FRAGEN Zusammenfassung
-
-   Tabelle:
-   Daten - Methoden in Daten-Objekte aufrufen? Darf Operation die Methode kennen?
-   Daten - was bedeutet die eigentlich? Methoden die zum Datentyp
-   gehören/gekapselt sind, sind die in Operationen erlaubt? file open handlers?
-   Daten - Darf Integration wirklich Konstruktor aufrufen, das sind doch Daten, oder gelten nur persistente Daten?
-
-
-
-** Leserlichkeit
-In diesem Kapitel werde ich mich speziell mit der Frage der Lesbarkeit mancher Flow Design Implementationen beschäftigen.
-Ziel von CCD ist es nicht nur den Code evolvierbar zu halten, sondern ihn auch besser leserlich zu machen.
-
-*** Integration gibt Funktionszeiger an Operationen, welche diesen jedoch auch nur an die nächste Operation weitergibt.
-Auf Ebene der Integration, wo man eigentlich das Zusammenspiel der einzelnen Operationen leicht erkennen soll, ist es bei solch einem Beispiel den
-Fluss nachzuvollziehen.
-
--> main ->
-->DecideValidationProcess -> Validation -> DoSomething ->
-
-Lösung: erstellen einer weiteren Integration, die die beiden letzten Operationen integriert.
--> main ->
--> DecideValidationProcess -> Validation1AndDoSomething ->
-                          -> Validation -> DoSomething ->
 
 
 * Die Entwurfsmethode
+Wie in der Einleitung dieser Arbeit bereits erwähnt, ist Flow Design nicht nur
+ein Methodik um Datenflüsse auf dem Papier zu modelieren, sondern Flow Design
+bietet neben dem Diagramm auch noch eine Entwurfsmethode um die Architektur einer Software
+zu entwerfen.
 
-** TODO System-Umwelt-Diagramm
-    Man zeichnet ein Kreis auf ein Papier, diese stellt die Domäne dar.
-    Auf der linken Seite hängt man die Sachen dran, die auf die Domäne zugreifen sogenannte Portale, zum Beispiel HTTP-Zugriff,
-    Batch mode, oder GUIs.
-    Auf der anderen Seite sind die Provider, diese Stellen externe Ressourcen zur Verfügung, die die Domäne verwendet.
-    Ziel ist es später in der Implementierung darauf zu achten, dass die "Schicht" oder "Membran", zwischen Domäne und Außenwelt möglichst
-dünn bleibt. Somit lässt sich die Domäne besser testen und es lassen sich leichter neue Portale und Provider anhängen.
+** System-Umwelt-Diagramm
+   Der erste Schritt beim Entwerfen einer Software nach Flow Design besteht
+    darin, die Grenzen des Systems kennenzulernen. Es soll herausgefunden
+    werden, welche Möglichkeiten es gibt, mit dem System zu interagieren und auf
+    welche Resourcen das System zugreifen soll. Ziel soll sein, dass das System
+    so entworfen wird, dass die Businessdomäne entkoppelt bleibt von diesen
+    äußeren Faktoren.
+    Ein einfaches Schaubild soll einem helfen diese äußeren Faktoren zu
+    identifizieren: Ein Kreis wird in der Mitte eines Papiers gezeichnet, dieser
+    Kreis symbolisiert das System oder auch Domäne genannt.
+    Auf der linken Seite des Kreises werden die äußeren Systeme eingetragen, die
+    auf das System zugreifen und damit interagieren, diese Systeme oder
+    Techniken werden auch als Portale bezeichnet. Beispiele für Portale wären:
+    HTTP-Zugriff, Batch mode und GUIs.
+    Auf der anderen Seite des Kreises werden die externen Resourcen eingetragen, auf die
+    das System Zugriff haben soll. Diese Resourcen werden auch als Provider
+    bezeichnet. Ein Beispiel hierfür wären, ein Filesystem oder eine Datenbank.
 
-** TODO Interfaceskizze ( im Falle einer GUI Anwendung )
-Man zeichnet eine einfache Skizze der GUI auf ein Papier und überlegt sich, welche Interaktionen kann der Nutzer machen.
-Diese Interaktionen werden dann gesammelt und für jedes wird dann ein eigenes Flow Design erstellt.
+    Ralf Westphal bezeichnet diesen Kreis auch als Softwarezelle, was
+    verdeutlichen soll, dass das zu entwerfende System, sich wie eine Zelle in der
+    Natur verhalten soll. Eine Zelle weiß nicht viel über ihre Umwelt, sie befindet sich in
+    einer Nährstofflösung und verarbeitet die Stoffe, die durch ihre Membran in
+    ihr Inneres gelangen. Die Membran einer Softwarezelle trennt diese von
+    ihrere Umwelt (andere Systeme) und regelt den Austausch von Daten mit dem
+    Inneren des Systems. Ziel ist es später in der Implementierung darauf zu
+    achten, dass die "Schicht" oder "Membran", zwischen Domäne und Außenwelt möglichst
+    dünn bleibt.
+    Ist das System von der Umwelt entkoppelt lässt es sich besser testen und es
+    lassen sich leichter neue Portale und Provider an das System anhängen.
 
-** TODO Flow Design Entwurf
-Herauskristallisieren der einzelnen Funktionseinheiten und welche Daten von wo nach wo fließen.
+** Interfaceskizze ( im Falle einer GUI Anwendung )
+In Anlehung an das User Experience Driven Development, soll schnell die
+Features des Systems herausgefunden werden, die der Kunde wirklich
+braucht. Es stellt sich heraus, das UML oder Use Cases für diese Aufgabe nur
+bedingt hilfreich sind. Leichter für den Kunden zu verstehen ist eine
+Interfaceskizze.
+Diese soll gemeinsam mit der Kunden erarbeitet werden. Ein wichtiger Bestandteil
+dieser Skizze besteht auch darin, die Interaktionen, die der
+Nuter mit dieser Oberfläche auslösen kann, zu identifizieren und zu benennen.
 
-** FRAGEN Einordnen der Funktionseinheiten in bestimmte Container
+** Flow Design Entwurf
+Für jede der definierten Interaktionen aus der Interfaceskizze(n) wird ein Flow Design Flussdiagramm
+erstellt.
 
-Mit Container meint man: Klassen, DLL, Anwendungen.
-Man fasst eine oder mehrere Funktionseinheiten zusammen, indem mag zum Beispiel alle mit einer gestrichelten Linie einkreist oder alle die zur selben Klasse
-gehören farblich markiert. Der Name der Klasse notiert man dann im eingekreisten Feld oder unter jeder Funktionseinheit.
-  endet mit Einteilen in Klassen, DLL, Anwendungen,...
+Nachdem die Flow Design Diagramme erstellt wurden, muss überlegt werden, wie die
+einzelnen Funktionseinheiten in Klassen, Dlls und Anwendungen zusammengefasst
+und strukturiert werden sollen.
+Dazu bietet sich an, einzelnen Funktionseinheiten zustätzlich mit dem Namen der
+Klasse (gegenfalls auch DLLs und Anwendung) zu beschriften. Alternative ist es
+auch üblich mehrere Funktionseinheiten mit einer gestrichelten Linien zu
+umkreisen und auch mit unterschiedlichen Farben zu arbeiten, um die Gruppierungen und Zuordnungen zu verdeutlichen. 
 
-  Entwurf ist ein Interaktiver Prozess, somit wäre Roundtrip super "Sinn des Systems SharpFlowDesign erläutern"
+Als letzer optionaler Schritt gilt es, Pfeile von solchen Datenströmen farblich hervorzuheben, die
+parallel laufen können.
 
-1)FRAGE: Manchmal wird eine Funktionseinheit selbst als Klasse implementiert? Dann kann ich sie ja nicht in eine andere Klasse schieben.
+** Rekursive Eigenschaft
+ Eine Softwarezelle hat die Eigenschaft, dass sie rekursive ist.
+ Das gesamte System lässt sich als eine große Softwarezelle betrachten, die wiederum
+ aus mehreren kleineren Softwarezellen bestehen können (Dlls und Anwendungen).
+ Diese Untersysteme sollen wieder wie das gesamte System möglichst entkoppelt
+ sein von den restlichen Untersystemen. Einer dieser Untersysteme muss sich dann
+ jedoch als integrierendes System verstehen, welches die anderen Untersysteme
+ kennt. Die Aufgabe dieses Untersystems besteht bestenfalls nur daraus, das
+ Zusammenspiel der Untersysteme zu koordinieren und keine komplexe Logik selbst zu implementieren.
+ Diese Untersysteme bestehen dann wieder aus Klassen und Methoden, die nach IOSP
+ implementiert sein sollen.
+ Somit könnte man selbst die Funktionseinheiten eines Flow Design
+ Flussdiagrammes als einzelne Softwarezellen betrachten.
+ Ralf Westphal behauptet, diese Architektur soll weniger starr und somit
+ universeller einsetzbar sein, als zum Beispiel das Schichtenmodell oder das Zwiebelschalenmodell.
 
-** FRAGEN Optional - Bestimmen von Parallelitäten
-Es können zusätzlich noch Pfeile eingefärbt werden, um zu verdeutlichen, dass
-manche Datenströme parallel laufen können.
-FRAGE: Wie genau geht das?
-* TODO Rekursive Eigenschaft
-Das Schöne an Flow Design und dem Konzept der Softwarezelle ist, dass sie rekursive ist.
-Man kann das Problem/die Anwendung ganz oben als eine Softwarezelle (oder hier der Kreis mit den Providern? ist das auch eine Softwarezelle?)
-verstehen, indem links Portale Zugriffe machen und rechts davon, die Softwarezelle wiederum auf ihre Provider Zugriffe macht.
-Die einzelnen Aktionen aus dem die Anwendung besteht können wiederum als Softwarezellen verstanden werden, auf die von links
-der Zugriff und der Input in die Softwarezelle hineinkommen, die Softwarezelle bearbeitet die Anfrage und rechts von ihr, kommt das
-Ergebnis heraus. Die Interaktion kann wiederum wieder in kleiner Teile zerlegt werden, die alle eine Softwarezelle sind, mit Inputs und
-Outputs. Damit ist die Architektur weniger starr, als zum Beispiel das Schichtenmodell oder das Zwiebelschalenmodell ( laut Ralf Westphal ).
-
-
-
-* Backlog
-** Einfaches Beispiel eines Flow Designs
-*** Negativ Beispiel
-#+BEGIN_SRC cpp
-...
-static void Main()
-{
-   while (true)
-   {
-      int number = ReadNumberFromCmd();
-      bool isAnswer = FindTheAnswer(number);
-
-      if (isAnswer)
-         break;
-      else
-         PrintNumber(number);
-   }
-}
-
-static int ReadNumbersFromCmd()
-{
-    var line = Console.ReadLine();
-    int number = int.Parse(line);
-    return number;
-}
-
-static bool FindtheAnswer(int number)
-{
-    if (number == 42)
-        return true;
-    return false;
-}
-...
-#+END_SRC
