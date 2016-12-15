@@ -26,6 +26,27 @@ namespace Dexel.Model
             return dsd.Parent.InputStreams.Contains(dsd);
         }
 
+
+        public static void Check(this DataStreamDefinition dsd, Action isInput, Action isOutput)
+        {
+            if (dsd.IsInput())
+                isInput();
+            else if (dsd.IsOutput())
+                isOutput();
+        }
+
+        public static void GetFirstConnected(this List<DataStreamDefinition> dsds, Action<DataStreamDefinition> foundConnected, Action noConnected)
+        {
+            var firstconnected = dsds.FirstOrDefault(x => x.Connected);
+            if (firstconnected != null)
+                foundConnected(firstconnected);
+            else
+                noConnected();
+
+        }
+
+        
+
         public static bool IsOutput(this DataStreamDefinition dsd)
         {
             return dsd.Parent.OutputStreams.Contains(dsd);

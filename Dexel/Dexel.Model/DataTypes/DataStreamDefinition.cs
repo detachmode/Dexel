@@ -14,7 +14,5 @@ namespace Dexel.Model.DataTypes
         public string DataNames { get;  set; }
         [XmlIgnore]
         public SoftwareCell Parent { get;  set; }
-
-
     }
 }

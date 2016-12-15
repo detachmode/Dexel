@@ -115,8 +115,8 @@ namespace Dexel.Editor
         public static void DragDroppedTwoDangelingConnections(DataStreamDefinition sourceDSD,
             DataStreamDefinition destinationDSD, MainModel mainModel)
         {
-            DataStreamManager.IsInSameCollection(sourceDSD, destinationDSD, 
-                onTrue: list => DataStreamManager.SwapDataStreamDefinitons(sourceDSD, destinationDSD, list), 
+            DataStreamManager.IsInSameCollection(sourceDSD, destinationDSD,
+                onTrue: list => DataStreamManager.SwapDataStreamDefinitons(sourceDSD, destinationDSD, list),
                 onFalse: () => CheckAreBothInputs(sourceDSD, destinationDSD,
                     isTrue: () => MainModelManager.MakeIntegrationIncludingChildren(sourceDSD.Parent, destinationDSD.Parent, mainModel),
                     isFalse: () => MainModelManager.ConnectTwoDefintions(sourceDSD, destinationDSD, mainModel)));
@@ -355,28 +355,25 @@ namespace Dexel.Editor
 
             focusedModel.TryCast<DataStreamDefinition>(dsd =>
             {
-                var softwareCell = dsd.Parent;
+                dsd.Check(
+                    isInput: () => result = dsd.Parent,
+                    isOutput: () =>
+                    {
+                        dsd.Parent.OutputStreams.GetFirstConnected(
+                            connectedInput =>
+                            {
+                                MainModelManager.TraverseChildren(dsd.Parent, cell =>
+                                {
+                                    if (cell.OutputStreams.Any())
+                                        result = cell.OutputStreams.First();
+                                    else
+                                        result = cell;
 
-                if (dsd.IsInput())
-                    result = softwareCell;
-
-                if (dsd.IsOutput())
-                    if (softwareCell.InputStreams.Any(x => x.Connected))
-                        MainModelManager.TraverseChildrenBackwards(softwareCell, cell =>
-                        {
-                            if (cell.InputStreams.Any())
-                                result = cell.InputStreams.First();
-                            else
-                                result = cell;
-
-                        }, mainModel);
-
-
-                    else if (softwareCell.InputStreams.Any())
-                        result = softwareCell.InputStreams.First();
-
+                                }, mainModel);
+                            },
+                            noConnected: () => result = dsd.Parent.OutputStreams.First());
+                    });
             });
-
             return result;
         }
 
@@ -443,10 +440,8 @@ namespace Dexel.Editor
         public static object AppendNewCell(SoftwareCell focusedcell, double width, DataStreamDefinition dataStreamDefinition, MainModel mainModel)
         {
             var softwareCell = SoftwareCellsManager.CreateNew();
-
-            var pos = focusedcell.Position;
-            pos.X += width;
-            softwareCell.Position = pos;
+            softwareCell.Position = focusedcell.Position;
+            softwareCell.MoveX(width);
 
             softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, dataStreamDefinition));
             softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
@@ -455,29 +450,40 @@ namespace Dexel.Editor
 
             mainModel.SoftwareCells.Add(softwareCell);
             ViewRedraw();
+
             return softwareCell;
         }
 
-
+        /// <summary>
+        /// If the softwarecell is a integration it returns the first softwarecell of the integrated softwarecells.
+        /// If the softwarecell is not a integration it will add a new softwarecell below it and add it to its integrated softwarecells.
+        /// </summary>
+        /// <param name="focusedcell">the softwarecell that is currently selected</param>
+        /// <param name="mainModel">the mainmodel from the view</param>
+        /// <returns>the model that was created or the first integrated softwarecell if it already had one</returns>
         public static object NewOrFirstIntegrated(SoftwareCell focusedcell, MainModel mainModel)
         {
-            if (focusedcell.Integration.Any())
-                return focusedcell.Integration.First();
+            object returnValue = null;
 
-            var softwareCell = SoftwareCellsManager.CreateNew();
-            var pos = focusedcell.Position;
-            pos.Y += 100;
-            softwareCell.Position = pos;
+            focusedcell.IsIntegration(
+                isIntegration: () => returnValue = focusedcell.Integration.First(),
+                isNotIntegration: () =>
+                {
+                    var softwareCell = SoftwareCellsManager.CreateNew();
+                    softwareCell.Position = focusedcell.Position;
+                    softwareCell.MoveY(100);
 
-            softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, focusedcell.InputStreams.First()));
-            softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
+                    softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, focusedcell.InputStreams.First()));
+                    softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
 
-            focusedcell.Integration.AddUnique(softwareCell);
-            mainModel.SoftwareCells.Add(softwareCell);
+                    focusedcell.Integration.AddUnique(softwareCell);
+                    mainModel.SoftwareCells.Add(softwareCell);
 
-            ViewRedraw();
-            return softwareCell;
+                    returnValue = softwareCell;
+                    ViewRedraw();
+                });
 
+            return returnValue;
         }
 
 

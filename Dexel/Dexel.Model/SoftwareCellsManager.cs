@@ -20,6 +20,28 @@ namespace Dexel.Model
             return mainModel.SoftwareCells.First(x => x.ID.Equals(destinationID));
         }
 
+        public static void IsIntegration(this SoftwareCell softwareCell, Action isIntegration, Action isNotIntegration )
+        {
+            if (softwareCell.Integration.Any())
+                isIntegration();
+            else
+                isNotIntegration();
+        }
+
+        public static void MoveX(this SoftwareCell softwareCell, double offsetx)
+        {
+            var pt = softwareCell.Position;
+            pt.X += offsetx;
+            softwareCell.Position = pt;
+        }
+
+        public static void MoveY(this SoftwareCell softwareCell, double offsety)
+        {
+            var pt = softwareCell.Position;
+            pt.Y += offsety;
+            softwareCell.Position = pt;
+        }
+
         public static void MovePosition(this SoftwareCell softwareCell, Vector dragDelta)
         {
             var pt = softwareCell.Position;
