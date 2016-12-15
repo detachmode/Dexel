@@ -14,6 +14,11 @@ programmiert, bei dem zuerst der Test geschrieben wird, der das zu erwartende
 Ergebnis definiert, und anschließend wurd die Methode erst implementiert, diese
 Tests werden in einem extra Test-Projekt für jedes Projekt zusammengefasst)
 
+*** Dexel.Model / Dexel.Model.Tests
+    Dieses Projekt beinhaltet alle Datentypen die zur internen Repräsentation
+    eines Flow Design Diagrammes nötig sind. Außerdem beinhaltet dieses Projekt
+    statische Manager-Klassen, die das Arbeiten mit den Datentypen vereinfachen.
+
 *** Dexel.Editor / Dexel.Editor.Tests
     Das Hauptprojekt, das alle anderen Projekte integriert. Hier wurde das IOSP
     Prinzip nicht eingehalten. Dieses Projekt hat nicht nur die Aufgabe die
@@ -25,11 +30,6 @@ Tests werden in einem extra Test-Projekt für jedes Projekt zusammengefasst)
     aufwendig. Aus diesem Grund wurde entschieden auf die zusätzliche
     Komplexität einer Entkoppelung zu verzichten und der Einfachheit halber
     dieses Projekt als UI und integrierendes Projekt zu nutzen.
-
-*** Dexel.Model / Dexel.Model.Tests
-    Dieses Projekt beinhaltet alle Datentypen die zur internen Repräsentation
-    eines Flow Design Diagrammes nötig sind. Außerdem beinhaltet dieses Projekt
-    statische Manager-Klassen, die das Arbeiten mit den Datentypen vereinfachen.
 
 *** Roslyn / Rosyln.Tests
     Diese Projekt beinhaltet die Logik zur Erstellung von C#-Code aus einem Flow
@@ -53,21 +53,38 @@ Tests werden in einem extra Test-Projekt für jedes Projekt zusammengefasst)
     nach Flow Design erleichter. Diese wurden in ein separates Projekt
     ausgelagert, damit alle anderen Projekte darauf zugreifen können.
 
-
+** Das Model
+*** MainModel
+*** SoftwareCell
+**** DataStreamDefinition
+*** DataStream (Connections)
+*** DataType
+*** Manager-Klassen
 
 ** Der Editor
+*** Vorstellung was erreicht wurde
+
 Die Grundlegenden Basisfunktionen aus Kaptitel 3 wurden größtenteils
 implementiert. Hierbei kamen WPF als GUI-Framework zum Einsatz.
+Bilder und Beschriebungen der GUI und Interaktionen.
+**** Erstellen von Funktionseinheiten, Verschieben, Benennen, Selektieren
+**** Erstellen von weiteren Outputs
+**** Verknüpfen von Funktionseinheiten über Drag and Drop
+**** Erstellen von Integrationen
+**** Navigation und Shortcuts
+     
+
 *** Views / ViewModels
-    Das Projekt wurde nicht strikt nach MVVM (Model-View-ViewModel) Regeln
-    umgesetzt, jedoch bedient es sich an der Idee, das es eine View gibt, die
-    als Datacontext ein ViewModel zugewiesen hat. Das zuweisen eines
-    Datacontexts erlaubt es Elemente der View an Properties des ViewModels zu
+    Das Projekt wurde nicht strikt nach MVVM-Regeln (Model-View-ViewModel) 
+    umgesetzt, jedoch bedient es sich der Idee, das es eine View gibt, die
+    als Datenkontext ein ViewModel zugewiesen hat. Das zuweisen eines
+    Datenkontextes erlaubt es Elemente der View an Properties des ViewModels zu
     binden. Ein Binding bewirkt, dass sich die UI-Element automatisch updatet,
-    sobald sich das dazugehörige Property ändert.
+    sobald sich das dazugehörige Property ändert. Eine Änderung einer
+    Eigenschaft des ViewModels ändert also automatisch die View.
  
     Die GUI besteht aus mehreren Views (xaml-Dateien) und dazugehörigen ViewModels.
-    Die Aufgabe des ViewModels besteht darin, ein Model entgegenzunehmen und dieses
+    Die Aufgabe des ViewModels besteht vorallem darin, ein Model entgegenzunehmen und dieses
     darzustellen, bzw. die aktuelle Darstellung zu aktualisieren.
     
     Nach jeder Änderung am Model - zum Beispiel das Hinzufügen einer neuen
@@ -87,11 +104,11 @@ implementiert. Hierbei kamen WPF als GUI-Framework zum Einsatz.
 *** Interaktionen
     Wie bereits in Kapitel 2 (Abschnitt Entwurfsmethode) schlägt Flow Design
     vor, alle Events als Interaktionen zu bezeichnen und für jedes dieser
-    Änderungen ein eigenen Flow Desing zu erstellen. 
+    Änderungen ein eigenen Flow Design zu erstellen. 
     Es bietet sich somit an, alle Interaktionen in einer Klasse zu sammeln.
     Diese bietet somit eine Überblick über alle Funktionalitäten der GUI.
-    Da diese Integrationen sind, sind sied leicht zu verstehen. Alle 
-    Interaktionen rufen ausschließlich Methoden von anderen Klassen auf, die die Operationen am
+    Da diese Integrationen sind, sind sie leicht zu verstehen (mit Ausnahmen). Die
+    Interaktionen rufen Methoden von anderen Klassen auf, die die Operationen am
     Mainmodel vereinfachen. Am Ende fast jeder Interaktion wird die =ViewRedraw=
     Methode aufgerufen, die das =MainViewModel= veranlasst, das Model neu zu
     laden und somit die Änderungen der Interaktion in der GUI sichtbar macht.
@@ -153,21 +170,34 @@ implementiert. Hierbei kamen WPF als GUI-Framework zum Einsatz.
      Beschreibung was der Code macht und wo die Coderedundanzen sind.
      Beide Methoden sind Methoden aus der Interaktions-Klasse, sind werden also
      direkt aus einem Event von der GUI ausgelöst. 
+     
 
+ 
+**** MISSING IMAGES Auswirkungen der beiden Interaktionen
      Die =AppendNewCell= Methode erzeugt eine neue SoftwareCell und und
      verschiebt diese entlang der X Postion.
      Außerdem setzt sie den Input gleich der DataStreamDefinition die
      übergebenen wurde und verbindet diese beiden.
      =AppendNewCell= wird durch die Tastenkombination Ctrl-Tab ausgelöst, wenn
      sich der Tastaturfokus innerhalb eines Textfeldes einer View einer Softwarecell oder
-     DatastreamDefinition befindet. Bei ersterem wird der erste Output als der
+     DatastreamDefinition befindet. Bei ersterem wird der erste unverbunden Output als der
      DataStreamDefinition genommen, andem die neue SoftwareCell angehängt wird.
- 
+
      Beide Methoden geben eine
      Model-Instanz als =object= an die GUI zurück. Die GUI-Logik findet dann die
      dazugehörige View und setzt den Focus darauf.
 
+*** Eigene Tabstop-Logik
+    Mit Tab und Shift-Tab soll es dem Nutzer möglich sein den Tastaturfokus zu
+    verändern. Dieses Beispiel zeigt auch nochmal, das Coderedundanzen innerhalb
+    von mehreren Integrationen nichts schlechtes sein muss.
 
-** Generierung von Code aus Diagramm
+** Roslyn - Generierung von Code aus einem Diagramm
 *** Vorstellung Roslyn
+**** Erzeugung Datentypen als einfaches Beispiel
+*** Erzeugung von Methodensignaturen
+**** Datentypen 
+**** DatanameParser
+*** Erzeugung der Integration-Bodies 
+
 ** Generierung eines Diagrammes aus Code
