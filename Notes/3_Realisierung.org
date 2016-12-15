@@ -1,0 +1,173 @@
+* Realisierung ( ~ 20- 30 Seiten )
+In diesem Kapitel soll vorgestellt werden, was in dem Zeitraum dieser
+Bachelorarbeit erreicht wurde. Es soll die Funktionalität des Editors
+anhand von Screenshots vorgestellt werden und die Architekur die selbst nach
+Flow Design umgesetzt wurde. 
+
+Als Arbeitstitel für die Anwendung wurde der Name Dexel gewählt.
+
+** Übersicht über die unterschiedlichen Projekte
+
+Die Anwendung besteht aus einer Solution, die aus folgenden Projekten:
+(Fußnote: Bei komplexen Funktionalitäten wurde nach TDD (Test Driven Development)
+programmiert, bei dem zuerst der Test geschrieben wird, der das zu erwartende
+Ergebnis definiert, und anschließend wurd die Methode erst implementiert, diese
+Tests werden in einem extra Test-Projekt für jedes Projekt zusammengefasst)
+
+*** Dexel.Editor / Dexel.Editor.Tests
+    Das Hauptprojekt, das alle anderen Projekte integriert. Hier wurde das IOSP
+    Prinzip nicht eingehalten. Dieses Projekt hat nicht nur die Aufgabe die
+    anderen Projekte zu integrieren, sondern beinhaltet selbst den
+    UI-Sourcecode. Diese Entscheidung wurde gefällt, da ein Extrahieren der UI
+    in ein anderes Projekt sich als zu schwierig erwies. Eine Lösung dafür zu
+    finden, wie ein Event aus dem UI mit einer Funktionalität verbunden werden
+    könnte, aus einem Projekt, welches es selbst nicht, war zeitlich zu
+    aufwendig. Aus diesem Grund wurde entschieden auf die zusätzliche
+    Komplexität einer Entkoppelung zu verzichten und der Einfachheit halber
+    dieses Projekt als UI und integrierendes Projekt zu nutzen.
+
+*** Dexel.Model / Dexel.Model.Tests
+    Dieses Projekt beinhaltet alle Datentypen die zur internen Repräsentation
+    eines Flow Design Diagrammes nötig sind. Außerdem beinhaltet dieses Projekt
+    statische Manager-Klassen, die das Arbeiten mit den Datentypen vereinfachen.
+
+*** Roslyn / Rosyln.Tests
+    Diese Projekt beinhaltet die Logik zur Erstellung von C#-Code aus einem Flow
+    Design. Mircosoft Rosyln ist die Technik, die hier zum Erstellen von Code zum
+    Einsatz kommt.
+    Das Flow Design Diagramm muss in Form eines Mainmodels aus dem
+    Dexel.Model Projekt vorliegen. Aus diesem Grund gibt es eine Abhängigkeit
+    zwischen diesem Projekt und dem Dexel.Model Projekt. 
+
+    Eine Trennung dieser Abhängigkeit wurde versucht umzusetzen indem gegen ein Interface
+    programmiert wurde, anstatt gegen die konkrete Implementation in
+    Dexel.Model. Diese Interfaces der Datentypen und Manager-Klassen wurde dann
+    in ein Contracts-Projekt ausgelagert, von dem alle anderen Projekte abhängig
+    sein durften. Die zusätzliche Komplexität, Mehraufwand und ein Problem bei
+    der Serialisierung von Datentypen, bestehend aus weiteren Interfaces als
+    Properties, machte die Entkoppelung nicht wert und der Beschluss auf die
+    Interfaces zu verzichten wurde gefällt.
+    
+*** Dexel.Library
+    Beinhaltet einige Methoden ( meist Extension-Methoden), die ein Arbeiten
+    nach Flow Design erleichter. Diese wurden in ein separates Projekt
+    ausgelagert, damit alle anderen Projekte darauf zugreifen können.
+
+
+
+** Der Editor
+Die Grundlegenden Basisfunktionen aus Kaptitel 3 wurden größtenteils
+implementiert. Hierbei kamen WPF als GUI-Framework zum Einsatz.
+*** Views / ViewModels
+    Das Projekt wurde nicht strikt nach MVVM (Model-View-ViewModel) Regeln
+    umgesetzt, jedoch bedient es sich an der Idee, das es eine View gibt, die
+    als Datacontext ein ViewModel zugewiesen hat. Das zuweisen eines
+    Datacontexts erlaubt es Elemente der View an Properties des ViewModels zu
+    binden. Ein Binding bewirkt, dass sich die UI-Element automatisch updatet,
+    sobald sich das dazugehörige Property ändert.
+ 
+    Die GUI besteht aus mehreren Views (xaml-Dateien) und dazugehörigen ViewModels.
+    Die Aufgabe des ViewModels besteht darin, ein Model entgegenzunehmen und dieses
+    darzustellen, bzw. die aktuelle Darstellung zu aktualisieren.
+    
+    Nach jeder Änderung am Model - zum Beispiel das Hinzufügen einer neuen
+    Node -  dieses komplet neu zu laden (Löschen und neu Hinzufügen aller
+    ViewModels, die wiederum ein neu Generieren der UI-Framework-Elemente zur
+    Folge hatte) erwies sich als nicht sehr performant. 
+    Ab Diagrammen, mit über 20 Nodes, stieg die Zeit zur Aktualisierung der View
+    bereits auf mehrere Sekunden an.
+    Die Lösung bestand darin, nicht einfach stur alles zu Löschen und neu
+    hinzuzufügen, sondern darin, die Änderungen am Model zu lokalisieren und nur
+    diese neu zu erstellen, bzw nur die Properties neu zu setzen. Durch
+    diese Verbesserungen wurde die Performance deutlich gesteigert, sodass
+    Diagramme mit mehrern hundert Nodes keine spürbaren Perfomanceverluste mit
+    sich führt. Einzig das Duplizieren von vielen Nodes dauert nach wie vor
+    mehrere Sekunden. 
+
+*** Interaktionen
+    Wie bereits in Kapitel 2 (Abschnitt Entwurfsmethode) schlägt Flow Design
+    vor, alle Events als Interaktionen zu bezeichnen und für jedes dieser
+    Änderungen ein eigenen Flow Desing zu erstellen. 
+    Es bietet sich somit an, alle Interaktionen in einer Klasse zu sammeln.
+    Diese bietet somit eine Überblick über alle Funktionalitäten der GUI.
+    Da diese Integrationen sind, sind sied leicht zu verstehen. Alle 
+    Interaktionen rufen ausschließlich Methoden von anderen Klassen auf, die die Operationen am
+    Mainmodel vereinfachen. Am Ende fast jeder Interaktion wird die =ViewRedraw=
+    Methode aufgerufen, die das =MainViewModel= veranlasst, das Model neu zu
+    laden und somit die Änderungen der Interaktion in der GUI sichtbar macht.
+    Deshalb erwies es sich als schlecht, wenn eine Interaktion eine andere
+    Interaktion aufruft, um ihre Funktionalität umzusetzen. 
+    Stattdessen war es eine bessere Lösung, den Code der einen Interaktion in
+    die andere zu Kopieren. Dies wiederspricht zwar dem DRY Prinzip, jedoch eine
+    Coderedundanz innerhalb von Integrationen stellt sich als nicht sehr schlimm
+    heraus. Integrationen beinhalten schließlich keine Logik und haben eine hohe
+    Abstraktion.
+    
+    Beispiel dieser Aussage:
+#+BEGIN_SRC cpp
+        public static object AppendNewCell(SoftwareCell focusedcell, double offsetX, DataStreamDefinition dataStreamDefinition, MainModel mainModel)
+        {
+            var softwareCell = SoftwareCellsManager.CreateNew();
+            softwareCell.Position = focusedcell.Position;
+            softwareCell.MoveX(offsetX);
+
+            softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, dataStreamDefinition));
+            softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
+
+            MainModelManager.ConnectTwoDefintions(dataStreamDefinition, softwareCell.InputStreams.First(), mainModel);
+
+            mainModel.SoftwareCells.Add(softwareCell);
+            ViewRedraw();
+
+            return softwareCell;
+        }
+
+
+        public static object NewOrFirstIntegrated(SoftwareCell focusedcell, MainModel mainModel)
+        {
+            object returnValue = null;
+
+            focusedcell.IsIntegration(
+                isIntegration: () => returnValue = focusedcell.Integration.First(), 
+                isNotIntegration: () =>
+                {
+                    var softwareCell = SoftwareCellsManager.CreateNew();
+                    softwareCell.Position = focusedcell.Position;
+                    softwareCell.MoveY(100);
+
+                    softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, focusedcell.InputStreams.First()));
+                    softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
+
+                    focusedcell.Integration.AddUnique(softwareCell);
+                    mainModel.SoftwareCells.Add(softwareCell);
+
+                    returnValue = softwareCell;
+                    ViewRedraw();               
+                });
+
+            return returnValue;
+        }
+
+#+END_SRC
+
+     Beschreibung was der Code macht und wo die Coderedundanzen sind.
+     Beide Methoden sind Methoden aus der Interaktions-Klasse, sind werden also
+     direkt aus einem Event von der GUI ausgelöst. 
+
+     Die =AppendNewCell= Methode erzeugt eine neue SoftwareCell und und
+     verschiebt diese entlang der X Postion.
+     Außerdem setzt sie den Input gleich der DataStreamDefinition die
+     übergebenen wurde und verbindet diese beiden.
+     =AppendNewCell= wird durch die Tastenkombination Ctrl-Tab ausgelöst, wenn
+     sich der Tastaturfokus innerhalb eines Textfeldes einer View einer Softwarecell oder
+     DatastreamDefinition befindet. Bei ersterem wird der erste Output als der
+     DataStreamDefinition genommen, andem die neue SoftwareCell angehängt wird.
+ 
+     Beide Methoden geben eine
+     Model-Instanz als =object= an die GUI zurück. Die GUI-Logik findet dann die
+     dazugehörige View und setzt den Focus darauf.
+
+
+** Generierung von Code aus Diagramm
+*** Vorstellung Roslyn
+** Generierung eines Diagrammes aus Code

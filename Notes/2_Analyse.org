@@ -8,11 +8,13 @@ verlieren.
 Flow Design ist eigentlich als Entwurfsmethode auf dem Papier gedacht.
 Jedoch hat ein Flow Design auf dem Papier einige Nachteile, die ein Editor am
 Computer aufheben könnte. Das wären vorallem folgende Punkte:
-*** Einmal eingezeichnete Pfeile, Kreise und Beschriftungen lassen sich nicht so leicht mehr verändern.
+*** Einmal eingezeichnete Elemente lassen sich nicht mehr so leicht verändern.
 Während des kreativen Prozesses ein Programmierproblem zu lösen, bedarf es
-mehrer Iterationen und Veränderungen an dem Diagramm. Eine Möglichkeit Versionen
+mehrer Iterationen und Veränderungen an den Diagrammen. Eine Möglichkeit Versionen
 abzuspeichern und Teile zu verschieben, umzubenennen und umzustukturieren sind
 klare Vorteile von einem digitalen Editor.
+*** Automatische Einhaltung der Notation
+Ein Editor bewirkt eine automatische Einhaltung der Notation
 *** Automaische Validierungsprozesse
 Während der Erstellung des Flow Designs können im Hintergrund
 Validierungsprozesse beim Erstellen des Diagrammes Hilfestellung bieten.
@@ -22,23 +24,32 @@ um das Tippen zu beschleunigen.
 Aus den Beschriftungen im Flow Design Diagramm lassen sich die Variablennamen und
 Methoden Signaturen leicht herleiten. Liegt das Diagramm in digitaler Form vor,
 wäre eine automatische Generierung von Quellcode naheliegend und
-würde dem Anwender unnötige Abtipparbeit ersparen.
+würde dem Anwender unnötige Abtipparbeit ersparen. Außerdem können schnell
+mehrere Iterationen eines Diagrammes erstellt werden und in
+Versionskontrollsystemen eingepflegt werden. 
+Die Diagramme können auch einfacher von unterschiedlichen Orten aus und von mehreren
+Personen abgerufen und bearbeitet werden.
+
 *** Generierung von Methoden-Bodies  
-Durch die strikten Implementierungsregeln von Integrationen lassen sich von
-diesen Methoden nicht nur die Signaturen, sonder sogar die komplette Implementierung aus dem Diagramm
+Durch die strikten Implementierungsregeln von Integrationen lassen sich für 
+diese Methoden nicht nur die Signaturen, sonder auch die komplette Implementierung aus dem Diagramm
 ableiten. Eine Generierung dieser Codezeilen wäre ein zustätzlicher Komfortgewinn von einem Editor.
 *** Roundtrip-Engineering
 Eine Möglichkeit aus einer bestehenden Codebasis ein Diagramm zu erstellen -
 wenn auch nur teilweise - würden die Produktivität beim Einsetzen von Flow
-Design in einem Projekt weiter steigern. Aufgrund von Unterhaltungen mit meinem
-Anleiter Kevin Erath stellte sich heraus, dass ein perfekter Roundtrip umzusetzen keine triviale Aufgabe
-darstellt. Deswegen wird im Rahmen dieser Arbeit der Fokus auf jene Funktionalitäten
-gelegt, die leichter zu implementieren sind und doch dem Anwender möglichst viel
-Zeitersparniss einbringt. Ein Anwendungsfall wäre: Der Anwender möchte
+Design in einem Projekt weiter steigern. 
+Ein Anwendungsfall wäre: Der Anwender möchte
 Teile seines Quellcodes in ein Flow Design überführen, um dann mit Hilfe des
 Flow Designs, diesen zu überarbeiten und anschließend neu zu generieren.
 Möglicherweise würde er die erstellten Codezeilen mit Copy-Paste in sein
 bestehendes Projekt übertragen.
+
+
+Anmerkung : Aufgrund von Unterhaltungen mit meinem
+Anleiter Kevin Erath stellte sich heraus, dass ein perfekter Roundtrip umzusetzen keine triviale Aufgabe
+darstellt. Deswegen wird im Rahmen dieser Arbeit, wenn überhaupt, der Fokus auf jene Funktionalitäten
+gelegt, die leichter zu implementieren sind und doch dem Anwender möglichst viel
+Zeitersparniss einbringt. 
 
 ** Vorteile von einem Entwurf auf dem Papier
 Ein Papier schränkt einen nicht ein und erlaubt es schnell und einfach Pfeile
@@ -51,6 +62,7 @@ kreatives Arbeiten besser ermöglicht.
 
 * Anforderungen
 ** Editor
+
 | Anforderungen                                                                                                       | Priorität    |
 |---------------------------------------------------------------------------------------------------------------------+--------------|
 | Erstellen von Softwarezellen, Benennen, Verschieben auf dem Canvas, Löschen, Duplizieren                            | must have    |
@@ -101,7 +113,7 @@ Zooms.
 **** Erzeugung des kompletten Methoden-Bodies einer Integration
 Hierbei muss erkannt werden, in welcher Reihenfolge die Methoden aufgerufen
 werden müssen, lokale Variablen erzeugt werden müssen und was einer Methode als Parameter
-übergeben werden muss. Dabei kommen IEnumerables und Lampdas zum Einsatz um
+übergeben werden muss. Dabei kommen IEnumerables und Lambdas zum Einsatz um
 Datenflüsse zu implementieren. 
 
 **** Einstellungen für die Generierung dem Benutzer zugänglich machen 
@@ -272,7 +284,7 @@ gewährleisten. Der Anwender soll die Freiheit haben, nicht valide Verbindungen
 zu erstellen, die er möglicherweise nach dem Verbinden dann entsprechend
 anpasst. Eine dezente farbliche Hervorhebung soll als Feedback des
 Validierungsprozesses ( möglicherweise indem man den Pfeil einfärbt) ausreichen. Mögliche Validierungsfehler wären:
-- Pipe-Notation : Überschneidung von Datentypen.
+- Mehrfaches Auftreten der selben Datentypen.
 - Fehlende Daten : Nicht alle vom Input der Softwarezelle verlangten Daten
   sind im Datenfluss enthalten.
 
