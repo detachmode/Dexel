@@ -19,14 +19,14 @@ namespace Roslyn.Tests
         {
             // unnamed syntax test
             var testModel = new MainModel();
-            var newName = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            var newName = MainModelManager.AddNewFunctionUnit("Random Name", testModel);
             MainModelManager.AddNewInput(newName, "");
 
-            var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            MainModelManager.ConnectTwoCells(newName, alter, "string", "", testModel);
+            var alter = MainModelManager.AddNewFunctionUnit("Random Age", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(newName, alter, "string", "", testModel);
 
-            var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            MainModelManager.ConnectTwoCells(alter, person, "int", "int, string", testModel);
+            var person = MainModelManager.AddNewFunctionUnit("Create Person", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(alter, person, "int", "int, string", testModel);
             MainModelManager.AddNewOutput(person, "Person");
 
             var dependecies = Integrations.FindParameters(person, testModel.Connections, newName);
@@ -35,14 +35,14 @@ namespace Roslyn.Tests
 
             // ...  syntax test
             testModel = new MainModel();
-            newName = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            newName = MainModelManager.AddNewFunctionUnit("Random Name", testModel);
             MainModelManager.AddNewInput(newName, "");
 
-            alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            MainModelManager.ConnectTwoCells(newName, alter, "string", "", testModel);
+            alter = MainModelManager.AddNewFunctionUnit("Random Age", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(newName, alter, "string", "", testModel);
 
-            person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            MainModelManager.ConnectTwoCells(alter, person, "int", "int, string", testModel);
+            person = MainModelManager.AddNewFunctionUnit("Create Person", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(alter, person, "int", "int, string", testModel);
             MainModelManager.AddNewOutput(person, "Person");
 
             dependecies = Integrations.FindParameters(person, testModel.Connections, newName);
@@ -66,23 +66,23 @@ namespace Roslyn.Tests
 
 
             var testModel = new MainModel();
-            var x = MainModelManager.AddNewSoftwareCell("X", testModel);
+            var x = MainModelManager.AddNewFunctionUnit("X", testModel);
             MainModelManager.AddNewInput(x, "()");
             MainModelManager.AddNewOutput(x, "(int)");
 
-            var createPersons = MainModelManager.AddNewSoftwareCell("Create Persons", testModel);
+            var createPersons = MainModelManager.AddNewFunctionUnit("Create Persons", testModel);
             MainModelManager.AddNewInput(createPersons, "()");
             MainModelManager.AddNewOutput(createPersons, "(Person)*");
 
-            var addAge = MainModelManager.AddNewSoftwareCell("Add Age", testModel);
+            var addAge = MainModelManager.AddNewFunctionUnit("Add Age", testModel);
             MainModelManager.AddNewInput(addAge, "(Person)*");
             MainModelManager.AddNewOutput(addAge, "()");
 
-            var addName = MainModelManager.AddNewSoftwareCell("Add Name", testModel);
+            var addName = MainModelManager.AddNewFunctionUnit("Add Name", testModel);
             MainModelManager.AddNewInput(addName, "(Person)*");
             MainModelManager.AddNewOutput(addName, "()");
 
-            var sumAges = MainModelManager.AddNewSoftwareCell("Sum Ages", testModel);
+            var sumAges = MainModelManager.AddNewFunctionUnit("Sum Ages", testModel);
             MainModelManager.AddNewInput(sumAges, "(Person)*");
             MainModelManager.AddNewOutput(sumAges, "(int)");
 
@@ -123,15 +123,15 @@ namespace Roslyn.Tests
         public void StreamOutput()
         {
             var testModel = new MainModel();
-            var x = MainModelManager.AddNewSoftwareCell("X", testModel);
+            var x = MainModelManager.AddNewFunctionUnit("X", testModel);
             MainModelManager.AddNewInput(x, "()");
             MainModelManager.AddNewOutput(x, "(onPerson:Person)*");
 
-            var createPersons = MainModelManager.AddNewSoftwareCell("Create Persons", testModel);
+            var createPersons = MainModelManager.AddNewFunctionUnit("Create Persons", testModel);
             MainModelManager.AddNewInput(createPersons, "()");
             MainModelManager.AddNewOutput(createPersons, "(Person)*");
 
-            var addAge = MainModelManager.AddNewSoftwareCell("Add Age", testModel);
+            var addAge = MainModelManager.AddNewFunctionUnit("Add Age", testModel);
             MainModelManager.AddNewInput(addAge, "(Person)*");
             MainModelManager.AddNewOutput(addAge, "(Person)*");
 

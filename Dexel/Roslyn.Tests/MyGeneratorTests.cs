@@ -40,14 +40,14 @@ namespace Roslyn.Tests
         public void MethodTest()
         {
             // string return value
-            var node = SoftwareCellsManager.CreateNew("Random Name");
+            var node = FunctionUnitManager.CreateNew("Random Name");
             MainModelManager.AddNewOutput(node, "string");
 
             var methode = MethodsGenerator.GenerateStaticMethod(_mygen.Generator, node);
             Assert.AreEqual("public static string RandomName()\r\n{\r\n}", methode.NormalizeWhitespace().ToFullString());
 
             // Empty output => return void
-            node = SoftwareCellsManager.CreateNew("Random Name");
+            node = FunctionUnitManager.CreateNew("Random Name");
             MainModelManager.AddNewOutput(node, "");
 
             methode = MethodsGenerator.GenerateStaticMethod(_mygen.Generator, node);
@@ -55,19 +55,19 @@ namespace Roslyn.Tests
 
 
             var testModel = new MainModel();
-            var newName = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            var newName = MainModelManager.AddNewFunctionUnit("Random Name", testModel);
             MainModelManager.AddNewInput(newName, "");
 
-            var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            MainModelManager.ConnectTwoCells(newName, alter, "string", "", testModel);
+            var alter = MainModelManager.AddNewFunctionUnit("Random Age", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(newName, alter, "string", "", testModel);
 
-            var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            MainModelManager.ConnectTwoCells(alter, person, "int", "int, string", testModel);
+            var person = MainModelManager.AddNewFunctionUnit("Create Person", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(alter, person, "int", "int, string", testModel);
 
             var definition = DataStreamManager.NewDefinition(person, "Person");
             person.OutputStreams.Add(definition);
 
-            SyntaxNode[] members = testModel.SoftwareCells.Select(x => MethodsGenerator.GenerateStaticMethod(_mygen.Generator, x)).ToArray();
+            SyntaxNode[] members = testModel.FunctionUnits.Select(x => MethodsGenerator.GenerateStaticMethod(_mygen.Generator, x)).ToArray();
             var newNameMethod = members[0];
             Assert.AreEqual("public static string RandomName()\r\n{\r\n}", newNameMethod.NormalizeWhitespace().ToFullString());
 
@@ -79,7 +79,7 @@ namespace Roslyn.Tests
 
             // Named Parameter
             person.InputStreams.Clear();
-            SoftwareCellsManager.NewInputDef(person, "int | age:int, name:string", "");
+            FunctionUnitManager.NewInputDef(person, "int | age:int, name:string", "");
             var personMethodNamedParams = MethodsGenerator.GenerateStaticMethod(_mygen.Generator, person);
             Assert.AreEqual("public static Person CreatePerson(int age, string name)\r\n{\r\n}",
                 personMethodNamedParams.NormalizeWhitespace().ToFullString());
@@ -97,15 +97,15 @@ namespace Roslyn.Tests
         {
 
             var testModel = new MainModel();
-            var main = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            var main = MainModelManager.AddNewFunctionUnit("Random Name", testModel);
             MainModelManager.AddNewInput(main, "");
             MainModelManager.AddNewOutput(main, "");
 
-            var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            MainModelManager.ConnectTwoCells(main, alter, "string", "", testModel);
+            var alter = MainModelManager.AddNewFunctionUnit("Random Age", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(main, alter, "string", "", testModel);
 
-            var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            MainModelManager.ConnectTwoCells(alter, person, "int", "int, string", testModel);
+            var person = MainModelManager.AddNewFunctionUnit("Create Person", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(alter, person, "int", "int, string", testModel);
             MainModelManager.AddNewOutput(person, "person");
 
             var expectedList = new List<Parameter>()
@@ -119,13 +119,13 @@ namespace Roslyn.Tests
 
             // test find parameter from parent method arguments
             testModel = new MainModel();
-            main = MainModelManager.AddNewSoftwareCell("convert roman number", testModel);
+            main = MainModelManager.AddNewFunctionUnit("convert roman number", testModel);
             MainModelManager.AddNewInput(main, "string");
             MainModelManager.AddNewOutput(main, "int");
 
 
 
-            var splitter = MainModelManager.AddNewSoftwareCell("split", testModel);
+            var splitter = MainModelManager.AddNewFunctionUnit("split", testModel);
             MainModelManager.AddNewInput(splitter, "string");
             MainModelManager.AddNewOutput(splitter, "char*");
 
@@ -137,12 +137,12 @@ namespace Roslyn.Tests
 
 
             testModel = new MainModel();
-            main = MainModelManager.AddNewSoftwareCell("convert roman number", testModel);
+            main = MainModelManager.AddNewFunctionUnit("convert roman number", testModel);
             MainModelManager.AddNewInput(main, "string");
             MainModelManager.AddNewOutput(main, "int");
 
             // should not find any           
-            splitter = MainModelManager.AddNewSoftwareCell("split", testModel);
+            splitter = MainModelManager.AddNewFunctionUnit("split", testModel);
             MainModelManager.AddNewInput(splitter, "int");
             MainModelManager.AddNewOutput(splitter, "char*");
 
@@ -158,14 +158,14 @@ namespace Roslyn.Tests
         public void FindOneParameterTest()
         {
             var testModel = new MainModel();
-            var newName = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            var newName = MainModelManager.AddNewFunctionUnit("Random Name", testModel);
             MainModelManager.AddNewInput(newName, "");
 
-            var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            MainModelManager.ConnectTwoCells(newName, alter, "string", "", testModel);
+            var alter = MainModelManager.AddNewFunctionUnit("Random Age", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(newName, alter, "string", "", testModel);
 
-            var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            MainModelManager.ConnectTwoCells(alter, person, "int", "int, string", testModel);
+            var person = MainModelManager.AddNewFunctionUnit("Create Person", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(alter, person, "int", "int, string", testModel);
 
             var expected = new Parameter { FoundFlag = Found.FoundInPreviousChild, Source = alter };
             var lookingfor = new NameType { Name = null, Type = "int" };
@@ -176,14 +176,14 @@ namespace Roslyn.Tests
             Assert.IsTrue(expected.Compare(Integrations.FindOneParameter(lookingfor, null, testModel.Connections, person, true)));
 
             testModel = new MainModel();
-            newName = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            newName = MainModelManager.AddNewFunctionUnit("Random Name", testModel);
             MainModelManager.AddNewInput(newName, "");
 
-            alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
-            MainModelManager.ConnectTwoCells(newName, alter, "string", "", testModel);
+            alter = MainModelManager.AddNewFunctionUnit("Random Age", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(newName, alter, "string", "", testModel);
 
-            person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
-            MainModelManager.ConnectTwoCells(alter, person, "int", "int, string", testModel);
+            person = MainModelManager.AddNewFunctionUnit("Create Person", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(alter, person, "int", "int, string", testModel);
 
             lookingfor = new NameType { Name = null, Type = "int" };
             Assert.IsTrue(Integrations.FindOneParameter(lookingfor, null, testModel.Connections, person, true).Source == alter);
@@ -225,7 +225,7 @@ namespace Roslyn.Tests
         public void SingleMethodWithStreamAsOutputAndInputs()
         {
             var testModel = new MainModel();
-            var x = MainModelManager.AddNewSoftwareCell("X", testModel);
+            var x = MainModelManager.AddNewFunctionUnit("X", testModel);
             MainModelManager.AddNewInput(x, "(int, string)");
             MainModelManager.AddNewOutput(x, "(Person)*");
 
@@ -238,7 +238,7 @@ namespace Roslyn.Tests
         public void SingleMethod()
         {
             var testModel = new MainModel();
-            var x = MainModelManager.AddNewSoftwareCell("X", testModel);
+            var x = MainModelManager.AddNewFunctionUnit("X", testModel);
             MainModelManager.AddNewInput(x, "(int)");
             MainModelManager.AddNewOutput(x, "(Person)");
             var formatted = _mygen.GenerateAllMethods(testModel).First().NormalizeWhitespace().ToFullString();
@@ -249,7 +249,7 @@ namespace Roslyn.Tests
         public void SingleMethodWithStreamAsOutput()
         {
             var testModel = new MainModel();
-            var x = MainModelManager.AddNewSoftwareCell("X", testModel);
+            var x = MainModelManager.AddNewFunctionUnit("X", testModel);
             MainModelManager.AddNewInput(x, "()");
             MainModelManager.AddNewOutput(x, "(Person)*");
 

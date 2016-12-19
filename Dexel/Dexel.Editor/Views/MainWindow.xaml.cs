@@ -42,7 +42,7 @@ namespace Dexel.Editor.Views
 
             if (e.Key == Key.Delete)
             {
-                Interactions.Delete(MainViewModel.Instance().SelectedSoftwareCells.Select(x => x.Model),
+                Interactions.Delete(MainViewModel.Instance().SelectedFunctionUnits.Select(x => x.Model),
                     MainViewModel.Instance().Model);
             }
 
@@ -50,7 +50,7 @@ namespace Dexel.Editor.Views
             {
                 case Key.Tab:
                     if (ctrlDown)
-                        TheDrawingBoard.AppendNewCell();
+                        TheDrawingBoard.AppendNewFunctionUnit();
                     else if (shiftDown)
                         TheDrawingBoard.TabStopMove(Interactions.TabStopGetPrevious);
                     else

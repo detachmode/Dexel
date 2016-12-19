@@ -7,7 +7,7 @@ using Dexel.Editor.ViewModels;
 using Dexel.Editor.ViewModels.DrawingBoard;
 using Dexel.Editor.Views;
 using Dexel.Editor.Views.DrawingBoard;
-using SoftwareCell = Dexel.Model.DataTypes.SoftwareCell;
+using Dexel.Model.DataTypes;
 
 namespace Dexel.Editor.DragAndDrop
 {
@@ -20,16 +20,16 @@ namespace Dexel.Editor.DragAndDrop
         public static Point OrigMouseDownPoint;
         public static Point ProjectedMousePosition;
         public static Point ScreenMousePosition;
-        private static bool _isLeftMouseDownOnIOCell;
-        private static bool _isLeftMouseAndControlDownOnIOCell;
-        private static bool _isDraggingIOCell;
-        private static bool _isCTRLDraggingIOCell;
-        private static SoftwareCell _mouseDownOnSoftwareCell;
+        private static bool _isLeftMouseDownOnFunctionUnit;
+        private static bool _isLeftMouseAndControlDownOnFunctionUnit;
+        private static bool _isDraggingFunctionUnit;
+        private static bool _isCTRLDraggingFunctionUnit;
+        private static FunctionUnit _mouseDownOnFunctionUnit;
 
 
         public static void MouseDown(object sender, MouseButtonEventArgs e)
         {
-            sender.TryCast<IOCell>(cell => IOCellMouseDown(cell, e));
+            sender.TryCast<FunctionUnitView>(fu => FunctionUnitMouseDown(fu, e));
             sender.TryCast<DrawingBoard>(board => DrawingBoardMouseDown(board, e));
 
             // reset picking in any case
@@ -58,7 +58,7 @@ namespace Dexel.Editor.DragAndDrop
 
         public static void MouseUp(object sender, MouseButtonEventArgs e)
         {
-            sender.TryCast<IOCell>(cell => IOCellMouseUp(cell, e));
+            sender.TryCast<FunctionUnitView>(fu => FunctionUnitMouseUp(fu, e));
             sender.TryCast<DrawingBoard>(board => DrawingBoardMouseUp(board, e));
             DraggingOFF();
         }
@@ -92,7 +92,7 @@ namespace Dexel.Editor.DragAndDrop
 
         public static void MouseMove(object sender, MouseEventArgs e)
         {
-            IOCellMouseMove(sender, e);
+            FunctionUnitMouseMove(sender, e);
             sender.TryCast<DrawingBoard>(board => DrawingBoardMouseMove(board, e));
         }
 
@@ -115,11 +115,11 @@ namespace Dexel.Editor.DragAndDrop
         }
 
 
-        private static void IOCellMouseDown(IOCell iocell, MouseButtonEventArgs e)
+        private static void FunctionUnitMouseDown(FunctionUnitView iocell, MouseButtonEventArgs e)
         {
             DebuggingHelper.MyDebug.WriteLineIfDifferent("-----------\nIOCellMouseDown");
             e.Handled = true;
-            _mouseDownOnSoftwareCell = iocell.ViewModel().Model;
+            _mouseDownOnFunctionUnit = iocell.ViewModel().Model;
 
             if (FrameworkElementDragBehavior.DragDropInProgressFlag)
                 return;
@@ -132,15 +132,15 @@ namespace Dexel.Editor.DragAndDrop
                 return;
             }
 
-            _isLeftMouseDownOnIOCell = true;
+            _isLeftMouseDownOnFunctionUnit = true;
 
             if ((Keyboard.Modifiers & ModifierKeys.Control) != 0)
             {
-                _isLeftMouseAndControlDownOnIOCell = true;
+                _isLeftMouseAndControlDownOnFunctionUnit = true;
             }
             else
             {
-                _isLeftMouseAndControlDownOnIOCell = false;
+                _isLeftMouseAndControlDownOnFunctionUnit = false;
                 MainViewModel.Instance().SetSelection(iocell.ViewModel());
             }
 
@@ -148,27 +148,27 @@ namespace Dexel.Editor.DragAndDrop
         }
 
 
-        private static void IOCellMouseUp(object sender, MouseButtonEventArgs e)
+        private static void FunctionUnitMouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (_isLeftMouseDownOnIOCell)
+            if (_isLeftMouseDownOnFunctionUnit)
             {
                 ResetFocus();
                 var iocell = (FrameworkElement) sender;
-                var ioCellViewModel = iocell.DataContext as IOCellViewModel;
+                var ioCellViewModel = iocell.DataContext as FunctionUnitViewModel;
                 if (ioCellViewModel == null)
                     return;
 
-                if (!_isDraggingIOCell && !_isCTRLDraggingIOCell)
+                if (!_isDraggingFunctionUnit && !_isCTRLDraggingFunctionUnit)
                 {
-                    if (_isLeftMouseAndControlDownOnIOCell)
+                    if (_isLeftMouseAndControlDownOnFunctionUnit)
                         MainViewModel.Instance().SetSelectionCTRLMod(ioCellViewModel);
                     else
                         MainViewModel.Instance().SetSelection(ioCellViewModel);
                 }
                
                 iocell.ReleaseMouseCapture();
-                _isLeftMouseDownOnIOCell = false;
-                _isLeftMouseAndControlDownOnIOCell = false;
+                _isLeftMouseDownOnFunctionUnit = false;
+                _isLeftMouseAndControlDownOnFunctionUnit = false;
 
                 e.Handled = true;
             }
@@ -180,46 +180,46 @@ namespace Dexel.Editor.DragAndDrop
         private static void DraggingOFF()
         {
             DebuggingHelper.MyDebug.WriteLineIfDifferent("DraggingOFF");
-            _isDraggingIOCell = false;
-            _isLeftMouseDownOnIOCell = false;
-            _isCTRLDraggingIOCell = false;
+            _isDraggingFunctionUnit = false;
+            _isLeftMouseDownOnFunctionUnit = false;
+            _isCTRLDraggingFunctionUnit = false;
         }
 
 
-        private static void IOCellMouseMove(object sender, MouseEventArgs e)
+        private static void FunctionUnitMouseMove(object sender, MouseEventArgs e)
         {
-            if (!_isLeftMouseDownOnIOCell) return;
+            if (!_isLeftMouseDownOnFunctionUnit) return;
             e.Handled = true;
 
 
-            //if (DragThresholdReached()) _isDraggingIOCell = true;
+            //if (DragThresholdReached()) _isDraggingFunctionUnit = true;
 
             ModifiersKeysState(
-                ctrlAndShift: DoCtrlShiftDraggingIOCells,
-                onlyShift: DoShiftDraggingIOCells,
-                onlyCtrl: () => _isCTRLDraggingIOCell = true
+                ctrlAndShift: DoCtrlShiftDraggingFunctionUnit,
+                onlyShift: DoShiftDraggingFunctionUnit,
+                onlyCtrl: () => _isCTRLDraggingFunctionUnit = true
                 );
 
-            _isDraggingIOCell = true;
+            _isDraggingFunctionUnit = true;
 
-            if (_isCTRLDraggingIOCell)
-                DoCtrlDraggingIOCells();
+            if (_isCTRLDraggingFunctionUnit)
+                DoCtrlDraggingFunctionUnit();
 
-            if (_isDraggingIOCell)
-                DraggingSelectedIOCells();
+            if (_isDraggingFunctionUnit)
+                DraggingSelectedFunctionUnits();
         }
 
 
-        private static void DoCtrlShiftDraggingIOCells()
+        private static void DoCtrlShiftDraggingFunctionUnit()
         {
-            if (_isDraggingIOCell)
+            if (_isDraggingFunctionUnit)
                 return;
 
-            _isCTRLDraggingIOCell = true;
+            _isCTRLDraggingFunctionUnit = true;
 
 
-            _mouseDownOnSoftwareCell =
-                Interactions.DuplicateIOCellIncludingChildrenAndIntegrated(_mouseDownOnSoftwareCell,
+            _mouseDownOnFunctionUnit =
+                Interactions.DuplicateFunctionUnitIncludingChildrenAndIntegrated(_mouseDownOnFunctionUnit,
                     MainViewModel.Instance().Model);
         }
 
@@ -250,9 +250,9 @@ namespace Dexel.Editor.DragAndDrop
         }
 
 
-        private static void DoShiftDraggingIOCells()
+        private static void DoShiftDraggingFunctionUnit()
         {
-            if (_isDraggingIOCell)
+            if (_isDraggingFunctionUnit)
                 return;
            
 
@@ -268,26 +268,26 @@ namespace Dexel.Editor.DragAndDrop
         }
 
 
-        private static void DraggingSelectedIOCells()
+        private static void DraggingSelectedFunctionUnits()
         {
-            DebuggingHelper.MyDebug.WriteLineIfDifferent($"DraggingSelectedIOCells {_isDraggingIOCell}");
+            DebuggingHelper.MyDebug.WriteLineIfDifferent($"DraggingSelectedFunctionUnits {_isDraggingFunctionUnit}");
             var dragDelta = ProjectedMousePosition - OrigMouseDownPoint;
             OrigMouseDownPoint = ProjectedMousePosition;
 
-            MainViewModel.Instance().MoveSelectedIOCells(dragDelta);
+            MainViewModel.Instance().MoveSelectedFunctionUnit(dragDelta);
         }
 
 
-        private static void DoCtrlDraggingIOCells()
+        private static void DoCtrlDraggingFunctionUnit()
         {
             var dragDelta = ProjectedMousePosition - OrigMouseDownPoint;
             OrigMouseDownPoint = ProjectedMousePosition;
 
 
-            if (_mouseDownOnSoftwareCell == null) return;
+            if (_mouseDownOnFunctionUnit == null) return;
 
-            Interactions.MoveIOCellIncludingChildrenAndIntegrated(
-                _mouseDownOnSoftwareCell, dragDelta, MainViewModel.Instance().Model);
+            Interactions.MoveFunctionUnitIncludingChildrenAndIntegrated(
+                _mouseDownOnFunctionUnit, dragDelta, MainViewModel.Instance().Model);
         }
     }
 

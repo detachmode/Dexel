@@ -20,7 +20,7 @@ namespace Dexel.Model
 
         public static IEnumerable<string> CollectAllTypesFromDsds(MainModel mainmodel)
         {
-            var alldsds = mainmodel.SoftwareCells.SelectMany(sc => sc.InputStreams.Concat(sc.OutputStreams).ToList());
+            var alldsds = mainmodel.FunctionUnits.SelectMany(sc => sc.InputStreams.Concat(sc.OutputStreams).ToList());
             return alldsds.SelectMany(dsd => DataStreamParser.GetInputAndOutput(dsd.DataNames).Select(x => x.Type));
         }
 

@@ -16,7 +16,7 @@ namespace Roslyn
 
 
         public static SyntaxNode[] CreateIntegrationBody(SyntaxGenerator generator, List<DataStream> connections,
-            SoftwareCell integration)
+            FunctionUnit integration)
         {
             var body = CreateNewBody(generator, connections, integration);
             AddIntegrationParameterToLocalScope(body, integration);
@@ -28,7 +28,7 @@ namespace Roslyn
         }
 
 
-        private static void AddIntegrationParameterToLocalScope(Body body, SoftwareCell integration)
+        private static void AddIntegrationParameterToLocalScope(Body body, FunctionUnit integration)
         {
             var nametypes = DataStreamParser.GetInputPart(integration.InputStreams.First().DataNames);
             nametypes.ToList().ForEach(nametype =>
@@ -58,16 +58,16 @@ namespace Roslyn
 
         private static void GenerateBody(Body body, Action<SyntaxNode> onSyntaxNode)
         {
-            GetNextSoftwareCell(body,
+            GetNextFunctionUnit(body,
                 outputAndInputIsStream: streamingCell =>
                 {
-                    RemoveConnectionAndCell(body, streamingCell);
+                    RemoveConnectionAndFunctionUnit(body, streamingCell);
                     CreateNonStreamMethod(body, streamingCell, onSyntaxNode);
                     GenerateBody(body, onSyntaxNode);
                 },
                 outputIsStream: streamingCell =>
                 {
-                    RemoveConnectionAndCell(body, streamingCell);
+                    RemoveConnectionAndFunctionUnit(body, streamingCell);
 
                     var lambdaBodyObject = CreateNewBody(body.Generator, body.Connections, streamingCell);
                     lambdaBodyObject.CallDependecies = body.CallDependecies;
@@ -84,20 +84,20 @@ namespace Roslyn
                 },
                 inputIsStream: softwarecell =>
                 {
-                    RemoveConnectionAndCell(body, softwarecell);
+                    RemoveConnectionAndFunctionUnit(body, softwarecell);
                     CreateNonStreamMethod(body, softwarecell, onSyntaxNode);
                     GenerateBody(body, onSyntaxNode);
                 },
                 noStream: softwarecell =>
                 {
-                    RemoveConnectionAndCell(body, softwarecell);
+                    RemoveConnectionAndFunctionUnit(body, softwarecell);
                     CreateNonStreamMethod(body, softwarecell, onSyntaxNode);
                     GenerateBody(body, onSyntaxNode);
                 });
         }
 
 
-        private static SyntaxNode[] GenerateLambdaParameter(Body body, SoftwareCell streamingCell)
+        private static SyntaxNode[] GenerateLambdaParameter(Body body, FunctionUnit streamingCell)
         {
             var inputs = DataStreamParser.GetOutputPart(streamingCell.OutputStreams.First().DataNames);
             var lambdaNames = new List<string>();
@@ -116,7 +116,7 @@ namespace Roslyn
         }
 
 
-        private static void MakeLocalMethodCallWithLambda(Body body, SoftwareCell toGenerate,
+        private static void MakeLocalMethodCallWithLambda(Body body, FunctionUnit toGenerate,
             SyntaxNode[] lambdaParameter, SyntaxNode[] lambdaBody, Action<SyntaxNode> onNodeCreated)
         {
             CanBeGenerated(body, toGenerate, method =>
@@ -125,7 +125,7 @@ namespace Roslyn
                 AssignmentParameter(body.Generator, body.LocalVariables, method.Parameters, parameter.Add);
                 GenerateLambdaExpression(body, lambdaParameter, lambdaBody, parameter.Add);
                
-                var methodname = MethodsGenerator.GetMethodName(method.OfSoftwareCell);
+                var methodname = MethodsGenerator.GetMethodName(method.OfFunctionUnit);
                 onNodeCreated(GenerateLocalMethodCall(body.Generator, methodname, parameter.ToArray(), null));
               
             }, cannnotCreate: errorCell => Debug.WriteLine($"Couldn't create {errorCell.Name}"));
@@ -139,7 +139,7 @@ namespace Roslyn
         }
 
 
-        private static void RemoveConnectionAndCell(Body body, SoftwareCell softwarecell)
+        private static void RemoveConnectionAndFunctionUnit(Body body, FunctionUnit softwarecell)
         {
             body.Connections.RemoveAll(c => c.Sources.Any(dsd => dsd.Parent == softwarecell));
             body.ChildrenToGenerate.RemoveAll(x => softwarecell.ID == x.ID);
@@ -147,7 +147,7 @@ namespace Roslyn
 
 
         private static Body CreateNewBody(SyntaxGenerator generator, List<DataStream> connections,
-            SoftwareCell integration)
+            FunctionUnit integration)
         {
             var body = new Body
             {
@@ -161,16 +161,16 @@ namespace Roslyn
         }
 
 
-        private static void GetNextSoftwareCell(Body body, Action<SoftwareCell> outputAndInputIsStream,
-            Action<SoftwareCell> outputIsStream,
-            Action<SoftwareCell> inputIsStream,
-            Action<SoftwareCell> noStream)
+        private static void GetNextFunctionUnit(Body body, Action<FunctionUnit> outputAndInputIsStream,
+            Action<FunctionUnit> outputIsStream,
+            Action<FunctionUnit> inputIsStream,
+            Action<FunctionUnit> noStream)
         {
             if (!body.ChildrenToGenerate.Any()) return;
 
             var first = body.ChildrenToGenerate.First();
             MainModelManager.TraverseChildrenBackwards(first,
-                (cell, conn) => first = cell, body.Connections);
+                (fu, conn) => first = fu, body.Connections);
 
             DataTypeParser.OutputOrInputIsStream(first,
                 bothAreStreams: () => outputAndInputIsStream(first),
@@ -194,18 +194,18 @@ namespace Roslyn
         }
 
 
-        private static void CreateNonStreamMethod(Body body, SoftwareCell softwareCell, Action<SyntaxNode> onGenerated)
+        private static void CreateNonStreamMethod(Body body, FunctionUnit functionUnit, Action<SyntaxNode> onGenerated)
         {
-            CanBeGenerated(body, softwareCell, method =>
+            CanBeGenerated(body, functionUnit, method =>
             {
                 var parameter = new List<SyntaxNode>();
                 AssignmentParameter(body.Generator, body.LocalVariables, method.Parameters, parameter.Add);
-                var methodname = MethodsGenerator.GetMethodName(softwareCell);
+                var methodname = MethodsGenerator.GetMethodName(functionUnit);
 
-                DetectLocalVariableNeeded(body, softwareCell, (localname, nametypes) =>
+                DetectLocalVariableNeeded(body, functionUnit, (localname, nametypes) =>
                 {                  
                     onGenerated(GenerateLocalMethodCall(body.Generator, methodname, parameter.ToArray(), localname));
-                    RegisterLocalVaribale(body, softwareCell, localname, nametypes);
+                    RegisterLocalVaribale(body, functionUnit, localname, nametypes);
                 },
                 notVariableNeeded:() => onGenerated(GenerateLocalMethodCall(body.Generator, methodname, parameter.ToArray(), null)));
             }, 
@@ -213,22 +213,22 @@ namespace Roslyn
         }
 
 
-        private static void RegisterLocalVaribale(Body body, SoftwareCell softwareCell, string localname,
+        private static void RegisterLocalVaribale(Body body, FunctionUnit functionUnit, string localname,
             List<NameType> nametypes)
         {
             body.LocalVariables.Add(new GeneratedLocalVariable
             {
                 VariableName = localname,
-                Source = softwareCell,
+                Source = functionUnit,
                 NameTypes = nametypes
             });
         }
 
 
-        private static void DetectLocalVariableNeeded(Body body, SoftwareCell softwareCell,
+        private static void DetectLocalVariableNeeded(Body body, FunctionUnit functionUnit,
             Action<string, List<NameType>> onLocalName, Action notVariableNeeded = null)
         {
-            var output = DataStreamParser.GetOutputPart(softwareCell.OutputStreams.First().DataNames);
+            var output = DataStreamParser.GetOutputPart(functionUnit.OutputStreams.First().DataNames);
             if (!output.Any())
             {
                 notVariableNeeded?.Invoke();
@@ -241,16 +241,16 @@ namespace Roslyn
         }
 
 
-        private static void CanBeGenerated(Body body, SoftwareCell softwareCell,
-            Action<MethodWithParameterDependencies> doAction, Action<SoftwareCell> cannnotCreate = null)
+        private static void CanBeGenerated(Body body, FunctionUnit functionUnit,
+            Action<MethodWithParameterDependencies> doAction, Action<FunctionUnit> cannnotCreate = null)
         {
-            var methodWithParameterDependencies = body.CallDependecies.First(x => x.OfSoftwareCell == softwareCell);
+            var methodWithParameterDependencies = body.CallDependecies.First(x => x.OfFunctionUnit == functionUnit);
             if (methodWithParameterDependencies == null) return;
             if (methodWithParameterDependencies.Parameters.TrueForAll(param => IsInBody(body, param)))
                 doAction(methodWithParameterDependencies);
             else
             {
-                cannnotCreate?.Invoke(methodWithParameterDependencies.OfSoftwareCell);
+                cannnotCreate?.Invoke(methodWithParameterDependencies.OfFunctionUnit);
             }
         }
 
@@ -293,39 +293,39 @@ namespace Roslyn
         {
             body.CallDependecies = body.ChildrenToGenerate.Select(sc => new MethodWithParameterDependencies
             {
-                OfSoftwareCell = sc,
+                OfFunctionUnit = sc,
                 Parameters = FindParameters(sc, body.Connections, body.CurrentParent)
             }).ToList();
         }
 
 
-        public static MethodWithParameterDependencies FindParameterDependencie(SoftwareCell parent, SoftwareCell ofCell,
+        public static MethodWithParameterDependencies FindParameterDependencie(FunctionUnit parent, FunctionUnit ofCell,
             List<DataStream> connections)
         {
             return new MethodWithParameterDependencies
             {
-                OfSoftwareCell = ofCell,
+                OfFunctionUnit = ofCell,
                 Parameters = FindParameters(ofCell, connections, parent)
             };
         }
 
 
-        public static List<Parameter> FindParameters(SoftwareCell ofSoftwareCell, List<DataStream> connections,
-            SoftwareCell parent
+        public static List<Parameter> FindParameters(FunctionUnit ofFunctionUnit, List<DataStream> connections,
+            FunctionUnit parent
             )
         {
-            var inputNameTypes = DataStreamParser.GetInputPart(ofSoftwareCell.InputStreams.First().DataNames);
+            var inputNameTypes = DataStreamParser.GetInputPart(ofFunctionUnit.InputStreams.First().DataNames);
             var result = inputNameTypes.Where(nt => nt.Type != "")
-                .Select(nt => FindOneParameter(nt, parent, connections, ofSoftwareCell, true)).ToList();
+                .Select(nt => FindOneParameter(nt, parent, connections, ofFunctionUnit, true)).ToList();
 
 
-            DataTypeParser.OutputIsStream(ofSoftwareCell,
+            DataTypeParser.OutputIsStream(ofFunctionUnit,
                 isStream: () =>
                 {
-                    var outputNameTypes = DataStreamParser.GetOutputPart(ofSoftwareCell.OutputStreams.First().DataNames);
+                    var outputNameTypes = DataStreamParser.GetOutputPart(ofFunctionUnit.OutputStreams.First().DataNames);
 
                     outputNameTypes.Where(nt => nt.Type != "").Select(
-                        nt => FindOneParameter(nt, parent, connections, ofSoftwareCell, false))
+                        nt => FindOneParameter(nt, parent, connections, ofFunctionUnit, false))
                         .ToList().ForEach(result.Add);
                 });
 
@@ -333,8 +333,8 @@ namespace Roslyn
         }
 
 
-        public static Parameter FindOneParameter(NameType lookingForNameType, SoftwareCell parent,
-            List<DataStream> connections, SoftwareCell ofSoftwareCell, bool isInput)
+        public static Parameter FindOneParameter(NameType lookingForNameType, FunctionUnit parent,
+            List<DataStream> connections, FunctionUnit ofFunctionUnit, bool isInput)
         {
             var parameter = new Parameter
             {
@@ -346,7 +346,7 @@ namespace Roslyn
 
             CheckParentForMatchingInputOutputs(parameter, parent, onNotFound: () =>
             {
-                MainModelManager.TraverseChildrenBackwards(ofSoftwareCell, (child, conn) =>
+                MainModelManager.TraverseChildrenBackwards(ofFunctionUnit, (child, conn) =>
                 {
                     var found = FindTypeInDataStream(lookingForNameType, conn);
                     if (!found.Any() || parameter.FoundFlag != Found.NotFound)
@@ -360,7 +360,7 @@ namespace Roslyn
         }
 
 
-        private static void CheckParentForMatchingInputOutputs(Parameter parameter, SoftwareCell parent,
+        private static void CheckParentForMatchingInputOutputs(Parameter parameter, FunctionUnit parent,
             Action onNotFound)
         {
             if (parameter.AsOutput)
@@ -448,9 +448,9 @@ namespace Roslyn
 
     public class Body
     {
-        public List<SoftwareCell> ChildrenToGenerate;
+        public List<FunctionUnit> ChildrenToGenerate;
         public List<DataStream> Connections;
-        public SoftwareCell CurrentParent;
+        public FunctionUnit CurrentParent;
         public SyntaxGenerator Generator;
         public List<GeneratedLocalVariable> LocalVariables;
         public List<MethodWithParameterDependencies> CallDependecies { get; set; }

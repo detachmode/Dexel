@@ -52,7 +52,7 @@ namespace Dexel.Model
         }
 
 
-        public static DataStreamDefinition NewDefinition(SoftwareCell parent, string datanames, string actionsName = "",
+        public static DataStreamDefinition NewDefinition(FunctionUnit parent, string datanames, string actionsName = "",
             bool connected = false)
         {
             var dataStream = new DataStreamDefinition();
@@ -77,7 +77,7 @@ namespace Dexel.Model
         }
 
 
-        public static DataStreamDefinition NewDefinition(SoftwareCell parent, DataStreamDefinition defintion,
+        public static DataStreamDefinition NewDefinition(FunctionUnit parent, DataStreamDefinition defintion,
             bool connected = false)
         {
             return NewDefinition(parent, defintion.DataNames, defintion.ActionName, connected);
@@ -91,7 +91,7 @@ namespace Dexel.Model
         }
 
 
-        public static Guid CheckForStreamWithSameName(SoftwareCell source, SoftwareCell destination,
+        public static Guid CheckForStreamWithSameName(FunctionUnit source, FunctionUnit destination,
             DataStream tempStream, MainModel mainModel,
             Action<DataStreamDefinition> onFound, Action onNotFound)
         {
@@ -205,7 +205,7 @@ namespace Dexel.Model
         }
 
 
-        public static DataStreamDefinition GetDSDFromModel(Guid id, List<SoftwareCell> softwareCells)
+        public static DataStreamDefinition GetDSDFromModel(Guid id, List<FunctionUnit> softwareCells)
         {
             var inputDSDs = softwareCells.Select(sc => sc.InputStreams.FirstOrDefault(dsd => dsd.ID == id))
                 .Where(x => x != null).ToList();

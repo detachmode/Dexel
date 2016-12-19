@@ -65,7 +65,7 @@ namespace Roslyn
 
         private List<SyntaxNode> GenerateIntegrations(List<SyntaxNode> operations, MainModel model)
         {
-            model.SoftwareCells.Where(sc => sc.Integration.Count > 0).ToList().ForEach(isc =>
+            model.FunctionUnits.Where(sc => sc.Integration.Count > 0).ToList().ForEach(isc =>
             {
                 var body = Integrations.CreateIntegrationBody(Generator, model.Connections, isc);
                 var main = MethodsGenerator.GenerateStaticMethod(Generator, isc, body);
@@ -78,7 +78,7 @@ namespace Roslyn
         private List<SyntaxNode> GeneratedOperations(MainModel mainModel)
         {
             var operationBody = MethodsGenerator.GetNotImplementatedException(Generator);
-            return mainModel.SoftwareCells
+            return mainModel.FunctionUnits
                 .Where(softwareCell => softwareCell.Integration.Count == 0)
                 .Select(softwareCell => MethodsGenerator.GenerateStaticMethod(Generator, softwareCell, operationBody))
                 .ToList();
@@ -130,7 +130,7 @@ namespace Roslyn
 
     public class GeneratedLocalVariable
     {
-        public SoftwareCell Source;
+        public FunctionUnit Source;
         public string VariableName;
         public IEnumerable<NameType> NameTypes;
     }
@@ -140,13 +140,13 @@ namespace Roslyn
     //{
     //    public string LocalName = string.Empty;
     //    public string LocalType = string.Empty;
-    //    public ISoftwareCell SoftwareCell = null;
+    //    public ISoftwareCell FunctionUnit = null;
     //}
 
 
     public class MethodWithParameterDependencies
     {
-        public SoftwareCell OfSoftwareCell;
+        public FunctionUnit OfFunctionUnit;
         public List<Parameter> Parameters = new List<Parameter>();
     }
 
@@ -162,7 +162,7 @@ namespace Roslyn
     public class Parameter
     {
         public Found FoundFlag;
-        public SoftwareCell Source;
+        public FunctionUnit Source;
         public NameType NeededNameType;
         public bool AsOutput { get; set; }
     }

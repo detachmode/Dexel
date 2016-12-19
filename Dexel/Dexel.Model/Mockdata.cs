@@ -11,14 +11,14 @@ namespace Dexel.Model
         {
 
             var mainModel = new MainModel();
-            var splitter= MainModelManager.AddNewSoftwareCell("Splitt Roman Numerals", mainModel);
+            var splitter= MainModelManager.AddNewFunctionUnit("Splitt Roman Numerals", mainModel);
 
             MainModelManager.AddNewInput(splitter, "RomanNumber", actionName:".test");
-            var convertEach = MainModelManager.AddNewSoftwareCell("Convert to decimal", mainModel);
-            MainModelManager.ConnectTwoCells(splitter, convertEach, "Roman Numeral*", "Roman Numeral*", mainModel, actionName:".eachSplitted");
+            var convertEach = MainModelManager.AddNewFunctionUnit("Convert to decimal", mainModel);
+            MainModelManager.ConnectTwoFunctionUnits(splitter, convertEach, "Roman Numeral*", "Roman Numeral*", mainModel, actionName:".eachSplitted");
 
-            var negatelogicID = MainModelManager.AddNewSoftwareCell("Negate when larger", mainModel);
-            MainModelManager.ConnectTwoCells(convertEach, negatelogicID, "Decimal*", "Decimal*", mainModel);
+            var negatelogicID = MainModelManager.AddNewFunctionUnit("Negate when larger", mainModel);
+            MainModelManager.ConnectTwoFunctionUnits(convertEach, negatelogicID, "Decimal*", "Decimal*", mainModel);
 
 
             return mainModel;
@@ -29,17 +29,17 @@ namespace Dexel.Model
         {
 
             var testModel = new MainModel();
-            var first = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            var first = MainModelManager.AddNewFunctionUnit("Random Name", testModel);
             first.Position = new Point(20, 50);
             MainModelManager.AddNewInput(first, "");
 
-            var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
+            var alter = MainModelManager.AddNewFunctionUnit("Random Age", testModel);
              alter.Position = new Point(280, 50);
-            MainModelManager.ConnectTwoCells(first, alter, "string", "", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(first, alter, "string", "", testModel);
 
-            var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
+            var person = MainModelManager.AddNewFunctionUnit("Create Person", testModel);
             person.Position = new Point(540, 50);
-            MainModelManager.ConnectTwoCells(alter, person, "int ","int, string", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(alter, person, "int ","int, string", testModel);
             var definition = DataStreamManager.NewDefinition(person, "Person");
             person.OutputStreams.Add(definition);
 
@@ -51,29 +51,29 @@ namespace Dexel.Model
         {
 
             var testModel = new MainModel();
-            var first = MainModelManager.AddNewSoftwareCell("Random Name", testModel);
+            var first = MainModelManager.AddNewFunctionUnit("Random Name", testModel);
             first.Position = new Point(20, 50);
             MainModelManager.AddNewInput(first, "");
 
-            var firstOp = MainModelManager.AddNewSoftwareCell("Operation", testModel);
+            var firstOp = MainModelManager.AddNewFunctionUnit("Operation", testModel);
             firstOp.Position = new Point(-60, 180);
             MainModelManager.AddNewOutput(firstOp, "");
             MainModelManager.AddNewInput(firstOp, "");
             first.Integration.Add(firstOp);
-            var firstOp2 = MainModelManager.AddNewSoftwareCell("Operation", testModel);
+            var firstOp2 = MainModelManager.AddNewFunctionUnit("Operation", testModel);
             
             firstOp2.Position = new Point(160, 180);
             MainModelManager.AddNewOutput(firstOp2, "");
             MainModelManager.AddNewInput(firstOp2, "");
             first.Integration.Add(firstOp2);
 
-            var alter = MainModelManager.AddNewSoftwareCell("Random Age", testModel);
+            var alter = MainModelManager.AddNewFunctionUnit("Random Age", testModel);
             alter.Position = new Point(280, 50);
-            MainModelManager.ConnectTwoCells(first, alter, "name:string", "", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(first, alter, "name:string", "", testModel);
 
-            var person = MainModelManager.AddNewSoftwareCell("Create Person", testModel);
+            var person = MainModelManager.AddNewFunctionUnit("Create Person", testModel);
             person.Position = new Point(540, 50);
-            MainModelManager.ConnectTwoCells(alter, person, "age:int ","age:int, name:string", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(alter, person, "age:int ","age:int, name:string", testModel);
             var definition = DataStreamManager.NewDefinition(person, "rndPerson:Person");
             person.OutputStreams.Add(definition);
 
@@ -86,11 +86,11 @@ namespace Dexel.Model
         {
 
             var testModel = new MainModel();
-            var first = MainModelManager.AddNewSoftwareCell("foo", testModel);
+            var first = MainModelManager.AddNewFunctionUnit("foo", testModel);
             first.Position = new Point(80, 50);
             MainModelManager.AddNewInput(first, "()");
 
-            var firstOp = MainModelManager.AddNewSoftwareCell("subbar", testModel);
+            var firstOp = MainModelManager.AddNewFunctionUnit("subbar", testModel);
             firstOp.Position = new Point(80, 180);
             MainModelManager.AddNewInput(firstOp, "()");
             MainModelManager.AddNewOutput(firstOp, "(age:int)");
@@ -101,9 +101,9 @@ namespace Dexel.Model
             var sublist = new List<SubDataType> { inttype, nametype };
             testModel.DataTypes.Add(new CustomDataType() { Name = "Person", SubDataTypes = sublist });
 
-            var person = MainModelManager.AddNewSoftwareCell("create person", testModel);
+            var person = MainModelManager.AddNewFunctionUnit("create person", testModel);
             person.Position = new Point(450, 50);
-            MainModelManager.ConnectTwoCells(first, person, "(age:int)", "(age:int, name:string)", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(first, person, "(age:int)", "(age:int, name:string)", testModel);
             MainModelManager.AddNewOutput(person, "(rndPerson:Person)");
 
 

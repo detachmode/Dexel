@@ -18,7 +18,7 @@
 			 d:DesignHeight="300" d:DesignWidth="700">
     <UserControl.Resources>
         <ContextMenu x:Key="MyContextMenu">
-            <MenuItem Header="Add Celldaw" Click="AddNewCell_Click" />
+            <MenuItem Header="Add Celldaw" Click="AddNewFunctionUnit_Click" />
             <MenuItem Header="Paste" Click="Paste_click" />
         </ContextMenu>
     </UserControl.Resources>
@@ -47,15 +47,15 @@
 							<customControls:IntegrationBorders
 								FillColor="{StaticResource FillPointerBrush}"
 								Thickness="2"
-								TopWidth="{Binding CellWidth}"
+								TopWidth="{Binding Width}"
 								End="{Binding IntegrationEndPosition}"
 								Start="{Binding IntegrationStartPosition}" Opacity="0.4">
 								<customControls:IntegrationBorders.TopPoint>
 									<MultiBinding Converter="{StaticResource IntegrationBorderTopPointConverter}">
 										<MultiBinding.Bindings>
 											<Binding Path="Model.Position" />
-											<Binding Path="CellWidth" />
-											<Binding Path="CellHeight" />
+											<Binding Path="Width" />
+											<Binding Path="Height" />
 										</MultiBinding.Bindings>
 									</MultiBinding>
 								</customControls:IntegrationBorders.TopPoint>
@@ -69,12 +69,12 @@
 				<!--
 				SoftwareCells
 				-->
-				<customControls:SelectionItemsControl x:Name="SoftwareCellsList" Background="Transparent"
+				<customControls:SelectionItemsControl x:Name="FunctionUnitsList" Background="Transparent"
 													  ItemsPanel="{StaticResource DrawingBoardItemControl}"
 													  VerticalContentAlignment="Stretch"
 													  HorizontalContentAlignment="Stretch"
 													
-													  ItemsSource="{Binding SoftwareCells}" BorderBrush="{x:Null}">
+													  ItemsSource="{Binding FunctionUnits}" BorderBrush="{x:Null}">
 					<customControls:SelectionItemsControl.ItemContainerStyle>
 						<Style>
 							<!--ReSharper disable once Xaml.BindingWithContextNotResolved-->
@@ -89,12 +89,12 @@
 						<DataTemplate>
 							<Grid
 								Margin="0,2,2,2">
-								<drawingBoard:IOCell x:Name="IoCell"
+								<drawingBoard:FunctionUnitView x:Name="IoCell"
 									Cursor="Hand"
 								   
-									MouseDown="IOCell_MouseDown"
-									MouseUp="IOCell_MouseUp"
-									MouseMove="IOCell_MouseMove" />
+									MouseDown="FunctionUnit_MouseDown"
+									MouseUp="FunctionUnit_MouseUp"
+									MouseMove="FunctionUnit_MouseMove" />
 							</Grid>
 						</DataTemplate>
 					</customControls:SelectionItemsControl.ItemTemplate>

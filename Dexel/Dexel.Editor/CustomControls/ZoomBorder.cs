@@ -114,25 +114,25 @@ namespace Dexel.Editor.CustomControls
                 Debug.WriteLine(st.ScaleX);
                 if (st.ScaleX < 0.21 || st.ScaleY < 0.21)
                 {
-                    MainViewModel.Instance().FontSizeCell = 32;
+                    MainViewModel.Instance().FontSizeFunctionUnit = 32;
                     MainViewModel.Instance().VisibilityBlockTextBox = Visibility.Visible;
                     MainViewModel.Instance().VisibilityDatanames = Visibility.Hidden;
                 }
                 if (st.ScaleX < 0.51 || st.ScaleY < 0.51)
                 {
-                    MainViewModel.Instance().FontSizeCell = 22;
+                    MainViewModel.Instance().FontSizeFunctionUnit = 22;
                     MainViewModel.Instance().VisibilityBlockTextBox = Visibility.Visible;
                     MainViewModel.Instance().VisibilityDatanames = Visibility.Hidden;
                 }
                 else if (st.ScaleX < 0.71 || st.ScaleY < 0.71)
                 {
-                    MainViewModel.Instance().FontSizeCell = 16;
+                    MainViewModel.Instance().FontSizeFunctionUnit = 16;
                     MainViewModel.Instance().VisibilityDatanames = Visibility.Hidden;
                     MainViewModel.Instance().VisibilityBlockTextBox = Visibility.Visible;
                 }
                 else
                 {
-                    MainViewModel.Instance().FontSizeCell = 12;
+                    MainViewModel.Instance().FontSizeFunctionUnit = 12;
                     MainViewModel.Instance().VisibilityBlockTextBox = Visibility.Hidden;
                     MainViewModel.Instance().VisibilityDatanames = Visibility.Visible;
                 }

@@ -20,7 +20,7 @@ namespace Dexel.Editor.Views.DataTypeEditor
 
         public void FocusDataType(CustomDataType customDataType)
         {
-            MainViewModel.Instance().SelectedSoftwareCells.Clear();
+            MainViewModel.Instance().SelectedFunctionUnits.Clear();
 
             DataTypeEditor.DataTypeCard frameworkelement = null;
             DataTypeViewModel viewmodel = null;

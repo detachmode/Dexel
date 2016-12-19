@@ -9,20 +9,20 @@ namespace Dexel.Editor.DebuggingHelper
 
     public static class DebugPrinter
     {
-        public static void PrintRecursive(SoftwareCell cell)
+        public static void PrintRecursive(FunctionUnit fu)
         {
-            //PrintOutputs(cell);
-            //var destinations = cell.OutputStreams.SelectMany(stream => stream.Destinations).ToList();
+            //PrintOutputs(fu);
+            //var destinations = fu.OutputStreams.SelectMany(stream => stream.Destinations).ToList();
             //destinations.ForEach(PrintRecursive);
         }
 
 
-        public static void PrintOutputs(List<SoftwareCell> cell)
+        public static void PrintOutputs(List<FunctionUnit> fu)
         {
-            //Console.WriteLine(@"// Outputs of " + cell.Name + ":");
-            //cell.OutputStreams.ToList().ForEach(dataStream =>
+            //Console.WriteLine(@"// Outputs of " + fu.Name + ":");
+            //fu.OutputStreams.ToList().ForEach(dataStream =>
             //{
-            //    PrintStreamHeader(cell, dataStream);
+            //    PrintStreamHeader(fu, dataStream);
             //    PrintDestinations(dataStream);
             //});
         }
@@ -33,23 +33,23 @@ namespace Dexel.Editor.DebuggingHelper
         }
 
 
-        private static void PrintStreamHeader(SoftwareCell cell, DataStream stream)
+        private static void PrintStreamHeader(FunctionUnit fu, DataStream stream)
         {
-              Console.WriteLine(cell.Name + @" - ( " + stream.DataNames + @" ) -> ");
+              Console.WriteLine(fu.Name + @" - ( " + stream.DataNames + @" ) -> ");
         }
 
 
-        public static void PrintIntegration(SoftwareCell cell)
+        public static void PrintIntegration(FunctionUnit fu)
         {
-            if (cell.Integration == null) return;
-            PrintIntegrationHeader(cell);
-            PrintOutputs(cell.Integration);
+            if (fu.Integration == null) return;
+            PrintIntegrationHeader(fu);
+            PrintOutputs(fu.Integration);
         }
 
 
-        private static void PrintIntegrationHeader(SoftwareCell cell)
+        private static void PrintIntegrationHeader(FunctionUnit fu)
         {
-            Console.WriteLine(@"// " + cell.Name + @" is integrating: " + cell.Integration.First().Name);
+            Console.WriteLine(@"// " + fu.Name + @" is integrating: " + fu.Integration.First().Name);
         }
 
         public static void PrintConnections(MainModel mainModel)
@@ -62,12 +62,12 @@ namespace Dexel.Editor.DebuggingHelper
                 Console.WriteLine(@"{0} - {1} -> {2} ", x.Sources.First().Parent.Name, x.DataNames, x.Destinations.First().Parent.Name));
         }
 
-        public static void PrintSoftwareCells(MainModel mainModel)
+        public static void PrintFunctionUnits(MainModel mainModel)
         {
             Console.WriteLine(@"---------------------");
-            Console.WriteLine(@"-- SoftwareCells ----");
+            Console.WriteLine(@"-- FunctionUnits ----");
             Console.WriteLine(@"---------------------");
-            mainModel.SoftwareCells.ForEach(
+            mainModel.FunctionUnits.ForEach(
                 x =>
                 {
                     Console.WriteLine("\nName: {0}", x.Name);

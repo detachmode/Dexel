@@ -13,6 +13,6 @@ namespace Dexel.Model.DataTypes
         public bool Connected { get;  set; }
         public string DataNames { get;  set; }
         [XmlIgnore]
-        public SoftwareCell Parent { get;  set; }
+        public FunctionUnit Parent { get;  set; }
     }
 }

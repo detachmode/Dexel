@@ -108,7 +108,7 @@ namespace Dexel.Editor.Converter
         }
     }
 
-    public class SoftwareCellTextfieldBG : IValueConverter
+    public class FunctionUnitTextfieldBG : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -118,7 +118,7 @@ namespace Dexel.Editor.Converter
                 return Brushes.Transparent;
                 
             }
-            return Application.Current.Resources["FillSoftwareCellBrush"];
+            return Application.Current.Resources["FillFunctionUnitBrush"];
         }
 
 
@@ -151,7 +151,7 @@ namespace Dexel.Editor.Converter
         }
     }
 
-    public class IOCellSelectionConverter : IValueConverter
+    public class FunctionUnitSelectionConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

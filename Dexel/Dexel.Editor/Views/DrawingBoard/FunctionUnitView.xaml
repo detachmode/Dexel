@@ -6,9 +6,9 @@
     xmlns:views="clr-namespace:Dexel.Editor.Views"
     xmlns:drawingBoard="clr-namespace:Dexel.Editor.Views.DrawingBoard"
     xmlns:drawingBoard1="clr-namespace:Dexel.Editor.ViewModels.DrawingBoard"
-    x:Class="Dexel.Editor.Views.DrawingBoard.IOCell"
-    x:Name="TheIoCell"
-    d:DataContext="{d:DesignInstance drawingBoard1:IOCellViewModel, IsDesignTimeCreatable=True}"
+    x:Class="Dexel.Editor.Views.DrawingBoard.FunctionUnitView"
+    x:Name="TheFunctionUnit"
+    d:DataContext="{d:DesignInstance drawingBoard1:FunctionUnitViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -61,7 +61,7 @@
             ContextMenu="{StaticResource MyContextMenu}"
             MinHeight="60"
             Orientation="Horizontal">
-            <drawingBoard:SoftwareCell x:Name="Fu"
+            <drawingBoard:FunctionUnitBody x:Name="Fu"
                                        Focusable="False"
                                        LabelContent="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <ItemsControl VerticalAlignment="Center"                         

@@ -10,13 +10,13 @@
         <Label>Mouse:</Label>
         <Label>Middle Mouse Drag : move canvas</Label>
         <Label>Mouse Wheel : zoom</Label>
-        <Label>Ctrl + Mouse drag : move software cell with its children</Label>
-        <Label>Shift + Mouse drag : duplicate dragged / selected software cells</Label>
+        <Label>Ctrl + Mouse drag : move software fu with its children</Label>
+        <Label>Shift + Mouse drag : duplicate dragged / selected software fus</Label>
         <Label></Label>
         <Label>Keyboard:</Label>
-        <Label>Ctrl + Tab : append new software cell</Label>
-        <Label>Enter  : new/first software cell as parent</Label>
-        <Label>Delete : delete selected software cells</Label>
+        <Label>Ctrl + Tab : append new software fu</Label>
+        <Label>Enter  : new/first software fu as parent</Label>
+        <Label>Delete : delete selected software fus</Label>
         <Label>Tab : cycle through text fields</Label>
         <Label>Shift + Tab : Cycle through text fields backwards</Label>
         

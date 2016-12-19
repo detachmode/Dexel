@@ -6,14 +6,14 @@ using System.Windows.Media;
 namespace Dexel.Editor.Views.DrawingBoard
 {
     /// <summary>
-    /// Interaktionslogik für SoftwareCell.xaml
+    /// Interaktionslogik für FunctionUnit.xaml
     /// </summary>
-    public partial class SoftwareCell
+    public partial class FunctionUnitBody
     {
         public List<LineGeometry> EndLines { get; private set; }
         public List<LineGeometry> StartLines { get; private set; }
 
-        public SoftwareCell()
+        public FunctionUnitBody()
         {
             StartLines = new List<LineGeometry>();
             EndLines = new List<LineGeometry>();
@@ -29,7 +29,7 @@ namespace Dexel.Editor.Views.DrawingBoard
         }
 
         public static readonly DependencyProperty LabelContentProperty =
-          DependencyProperty.Register("LabelContent", typeof(string), typeof(SoftwareCell));
+          DependencyProperty.Register("LabelContent", typeof(string), typeof(FunctionUnitBody));
 
         public SolidColorBrush SelectionColor
         {
@@ -38,7 +38,7 @@ namespace Dexel.Editor.Views.DrawingBoard
         }
 
         public static readonly DependencyProperty SelectionColorProperty =
-          DependencyProperty.Register("SelectionColor", typeof(SolidColorBrush), typeof(SoftwareCell));
+          DependencyProperty.Register("SelectionColor", typeof(SolidColorBrush), typeof(FunctionUnitBody));
 
 
         private void TheTextBox_OnLostFocus(object sender, RoutedEventArgs e)

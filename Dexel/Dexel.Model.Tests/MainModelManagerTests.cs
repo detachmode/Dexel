@@ -18,9 +18,9 @@ namespace Dexel.Model.Tests
         public void TraverseChildrenTest()
         {
             var testmodel = Mockdata.MakeRandomPerson2();
-            var randname = testmodel.SoftwareCells[0];
-            var found = new List<SoftwareCell>();
-            MainModelManager.TraverseChildren(randname, cell => found.Add(cell), testmodel);
+            var randname = testmodel.FunctionUnits[0];
+            var found = new List<FunctionUnit>();
+            MainModelManager.TraverseChildren(randname, fu => found.Add(fu), testmodel);
             Assert.IsTrue(found.Any(sc => sc.Name == "Random Age"));
             Assert.IsTrue(found.Any(sc => sc.Name == "Create Person"));
         }
@@ -28,21 +28,21 @@ namespace Dexel.Model.Tests
 
 
         [TestMethod()]
-        public void DeleteCellTest()
+        public void DeleteFunctionUnitTest()
         {
             var testModel = new MainModel();
-            var main = MainModelManager.AddNewSoftwareCell("Main", testModel);
+            var main = MainModelManager.AddNewFunctionUnit("Main", testModel);
 
-            var firstOp = MainModelManager.AddNewSoftwareCell("Operation 1", testModel);
-            var secondOp = MainModelManager.AddNewSoftwareCell("Operation 2", testModel);
-            var thirdOp = MainModelManager.AddNewSoftwareCell("Operation 3", testModel);
+            var firstOp = MainModelManager.AddNewFunctionUnit("Operation 1", testModel);
+            var secondOp = MainModelManager.AddNewFunctionUnit("Operation 2", testModel);
+            var thirdOp = MainModelManager.AddNewFunctionUnit("Operation 3", testModel);
             main.Integration.Add(firstOp);
 
-            MainModelManager.ConnectTwoCells(firstOp, secondOp, "", "", testModel);
-            MainModelManager.ConnectTwoCells(secondOp, thirdOp, "", "", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(firstOp, secondOp, "", "", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(secondOp, thirdOp, "", "", testModel);
 
-            // first Cell in integration deleted -> assert that only this will get deleted
-            MainModelManager.DeleteCell(firstOp,testModel);
+            // first functionunit in integration deleted -> assert that only this will get deleted
+            MainModelManager.DeleteFunctionUnit(firstOp,testModel);
 
             CollectionAssert.DoesNotContain(main.Integration, firstOp);
             CollectionAssert.Contains(main.Integration, secondOp);
@@ -50,18 +50,18 @@ namespace Dexel.Model.Tests
 
 
             testModel = new MainModel();
-            main = MainModelManager.AddNewSoftwareCell("Main", testModel);
+            main = MainModelManager.AddNewFunctionUnit("Main", testModel);
 
-            firstOp = MainModelManager.AddNewSoftwareCell("Operation 1", testModel);
-            secondOp = MainModelManager.AddNewSoftwareCell("Operation 2", testModel);
-            thirdOp = MainModelManager.AddNewSoftwareCell("Operation 3", testModel);
+            firstOp = MainModelManager.AddNewFunctionUnit("Operation 1", testModel);
+            secondOp = MainModelManager.AddNewFunctionUnit("Operation 2", testModel);
+            thirdOp = MainModelManager.AddNewFunctionUnit("Operation 3", testModel);
             main.Integration.Add(firstOp);
 
-            MainModelManager.ConnectTwoCells(firstOp, secondOp, "", "", testModel);
-            MainModelManager.ConnectTwoCells(secondOp, thirdOp, "", "", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(firstOp, secondOp, "", "", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(secondOp, thirdOp, "", "", testModel);
 
-            // second Cell in integration deleted -> assert that all following will also be removed from integration
-            MainModelManager.DeleteCell(secondOp, testModel);
+            // second functionunit in integration deleted -> assert that all following will also be removed from integration
+            MainModelManager.DeleteFunctionUnit(secondOp, testModel);
 
             CollectionAssert.Contains(main.Integration, firstOp);
             CollectionAssert.DoesNotContain(main.Integration, secondOp);

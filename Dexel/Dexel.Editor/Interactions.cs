@@ -27,23 +27,23 @@ namespace Dexel.Editor
         private static Timer aTimer;
 
 
-        private static readonly List<SoftwareCell> _copiedCells = new List<SoftwareCell>();
+        private static readonly List<FunctionUnit> _copiedFunctionUnits = new List<FunctionUnit>();
         public static bool PickState;
 
 
-        private static SoftwareCell StartPickingAt;
+        private static FunctionUnit StartPickingAt;
 
 
-        public static SoftwareCell AddNewIOCell(Point pos, MainModel mainModel)
+        public static FunctionUnit AddNewFunctionUnit(Point pos, MainModel mainModel)
         {
-            var softwareCell = SoftwareCellsManager.CreateNew();
+            var softwareCell = FunctionUnitManager.CreateNew();
             pos.X -= 100;
             pos.Y -= 20;
             softwareCell.Position = new Point(pos.X, pos.Y);
             softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
             softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
 
-            mainModel.SoftwareCells.Add(softwareCell);
+            mainModel.FunctionUnits.Add(softwareCell);
             ViewRedraw();
             return softwareCell;
         }
@@ -62,33 +62,33 @@ namespace Dexel.Editor
         }
 
 
-        public static void ChangeConnectionDestination(DataStream dataStream, SoftwareCell newdestination,
+        public static void ChangeConnectionDestination(DataStream dataStream, FunctionUnit newdestination,
             MainModel mainModel)
         {
             //MainModelManager.RemoveConnection(dataStream, mainModel);
             DeConnect(dataStream, mainModel);
-            MainModelManager.ConnectTwoCells(dataStream.Sources.First().Parent, newdestination, dataStream.DataNames, "",
+            MainModelManager.ConnectTwoFunctionUnits(dataStream.Sources.First().Parent, newdestination, dataStream.DataNames, "",
                 mainModel);
 
             ViewRedraw();
         }
 
 
-        public static void AddNewOutput(SoftwareCell softwareCell, string datanames)
+        public static void AddNewOutput(FunctionUnit functionUnit, string datanames)
         {
-            MainModelManager.AddNewOutput(softwareCell, datanames);
+            MainModelManager.AddNewOutput(functionUnit, datanames);
             ViewRedraw();
         }
 
 
-        public static void AddNewInput(SoftwareCell softwareCell, string datanames)
+        public static void AddNewInput(FunctionUnit functionUnit, string datanames)
         {
-            MainModelManager.AddNewInput(softwareCell, datanames);
+            MainModelManager.AddNewInput(functionUnit, datanames);
             ViewRedraw();
         }
 
 
-        public static void MoveSoftwareCell(SoftwareCell model, double horizontalChange, double verticalChange)
+        public static void MoveFunctionUnit(FunctionUnit model, double horizontalChange, double verticalChange)
         {
             if (model == null)
             {
@@ -136,10 +136,10 @@ namespace Dexel.Editor
         }
 
 
-        public static void ConnectDangelingConnectionAndSoftwareCell(DataStreamDefinition defintionDSD,
-            SoftwareCell destination, MainModel mainModel)
+        public static void ConnectDangelingConnectionAndFunctionUnit(DataStreamDefinition defintionDSD,
+            FunctionUnit destination, MainModel mainModel)
         {
-            var inputDefinition = SoftwareCellsManager.NewInputDef(destination, "", null);
+            var inputDefinition = FunctionUnitManager.NewInputDef(destination, "", null);
             MainModelManager.ConnectTwoDefintions(defintionDSD, inputDefinition, mainModel);
 
             ViewRedraw();
@@ -147,10 +147,10 @@ namespace Dexel.Editor
 
 
         public static void DeleteDatastreamDefiniton(DataStreamDefinition dataStreamDefinition,
-            SoftwareCell softwareCell)
+            FunctionUnit functionUnit)
         {
-            softwareCell.InputStreams.RemoveAll(x => x == dataStreamDefinition);
-            softwareCell.OutputStreams.RemoveAll(x => x == dataStreamDefinition);
+            functionUnit.InputStreams.RemoveAll(x => x == dataStreamDefinition);
+            functionUnit.OutputStreams.RemoveAll(x => x == dataStreamDefinition);
             ViewRedraw();
         }
 
@@ -199,7 +199,7 @@ namespace Dexel.Editor
         {
             Console.Clear();
             DebugPrinter.PrintConnections(mainModel);
-            DebugPrinter.PrintSoftwareCells(mainModel);
+            DebugPrinter.PrintFunctionUnits(mainModel);
         }
 
 
@@ -248,52 +248,52 @@ namespace Dexel.Editor
             var loadedMainModel = loader?.Invoke(fileName);
 
             mainModel.Connections.AddRange(loadedMainModel.Connections);
-            mainModel.SoftwareCells.AddRange(loadedMainModel.SoftwareCells);
+            mainModel.FunctionUnits.AddRange(loadedMainModel.FunctionUnits);
 
             ViewRedraw();
         }
 
 
-        public static void Delete(IEnumerable<SoftwareCell> softwareCells, MainModel mainModel)
+        public static void Delete(IEnumerable<FunctionUnit> softwareCells, MainModel mainModel)
         {
-            softwareCells.ForEach(sc => MainModelManager.DeleteCell(sc, mainModel));
+            softwareCells.ForEach(sc => MainModelManager.DeleteFunctionUnit(sc, mainModel));
             ViewRedraw();
         }
 
 
-        public static void Copy(List<SoftwareCell> softwareCells, MainModel mainModel)
+        public static void Copy(List<FunctionUnit> softwareCells, MainModel mainModel)
         {
-            _copiedCells.Clear();
-            softwareCells.ForEach(_copiedCells.Add);
+            _copiedFunctionUnits.Clear();
+            softwareCells.ForEach(_copiedFunctionUnits.Add);
         }
 
 
         public static void Paste(Point positionClicked, MainModel mainModel)
         {
-            if (_copiedCells.Count == 0)
+            if (_copiedFunctionUnits.Count == 0)
                 return;
 
-            var copiedList = MainModelManager.Duplicate(_copiedCells, mainModel);
-            MainModelManager.MoveCellsToClickedPosition(positionClicked, copiedList);
+            var copiedList = MainModelManager.Duplicate(_copiedFunctionUnits, mainModel);
+            MainModelManager.MoveFunctionUnitsToClickedPosition(positionClicked, copiedList);
 
             ViewRedraw();
         }
 
 
-        public static void StartPickIntegration(SoftwareCell softwareCell)
+        public static void StartPickIntegration(FunctionUnit functionUnit)
         {
             PickState = true;
             Mouse.OverrideCursor = Cursors.Cross;
-            StartPickingAt = softwareCell;
+            StartPickingAt = functionUnit;
         }
 
 
-        private static List<SoftwareCell> _toMove = new List<SoftwareCell>();
-        public static void MoveIOCellIncludingChildrenAndIntegrated(SoftwareCell softwareCell, Vector dragDelta,
+        private static List<FunctionUnit> _toMove = new List<FunctionUnit>();
+        public static void MoveFunctionUnitIncludingChildrenAndIntegrated(FunctionUnit functionUnit, Vector dragDelta,
             MainModel mainModel)
         {
             _toMove.Clear();
-            _toMove = MainModelManager.GetChildrenAndIntegrated(softwareCell, _toMove, mainModel);
+            _toMove = MainModelManager.GetChildrenAndIntegrated(functionUnit, _toMove, mainModel);
 
             _toMove.ForEach(sc => sc.MovePosition(dragDelta));
 
@@ -301,31 +301,31 @@ namespace Dexel.Editor
         }
 
 
-        public static SoftwareCell DuplicateIOCellIncludingChildrenAndIntegrated(SoftwareCell softwareCell, MainModel mainModel)
+        public static FunctionUnit DuplicateFunctionUnitIncludingChildrenAndIntegrated(FunctionUnit functionUnit, MainModel mainModel)
         {
             _toMove.Clear();
-            _toMove = MainModelManager.GetChildrenAndIntegrated(softwareCell, _toMove, mainModel);
+            _toMove = MainModelManager.GetChildrenAndIntegrated(functionUnit, _toMove, mainModel);
 
             var copiedcells = MainModelManager.Duplicate(_toMove, mainModel);
 
             ViewRedraw();
 
-            return copiedcells.First(x => x.OriginGuid == softwareCell.ID).NewCell;
+            return copiedcells.First(x => x.OriginGuid == functionUnit.ID).NewFunctionUnit;
         }
 
 
 
 
-        public static void SetPickedIntegration(SoftwareCell softwareCell, MainModel mainModel)
+        public static void SetPickedIntegration(FunctionUnit functionUnit, MainModel mainModel)
         {
-            MainModelManager.MakeIntegrationIncludingAllConnected(StartPickingAt, softwareCell, mainModel);
+            MainModelManager.MakeIntegrationIncludingAllConnected(StartPickingAt, functionUnit, mainModel);
             ViewRedraw();
         }
 
 
-        public static void RemoveFromIntegration(SoftwareCell softwareCell, MainModel mainModel)
+        public static void RemoveFromIntegration(FunctionUnit functionUnit, MainModel mainModel)
         {
-            MainModelManager.RemoveAllConnectedFromIntegration(softwareCell, mainModel);
+            MainModelManager.RemoveAllConnectedFromIntegration(functionUnit, mainModel);
             ViewRedraw();
         }
 
@@ -333,18 +333,18 @@ namespace Dexel.Editor
         public static object TabStopGetNext(object focusedModel, MainModel mainModel)
         {
             object @return = null;
-            focusedModel.TryCast<SoftwareCell>(cell =>
+            focusedModel.TryCast<FunctionUnit>(fu =>
             {
                 // prefer connected outputs as next tabstop
                 // if no connected take first output defintion if there are any
-                if (cell.OutputStreams.Any(dsd => dsd.Connected))
+                if (fu.OutputStreams.Any(dsd => dsd.Connected))
                 {
-                    var connectedDsd = cell.OutputStreams.First(dsd => dsd.Connected);
+                    var connectedDsd = fu.OutputStreams.First(dsd => dsd.Connected);
                     @return = mainModel.Connections.First(c => c.Sources.Contains(connectedDsd));
                 } 
-                else if (cell.OutputStreams.Any()) 
+                else if (fu.OutputStreams.Any()) 
                 {
-                    @return = cell.OutputStreams.First();
+                    @return = fu.OutputStreams.First();
                 }
             });
 
@@ -368,12 +368,12 @@ namespace Dexel.Editor
                         dsd.Parent.OutputStreams.GetFirstConnected(
                             foundConnected: connectedInput =>
                             {
-                                MainModelManager.TraverseChildrenBackwards(connectedInput.Parent, cell =>
+                                MainModelManager.TraverseChildrenBackwards(connectedInput.Parent, fu =>
                                 {
-                                    if (cell.OutputStreams.Any())
-                                        @return = cell.OutputStreams.First();
+                                    if (fu.OutputStreams.Any())
+                                        @return = fu.OutputStreams.First();
                                     else
-                                        @return = cell;
+                                        @return = fu;
 
                                 }, mainModel);
                             },
@@ -386,16 +386,16 @@ namespace Dexel.Editor
         public static object TabStopGetPrevious(object focusedModel, MainModel mainModel)
         {
             object @return = null;
-            focusedModel.TryCast<SoftwareCell>(cell =>
+            focusedModel.TryCast<FunctionUnit>(fu =>
             {
-                if (cell.InputStreams.Any(dsd => dsd.Connected))
+                if (fu.InputStreams.Any(dsd => dsd.Connected))
                 {
-                    var connectedDsd = cell.InputStreams.First(dsd => dsd.Connected);
+                    var connectedDsd = fu.InputStreams.First(dsd => dsd.Connected);
                     @return = mainModel.Connections.First(c => c.Destinations.Contains(connectedDsd));
                 }
-                else if (cell.InputStreams.Any())
+                else if (fu.InputStreams.Any())
                 {
-                    @return = cell.InputStreams.First();
+                    @return = fu.InputStreams.First();
                 }
             });
 
@@ -414,12 +414,12 @@ namespace Dexel.Editor
 
                 if (dsd.IsInput())
                     if (softwareCell.OutputStreams.Any(x => x.Connected))
-                        MainModelManager.TraverseChildren(softwareCell, cell =>
+                        MainModelManager.TraverseChildren(softwareCell, fu =>
                         {
-                            if (cell.OutputStreams.Any())
-                                @return = cell.OutputStreams.First();
+                            if (fu.OutputStreams.Any())
+                                @return = fu.OutputStreams.First();
                             else
-                                @return = cell;
+                                @return = fu;
 
                         }, mainModel);
                     else if (softwareCell.OutputStreams.Any())
@@ -431,21 +431,21 @@ namespace Dexel.Editor
         }
 
 
-        public static void Cut(List<SoftwareCell> softwareCells, MainModel mainModel)
+        public static void Cut(List<FunctionUnit> softwareCells, MainModel mainModel)
         {
 
-            _copiedCells.Clear();
-            softwareCells.ForEach(_copiedCells.Add);
+            _copiedFunctionUnits.Clear();
+            softwareCells.ForEach(_copiedFunctionUnits.Add);
 
-            softwareCells.ForEach(sc => MainModelManager.DeleteCell(sc, mainModel));
+            softwareCells.ForEach(sc => MainModelManager.DeleteFunctionUnit(sc, mainModel));
             ViewRedraw();
 
         }
 
 
-        public static object AppendNewCell(SoftwareCell focusedcell, double width, DataStreamDefinition dataStreamDefinition, MainModel mainModel)
+        public static object AppendNewFunctionUnit(FunctionUnit focusedcell, double width, DataStreamDefinition dataStreamDefinition, MainModel mainModel)
         {
-            var softwareCell = SoftwareCellsManager.CreateNew();
+            var softwareCell = FunctionUnitManager.CreateNew();
             softwareCell.Position = focusedcell.Position;
             softwareCell.MoveX(width);
 
@@ -454,7 +454,7 @@ namespace Dexel.Editor
 
             MainModelManager.ConnectTwoDefintions(dataStreamDefinition, softwareCell.InputStreams.First(), mainModel);
 
-            mainModel.SoftwareCells.Add(softwareCell);
+            mainModel.FunctionUnits.Add(softwareCell);
             ViewRedraw();
 
             return softwareCell;
@@ -467,7 +467,7 @@ namespace Dexel.Editor
         /// <param name="focusedcell">the softwarecell that is currently selected</param>
         /// <param name="mainModel">the mainmodel from the view</param>
         /// <returns>the model that was created or the first integrated softwarecell if it already had one</returns>
-        public static object NewOrFirstIntegrated(SoftwareCell focusedcell, MainModel mainModel)
+        public static object NewOrFirstIntegrated(FunctionUnit focusedcell, MainModel mainModel)
         {
             object @return = null;
 
@@ -475,7 +475,7 @@ namespace Dexel.Editor
                 isIntegration: () => @return = focusedcell.Integration.First(),
                 isNotIntegration: () =>
                 {
-                    var softwareCell = SoftwareCellsManager.CreateNew();
+                    var softwareCell = FunctionUnitManager.CreateNew();
                     softwareCell.Position = focusedcell.Position;
                     softwareCell.MoveY(100);
 
@@ -483,7 +483,7 @@ namespace Dexel.Editor
                     softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
 
                     focusedcell.Integration.AddUnique(softwareCell);
-                    mainModel.SoftwareCells.Add(softwareCell);
+                    mainModel.FunctionUnits.Add(softwareCell);
 
                     @return = softwareCell;
                     ViewRedraw();
