@@ -1,0 +1,339 @@
+* Realisierung ( ~ 20- 30 Seiten )
+In diesem Kapitel soll vorgestellt werden, was in dem Zeitraum dieser
+Bachelorarbeit erreicht wurde. Es soll die Funktionalität des Editors
+anhand von Screenshots vorgestellt werden und die Architekur die selbst nach
+Flow Design umgesetzt wurde. 
+
+Als Arbeitstitel für die Anwendung wurde der Name Dexel gewählt.
+
+** Übersicht über die unterschiedlichen Projekte
+
+Die Anwendung besteht aus einer Solution, die aus folgenden Projekten:
+(Fußnote: Bei komplexen Funktionalitäten wurde nach TDD (Test Driven Development)
+programmiert, bei dem zuerst der Test geschrieben wird, der das zu erwartende
+Ergebnis definiert, und anschließend wurd die Methode erst implementiert, diese
+Tests werden in einem extra Test-Projekt für jedes Projekt zusammengefasst)
+
+*** Dexel.Model / Dexel.Model.Tests
+    Dieses Projekt beinhaltet alle Datentypen die zur internen Repräsentation
+    eines Flow Design Diagrammes nötig sind. Außerdem beinhaltet dieses Projekt
+    statische Manager-Klassen, die das Arbeiten mit den Datentypen vereinfachen.
+
+*** Dexel.Editor / Dexel.Editor.Tests
+    Das Hauptprojekt, das alle anderen Projekte integriert. Hier wurde das IOSP
+    Prinzip nicht eingehalten. Dieses Projekt hat nicht nur die Aufgabe die
+    anderen Projekte zu integrieren, sondern beinhaltet selbst den
+    UI-Sourcecode. Diese Entscheidung wurde gefällt, da ein Extrahieren der UI
+    in ein anderes Projekt sich als zu schwierig erwies. Eine Lösung dafür zu
+    finden, wie ein Event aus dem UI mit einer Funktionalität verbunden werden
+    könnte, aus einem Projekt, welches es selbst nicht, war zeitlich zu
+    aufwendig. Aus diesem Grund wurde entschieden auf die zusätzliche
+    Komplexität einer Entkoppelung zu verzichten und der Einfachheit halber
+    dieses Projekt als UI und integrierendes Projekt zu nutzen.
+
+*** Roslyn / Rosyln.Tests
+    Diese Projekt beinhaltet die Logik zur Erstellung von C#-Code aus einem Flow
+    Design. Mircosoft Rosyln ist die Technik, die hier zum Erstellen von Code zum
+    Einsatz kommt.
+    Das Flow Design Diagramm muss in Form eines Mainmodels aus dem
+    Dexel.Model Projekt vorliegen. Aus diesem Grund gibt es eine Abhängigkeit
+    zwischen diesem Projekt und dem Dexel.Model Projekt. 
+
+    Eine Trennung dieser Abhängigkeit wurde versucht umzusetzen indem gegen ein Interface
+    programmiert wurde, anstatt gegen die konkrete Implementation in
+    Dexel.Model. Diese Interfaces der Datentypen und Manager-Klassen wurde dann
+    in ein Contracts-Projekt ausgelagert, von dem alle anderen Projekte abhängig
+    sein durften. Die zusätzliche Komplexität, Mehraufwand und ein Problem bei
+    der Serialisierung von Datentypen, bestehend aus weiteren Interfaces als
+    Properties, machte die Entkoppelung nicht wert und der Beschluss auf die
+    Interfaces zu verzichten wurde gefällt.
+    
+*** Dexel.Library
+    Beinhaltet einige Methoden ( meist Extension-Methoden), die ein Arbeiten
+    nach Flow Design erleichter. Diese wurden in ein separates Projekt
+    ausgelagert, damit alle anderen Projekte darauf zugreifen können.
+
+** Das Model
+   Um nachfolgende Kapitel der Realisierung und die darin enthaltenden
+   Codeauschnitte verstehen zu können, braucht es ein Verständnis darüber, wie die
+   grundlegenden Datentypen des Models aufgebaut sind. Um die Funktionalität der
+   jeweiligen Datentypten besser zu veranschaulichen, werden in diesem Kapitel
+   Bilder verwendet, welche die spätere Darstellung des Datentypen in der UI zeigen.
+
+*** MISSING IMAGES MainModel
+    Das MainModel ist, wie der Name schon sagt, das oberste Model, das alle
+    anderen Modelle per Komposition beinhaltet. Somit kann man eine Objektinstanz
+    eines MainModels an eine Methode übergeben und diese Instanz beinhaltet alle
+    Informationen über das aktuelle Flow Design Diagramm. 
+    Das MainModel beinhaltet alle Funktonseinheiten (=SoftwareCells=), alle verbindende
+    Datenströme (=Connections=) und alle benutzerdefinierten Datentypen (=DataTypes=).
+
+#+BEGIN_SRC cpp 
+    [ImplementPropertyChanged]
+    public class MainModel
+    {
+        public List<SoftwareCell> SoftwareCells { get; set; }
+        public List<DataStream> Connections { get;  set; }
+        public List<DataType> DataTypes { get; set; } 
+    }
+#+END_SRC
+
+*** MISSING IMAGES SoftwareCell
+    In Anlehnung an den Gedanken der Softwarezellen-Architekur und den Schluss
+    daraus, dass auf unterster Ebene eine Funktionseinheit auch als
+    Softwarezellen gedacht werden kann, wurden Funktionseinheiten als
+    Softwarezellen bezeichnet.
+
+#+BEGIN_SRC cpp
+    [ImplementPropertyChanged]
+    public class SoftwareCell
+    {
+        public Guid ID { get; set; }
+        public string Name { get; set; }
+        public Point Position { get; set; }
+        public List<SoftwareCell> Integration { get; set; }
+        public List<DataStreamDefinition> InputStreams { get; set; }
+        public List<DataStreamDefinition> OutputStreams { get; set; }
+    }
+#+END_SRC
+
+    Der Name ist der Name der Funktionseinheit ( der Text, der bei der
+    Darstellung später innhalb des Kreises erscheint). Dieser wird später per Binding
+    direkt an die UI gebunden. Aus diesem Grund implementiert dieses Klasse,
+    genau wie alle anderen des Models, die ImplementPropertyChanged
+    Funktionalität. Diese bewirkt, dass bei einer Änderung im UI automatisch das
+    entsprechende Property im Model aktualisiert wird und umgekehrt.
+
+    Die Position beschreibt die Position der Softwarezelle innherhalb des
+    Diagrammes.  
+
+    Das Integration Property gibt an, ob diese Softwarezelle eine Integration
+    ist und welche andere Instanzen von Softwarezellen sie integriert.
+    Eine leere Liste besagt, dass die Softwarezelle keine Integration ist.
+
+    Die Input- und OutputStreams definieren die möglichen ein- und ausgehenden
+    Datenströme der Softwarezelle. An diese DataStreamDefinitionen können sich DataStreams
+    verbinden. Dadurch lassen sie die Datenflüsse modelieren.
+
+**** MISSING IMAGES DataStreamDefinition
+
+#+BEGIN_SRC cpp
+    [ImplementPropertyChanged]
+    public class DataStreamDefinition
+    {
+        public Guid ID { get;  set; }
+        public string DataNames { get;  set; }
+        public string ActionName { get;  set; }
+        public SoftwareCell Parent { get;  set; }
+        public bool Connected { get;  set; }
+    }
+#+END_SRC
+
+     Eine Funktionseinheit verfügt über ein oder mehrere ein- und ausgehende
+     DataStreamDefinitionen. Diese können verbunden sein oder nicht. Wenn eine
+     Verbindung erstellt und gelöscht wird, muss deshalb auch das Connected
+     Property immer gesetzt werden, damit das Model valide bleibt.
+     Ob eine DataStreamDefinition verbunden ist, oder nicht, ist vorallem später
+     für die Darstellung relevant.
+     Eine DataStreamDefinition kennt auch die Funktionseinheit, von der sie ein
+     Ein- oder Ausgang ist.
+     
+     Eine weitere grundlegende Eigenschaft ist die Benennung der Daten, die in/aus
+     dem Ein-/ Ausgang fließen. Für Ausgänge ist auch die Angabe eines
+     Actionnames manchmal nötig. Dieser soll später unterhalb des Pfeiles
+     dargstellt werden.
+
+*** MISSING IMAGES DataStream (Connections)
+    Um Datenflüsse zwischen Funktionseinheitn zu beschreiben, bedarf es einer
+    Verbindungsklasse. Die DataStream-Klasse stellt diese Verbindungsklasse dar.
+ 
+
+#+BEGIN_SRC cpp
+    [ImplementPropertyChanged]
+    public class DataStream
+    {
+        public Guid ID { get; set; }
+        public string DataNames { get;  set; }
+        public List<DataStreamDefinition> Sources { get;  set; }
+        public List<DataStreamDefinition> Destinations { get;  set; }
+
+    }
+#+END_SRC
+
+    Ein DataStream hat ein oder mehrere Referenzen an DataStreamDefinition als
+    Quellen und ein oder mehrere Referenzen an DataStreamDefinition als Ziele.
+    Um ein Datenstrom zu beschreiben, der aus mehren Quellen Daten bezieht und
+    an einer Stelle zusammenläuft, benötigt man ein DataStream, der mehrer
+    Einträge in der Source-Liste besitzt und ein Eintrag in der
+    Destination-Liste. Diese Datenstrom wäre dann ein Joint-Input.
+    Ein Datenstrom mit einer Quelle und mehreren Zielen wäre ein Joint-Output ( TODO:
+    Referenz auf vorheriges Kapitel)
+    
+    Das DataNames Property stellt den Text dar, der später in der Mitte des
+    Pfeiles dargestellt werden soll. Eine Änderung dieser Eigenschaft bedarf
+    einer Aktualisierung der DataNames aller Sources und Destinations.
+    Eine Aktualisierung muss die optionalen Pipe-Notation kennen und
+    entsprechend dieser die Ein und Ausgänge akutalisieren.
+
+    Der akutelle Stand der UI kann akutell nur Datenflüsse mit einer Quelle und
+    einem Ziel darstellen. Möglicherweise muss hier das Modell noch einmal
+    überarbeitet werden.
+
+*** DataType
+
+
+
+#+BEGIN_SRC cpp
+    [ImplementPropertyChanged]
+    public class DataType
+    {
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public List<DataType> DataTypes { get; set; }
+    }
+#+END_SRC
+
+ 
+
+*** Manager-Klassen
+
+** Der Editor
+*** Vorstellung was erreicht wurde
+
+Die Grundlegenden Basisfunktionen aus Kaptitel 3 wurden größtenteils
+implementiert. Hierbei kamen WPF als GUI-Framework zum Einsatz.
+Bilder und Beschriebungen der GUI und Interaktionen.
+**** Erstellen von Funktionseinheiten, Verschieben, Benennen, Selektieren
+**** Erstellen von weiteren Outputs
+**** Verknüpfen von Funktionseinheiten über Drag and Drop
+**** Erstellen von Integrationen
+**** Navigation und Shortcuts
+     
+
+*** Views / ViewModels
+    Das Projekt wurde nicht strikt nach MVVM-Regeln (Model-View-ViewModel) 
+    umgesetzt, jedoch bedient es sich der Idee, das es eine View gibt, die
+    als Datenkontext ein ViewModel zugewiesen hat. Das zuweisen eines
+    Datenkontextes erlaubt es Elemente der View an Properties des ViewModels zu
+    binden. Ein Binding bewirkt, dass sich die UI-Element automatisch updatet,
+    sobald sich das dazugehörige Property ändert. Eine Änderung einer
+    Eigenschaft des ViewModels ändert also automatisch die View.
+ 
+    Die GUI besteht aus mehreren Views (xaml-Dateien) und dazugehörigen ViewModels.
+    Die Aufgabe des ViewModels besteht vorallem darin, ein Model entgegenzunehmen und dieses
+    darzustellen, bzw. die aktuelle Darstellung zu aktualisieren.
+    
+    Nach jeder Änderung am Model - zum Beispiel das Hinzufügen einer neuen
+    Node -  dieses komplet neu zu laden (Löschen und neu Hinzufügen aller
+    ViewModels, die wiederum ein neu Generieren der UI-Framework-Elemente zur
+    Folge hatte) erwies sich als nicht sehr performant. 
+    Ab Diagrammen, mit über 20 Nodes, stieg die Zeit zur Aktualisierung der View
+    bereits auf mehrere Sekunden an.
+    Die Lösung bestand darin, nicht einfach stur alles zu Löschen und neu
+    hinzuzufügen, sondern darin, die Änderungen am Model zu lokalisieren und nur
+    diese neu zu erstellen, bzw nur die Properties neu zu setzen. Durch
+    diese Verbesserungen wurde die Performance deutlich gesteigert, sodass
+    Diagramme mit mehrern hundert Nodes keine spürbaren Perfomanceverluste mit
+    sich führt. Einzig das Duplizieren von vielen Nodes dauert nach wie vor
+    mehrere Sekunden. 
+
+*** Interaktionen
+    Wie bereits in Kapitel 2 (Abschnitt Entwurfsmethode) schlägt Flow Design
+    vor, alle Events als Interaktionen zu bezeichnen und für jedes dieser
+    Änderungen ein eigenen Flow Design zu erstellen. 
+    Es bietet sich somit an, alle Interaktionen in einer Klasse zu sammeln.
+    Diese bietet somit eine Überblick über alle Funktionalitäten der GUI.
+    Da diese Integrationen sind, sind sie leicht zu verstehen (mit Ausnahmen). Die
+    Interaktionen rufen Methoden von anderen Klassen auf, die die Operationen am
+    Mainmodel vereinfachen. Am Ende fast jeder Interaktion wird die =ViewRedraw=
+    Methode aufgerufen, die das =MainViewModel= veranlasst, das Model neu zu
+    laden und somit die Änderungen der Interaktion in der GUI sichtbar macht.
+    Deshalb erwies es sich als schlecht, wenn eine Interaktion eine andere
+    Interaktion aufruft, um ihre Funktionalität umzusetzen. 
+    Stattdessen war es eine bessere Lösung, den Code der einen Interaktion in
+    die andere zu Kopieren. Dies wiederspricht zwar dem DRY Prinzip, jedoch eine
+    Coderedundanz innerhalb von Integrationen stellt sich als nicht sehr schlimm
+    heraus. Integrationen beinhalten schließlich keine Logik und haben eine hohe
+    Abstraktion.
+    
+    Beispiel dieser Aussage:
+#+BEGIN_SRC cpp
+        public static object AppendNewCell(SoftwareCell focusedcell, double offsetX, DataStreamDefinition dataStreamDefinition, MainModel mainModel)
+        {
+            var softwareCell = SoftwareCellsManager.CreateNew();
+            softwareCell.Position = focusedcell.Position;
+            softwareCell.MoveX(offsetX);
+
+            softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, dataStreamDefinition));
+            softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
+
+            MainModelManager.ConnectTwoDefintions(dataStreamDefinition, softwareCell.InputStreams.First(), mainModel);
+
+            mainModel.SoftwareCells.Add(softwareCell);
+            ViewRedraw();
+
+            return softwareCell;
+        }
+
+
+        public static object NewOrFirstIntegrated(SoftwareCell focusedcell, MainModel mainModel)
+        {
+            object returnValue = null;
+
+            focusedcell.IsIntegration(
+                isIntegration: () => returnValue = focusedcell.Integration.First(), 
+                isNotIntegration: () =>
+                {
+                    var softwareCell = SoftwareCellsManager.CreateNew();
+                    softwareCell.Position = focusedcell.Position;
+                    softwareCell.MoveY(100);
+
+                    softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, focusedcell.InputStreams.First()));
+                    softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
+
+                    focusedcell.Integration.AddUnique(softwareCell);
+                    mainModel.SoftwareCells.Add(softwareCell);
+
+                    returnValue = softwareCell;
+                    ViewRedraw();               
+                });
+
+            return returnValue;
+        }
+
+#+END_SRC
+
+     Beschreibung was der Code macht und wo die Coderedundanzen sind.
+     Beide Methoden sind Methoden aus der Interaktions-Klasse, sind werden also
+     direkt aus einem Event von der GUI ausgelöst. 
+     
+
+ 
+**** MISSING IMAGES Auswirkungen der beiden Interaktionen
+     Die =AppendNewCell= Methode erzeugt eine neue SoftwareCell und und
+     verschiebt diese entlang der X Postion.
+     Außerdem setzt sie den Input gleich der DataStreamDefinition die
+     übergebenen wurde und verbindet diese beiden.
+     =AppendNewCell= wird durch die Tastenkombination Ctrl-Tab ausgelöst, wenn
+     sich der Tastaturfokus innerhalb eines Textfeldes einer View einer Softwarecell oder
+     DatastreamDefinition befindet. Bei ersterem wird der erste unverbunden Output als der
+     DataStreamDefinition genommen, andem die neue SoftwareCell angehängt wird.
+
+     Beide Methoden geben eine
+     Model-Instanz als =object= an die GUI zurück. Die GUI-Logik findet dann die
+     dazugehörige View und setzt den Focus darauf.
+
+*** Eigene Tabstop-Logik
+    Mit Tab und Shift-Tab soll es dem Nutzer möglich sein den Tastaturfokus zu
+    verändern. Dieses Beispiel zeigt auch nochmal, das Coderedundanzen innerhalb
+    von mehreren Integrationen nichts Schlechtes sein muss.
+
+** Roslyn - Generierung von Code aus einem Diagramm
+*** Vorstellung Roslyn
+**** Erzeugung Datentypen als einfaches Beispiel
+*** Erzeugung von Methodensignaturen
+**** Datentypen 
+**** DatanameParser
+*** Erzeugung der Integration-Bodies 
+
+** Generierung eines Diagrammes aus Code
