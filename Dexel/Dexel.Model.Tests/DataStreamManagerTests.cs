@@ -16,7 +16,7 @@ namespace Dexel.Model.Tests
         {
 
             var ds = DataStreamManager.NewDataStream("(int)* | (... string)*");
-            DataStreamManager.SolveWithPipeNotation(ds.DataNames, (s1, s2) =>
+            DataStreamManager.TrySolveWithPipeNotation(ds.DataNames, (s1, s2) =>
             {
                 Assert.AreEqual("(int)*", s1.Trim());
                 Assert.AreEqual("(int, string)*", s2.Trim());
@@ -25,7 +25,7 @@ namespace Dexel.Model.Tests
 
 
             ds = DataStreamManager.NewDataStream("(int) | (string) ");
-            DataStreamManager.SolveWithPipeNotation(ds.DataNames, (s1, s2) =>
+            DataStreamManager.TrySolveWithPipeNotation(ds.DataNames, (s1, s2) =>
             {
                 Assert.AreEqual("(int)", s1.Trim() );
                 Assert.AreEqual("(string)", s2.Trim());
@@ -33,7 +33,7 @@ namespace Dexel.Model.Tests
             
 
             ds = DataStreamManager.NewDataStream("(int, string)");
-            DataStreamManager.SolveWithPipeNotation(ds.DataNames, (s1, s2) => Assert.Fail(), () => {} );
+            DataStreamManager.TrySolveWithPipeNotation(ds.DataNames, (s1, s2) => Assert.Fail(), () => {} );
 
         }
     }

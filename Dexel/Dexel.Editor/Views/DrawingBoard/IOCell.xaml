@@ -16,7 +16,7 @@
             <!--<MenuItem Header="Add New Input" Click="NewInput_click" />-->
             <MenuItem Header="Add New Output" Click="NewOutput_click" />
             <Separator />
-            <MenuItem Header="Make Integration" Click="MakeIntegration_OnClick" />
+            <MenuItem Header="Make to Integration of (pick)" Click="MakeIntegration_OnClick" />
             <MenuItem Header="Remove from Integration" Click="RemoveFromIntegration_OnClick" />
             <Separator />
 

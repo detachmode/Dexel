@@ -190,21 +190,21 @@ namespace Dexel.Model
         }
 
 
-        public static void TraverseChildren(SoftwareCell parent, Action<SoftwareCell> func, MainModel mainModel)
+        public static void TraverseChildren(SoftwareCell parent, Action<SoftwareCell> onEach, MainModel mainModel)
         {
             var foundConnections = mainModel.Connections.Where(c => c.Sources.Any(dsd => dsd.Parent == parent));
             foreach (var connection in foundConnections)
             {
                 connection.Destinations.ForEach(dsd =>
                 {
-                    func(dsd.Parent);
-                    TraverseChildren(dsd.Parent, func, mainModel);
+                    onEach(dsd.Parent);
+                    TraverseChildren(dsd.Parent, onEach, mainModel);
                 });
             }
         }
 
 
-        public static void TraverseChildrenBackwards(SoftwareCell children, Action<SoftwareCell> func,
+        public static void TraverseChildrenBackwards(SoftwareCell children, Action<SoftwareCell> onEach,
             MainModel mainModel)
         {
             var foundConnections = mainModel.Connections.Where(c => c.Destinations.Any(dsd => dsd.Parent == children));
@@ -212,22 +212,22 @@ namespace Dexel.Model
             {
                 connection.Sources.ForEach(dsd =>
                 {
-                    func(dsd.Parent);
-                    TraverseChildrenBackwards(dsd.Parent, func, mainModel);
+                    onEach(dsd.Parent);
+                    TraverseChildrenBackwards(dsd.Parent, onEach, mainModel);
                 });
             }
         }
 
-        public static void TraverseChildrenBackwards(SoftwareCell children, Action<SoftwareCell, DataStream> func,
-            List<DataStream> connections)
+        public static void TraverseChildrenBackwards(SoftwareCell children, Action<SoftwareCell, DataStream> onEach,
+            List<DataStream> allconnections)
         {
-            var foundConnections = connections.Where(c => c.Destinations.Any(dsd => dsd.Parent == children));
+            var foundConnections = allconnections.Where(c => c.Destinations.Any(dsd => dsd.Parent == children));
             foreach (var connection in foundConnections)
             {
                 connection.Sources.ForEach(dsd =>
                 {
-                    func(dsd.Parent, connection);
-                    TraverseChildrenBackwards(dsd.Parent, func, connections);
+                    onEach(dsd.Parent, connection);
+                    TraverseChildrenBackwards(dsd.Parent, onEach, allconnections);
                 });
             }
         }
@@ -248,8 +248,8 @@ namespace Dexel.Model
                 inputsNotConnected: () =>
                     RemoveFromIntegrations(softwareCell, mainModel));
 
+            // remove functionunit itself
             RemoveAllConnectionsToCell(softwareCell, mainModel);
-
             mainModel.SoftwareCells.Remove(softwareCell);
         }
 

@@ -125,16 +125,18 @@ namespace Dexel.Model
             datastream.DataNames = newDatanames;
 
             // update datanames of DSDs
-            SolveWithPipeNotation(newDatanames,
+            TrySolveWithPipeNotation(newDatanames,
                 onSuccess: (outputPart, inputPart) =>
                 {
-                    datastream.Sources.ForEach(dsd => dsd.DataNames = outputPart.Trim());
-                    datastream.Destinations.ForEach(dsd => dsd.DataNames = inputPart.Trim());
+                    // TODO: doesn't support mutliple sources yet
+                    datastream.Sources.First().DataNames = outputPart.Trim();
+                    datastream.Destinations.First().DataNames = inputPart.Trim();
                 },
                 onNoSuccess: () =>
                 {
-                    datastream.Sources.ForEach(dsd => dsd.DataNames = newDatanames.Trim());
-                    datastream.Destinations.ForEach(dsd => dsd.DataNames = newDatanames.Trim());
+                    // TODO: doesn't support mutliple destinations yet
+                    datastream.Sources.First().DataNames = newDatanames.Trim();
+                    datastream.Destinations.First().DataNames = newDatanames.Trim();
                 });
         }
 
@@ -169,7 +171,7 @@ namespace Dexel.Model
         }
 
 
-        public static void SolveWithPipeNotation(string datanames, Action<string,string> onSuccess, Action onNoSuccess)
+        public static void TrySolveWithPipeNotation(string datanames, Action<string,string> onSuccess, Action onNoSuccess)
         {
             var withparenthesis =
                 new Regex(

@@ -1,7 +1,7 @@
 * Realisierung ( ~ 20- 30 Seiten )
 In diesem Kapitel soll vorgestellt werden, was in dem Zeitraum dieser
 Bachelorarbeit erreicht wurde. Es soll die Funktionalität des Editors
-anhand von Screenshots vorgestellt werden und die Architekur die selbst nach
+anhand von Screenshots vorgestellt werden und die Architekur der Anwendung, die selbst nach
 Flow Design umgesetzt wurde. 
 
 Als Arbeitstitel für die Anwendung wurde der Name Dexel gewählt.
@@ -61,7 +61,7 @@ Tests werden in einem extra Test-Projekt für jedes Projekt zusammengefasst)
    Bilder verwendet, welche die spätere Darstellung des Datentypen in der UI zeigen.
 
 *** MISSING IMAGES MainModel
-    Das MainModel ist, wie der Name schon sagt, das oberste Model, das alle
+    Das MainModel ist, wie der Name schon sagt, das Haupt-Modell, das alle
     anderen Modelle per Komposition beinhaltet. Somit kann man eine Objektinstanz
     eines MainModels an eine Methode übergeben und diese Instanz beinhaltet alle
     Informationen über das aktuelle Flow Design Diagramm. 
@@ -206,12 +206,75 @@ Tests werden in einem extra Test-Projekt für jedes Projekt zusammengefasst)
   Datentypen).
 
 *** Manager-Klassen
+**** MainModelManager 
+     Einer der relevantesten Manager-Klassen ist die MainModelManager-Klasse,
+     diese stellt die wichtigsten Funktionalitäten zur Verfügung die mit dem
+     Arbeiten des MainModels gebraucht werden. Einige dieser Funktionalitäten
+     wären: Verbinden und Trennen von Funktionseinheiten, vorwärts und rückwärts
+     Traversieren entlang des Graphen, Hinzufügen und Entfernen einer
+     Funktionseinheit von einer Integration, Hinzufügen, Löschen und Duplizieren
+     von Funktionseinheiten, oder Teile des Graphen.
+
+**** DataStreamManager 
+     Diese statische Klasse bietet einige Funktionalitäten, die das Arbeiten mit
+     Objekten der DataStream-Klasse vereinfachen soll.
+
+     Ein Beispiel hierfür wäre das Ändern des Datanames eines DataStreams. 
+     Wie bereits in letzten Abschnitt erwähnt, muss beim Ändern der Daten
+     eines Datenflusses auch die Daten seiner Sources und Destinations
+     angepasst werden. 
+
+     Um dies nochmal zu verdeutlichen, zwei konkrete Beispiele:
+     Falls der Datenfluss auf (int)|(string) geändert werden
+     soll, muss die Source-DataStreamDefinition auf (int) gesetzt werden und der
+     die Destination-DataStreamDefinition auf (string). 
+     Falls der Datenfluss auf (double) geändert werden soll, so werden Source
+     und Destination Daten auf (double) gesetzt.
+
+     Fussnote: Da aktuell nur DataStreams mit einer Source und einer Destination im Editor unterstützt
+     werden, wurde akutell auch nur dieses Szenario implementiert. Ändert sich
+     diese Einschränkung müsste man sich Gedanken darüber machen, was in diesen
+     Fällen zu tun wäre. Ein Option wäre, die Pipe-Notation in diesen Fällen zu
+     verbieten. Die UI würde die Daten der DataStreamDefinitionen direkt
+     anzeigen und der Benutzer würde diese dann direkt ändern. Der Datenstrom
+     selbst würde dann kein eigenes Textfeld besitzen und die Dataname
+     Eigenschaft hätte in diesen Fall keine Bedeutung. 
+     Vielleicht wäre es dann auch besser im Modell zwei separate Klassen
+     anzulegen und die
+     einfache DataStream-Klasse hätte anstatt einer Liste von DatastreamDefinitionen nur noch ein einfaches Feld
+     für eine Source-DataStreamDefinition und eine Destionation-DataStreamDefinition.
+ 
+#+BEGIN_SRC cpp
+
+ public static void ChangeDatanames(DataStream datastream, string newDatanames)
+        {
+            // update datanames of connection itself
+            datastream.DataNames = newDatanames;
+
+            // update datanames of DSDs
+            TrySolveWithPipeNotation(newDatanames,
+                onSuccess: (outputPart, inputPart) =>
+                {
+                    // TODO: doesn't support mutliple sources yet
+                    datastream.Sources.First().DataNames = outputPart;
+                    datastream.Destinations.First().DataNames = inputPart;
+                },
+                onNoSuccess: () =>
+                {
+                    // TODO: doesn't support mutliple destinations yet
+                    datastream.Sources.First().DataNames = newDatanames.Trim();
+                    datastream.Destinations.First().DataNames = newDatanames.Trim();
+                });
+        }
+#+END_SRC
+
+
 
 ** Der Editor
 *** Vorstellung was erreicht wurde
 
 Die Grundlegenden Basisfunktionen aus Kaptitel 3 wurden größtenteils
-implementiert. Hierbei kamen WPF als GUI-Framework zum Einsatz.
+implementiert. Hierbei kam WPF als GUI-Framework zum Einsatz.
 Bilder und Beschriebungen der GUI und Interaktionen.
 **** Erstellen von Funktionseinheiten, Verschieben, Benennen, Selektieren
 **** Erstellen von weiteren Outputs

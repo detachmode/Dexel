@@ -332,70 +332,77 @@ namespace Dexel.Editor
 
         public static object TabStopGetNext(object focusedModel, MainModel mainModel)
         {
-            object result = null;
+            object @return = null;
             focusedModel.TryCast<SoftwareCell>(cell =>
             {
+                // prefer connected outputs as next tabstop
+                // if no connected take first output defintion if there are any
                 if (cell.OutputStreams.Any(dsd => dsd.Connected))
                 {
                     var connectedDsd = cell.OutputStreams.First(dsd => dsd.Connected);
-                    result = mainModel.Connections.First(c => c.Sources.Contains(connectedDsd));
-                }
-                else if (cell.OutputStreams.Any())
+                    @return = mainModel.Connections.First(c => c.Sources.Contains(connectedDsd));
+                } 
+                else if (cell.OutputStreams.Any()) 
                 {
-                    result = cell.OutputStreams.First();
+                    @return = cell.OutputStreams.First();
                 }
             });
 
             focusedModel.TryCast<DataStream>(stream =>
             {
+                // if focus was inside datastream take its destination function unit as next tabstop
                 if (stream.Destinations.Any())
-                    result = stream.Destinations.First().Parent;
+                    @return = stream.Destinations.First().Parent;
             });
 
             focusedModel.TryCast<DataStreamDefinition>(dsd =>
             {
+                // if focus was inside definition there are two case:
+                // is input definition: next tabstop is the function unit of the definition
+                // is output definition: next tabstop is the first input definition
+                // of the beginning of the whole Flow Design graph.
                 dsd.Check(
-                    isInput: () => result = dsd.Parent,
+                    isInput: () => @return = dsd.Parent,
                     isOutput: () =>
                     {
                         dsd.Parent.OutputStreams.GetFirstConnected(
-                            connectedInput =>
+                            foundConnected: connectedInput =>
                             {
-                                MainModelManager.TraverseChildren(dsd.Parent, cell =>
+                                MainModelManager.TraverseChildrenBackwards(connectedInput.Parent, cell =>
                                 {
                                     if (cell.OutputStreams.Any())
-                                        result = cell.OutputStreams.First();
+                                        @return = cell.OutputStreams.First();
                                     else
-                                        result = cell;
+                                        @return = cell;
 
                                 }, mainModel);
                             },
-                            noConnected: () => result = dsd.Parent.OutputStreams.First());
+                            noConnected: () => @return = dsd.Parent.OutputStreams.First());
                     });
             });
-            return result;
+            return @return;
         }
 
         public static object TabStopGetPrevious(object focusedModel, MainModel mainModel)
         {
-            object result = null;
+            object @return = null;
             focusedModel.TryCast<SoftwareCell>(cell =>
             {
                 if (cell.InputStreams.Any(dsd => dsd.Connected))
                 {
                     var connectedDsd = cell.InputStreams.First(dsd => dsd.Connected);
-                    result = mainModel.Connections.First(c => c.Destinations.Contains(connectedDsd));
+                    @return = mainModel.Connections.First(c => c.Destinations.Contains(connectedDsd));
                 }
                 else if (cell.InputStreams.Any())
                 {
-                    result = cell.InputStreams.First();
+                    @return = cell.InputStreams.First();
                 }
             });
 
             focusedModel.TryCast<DataStream>(stream =>
             {
                 if (stream.Sources.Any())
-                    result = stream.Sources.First().Parent;
+                    @return = stream.Sources.First().Parent;
             });
 
             focusedModel.TryCast<DataStreamDefinition>(dsd =>
@@ -403,24 +410,24 @@ namespace Dexel.Editor
                 var softwareCell = dsd.Parent;
 
                 if (dsd.IsOutput())
-                    result = softwareCell;
+                    @return = softwareCell;
 
                 if (dsd.IsInput())
                     if (softwareCell.OutputStreams.Any(x => x.Connected))
                         MainModelManager.TraverseChildren(softwareCell, cell =>
                         {
                             if (cell.OutputStreams.Any())
-                                result = cell.OutputStreams.First();
+                                @return = cell.OutputStreams.First();
                             else
-                                result = cell;
+                                @return = cell;
 
                         }, mainModel);
                     else if (softwareCell.OutputStreams.Any())
-                        result = softwareCell.OutputStreams.First();
+                        @return = softwareCell.OutputStreams.First();
 
             });
 
-            return result;
+            return @return;
         }
 
 
@@ -462,10 +469,10 @@ namespace Dexel.Editor
         /// <returns>the model that was created or the first integrated softwarecell if it already had one</returns>
         public static object NewOrFirstIntegrated(SoftwareCell focusedcell, MainModel mainModel)
         {
-            object returnValue = null;
+            object @return = null;
 
             focusedcell.IsIntegration(
-                isIntegration: () => returnValue = focusedcell.Integration.First(),
+                isIntegration: () => @return = focusedcell.Integration.First(),
                 isNotIntegration: () =>
                 {
                     var softwareCell = SoftwareCellsManager.CreateNew();
@@ -478,11 +485,11 @@ namespace Dexel.Editor
                     focusedcell.Integration.AddUnique(softwareCell);
                     mainModel.SoftwareCells.Add(softwareCell);
 
-                    returnValue = softwareCell;
+                    @return = softwareCell;
                     ViewRedraw();
                 });
 
-            return returnValue;
+            return @return;
         }
 
 
