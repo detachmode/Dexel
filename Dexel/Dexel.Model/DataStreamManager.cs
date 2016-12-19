@@ -125,26 +125,19 @@ namespace Dexel.Model
             datastream.DataNames = newDatanames;
 
             // update datanames of DSDs
-            var splitted = SolvePipeLogic(datastream);
-            datastream.Sources.ForEach(dsd => dsd.DataNames = splitted[0].Trim());
-            datastream.Destinations.ForEach(dsd => dsd.DataNames = splitted[1].Trim());
+            SolveWithPipeNotation(newDatanames,
+                onSuccess: (outputPart, inputPart) =>
+                {
+                    datastream.Sources.ForEach(dsd => dsd.DataNames = outputPart.Trim());
+                    datastream.Destinations.ForEach(dsd => dsd.DataNames = inputPart.Trim());
+                },
+                onNoSuccess: () =>
+                {
+                    datastream.Sources.ForEach(dsd => dsd.DataNames = newDatanames.Trim());
+                    datastream.Destinations.ForEach(dsd => dsd.DataNames = newDatanames.Trim());
+                });
         }
 
-
-        public static string[] SolvePipeLogic(DataStream datastream)
-        {
-            var strings = SolveWithParenthesis(datastream.DataNames);
-            strings = SolveNoParenthesis(datastream.DataNames, strings);
-            strings = SolveNoPipe(datastream.DataNames, strings);
-
-            return strings;
-        }
-
-
-        private static string[] SolveNoPipe(string datanames, string[] strings)
-        {
-            return strings ?? new[] {datanames, datanames};
-        }
 
 
         private static string[] SolveNoParenthesis(string datanames, string[] strings)
@@ -176,7 +169,7 @@ namespace Dexel.Model
         }
 
 
-        private static string[] SolveWithParenthesis(string datanames)
+        public static void SolveWithPipeNotation(string datanames, Action<string,string> onSuccess, Action onNoSuccess)
         {
             var withparenthesis =
                 new Regex(
@@ -192,14 +185,21 @@ namespace Dexel.Model
 
 
                 if (!grps["dots"].Success)
-                    return new[] {output, input};
+                {
+                    onSuccess(output, input);
+                }
+                else
+                {
+                    input = grps["open2"].Value + grps["output"].Value.Trim() + ", " + grps["input"].Value.Trim() +
+                       grps["close2"].Value;
 
-                input = grps["open2"].Value + grps["output"].Value.Trim() + ", " + grps["input"].Value.Trim() +
-                        grps["close2"].Value;
-
-                return new[] {output, input};
+                    onSuccess(output, input);
+                }
             }
-            return null;
+            else
+            {
+                onNoSuccess();
+            }
         }
 
 
