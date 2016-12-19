@@ -35,10 +35,7 @@ namespace Dexel.Editor.DebuggingHelper
 
         private static void PrintStreamHeader(SoftwareCell cell, DataStream stream)
         {
-            if (stream.ActionName != null)
-                Console.WriteLine(cell.Name + @" - " + stream.ActionName + @"( " + stream.DataNames + @" ) ->");
-            else
-                Console.WriteLine(cell.Name + @" - ( " + stream.DataNames + @" ) -> ");
+              Console.WriteLine(cell.Name + @" - ( " + stream.DataNames + @" ) -> ");
         }
 
 

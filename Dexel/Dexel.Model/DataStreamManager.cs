@@ -12,12 +12,11 @@ namespace Dexel.Model
     [ImplementPropertyChanged]
     public static class DataStreamManager
     {
-        public static DataStream NewDataStream(string datanames, string actionsName = "")
+        public static DataStream NewDataStream(string datanames)
         {
             var dataStream = new DataStream();
             dataStream.ID = Guid.NewGuid();
             dataStream.DataNames = datanames;
-            dataStream.ActionName = actionsName;
             return dataStream;
         }
 
@@ -74,7 +73,7 @@ namespace Dexel.Model
 
         public static DataStream NewDataStream(DataStreamDefinition datastreamDefintion)
         {
-            return NewDataStream(datastreamDefintion.DataNames, datastreamDefintion.ActionName);
+            return NewDataStream(datastreamDefintion.DataNames);
         }
 
 

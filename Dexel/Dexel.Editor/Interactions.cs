@@ -68,8 +68,7 @@ namespace Dexel.Editor
             //MainModelManager.RemoveConnection(dataStream, mainModel);
             DeConnect(dataStream, mainModel);
             MainModelManager.ConnectTwoCells(dataStream.Sources.First().Parent, newdestination, dataStream.DataNames, "",
-                mainModel,
-                dataStream.ActionName);
+                mainModel);
 
             ViewRedraw();
         }

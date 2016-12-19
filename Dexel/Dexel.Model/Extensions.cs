@@ -23,7 +23,7 @@ namespace Dexel.Model
 
         public static bool IsEquals(this DataStreamDefinition def1, DataStream def2)
         {
-            return def1.DataNames == def2.DataNames && def1.ActionName == def2.ActionName;
+            return def1.DataNames == def2.DataNames;
         }
 
 
