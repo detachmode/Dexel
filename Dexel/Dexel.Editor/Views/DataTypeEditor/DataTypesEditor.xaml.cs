@@ -18,7 +18,7 @@ namespace Dexel.Editor.Views.DataTypeEditor
             InitializeComponent();
         }
 
-        public void FocusDataType(DataType dataType)
+        public void FocusDataType(CustomDataType customDataType)
         {
             MainViewModel.Instance().SelectedSoftwareCells.Clear();
 
@@ -33,7 +33,7 @@ namespace Dexel.Editor.Views.DataTypeEditor
                 frameworkelement = (DataTypeEditor.DataTypeCard)c.ContentTemplate.FindName("TheDataTypeCard", c);
                 if (frameworkelement == null) continue;
                 viewmodel = (DataTypeViewModel)frameworkelement.DataContext;
-                if (viewmodel.Model == dataType)
+                if (viewmodel.Model == customDataType)
                     break;
             }
 

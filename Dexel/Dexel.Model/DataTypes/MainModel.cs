@@ -10,13 +10,13 @@ namespace Dexel.Model.DataTypes
     {
         public List<SoftwareCell> SoftwareCells { get; set; }
         public List<DataStream> Connections { get;  set; }
-        public List<DataType> DataTypes { get; set; } 
+        public List<CustomDataType> DataTypes { get; set; } 
         
         public MainModel()
         {
             Connections = new List<DataStream>();
             SoftwareCells = new List<SoftwareCell>();
-            DataTypes = new List<DataType>();
+            DataTypes = new List<CustomDataType>();
         }
 
     }

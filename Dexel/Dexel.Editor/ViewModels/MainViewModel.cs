@@ -53,20 +53,7 @@ namespace Dexel.Editor.ViewModels
         public static MainViewModel Instance() => _self ?? (_self = new MainViewModel());
 
 
-        public void SetDataTypeFilter(string datanames)
-        {
-            if (datanames == null)
-            {
-                VisibileDataTypes.Clear();
-                DataTypes.ForEach(vm => VisibileDataTypes.Add(vm));
-                return;
-            }
 
-            var types = Interactions.GetFocusedDataTypes(datanames, Model);
-
-            VisibileDataTypes.Clear();
-            DataTypes.Where(x => types.Any(y => x.Model.Name == y)).ForEach(vm => VisibileDataTypes.Add(vm));
-        }
 
         #region Modify Selection
 
@@ -279,7 +266,7 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        private void LoadDataTypes(List<DataType> dataTypes)
+        private void LoadDataTypes(List<CustomDataType> dataTypes)
         {
             DataTypes.Clear();
             dataTypes.ForEach(dataType =>
@@ -287,10 +274,10 @@ namespace Dexel.Editor.ViewModels
                 var vm = new DataTypeViewModel();
                 vm.Model = dataType;
 
-                if ((dataType.DataTypes == null) || !dataType.DataTypes.Any())
+                if ((dataType.SubDataTypes == null) || !dataType.SubDataTypes.Any())
                     vm.Definitions = "";
                 else
-                    vm.Definitions = dataType.DataTypes
+                    vm.Definitions = dataType.SubDataTypes
                         .Select(x => string.IsNullOrEmpty(x.Name) ? x.Type : $"{x.Name}:{x.Type}")
                         .Aggregate((str, type) => str + "\n" + type);
 

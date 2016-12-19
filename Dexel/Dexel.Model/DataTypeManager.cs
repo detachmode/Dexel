@@ -38,14 +38,14 @@ namespace Dexel.Model
 
         public static IEnumerable<string> CollectAllSubtypes(MainModel mainmodel)
         {
-            return mainmodel.DataTypes.Where(x => x.DataTypes != null).SelectMany(dt => dt.DataTypes.Select(subDt => subDt.Type.Trim()));
+            return mainmodel.DataTypes.Where(x => x.SubDataTypes != null).SelectMany(dt => dt.SubDataTypes.Select(subDt => subDt.Type.Trim()));
         }
 
 
-        public static List<DataType> GetTypesRecursive(List<DataType> found, MainModel mainModel)
+        public static List<CustomDataType> GetTypesRecursive(List<CustomDataType> found, MainModel mainModel)
         {
             var count = found.Count;
-            var subtypes = found.Select(dt => dt.DataTypes.SelectMany(x => x.Type));
+            var subtypes = found.Select(dt => dt.SubDataTypes.SelectMany(x => x.Type));
             mainModel.DataTypes.Where(dt => subtypes.Contains(dt.Name)).ForEach(found.AddUnique);
             return found.Count == count ? found : GetTypesRecursive(found, mainModel);
         }

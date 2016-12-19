@@ -197,13 +197,13 @@ namespace Roslyn.Tests
         public void GenerateDataTypesTest()
         {
             var testModel = new MainModel();
-            var dt = new DataType { Name = "Person" };
-            var subdt = new DataType
+            var dt = new CustomDataType { Name = "Person" };
+            var subdt = new SubDataType
             {
                 Name = "Name",
                 Type = "string"
             };
-            dt.DataTypes = new List<DataType> { subdt };
+            dt.SubDataTypes = new List<SubDataType> { subdt };
             testModel.DataTypes.Add(dt);
 
             var gen = new MyGenerator();

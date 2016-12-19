@@ -96,10 +96,10 @@ namespace Dexel.Model
             MainModelManager.AddNewOutput(firstOp, "(age:int)");
             first.Integration.Add(firstOp);
 
-            var inttype = new DataType { Name = "age", Type = "int" };
-            var nametype = new DataType { Name = "name", Type = "string" };
-            var sublist = new List<DataType> { inttype, nametype };
-            testModel.DataTypes.Add(new DataType() { Name = "Person", DataTypes = sublist });
+            var inttype = new SubDataType { Name = "age", Type = "int" };
+            var nametype = new SubDataType { Name = "name", Type = "string" };
+            var sublist = new List<SubDataType> { inttype, nametype };
+            testModel.DataTypes.Add(new CustomDataType() { Name = "Person", SubDataTypes = sublist });
 
             var person = MainModelManager.AddNewSoftwareCell("create person", testModel);
             person.Position = new Point(450, 50);

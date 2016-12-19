@@ -9,15 +9,15 @@ namespace Roslyn
 {
     public static class DataTypesGenerator
     {
-        public static IEnumerable<SyntaxNode> GenerateFields(SyntaxGenerator generator, DataType dataType)
+        public static IEnumerable<SyntaxNode> GenerateFields(SyntaxGenerator generator, CustomDataType customDataType)
         {
-            return dataType.DataTypes.Select(fieldDt => Helper.TryCatch(() => 
+            return customDataType.SubDataTypes.Select(fieldDt => Helper.TryCatch(() => 
                     FieldDeclaration(generator, fieldDt),
-                    errormsg: $"Couldn't generate field of data type {dataType.Name}"));
+                    errormsg: $"Couldn't generate field of data type {customDataType.Name}"));
         }
 
 
-        private static SyntaxNode FieldDeclaration(SyntaxGenerator generator, DataType dt)
+        private static SyntaxNode FieldDeclaration(SyntaxGenerator generator, SubDataType dt)
         {
             return generator.FieldDeclaration(name: Helper.FirstCharToUpper(dt.Name),
                 type: DataTypeParser.ConvertToType(generator, dt.Type),

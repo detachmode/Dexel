@@ -486,19 +486,19 @@ namespace Dexel.Editor
         }
 
 
-        public static void DeleteDataTypeDefinition(DataType dataType, MainModel mainModel)
+        public static void DeleteDataTypeDefinition(CustomDataType customDataType, MainModel mainModel)
         {
-            mainModel.DataTypes.Remove(dataType);
+            mainModel.DataTypes.Remove(customDataType);
             ViewRedraw();
         }
 
 
-        public static DataType AddDataTypeDefinition(MainModel mainModel)
+        public static CustomDataType AddDataTypeDefinition(MainModel mainModel)
         {
-            var dataType = new DataType
+            var dataType = new CustomDataType
             {
                 Name = "",
-                DataTypes = null
+                SubDataTypes = null
             };
 
             mainModel.DataTypes.Add(dataType);
@@ -513,10 +513,10 @@ namespace Dexel.Editor
             var res = DataTypeManager.GetUndefinedTypenames(mainModel).Where(x => !DataTypeParser.IsSystemType(x));
             res.ForEach(name =>
             {
-                var dataType = new DataType
+                var dataType = new CustomDataType
                 {
                     Name = name,
-                    DataTypes = null
+                    SubDataTypes = null
                 };
                 mainModel.DataTypes.Add(dataType);
             });
@@ -529,14 +529,6 @@ namespace Dexel.Editor
             MainViewModel.Instance().MissingDataTypes = DataTypeManager.GetUndefinedTypenames(mainModel).Where(x => !DataTypeParser.IsSystemType(x)).ToList().Count;
         }
 
-
-        public static IEnumerable<string> GetFocusedDataTypes(string datanames, MainModel mainModel)
-        {
-            var types = DataStreamParser.GetInputAndOutput(datanames).Select(x => x.Type);
-            var res = mainModel.DataTypes.Where(dt => types.Contains(dt.Name)).SelectMany(x => x.DataTypes).ToList();
-            res = DataTypeManager.GetTypesRecursive(res, mainModel);
-            return res.Select(x => x.Name);
-        }
 
 
         public static void SwapDataStreamOrder(DataStreamDefinition dsd1, DataStreamDefinition dsd2, MainModel mainModel)

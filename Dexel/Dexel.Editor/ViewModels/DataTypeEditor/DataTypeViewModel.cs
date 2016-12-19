@@ -8,25 +8,25 @@ namespace Dexel.Editor.ViewModels.DataTypeEditor
     public class DataTypeViewModel
     {
 
-        public DataType Model { get; set; }
+        public CustomDataType Model { get; set; }
         public string Definitions { get; set; }
 
 
 
         public void UpdateModel(string text)
         {
-            Model.DataTypes = text.Split('\n').Where(x => !string.IsNullOrEmpty(x)).Select(s =>
+            Model.SubDataTypes = text.Split('\n').Where(x => !string.IsNullOrEmpty(x)).Select(s =>
             {
                 var splitted = s.Split(':');
                 if (splitted.Length == 1)
                 {
-                    return new DataType
+                    return new SubDataType
                     {
                         Name = "",
                         Type = splitted.Last()
                     };
                 }             
-                return new DataType
+                return new SubDataType
                 {
                     Name = splitted.First(),
                     Type = splitted.Last()

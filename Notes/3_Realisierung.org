@@ -176,24 +176,34 @@ Tests werden in einem extra Test-Projekt für jedes Projekt zusammengefasst)
     entsprechend dieser die Ein und Ausgänge akutalisieren.
 
     Der akutelle Stand der UI kann akutell nur Datenflüsse mit einer Quelle und
-    einem Ziel darstellen. Möglicherweise muss hier das Modell noch einmal
-    überarbeitet werden.
+    einem Ziel darstellen.
 
 *** DataType
 
-
-
 #+BEGIN_SRC cpp
+
+  [ImplementPropertyChanged]
+    public class CustomDataType
+    {
+        public string Name { get; set; }
+        public List<SubDataType> SubDataTypes { get; set; }
+    }
+
     [ImplementPropertyChanged]
-    public class DataType
+    public class SubDataType
     {
         public string Name { get; set; }
         public string Type { get; set; }
-        public List<DataType> DataTypes { get; set; }
     }
+
 #+END_SRC
 
- 
+  Ein benutzerdefinierter Datentyp besteht aus einem Namen und einer Liste von mehreren
+  =SubDataType=-Objekten. 
+
+  Ein SubDataType besteht aus einem Namen und den Namen
+  des Types (zum Beispiel string, int oder auch ein anderen benutzerdefinierten
+  Datentypen).
 
 *** Manager-Klassen
 
