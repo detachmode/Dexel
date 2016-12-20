@@ -26,7 +26,7 @@ namespace Dexel.Model
         }
 
 
-        public static void Check(this DataStreamDefinition dsd, Action isInput, Action isOutput)
+        public static void CheckIsInputOrOutput(this DataStreamDefinition dsd, Action isInput, Action isOutput)
         {
             if (dsd.IsInput())
                 isInput();

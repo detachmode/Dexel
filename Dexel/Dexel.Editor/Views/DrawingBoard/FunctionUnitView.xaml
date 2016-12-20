@@ -48,11 +48,13 @@
                 </TransformGroup>
             </ItemsControl.RenderTransform>
             <ItemsControl.Resources>
-                <DataTemplate DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
-                    <drawingBoard:DangelingConnectionView x:Name="DangelingConnectionView" />
+                <DataTemplate x:Name="DangelingConnectionViewsTemplate" DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
+                    <drawingBoard:DangelingConnectionView 
+                            ContextMenu="{StaticResource MyContextMenuOutput}"
+                            x:Name="DangelingConnectionViews" />
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
-                   <Canvas Height="42"></Canvas> 
+                <DataTemplate x:Name="ConnectionAdapterViewsTemplate" DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
+                    <drawingBoard:ConnectionAdapterView x:Name="ConnectionAdapterView" />
                 </DataTemplate>
             </ItemsControl.Resources>
         </ItemsControl>
@@ -69,12 +71,12 @@
                           x:Name="OutputFlow" ItemsSource="{Binding Outputs, Mode=TwoWay}" >
                 <ItemsControl.Resources>
                     <!-- Do NOT set the x:Key -->
-                    <DataTemplate DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
+                    <DataTemplate x:Name="DangelingConnectionViewsTemplate" DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
                         <drawingBoard:DangelingConnectionView 
                             ContextMenu="{StaticResource MyContextMenuOutput}"
-                            x:Name="DangelingConnectionView" />
+                            x:Name="DangelingConnectionViews" />
                     </DataTemplate>
-                    <DataTemplate DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
+                    <DataTemplate x:Name="ConnectionAdapterViewsTemplate" DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
                         <drawingBoard:ConnectionAdapterView x:Name="ConnectionAdapterView" />
                     </DataTemplate>
                 </ItemsControl.Resources>

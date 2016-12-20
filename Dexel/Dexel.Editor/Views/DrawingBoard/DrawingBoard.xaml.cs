@@ -235,22 +235,33 @@ namespace Dexel.Editor.Views.DrawingBoard
             if (viewmodel == null)
                 return;
 
-            FocusTextbox(dsd, frameworkelement.OutputFlow);
-            FocusTextbox(dsd, frameworkelement.InputFlow);
+
+
+            FocusTextboxOfDSD(dsd, frameworkelement.OutputFlow);
+            FocusTextboxOfDSD(dsd, frameworkelement.InputFlow);
         }
 
 
-        private static void FocusTextbox(DataStreamDefinition dsd, ItemsControl itemsControl)
+        private static void FocusTextboxOfDSD(DataStreamDefinition dsd, ItemsControl itemsControl)
         {
             for (var i = 0; i < itemsControl.Items.Count; i++)
             {
-                var c = (ContentPresenter)itemsControl.ItemContainerGenerator.ContainerFromIndex(i);
-                c.ApplyTemplate();
 
-                var dsdView = (DangelingConnectionView)c.ContentTemplate.FindName("DangelingConnectionView", c);
-                if (dsdView == null) continue;
-                var dsdViewModel = (DangelingConnectionViewModel)dsdView.DataContext;
+                var item = (ContentPresenter)itemsControl.ItemContainerGenerator.ContainerFromIndex(i);
+                if (item.DataContext.GetType() != typeof(DangelingConnectionViewModel))
+                    continue;
+
+                var dsdViewModel = (DangelingConnectionViewModel)item.DataContext;
                 if (dsdViewModel.Model != dsd) continue;
+
+                var actionKey = new DataTemplateKey(typeof(DangelingConnectionViewModel));
+                var actionTemplate = itemsControl.Resources[actionKey] as DataTemplate;
+                var dsdView = actionTemplate?.FindName("DangelingConnectionViews", item) as DangelingConnectionView;
+                if (dsdView == null) continue;
+
+
+
+
 
                 dsdView.TheDataNamesControl.TextBox.Focus();
                 dsdView.TheDataNamesControl.TextBox.SelectionStart = dsdView.TheDataNamesControl.TextBox.Text.First()
@@ -271,7 +282,7 @@ namespace Dexel.Editor.Views.DrawingBoard
                     (ContentPresenter)FunctionUnitsList.ItemContainerGenerator.ContainerFromIndex(i);
                 c.ApplyTemplate();
 
-                frameworkelement = (FunctionUnitView)c.ContentTemplate.FindName("IoCell", c);
+                frameworkelement = (FunctionUnitView)c.ContentTemplate.FindName("FunctionUnits", c);
 
                 if (frameworkelement != null)
                 {

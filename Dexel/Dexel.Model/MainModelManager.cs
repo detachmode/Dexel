@@ -417,6 +417,55 @@ namespace Dexel.Model
             public FunctionUnit NewFunctionUnit;
             public Guid OriginGuid;
         }
+
+
+        public static DataStream FindDataStream(DataStreamDefinition connectedDsd, MainModel mainModel)
+        {
+           return mainModel.Connections.FirstOrDefault(c => c.Sources.Contains(connectedDsd) || c.Destinations.Contains(connectedDsd));
+        }
+
+
+        public static object GetBeginningOfFlow(FunctionUnit startByFunctionUnit, MainModel mainModel)
+        {
+            object @return;
+
+            if (startByFunctionUnit.InputStreams.Any())
+                @return = startByFunctionUnit.InputStreams.First();
+            else
+                @return = startByFunctionUnit;
+
+            TraverseChildrenBackwards(startByFunctionUnit, fu =>
+            {
+                if (fu.InputStreams.Any())
+                    @return = fu.InputStreams.First();
+                else
+                    @return = fu;
+
+            }, mainModel);
+
+            return @return;
+        }
+
+        public static object GetEndOfFlow(FunctionUnit startByFunctionUnit, MainModel mainModel)
+        {
+            object @return;
+
+            if (startByFunctionUnit.OutputStreams.Any())
+                @return = startByFunctionUnit.OutputStreams.First();
+            else
+                @return = startByFunctionUnit;
+
+            TraverseChildren(startByFunctionUnit, fu =>
+            {
+                if (fu.OutputStreams.Any())
+                    @return = fu.OutputStreams.First();
+                else
+                    @return = fu;
+
+            }, mainModel);
+
+            return @return;
+        }
     }
 
 }

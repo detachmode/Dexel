@@ -337,15 +337,9 @@ namespace Dexel.Editor
             {
                 // prefer connected outputs as next tabstop
                 // if no connected take first output defintion if there are any
-                if (fu.OutputStreams.Any(dsd => dsd.Connected))
-                {
-                    var connectedDsd = fu.OutputStreams.First(dsd => dsd.Connected);
-                    @return = mainModel.Connections.First(c => c.Sources.Contains(connectedDsd));
-                } 
-                else if (fu.OutputStreams.Any()) 
-                {
-                    @return = fu.OutputStreams.First();
-                }
+                fu.OutputStreams.GetFirstConnected(
+                    foundConnected: connectedDsd => @return = MainModelManager.FindDataStream(connectedDsd, mainModel),
+                    noConnected: () => @return = fu.OutputStreams.FirstOrDefault());
             });
 
             focusedModel.TryCast<DataStream>(stream =>
@@ -361,23 +355,15 @@ namespace Dexel.Editor
                 // is input definition: next tabstop is the function unit of the definition
                 // is output definition: next tabstop is the first input definition
                 // of the beginning of the whole Flow Design graph.
-                dsd.Check(
+                dsd.CheckIsInputOrOutput(
                     isInput: () => @return = dsd.Parent,
                     isOutput: () =>
                     {
                         dsd.Parent.OutputStreams.GetFirstConnected(
-                            foundConnected: connectedInput =>
-                            {
-                                MainModelManager.TraverseChildrenBackwards(connectedInput.Parent, fu =>
-                                {
-                                    if (fu.OutputStreams.Any())
-                                        @return = fu.OutputStreams.First();
-                                    else
-                                        @return = fu;
-
-                                }, mainModel);
-                            },
-                            noConnected: () => @return = dsd.Parent.OutputStreams.First());
+                            foundConnected: connectedInput => 
+                                @return = MainModelManager.FindDataStream(connectedInput, mainModel),
+                            noConnected: () => // loop tabstop focus when the end is reached
+                                @return = MainModelManager.GetBeginningOfFlow(dsd.Parent, mainModel)); 
                     });
             });
             return @return;
@@ -388,15 +374,9 @@ namespace Dexel.Editor
             object @return = null;
             focusedModel.TryCast<FunctionUnit>(fu =>
             {
-                if (fu.InputStreams.Any(dsd => dsd.Connected))
-                {
-                    var connectedDsd = fu.InputStreams.First(dsd => dsd.Connected);
-                    @return = mainModel.Connections.First(c => c.Destinations.Contains(connectedDsd));
-                }
-                else if (fu.InputStreams.Any())
-                {
-                    @return = fu.InputStreams.First();
-                }
+                fu.InputStreams.GetFirstConnected(
+                    foundConnected: connectedDsd => @return = MainModelManager.FindDataStream(connectedDsd, mainModel),
+                    noConnected: () => @return = fu.InputStreams.FirstOrDefault());
             });
 
             focusedModel.TryCast<DataStream>(stream =>
@@ -407,23 +387,16 @@ namespace Dexel.Editor
 
             focusedModel.TryCast<DataStreamDefinition>(dsd =>
             {
-                var softwareCell = dsd.Parent;
-
-                if (dsd.IsOutput())
-                    @return = softwareCell;
-
-                if (dsd.IsInput())
-                    if (softwareCell.OutputStreams.Any(x => x.Connected))
-                        MainModelManager.TraverseChildren(softwareCell, fu =>
-                        {
-                            if (fu.OutputStreams.Any())
-                                @return = fu.OutputStreams.First();
-                            else
-                                @return = fu;
-
-                        }, mainModel);
-                    else if (softwareCell.OutputStreams.Any())
-                        @return = softwareCell.OutputStreams.First();
+                dsd.CheckIsInputOrOutput(
+                   isOutput: () => @return = dsd.Parent,
+                   isInput: () =>
+                   {
+                       dsd.Parent.InputStreams.GetFirstConnected(
+                           foundConnected: connectedInput =>
+                               @return = MainModelManager.FindDataStream(connectedInput, mainModel),
+                           noConnected: () => // loop tabstop focus when the beginning is reached
+                               @return = MainModelManager.GetEndOfFlow(dsd.Parent, mainModel));
+                   });
 
             });
 
