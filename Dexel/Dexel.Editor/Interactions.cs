@@ -27,23 +27,23 @@ namespace Dexel.Editor
         private static Timer aTimer;
 
 
-        private static readonly List<SoftwareCell> _copiedCells = new List<SoftwareCell>();
+        private static readonly List<FunctionUnit> _copiedFunctionUnits = new List<FunctionUnit>();
         public static bool PickState;
 
 
-        private static SoftwareCell StartPickingAt;
+        private static FunctionUnit StartPickingAt;
 
 
-        public static SoftwareCell AddNewIOCell(Point pos, MainModel mainModel)
+        public static FunctionUnit AddNewFunctionUnit(Point pos, MainModel mainModel)
         {
-            var softwareCell = SoftwareCellsManager.CreateNew();
+            var softwareCell = FunctionUnitManager.CreateNew();
             pos.X -= 100;
             pos.Y -= 20;
             softwareCell.Position = new Point(pos.X, pos.Y);
             softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
             softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
 
-            mainModel.SoftwareCells.Add(softwareCell);
+            mainModel.FunctionUnits.Add(softwareCell);
             ViewRedraw();
             return softwareCell;
         }
@@ -62,34 +62,33 @@ namespace Dexel.Editor
         }
 
 
-        public static void ChangeConnectionDestination(DataStream dataStream, SoftwareCell newdestination,
+        public static void ChangeConnectionDestination(DataStream dataStream, FunctionUnit newdestination,
             MainModel mainModel)
         {
             //MainModelManager.RemoveConnection(dataStream, mainModel);
             DeConnect(dataStream, mainModel);
-            MainModelManager.ConnectTwoCells(dataStream.Sources.First().Parent, newdestination, dataStream.DataNames, "",
-                mainModel,
-                dataStream.ActionName);
+            MainModelManager.ConnectTwoFunctionUnits(dataStream.Sources.First().Parent, newdestination, dataStream.DataNames, "",
+                mainModel);
 
             ViewRedraw();
         }
 
 
-        public static void AddNewOutput(SoftwareCell softwareCell, string datanames)
+        public static void AddNewOutput(FunctionUnit functionUnit, string datanames)
         {
-            MainModelManager.AddNewOutput(softwareCell, datanames);
+            MainModelManager.AddNewOutput(functionUnit, datanames);
             ViewRedraw();
         }
 
 
-        public static void AddNewInput(SoftwareCell softwareCell, string datanames)
+        public static void AddNewInput(FunctionUnit functionUnit, string datanames)
         {
-            MainModelManager.AddNewInput(softwareCell, datanames);
+            MainModelManager.AddNewInput(functionUnit, datanames);
             ViewRedraw();
         }
 
 
-        public static void MoveSoftwareCell(SoftwareCell model, double horizontalChange, double verticalChange)
+        public static void MoveFunctionUnit(FunctionUnit model, double horizontalChange, double verticalChange)
         {
             if (model == null)
             {
@@ -115,8 +114,8 @@ namespace Dexel.Editor
         public static void DragDroppedTwoDangelingConnections(DataStreamDefinition sourceDSD,
             DataStreamDefinition destinationDSD, MainModel mainModel)
         {
-            DataStreamManager.IsInSameCollection(sourceDSD, destinationDSD, 
-                onTrue: list => DataStreamManager.SwapDataStreamDefinitons(sourceDSD, destinationDSD, list), 
+            DataStreamManager.IsInSameCollection(sourceDSD, destinationDSD,
+                onTrue: list => DataStreamManager.SwapDataStreamDefinitons(sourceDSD, destinationDSD, list),
                 onFalse: () => CheckAreBothInputs(sourceDSD, destinationDSD,
                     isTrue: () => MainModelManager.MakeIntegrationIncludingChildren(sourceDSD.Parent, destinationDSD.Parent, mainModel),
                     isFalse: () => MainModelManager.ConnectTwoDefintions(sourceDSD, destinationDSD, mainModel)));
@@ -137,10 +136,10 @@ namespace Dexel.Editor
         }
 
 
-        public static void ConnectDangelingConnectionAndSoftwareCell(DataStreamDefinition defintionDSD,
-            SoftwareCell destination, MainModel mainModel)
+        public static void ConnectDangelingConnectionAndFunctionUnit(DataStreamDefinition defintionDSD,
+            FunctionUnit destination, MainModel mainModel)
         {
-            var inputDefinition = SoftwareCellsManager.NewInputDef(destination, "", null);
+            var inputDefinition = FunctionUnitManager.NewInputDef(destination, "", null);
             MainModelManager.ConnectTwoDefintions(defintionDSD, inputDefinition, mainModel);
 
             ViewRedraw();
@@ -148,10 +147,10 @@ namespace Dexel.Editor
 
 
         public static void DeleteDatastreamDefiniton(DataStreamDefinition dataStreamDefinition,
-            SoftwareCell softwareCell)
+            FunctionUnit functionUnit)
         {
-            softwareCell.InputStreams.RemoveAll(x => x == dataStreamDefinition);
-            softwareCell.OutputStreams.RemoveAll(x => x == dataStreamDefinition);
+            functionUnit.InputStreams.RemoveAll(x => x == dataStreamDefinition);
+            functionUnit.OutputStreams.RemoveAll(x => x == dataStreamDefinition);
             ViewRedraw();
         }
 
@@ -200,7 +199,7 @@ namespace Dexel.Editor
         {
             Console.Clear();
             DebugPrinter.PrintConnections(mainModel);
-            DebugPrinter.PrintSoftwareCells(mainModel);
+            DebugPrinter.PrintFunctionUnits(mainModel);
         }
 
 
@@ -249,52 +248,52 @@ namespace Dexel.Editor
             var loadedMainModel = loader?.Invoke(fileName);
 
             mainModel.Connections.AddRange(loadedMainModel.Connections);
-            mainModel.SoftwareCells.AddRange(loadedMainModel.SoftwareCells);
+            mainModel.FunctionUnits.AddRange(loadedMainModel.FunctionUnits);
 
             ViewRedraw();
         }
 
 
-        public static void Delete(IEnumerable<SoftwareCell> softwareCells, MainModel mainModel)
+        public static void Delete(IEnumerable<FunctionUnit> softwareCells, MainModel mainModel)
         {
-            softwareCells.ForEach(sc => MainModelManager.DeleteCell(sc, mainModel));
+            softwareCells.ForEach(sc => MainModelManager.DeleteFunctionUnit(sc, mainModel));
             ViewRedraw();
         }
 
 
-        public static void Copy(List<SoftwareCell> softwareCells, MainModel mainModel)
+        public static void Copy(List<FunctionUnit> softwareCells, MainModel mainModel)
         {
-            _copiedCells.Clear();
-            softwareCells.ForEach(_copiedCells.Add);
+            _copiedFunctionUnits.Clear();
+            softwareCells.ForEach(_copiedFunctionUnits.Add);
         }
 
 
         public static void Paste(Point positionClicked, MainModel mainModel)
         {
-            if (_copiedCells.Count == 0)
+            if (_copiedFunctionUnits.Count == 0)
                 return;
 
-            var copiedList = MainModelManager.Duplicate(_copiedCells, mainModel);
-            MainModelManager.MoveCellsToClickedPosition(positionClicked, copiedList);
+            var copiedList = MainModelManager.Duplicate(_copiedFunctionUnits, mainModel);
+            MainModelManager.MoveFunctionUnitsToClickedPosition(positionClicked, copiedList);
 
             ViewRedraw();
         }
 
 
-        public static void StartPickIntegration(SoftwareCell softwareCell)
+        public static void StartPickIntegration(FunctionUnit functionUnit)
         {
             PickState = true;
             Mouse.OverrideCursor = Cursors.Cross;
-            StartPickingAt = softwareCell;
+            StartPickingAt = functionUnit;
         }
 
 
-        private static List<SoftwareCell> _toMove = new List<SoftwareCell>();
-        public static void MoveIOCellIncludingChildrenAndIntegrated(SoftwareCell softwareCell, Vector dragDelta,
+        private static List<FunctionUnit> _toMove = new List<FunctionUnit>();
+        public static void MoveFunctionUnitIncludingChildrenAndIntegrated(FunctionUnit functionUnit, Vector dragDelta,
             MainModel mainModel)
         {
             _toMove.Clear();
-            _toMove = MainModelManager.GetChildrenAndIntegrated(softwareCell, _toMove, mainModel);
+            _toMove = MainModelManager.GetChildrenAndIntegrated(functionUnit, _toMove, mainModel);
 
             _toMove.ForEach(sc => sc.MovePosition(dragDelta));
 
@@ -302,198 +301,184 @@ namespace Dexel.Editor
         }
 
 
-        public static SoftwareCell DuplicateIOCellIncludingChildrenAndIntegrated(SoftwareCell softwareCell, MainModel mainModel)
+        public static FunctionUnit DuplicateFunctionUnitIncludingChildrenAndIntegrated(FunctionUnit functionUnit, MainModel mainModel)
         {
             _toMove.Clear();
-            _toMove = MainModelManager.GetChildrenAndIntegrated(softwareCell, _toMove, mainModel);
+            _toMove = MainModelManager.GetChildrenAndIntegrated(functionUnit, _toMove, mainModel);
 
             var copiedcells = MainModelManager.Duplicate(_toMove, mainModel);
 
             ViewRedraw();
 
-            return copiedcells.First(x => x.OriginGuid == softwareCell.ID).NewCell;
+            return copiedcells.First(x => x.OriginGuid == functionUnit.ID).NewFunctionUnit;
         }
 
 
 
 
-        public static void SetPickedIntegration(SoftwareCell softwareCell, MainModel mainModel)
+        public static void SetPickedIntegration(FunctionUnit functionUnit, MainModel mainModel)
         {
-            MainModelManager.MakeIntegrationIncludingAllConnected(StartPickingAt, softwareCell, mainModel);
+            MainModelManager.MakeIntegrationIncludingAllConnected(StartPickingAt, functionUnit, mainModel);
             ViewRedraw();
         }
 
 
-        public static void RemoveFromIntegration(SoftwareCell softwareCell, MainModel mainModel)
+        public static void RemoveFromIntegration(FunctionUnit functionUnit, MainModel mainModel)
         {
-            MainModelManager.RemoveAllConnectedFromIntegration(softwareCell, mainModel);
+            MainModelManager.RemoveAllConnectedFromIntegration(functionUnit, mainModel);
             ViewRedraw();
         }
 
 
         public static object TabStopGetNext(object focusedModel, MainModel mainModel)
         {
-            object result = null;
-            focusedModel.TryCast<SoftwareCell>(cell =>
+            object @return = null;
+            focusedModel.TryCast<FunctionUnit>(fu =>
             {
-                if (cell.OutputStreams.Any(dsd => dsd.Connected))
-                {
-                    var connectedDsd = cell.OutputStreams.First(dsd => dsd.Connected);
-                    result = mainModel.Connections.First(c => c.Sources.Contains(connectedDsd));
-                }
-                else if (cell.OutputStreams.Any())
-                {
-                    result = cell.OutputStreams.First();
-                }
+                // prefer connected outputs as next tabstop
+                // if no connected take first output defintion if there are any
+                fu.OutputStreams.GetFirstConnected(
+                    foundConnected: connectedDsd => @return = MainModelManager.FindDataStream(connectedDsd, mainModel),
+                    noConnected: () => @return = fu.OutputStreams.FirstOrDefault());
             });
 
             focusedModel.TryCast<DataStream>(stream =>
             {
+                // if focus was inside datastream take its destination function unit as next tabstop
                 if (stream.Destinations.Any())
-                    result = stream.Destinations.First().Parent;
+                    @return = stream.Destinations.First().Parent;
             });
 
             focusedModel.TryCast<DataStreamDefinition>(dsd =>
             {
-                var softwareCell = dsd.Parent;
-
-                if (dsd.IsInput())
-                    result = softwareCell;
-
-                if (dsd.IsOutput())
-                    if (softwareCell.InputStreams.Any(x => x.Connected))
-                        MainModelManager.TraverseChildrenBackwards(softwareCell, cell =>
-                        {
-                            if (cell.InputStreams.Any())
-                                result = cell.InputStreams.First();
-                            else
-                                result = cell;
-
-                        }, mainModel);
-
-
-                    else if (softwareCell.InputStreams.Any())
-                        result = softwareCell.InputStreams.First();
-
+                // if focus was inside definition there are two case:
+                // is input definition: next tabstop is the function unit of the definition
+                // is output definition: next tabstop is the first input definition
+                // of the beginning of the whole Flow Design graph.
+                dsd.CheckIsInputOrOutput(
+                    isInput: () => @return = dsd.Parent,
+                    isOutput: () =>
+                    {
+                        dsd.Parent.OutputStreams.GetFirstConnected(
+                            foundConnected: connectedInput => 
+                                @return = MainModelManager.FindDataStream(connectedInput, mainModel),
+                            noConnected: () => // loop tabstop focus when the end is reached
+                                @return = MainModelManager.GetBeginningOfFlow(dsd.Parent, mainModel)); 
+                    });
             });
-
-            return result;
+            return @return;
         }
 
         public static object TabStopGetPrevious(object focusedModel, MainModel mainModel)
         {
-            object result = null;
-            focusedModel.TryCast<SoftwareCell>(cell =>
+            object @return = null;
+            focusedModel.TryCast<FunctionUnit>(fu =>
             {
-                if (cell.InputStreams.Any(dsd => dsd.Connected))
-                {
-                    var connectedDsd = cell.InputStreams.First(dsd => dsd.Connected);
-                    result = mainModel.Connections.First(c => c.Destinations.Contains(connectedDsd));
-                }
-                else if (cell.InputStreams.Any())
-                {
-                    result = cell.InputStreams.First();
-                }
+                fu.InputStreams.GetFirstConnected(
+                    foundConnected: connectedDsd => @return = MainModelManager.FindDataStream(connectedDsd, mainModel),
+                    noConnected: () => @return = fu.InputStreams.FirstOrDefault());
             });
 
             focusedModel.TryCast<DataStream>(stream =>
             {
                 if (stream.Sources.Any())
-                    result = stream.Sources.First().Parent;
+                    @return = stream.Sources.First().Parent;
             });
 
             focusedModel.TryCast<DataStreamDefinition>(dsd =>
             {
-                var softwareCell = dsd.Parent;
-
-                if (dsd.IsOutput())
-                    result = softwareCell;
-
-                if (dsd.IsInput())
-                    if (softwareCell.OutputStreams.Any(x => x.Connected))
-                        MainModelManager.TraverseChildren(softwareCell, cell =>
-                        {
-                            if (cell.OutputStreams.Any())
-                                result = cell.OutputStreams.First();
-                            else
-                                result = cell;
-
-                        }, mainModel);
-                    else if (softwareCell.OutputStreams.Any())
-                        result = softwareCell.OutputStreams.First();
+                dsd.CheckIsInputOrOutput(
+                   isOutput: () => @return = dsd.Parent,
+                   isInput: () =>
+                   {
+                       dsd.Parent.InputStreams.GetFirstConnected(
+                           foundConnected: connectedInput =>
+                               @return = MainModelManager.FindDataStream(connectedInput, mainModel),
+                           noConnected: () => // loop tabstop focus when the beginning is reached
+                               @return = MainModelManager.GetEndOfFlow(dsd.Parent, mainModel));
+                   });
 
             });
 
-            return result;
+            return @return;
         }
 
 
-        public static void Cut(List<SoftwareCell> softwareCells, MainModel mainModel)
+        public static void Cut(List<FunctionUnit> softwareCells, MainModel mainModel)
         {
 
-            _copiedCells.Clear();
-            softwareCells.ForEach(_copiedCells.Add);
+            _copiedFunctionUnits.Clear();
+            softwareCells.ForEach(_copiedFunctionUnits.Add);
 
-            softwareCells.ForEach(sc => MainModelManager.DeleteCell(sc, mainModel));
+            softwareCells.ForEach(sc => MainModelManager.DeleteFunctionUnit(sc, mainModel));
             ViewRedraw();
 
         }
 
 
-        public static object AppendNewCell(SoftwareCell focusedcell, double width, DataStreamDefinition dataStreamDefinition, MainModel mainModel)
+        public static object AppendNewFunctionUnit(FunctionUnit focusedcell, double width, DataStreamDefinition dataStreamDefinition, MainModel mainModel)
         {
-            var softwareCell = SoftwareCellsManager.CreateNew();
-
-            var pos = focusedcell.Position;
-            pos.X += width;
-            softwareCell.Position = pos;
+            var softwareCell = FunctionUnitManager.CreateNew();
+            softwareCell.Position = focusedcell.Position;
+            softwareCell.MoveX(width);
 
             softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, dataStreamDefinition));
             softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
 
             MainModelManager.ConnectTwoDefintions(dataStreamDefinition, softwareCell.InputStreams.First(), mainModel);
 
-            mainModel.SoftwareCells.Add(softwareCell);
+            mainModel.FunctionUnits.Add(softwareCell);
             ViewRedraw();
+
             return softwareCell;
         }
 
-
-        public static object NewOrFirstIntegrated(SoftwareCell focusedcell, MainModel mainModel)
+        /// <summary>
+        /// If the softwarecell is a integration it returns the first softwarecell of the integrated softwarecells.
+        /// If the softwarecell is not a integration it will add a new softwarecell below it and add it to its integrated softwarecells.
+        /// </summary>
+        /// <param name="focusedcell">the softwarecell that is currently selected</param>
+        /// <param name="mainModel">the mainmodel from the view</param>
+        /// <returns>the model that was created or the first integrated softwarecell if it already had one</returns>
+        public static object NewOrFirstIntegrated(FunctionUnit focusedcell, MainModel mainModel)
         {
-            if (focusedcell.Integration.Any())
-                return focusedcell.Integration.First();
+            object @return = null;
 
-            var softwareCell = SoftwareCellsManager.CreateNew();
-            var pos = focusedcell.Position;
-            pos.Y += 100;
-            softwareCell.Position = pos;
+            focusedcell.IsIntegration(
+                isIntegration: () => @return = focusedcell.Integration.First(),
+                isNotIntegration: () =>
+                {
+                    var softwareCell = FunctionUnitManager.CreateNew();
+                    softwareCell.Position = focusedcell.Position;
+                    softwareCell.MoveY(100);
 
-            softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, focusedcell.InputStreams.First()));
-            softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
+                    softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, focusedcell.InputStreams.First()));
+                    softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
 
-            focusedcell.Integration.AddUnique(softwareCell);
-            mainModel.SoftwareCells.Add(softwareCell);
+                    focusedcell.Integration.AddUnique(softwareCell);
+                    mainModel.FunctionUnits.Add(softwareCell);
 
-            ViewRedraw();
-            return softwareCell;
+                    @return = softwareCell;
+                    ViewRedraw();
+                });
 
+            return @return;
         }
 
 
-        public static void DeleteDataTypeDefinition(DataType dataType, MainModel mainModel)
+        public static void DeleteDataTypeDefinition(CustomDataType customDataType, MainModel mainModel)
         {
-            mainModel.DataTypes.Remove(dataType);
+            mainModel.DataTypes.Remove(customDataType);
             ViewRedraw();
         }
 
 
-        public static DataType AddDataTypeDefinition(MainModel mainModel)
+        public static CustomDataType AddDataTypeDefinition(MainModel mainModel)
         {
-            var dataType = new DataType
+            var dataType = new CustomDataType
             {
                 Name = "",
-                DataTypes = null
+                SubDataTypes = null
             };
 
             mainModel.DataTypes.Add(dataType);
@@ -508,10 +493,10 @@ namespace Dexel.Editor
             var res = DataTypeManager.GetUndefinedTypenames(mainModel).Where(x => !DataTypeParser.IsSystemType(x));
             res.ForEach(name =>
             {
-                var dataType = new DataType
+                var dataType = new CustomDataType
                 {
                     Name = name,
-                    DataTypes = null
+                    SubDataTypes = null
                 };
                 mainModel.DataTypes.Add(dataType);
             });
@@ -524,14 +509,6 @@ namespace Dexel.Editor
             MainViewModel.Instance().MissingDataTypes = DataTypeManager.GetUndefinedTypenames(mainModel).Where(x => !DataTypeParser.IsSystemType(x)).ToList().Count;
         }
 
-
-        public static IEnumerable<string> GetFocusedDataTypes(string datanames, MainModel mainModel)
-        {
-            var types = DataStreamParser.GetInputAndOutput(datanames).Select(x => x.Type);
-            var res = mainModel.DataTypes.Where(dt => types.Contains(dt.Name)).SelectMany(x => x.DataTypes).ToList();
-            res = DataTypeManager.GetTypesRecursive(res, mainModel);
-            return res.Select(x => x.Name);
-        }
 
 
         public static void SwapDataStreamOrder(DataStreamDefinition dsd1, DataStreamDefinition dsd2, MainModel mainModel)

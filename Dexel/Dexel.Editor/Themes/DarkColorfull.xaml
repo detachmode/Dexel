@@ -11,8 +11,8 @@
     <SolidColorBrush x:Key="BorderBrush" Color="#3e3e40" />
     <SolidColorBrush x:Key="OuterFillPointerBrush" Color="Transparent"/>
     <SolidColorBrush x:Key="FillPointerBrush" Color="DeepSkyBlue"/>
-    <SolidColorBrush x:Key="BorderSoftwareCellBrush" Color="DeepSkyBlue"/>
-    <SolidColorBrush x:Key="FillSoftwareCellBrush" Color="#FF303030"/>
+    <SolidColorBrush x:Key="BorderFunctionUnitBrush" Color="DeepSkyBlue"/>
+    <SolidColorBrush x:Key="FillFunctionUnitBrush" Color="#FF303030"/>
     <SolidColorBrush x:Key="Foreground" Color="White"/>
     <system:Double x:Key="StrokeThickness">3</system:Double>
 

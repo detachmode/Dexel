@@ -19,15 +19,15 @@ namespace Dexel.Model
         }
 
 
-        public static void AddNewOutput(SoftwareCell softwareCell, string datanames, string actionName = null)
+        public static void AddNewOutput(FunctionUnit functionUnit, string datanames, string actionName = null)
         {
-            SoftwareCellsManager.NewOutputDef(softwareCell, datanames, actionName);
+            FunctionUnitManager.NewOutputDef(functionUnit, datanames, actionName);
         }
 
 
-        public static void AddNewInput(SoftwareCell softwareCell, string datanames, string actionName = null)
+        public static void AddNewInput(FunctionUnit functionUnit, string datanames, string actionName = null)
         {
-            SoftwareCellsManager.NewInputDef(softwareCell, datanames, actionName);
+            FunctionUnitManager.NewInputDef(functionUnit, datanames, actionName);
         }
 
 
@@ -38,30 +38,30 @@ namespace Dexel.Model
         }
 
 
-        public static SoftwareCell AddNewSoftwareCell(string name, MainModel mainModel)
+        public static FunctionUnit AddNewFunctionUnit(string name, MainModel mainModel)
         {
-            var newcell = SoftwareCellsManager.CreateNew(name);
-            mainModel.SoftwareCells.Add(newcell);
+            var newcell = FunctionUnitManager.CreateNew(name);
+            mainModel.FunctionUnits.Add(newcell);
             return newcell;
         }
 
 
-        public static void ConnectTwoCells(SoftwareCell source, SoftwareCell destination, DataStreamDefinition defintion,
+        public static void ConnectTwoFunctionUnits(FunctionUnit source, FunctionUnit destination, DataStreamDefinition defintion,
             MainModel mainModel)
         {
-            ConnectTwoCells(source, destination, defintion.DataNames, "", mainModel, defintion.ActionName);
+            ConnectTwoFunctionUnits(source, destination, defintion.DataNames, "", mainModel, defintion.ActionName);
         }
 
 
-        public static DataStream ConnectTwoCells(SoftwareCell source, SoftwareCell destination, string outputs,
+        public static DataStream ConnectTwoFunctionUnits(FunctionUnit source, FunctionUnit destination, string outputs,
             string inputs,
             MainModel mainModel, string actionName = "")
         {
             source.OutputStreams.RemoveAll(x => x.DataNames == outputs && x.ActionName == actionName);
             destination.InputStreams.RemoveAll(x => x.DataNames == inputs && x.ActionName == actionName);
 
-            var sourceDef = SoftwareCellsManager.NewOutputDef(source, outputs, actionName);
-            var destinationDef = SoftwareCellsManager.NewInputDef(destination, inputs, null);
+            var sourceDef = FunctionUnitManager.NewOutputDef(source, outputs, actionName);
+            var destinationDef = FunctionUnitManager.NewInputDef(destination, inputs, null);
 
             return ConnectTwoDefintions(sourceDef, destinationDef, mainModel);
         }
@@ -108,7 +108,7 @@ namespace Dexel.Model
 
         public static void SetParents(MainModel loadedMainModel)
         {
-            loadedMainModel.SoftwareCells.ForEach(sc =>
+            loadedMainModel.FunctionUnits.ForEach(sc =>
             {
                 sc.InputStreams.ForEach(dsd => dsd.Parent = sc);
                 sc.OutputStreams.ForEach(dsd => dsd.Parent = sc);
@@ -121,7 +121,7 @@ namespace Dexel.Model
             loadedMainModel.Connections.ForEach(c =>
             {
                 var found =
-                    c.Sources.Select(dsd => DataStreamManager.GetDSDFromModel(dsd.ID, loadedMainModel.SoftwareCells))
+                    c.Sources.Select(dsd => DataStreamManager.GetDSDFromModel(dsd.ID, loadedMainModel.FunctionUnits))
                         .ToList();
                 if (found.Any())
                 {
@@ -130,7 +130,7 @@ namespace Dexel.Model
 
                 found =
                     c.Destinations.Select(
-                        dsd => DataStreamManager.GetDSDFromModel(dsd.ID, loadedMainModel.SoftwareCells)).ToList();
+                        dsd => DataStreamManager.GetDSDFromModel(dsd.ID, loadedMainModel.FunctionUnits)).ToList();
                 if (found.Any())
                 {
                     c.Destinations = found;
@@ -141,8 +141,8 @@ namespace Dexel.Model
 
         public static void SolveIntegrationReferences(MainModel loadedMainModel)
         {
-            var lookupID = loadedMainModel.SoftwareCells.ToLookup(sc => sc.ID);
-            loadedMainModel.SoftwareCells.Where(sc => sc.Integration.Count != 0).ToList().ForEach(sc =>
+            var lookupID = loadedMainModel.FunctionUnits.ToLookup(sc => sc.ID);
+            loadedMainModel.FunctionUnits.Where(sc => sc.Integration.Count != 0).ToList().ForEach(sc =>
             {
                 var references = sc.Integration.SelectMany(iSc => lookupID[iSc.ID]).ToList();
                 sc.Integration = references;
@@ -169,42 +169,42 @@ namespace Dexel.Model
         }
 
 
-        public static void RemoveAllConnectedFromIntegration(SoftwareCell softwareCell, MainModel mainModel)
+        public static void RemoveAllConnectedFromIntegration(FunctionUnit functionUnit, MainModel mainModel)
         {
-            FindIntegration(softwareCell, foundIntegration =>
+            FindIntegration(functionUnit, foundIntegration =>
             {
-                foundIntegration.Integration.Remove(softwareCell);
-                TraverseChildren(softwareCell, child => foundIntegration.Integration.Remove(child), mainModel);
-                TraverseChildrenBackwards(softwareCell, child => foundIntegration.Integration.Remove(child), mainModel);
+                foundIntegration.Integration.Remove(functionUnit);
+                TraverseChildren(functionUnit, child => foundIntegration.Integration.Remove(child), mainModel);
+                TraverseChildrenBackwards(functionUnit, child => foundIntegration.Integration.Remove(child), mainModel);
             }, mainModel);
         }
 
 
-        public static void RemoveFromIntegrationsIncludingChildren(SoftwareCell softwareCell, MainModel mainModel)
+        public static void RemoveFromIntegrationsIncludingChildren(FunctionUnit functionUnit, MainModel mainModel)
         {
-            FindIntegration(softwareCell, foundIntegration =>
+            FindIntegration(functionUnit, foundIntegration =>
             {
-                foundIntegration.Integration.Remove(softwareCell);
-                TraverseChildren(softwareCell, child => foundIntegration.Integration.Remove(child), mainModel);
+                foundIntegration.Integration.Remove(functionUnit);
+                TraverseChildren(functionUnit, child => foundIntegration.Integration.Remove(child), mainModel);
             }, mainModel);
         }
 
 
-        public static void TraverseChildren(SoftwareCell parent, Action<SoftwareCell> func, MainModel mainModel)
+        public static void TraverseChildren(FunctionUnit parent, Action<FunctionUnit> onEach, MainModel mainModel)
         {
             var foundConnections = mainModel.Connections.Where(c => c.Sources.Any(dsd => dsd.Parent == parent));
             foreach (var connection in foundConnections)
             {
                 connection.Destinations.ForEach(dsd =>
                 {
-                    func(dsd.Parent);
-                    TraverseChildren(dsd.Parent, func, mainModel);
+                    onEach(dsd.Parent);
+                    TraverseChildren(dsd.Parent, onEach, mainModel);
                 });
             }
         }
 
 
-        public static void TraverseChildrenBackwards(SoftwareCell children, Action<SoftwareCell> func,
+        public static void TraverseChildrenBackwards(FunctionUnit children, Action<FunctionUnit> onEach,
             MainModel mainModel)
         {
             var foundConnections = mainModel.Connections.Where(c => c.Destinations.Any(dsd => dsd.Parent == children));
@@ -212,70 +212,70 @@ namespace Dexel.Model
             {
                 connection.Sources.ForEach(dsd =>
                 {
-                    func(dsd.Parent);
-                    TraverseChildrenBackwards(dsd.Parent, func, mainModel);
+                    onEach(dsd.Parent);
+                    TraverseChildrenBackwards(dsd.Parent, onEach, mainModel);
                 });
             }
         }
 
-        public static void TraverseChildrenBackwards(SoftwareCell children, Action<SoftwareCell, DataStream> func,
-            List<DataStream> connections)
+        public static void TraverseChildrenBackwards(FunctionUnit children, Action<FunctionUnit, DataStream> onEach,
+            List<DataStream> allconnections)
         {
-            var foundConnections = connections.Where(c => c.Destinations.Any(dsd => dsd.Parent == children));
+            var foundConnections = allconnections.Where(c => c.Destinations.Any(dsd => dsd.Parent == children));
             foreach (var connection in foundConnections)
             {
                 connection.Sources.ForEach(dsd =>
                 {
-                    func(dsd.Parent, connection);
-                    TraverseChildrenBackwards(dsd.Parent, func, connections);
+                    onEach(dsd.Parent, connection);
+                    TraverseChildrenBackwards(dsd.Parent, onEach, allconnections);
                 });
             }
         }
 
 
-        private static void FindIntegration(SoftwareCell softwareCell, Action<SoftwareCell> onFound, MainModel mainModel)
+        private static void FindIntegration(FunctionUnit functionUnit, Action<FunctionUnit> onFound, MainModel mainModel)
         {
-            mainModel.SoftwareCells.Where(sc => sc.Integration.Contains(softwareCell))
+            mainModel.FunctionUnits.Where(sc => sc.Integration.Contains(functionUnit))
                 .ForEach(onFound);
         }
 
 
-        public static void DeleteCell(SoftwareCell softwareCell, MainModel mainModel)
+        public static void DeleteFunctionUnit(FunctionUnit functionUnit, MainModel mainModel)
         {
             // solve Integration logic
-            AtleastOneInputConnected(softwareCell,
-                () => RemoveFromIntegrationsIncludingChildren(softwareCell, mainModel),
+            AtleastOneInputConnected(functionUnit,
+                () => RemoveFromIntegrationsIncludingChildren(functionUnit, mainModel),
                 inputsNotConnected: () =>
-                    RemoveFromIntegrations(softwareCell, mainModel));
-
-            RemoveAllConnectionsToCell(softwareCell, mainModel);
-
-            mainModel.SoftwareCells.Remove(softwareCell);
+                    RemoveFromIntegrations(functionUnit, mainModel));
+                
+            // remove functionunit itself
+            RemoveAllConnectionsToFunctionUnit(functionUnit, mainModel);
+            mainModel.FunctionUnits.Remove(functionUnit);
         }
 
 
-        private static void RemoveFromIntegrations(SoftwareCell softwareCell, MainModel mainModel)
+        private static void RemoveFromIntegrations(FunctionUnit functionUnit, MainModel mainModel)
         {
-            FindIntegration(softwareCell, integratedByCell => integratedByCell.Integration.Remove(softwareCell),
+            FindIntegration(functionUnit, integratedByCell => integratedByCell.Integration.Remove(functionUnit),
                 mainModel);
         }
 
 
-        private static void RemoveAllConnectionsToCell(SoftwareCell softwareCell, MainModel mainModel)
+        private static void RemoveAllConnectionsToFunctionUnit(FunctionUnit functionUnit, MainModel mainModel)
         {
             var sources =
-                mainModel.Connections.Where(c => c.Sources.Any(sc => softwareCell == sc.Parent));
+                mainModel.Connections.Where(c => c.Sources.Any(sc => functionUnit == sc.Parent));
             var destinations =
-                mainModel.Connections.Where(c => c.Destinations.Any(sc => softwareCell == sc.Parent));
+                mainModel.Connections.Where(c => c.Destinations.Any(sc => functionUnit == sc.Parent));
             var todelete = destinations.Concat(sources).ToList();
             todelete.ForEach(c => RemoveConnection(c, mainModel));
         }
 
 
-        private static void AtleastOneInputConnected(SoftwareCell softwareCell, Action doAction,
+        private static void AtleastOneInputConnected(FunctionUnit functionUnit, Action doAction,
             Action inputsNotConnected = null)
         {
-            if (softwareCell.InputStreams.Any(dsd => dsd.Connected))
+            if (functionUnit.InputStreams.Any(dsd => dsd.Connected))
             {
                 doAction();
             }
@@ -286,42 +286,42 @@ namespace Dexel.Model
         }
 
 
-        private static void SetIntegrationOfCopiedCells(List<CopiedCells> copiedList, MainModel mainModel)
+        private static void SetIntegrationOfCopiedFunctionUnits(List<CopiedFunctionUnits> copiedList, MainModel mainModel)
         {
             copiedList.ForEach(cc =>
             {
-                var orginal = mainModel.SoftwareCells.First(sc => sc.ID == cc.OriginGuid);
+                var orginal = mainModel.FunctionUnits.First(sc => sc.ID == cc.OriginGuid);
                 orginal.Integration.ForEach(isc =>
                 {
                     var incopied = copiedList.FirstOrDefault(x => x.OriginGuid == isc.ID);
                     if (incopied != null)
                     {
-                        cc.NewCell.Integration.Add(incopied.NewCell);
+                        cc.NewFunctionUnit.Integration.Add(incopied.NewFunctionUnit);
                     }
                 });
             });
         }
 
 
-        private static void ReConnetCopiedCells(List<CopiedCells> copiedList, List<SoftwareCell> original,
+        private static void ReConnetCopiedFunctionUnits(List<CopiedFunctionUnits> copiedList, List<FunctionUnit> original,
             MainModel mainModel)
         {
-            var connectionsOfSelectedCells = mainModel.Connections.Where(c =>
+            var connectionsOfSelectedFunctionUnits = mainModel.Connections.Where(c =>
                 c.Sources.Any(y => original.Any(x => x == y.Parent))
                 &&
                 c.Destinations.Any(y => original.Any(x => x == y.Parent))
                 ).ToList();
 
 
-            connectionsOfSelectedCells.ForEach(c =>
+            connectionsOfSelectedFunctionUnits.ForEach(c =>
             {
                 var datastream = c;
                 var destination = datastream.Destinations.Select(y => y.Parent).First();
                 var source = datastream.Sources.Select(y => y.Parent).First();
 
-                var sourcedsd = copiedList.First(y => y.OriginGuid == source.ID).NewCell.OutputStreams.First(
+                var sourcedsd = copiedList.First(y => y.OriginGuid == source.ID).NewFunctionUnit.OutputStreams.First(
                     dsd => dsd.DataNames == datastream.Sources.First().DataNames);
-                var destinationdsd = copiedList.First(y => y.OriginGuid == destination.ID).NewCell.InputStreams.First(
+                var destinationdsd = copiedList.First(y => y.OriginGuid == destination.ID).NewFunctionUnit.InputStreams.First(
                     dsd => dsd.DataNames == datastream.Destinations.First().DataNames);
 
                 ConnectTwoDefintions(sourcedsd, destinationdsd, mainModel);
@@ -329,16 +329,16 @@ namespace Dexel.Model
         }
 
 
-        private static SoftwareCell Duplicate(SoftwareCell softwareCell)
+        private static FunctionUnit Duplicate(FunctionUnit functionUnit)
         {
-            var newmodel = SoftwareCellsManager.CreateNew(softwareCell.Name);
-            newmodel.Position = softwareCell.Position;
-            softwareCell.InputStreams.ForEach(dsd =>
+            var newmodel = FunctionUnitManager.CreateNew(functionUnit.Name);
+            newmodel.Position = functionUnit.Position;
+            functionUnit.InputStreams.ForEach(dsd =>
             {
                 var newdsd = DataStreamManager.NewDefinition(newmodel, dsd);
                 newmodel.InputStreams.Add(newdsd);
             });
-            softwareCell.OutputStreams.ForEach(dsd =>
+            functionUnit.OutputStreams.ForEach(dsd =>
             {
                 var newdsd = DataStreamManager.NewDefinition(newmodel, dsd);
                 newmodel.OutputStreams.Add(newdsd);
@@ -348,21 +348,21 @@ namespace Dexel.Model
         }
 
 
-        private static List<CopiedCells> DuplicateMany(List<SoftwareCell> softwareCells, MainModel mainModel)
+        private static List<CopiedFunctionUnits> DuplicateMany(List<FunctionUnit> softwareCells, MainModel mainModel)
         {
-            var copiedList = new List<CopiedCells>();
+            var copiedList = new List<CopiedFunctionUnits>();
             softwareCells.ForEach(sc =>
             {
                 var newCell = Duplicate(sc);
-                var copiedCell = new CopiedCells {OriginGuid = sc.ID, NewCell = newCell};
+                var copiedCell = new CopiedFunctionUnits {OriginGuid = sc.ID, NewFunctionUnit = newCell};
                 copiedList.Add(copiedCell);
-                mainModel.SoftwareCells.Add(newCell);
+                mainModel.FunctionUnits.Add(newCell);
             });
             return copiedList;
         }
 
 
-        public static void MakeIntegrationIncludingChildren(SoftwareCell parentCell, SoftwareCell subCell,
+        public static void MakeIntegrationIncludingChildren(FunctionUnit parentCell, FunctionUnit subCell,
             MainModel mainModel)
         {
             parentCell.Integration.AddUnique(subCell);
@@ -370,23 +370,23 @@ namespace Dexel.Model
         }
 
 
-        public static void MoveCellsToClickedPosition(Point positionClicked, List<CopiedCells> copiedList)
+        public static void MoveFunctionUnitsToClickedPosition(Point positionClicked, List<CopiedFunctionUnits> copiedList)
         {
-            var delta = positionClicked - copiedList.First().NewCell.Position;
-            copiedList.ForEach(x => x.NewCell.Position += delta);
+            var delta = positionClicked - copiedList.First().NewFunctionUnit.Position;
+            copiedList.ForEach(x => x.NewFunctionUnit.Position += delta);
         }
 
 
-        public static List<CopiedCells> Duplicate(List<SoftwareCell> softwareCells, MainModel mainModel)
+        public static List<CopiedFunctionUnits> Duplicate(List<FunctionUnit> softwareCells, MainModel mainModel)
         {
             var copiedList = DuplicateMany(softwareCells, mainModel);
-            ReConnetCopiedCells(copiedList, softwareCells, mainModel);
-            SetIntegrationOfCopiedCells(copiedList, mainModel);
+            ReConnetCopiedFunctionUnits(copiedList, softwareCells, mainModel);
+            SetIntegrationOfCopiedFunctionUnits(copiedList, mainModel);
             return copiedList;
         }
 
 
-        public static void MakeIntegrationIncludingAllConnected(SoftwareCell parentCell, SoftwareCell subCell,
+        public static void MakeIntegrationIncludingAllConnected(FunctionUnit parentCell, FunctionUnit subCell,
             MainModel mainModel)
         {
             parentCell.Integration.AddUnique(subCell);
@@ -395,13 +395,13 @@ namespace Dexel.Model
         }
 
 
-        public static List<SoftwareCell> GetChildrenAndIntegrated(SoftwareCell softwareCell, List<SoftwareCell> found,
+        public static List<FunctionUnit> GetChildrenAndIntegrated(FunctionUnit functionUnit, List<FunctionUnit> found,
             MainModel mainModel)
         {
-            found.AddUnique(softwareCell);
-            softwareCell.Integration.ForEach(isc => GetChildrenAndIntegrated(isc, found, mainModel));
+            found.AddUnique(functionUnit);
+            functionUnit.Integration.ForEach(isc => GetChildrenAndIntegrated(isc, found, mainModel));
 
-            TraverseChildren(softwareCell, child =>
+            TraverseChildren(functionUnit, child =>
             {
                 found.AddUnique(child);
                 child.Integration.ForEach(isc => GetChildrenAndIntegrated(isc, found, mainModel));
@@ -412,10 +412,59 @@ namespace Dexel.Model
         }
 
 
-        public class CopiedCells
+        public class CopiedFunctionUnits
         {
-            public SoftwareCell NewCell;
+            public FunctionUnit NewFunctionUnit;
             public Guid OriginGuid;
+        }
+
+
+        public static DataStream FindDataStream(DataStreamDefinition connectedDsd, MainModel mainModel)
+        {
+           return mainModel.Connections.FirstOrDefault(c => c.Sources.Contains(connectedDsd) || c.Destinations.Contains(connectedDsd));
+        }
+
+
+        public static object GetBeginningOfFlow(FunctionUnit startByFunctionUnit, MainModel mainModel)
+        {
+            object @return;
+
+            if (startByFunctionUnit.InputStreams.Any())
+                @return = startByFunctionUnit.InputStreams.First();
+            else
+                @return = startByFunctionUnit;
+
+            TraverseChildrenBackwards(startByFunctionUnit, fu =>
+            {
+                if (fu.InputStreams.Any())
+                    @return = fu.InputStreams.First();
+                else
+                    @return = fu;
+
+            }, mainModel);
+
+            return @return;
+        }
+
+        public static object GetEndOfFlow(FunctionUnit startByFunctionUnit, MainModel mainModel)
+        {
+            object @return;
+
+            if (startByFunctionUnit.OutputStreams.Any())
+                @return = startByFunctionUnit.OutputStreams.First();
+            else
+                @return = startByFunctionUnit;
+
+            TraverseChildren(startByFunctionUnit, fu =>
+            {
+                if (fu.OutputStreams.Any())
+                    @return = fu.OutputStreams.First();
+                else
+                    @return = fu;
+
+            }, mainModel);
+
+            return @return;
         }
     }
 

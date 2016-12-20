@@ -138,7 +138,7 @@ namespace Roslyn
             //var myGenerator = new MyGenerator();
 
 
-            //SyntaxNode[] members = testModel.SoftwareCells.Select(x => myGenerator.GenerateMethod(x)).ToArray();
+            //SyntaxNode[] members = testModel.FunctionUnits.Select(x => myGenerator.GenerateMethod(x)).ToArray();
 
 
 

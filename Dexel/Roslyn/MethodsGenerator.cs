@@ -22,15 +22,15 @@ namespace Roslyn
         }
 
 
-        public static SyntaxNode GetReturnPart(SyntaxGenerator generator, SoftwareCell softwareCell)
+        public static SyntaxNode GetReturnPart(SyntaxGenerator generator, FunctionUnit functionUnit)
         {
             SyntaxNode result = null;
 
-            DataTypeParser.OutputIsStream(softwareCell,
+            DataTypeParser.OutputIsStream(functionUnit,
                 isStream: () => { },
                 isNotStream: () =>
                 {
-                    var outputStream = softwareCell.OutputStreams.First();
+                    var outputStream = functionUnit.OutputStreams.First();
                     result = DataTypeParser.ConvertToType(generator,
                         DataStreamParser.GetOutputPart(outputStream.DataNames));
                 });
@@ -39,12 +39,12 @@ namespace Roslyn
         }
 
 
-        public static SyntaxNode GenerateStaticMethod(SyntaxGenerator generator, SoftwareCell softwareCell,
+        public static SyntaxNode GenerateStaticMethod(SyntaxGenerator generator, FunctionUnit functionUnit,
             SyntaxNode[] body = null)
         {
-            var methodName = GetMethodName(softwareCell);
-            var returntype = GetReturnPart(generator, softwareCell);
-            var parameters = GetParameters(generator, softwareCell);
+            var methodName = GetMethodName(functionUnit);
+            var returntype = GetReturnPart(generator, functionUnit);
+            var parameters = GetParameters(generator, functionUnit);
 
             return generator.MethodDeclaration(methodName, parameters,
                 null, returntype,
@@ -54,22 +54,22 @@ namespace Roslyn
         }
 
 
-        public static IEnumerable<SyntaxNode> GetParameters(SyntaxGenerator generator, SoftwareCell softwareCell)
+        public static IEnumerable<SyntaxNode> GetParameters(SyntaxGenerator generator, FunctionUnit functionUnit)
         {
             var result = new List<SyntaxNode>();
-            DataTypeParser.OutputIsStream(softwareCell,
-                isStream: () => MethodParameterSignatureForStreamOutput(generator, softwareCell, result),
-                isNotStream: () => MethodParameterSignatureFromInputs(generator, softwareCell, result));
+            DataTypeParser.OutputIsStream(functionUnit,
+                isStream: () => MethodParameterSignatureForStreamOutput(generator, functionUnit, result),
+                isNotStream: () => MethodParameterSignatureFromInputs(generator, functionUnit, result));
 
             return result;
         }
 
 
-        private static void MethodParameterSignatureForStreamOutput(SyntaxGenerator generator, SoftwareCell softwareCell,
+        private static void MethodParameterSignatureForStreamOutput(SyntaxGenerator generator, FunctionUnit functionUnit,
             List<SyntaxNode> result)
         {
-            MethodParameterSignatureFromInputs(generator, softwareCell, result);
-            var outgoingDataNames = softwareCell.OutputStreams.First().DataNames;
+            MethodParameterSignatureFromInputs(generator, functionUnit, result);
+            var outgoingDataNames = functionUnit.OutputStreams.First().DataNames;
             var nametypes = DataStreamParser.GetOutputPart(outgoingDataNames);
             nametypes.Where(nt => nt != null).ToList().ForEach(nt =>
                 {
@@ -80,13 +80,13 @@ namespace Roslyn
         }
 
 
-        private static void MethodParameterSignatureFromInputs(SyntaxGenerator generator, SoftwareCell softwareCell,
+        private static void MethodParameterSignatureFromInputs(SyntaxGenerator generator, FunctionUnit functionUnit,
             List<SyntaxNode> result)
         {
-            if (!softwareCell.InputStreams.Any())
+            if (!functionUnit.InputStreams.Any())
                 return;
 
-            var inputDataNames = softwareCell.InputStreams.First().DataNames;
+            var inputDataNames = functionUnit.InputStreams.First().DataNames;
             var i = 0;
             var nametypes = DataStreamParser.GetInputPart(inputDataNames);
             nametypes.ToList().ForEach(nametype =>
@@ -107,13 +107,13 @@ namespace Roslyn
         }
 
 
-        public static string GetMethodName(SoftwareCell softwareCell)
+        public static string GetMethodName(FunctionUnit functionUnit)
         {
-            if (string.IsNullOrEmpty(softwareCell.Name))
-                throw new Exception("SoftwareCell has no name");
+            if (string.IsNullOrEmpty(functionUnit.Name))
+                throw new Exception("FunctionUnit has no name");
            
             return
-                softwareCell.Name.Split(' ')
+                functionUnit.Name.Split(' ')
                     .Where(s => !string.IsNullOrEmpty(s))
                     .Select(Helper.FirstCharToUpper)
                     .Aggregate((s, s2) => s + s2);

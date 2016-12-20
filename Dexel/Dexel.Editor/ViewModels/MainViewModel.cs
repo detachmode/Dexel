@@ -24,28 +24,28 @@ namespace Dexel.Editor.ViewModels
 
         public MainViewModel()
         {
-            SoftwareCells = new ObservableCollection<IOCellViewModel>();
-            SelectedSoftwareCells = new ObservableCollection<IOCellViewModel>();
+            FunctionUnits = new ObservableCollection<FunctionUnitViewModel>();
+            SelectedFunctionUnits = new ObservableCollection<FunctionUnitViewModel>();
             Connections = new ObservableCollection<ConnectionViewModel>();
-            IntegrationBorders = new ObservableCollection<IOCellViewModel>();
+            IntegrationBorders = new ObservableCollection<FunctionUnitViewModel>();
             DataTypes = new ObservableCollection<DataTypeViewModel>();
             VisibileDataTypes = new ObservableCollection<DataTypeViewModel>();
-            FontSizeCell = 12;
+            FontSizeFunctionUnit = 12;
             VisibilityDatanames = Visibility.Visible;
             VisibilityBlockTextBox = Visibility.Hidden;
-            SelectedSoftwareCells.CollectionChanged += (sender, args) => UpdateSelectionState();
+            SelectedFunctionUnits.CollectionChanged += (sender, args) => UpdateSelectionState();
         }
 
 
         public ObservableCollection<DataTypeViewModel> DataTypes { get; set; }
-        public ObservableCollection<IOCellViewModel> IntegrationBorders { get; set; }
+        public ObservableCollection<FunctionUnitViewModel> IntegrationBorders { get; set; }
         public ObservableCollection<ConnectionViewModel> Connections { get; set; }
-        public ObservableCollection<IOCellViewModel> SoftwareCells { get; set; }
-        public ObservableCollection<IOCellViewModel> SelectedSoftwareCells { get; set; }
+        public ObservableCollection<FunctionUnitViewModel> FunctionUnits { get; set; }
+        public ObservableCollection<FunctionUnitViewModel> SelectedFunctionUnits { get; set; }
         public ObservableCollection<DataTypeViewModel> VisibileDataTypes { get; set; }
         public ConnectionViewModel TemporaryConnection { get; set; }
         public MainModel Model { get; set; }
-        public int FontSizeCell { get; set; }
+        public int FontSizeFunctionUnit { get; set; }
         public Visibility VisibilityDatanames { get; set; }
         public Visibility VisibilityBlockTextBox { get; set; }
         public int MissingDataTypes { get; set; }
@@ -53,51 +53,38 @@ namespace Dexel.Editor.ViewModels
         public static MainViewModel Instance() => _self ?? (_self = new MainViewModel());
 
 
-        public void SetDataTypeFilter(string datanames)
-        {
-            if (datanames == null)
-            {
-                VisibileDataTypes.Clear();
-                DataTypes.ForEach(vm => VisibileDataTypes.Add(vm));
-                return;
-            }
 
-            var types = Interactions.GetFocusedDataTypes(datanames, Model);
-
-            VisibileDataTypes.Clear();
-            DataTypes.Where(x => types.Any(y => x.Model.Name == y)).ForEach(vm => VisibileDataTypes.Add(vm));
-        }
 
         #region Modify Selection
 
         private void UpdateSelectionState()
         {
-            SoftwareCells.ForEach(x => x.IsSelected = false);
-            SelectedSoftwareCells.ForEach(x => x.IsSelected = true);
+            FunctionUnits.ForEach(x => x.IsSelected = false);
+            SelectedFunctionUnits.ForEach(x => x.IsSelected = true);
         }
 
 
-        public void SetSelection(IOCellViewModel ioCellViewModel)
+        public void SetSelection(FunctionUnitViewModel functionUnitViewModel)
         {
-            if (SelectedSoftwareCells.Contains(ioCellViewModel)) return;
+            if (SelectedFunctionUnits.Contains(functionUnitViewModel)) return;
 
-            SelectedSoftwareCells.Clear();
-            SelectedSoftwareCells.Add(ioCellViewModel);
+            SelectedFunctionUnits.Clear();
+            SelectedFunctionUnits.Add(functionUnitViewModel);
         }
 
 
-        public void SetSelectionCTRLMod(IOCellViewModel ioCellViewModel)
+        public void SetSelectionCTRLMod(FunctionUnitViewModel functionUnitViewModel)
         {
-            if (SelectedSoftwareCells.Contains(ioCellViewModel))
-                SelectedSoftwareCells.Remove(ioCellViewModel);
+            if (SelectedFunctionUnits.Contains(functionUnitViewModel))
+                SelectedFunctionUnits.Remove(functionUnitViewModel);
             else
-                SelectedSoftwareCells.Add(ioCellViewModel);
+                SelectedFunctionUnits.Add(functionUnitViewModel);
         }
 
 
-        public void MoveSelectedIOCells(Vector dragDelta)
+        public void MoveSelectedFunctionUnit(Vector dragDelta)
         {
-            SelectedSoftwareCells.ForEach(sc => Interactions.MoveSoftwareCell(sc.Model, dragDelta.X, dragDelta.Y));
+            SelectedFunctionUnits.ForEach(sc => Interactions.MoveFunctionUnit(sc.Model, dragDelta.X, dragDelta.Y));
         }
 
 
@@ -108,40 +95,40 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        private void Select(List<SoftwareCell> duplicted)
+        private void Select(List<FunctionUnit> duplicted)
         {
-            SelectedSoftwareCells.Clear();
-            SoftwareCells.Where(sc => duplicted.Contains(sc.Model)).ForEach(vm => SelectedSoftwareCells.Add(vm));
+            SelectedFunctionUnits.Clear();
+            FunctionUnits.Where(sc => duplicted.Contains(sc.Model)).ForEach(vm => SelectedFunctionUnits.Add(vm));
         }
 
 
-        public SoftwareCell DuplicateIncludingChildrenAndIntegrated(SoftwareCell softwareCell)
+        public FunctionUnit DuplicateIncludingChildrenAndIntegrated(FunctionUnit functionUnit)
         {
-            var list = MainModelManager.GetChildrenAndIntegrated(softwareCell, new List<SoftwareCell>(), Model);
+            var list = MainModelManager.GetChildrenAndIntegrated(functionUnit, new List<FunctionUnit>(), Model);
             var copiedlist = MainModelManager.Duplicate(list, Model);
-            var first = copiedlist.First(x => x.OriginGuid == softwareCell.ID);
-            return first.NewCell;
+            var first = copiedlist.First(x => x.OriginGuid == functionUnit.ID);
+            return first.NewFunctionUnit;
         }
 
 
-        private List<SoftwareCell> DuplicateSelection()
+        private List<FunctionUnit> DuplicateSelection()
         {
-            var copiedList = MainModelManager.Duplicate(SelectedSoftwareCells.Select(vm => vm.Model).ToList(), Model);
+            var copiedList = MainModelManager.Duplicate(SelectedFunctionUnits.Select(vm => vm.Model).ToList(), Model);
 
             Reload();
-            return copiedList.Select(x => x.NewCell).ToList();
+            return copiedList.Select(x => x.NewFunctionUnit).ToList();
         }
 
 
         public void ClearSelection()
         {
-            SelectedSoftwareCells.Clear();
+            SelectedFunctionUnits.Clear();
         }
 
 
-        public void AddToSelection(IOCellViewModel ioCellViewModel)
+        public void AddToSelection(FunctionUnitViewModel functionUnitViewModel)
         {
-            SelectedSoftwareCells.Add(ioCellViewModel);
+            SelectedFunctionUnits.Add(functionUnitViewModel);
         }
 
         #endregion
@@ -164,30 +151,30 @@ namespace Dexel.Editor.ViewModels
 
         #region Update Positions
 
-        public void UpdateConnectionsPosition(Point inputPoint, Point outputPoint, IOCellViewModel ioCellViewModel)
+        public void UpdateConnectionsPosition(Point inputPoint, Point outputPoint, FunctionUnitViewModel functionUnitViewModel)
         {
 
 
-            var allOutputs = Connections.Where(conn => conn.Model.Sources.Any(x => x.Parent == ioCellViewModel.Model));
-            var allInputs = Connections.Where(conn => conn.Model.Destinations.Any(x => x.Parent == ioCellViewModel.Model));
+            var allOutputs = Connections.Where(conn => conn.Model.Sources.Any(x => x.Parent == functionUnitViewModel.Model));
+            var allInputs = Connections.Where(conn => conn.Model.Destinations.Any(x => x.Parent == functionUnitViewModel.Model));
 
             allInputs.ToList().ForEach(connVm =>
             {
-                SetInputPosition(inputPoint, connVm, ioCellViewModel);
+                SetInputPosition(inputPoint, connVm, functionUnitViewModel);
             });
 
             allOutputs.ToList().ForEach(connVm =>
             {
-                SetOutputPosition(outputPoint, connVm, ioCellViewModel);
+                SetOutputPosition(outputPoint, connVm, functionUnitViewModel);
             });
         }
 
 
-        private void SetInputPosition(Point point, ConnectionViewModel connVm, IOCellViewModel ioCellViewModel)
+        private void SetInputPosition(Point point, ConnectionViewModel connVm, FunctionUnitViewModel functionUnitViewModel)
         {
-            var inputVm = (ConnectionAdapterViewModel)ioCellViewModel.Inputs.First(ioVm => ioVm.Model == connVm.Model.Destinations.First());
-            var index = ioCellViewModel.Inputs.IndexOf(inputVm);
-            var count = ioCellViewModel.Inputs.Count;
+            var inputVm = (ConnectionAdapterViewModel)functionUnitViewModel.Inputs.First(ioVm => ioVm.Model == connVm.Model.Destinations.First());
+            var index = functionUnitViewModel.Inputs.IndexOf(inputVm);
+            var count = functionUnitViewModel.Inputs.Count;
 
             var pt = OffsetPos(point, count, index, inputVm, isOutput:false);
 
@@ -195,11 +182,11 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        private void SetOutputPosition(Point point, ConnectionViewModel connVm, IOCellViewModel ioCellViewModel)
+        private void SetOutputPosition(Point point, ConnectionViewModel connVm, FunctionUnitViewModel functionUnitViewModel)
         {
-            var outputVm = (ConnectionAdapterViewModel)ioCellViewModel.Outputs.First(ioVm => ioVm.Model == connVm.Model.Sources.First());
-            var index = ioCellViewModel.Outputs.IndexOf(outputVm);
-            var count = ioCellViewModel.Outputs.Count;
+            var outputVm = (ConnectionAdapterViewModel)functionUnitViewModel.Outputs.First(ioVm => ioVm.Model == connVm.Model.Sources.First());
+            var index = functionUnitViewModel.Outputs.IndexOf(outputVm);
+            var count = functionUnitViewModel.Outputs.Count;
 
             var pt = OffsetPos(point, count, index, outputVm);
 
@@ -228,25 +215,25 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        public void UpdateIntegrationBorderPositions(ObservableCollection<IOCellViewModel> integrationsBorders)
+        public void UpdateIntegrationBorderPositions(ObservableCollection<FunctionUnitViewModel> integrationsBorders)
         {
             integrationsBorders.ForEach(UpdateIntegrationBorderPosition);
         }
 
 
-        public void UpdateIntegrationBorderPosition(IOCellViewModel iocellvm)
+        public void UpdateIntegrationBorderPosition(FunctionUnitViewModel iocellvm)
         {
             if (iocellvm.Integration.Count == 0)
                 return;
             var tempIntegrations =
-                iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.X + cellvm1.CellWidth);
+                iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.X + cellvm1.Width);
             var min = tempIntegrations.First();
             var max = tempIntegrations.Last();
 
-            tempIntegrations = iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.Y + cellvm1.CellHeight);
+            tempIntegrations = iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.Y + cellvm1.Height);
             var miny = tempIntegrations.First();
             iocellvm.IntegrationStartPosition = new Point(min.Model.Position.X - 60, miny.Model.Position.Y);
-            iocellvm.IntegrationEndPosition = new Point(max.Model.Position.X + max.CellWidth + 60,
+            iocellvm.IntegrationEndPosition = new Point(max.Model.Position.X + max.Width + 60,
                 miny.Model.Position.Y);
         }
 
@@ -267,7 +254,7 @@ namespace Dexel.Editor.ViewModels
             try
             {
                 Model = mainModel;
-                LoadSoftwareCells(mainModel.SoftwareCells);
+                LoadFunctionUnits(mainModel.FunctionUnits);
                 LoadConnection(mainModel.Connections);               
                 LoadIntegrations();
                 LoadDataTypes(mainModel.DataTypes);
@@ -279,7 +266,7 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        private void LoadDataTypes(List<DataType> dataTypes)
+        private void LoadDataTypes(List<CustomDataType> dataTypes)
         {
             DataTypes.Clear();
             dataTypes.ForEach(dataType =>
@@ -287,10 +274,10 @@ namespace Dexel.Editor.ViewModels
                 var vm = new DataTypeViewModel();
                 vm.Model = dataType;
 
-                if ((dataType.DataTypes == null) || !dataType.DataTypes.Any())
+                if ((dataType.SubDataTypes == null) || !dataType.SubDataTypes.Any())
                     vm.Definitions = "";
                 else
-                    vm.Definitions = dataType.DataTypes
+                    vm.Definitions = dataType.SubDataTypes
                         .Select(x => string.IsNullOrEmpty(x.Name) ? x.Type : $"{x.Name}:{x.Type}")
                         .Aggregate((str, type) => str + "\n" + type);
 
@@ -301,12 +288,12 @@ namespace Dexel.Editor.ViewModels
 
         private void LoadIntegrations()
         {
-            var newcollection = new ObservableCollection<IOCellViewModel>();
-            SoftwareCells.Where(x => x.Model.Integration.Count != 0).ToList().ForEach(hasIntegration =>
+            var newcollection = new ObservableCollection<FunctionUnitViewModel>();
+            FunctionUnits.Where(x => x.Model.Integration.Count != 0).ToList().ForEach(hasIntegration =>
             {
                 var integratedVMs =
-                    SoftwareCells.Where(otherVM => hasIntegration.Model.Integration.Contains(otherVM.Model));
-                var list = new ObservableCollection<IOCellViewModel>();
+                    FunctionUnits.Where(otherVM => hasIntegration.Model.Integration.Contains(otherVM.Model));
+                var list = new ObservableCollection<FunctionUnitViewModel>();
                 integratedVMs.ToList().ForEach(list.Add);
                 hasIntegration.Integration = list;
                 newcollection.Add(hasIntegration);
@@ -317,27 +304,27 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        private void LoadSoftwareCells(List<SoftwareCell> softwareCellsToLoad)
+        private void LoadFunctionUnits(List<FunctionUnit> softwareCellsToLoad)
         {
-            RemoveDeletedSoftwareCells(softwareCellsToLoad);
+            RemoveDeletedFunctionUnits(softwareCellsToLoad);
 
-            var lookup = SoftwareCells.ToLookup(x => x.Model.ID, x => x);
-            softwareCellsToLoad.ForEach(model => FindIOCellViewModel(lookup, model,
-                onFound: viewModel => IOCellViewModel.LoadFromModel(viewModel, model),
-                onNotFound: () => AddNewSoftwareCell(model)));
+            var lookup = FunctionUnits.ToLookup(x => x.Model.ID, x => x);
+            softwareCellsToLoad.ForEach(model => FindFunctionUnitViewModel(lookup, model,
+                onFound: viewModel => FunctionUnitViewModel.LoadFromModel(viewModel, model),
+                onNotFound: () => AddNewFunctionUnit(model)));
         }
 
 
-        private void AddNewSoftwareCell(SoftwareCell model)
+        private void AddNewFunctionUnit(FunctionUnit model)
         {
-            var vm = new IOCellViewModel();
+            var vm = new FunctionUnitViewModel();
             vm.LoadFromModel(model);
-            SoftwareCells.Add(vm);
+            FunctionUnits.Add(vm);
         }
 
 
-        private void FindIOCellViewModel(ILookup<Guid, IOCellViewModel> lookup, SoftwareCell model,
-            Action<IOCellViewModel> onFound, Action onNotFound)
+        private void FindFunctionUnitViewModel(ILookup<Guid, FunctionUnitViewModel> lookup, FunctionUnit model,
+            Action<FunctionUnitViewModel> onFound, Action onNotFound)
         {
             var found = lookup[model.ID].ToList();
             if (found.Any())
@@ -358,10 +345,10 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        private void RemoveDeletedSoftwareCells(List<SoftwareCell> softwareCellsToLoad)
+        private void RemoveDeletedFunctionUnits(List<FunctionUnit> softwareCellsToLoad)
         {
-            var todelte = SoftwareCells.Where(vm => softwareCellsToLoad.All(cell => cell.ID != vm.Model.ID)).ToList();
-            todelte.ForEach(vm => SoftwareCells.Remove(vm));
+            var todelte = FunctionUnits.Where(vm => softwareCellsToLoad.All(fu => fu.ID != vm.Model.ID)).ToList();
+            todelte.ForEach(vm => FunctionUnits.Remove(vm));
         }
 
 
@@ -386,7 +373,7 @@ namespace Dexel.Editor.ViewModels
 
         private void RemoveDeletedConnections(List<DataStream> datastreamsToLoad)
         {
-            var todelte = Connections.Where(vm => datastreamsToLoad.All(cell => cell.ID != vm.Model.ID)).ToList();
+            var todelte = Connections.Where(vm => datastreamsToLoad.All(fu => fu.ID != vm.Model.ID)).ToList();
             todelte.ForEach(vm => Connections.Remove(vm));
         }
 

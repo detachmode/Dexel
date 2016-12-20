@@ -158,7 +158,7 @@
       <DependentUpon>DataTypeCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\DataTypeEditor\DataTypeViewModel.cs" />
-    <Compile Include="ViewModels\DrawingBoard\IOCellViewModel.cs" />
+    <Compile Include="ViewModels\DrawingBoard\FunctionUnitViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\DrawingBoard\RectangleViewModel.cs" />
     <Compile Include="Views\DrawingBoard\ConnectionsView.xaml.cs">
@@ -181,14 +181,14 @@
     <Compile Include="Views\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DrawingBoard\IOCell.xaml.cs">
-      <DependentUpon>IOCell.xaml</DependentUpon>
+    <Compile Include="Views\DrawingBoard\FunctionUnitView.xaml.cs">
+      <DependentUpon>FunctionUnitView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DrawingBoard\SoftwareCell.xaml.cs">
-      <DependentUpon>SoftwareCell.xaml</DependentUpon>
+    <Compile Include="Views\DrawingBoard\FunctionUnitBody.xaml.cs">
+      <DependentUpon>FunctionUnitBody.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UnkownErrorDialog.xaml.cs">
       <DependentUpon>UnkownErrorDialog.xaml</DependentUpon>
@@ -250,7 +250,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DrawingBoard\IOCell.xaml">
+    <Page Include="Views\DrawingBoard\FunctionUnitView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -258,7 +258,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DrawingBoard\SoftwareCell.xaml">
+    <Page Include="Views\DrawingBoard\FunctionUnitBody.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

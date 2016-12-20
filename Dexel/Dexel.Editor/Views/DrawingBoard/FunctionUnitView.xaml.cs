@@ -9,35 +9,35 @@ namespace Dexel.Editor.Views.DrawingBoard
 {
 
     /// <summary>
-    ///     Interaction logic for IOCell.xaml
+    ///     Interaction logic for FunctionUnitView.xaml
     /// </summary>
-    public partial class IOCell
+    public partial class FunctionUnitView
     {
 
-        public IOCellViewModel ViewModel()
+        public FunctionUnitViewModel ViewModel()
         {
-            var cellViewModel = DataContext as IOCellViewModel;
+            var cellViewModel = DataContext as FunctionUnitViewModel;
             return cellViewModel;
         }
 
 
-        public IOCell()
+        public FunctionUnitView()
         {
             InitializeComponent();
-            LayoutUpdated += IOCell_LayoutUpdated;
+            LayoutUpdated += FunctionUnit_LayoutUpdated;
         }
 
 
 
 
-        private void IOCell_LayoutUpdated(object sender, EventArgs e)
+        private void FunctionUnit_LayoutUpdated(object sender, EventArgs e)
         {
             if (MainViewModel.Instance().LoadingModelFlag)
                 return;
             if (ViewModel() == null) return;
 
-            ViewModel().CellWidth = Fu.ActualWidth;
-            ViewModel().CellHeight = Fu.ActualHeight;
+            ViewModel().Width = Fu.ActualWidth;
+            ViewModel().Height = Fu.ActualHeight;
 
             MainViewModel.Instance().UpdateIntegrationBorderPosition(ViewModel());
             UpdateConnectionViewModels();
@@ -111,13 +111,13 @@ namespace Dexel.Editor.Views.DrawingBoard
 
 
 
-        private List<Model.DataTypes.SoftwareCell> GetSelectionOrClickedOn()
+        private List<Model.DataTypes.FunctionUnit> GetSelectionOrClickedOn()
         {
-            var list = new List<Model.DataTypes.SoftwareCell>();
-            if (MainViewModel.Instance().SelectedSoftwareCells.Count == 0)
+            var list = new List<Model.DataTypes.FunctionUnit>();
+            if (MainViewModel.Instance().SelectedFunctionUnits.Count == 0)
                 list.Add(ViewModel().Model);
             else
-                list = MainViewModel.Instance().SelectedSoftwareCells.Select(x => x.Model).ToList();
+                list = MainViewModel.Instance().SelectedFunctionUnits.Select(x => x.Model).ToList();
 
             return list;
         }

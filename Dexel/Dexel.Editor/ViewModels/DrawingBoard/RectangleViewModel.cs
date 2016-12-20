@@ -120,7 +120,7 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
 
                 width = value;
 
-                OnPropertyChanged("CellWidth");
+                OnPropertyChanged("Width");
             }
         }
 
@@ -142,7 +142,7 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
 
                 height = value;
 
-                OnPropertyChanged("CellHeight");
+                OnPropertyChanged("Height");
             }
         }
 

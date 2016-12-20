@@ -1,7 +1,7 @@
 * Realisierung ( ~ 20- 30 Seiten )
 In diesem Kapitel soll vorgestellt werden, was in dem Zeitraum dieser
 Bachelorarbeit erreicht wurde. Es soll die Funktionalität des Editors
-anhand von Screenshots vorgestellt werden und die Architekur die selbst nach
+anhand von Screenshots vorgestellt werden und die Architekur der Anwendung, die selbst nach
 Flow Design umgesetzt wurde. 
 
 Als Arbeitstitel für die Anwendung wurde der Name Dexel gewählt.
@@ -54,18 +54,227 @@ Tests werden in einem extra Test-Projekt für jedes Projekt zusammengefasst)
     ausgelagert, damit alle anderen Projekte darauf zugreifen können.
 
 ** Das Model
-*** MainModel
-*** SoftwareCell
-**** DataStreamDefinition
-*** DataStream (Connections)
+   Um nachfolgende Kapitel der Realisierung und die darin enthaltenden
+   Codeauschnitte verstehen zu können, braucht es ein Verständnis darüber, wie die
+   grundlegenden Datentypen des Models aufgebaut sind. Um die Funktionalität der
+   jeweiligen Datentypten besser zu veranschaulichen, werden in diesem Kapitel
+   Bilder verwendet, welche die spätere Darstellung des Datentypen in der UI zeigen.
+
+*** MISSING IMAGES MainModel
+    Das MainModel ist, wie der Name schon sagt, das Haupt-Modell, das alle
+    anderen Modelle per Komposition beinhaltet. Somit kann man eine Objektinstanz
+    eines MainModels an eine Methode übergeben und diese Instanz beinhaltet alle
+    Informationen über das aktuelle Flow Design Diagramm. 
+    Das MainModel beinhaltet alle Funktonseinheiten (=SoftwareCells=), alle verbindende
+    Datenströme (=Connections=) und alle benutzerdefinierten Datentypen (=DataTypes=).
+
+#+BEGIN_SRC cpp 
+    [ImplementPropertyChanged]
+    public class MainModel
+    {
+        public List<SoftwareCell> SoftwareCells { get; set; }
+        public List<DataStream> Connections { get;  set; }
+        public List<DataType> DataTypes { get; set; } 
+    }
+#+END_SRC
+
+*** MISSING IMAGES SoftwareCell
+    In Anlehnung an den Gedanken der Softwarezellen-Architekur und den Schluss
+    daraus, dass auf unterster Ebene eine Funktionseinheit auch als
+    Softwarezellen gedacht werden kann, wurden Funktionseinheiten als
+    Softwarezellen bezeichnet.
+
+#+BEGIN_SRC cpp
+    [ImplementPropertyChanged]
+    public class SoftwareCell
+    {
+        public Guid ID { get; set; }
+        public string Name { get; set; }
+        public Point Position { get; set; }
+        public List<SoftwareCell> Integration { get; set; }
+        public List<DataStreamDefinition> InputStreams { get; set; }
+        public List<DataStreamDefinition> OutputStreams { get; set; }
+    }
+#+END_SRC
+
+    Der Name ist der Name der Funktionseinheit ( der Text, der bei der
+    Darstellung später innhalb des Kreises erscheint). Dieser wird später per Binding
+    direkt an die UI gebunden. Aus diesem Grund implementiert dieses Klasse,
+    genau wie alle anderen des Models, die ImplementPropertyChanged
+    Funktionalität. Diese bewirkt, dass bei einer Änderung im UI automatisch das
+    entsprechende Property im Model aktualisiert wird und umgekehrt.
+
+    Die Position beschreibt die Position der Softwarezelle innherhalb des
+    Diagrammes.  
+
+    Das Integration Property gibt an, ob diese Softwarezelle eine Integration
+    ist und welche andere Instanzen von Softwarezellen sie integriert.
+    Eine leere Liste besagt, dass die Softwarezelle keine Integration ist.
+
+    Die Input- und OutputStreams definieren die möglichen ein- und ausgehenden
+    Datenströme der Softwarezelle. An diese DataStreamDefinitionen können sich DataStreams
+    verbinden. Dadurch lassen sie die Datenflüsse modelieren.
+
+**** MISSING IMAGES DataStreamDefinition
+
+#+BEGIN_SRC cpp
+    [ImplementPropertyChanged]
+    public class DataStreamDefinition
+    {
+        public Guid ID { get;  set; }
+        public string DataNames { get;  set; }
+        public string ActionName { get;  set; }
+        public SoftwareCell Parent { get;  set; }
+        public bool Connected { get;  set; }
+    }
+#+END_SRC
+
+     Eine Funktionseinheit verfügt über ein oder mehrere ein- und ausgehende
+     DataStreamDefinitionen. Diese können verbunden sein oder nicht. Wenn eine
+     Verbindung erstellt und gelöscht wird, muss deshalb auch das Connected
+     Property immer gesetzt werden, damit das Model valide bleibt.
+     Ob eine DataStreamDefinition verbunden ist, oder nicht, ist vorallem später
+     für die Darstellung relevant.
+     Eine DataStreamDefinition kennt auch die Funktionseinheit, von der sie ein
+     Ein- oder Ausgang ist.
+     
+     Eine weitere grundlegende Eigenschaft ist die Benennung der Daten, die in/aus
+     dem Ein-/ Ausgang fließen. Für Ausgänge ist auch die Angabe eines
+     Actionnames manchmal nötig. Dieser soll später unterhalb des Pfeiles
+     dargstellt werden.
+
+*** MISSING IMAGES DataStream (Connections)
+    Um Datenflüsse zwischen Funktionseinheitn zu beschreiben, bedarf es einer
+    Verbindungsklasse. Die DataStream-Klasse stellt diese Verbindungsklasse dar.
+ 
+
+#+BEGIN_SRC cpp
+    [ImplementPropertyChanged]
+    public class DataStream
+    {
+        public Guid ID { get; set; }
+        public string DataNames { get;  set; }
+        public List<DataStreamDefinition> Sources { get;  set; }
+        public List<DataStreamDefinition> Destinations { get;  set; }
+
+    }
+#+END_SRC
+
+    Ein DataStream hat ein oder mehrere Referenzen an DataStreamDefinition als
+    Quellen und ein oder mehrere Referenzen an DataStreamDefinition als Ziele.
+    Um ein Datenstrom zu beschreiben, der aus mehren Quellen Daten bezieht und
+    an einer Stelle zusammenläuft, benötigt man ein DataStream, der mehrer
+    Einträge in der Source-Liste besitzt und ein Eintrag in der
+    Destination-Liste. Diese Datenstrom wäre dann ein Joint-Input.
+    Ein Datenstrom mit einer Quelle und mehreren Zielen wäre ein Joint-Output ( TODO:
+    Referenz auf vorheriges Kapitel)
+    
+    Das DataNames Property stellt den Text dar, der später in der Mitte des
+    Pfeiles dargestellt werden soll. Eine Änderung dieser Eigenschaft bedarf
+    einer Aktualisierung der DataNames aller Sources und Destinations.
+    Eine Aktualisierung muss die optionalen Pipe-Notation kennen und
+    entsprechend dieser die Ein und Ausgänge akutalisieren.
+
+    Der akutelle Stand der UI kann akutell nur Datenflüsse mit einer Quelle und
+    einem Ziel darstellen.
+
 *** DataType
+
+#+BEGIN_SRC cpp
+
+  [ImplementPropertyChanged]
+    public class CustomDataType
+    {
+        public string Name { get; set; }
+        public List<SubDataType> SubDataTypes { get; set; }
+    }
+
+    [ImplementPropertyChanged]
+    public class SubDataType
+    {
+        public string Name { get; set; }
+        public string Type { get; set; }
+    }
+
+#+END_SRC
+
+  Ein benutzerdefinierter Datentyp besteht aus einem Namen und einer Liste von mehreren
+  =SubDataType=-Objekten. 
+
+  Ein SubDataType besteht aus einem Namen und den Namen
+  des Types (zum Beispiel string, int oder auch ein anderen benutzerdefinierten
+  Datentypen).
+
 *** Manager-Klassen
+**** MainModelManager 
+     Einer der relevantesten Manager-Klassen ist die MainModelManager-Klasse,
+     diese stellt die wichtigsten Funktionalitäten zur Verfügung die mit dem
+     Arbeiten des MainModels gebraucht werden. Einige dieser Funktionalitäten
+     wären: Verbinden und Trennen von Funktionseinheiten, vorwärts und rückwärts
+     Traversieren entlang des Graphen, Hinzufügen und Entfernen einer
+     Funktionseinheit von einer Integration, Hinzufügen, Löschen und Duplizieren
+     von Funktionseinheiten, oder Teile des Graphen.
+
+**** DataStreamManager 
+     Diese statische Klasse bietet einige Funktionalitäten, die das Arbeiten mit
+     Objekten der DataStream-Klasse vereinfachen soll.
+
+     Ein Beispiel hierfür wäre das Ändern des Datanames eines DataStreams. 
+     Wie bereits in letzten Abschnitt erwähnt, muss beim Ändern der Daten
+     eines Datenflusses auch die Daten seiner Sources und Destinations
+     angepasst werden. 
+
+     Um dies nochmal zu verdeutlichen, zwei konkrete Beispiele:
+     Falls der Datenfluss auf (int)|(string) geändert werden
+     soll, muss die Source-DataStreamDefinition auf (int) gesetzt werden und der
+     die Destination-DataStreamDefinition auf (string). 
+     Falls der Datenfluss auf (double) geändert werden soll, so werden Source
+     und Destination Daten auf (double) gesetzt.
+
+     Fussnote: Da aktuell nur DataStreams mit einer Source und einer Destination im Editor unterstützt
+     werden, wurde akutell auch nur dieses Szenario implementiert. Ändert sich
+     diese Einschränkung müsste man sich Gedanken darüber machen, was in diesen
+     Fällen zu tun wäre. Ein Option wäre, die Pipe-Notation in diesen Fällen zu
+     verbieten. Die UI würde die Daten der DataStreamDefinitionen direkt
+     anzeigen und der Benutzer würde diese dann direkt ändern. Der Datenstrom
+     selbst würde dann kein eigenes Textfeld besitzen und die Dataname
+     Eigenschaft hätte in diesen Fall keine Bedeutung. 
+     Vielleicht wäre es dann auch besser im Modell zwei separate Klassen
+     anzulegen und die
+     einfache DataStream-Klasse hätte anstatt einer Liste von DatastreamDefinitionen nur noch ein einfaches Feld
+     für eine Source-DataStreamDefinition und eine Destionation-DataStreamDefinition.
+ 
+#+BEGIN_SRC cpp
+
+ public static void ChangeDatanames(DataStream datastream, string newDatanames)
+        {
+            // update datanames of connection itself
+            datastream.DataNames = newDatanames;
+
+            // update datanames of DSDs
+            TrySolveWithPipeNotation(newDatanames,
+                onSuccess: (outputPart, inputPart) =>
+                {
+                    // TODO: doesn't support mutliple sources yet
+                    datastream.Sources.First().DataNames = outputPart;
+                    datastream.Destinations.First().DataNames = inputPart;
+                },
+                onNoSuccess: () =>
+                {
+                    // TODO: doesn't support mutliple destinations yet
+                    datastream.Sources.First().DataNames = newDatanames.Trim();
+                    datastream.Destinations.First().DataNames = newDatanames.Trim();
+                });
+        }
+#+END_SRC
+
+
 
 ** Der Editor
 *** Vorstellung was erreicht wurde
 
 Die Grundlegenden Basisfunktionen aus Kaptitel 3 wurden größtenteils
-implementiert. Hierbei kamen WPF als GUI-Framework zum Einsatz.
+implementiert. Hierbei kam WPF als GUI-Framework zum Einsatz.
 Bilder und Beschriebungen der GUI und Interaktionen.
 **** Erstellen von Funktionseinheiten, Verschieben, Benennen, Selektieren
 **** Erstellen von weiteren Outputs
@@ -190,7 +399,7 @@ Bilder und Beschriebungen der GUI und Interaktionen.
 *** Eigene Tabstop-Logik
     Mit Tab und Shift-Tab soll es dem Nutzer möglich sein den Tastaturfokus zu
     verändern. Dieses Beispiel zeigt auch nochmal, das Coderedundanzen innerhalb
-    von mehreren Integrationen nichts schlechtes sein muss.
+    von mehreren Integrationen nichts Schlechtes sein muss.
 
 ** Roslyn - Generierung von Code aus einem Diagramm
 *** Vorstellung Roslyn

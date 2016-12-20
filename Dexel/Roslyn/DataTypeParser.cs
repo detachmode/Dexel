@@ -111,18 +111,18 @@ namespace Roslyn
         }
 
 
-        public static void OutputIsStream(SoftwareCell softwareCell, Action isStream = null, Action isNotStream = null)
+        public static void OutputIsStream(FunctionUnit functionUnit, Action isStream = null, Action isNotStream = null)
         {
-            DataStreamParser.IsStream(softwareCell.OutputStreams.First().DataNames, isStream, isNotStream);
+            DataStreamParser.IsStream(functionUnit.OutputStreams.First().DataNames, isStream, isNotStream);
         }
 
 
-        public static void OutputOrInputIsStream(SoftwareCell softwareCell, Action bothAreStreams = null, Action onInputIsStream = null, Action onOutputIsStream = null, Action noStream = null )
+        public static void OutputOrInputIsStream(FunctionUnit functionUnit, Action bothAreStreams = null, Action onInputIsStream = null, Action onOutputIsStream = null, Action noStream = null )
         {
             var outputIsStream = false;
             var inputIsStream = false;
-            DataStreamParser.IsStream(softwareCell.OutputStreams.First().DataNames, () => outputIsStream = true );
-            DataStreamParser.IsStream(softwareCell.InputStreams.First().DataNames, () => inputIsStream = true);
+            DataStreamParser.IsStream(functionUnit.OutputStreams.First().DataNames, () => outputIsStream = true );
+            DataStreamParser.IsStream(functionUnit.InputStreams.First().DataNames, () => inputIsStream = true);
 
             if (outputIsStream && inputIsStream)
                 bothAreStreams?.Invoke();

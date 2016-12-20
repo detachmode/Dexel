@@ -12,12 +12,11 @@ namespace Dexel.Model
     [ImplementPropertyChanged]
     public static class DataStreamManager
     {
-        public static DataStream NewDataStream(string datanames, string actionsName = "")
+        public static DataStream NewDataStream(string datanames)
         {
             var dataStream = new DataStream();
             dataStream.ID = Guid.NewGuid();
             dataStream.DataNames = datanames;
-            dataStream.ActionName = actionsName;
             return dataStream;
         }
 
@@ -26,13 +25,34 @@ namespace Dexel.Model
             return dsd.Parent.InputStreams.Contains(dsd);
         }
 
+
+        public static void CheckIsInputOrOutput(this DataStreamDefinition dsd, Action isInput, Action isOutput)
+        {
+            if (dsd.IsInput())
+                isInput();
+            else if (dsd.IsOutput())
+                isOutput();
+        }
+
+        public static void GetFirstConnected(this List<DataStreamDefinition> dsds, Action<DataStreamDefinition> foundConnected, Action noConnected)
+        {
+            var firstconnected = dsds.FirstOrDefault(x => x.Connected);
+            if (firstconnected != null)
+                foundConnected(firstconnected);
+            else
+                noConnected();
+
+        }
+
+        
+
         public static bool IsOutput(this DataStreamDefinition dsd)
         {
             return dsd.Parent.OutputStreams.Contains(dsd);
         }
 
 
-        public static DataStreamDefinition NewDefinition(SoftwareCell parent, string datanames, string actionsName = "",
+        public static DataStreamDefinition NewDefinition(FunctionUnit parent, string datanames, string actionsName = "",
             bool connected = false)
         {
             var dataStream = new DataStreamDefinition();
@@ -53,11 +73,11 @@ namespace Dexel.Model
 
         public static DataStream NewDataStream(DataStreamDefinition datastreamDefintion)
         {
-            return NewDataStream(datastreamDefintion.DataNames, datastreamDefintion.ActionName);
+            return NewDataStream(datastreamDefintion.DataNames);
         }
 
 
-        public static DataStreamDefinition NewDefinition(SoftwareCell parent, DataStreamDefinition defintion,
+        public static DataStreamDefinition NewDefinition(FunctionUnit parent, DataStreamDefinition defintion,
             bool connected = false)
         {
             return NewDefinition(parent, defintion.DataNames, defintion.ActionName, connected);
@@ -71,7 +91,7 @@ namespace Dexel.Model
         }
 
 
-        public static Guid CheckForStreamWithSameName(SoftwareCell source, SoftwareCell destination,
+        public static Guid CheckForStreamWithSameName(FunctionUnit source, FunctionUnit destination,
             DataStream tempStream, MainModel mainModel,
             Action<DataStreamDefinition> onFound, Action onNotFound)
         {
@@ -105,26 +125,21 @@ namespace Dexel.Model
             datastream.DataNames = newDatanames;
 
             // update datanames of DSDs
-            var splitted = SolvePipeLogic(datastream);
-            datastream.Sources.ForEach(dsd => dsd.DataNames = splitted[0].Trim());
-            datastream.Destinations.ForEach(dsd => dsd.DataNames = splitted[1].Trim());
+            TrySolveWithPipeNotation(newDatanames,
+                onSuccess: (outputPart, inputPart) =>
+                {
+                    // TODO: doesn't support mutliple sources yet
+                    datastream.Sources.First().DataNames = outputPart.Trim();
+                    datastream.Destinations.First().DataNames = inputPart.Trim();
+                },
+                onNoSuccess: () =>
+                {
+                    // TODO: doesn't support mutliple destinations yet
+                    datastream.Sources.First().DataNames = newDatanames.Trim();
+                    datastream.Destinations.First().DataNames = newDatanames.Trim();
+                });
         }
 
-
-        public static string[] SolvePipeLogic(DataStream datastream)
-        {
-            var strings = SolveWithParenthesis(datastream.DataNames);
-            strings = SolveNoParenthesis(datastream.DataNames, strings);
-            strings = SolveNoPipe(datastream.DataNames, strings);
-
-            return strings;
-        }
-
-
-        private static string[] SolveNoPipe(string datanames, string[] strings)
-        {
-            return strings ?? new[] {datanames, datanames};
-        }
 
 
         private static string[] SolveNoParenthesis(string datanames, string[] strings)
@@ -156,7 +171,7 @@ namespace Dexel.Model
         }
 
 
-        private static string[] SolveWithParenthesis(string datanames)
+        public static void TrySolveWithPipeNotation(string datanames, Action<string,string> onSuccess, Action onNoSuccess)
         {
             var withparenthesis =
                 new Regex(
@@ -172,18 +187,25 @@ namespace Dexel.Model
 
 
                 if (!grps["dots"].Success)
-                    return new[] {output, input};
+                {
+                    onSuccess(output, input);
+                }
+                else
+                {
+                    input = grps["open2"].Value + grps["output"].Value.Trim() + ", " + grps["input"].Value.Trim() +
+                       grps["close2"].Value;
 
-                input = grps["open2"].Value + grps["output"].Value.Trim() + ", " + grps["input"].Value.Trim() +
-                        grps["close2"].Value;
-
-                return new[] {output, input};
+                    onSuccess(output, input);
+                }
             }
-            return null;
+            else
+            {
+                onNoSuccess();
+            }
         }
 
 
-        public static DataStreamDefinition GetDSDFromModel(Guid id, List<SoftwareCell> softwareCells)
+        public static DataStreamDefinition GetDSDFromModel(Guid id, List<FunctionUnit> softwareCells)
         {
             var inputDSDs = softwareCells.Select(sc => sc.InputStreams.FirstOrDefault(dsd => dsd.ID == id))
                 .Where(x => x != null).ToList();

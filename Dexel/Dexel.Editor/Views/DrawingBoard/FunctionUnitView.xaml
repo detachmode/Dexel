@@ -6,9 +6,9 @@
     xmlns:views="clr-namespace:Dexel.Editor.Views"
     xmlns:drawingBoard="clr-namespace:Dexel.Editor.Views.DrawingBoard"
     xmlns:drawingBoard1="clr-namespace:Dexel.Editor.ViewModels.DrawingBoard"
-    x:Class="Dexel.Editor.Views.DrawingBoard.IOCell"
-    x:Name="TheIoCell"
-    d:DataContext="{d:DesignInstance drawingBoard1:IOCellViewModel, IsDesignTimeCreatable=True}"
+    x:Class="Dexel.Editor.Views.DrawingBoard.FunctionUnitView"
+    x:Name="TheFunctionUnit"
+    d:DataContext="{d:DesignInstance drawingBoard1:FunctionUnitViewModel, IsDesignTimeCreatable=True}"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -16,7 +16,7 @@
             <!--<MenuItem Header="Add New Input" Click="NewInput_click" />-->
             <MenuItem Header="Add New Output" Click="NewOutput_click" />
             <Separator />
-            <MenuItem Header="Make Integration" Click="MakeIntegration_OnClick" />
+            <MenuItem Header="Make to Integration of (pick)" Click="MakeIntegration_OnClick" />
             <MenuItem Header="Remove from Integration" Click="RemoveFromIntegration_OnClick" />
             <Separator />
 
@@ -48,11 +48,13 @@
                 </TransformGroup>
             </ItemsControl.RenderTransform>
             <ItemsControl.Resources>
-                <DataTemplate DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
-                    <drawingBoard:DangelingConnectionView x:Name="DangelingConnectionView" />
+                <DataTemplate x:Name="DangelingConnectionViewsTemplate" DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
+                    <drawingBoard:DangelingConnectionView 
+                            ContextMenu="{StaticResource MyContextMenuOutput}"
+                            x:Name="DangelingConnectionViews" />
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
-                   <Canvas Height="42"></Canvas> 
+                <DataTemplate x:Name="ConnectionAdapterViewsTemplate" DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
+                    <drawingBoard:ConnectionAdapterView x:Name="ConnectionAdapterView" />
                 </DataTemplate>
             </ItemsControl.Resources>
         </ItemsControl>
@@ -61,7 +63,7 @@
             ContextMenu="{StaticResource MyContextMenu}"
             MinHeight="60"
             Orientation="Horizontal">
-            <drawingBoard:SoftwareCell x:Name="Fu"
+            <drawingBoard:FunctionUnitBody x:Name="Fu"
                                        Focusable="False"
                                        LabelContent="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <ItemsControl VerticalAlignment="Center"                         
@@ -69,12 +71,12 @@
                           x:Name="OutputFlow" ItemsSource="{Binding Outputs, Mode=TwoWay}" >
                 <ItemsControl.Resources>
                     <!-- Do NOT set the x:Key -->
-                    <DataTemplate DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
+                    <DataTemplate x:Name="DangelingConnectionViewsTemplate" DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
                         <drawingBoard:DangelingConnectionView 
                             ContextMenu="{StaticResource MyContextMenuOutput}"
-                            x:Name="DangelingConnectionView" />
+                            x:Name="DangelingConnectionViews" />
                     </DataTemplate>
-                    <DataTemplate DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
+                    <DataTemplate x:Name="ConnectionAdapterViewsTemplate" DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
                         <drawingBoard:ConnectionAdapterView x:Name="ConnectionAdapterView" />
                     </DataTemplate>
                 </ItemsControl.Resources>

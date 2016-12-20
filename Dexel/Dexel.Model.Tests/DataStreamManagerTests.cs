@@ -16,26 +16,24 @@ namespace Dexel.Model.Tests
         {
 
             var ds = DataStreamManager.NewDataStream("(int)* | (... string)*");
-            var splitted = DataStreamManager.SolvePipeLogic(ds);
-            Assert.IsTrue(splitted[0].Trim() == "(int)*");
-            Assert.IsTrue(splitted[1].Trim() == "(int, string)*");
-
-            ds = DataStreamManager.NewDataStream("int | ... string ");
-            splitted = DataStreamManager.SolvePipeLogic(ds);
-            Assert.IsTrue(splitted[0].Trim() == "int");
-            Assert.IsTrue(splitted[1].Trim() == "int, string");
-
-            ds = DataStreamManager.NewDataStream("int | string ");
-            splitted = DataStreamManager.SolvePipeLogic(ds);
-            Assert.IsTrue(splitted[0].Trim() == "int");
-            Assert.IsTrue(splitted[1].Trim() == "string");
-
-            ds = DataStreamManager.NewDataStream("int, string");
-            splitted = DataStreamManager.SolvePipeLogic(ds);
-            Assert.IsTrue(splitted[0].Trim() == "int, string");
-            Assert.IsTrue(splitted[1].Trim() == "int, string");
+            DataStreamManager.TrySolveWithPipeNotation(ds.DataNames, (s1, s2) =>
+            {
+                Assert.AreEqual("(int)*", s1.Trim());
+                Assert.AreEqual("(int, string)*", s2.Trim());
+            }, Assert.Fail );
 
 
+
+            ds = DataStreamManager.NewDataStream("(int) | (string) ");
+            DataStreamManager.TrySolveWithPipeNotation(ds.DataNames, (s1, s2) =>
+            {
+                Assert.AreEqual("(int)", s1.Trim() );
+                Assert.AreEqual("(string)", s2.Trim());
+            }, Assert.Fail);
+            
+
+            ds = DataStreamManager.NewDataStream("(int, string)");
+            DataStreamManager.TrySolveWithPipeNotation(ds.DataNames, (s1, s2) => Assert.Fail(), () => {} );
 
         }
     }

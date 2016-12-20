@@ -6,12 +6,12 @@
     <Application.Resources>
         <ResourceDictionary>
             <converter:DebugConverter x:Key="DebugConverter" />
-            <converter:IOCellSelectionConverter x:Key="SelectionConverter" />
+            <converter:FunctionUnitSelectionConverter x:Key="SelectionConverter" />
             <converter:PercentageConverter x:Key="PercentageConverter" />
             <converter:TextDocumentConverter x:Key="TextDocumentConverter" />
             <converter:IntegrationBorderTopPointConverter x:Key="IntegrationBorderTopPointConverter" />
             <converter:VisibilityConverter x:Key="VisibilityConverter" />
-            <converter:SoftwareCellTextfieldBG x:Key="SoftwareCellTextfieldBG" />
+            <converter:FunctionUnitTextfieldBG x:Key="FunctionUnitTextfieldBG" />
             <converter:MissingTypesButtonText x:Key="MissingTypesButtonText" />
             
             

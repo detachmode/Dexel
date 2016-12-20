@@ -17,7 +17,7 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
 
         public Guid ID;
         public DataStreamDefinition Model { get; set; }
-        public SoftwareCell Parent { get; set; }
+        public FunctionUnit Parent { get; set; }
         public string DataNames { get; set; }
         public string Actionname { get; set; }
         public double Width { get; set; }
@@ -25,7 +25,7 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         Type IDragable.DataType => typeof (DangelingConnectionViewModel);
 
 
-        public void LoadFromModel(SoftwareCell parent, DataStreamDefinition dataStream)
+        public void LoadFromModel(FunctionUnit parent, DataStreamDefinition dataStream)
         {
             ID = dataStream.ID;
             Model = dataStream;
@@ -35,7 +35,7 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         }
 
 
-        public static void LoadFromModel(DangelingConnectionViewModel vm, SoftwareCell parent,
+        public static void LoadFromModel(DangelingConnectionViewModel vm, FunctionUnit parent,
             DataStreamDefinition dataStream)
         {
             vm.LoadFromModel(parent, dataStream);
