@@ -33,7 +33,7 @@
                                 Stroke="White"
                                 StrokeThickness="{DynamicResource StrokeThickness}" />
                 <TextBox MinWidth="22" 
-                         FontSize="{Binding DataContext.FontSizeCell, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"  x:Name="theTextBox"   LostFocus="TheTextBox_OnLostFocus" 
+                         FontSize="{Binding DataContext.FontSizeFunctionUnit, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"  x:Name="theTextBox"   LostFocus="TheTextBox_OnLostFocus" 
                          Background="{Binding DataContext.VisibilityBlockTextBox, Converter={StaticResource FunctionUnitTextfieldBG}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}" 
                                  Text="{Binding Path=LabelContent, 
                                         UpdateSourceTrigger=PropertyChanged,

@@ -104,21 +104,6 @@ namespace Dexel.Editor.CustomControls
             figure2.StartPoint = start;
             figure2.Segments.Add(new LineSegment(End, true));
             ((PathGeometry)pathShape.Data).Figures.Add(figure2);
-
-
-            var figure3 = new PathFigure { IsClosed = false };
-            var end3 = Start;
-            end3.Y += 50;
-            figure3.StartPoint = Start;
-            figure3.Segments.Add(new LineSegment(end3, true));
-            ((PathGeometry)pathShape.Data).Figures.Add(figure3);
-
-            var figure4 = new PathFigure { IsClosed = false };
-            var end4 = End;
-            end4.Y += 50;
-            figure4.StartPoint = End;
-            figure4.Segments.Add(new LineSegment(end4, true));
-            ((PathGeometry)pathShape.Data).Figures.Add(figure4);
         }
 
 
