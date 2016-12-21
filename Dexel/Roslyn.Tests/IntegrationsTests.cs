@@ -94,10 +94,10 @@ namespace Roslyn.Tests
             MainModelManager.ConnectTwoDefintions(addAge.OutputStreams.First(),
                 addName.InputStreams.First(), testModel);
 
-            x.Integration.AddUnique(createPersons);
-            x.Integration.AddUnique(addAge);
-            x.Integration.AddUnique(addName);
-            x.Integration.AddUnique(sumAges);
+            x.IsIntegrating.AddUnique(createPersons);
+            x.IsIntegrating.AddUnique(addAge);
+            x.IsIntegrating.AddUnique(addName);
+            x.IsIntegrating.AddUnique(sumAges);
 
             var res = IntegrationGenerator.CreateIntegrationBody(_mygen.Generator, testModel.Connections, x);
             var formatted = _mygen.CompileToString(res.ToList());
@@ -140,8 +140,8 @@ namespace Roslyn.Tests
             MainModelManager.ConnectTwoDefintions(createPersons.OutputStreams.First(),
                 addAge.InputStreams.First(), testModel);
 
-            x.Integration.Add(createPersons);
-            x.Integration.Add(addAge);
+            x.IsIntegrating.Add(createPersons);
+            x.IsIntegrating.Add(addAge);
 
 
             var res = IntegrationGenerator.CreateIntegrationBody(_mygen.Generator, testModel.Connections, x);
@@ -158,7 +158,7 @@ namespace Roslyn.Tests
                    @".*CreatePersons\(person =>.*\S* aPerson = AddAge\(person\);.*",
                    RegexOptions.Singleline));
 
-            // finds matching outgoing Action of Integration
+            // finds matching outgoing Action of IsIntegrating
             Assert.IsTrue(
                 Regex.IsMatch(
                     formatted,

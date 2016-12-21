@@ -386,7 +386,7 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
         {
             Keyboard.FocusedElement.TryGetDataContext<FunctionUnitViewModel>(vm =>
             {
-                var nextmodel = Interactions.NewOrFirstIntegrated(vm.Model, ViewModelModel());
+                var nextmodel = Interactions.CreateNewOrGetFirstIntegrated(vm.Model, ViewModelModel());
                 SetFocusOnObject(nextmodel);
 
             });

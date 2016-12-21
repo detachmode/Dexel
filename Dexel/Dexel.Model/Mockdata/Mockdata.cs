@@ -60,13 +60,13 @@ namespace Dexel.Model.Mockdata
             firstOp.Position = new Point(-60, 180);
             MainModelManager.AddNewOutput(firstOp, "");
             MainModelManager.AddNewInput(firstOp, "");
-            first.Integration.Add(firstOp);
+            first.IsIntegrating.Add(firstOp);
             var firstOp2 = MainModelManager.AddNewFunctionUnit("Operation", testModel);
             
             firstOp2.Position = new Point(160, 180);
             MainModelManager.AddNewOutput(firstOp2, "");
             MainModelManager.AddNewInput(firstOp2, "");
-            first.Integration.Add(firstOp2);
+            first.IsIntegrating.Add(firstOp2);
 
             var alter = MainModelManager.AddNewFunctionUnit("Random Age", testModel);
             alter.Position = new Point(280, 50);
@@ -95,7 +95,7 @@ namespace Dexel.Model.Mockdata
             firstOp.Position = new Point(80, 180);
             MainModelManager.AddNewInput(firstOp, "()");
             MainModelManager.AddNewOutput(firstOp, "(age:int)");
-            first.Integration.Add(firstOp);
+            first.IsIntegrating.Add(firstOp);
 
             var inttype = new SubDataType { Name = "age", Type = "int" };
             var nametype = new SubDataType { Name = "name", Type = "string" };

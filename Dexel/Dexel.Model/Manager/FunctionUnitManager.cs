@@ -22,7 +22,7 @@ namespace Dexel.Model.Manager
 
         public static void IsIntegration(this FunctionUnit functionUnit, Action isIntegration, Action isNotIntegration )
         {
-            if (functionUnit.Integration.Any())
+            if (functionUnit.IsIntegrating.Any())
                 isIntegration();
             else
                 isNotIntegration();

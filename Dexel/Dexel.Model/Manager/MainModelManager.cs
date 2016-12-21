@@ -92,15 +92,15 @@ namespace Dexel.Model.Manager
         {
             FindIntegration(sourceDSD.Parent, foundIntegration =>
             {
-                foundIntegration.Integration.AddUnique(destinationDSD.Parent);
-                TraverseChildren(destinationDSD.Parent, child => foundIntegration.Integration.AddUnique(child),
+                foundIntegration.IsIntegrating.AddUnique(destinationDSD.Parent);
+                TraverseChildren(destinationDSD.Parent, child => foundIntegration.IsIntegrating.AddUnique(child),
                     mainModel);
             }, mainModel);
 
             FindIntegration(destinationDSD.Parent, foundIntegration =>
             {
-                foundIntegration.Integration.AddUnique(sourceDSD.Parent);
-                TraverseChildrenBackwards(sourceDSD.Parent, child => foundIntegration.Integration.AddUnique(child),
+                foundIntegration.IsIntegrating.AddUnique(sourceDSD.Parent);
+                TraverseChildrenBackwards(sourceDSD.Parent, child => foundIntegration.IsIntegrating.AddUnique(child),
                     mainModel);
             }, mainModel);
         }
@@ -142,10 +142,10 @@ namespace Dexel.Model.Manager
         public static void SolveIntegrationReferences(MainModel loadedMainModel)
         {
             var lookupID = loadedMainModel.FunctionUnits.ToLookup(sc => sc.ID);
-            loadedMainModel.FunctionUnits.Where(sc => sc.Integration.Count != 0).ToList().ForEach(sc =>
+            loadedMainModel.FunctionUnits.Where(sc => sc.IsIntegrating.Count != 0).ToList().ForEach(sc =>
             {
-                var references = sc.Integration.SelectMany(iSc => lookupID[iSc.ID]).ToList();
-                sc.Integration = references;
+                var references = sc.IsIntegrating.SelectMany(iSc => lookupID[iSc.ID]).ToList();
+                sc.IsIntegrating = references;
             });
         }
 
@@ -154,15 +154,15 @@ namespace Dexel.Model.Manager
         {
             FindIntegration(dataStream.Destinations.First().Parent, foundIntegration =>
             {
-                foundIntegration.Integration.RemoveAll(
+                foundIntegration.IsIntegrating.RemoveAll(
                     iSc => dataStream.Destinations.Any(dsd => dsd.Parent.ID == iSc.ID));
 
                 dataStream.Destinations.ForEach(
                     dsd =>
                     {
-                        foundIntegration.Integration.Remove(dsd.Parent);
+                        foundIntegration.IsIntegrating.Remove(dsd.Parent);
                         TraverseChildren(dsd.Parent,
-                            child => foundIntegration.Integration.RemoveAll(iSc => iSc.ID == child.ID),
+                            child => foundIntegration.IsIntegrating.RemoveAll(iSc => iSc.ID == child.ID),
                             mainModel);
                     });
             }, mainModel);
@@ -173,9 +173,9 @@ namespace Dexel.Model.Manager
         {
             FindIntegration(functionUnit, foundIntegration =>
             {
-                foundIntegration.Integration.Remove(functionUnit);
-                TraverseChildren(functionUnit, child => foundIntegration.Integration.Remove(child), mainModel);
-                TraverseChildrenBackwards(functionUnit, child => foundIntegration.Integration.Remove(child), mainModel);
+                foundIntegration.IsIntegrating.Remove(functionUnit);
+                TraverseChildren(functionUnit, child => foundIntegration.IsIntegrating.Remove(child), mainModel);
+                TraverseChildrenBackwards(functionUnit, child => foundIntegration.IsIntegrating.Remove(child), mainModel);
             }, mainModel);
         }
 
@@ -184,8 +184,8 @@ namespace Dexel.Model.Manager
         {
             FindIntegration(functionUnit, foundIntegration =>
             {
-                foundIntegration.Integration.Remove(functionUnit);
-                TraverseChildren(functionUnit, child => foundIntegration.Integration.Remove(child), mainModel);
+                foundIntegration.IsIntegrating.Remove(functionUnit);
+                TraverseChildren(functionUnit, child => foundIntegration.IsIntegrating.Remove(child), mainModel);
             }, mainModel);
         }
 
@@ -235,14 +235,14 @@ namespace Dexel.Model.Manager
 
         private static void FindIntegration(FunctionUnit functionUnit, Action<FunctionUnit> onFound, MainModel mainModel)
         {
-            mainModel.FunctionUnits.Where(sc => sc.Integration.Contains(functionUnit))
+            mainModel.FunctionUnits.Where(sc => sc.IsIntegrating.Contains(functionUnit))
                 .ForEach(onFound);
         }
 
 
         public static void DeleteFunctionUnit(FunctionUnit functionUnit, MainModel mainModel)
         {
-            // solve Integration logic
+            // solve IsIntegrating logic
             AtleastOneInputConnected(functionUnit,
                 () => RemoveFromIntegrationsIncludingChildren(functionUnit, mainModel),
                 inputsNotConnected: () =>
@@ -256,7 +256,7 @@ namespace Dexel.Model.Manager
 
         private static void RemoveFromIntegrations(FunctionUnit functionUnit, MainModel mainModel)
         {
-            FindIntegration(functionUnit, integratedByFu => integratedByFu.Integration.Remove(functionUnit),
+            FindIntegration(functionUnit, integratedByFu => integratedByFu.IsIntegrating.Remove(functionUnit),
                 mainModel);
         }
 
@@ -291,12 +291,12 @@ namespace Dexel.Model.Manager
             copiedList.ForEach(cc =>
             {
                 var orginal = mainModel.FunctionUnits.First(sc => sc.ID == cc.OriginGuid);
-                orginal.Integration.ForEach(isc =>
+                orginal.IsIntegrating.ForEach(isc =>
                 {
                     var incopied = copiedList.FirstOrDefault(x => x.OriginGuid == isc.ID);
                     if (incopied != null)
                     {
-                        cc.NewFunctionUnit.Integration.Add(incopied.NewFunctionUnit);
+                        cc.NewFunctionUnit.IsIntegrating.Add(incopied.NewFunctionUnit);
                     }
                 });
             });
@@ -365,8 +365,8 @@ namespace Dexel.Model.Manager
         public static void MakeIntegrationIncludingChildren(FunctionUnit parentFu, FunctionUnit subFu,
             MainModel mainModel)
         {
-            parentFu.Integration.AddUnique(subFu);
-            TraverseChildren(subFu, child => parentFu.Integration.AddUnique(child), mainModel);
+            parentFu.IsIntegrating.AddUnique(subFu);
+            TraverseChildren(subFu, child => parentFu.IsIntegrating.AddUnique(child), mainModel);
         }
 
 
@@ -389,9 +389,9 @@ namespace Dexel.Model.Manager
         public static void MakeIntegrationIncludingAllConnected(FunctionUnit parentFu, FunctionUnit subFu,
             MainModel mainModel)
         {
-            parentFu.Integration.AddUnique(subFu);
-            TraverseChildren(subFu, child => parentFu.Integration.AddUnique(child), mainModel);
-            TraverseChildrenBackwards(subFu, child => parentFu.Integration.AddUnique(child), mainModel);
+            parentFu.IsIntegrating.AddUnique(subFu);
+            TraverseChildren(subFu, child => parentFu.IsIntegrating.AddUnique(child), mainModel);
+            TraverseChildrenBackwards(subFu, child => parentFu.IsIntegrating.AddUnique(child), mainModel);
         }
 
 
@@ -399,12 +399,12 @@ namespace Dexel.Model.Manager
             MainModel mainModel)
         {
             found.AddUnique(functionUnit);
-            functionUnit.Integration.ForEach(isc => GetChildrenAndIntegrated(isc, found, mainModel));
+            functionUnit.IsIntegrating.ForEach(isc => GetChildrenAndIntegrated(isc, found, mainModel));
 
             TraverseChildren(functionUnit, child =>
             {
                 found.AddUnique(child);
-                child.Integration.ForEach(isc => GetChildrenAndIntegrated(isc, found, mainModel));
+                child.IsIntegrating.ForEach(isc => GetChildrenAndIntegrated(isc, found, mainModel));
             }, mainModel);
 
            

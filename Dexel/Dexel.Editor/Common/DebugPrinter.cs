@@ -34,15 +34,15 @@ namespace Dexel.Editor.Common
 
         public static void PrintIntegration(FunctionUnit fu)
         {
-            if (fu.Integration == null) return;
+            if (fu.IsIntegrating == null) return;
             PrintIntegrationHeader(fu);
-            PrintOutputs(fu.Integration);
+            PrintOutputs(fu.IsIntegrating);
         }
 
 
         private static void PrintIntegrationHeader(FunctionUnit fu)
         {
-            Console.WriteLine(@"// " + fu.Name + @" is integrating: " + fu.Integration.First().Name);
+            Console.WriteLine(@"// " + fu.Name + @" is integrating: " + fu.IsIntegrating.First().Name);
         }
 
         public static void PrintConnections(MainModel mainModel)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -155,7 +155,7 @@ namespace Roslyn
                 Generator = generator,
                 LocalVariables = new List<GeneratedLocalVariable>(),
                 Connections = connections.ToList(),
-                ChildrenToGenerate = integration.Integration.ToList(),
+                ChildrenToGenerate = integration.IsIntegrating.ToList(),
                 CurrentParent = integration
             };
             return body;

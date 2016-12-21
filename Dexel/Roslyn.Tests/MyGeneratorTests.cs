@@ -130,7 +130,7 @@ namespace Roslyn.Tests
             MainModelManager.AddNewInput(splitter, "string");
             MainModelManager.AddNewOutput(splitter, "char*");
 
-            main.Integration.Add(splitter);
+            main.IsIntegrating.Add(splitter);
 
 
             paramList = IntegrationGenerator.FindParameters(splitter, testModel.Connections, main);
@@ -147,7 +147,7 @@ namespace Roslyn.Tests
             MainModelManager.AddNewInput(splitter, "int");
             MainModelManager.AddNewOutput(splitter, "char*");
 
-            main.Integration.Add(splitter);
+            main.IsIntegrating.Add(splitter);
 
 
             paramList = IntegrationGenerator.FindParameters(splitter, testModel.Connections, main);

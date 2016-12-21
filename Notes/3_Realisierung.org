@@ -275,12 +275,135 @@ Tests werden in einem extra Test-Projekt für jedes Projekt zusammengefasst)
 
 Die Grundlegenden Basisfunktionen aus Kaptitel 3 wurden größtenteils
 implementiert. Hierbei kam WPF als GUI-Framework zum Einsatz.
-Bilder und Beschriebungen der GUI und Interaktionen.
-**** Erstellen von Funktionseinheiten, Verschieben, Benennen, Selektieren
-**** Erstellen von weiteren Outputs
-**** Verknüpfen von Funktionseinheiten über Drag and Drop
-**** Erstellen von Integrationen
-**** Navigation und Shortcuts
+Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
+
+**** MISSING IMAGES Erstellen von Funktionseinheiten, Verschieben, Benennen, Selektieren
+     Das Drawing-Board wurde implementiert, auf dem der Benutzer mit einem
+     Rechtsklick->Create New Function Unit eine erste Funktionseinheit erzeugen
+     kann. Per Drag an Drop kann er diese dann innerhalb des DrawingBoards frei
+     verschieben. Mit einer Rect-Selektion ist es mögliche mehrere
+     Funktionseinheiten zu Selektieren. Selektierte Funktionseinheiten können
+     gemeinsam verschoben, dupliziert und gelöscht werden.
+     
+     Nach dem Erstellen einer neuen Funktionseinheit, wird diese automatisch
+     selektiert und der Tastaturfokus wird in das Textfeld des Kreises gesetzt.
+     Durch lässt sich diese Benennen.
+
+     Beim Klicken auf den äußeren Teil des Kreises wird die Funktionseinheit
+     selektiert. Beim Klicken auf das Textfeld, wechselt der Tastaturfokus auf
+     das Textfeld ( ein Mouse-Hover zeigt auch an, über welchen Teil des Kreises
+     man sich gerade befindet, auch ein Klicken und Ziehen um sofort ein Teil
+     des Textes zu markieren bleibt damit dem Benutzer möglich. Wie er es von
+     einem Textfeld gewohnt ist).
+
+
+**** MISSING IMAGES Erstellen/Löschen/Manipulieren von Inputs und Outputs
+     Eine Funktionseinheit wird standardmässig mit einem Input und einem Output
+     erstellt. Die Daten die aus diesen hinein- oder herausfließen können auf
+     dem Textfeld eingetragen werden. Dabei bietet diese Textfeld ein einfaches
+     Syntaxhighlighting, dass mit Doppelpunkt getrennte Namen-Type-Paare
+     farblich trennt. Auch Symbole wie * | [] () , ... haben eine eigene Farbe.
+
+     Der Action-Name kann unterhalb des Pfeiles eingetragen werden.
+
+     Eine Funktionseinheit kann mehr als nur einen Output besitzen.
+     Zum Hinfzufügen eines neuen Outputs: Rechtsklick -> Add New Output
+     Das Löschen eines Outputs ist durch auch möglich: Rechtsklick auf ein
+     Output -> Delete.    
+     
+     Die Reihenfolge bei mehreren Outputs kann per Drag and Drop verändert werden.
+
+**** MISSING IMAGES Verknüpfen und Trennen von Funktionseinheiten über Drag and Drop
+     Wird das Ende eines Pfeiles eines Output auf ein Input Pfeil gedropt, so werden beide
+     miteinandern Verbunden. Die Datennamen des Flusses werden bei nicht
+     Übereinstimmung der beiden Daten des Input und Outputs mit
+     der Pipe-Notation beschrieben. Stimmen beide Überein, kann darauf
+     verzichtete werden.
+     
+     Werden die Daten eines verbundenen Datenflusses geändert, werden die Inputs
+     und Outputs mit Berücksichtigung auf die Pipe-Notation angepasst, sodass
+     beim Trennen der Beiden Funktionseinheiten, die Änderungen erhalten bleiben.
+
+     Ein Drag and Drop eines Outputs direkt auf eine Funktionseinheit: TODO
+
+     Durch Drag and Drop eines verbunden Pfeiles auf eine leere Stelle auf dem
+     DrawingBoard, kann eine Verbindung getrennt werden. Wird sie auf eine
+     anderen Input gedropt, so wird diese als neues Ziel gesetzt und die 
+     Verbindung zur vorherigen Funktionseinheit gelöscht. TODO
+     
+
+**** MISSING IMAGES Erstellen von Integrationen
+     Durch Rechtsklick auf eine Funktionseinheit kann im Kontextmenu der Eintrag
+     'Make to Integration of (Pick)' ausgewählt werden. Der Cursor verändert
+     sich und wird nun eine andere Funktionseinheit angeklickt, so wird der
+     komplette Flow, in der diese Funktionseinheit Teil ist, als zu
+     Sub-Flow der Integration genommen.
+
+     Das Entfernen eines Flows von einer Integration geschieht indem auf eine
+     Funktonseinheit rechtsklickt und dann auf 'Remove from Integration'
+     ausgewählt wird. Der komplette zusammenhängede Flow wird dann aus der
+     Integration entfernt. 
+
+
+     Bei einer Modifikation des Datenflusses innerhalb einer Integration, werden nach
+     bestimmten Regeln die nachfolgenden (abgetrennten) Funktionseinheiten
+     ebenfalls aus der Integration entfernt. Wird die erste Funktionseinheit
+     entfernt, gilt diese Regel nicht.
+
+**** Definieren von Datentypen
+     Eigene DatenTypen können auf der rechten Seite des Editors angelegt werden.
+     Durch Rechtsklick -> Add New DataType. Außerdem zeigt der obere Button an,
+     ob im akutellen Diagramm Datenflüsse mit Daten fließen, die nicht definiert
+     sind. ( int, string, double, usw. werden automatisch ignoriert). Ein Klick
+     auf diesen erstellt für jeden nicht-definierten Datentyp ein neuen Eintrag.
+     Auch Datentypen innerhalb eines eigenen Datentypen werden überprüft, ob sie 
+     bekannt sind oder nicht. Bsp. 
+     Person 
+     name:string
+     address:Address  
+
+     Der Editor würde überprüfen ob der Address Datentyp definiert wurde oder nicht.
+
+**** MISSING IMAGES Navigation und Shortcuts
+     Zur Navigation innerhalb des DrawingBoards wird das Mausrad verwendet.
+     Durch Scrollen wird in das DrawingBoard herein und herausgezoomt.
+     Durch gedrückthalten des Mausrades (mittlere Maustaste) und Bewegen der
+     Maus kann die Ansicht verschoben werden ( das DrawingBoard ist endlos groß)
+     
+     Ein weiteres Feature besteht darin, dass ab bestimmten Zoom-Stufen die
+     Font-Größen der Namen der Funktionseinheiten angepasst werden und die 
+     Textfelder der Datenflüsse ausgeblendet werden.
+     Außerdem können Textfelder nicht mehr fokusiert werden, was ein einfachers
+     Verschieben der Funktionseinheiten ermöglichen soll. Diese Eigenschaft wird
+     visuell erkenntlich gemacht, dass die Hintergrundfarbe des Textfeldes bei
+     einer selektierten Funktionseinheit nicht mehr dunkel ist.
+     Auch der Mousecursor zeigt bei einem Mouse-Over an, dass man nicht mehr in
+     das Textfeld klicken kann.
+
+
+**** Weitere Features
+     - Speichern, Laden, Mergen.
+       Speichern und Laden in 3 Dateiformate werden unterstüzt.
+        (yaml, json und xml - nach Dateigröße aufsteigend sortiert)
+        Auch das Laden eines anderen Flow Design in das akutelle geladene wird 
+        mit der Merge-Funktion unterstützt.
+     
+
+     - Unhandled Exception ErrorDialog
+       Wird eine Exception geworfen, die nicht behandelt wurde, so wurde eine
+       allgemeine Fehlerbehandlung aufgerufen. Das Programm stürzt nicht ab,
+       sondern ein Dialog errscheint, mit einem Stacktrace und Informationen
+       über die geflogenen Exception. Der Benutzer kann das entscheiden, ob er
+       hier das Programm Beenden will, oder weiter den Fehler ignorieren will.
+       Der Stacktrace kann gegenenfalls kopiert und an den Entwickler als
+       Bugreport zuschicken werden.
+
+     
+     - Help-Window
+       Ein kleines einfaches Fenster gibt dem Benutzer einen Überblick über die
+       vorhandenen Shortcuts und die Navigation mit der Maus wird erklärt.
+
+
      
 
 *** Views / ViewModels
@@ -326,63 +449,66 @@ Bilder und Beschriebungen der GUI und Interaktionen.
     Stattdessen war es eine bessere Lösung, den Code der einen Interaktion in
     die andere zu Kopieren. Dies wiederspricht zwar dem DRY Prinzip, jedoch eine
     Coderedundanz innerhalb von Integrationen stellt sich als nicht sehr schlimm
-    heraus. Integrationen beinhalten schließlich keine Logik und haben eine hohe
+    heraus. Integrationen beinhalten schließlich keine Logik (Fussnote: Beim
+    Aufruf einer Funktionseinheit, die mehrere Outputs liefert, existiert
+    eigentlich auch eine Logik in der Integration ( Bsp: IsIntegration: Wenn ja,
+    dann X wenn nicht, dann Y. Dadurch verlieren Integrationen etwas ihre
+    Leichtgewichtigkeit und sind nicht mehr ganz so einfach zu verstehen ) und haben eine hohe
     Abstraktion.
     
     Beispiel dieser Aussage:
 #+BEGIN_SRC cpp
-        public static object AppendNewCell(SoftwareCell focusedcell, double offsetX, DataStreamDefinition dataStreamDefinition, MainModel mainModel)
+
+        public static object AppendNewFunctionUnit(FunctionUnit currentFunctionUnit, double offsetX, DataStreamDefinition outputToConnect, MainModel mainModel)
         {
-            var softwareCell = SoftwareCellsManager.CreateNew();
-            softwareCell.Position = focusedcell.Position;
-            softwareCell.MoveX(offsetX);
+            var newFunctionUnit = FunctionUnitManager.CreateNew();
 
-            softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, dataStreamDefinition));
-            softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
+            newFunctionUnit.Position = currentFunctionUnit.Position;
+            newFunctionUnit.MoveX(offsetX);
 
-            MainModelManager.ConnectTwoDefintions(dataStreamDefinition, softwareCell.InputStreams.First(), mainModel);
+            // default IO of new function unit: input of new function unit = output to connect to of current function unit
+            newFunctionUnit.InputStreams.Add(DataStreamManager.NewDefinition(newFunctionUnit, outputToConnect));
+            newFunctionUnit.OutputStreams.Add(DataStreamManager.NewDefinition(newFunctionUnit, "()"));
+            MainModelManager.ConnectTwoDefintions(outputToConnect, newFunctionUnit.InputStreams.First(), mainModel);
 
-            mainModel.SoftwareCells.Add(softwareCell);
+            mainModel.FunctionUnits.Add(newFunctionUnit);
+
             ViewRedraw();
 
-            return softwareCell;
+            return newFunctionUnit;
         }
 
-
-        public static object NewOrFirstIntegrated(SoftwareCell focusedcell, MainModel mainModel)
+        public static FunctionUnit CreateNewOrGetFirstIntegrated(FunctionUnit currentFunctionUnit, MainModel mainModel)
         {
-            object returnValue = null;
+            FunctionUnit @return = null;
 
-            focusedcell.IsIntegration(
-                isIntegration: () => returnValue = focusedcell.Integration.First(), 
+            currentFunctionUnit.IsIntegration(
+                isIntegration: () => @return = currentFunctionUnit.IsIntegrating.First(),
                 isNotIntegration: () =>
                 {
-                    var softwareCell = SoftwareCellsManager.CreateNew();
-                    softwareCell.Position = focusedcell.Position;
-                    softwareCell.MoveY(100);
+                    var newFunctionUnit = FunctionUnitManager.CreateNew();
+                    newFunctionUnit.Position = currentFunctionUnit.Position;
+                    newFunctionUnit.MoveY(100);
 
-                    softwareCell.InputStreams.Add(DataStreamManager.NewDefinition(softwareCell, focusedcell.InputStreams.First()));
-                    softwareCell.OutputStreams.Add(DataStreamManager.NewDefinition(softwareCell, "()"));
+                    newFunctionUnit.InputStreams.Add(DataStreamManager.NewDefinition(newFunctionUnit, currentFunctionUnit.InputStreams.First()));
+                    newFunctionUnit.OutputStreams.Add(DataStreamManager.NewDefinition(newFunctionUnit, "()"));
 
-                    focusedcell.Integration.AddUnique(softwareCell);
-                    mainModel.SoftwareCells.Add(softwareCell);
+                    currentFunctionUnit.IsIntegrating.Add(newFunctionUnit);
 
-                    returnValue = softwareCell;
-                    ViewRedraw();               
+                    mainModel.FunctionUnits.Add(newFunctionUnit);
+
+                    @return = newFunctionUnit;
+                    ViewRedraw();
                 });
 
-            return returnValue;
+            return @return;
         }
-
+  
 #+END_SRC
 
-     Beschreibung was der Code macht und wo die Coderedundanzen sind.
-     Beide Methoden sind Methoden aus der Interaktions-Klasse, sind werden also
-     direkt aus einem Event von der GUI ausgelöst. 
      
-
  
-**** MISSING IMAGES Auswirkungen der beiden Interaktionen
+**** MISSING IMAGES Auswirkungen der beiden Interaktionen (Listing Caption)
      Die =AppendNewCell= Methode erzeugt eine neue SoftwareCell und und
      verschiebt diese entlang der X Postion.
      Außerdem setzt sie den Input gleich der DataStreamDefinition die
@@ -390,16 +516,166 @@ Bilder und Beschriebungen der GUI und Interaktionen.
      =AppendNewCell= wird durch die Tastenkombination Ctrl-Tab ausgelöst, wenn
      sich der Tastaturfokus innerhalb eines Textfeldes einer View einer Softwarecell oder
      DatastreamDefinition befindet. Bei ersterem wird der erste unverbunden Output als der
-     DataStreamDefinition genommen, andem die neue SoftwareCell angehängt wird.
+     DataStreamDefinition genommen, andem die neue SoftwareCell angehängt wird (
+     nicht Teil dieser Methode).
 
      Beide Methoden geben eine
      Model-Instanz als =object= an die GUI zurück. Die GUI-Logik findet dann die
      dazugehörige View und setzt den Focus darauf.
 
+**** Coderedundanzen 
+     Beide Methoden sind Methoden aus der Interaktions-Klasse, sind werden also
+     direkt aus einem Event von der GUI ausgelöst. 
+     Beide Methoden haben ähnliche Methodenaufrufe ( Neue Funktionseinheit
+     erzeugen, sie auf die gleiche Position zu setzten wie die der übergebenen
+     Funktionseinheit, neue Default-Werte für den Output-Stream der neuen
+     Funktionseinheit setzen, dem MainModel die neue Funktionseinheit zu geben
+     und die Ansicht neu zu zeichnen). Diese könnten in eine neue
+     Integration ausgelagert werden, hätte jedoch eine unnötige
+     Verschachtelung von Code als Auswirkung. Besser ist es hier die
+     Coderedundanz als etwas nicht schlimmes anzusehen und diese zu belassen.
+     So ist auf einen Blick ersichtlich, was die Interaktion genau macht, ohne
+     im Code herumspringen zu müssen.
+
 *** Eigene Tabstop-Logik
     Mit Tab und Shift-Tab soll es dem Nutzer möglich sein den Tastaturfokus zu
-    verändern. Dieses Beispiel zeigt auch nochmal, das Coderedundanzen innerhalb
+    verändern. Dieses Beispiel zeigt dabei noch einmal, das Coderedundanzen innerhalb
     von mehreren Integrationen nichts Schlechtes sein muss.
+    Außerdem macht es auch deutlich, wie eine etwas komplexerer Integration mit
+    mehreren verschachteteln Lambda-Ausdrücken in der Praxis aussehen kann.
+    Auch das Arbeiten mit dem Model und Managerklassen soll
+    dieses Beispiel dem Leser verdeutlichen.
+
+
+    Der nächsten Tabstop soll nach folgenden Regeln und abhängig vom aktuell
+    fokusierten Model bestimmt werden:
+
+***** MISSING IMAGES FunctionUnit
+      Besitzt akutell die View einer FunctionUnit den Tastaturfokus, so soll als
+      nächste Stop der erste Datenfluss, der verbunden ist gewählt werden. Ist keiner
+      verbunden, wähle als nächsten Tabstop den ersten Output.
+
+***** MISSING IMAGES DataStream
+      Der sehr einfache Fall trifft ein, wenn der Fokus aktuell auf einem
+      DataStream liegt. Der nächste Stop ist dnn die Ziel-Funktionseinheit des Datenflusses
+
+***** MISSING IMAGES DataStreamDefinition
+      Der komplexeste Fall: 
+      Zu erst muss überprüft werden, ob es sich um ein Input oder Output
+      handelt. Ist es ein Input, so soll als nächster Stop die Funktionseinheit
+      selbst zurückgegeben werden, von der die DataStreamDefinition der Input ist. 
+      Bei einem Output muss überprüft werden, ob das Ende des Flows erreicht
+      wurde, oder nicht. Wird ein verbundener Output entdeckt, wird der
+      entsprechende DataStream als nächster Stop zurückgegeben. Ist das Ende
+      erreicht, so soll zum Anfang des kompletten Flows gesprungen werden.
+
+#+BEGIN_SRC cpp
+
+public static object TabStopGetNext(object focusedModel, MainModel mainModel)
+        {
+            object @return = null;
+
+            focusedModel.TryCast<FunctionUnit>(fu =>
+            {
+                // prefer connected outputs as next tabstop
+                // if no connected take first output defintion if there are any
+                fu.OutputStreams.GetFirstConnected(
+                    foundConnected: connectedDsd => 
+                        @return = MainModelManager.FindDataStream(connectedDsd, mainModel),
+                    noConnected: () => 
+                        @return = fu.OutputStreams.FirstOrDefault());
+            });
+
+            focusedModel.TryCast<DataStream>(stream =>
+            {
+                // if focus was inside datastream take its destination function unit as next tabstop
+                if (stream.Destinations.Any())
+                    @return = stream.Destinations.First().Parent;
+            });
+
+            focusedModel.TryCast<DataStreamDefinition>(dsd =>
+            {
+                // if focus was inside definition there are two case:
+                // is input definition: next tabstop is the function unit of the definition
+                // is output definition: in case the end of the flow was reached ( no connected output ) 
+                // the next tabstop is the first input definition of the beginning of the whole flow.
+                // Is the end not reached go to first connected output datastream
+                dsd.CheckIsInputOrOutput( 
+                    isInput: () => @return = dsd.Parent,
+                    isOutput: () =>
+                    {
+                        dsd.Parent.OutputStreams.GetFirstConnected(
+                            foundConnected: connectedInput => 
+                                @return = MainModelManager.FindDataStream(connectedInput, mainModel),
+                            noConnected: () => // loop tabstop focus when the end is reached
+                                @return = MainModelManager.GetBeginningOfFlow(dsd.Parent, mainModel)); 
+                    });
+            });
+            return @return;
+        }
+#+END_SRC
+
+    Analog dazu die Tabstop-Methode in die entgegengesetzte Richtung.
+
+
+#+BEGIN_SRC cpp
+        public static object TabStopGetPrevious(object focusedModel, MainModel mainModel)
+        {
+            object @return = null;
+
+            focusedModel.TryCast<FunctionUnit>(fu => 
+            {
+                fu.InputStreams.GetFirstConnected(
+                    foundConnected: connectedDsd => 
+                        @return = MainModelManager.FindDataStream(connectedDsd, mainModel),
+                    noConnected: () =>
+                        @return = fu.InputStreams.FirstOrDefault());
+            });
+
+            focusedModel.TryCast<DataStream>(stream => 
+            {
+                if (stream.Sources.Any())
+                    @return = stream.Sources.First().Parent;
+            });
+
+            focusedModel.TryCast<DataStreamDefinition>(dsd => 
+            {
+                dsd.CheckIsInputOrOutput(
+                    isOutput: () => @return = dsd.Parent,
+                    isInput: () => 
+                    {
+                        dsd.Parent.InputStreams.GetFirstConnected(
+                            foundConnected: connectedInput =>
+                                @return = MainModelManager.FindDataStream(connectedInput, mainModel),
+                            noConnected: () => // loop tabstop focus when the beginning is reached
+                                @return = MainModelManager.GetEndOfFlow(dsd.Parent, mainModel));
+                    });
+            });
+
+            return @return;
+        }
+        
+
+
+#+END_SRC
+
+
+**** Erläuterung
+     Auf oberster Ebene wird überprüft um welchen Typ von Objekt es sich
+     handelt, der aktuell fokusiert ist (Fussnote: Teile davon war Aufgabe der UI und die
+     Interaktion bekommt das Model dann als =object= übergeben. Deshalb bedarf es
+     innerhalb der Methode einer Überprüfung des Typen mit TryCast). Nun
+     existieren die drei Fälle, abhängig vom übergebenen Typen.
+
+      Beachte: Die Sources-Eigenschaft eines DataStream beinhaltet nicht die Funktionseinheit,
+      sondern die DataStreamDefinition einer Funktionseinheit. Die eigentliche
+      Funktionseinheit enthält die Parent-Eigenschaft der DataStreamDefinition.
+      Analog dazu enthält die InputStream- und OutputStream-Eigenschaft der
+      FunctionUnit auch nur die DataStreamDefinitionen nicht ein DataStream-Objekt.
+      Eine DataStreamDefinition kennt jedoch nicht den Datenfluss, mit dem sie
+      verbunden ist. Eine Helfer-Methode der MainModelManager-Klasse stellt
+      diese Funktionalität zum Auffinden des DataStream zur Verfügung.
+
 
 ** Roslyn - Generierung von Code aus einem Diagramm
 *** Vorstellung Roslyn

@@ -11,7 +11,7 @@ namespace Dexel.Model.DataTypes
     {
         public Guid ID { get; set; }
         public FlowAttribute Attribute { get; set; }
-        public List<FunctionUnit> Integration { get; set; }
+        public List<FunctionUnit> IsIntegrating { get; set; }
         public string Name { get; set; }
         public Point Position { get; set; }
         public List<DataStreamDefinition> InputStreams { get; set; }
@@ -22,7 +22,7 @@ namespace Dexel.Model.DataTypes
             // Inputs / Outputs
             InputStreams = new List<DataStreamDefinition>();
             OutputStreams = new List<DataStreamDefinition>();
-            Integration = new List<FunctionUnit>();
+            IsIntegrating = new List<FunctionUnit>();
         }
     }
 

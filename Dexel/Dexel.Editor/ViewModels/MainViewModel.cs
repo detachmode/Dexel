@@ -291,10 +291,10 @@ namespace Dexel.Editor.ViewModels
         private void LoadIntegrations()
         {
             var newcollection = new ObservableCollection<FunctionUnitViewModel>();
-            FunctionUnits.Where(x => x.Model.Integration.Count != 0).ToList().ForEach(hasIntegration =>
+            FunctionUnits.Where(x => x.Model.IsIntegrating.Count != 0).ToList().ForEach(hasIntegration =>
             {
                 var integratedVMs =
-                    FunctionUnits.Where(otherVM => hasIntegration.Model.Integration.Contains(otherVM.Model));
+                    FunctionUnits.Where(otherVM => hasIntegration.Model.IsIntegrating.Contains(otherVM.Model));
                 var list = new ObservableCollection<FunctionUnitViewModel>();
                 integratedVMs.ToList().ForEach(list.Add);
                 hasIntegration.Integration = list;

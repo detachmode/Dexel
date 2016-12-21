@@ -149,22 +149,22 @@ namespace Dexel.Editor.Tests
             var firstOp = MainModelManager.AddNewFunctionUnit("Operation 1", testModel);
             var secondOp = MainModelManager.AddNewFunctionUnit("Operation 2", testModel);
             var thirdOp = MainModelManager.AddNewFunctionUnit("Operation 3", testModel);
-            main.Integration.Add(firstOp);
+            main.IsIntegrating.Add(firstOp);
             MainModelManager.ConnectTwoFunctionUnits(firstOp, secondOp, "", "", testModel);
             MainModelManager.ConnectTwoFunctionUnits(secondOp, thirdOp, "", "", testModel);
 
             var selected = new List<FunctionUnit> { thirdOp };
             Interactions.Delete(selected, testModel);
             Assert.AreEqual(3, testModel.FunctionUnits.Count);
-            Assert.AreEqual(2, main.Integration.Count);
-            CollectionAssert.Contains(main.Integration, secondOp);
-            CollectionAssert.Contains(main.Integration, firstOp);
+            Assert.AreEqual(2, main.IsIntegrating.Count);
+            CollectionAssert.Contains(main.IsIntegrating, secondOp);
+            CollectionAssert.Contains(main.IsIntegrating, firstOp);
 
             selected = new List<FunctionUnit> { firstOp };
             Interactions.Delete(selected, testModel);
             Assert.AreEqual(2, testModel.FunctionUnits.Count);
-            Assert.AreEqual(1, main.Integration.Count);
-            Assert.AreEqual(secondOp.Name, main.Integration.First().Name);
+            Assert.AreEqual(1, main.IsIntegrating.Count);
+            Assert.AreEqual(secondOp.Name, main.IsIntegrating.First().Name);
         }
 
       

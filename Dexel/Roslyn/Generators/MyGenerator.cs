@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -66,7 +66,7 @@ namespace Roslyn
 
         private List<SyntaxNode> GenerateIntegrations(List<SyntaxNode> operations, MainModel model)
         {
-            model.FunctionUnits.Where(sc => sc.Integration.Count > 0).ToList().ForEach(isc =>
+            model.FunctionUnits.Where(sc => sc.IsIntegrating.Count > 0).ToList().ForEach(isc =>
             {
                 var body = IntegrationGenerator.CreateIntegrationBody(Generator, model.Connections, isc);
                 var main = MethodsGenerator.GenerateStaticMethod(Generator, isc, body);
@@ -80,7 +80,7 @@ namespace Roslyn
         {
             var operationBody = MethodsGenerator.GetNotImplementatedException(Generator);
             return mainModel.FunctionUnits
-                .Where(functionUnit => functionUnit.Integration.Count == 0)
+                .Where(functionUnit => functionUnit.IsIntegrating.Count == 0)
                 .Select(functionUnit => MethodsGenerator.GenerateStaticMethod(Generator, functionUnit, operationBody))
                 .ToList();
 

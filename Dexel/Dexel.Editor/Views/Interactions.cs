@@ -237,9 +237,7 @@ namespace Dexel.Editor.Views
 
 
             if (loadedMainModel != null)
-            {
                 ViewRedraw(loadedMainModel);
-            }
         }
 
 
@@ -337,13 +335,16 @@ namespace Dexel.Editor.Views
         public static object TabStopGetNext(object focusedModel, MainModel mainModel)
         {
             object @return = null;
+
             focusedModel.TryCast<FunctionUnit>(fu =>
             {
                 // prefer connected outputs as next tabstop
                 // if no connected take first output defintion if there are any
                 fu.OutputStreams.GetFirstConnected(
-                    foundConnected: connectedDsd => @return = MainModelManager.FindDataStream(connectedDsd, mainModel),
-                    noConnected: () => @return = fu.OutputStreams.FirstOrDefault());
+                    foundConnected: connectedDsd => 
+                        @return = MainModelManager.FindDataStream(connectedDsd, mainModel),
+                    noConnected: () => 
+                        @return = fu.OutputStreams.FirstOrDefault());
             });
 
             focusedModel.TryCast<DataStream>(stream =>
@@ -359,7 +360,7 @@ namespace Dexel.Editor.Views
                 // is input definition: next tabstop is the function unit of the definition
                 // is output definition: next tabstop is the first input definition
                 // of the beginning of the whole Flow Design graph.
-                dsd.CheckIsInputOrOutput(
+                dsd.CheckIsInputOrOutput( 
                     isInput: () => @return = dsd.Parent,
                     isOutput: () =>
                     {
@@ -376,32 +377,34 @@ namespace Dexel.Editor.Views
         public static object TabStopGetPrevious(object focusedModel, MainModel mainModel)
         {
             object @return = null;
-            focusedModel.TryCast<FunctionUnit>(fu =>
+
+            focusedModel.TryCast<FunctionUnit>(fu => 
             {
                 fu.InputStreams.GetFirstConnected(
-                    foundConnected: connectedDsd => @return = MainModelManager.FindDataStream(connectedDsd, mainModel),
-                    noConnected: () => @return = fu.InputStreams.FirstOrDefault());
+                    foundConnected: connectedDsd => 
+                        @return = MainModelManager.FindDataStream(connectedDsd, mainModel),
+                    noConnected: () =>
+                        @return = fu.InputStreams.FirstOrDefault());
             });
 
-            focusedModel.TryCast<DataStream>(stream =>
+            focusedModel.TryCast<DataStream>(stream => 
             {
                 if (stream.Sources.Any())
                     @return = stream.Sources.First().Parent;
             });
 
-            focusedModel.TryCast<DataStreamDefinition>(dsd =>
+            focusedModel.TryCast<DataStreamDefinition>(dsd => 
             {
                 dsd.CheckIsInputOrOutput(
-                   isOutput: () => @return = dsd.Parent,
-                   isInput: () =>
-                   {
-                       dsd.Parent.InputStreams.GetFirstConnected(
-                           foundConnected: connectedInput =>
-                               @return = MainModelManager.FindDataStream(connectedInput, mainModel),
-                           noConnected: () => // loop tabstop focus when the beginning is reached
-                               @return = MainModelManager.GetEndOfFlow(dsd.Parent, mainModel));
-                   });
-
+                    isOutput: () => @return = dsd.Parent,
+                    isInput: () => 
+                    {
+                        dsd.Parent.InputStreams.GetFirstConnected(
+                            foundConnected: connectedInput =>
+                                @return = MainModelManager.FindDataStream(connectedInput, mainModel),
+                            noConnected: () => // loop tabstop focus when the beginning is reached
+                                @return = MainModelManager.GetEndOfFlow(dsd.Parent, mainModel));
+                    });
             });
 
             return @return;
@@ -420,49 +423,52 @@ namespace Dexel.Editor.Views
         }
 
 
-        public static object AppendNewFunctionUnit(FunctionUnit focusedFu, double width, DataStreamDefinition dataStreamDefinition, MainModel mainModel)
+        public static object AppendNewFunctionUnit(FunctionUnit currentFunctionUnit, double offsetX, DataStreamDefinition outputToConnect, MainModel mainModel)
         {
-            var functionUnit = FunctionUnitManager.CreateNew();
-            functionUnit.Position = focusedFu.Position;
-            functionUnit.MoveX(width);
+            var newFunctionUnit = FunctionUnitManager.CreateNew();
 
-            functionUnit.InputStreams.Add(DataStreamManager.NewDefinition(functionUnit, dataStreamDefinition));
-            functionUnit.OutputStreams.Add(DataStreamManager.NewDefinition(functionUnit, "()"));
+            newFunctionUnit.Position = currentFunctionUnit.Position;
+            newFunctionUnit.MoveX(offsetX);
 
-            MainModelManager.ConnectTwoDefintions(dataStreamDefinition, functionUnit.InputStreams.First(), mainModel);
+            // default IO of new function unit: input of new function unit = output to connect to of current function unit
+            newFunctionUnit.InputStreams.Add(DataStreamManager.NewDefinition(newFunctionUnit, outputToConnect));
+            newFunctionUnit.OutputStreams.Add(DataStreamManager.NewDefinition(newFunctionUnit, "()"));
+            MainModelManager.ConnectTwoDefintions(outputToConnect, newFunctionUnit.InputStreams.First(), mainModel);
 
-            mainModel.FunctionUnits.Add(functionUnit);
+            mainModel.FunctionUnits.Add(newFunctionUnit);
+
             ViewRedraw();
 
-            return functionUnit;
+            return newFunctionUnit;
         }
 
         /// <summary>
         /// If the functionUnit is a integration it returns the first functionUnit of the integrated functionUnits.
         /// If the functionUnit is not a integration it will add a new functionUnit below it and add it to its integrated functionUnits.
         /// </summary>
-        /// <param name="focusedFu">the functionUnit that is currently selected</param>
+        /// <param name="currentFunctionUnit">the functionUnit that is currently selected</param>
         /// <param name="mainModel">the mainmodel from the view</param>
         /// <returns>the model that was created or the first integrated functionUnit if it already had one</returns>
-        public static object NewOrFirstIntegrated(FunctionUnit focusedFu, MainModel mainModel)
+        public static FunctionUnit CreateNewOrGetFirstIntegrated(FunctionUnit currentFunctionUnit, MainModel mainModel)
         {
-            object @return = null;
+            FunctionUnit @return = null;
 
-            focusedFu.IsIntegration(
-                isIntegration: () => @return = focusedFu.Integration.First(),
+            currentFunctionUnit.IsIntegration(
+                isIntegration: () => @return = currentFunctionUnit.IsIntegrating.First(),
                 isNotIntegration: () =>
                 {
-                    var functionUnit = FunctionUnitManager.CreateNew();
-                    functionUnit.Position = focusedFu.Position;
-                    functionUnit.MoveY(100);
+                    var newFunctionUnit = FunctionUnitManager.CreateNew();
+                    newFunctionUnit.Position = currentFunctionUnit.Position;
+                    newFunctionUnit.MoveY(100);
 
-                    functionUnit.InputStreams.Add(DataStreamManager.NewDefinition(functionUnit, focusedFu.InputStreams.First()));
-                    functionUnit.OutputStreams.Add(DataStreamManager.NewDefinition(functionUnit, "()"));
+                    newFunctionUnit.InputStreams.Add(DataStreamManager.NewDefinition(newFunctionUnit, currentFunctionUnit.InputStreams.First()));
+                    newFunctionUnit.OutputStreams.Add(DataStreamManager.NewDefinition(newFunctionUnit, "()"));
 
-                    focusedFu.Integration.AddUnique(functionUnit);
-                    mainModel.FunctionUnits.Add(functionUnit);
+                    currentFunctionUnit.IsIntegrating.Add(newFunctionUnit);
 
-                    @return = functionUnit;
+                    mainModel.FunctionUnits.Add(newFunctionUnit);
+
+                    @return = newFunctionUnit;
                     ViewRedraw();
                 });
 
