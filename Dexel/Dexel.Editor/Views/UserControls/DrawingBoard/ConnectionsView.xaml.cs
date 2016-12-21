@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Dexel.Editor.Views.DrawingBoard
+namespace Dexel.Editor.Views.UserControls.DrawingBoard
 {
     /// <summary>
     /// Interaktionslogik für ConnectionsView.xaml

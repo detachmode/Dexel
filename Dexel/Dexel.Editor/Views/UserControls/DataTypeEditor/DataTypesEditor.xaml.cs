@@ -6,7 +6,7 @@ using Dexel.Editor.ViewModels;
 using Dexel.Editor.ViewModels.DataTypeEditor;
 using Dexel.Model.DataTypes;
 
-namespace Dexel.Editor.Views.DataTypeEditor
+namespace Dexel.Editor.Views.UserControls.DataTypeEditor
 {
     /// <summary>
     /// Interaction logic for DataTypesEditor.xaml
@@ -22,7 +22,7 @@ namespace Dexel.Editor.Views.DataTypeEditor
         {
             MainViewModel.Instance().SelectedFunctionUnits.Clear();
 
-            DataTypeEditor.DataTypeCard frameworkelement = null;
+            DataTypeCard frameworkelement = null;
             DataTypeViewModel viewmodel = null;
 
             for (var i = 0; i < DataTypeList.Items.Count; i++)
@@ -30,7 +30,7 @@ namespace Dexel.Editor.Views.DataTypeEditor
                 var c = (ContentPresenter)DataTypeList.ItemContainerGenerator.ContainerFromIndex(i);
                 c.ApplyTemplate();
 
-                frameworkelement = (DataTypeEditor.DataTypeCard)c.ContentTemplate.FindName("TheDataTypeCard", c);
+                frameworkelement = (DataTypeCard)c.ContentTemplate.FindName("TheDataTypeCard", c);
                 if (frameworkelement == null) continue;
                 viewmodel = (DataTypeViewModel)frameworkelement.DataContext;
                 if (viewmodel.Model == customDataType)

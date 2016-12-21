@@ -9,7 +9,7 @@ using Dexel.Editor.Views.Common;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 
-namespace Dexel.Editor.Views.DataTypeEditor
+namespace Dexel.Editor.Views.UserControls.DataTypeEditor
 {
     /// <summary>
     /// Interaction logic for DataTypeCard.xaml

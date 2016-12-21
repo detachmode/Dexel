@@ -5,7 +5,7 @@ using System.Windows;
 using Dexel.Editor.ViewModels;
 using Dexel.Editor.ViewModels.DrawingBoard;
 
-namespace Dexel.Editor.Views.DrawingBoard
+namespace Dexel.Editor.Views.UserControls.DrawingBoard
 {
 
     /// <summary>

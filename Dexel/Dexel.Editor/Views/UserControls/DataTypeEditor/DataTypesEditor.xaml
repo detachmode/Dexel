@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="Dexel.Editor.Views.DataTypeEditor.DataTypesEditor"
+﻿<UserControl x:Class="Dexel.Editor.Views.UserControls.DataTypeEditor.DataTypesEditor"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:dataTypeEditor="clr-namespace:Dexel.Editor.Views.DataTypeEditor"
+             xmlns:dataTypeEditor="clr-namespace:Dexel.Editor.Views.UserControls.DataTypeEditor"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="300" d:DataContext="{d:DesignData MainModel}">
     <UserControl.Resources>

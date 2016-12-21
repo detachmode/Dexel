@@ -6,7 +6,7 @@ using Dexel.Editor.ViewModels;
 using Dexel.Editor.ViewModels.DrawingBoard;
 using Dexel.Editor.Views.CustomControls;
 using Dexel.Editor.Views.DragAndDrop;
-using Dexel.Editor.Views.DrawingBoard;
+using Dexel.Editor.Views.UserControls.DrawingBoard;
 using Dexel.Model.DataTypes;
 
 namespace Dexel.Editor.Views
@@ -30,7 +30,7 @@ namespace Dexel.Editor.Views
         public static void MouseDown(object sender, MouseButtonEventArgs e)
         {
             sender.TryCast<FunctionUnitView>(fu => FunctionUnitMouseDown(fu, e));
-            sender.TryCast<DrawingBoard.DrawingBoard>(board => DrawingBoardMouseDown(board, e));
+            sender.TryCast<UserControls.DrawingBoard.DrawingBoard>(board => DrawingBoardMouseDown(board, e));
 
             // reset picking in any case
             Interactions.PickState = false;
@@ -38,7 +38,7 @@ namespace Dexel.Editor.Views
         }
 
 
-        private static void DrawingBoardMouseDown(DrawingBoard.DrawingBoard sender, MouseButtonEventArgs e)
+        private static void DrawingBoardMouseDown(UserControls.DrawingBoard.DrawingBoard sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
             if (FrameworkElementDragBehavior.DragDropInProgressFlag)
@@ -59,12 +59,12 @@ namespace Dexel.Editor.Views
         public static void MouseUp(object sender, MouseButtonEventArgs e)
         {
             sender.TryCast<FunctionUnitView>(fu => FunctionUnitMouseUp(fu, e));
-            sender.TryCast<DrawingBoard.DrawingBoard>(board => DrawingBoardMouseUp(board, e));
+            sender.TryCast<UserControls.DrawingBoard.DrawingBoard>(board => DrawingBoardMouseUp(board, e));
             DraggingOFF();
         }
 
 
-        private static void DrawingBoardMouseUp(DrawingBoard.DrawingBoard sender, MouseButtonEventArgs e)
+        private static void DrawingBoardMouseUp(UserControls.DrawingBoard.DrawingBoard sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton != MouseButton.Left) return;
 
@@ -93,11 +93,11 @@ namespace Dexel.Editor.Views
         public static void MouseMove(object sender, MouseEventArgs e)
         {
             FunctionUnitMouseMove(sender, e);
-            sender.TryCast<DrawingBoard.DrawingBoard>(board => DrawingBoardMouseMove(board, e));
+            sender.TryCast<UserControls.DrawingBoard.DrawingBoard>(board => DrawingBoardMouseMove(board, e));
         }
 
 
-        private static void DrawingBoardMouseMove(DrawingBoard.DrawingBoard drawingboard, MouseEventArgs e)
+        private static void DrawingBoardMouseMove(UserControls.DrawingBoard.DrawingBoard drawingboard, MouseEventArgs e)
         {
             e.Handled = true;
             if (_isDraggingSelectionRect)

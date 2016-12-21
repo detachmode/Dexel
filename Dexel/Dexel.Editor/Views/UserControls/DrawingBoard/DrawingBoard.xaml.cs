@@ -8,10 +8,9 @@ using Dexel.Editor.ViewModels;
 using Dexel.Editor.ViewModels.DrawingBoard;
 using Dexel.Editor.Views.Common;
 using Dexel.Editor.Views.CustomControls;
-using Dexel.Editor.Views.DragAndDrop;
 using Dexel.Model.DataTypes;
 
-namespace Dexel.Editor.Views.DrawingBoard
+namespace Dexel.Editor.Views.UserControls.DrawingBoard
 {
     /// <summary>
     /// Interaktionslogik für DrawingBoard.xaml

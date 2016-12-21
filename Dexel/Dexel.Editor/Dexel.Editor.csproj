@@ -154,26 +154,26 @@
     <Compile Include="ViewModels\DrawingBoard\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\DrawingBoard\ConnectionAdapterViewModel.cs" />
     <Compile Include="ViewModels\DrawingBoard\DangelingConnectionViewModel.cs" />
-    <Compile Include="Views\DataTypeEditor\DataTypeCard.xaml.cs">
+    <Compile Include="Views\UserControls\DataTypeEditor\DataTypeCard.xaml.cs">
       <DependentUpon>DataTypeCard.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\DataTypeEditor\DataTypeViewModel.cs" />
     <Compile Include="ViewModels\DrawingBoard\FunctionUnitViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\DrawingBoard\RectangleViewModel.cs" />
-    <Compile Include="Views\DrawingBoard\ConnectionsView.xaml.cs">
+    <Compile Include="Views\UserControls\DrawingBoard\ConnectionsView.xaml.cs">
       <DependentUpon>ConnectionsView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DrawingBoard\ConnectionAdapterView.xaml.cs">
+    <Compile Include="Views\UserControls\DrawingBoard\ConnectionAdapterView.xaml.cs">
       <DependentUpon>ConnectionAdapterView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DrawingBoard\DangelingConnectionView.xaml.cs">
+    <Compile Include="Views\UserControls\DrawingBoard\DangelingConnectionView.xaml.cs">
       <DependentUpon>DangelingConnectionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DataTypeEditor\DataTypesEditor.xaml.cs">
+    <Compile Include="Views\UserControls\DataTypeEditor\DataTypesEditor.xaml.cs">
       <DependentUpon>DataTypesEditor.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DrawingBoard\DrawingBoard.xaml.cs">
+    <Compile Include="Views\UserControls\DrawingBoard\DrawingBoard.xaml.cs">
       <DependentUpon>DrawingBoard.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\DrawingBoard\IInputOutputViewModel.cs" />
@@ -181,13 +181,13 @@
     <Compile Include="Views\AdditionalWindows\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DrawingBoard\FunctionUnitView.xaml.cs">
+    <Compile Include="Views\UserControls\DrawingBoard\FunctionUnitView.xaml.cs">
       <DependentUpon>FunctionUnitView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DrawingBoard\FunctionUnitBody.xaml.cs">
+    <Compile Include="Views\UserControls\DrawingBoard\FunctionUnitBody.xaml.cs">
       <DependentUpon>FunctionUnitBody.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AdditionalWindows\UnkownErrorDialog.xaml.cs">
@@ -222,27 +222,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DataTypeEditor\DataTypeCard.xaml">
+    <Page Include="Views\UserControls\DataTypeEditor\DataTypeCard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DrawingBoard\ConnectionsView.xaml">
+    <Page Include="Views\UserControls\DrawingBoard\ConnectionsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DrawingBoard\ConnectionAdapterView.xaml">
+    <Page Include="Views\UserControls\DrawingBoard\ConnectionAdapterView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DrawingBoard\DangelingConnectionView.xaml">
+    <Page Include="Views\UserControls\DrawingBoard\DangelingConnectionView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DataTypeEditor\DataTypesEditor.xaml">
+    <Page Include="Views\UserControls\DataTypeEditor\DataTypesEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DrawingBoard\DrawingBoard.xaml">
+    <Page Include="Views\UserControls\DrawingBoard\DrawingBoard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -250,7 +250,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DrawingBoard\FunctionUnitView.xaml">
+    <Page Include="Views\UserControls\DrawingBoard\FunctionUnitView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -258,7 +258,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\DrawingBoard\FunctionUnitBody.xaml">
+    <Page Include="Views\UserControls\DrawingBoard\FunctionUnitBody.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
