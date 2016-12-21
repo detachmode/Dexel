@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using Dexel.Editor.CustomControls;
-using Dexel.Editor.DragAndDrop;
+using Dexel.Editor.Views;
+using Dexel.Editor.Views.CustomControls;
+using Dexel.Editor.Views.DragAndDrop;
 using Dexel.Model.DataTypes;
 using PropertyChanged;
 

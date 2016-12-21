@@ -16,8 +16,8 @@ namespace Dexel.Editor.Views.DrawingBoard
 
         public FunctionUnitViewModel ViewModel()
         {
-            var cellViewModel = DataContext as FunctionUnitViewModel;
-            return cellViewModel;
+            var fuViewModel = DataContext as FunctionUnitViewModel;
+            return fuViewModel;
         }
 
 
@@ -69,13 +69,7 @@ namespace Dexel.Editor.Views.DrawingBoard
 
         private void NewOutput_click(object sender, RoutedEventArgs e)
         {
-            Interactions.AddNewOutput(ViewModel().Model, "params");
-        }
-
-
-        private void NewInput_click(object sender, RoutedEventArgs e)
-        {
-            Interactions.AddNewInput(ViewModel().Model, "params");
+            Interactions.AddNewOutput(ViewModel().Model, "()");
         }
 
 
@@ -84,10 +78,12 @@ namespace Dexel.Editor.Views.DrawingBoard
             Interactions.Copy(GetSelectionOrClickedOn(), MainViewModel.Instance().Model);
         }
 
+/*
         private void Cut_click(object sender, RoutedEventArgs e)
         {
             Interactions.Cut(GetSelectionOrClickedOn(), MainViewModel.Instance().Model);
         }
+*/
 
 
         private void MakeIntegration_OnClick(object sender, RoutedEventArgs e)

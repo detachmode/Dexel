@@ -5,6 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
+using Dexel.Model.Manager;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Roslyn.Common;
@@ -113,7 +114,7 @@ namespace Roslyn.Tests
                 new Parameter() {FoundFlag = Found.FoundInPreviousChild, Source = alter},
                 new Parameter() {FoundFlag = Found.FoundInPreviousChild, Source = main}
             };
-            var paramList = Integrations.FindParameters(person, testModel.Connections, main);
+            var paramList = IntegrationGenerator.FindParameters(person, testModel.Connections, main);
             Assert.IsTrue(expectedList[0].Compare(paramList[0]));
             Assert.IsTrue(expectedList[1].Compare(paramList[1]));
 
@@ -132,7 +133,7 @@ namespace Roslyn.Tests
             main.Integration.Add(splitter);
 
 
-            paramList = Integrations.FindParameters(splitter, testModel.Connections, main);
+            paramList = IntegrationGenerator.FindParameters(splitter, testModel.Connections, main);
             Assert.IsTrue(paramList.First().FoundFlag == Found.FromParent && paramList.First().Source == main);
 
 
@@ -149,7 +150,7 @@ namespace Roslyn.Tests
             main.Integration.Add(splitter);
 
 
-            paramList = Integrations.FindParameters(splitter, testModel.Connections, main);
+            paramList = IntegrationGenerator.FindParameters(splitter, testModel.Connections, main);
             Assert.IsFalse(paramList.First().FoundFlag == Found.FoundInPreviousChild && paramList.First().Source == null);
 
         }
@@ -169,11 +170,11 @@ namespace Roslyn.Tests
 
             var expected = new Parameter { FoundFlag = Found.FoundInPreviousChild, Source = alter };
             var lookingfor = new NameType { Name = null, Type = "int" };
-            Assert.IsTrue(expected.Compare(Integrations.FindOneParameter(lookingfor, null, testModel.Connections, person, true)));
+            Assert.IsTrue(expected.Compare(IntegrationGenerator.FindOneParameter(lookingfor, null, testModel.Connections, person, true)));
 
             expected = new Parameter { FoundFlag = Found.FoundInPreviousChild, Source = newName };
             lookingfor = new NameType { Name = null, Type = "string" };
-            Assert.IsTrue(expected.Compare(Integrations.FindOneParameter(lookingfor, null, testModel.Connections, person, true)));
+            Assert.IsTrue(expected.Compare(IntegrationGenerator.FindOneParameter(lookingfor, null, testModel.Connections, person, true)));
 
             testModel = new MainModel();
             newName = MainModelManager.AddNewFunctionUnit("Random Name", testModel);
@@ -186,7 +187,7 @@ namespace Roslyn.Tests
             MainModelManager.ConnectTwoFunctionUnits(alter, person, "int", "int, string", testModel);
 
             lookingfor = new NameType { Name = null, Type = "int" };
-            Assert.IsTrue(Integrations.FindOneParameter(lookingfor, null, testModel.Connections, person, true).Source == alter);
+            Assert.IsTrue(IntegrationGenerator.FindOneParameter(lookingfor, null, testModel.Connections, person, true).Source == alter);
 
 
         }

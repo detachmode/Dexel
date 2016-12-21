@@ -6,9 +6,9 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:views="clr-namespace:Dexel.Editor.Views"
              xmlns:viewModels="clr-namespace:Dexel.Editor.ViewModels"
-             xmlns:customControls="clr-namespace:Dexel.Editor.CustomControls"
-             xmlns:dragAndDrop="clr-namespace:Dexel.Editor.DragAndDrop"
              xmlns:drawingBoard="clr-namespace:Dexel.Editor.Views.DrawingBoard"
+             xmlns:dragAndDrop="clr-namespace:Dexel.Editor.Views.DragAndDrop"
+             xmlns:customControls="clr-namespace:Dexel.Editor.Views.CustomControls"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModels:MainViewModel, IsDesignTimeCreatable=True}"
            
@@ -18,7 +18,7 @@
              d:DesignHeight="300" d:DesignWidth="700">
     <UserControl.Resources>
         <ContextMenu x:Key="MyContextMenu">
-            <MenuItem Header="Add Celldaw" Click="AddNewFunctionUnit_Click" />
+            <MenuItem Header="Add New Function Unit" Click="AddNewFunctionUnit_Click" />
             <MenuItem Header="Paste" Click="Paste_click" />
         </ContextMenu>
     </UserControl.Resources>
@@ -67,7 +67,7 @@
 
 
                 <!--
-                SoftwareCells
+                functionUnits
                 -->
                 <customControls:SelectionItemsControl x:Name="FunctionUnitsList" Background="Transparent"
                                                       ItemsPanel="{StaticResource DrawingBoardItemControl}"

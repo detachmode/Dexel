@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+
+    <SolidColorBrush x:Key="BG" Color="White"/>
+    <SolidColorBrush x:Key="GridColor" Color="White" />
+    <SolidColorBrush x:Key="OuterFillPointerBrush" Color="Transparent"/>
+    <SolidColorBrush x:Key="FillPointerBrush" Color="DimGray"/>
+    <SolidColorBrush x:Key="BorderFunctionUnitBrush" Color="Black"/>
+    <SolidColorBrush x:Key="FillFunctionUnitBrush" Color="White"/>
+    <SolidColorBrush x:Key="Foreground" Color="Black"/>
+    <Color x:Key="DropShadowColor">Transparent</Color>
+
+    <system:Double x:Key="StrokeThickness">2</system:Double>
+
+</ResourceDictionary>

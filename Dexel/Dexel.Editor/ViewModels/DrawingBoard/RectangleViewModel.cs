@@ -14,34 +14,34 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         /// <summary>
         /// The X coordinate of the location of the rectangle (in content coordinates).
         /// </summary>
-        private double x = 0;
+        private double _x = 0;
 
         /// <summary>
         /// The Y coordinate of the location of the rectangle (in content coordinates).
         /// </summary>
-        private double y = 0;
+        private double _y = 0;
 
         /// <summary>
         /// The width of the rectangle (in content coordinates).
         /// </summary>
-        private double width = 0;
+        private double _width = 0;
 
         /// <summary>
         /// The height of the rectangle (in content coordinates).
         /// </summary>
-        private double height = 0;
+        private double _height = 0;
 
         /// <summary>
         /// The color of the rectangle.
         /// </summary>
-        private Color color;
+        private Color _color;
 
         /// <summary>
         /// The hotspot of the rectangle's connector.
         /// This value is pushed through from the UI because it is data-bound to 'Hotspot'
         /// in ConnectorItem.
         /// </summary>
-        private Point connectorHotspot;
+        private Point _connectorHotspot;
 
         #endregion Data Members
 
@@ -51,11 +51,11 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
 
         public RectangleViewModel(double x, double y, double width, double height, Color color)
         {
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
-            this.color = color;
+            _x = x;
+            _y = y;
+            _width = width;
+            _height = height;
+            _color = color;
         }
 
         /// <summary>
@@ -65,16 +65,16 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         {
             get
             {
-                return x;
+                return _x;
             }
             set
             {
-                if (x == value)
+                if (_x == value)
                 {
                     return;
                 }
 
-                x = value;
+                _x = value;
 
                 OnPropertyChanged("X");
             }
@@ -87,16 +87,16 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         {
             get
             {
-                return y;
+                return _y;
             }
             set
             {
-                if (y == value)
+                if (_y == value)
                 {
                     return;
                 }
 
-                y = value;
+                _y = value;
 
                 OnPropertyChanged("Y");
             }
@@ -109,16 +109,16 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         {
             get
             {
-                return width;
+                return _width;
             }
             set
             {
-                if (width == value)
+                if (_width == value)
                 {
                     return;
                 }
 
-                width = value;
+                _width = value;
 
                 OnPropertyChanged("Width");
             }
@@ -131,16 +131,16 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         {
             get
             {
-                return height;
+                return _height;
             }
             set
             {
-                if (height == value)
+                if (_height == value)
                 {
                     return;
                 }
 
-                height = value;
+                _height = value;
 
                 OnPropertyChanged("Height");
             }
@@ -153,16 +153,16 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         {
             get
             {
-                return color;
+                return _color;
             }
             set
             {
-                if (color == value)
+                if (_color == value)
                 {
                     return;
                 }
 
-                color = value;
+                _color = value;
 
                 OnPropertyChanged("Color");
             }
@@ -177,16 +177,16 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         {
             get
             {
-                return connectorHotspot;
+                return _connectorHotspot;
             }
             set
             {
-                if (connectorHotspot == value)
+                if (_connectorHotspot == value)
                 {
                     return;
                 }
 
-                connectorHotspot = value;
+                _connectorHotspot = value;
 
                 OnPropertyChanged("ConnectorHotspot");
             }

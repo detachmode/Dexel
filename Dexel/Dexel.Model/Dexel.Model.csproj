@@ -72,22 +72,22 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataStreamParser.cs" />
-    <Compile Include="DataTypeManager.cs" />
+    <Compile Include="Manager\DataStreamParser.cs" />
+    <Compile Include="Manager\DataTypeManager.cs" />
     <Compile Include="DataTypes\CustomDataType.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="JsonSaveLoad.cs" />
-    <Compile Include="Mockdata.cs" />
+    <Compile Include="Common\Extensions.cs" />
+    <Compile Include="FileIO\JsonSaveLoad.cs" />
+    <Compile Include="Mockdata\Mockdata.cs" />
     <Compile Include="DataTypes\DataStream.cs" />
     <Compile Include="DataTypes\DataStreamDefinition.cs" />
-    <Compile Include="DataStreamManager.cs" />
+    <Compile Include="Manager\DataStreamManager.cs" />
     <Compile Include="DataTypes\MainModel.cs" />
-    <Compile Include="MainModelManager.cs" />
+    <Compile Include="Manager\MainModelManager.cs" />
     <Compile Include="DataTypes\FunctionUnit.cs" />
-    <Compile Include="FunctionUnitManager.cs" />
+    <Compile Include="Manager\FunctionUnitManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XMLSaveLoad.cs" />
-    <Compile Include="YAMLSaveLoader.cs" />
+    <Compile Include="FileIO\XMLSaveLoad.cs" />
+    <Compile Include="FileIO\YAMLSaveLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />

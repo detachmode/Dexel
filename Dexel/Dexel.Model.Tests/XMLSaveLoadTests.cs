@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dexel.Model.DataTypes;
+using Dexel.Model.FileIO;
 
 namespace Dexel.Model.Tests
 {
@@ -15,7 +16,7 @@ namespace Dexel.Model.Tests
         [TestMethod()]
         public void SaveToXMLTest()
         {
-            var testmodel = Mockdata.MakeRandomPerson2();
+            var testmodel = Mockdata.Mockdata.MakeRandomPerson2();
             //testmodel.SaveToXML("test.xml");
 
             var loadedTestModel = XMLSaveLoad.LoadFromXml("test.xml");

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Dexel.Model;
+using Dexel.Model.Manager;
 using Microsoft.CodeAnalysis;
 
 namespace Roslyn.Tests

@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Windows;
-using Dexel.Editor.DragAndDrop;
+using Dexel.Editor.Views.DragAndDrop;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
+using Dexel.Model.Manager;
 using PropertyChanged;
 
 namespace Dexel.Editor.ViewModels.DrawingBoard

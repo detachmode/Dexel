@@ -5,6 +5,7 @@ using System.Windows.Input;
 using System.Xml;
 using Dexel.Editor.ViewModels;
 using Dexel.Editor.ViewModels.DataTypeEditor;
+using Dexel.Editor.Views.Common;
 using ICSharpCode.AvalonEdit.Highlighting;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 

@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using Dexel.Editor;
 using System.Linq;
+using Dexel.Editor.Views;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
+using Dexel.Model.Manager;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dexel.Editor.Tests
@@ -107,13 +109,13 @@ namespace Dexel.Editor.Tests
         public void ConnectTest()
         {
             var mainModel = new MainModel();
-            var oneCell = MainModelManager.AddNewFunctionUnit("one", mainModel);
-            var secondCell = MainModelManager.AddNewFunctionUnit("second", mainModel);
-            MainModelManager.ConnectTwoFunctionUnits(oneCell, secondCell, "testdata", "testdata", mainModel);
+            var oneFu = MainModelManager.AddNewFunctionUnit("one", mainModel);
+            var secondFu = MainModelManager.AddNewFunctionUnit("second", mainModel);
+            MainModelManager.ConnectTwoFunctionUnits(oneFu, secondFu, "testdata", "testdata", mainModel);
 
             Assert.IsTrue(mainModel.Connections.Any(x => x.DataNames.Equals("testdata")));
-            Assert.IsTrue(mainModel.Connections.Any(x => x.Sources.Any(dsd => dsd.Parent == oneCell)));
-            Assert.IsTrue(mainModel.Connections.Any(x => x.Destinations.Any(dsd => dsd.Parent == secondCell)));
+            Assert.IsTrue(mainModel.Connections.Any(x => x.Sources.Any(dsd => dsd.Parent == oneFu)));
+            Assert.IsTrue(mainModel.Connections.Any(x => x.Destinations.Any(dsd => dsd.Parent == secondFu)));
         }
 
 
@@ -121,20 +123,20 @@ namespace Dexel.Editor.Tests
         public void ConnectDangelingConnectionAndFunctionUnitTest()
         {
             var mainModel = new MainModel();
-            var oneCell = MainModelManager.AddNewFunctionUnit("one", mainModel);
-            Interactions.AddNewOutput(oneCell, "testdata");
-            var secondCell = MainModelManager.AddNewFunctionUnit("second", mainModel);
-            Interactions.ConnectDangelingConnectionAndFunctionUnit(oneCell.OutputStreams.First(), secondCell, mainModel);
+            var oneFu = MainModelManager.AddNewFunctionUnit("one", mainModel);
+            Interactions.AddNewOutput(oneFu, "testdata");
+            var secondFu = MainModelManager.AddNewFunctionUnit("second", mainModel);
+            Interactions.ConnectDangelingConnectionAndFunctionUnit(oneFu.OutputStreams.First(), secondFu, mainModel);
 
             Assert.IsTrue(mainModel.Connections.Any(x => x.DataNames.Equals("testdata | ")));
-            Assert.IsTrue(mainModel.Connections.Any(x => x.Sources.Any(dsd => dsd.Parent == oneCell)));
-            Assert.IsTrue(mainModel.Connections.Any(x => x.Destinations.Any(dsd => dsd.Parent == secondCell)));
+            Assert.IsTrue(mainModel.Connections.Any(x => x.Sources.Any(dsd => dsd.Parent == oneFu)));
+            Assert.IsTrue(mainModel.Connections.Any(x => x.Destinations.Any(dsd => dsd.Parent == secondFu)));
 
-            Assert.IsTrue(oneCell.OutputStreams.First().DataNames == "testdata");
-            Assert.IsTrue(oneCell.OutputStreams.First().Connected);
+            Assert.IsTrue(oneFu.OutputStreams.First().DataNames == "testdata");
+            Assert.IsTrue(oneFu.OutputStreams.First().Connected);
 
-            Assert.IsTrue(secondCell.InputStreams.First().Connected);
-            Assert.IsTrue(secondCell.InputStreams.First().DataNames == "");
+            Assert.IsTrue(secondFu.InputStreams.First().Connected);
+            Assert.IsTrue(secondFu.InputStreams.First().DataNames == "");
         }
 
 

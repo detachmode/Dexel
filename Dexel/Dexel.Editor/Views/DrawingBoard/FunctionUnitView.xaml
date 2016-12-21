@@ -3,7 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:views="clr-namespace:Dexel.Editor.Views"
     xmlns:drawingBoard="clr-namespace:Dexel.Editor.Views.DrawingBoard"
     xmlns:drawingBoard1="clr-namespace:Dexel.Editor.ViewModels.DrawingBoard"
     x:Class="Dexel.Editor.Views.DrawingBoard.FunctionUnitView"
@@ -48,12 +47,12 @@
                 </TransformGroup>
             </ItemsControl.RenderTransform>
             <ItemsControl.Resources>
-                <DataTemplate x:Name="DangelingConnectionViewsTemplate" DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
+                <DataTemplate DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
                     <drawingBoard:DangelingConnectionView 
                             ContextMenu="{StaticResource MyContextMenuOutput}"
                             x:Name="DangelingConnectionViews" />
                 </DataTemplate>
-                <DataTemplate x:Name="ConnectionAdapterViewsTemplate" DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
+                <DataTemplate DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
                     <drawingBoard:ConnectionAdapterView x:Name="ConnectionAdapterView" />
                 </DataTemplate>
             </ItemsControl.Resources>
@@ -71,12 +70,12 @@
                           x:Name="OutputFlow" ItemsSource="{Binding Outputs, Mode=TwoWay}" >
                 <ItemsControl.Resources>
                     <!-- Do NOT set the x:Key -->
-                    <DataTemplate x:Name="DangelingConnectionViewsTemplate" DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
+                    <DataTemplate DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
                         <drawingBoard:DangelingConnectionView 
                             ContextMenu="{StaticResource MyContextMenuOutput}"
                             x:Name="DangelingConnectionViews" />
                     </DataTemplate>
-                    <DataTemplate x:Name="ConnectionAdapterViewsTemplate" DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
+                    <DataTemplate DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
                         <drawingBoard:ConnectionAdapterView x:Name="ConnectionAdapterView" />
                     </DataTemplate>
                 </ItemsControl.Resources>

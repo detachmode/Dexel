@@ -1,13 +1,7 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Threading;
-using Dexel.Editor.CustomControls;
 using Dexel.Editor.ViewModels;
-using Dexel.Model;
 using Dexel.Model.DataTypes;
 using Microsoft.Win32;
 
@@ -137,7 +131,7 @@ namespace Dexel.Editor.Views
 
         private void help_OnClicked(object sender, RoutedEventArgs e)
         {
-            var helpdia = new HelpWindow();
+            var helpdia = new AdditionalWindows.HelpWindow();
             helpdia.ShowDialog();
         }
 

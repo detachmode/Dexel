@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dexel.Editor.CustomControls;
-using Dexel.Editor.DragAndDrop;
+using Dexel.Editor.Views;
+using Dexel.Editor.Views.CustomControls;
+using Dexel.Editor.Views.DragAndDrop;
 using Dexel.Model.DataTypes;
 using PropertyChanged;
 
@@ -48,9 +49,9 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         public void Drop(object data)
         {
             data.TryCast<DangelingConnectionViewModel>(
-                dangConnVm => Interactions.DragDroppedTwoDangelingConnections(dangConnVm.Model, this.Model, MainViewModel.Instance().Model));
+                dangConnVm => Interactions.DragDroppedTwoDangelingConnections(dangConnVm.Model, Model, MainViewModel.Instance().Model));
             data.TryCast<ConnectionAdapterViewModel>(
-               dangConnVm => Interactions.SwapDataStreamOrder(dangConnVm.Model, this.Model, MainViewModel.Instance().Model));
+               dangConnVm => Interactions.SwapDataStreamOrder(dangConnVm.Model, Model, MainViewModel.Instance().Model));
         }
     }
 }

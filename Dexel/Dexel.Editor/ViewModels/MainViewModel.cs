@@ -3,13 +3,15 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using Dexel.Editor.CustomControls;
-using Dexel.Editor.DragAndDrop;
 using Dexel.Editor.ViewModels.DataTypeEditor;
 using Dexel.Editor.ViewModels.DrawingBoard;
+using Dexel.Editor.Views;
+using Dexel.Editor.Views.CustomControls;
+using Dexel.Editor.Views.DragAndDrop;
 using Dexel.Library;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
+using Dexel.Model.Manager;
 using PropertyChanged;
 
 namespace Dexel.Editor.ViewModels
@@ -221,19 +223,19 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        public void UpdateIntegrationBorderPosition(FunctionUnitViewModel iocellvm)
+        public void UpdateIntegrationBorderPosition(FunctionUnitViewModel fuVm)
         {
-            if (iocellvm.Integration.Count == 0)
+            if (fuVm.Integration.Count == 0)
                 return;
             var tempIntegrations =
-                iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.X + cellvm1.Width);
+                fuVm.Integration.OrderBy(vm => vm.Model.Position.X + vm.Width);
             var min = tempIntegrations.First();
             var max = tempIntegrations.Last();
 
-            tempIntegrations = iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.Y + cellvm1.Height);
+            tempIntegrations = fuVm.Integration.OrderBy(vm => vm.Model.Position.Y + vm.Height);
             var miny = tempIntegrations.First();
-            iocellvm.IntegrationStartPosition = new Point(min.Model.Position.X - 60, miny.Model.Position.Y);
-            iocellvm.IntegrationEndPosition = new Point(max.Model.Position.X + max.Width + 60,
+            fuVm.IntegrationStartPosition = new Point(min.Model.Position.X - 60, miny.Model.Position.Y);
+            fuVm.IntegrationEndPosition = new Point(max.Model.Position.X + max.Width + 60,
                 miny.Model.Position.Y);
         }
 
@@ -304,12 +306,12 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        private void LoadFunctionUnits(List<FunctionUnit> softwareCellsToLoad)
+        private void LoadFunctionUnits(List<FunctionUnit> functionUnitsToLoad)
         {
-            RemoveDeletedFunctionUnits(softwareCellsToLoad);
+            RemoveDeletedFunctionUnits(functionUnitsToLoad);
 
             var lookup = FunctionUnits.ToLookup(x => x.Model.ID, x => x);
-            softwareCellsToLoad.ForEach(model => FindFunctionUnitViewModel(lookup, model,
+            functionUnitsToLoad.ForEach(model => FindFunctionUnitViewModel(lookup, model,
                 onFound: viewModel => FunctionUnitViewModel.LoadFromModel(viewModel, model),
                 onNotFound: () => AddNewFunctionUnit(model)));
         }
@@ -345,9 +347,9 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        private void RemoveDeletedFunctionUnits(List<FunctionUnit> softwareCellsToLoad)
+        private void RemoveDeletedFunctionUnits(List<FunctionUnit> functionUnitsToLoad)
         {
-            var todelte = FunctionUnits.Where(vm => softwareCellsToLoad.All(fu => fu.ID != vm.Model.ID)).ToList();
+            var todelte = FunctionUnits.Where(vm => functionUnitsToLoad.All(fu => fu.ID != vm.Model.ID)).ToList();
             todelte.ForEach(vm => FunctionUnits.Remove(vm));
         }
 

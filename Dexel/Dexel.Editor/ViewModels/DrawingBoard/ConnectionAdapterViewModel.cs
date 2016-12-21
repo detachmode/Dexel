@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Dexel.Editor.CustomControls;
-using Dexel.Editor.DragAndDrop;
+using Dexel.Editor.Views;
+using Dexel.Editor.Views.CustomControls;
+using Dexel.Editor.Views.DragAndDrop;
 using Dexel.Model.DataTypes;
 using PropertyChanged;
 
@@ -41,9 +42,9 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         public void Drop(object data)
         {
             data.TryCast<ConnectionAdapterViewModel>(
-                droppedData => Interactions.SwapDataStreamOrder(droppedData.Model, this.Model, MainViewModel.Instance().Model));
+                droppedData => Interactions.SwapDataStreamOrder(droppedData.Model, Model, MainViewModel.Instance().Model));
             data.TryCast<DangelingConnectionViewModel>(
-                droppedData => Interactions.SwapDataStreamOrder(droppedData.Model, this.Model, MainViewModel.Instance().Model));
+                droppedData => Interactions.SwapDataStreamOrder(droppedData.Model, Model, MainViewModel.Instance().Model));
         }
     }
 }

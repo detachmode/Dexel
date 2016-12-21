@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Dexel.Model.DataTypes;
+using Dexel.Model.Manager;
 
 namespace Dexel.Model.Tests
 {
@@ -17,7 +18,7 @@ namespace Dexel.Model.Tests
         [TestMethod()]
         public void TraverseChildrenTest()
         {
-            var testmodel = Mockdata.MakeRandomPerson2();
+            var testmodel = Mockdata.Mockdata.MakeRandomPerson2();
             var randname = testmodel.FunctionUnits[0];
             var found = new List<FunctionUnit>();
             MainModelManager.TraverseChildren(randname, fu => found.Add(fu), testmodel);

@@ -143,13 +143,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CustomControls\Class1.cs" />
-    <Compile Include="CustomControls\IntegrationBorders.cs" />
-    <Compile Include="CustomControls\SelectionItemsControl.cs" />
-    <Compile Include="DebuggingHelper\Extensions.cs" />
-    <Compile Include="DragAndDrop\MouseEventMediator.cs" />
-    <Compile Include="FileSaveLoad.cs" />
-    <Compile Include="Interactions.cs" />
+    <Compile Include="Views\CustomControls\Class1.cs" />
+    <Compile Include="Views\CustomControls\IntegrationBorders.cs" />
+    <Compile Include="Views\CustomControls\SelectionItemsControl.cs" />
+    <Compile Include="Common\Extensions.cs" />
+    <Compile Include="Views\MouseEventMediator.cs" />
+    <Compile Include="FileIO\FileSaveLoad.cs" />
+    <Compile Include="Views\Interactions.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="ViewModels\DrawingBoard\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\DrawingBoard\ConnectionAdapterViewModel.cs" />
@@ -177,8 +177,8 @@
       <DependentUpon>DrawingBoard.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\DrawingBoard\IInputOutputViewModel.cs" />
-    <Compile Include="Views\Extensions.cs" />
-    <Compile Include="Views\HelpWindow.xaml.cs">
+    <Compile Include="Views\Common\Extensions.cs" />
+    <Compile Include="Views\AdditionalWindows\HelpWindow.xaml.cs">
       <DependentUpon>HelpWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\DrawingBoard\FunctionUnitView.xaml.cs">
@@ -190,10 +190,10 @@
     <Compile Include="Views\DrawingBoard\FunctionUnitBody.xaml.cs">
       <DependentUpon>FunctionUnitBody.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UnkownErrorDialog.xaml.cs">
+    <Compile Include="Views\AdditionalWindows\UnkownErrorDialog.xaml.cs">
       <DependentUpon>UnkownErrorDialog.xaml</DependentUpon>
     </Compile>
-    <Page Include="CustomControls\DataNamesControl.xaml">
+    <Page Include="Views\CustomControls\DataNamesControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -201,24 +201,24 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="DragAndDrop\FrameworkElementDragBehavior.cs" />
-    <Compile Include="DragAndDrop\FrameworkElementDropBehavior.cs" />
-    <Compile Include="DragAndDrop\IDragable.cs" />
-    <Compile Include="DragAndDrop\IDropable.cs" />
-    <Compile Include="DragAndDrop\MouseHoverFeedBack.cs" />
-    <Compile Include="Converter\Converter.cs" />
-    <Compile Include="CustomControls\DataNamesControl.xaml.cs">
+    <Compile Include="Views\DragAndDrop\FrameworkElementDragBehavior.cs" />
+    <Compile Include="Views\DragAndDrop\FrameworkElementDropBehavior.cs" />
+    <Compile Include="Views\DragAndDrop\IDragable.cs" />
+    <Compile Include="Views\DragAndDrop\IDropable.cs" />
+    <Compile Include="Views\DragAndDrop\MouseHoverFeedBack.cs" />
+    <Compile Include="Views\Converter\Converter.cs" />
+    <Compile Include="Views\CustomControls\DataNamesControl.xaml.cs">
       <DependentUpon>DataNamesControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CustomControls\Extensions.cs" />
-    <Compile Include="CustomControls\Pointer.cs" />
-    <Compile Include="CustomControls\ZoomBorder.cs" />
-    <Compile Include="DebuggingHelper\DebugPrinter.cs" />
-    <Page Include="Themes\DarkColorfull.xaml">
+    <Compile Include="Views\CustomControls\Extensions.cs" />
+    <Compile Include="Views\CustomControls\Pointer.cs" />
+    <Compile Include="Views\CustomControls\ZoomBorder.cs" />
+    <Compile Include="Common\DebugPrinter.cs" />
+    <Page Include="Views\Themes\DarkColorfull.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Print.xaml">
+    <Page Include="Views\Themes\Print.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -246,7 +246,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\HelpWindow.xaml">
+    <Page Include="Views\AdditionalWindows\HelpWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -262,7 +262,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\UnkownErrorDialog.xaml">
+    <Page Include="Views\AdditionalWindows\UnkownErrorDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -285,7 +285,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="FlowDesignColor.xshd">
+    <None Include="Views\Themes\FlowDesignColor.xshd">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
@@ -315,6 +315,7 @@
       <Name>Roslyn</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

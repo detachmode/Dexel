@@ -3,6 +3,7 @@ using System.Text.RegularExpressions;
 using Dexel.Library;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
+using Dexel.Model.Manager;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Roslyn.Tests
@@ -29,7 +30,7 @@ namespace Roslyn.Tests
             MainModelManager.ConnectTwoFunctionUnits(alter, person, "int", "int, string", testModel);
             MainModelManager.AddNewOutput(person, "Person");
 
-            var dependecies = Integrations.FindParameters(person, testModel.Connections, newName);
+            var dependecies = IntegrationGenerator.FindParameters(person, testModel.Connections, newName);
             Assert.IsTrue(dependecies.Any(x => x.Source == alter));
             Assert.IsTrue(dependecies.Any(x => x.Source == newName));
 
@@ -45,7 +46,7 @@ namespace Roslyn.Tests
             MainModelManager.ConnectTwoFunctionUnits(alter, person, "int", "int, string", testModel);
             MainModelManager.AddNewOutput(person, "Person");
 
-            dependecies = Integrations.FindParameters(person, testModel.Connections, newName);
+            dependecies = IntegrationGenerator.FindParameters(person, testModel.Connections, newName);
             Assert.IsTrue(dependecies.Any(x => x.Source == alter));
             Assert.IsTrue(dependecies.Any(x => x.Source == newName));
         }
@@ -98,7 +99,7 @@ namespace Roslyn.Tests
             x.Integration.AddUnique(addName);
             x.Integration.AddUnique(sumAges);
 
-            var res = Integrations.CreateIntegrationBody(_mygen.Generator, testModel.Connections, x);
+            var res = IntegrationGenerator.CreateIntegrationBody(_mygen.Generator, testModel.Connections, x);
             var formatted = _mygen.CompileToString(res.ToList());
 
             Assert.IsTrue(
@@ -143,7 +144,7 @@ namespace Roslyn.Tests
             x.Integration.Add(addAge);
 
 
-            var res = Integrations.CreateIntegrationBody(_mygen.Generator, testModel.Connections, x);
+            var res = IntegrationGenerator.CreateIntegrationBody(_mygen.Generator, testModel.Connections, x);
             var formatted = _mygen.CompileToString(res.ToList());
 
             Assert.IsTrue(

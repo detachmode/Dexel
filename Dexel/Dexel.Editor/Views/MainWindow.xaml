@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:views="clr-namespace:Dexel.Editor.Views"
-        xmlns:dragAndDrop="clr-namespace:Dexel.Editor.DragAndDrop"
         xmlns:dataTypeEditor="clr-namespace:Dexel.Editor.Views.DataTypeEditor"
         xmlns:drawingBoard="clr-namespace:Dexel.Editor.Views.DrawingBoard"
         mc:Ignorable="d"
