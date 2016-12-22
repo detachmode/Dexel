@@ -1,0 +1,30 @@
+FunctionUnits:
+- &o0
+  Position:
+    X: 212
+    Y: 133
+  Name: new Person
+  ID: 47662a57-1479-4013-8174-5b151314147d
+  IsIntegrating: []
+  InputStreams:
+  - DataNames: (int,string)
+    ID: 9664c6ba-2820-48d4-b4bc-18890d6046ad
+    Parent: *o0
+  OutputStreams:
+  - ActionName: .onPerson
+    DataNames: (Person)
+    ID: 183de344-809a-4019-b817-c94163b85442
+    Parent: *o0
+  - ActionName: .onError
+    DataNames: (string)
+    ID: ed85dc47-4f39-4f64-81a7-938af36c6312
+    Parent: *o0
+Connections: []
+DataTypes:
+- Name: Person
+  SubDataTypes:
+  - Name: name
+    Type: >
+      string
+  - Name: age
+    Type: int

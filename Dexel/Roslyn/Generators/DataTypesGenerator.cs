@@ -19,7 +19,8 @@ namespace Roslyn
 
         private static SyntaxNode FieldDeclaration(SyntaxGenerator generator, SubDataType dt)
         {
-            return generator.FieldDeclaration(name: Helper.FirstCharToUpper(dt.Name),
+            return generator.FieldDeclaration(
+                name: Helper.FirstCharToUpper(dt.Name),
                 type: DataTypeParser.ConvertToType(generator, dt.Type),
                 accessibility: Accessibility.Public);
         }

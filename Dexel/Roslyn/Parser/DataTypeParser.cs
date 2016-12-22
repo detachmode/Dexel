@@ -112,9 +112,19 @@ namespace Roslyn
         }
 
 
-        public static void OutputIsStream(FunctionUnit functionUnit, Action isStream = null, Action isNotStream = null)
+        public static void AnalyseOutputs(FunctionUnit functionUnit, Action isComplexOutput = null, Action isSimpleOutput = null)
         {
-            DataStreamParser.IsStream(functionUnit.OutputStreams.First().DataNames, isStream, isNotStream);
+
+            DataStreamParser.IsStream(functionUnit.OutputStreams.First().DataNames,
+                isStream: () => isComplexOutput?.Invoke(),
+                isNotStream: () =>
+                {
+                    if (functionUnit.OutputStreams.Count > 1)
+                        isComplexOutput?.Invoke();
+                    else
+                        isSimpleOutput?.Invoke();
+                }
+            );
         }
 
 

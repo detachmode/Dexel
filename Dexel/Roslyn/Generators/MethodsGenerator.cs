@@ -27,9 +27,9 @@ namespace Roslyn
         {
             SyntaxNode result = null;
 
-            DataTypeParser.OutputIsStream(functionUnit,
-                isStream: () => { },
-                isNotStream: () =>
+            DataTypeParser.AnalyseOutputs(functionUnit,
+                isComplexOutput: () => { },
+                isSimpleOutput: () =>
                 {
                     var outputStream = functionUnit.OutputStreams.First();
                     result = DataTypeParser.ConvertToType(generator,
@@ -47,6 +47,12 @@ namespace Roslyn
             var returntype = GetReturnPart(generator, functionUnit);
             var parameters = GetParameters(generator, functionUnit);
 
+            return MethodDeclaration(generator, body, methodName, parameters, returntype);
+        }
+
+
+        private static SyntaxNode MethodDeclaration(SyntaxGenerator generator, SyntaxNode[] body, string methodName, IEnumerable<SyntaxNode> parameters, SyntaxNode returntype)
+        {
             return generator.MethodDeclaration(methodName, parameters,
                 null, returntype,
                 Accessibility.Public,
@@ -58,26 +64,36 @@ namespace Roslyn
         public static IEnumerable<SyntaxNode> GetParameters(SyntaxGenerator generator, FunctionUnit functionUnit)
         {
             var result = new List<SyntaxNode>();
-            DataTypeParser.OutputIsStream(functionUnit,
-                isStream: () => MethodParameterSignatureForStreamOutput(generator, functionUnit, result),
-                isNotStream: () => MethodParameterSignatureFromInputs(generator, functionUnit, result));
+            DataTypeParser.AnalyseOutputs(functionUnit,
+                isComplexOutput: () => MethodParameterSignatureForComplexOutput(generator, functionUnit, result),
+                isSimpleOutput: () => MethodParameterSignatureFromInputs(generator, functionUnit, result));
 
             return result;
         }
 
 
-        private static void MethodParameterSignatureForStreamOutput(SyntaxGenerator generator, FunctionUnit functionUnit,
+        private static void MethodParameterSignatureForComplexOutput(SyntaxGenerator generator, FunctionUnit functionUnit,
             List<SyntaxNode> result)
         {
             MethodParameterSignatureFromInputs(generator, functionUnit, result);
-            var outgoingDataNames = functionUnit.OutputStreams.First().DataNames;
-            var nametypes = DataStreamParser.GetOutputPart(outgoingDataNames);
-            nametypes.Where(nt => nt != null).ToList().ForEach(nt =>
+            functionUnit.OutputStreams.ToList().ForEach(dsd =>
+            {
+                var outgoingDataNames = dsd.DataNames;
+                var outgoingActionName = dsd.ActionName;
+                var nametypes = DataStreamParser.GetOutputPart(outgoingDataNames);
+                nametypes.Where(nt => nt != null).ToList().ForEach(nt =>
                 {
-                    var name = nt.Name != null ? $"on{Helper.FirstCharToUpper(nt.Name)}" : $"on{nt.Type}";
+                    var name = GetNameOfStream(nt, outgoingActionName);
                     var typeExpression = generator.IdentifierName($"Action<{nt.Type}>");
                     result.Add(generator.ParameterDeclaration(name, typeExpression));
                 });
+            });
+        }
+
+
+        private static string GetNameOfStream(NameType nt, string outgoingActionName)
+        {
+            return outgoingActionName?.Replace(".", string.Empty) ?? $"on{nt.Type}";
         }
 
 
@@ -88,7 +104,6 @@ namespace Roslyn
                 return;
 
             var inputDataNames = functionUnit.InputStreams.First().DataNames;
-            var i = 0;
             var nametypes = DataStreamParser.GetInputPart(inputDataNames);
             nametypes.ToList().ForEach(nametype =>
                 {
@@ -104,7 +119,7 @@ namespace Roslyn
             var lower = nametype.Type.ToLower();
             if (nametype.IsArray || nametype.IsList)
                 lower += "s";
-            return nametype.Name ?? lower;
+            return nametype.Name ?? $"a{lower}";
         }
 
 

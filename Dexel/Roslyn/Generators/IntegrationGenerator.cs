@@ -320,8 +320,8 @@ namespace Roslyn
                 .Select(nt => FindOneParameter(nt, parent, connections, ofFunctionUnit, true)).ToList();
 
 
-            DataTypeParser.OutputIsStream(ofFunctionUnit,
-                isStream: () =>
+            DataTypeParser.AnalyseOutputs(ofFunctionUnit,
+                isComplexOutput: () =>
                 {
                     var outputNameTypes = DataStreamParser.GetOutputPart(ofFunctionUnit.OutputStreams.First().DataNames);
 

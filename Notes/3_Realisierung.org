@@ -678,11 +678,143 @@ public static object TabStopGetNext(object focusedModel, MainModel mainModel)
 
 
 ** Roslyn - Generierung von Code aus einem Diagramm
-*** Vorstellung Roslyn
-**** Erzeugung Datentypen als einfaches Beispiel
+
+*** Was erreicht wurde
+    Die weniger komplexeren Aufgaben wurden vollständig implementiert.
+    Diese wären: 
+    - Generieung der benutzerdefinierten DatenTypen, und Generierung
+    - der Methodensignaturen anhand einer Funktionseinheit.
+     
+    Die weitaus komplexere Aufgabe: die Generierung der Methoden-Bodys einer Integration wurde nicht
+    vollständig implementiert.
+     
+    Um Code zu generieren muss im Editor in der Menuleiste der Eintrag Output
+    angesteuert werden.
+    Hier gibt es die Möglichkeit das aktuelle Flow Design in eine Datei zu
+    generieren, oder aber den Code direkt in das Clipboard zu kopieren( damit man den erzeugten Code bequem an
+    eine gewünschte Stelle copy-pasten kann).
+    
+    Außerdem gibt es die Option eine automatische Generierung einzuschalten, die
+    den Code während der Bearbeitung immer neu generiert und in die Datei
+    schreibt. So lässt sich das Ergebnis der Generierung während der Bearbeitung
+    des Datenflusses beobachten (vorallem in Kombination mit einem
+    Textedtitoren, wie zum Beispiel Atom, die bei einer Änderung der Datei diese automatische neu laden).
+
+    Das Ergebnis wird auch immer mit in die Konsole ausgegeben, die beim
+    Programmstart mit geöffnet wird.
+     
 *** Erzeugung von Methodensignaturen
-**** Datentypen 
+    Das Analysieren einzelner Funktionseinheiten anhand ihrer Ein und Ausgänge
+    erlaubt eine automatische Generierung der Methodensignaturen.
+    Dieses Feature wurde vollständig implementiert.
+
+**** Ein Output
+     Der Einfachste Fall ist eine Funktionseinheit, die nur ein Output hat und
+     kein Stream, oder optional ist.
+     In diesem Fall werden die ausgehenden Daten als Rückgabewert herausgereicht.
+
+    [[./img/roslyn_simpleOutput.png]] 
+
+     Die Generierung erzeugt folgenden Code:
+#+BEGIN_SRC cpp
+        public class Person
+        {
+            public string Name;
+            public int Age;
+        }
+
+        public static Person NewPerson(int aint, string astring)
+        {
+            throw  new NotImplementedException();
+        }
+ #+END_SRC
+ 
+**** Optionale/Mehrere Outputs 
+     Sobald eine Funktionseinheit mehrere Ausgänge hat, müssen diese als entsprechende Actions in die Parameter mit
+     übergeben werden. Ein Return-Wert entfällt in diesem Fall.
+
+    [[./img/roslyn_multipleOutputs.png]] 
+
+#+BEGIN_SRC cpp
+        public static void NewPerson(int aint, string astring, Action<Person> onPerson, Action<string> onError)
+        {
+            throw  new NotImplementedException();
+        }
+#+END_SRC
+
+**** Streams 
+
+**** TDD 
+
+**** Codeauschnitte
+     
 **** DatanameParser
+*** Kleine Einblick in die API von Roslyn
+    Das Projekt Rosyln von Microsoft ist ein .NET-Compiler, der eine API bietet, um beliebigen C#-Quelltext zu erstellten,
+    zu analysieren und zu modifizieren.
+
+    Das hier verwendetet Packet ist: Microsoft.CodeAnalysis
+
+    Der Datentypen auf dem die Methoden zum Erstellen von Code arbeitet lautet:
+    =SyntaxNode= 
+
+    Diese SyntaxNodes werden von einem SyntaxGenerator erstellt werden.
+    Diese muss beim Initialsieren konfiguriert werden.
+
+#+BEGIN_SRC cpp
+    var workspace = new AdhocWorkspace();
+    // Get the SyntaxGenerator for the specified language
+    var generator = SyntaxGenerator.GetGenerator(workspace, LanguageNames.CSharp);
+#+END_SRC
+
+ 
+    Das Erstellen eines Ausdruckes, Klasse oder Methode mit Hilfe von Methoden
+    des SyntaxGenerators lieferen am Ende immer eine SyntaxNode zurück.
+    Beim Erstellen einer Methode oder Klasse kann der Inhalt des Scopes durch
+    ein Array von SyntaxNodes bestimmt werden.
+    
+    Nachfolgend ein einfaches Beispiel zum erstellen von einem
+    benutzerdefinierten Datentyp.
+
+**** Erzeugung eines Datentypen als einfaches Beispiel
+
+#+BEGIN_SRC cpp
+  var fieldAlter = generator.FieldDeclaration(
+                name: "Alter",
+                type: generator.TypeExpression(SpecialType.System_Int32),
+                accessibility: Accessibility.Public);
+
+  var fieldName = generator.FieldDeclaration(
+                name: "Name",
+                type: generator.TypeExpression(SpecialType.System_String),
+                accessibility: Accessibility.Public);
+
+
+  var allFields =  new[] {fieldName, fieldAlter};
+
+
+  // Generate the class
+  var classDefinition = Generator.ClassDeclaration(
+    "Person", 
+    typeParameters: null,
+    accessibility: Accessibility.Public,
+    modifiers: DeclarationModifiers.None,
+    baseType: null,
+    interfaceTypes: null,
+    members:allFields
+);
+
+#+END_SRC
+
+ Um am Ende den Code in Form eines Strings zu erhalten muss auf die oberstere
+ SyntaxNode folgende beide Methoden aufgerufen werden:
+
+#+BEGIN_SRC cpp
+ var code = classDefinition.NormalizeWhitespace().ToFullString();
+#+END_SRC
+
 *** Erzeugung der Integration-Bodies 
+**** Einfacherster Fall
+**** Datenströme
 
 ** Generierung eines Diagrammes aus Code

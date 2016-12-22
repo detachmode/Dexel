@@ -20,7 +20,7 @@ namespace Dexel.Editor.Views.UserControls.DataTypeEditor
         {
 
             InitializeComponent();
-            LoadColorSchema(@"FlowDesignColor.xshd");
+            LoadColorSchema(@"Views/Themes/FlowDesignColor.xshd");
 
 
             

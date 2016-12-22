@@ -116,12 +116,13 @@ namespace Roslyn
         {
             // Generate the class
             var classDefinition = Generator.ClassDeclaration(
-                name, null,
-                Accessibility.Public,
-                DeclarationModifiers.None,
-                null,
-                null,
-                members
+                name, 
+                typeParameters: null,
+                accessibility: Accessibility.Public,
+                modifiers: DeclarationModifiers.None,
+                baseType: null,
+                interfaceTypes: null,
+                members: members
                 );
             return classDefinition;
         }

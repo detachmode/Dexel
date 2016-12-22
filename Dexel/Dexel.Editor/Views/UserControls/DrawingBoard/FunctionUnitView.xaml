@@ -28,9 +28,6 @@
             <MenuItem Header="Delete Data Stream" Click="DeleteDataStreamDefinition"  />
         </ContextMenu>
 
-
-
-
     </UserControl.Resources>
     <Grid>
         <ItemsControl MinHeight="35" x:Name="InputFlow"                               
