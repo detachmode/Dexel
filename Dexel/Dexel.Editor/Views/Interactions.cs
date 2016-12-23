@@ -12,6 +12,7 @@ using Dexel.Library;
 using Dexel.Model.DataTypes;
 using Dexel.Model.Manager;
 using Roslyn;
+using Roslyn.Parser;
 
 namespace Dexel.Editor.Views
 {

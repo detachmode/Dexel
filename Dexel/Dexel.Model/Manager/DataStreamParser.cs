@@ -41,7 +41,7 @@ namespace Dexel.Model.Manager
             return Regex.IsMatch(rawdatanames, @"^\(.*\)\*$");
         }
 
-        public static void IsStream(string rawdatanames, Action isStream = null, Action isNotStream = null)
+        public static void CheckIsStream(string rawdatanames, Action isStream = null, Action isNotStream = null)
         {
             if (Regex.IsMatch(rawdatanames, @"^\(.*\)\*$"))
                 isStream?.Invoke();

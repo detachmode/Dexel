@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Dexel.Model;
 using Dexel.Model.Manager;
 using Microsoft.CodeAnalysis;
+using Roslyn.Parser;
 
 namespace Roslyn.Tests
 {

@@ -1,13 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dexel.Model;
 using Dexel.Model.DataTypes;
 using Dexel.Model.Manager;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
 
-namespace Roslyn
+namespace Roslyn.Parser
 {
     public static class DataTypeParser
     {
@@ -98,33 +97,76 @@ namespace Roslyn
             }
             if (alltypes.Count > 1)
             {
-                generator.GenericName("Tupel",
+                return generator.GenericName("Tupel",
                     generator.IdentifierName(
                         alltypes.Select(nt => ConvertNameTypeToTypeExpression(generator, nt).ToFullString())
                             .Aggregate((f, s) => f + "," + s)));
             }
-            else
-            {
-                return ConvertNameTypeToTypeExpression(generator, alltypes.First());
-            }
 
-            return null;
+
+            return ConvertNameTypeToTypeExpression(generator, alltypes.First());
+
         }
 
 
-        public static void AnalyseOutputs(FunctionUnit functionUnit, Action isComplexOutput = null, Action isSimpleOutput = null)
+        public enum DataFlowImplementationStyle
         {
+            AsAction,
+            AsReturn
+        }
 
-            DataStreamParser.IsStream(functionUnit.OutputStreams.First().DataNames,
-                isStream: () => isComplexOutput?.Invoke(),
-                isNotStream: () =>
+        public class MethodSignaturePart
+        {
+            public DataFlowImplementationStyle ImplementWith;
+            public string Datanames;
+            public string ActionNames;
+        }
+
+        public static List<MethodSignaturePart> AnalyseOutputs(FunctionUnit functionUnit)
+        {
+            var result = new List<MethodSignaturePart>();
+
+            var copyOfOutputs = functionUnit.OutputStreams.ToList();
+            OutputByReturn(functionUnit, dsdByReturn =>
+            {
+                result.Add(new MethodSignaturePart
                 {
-                    if (functionUnit.OutputStreams.Count > 1)
-                        isComplexOutput?.Invoke();
-                    else
-                        isSimpleOutput?.Invoke();
-                }
-            );
+                    Datanames = dsdByReturn.DataNames,
+                    ImplementWith = DataFlowImplementationStyle.AsReturn
+                });
+                copyOfOutputs.Remove(dsdByReturn);
+            });
+
+            copyOfOutputs.ForEach(dsd =>
+            {
+                result.Add(new MethodSignaturePart
+                {
+                    Datanames = dsd.DataNames,
+                    ActionNames =  dsd.ActionName,
+                    ImplementWith = DataFlowImplementationStyle.AsAction
+                });
+            });
+
+            return result;
+        }
+
+
+        private static void OutputByReturn(FunctionUnit functionUnit, Action<DataStreamDefinition> onFound)
+        {
+            var noActionsnames = functionUnit.OutputStreams.Where(dsd => string.IsNullOrWhiteSpace(dsd.ActionName)).ToList();
+            if (noActionsnames.Count == 1)
+            {
+                DataStreamParser.CheckIsStream(noActionsnames.First().DataNames,
+                    isNotStream: () =>
+                    {
+                        onFound(noActionsnames.First());
+                    },
+                    isStream: () =>
+                    {
+                        DataStreamParser.CheckIsStream(functionUnit.InputStreams.First().DataNames,
+                            isStream: () => onFound(noActionsnames.First()));
+                    });
+            }
         }
 
 
@@ -132,8 +174,8 @@ namespace Roslyn
         {
             var outputIsStream = false;
             var inputIsStream = false;
-            DataStreamParser.IsStream(functionUnit.OutputStreams.First().DataNames, () => outputIsStream = true );
-            DataStreamParser.IsStream(functionUnit.InputStreams.First().DataNames, () => inputIsStream = true);
+            DataStreamParser.CheckIsStream(functionUnit.OutputStreams.First().DataNames, () => outputIsStream = true );
+            DataStreamParser.CheckIsStream(functionUnit.InputStreams.First().DataNames, () => inputIsStream = true);
 
             if (outputIsStream && inputIsStream)
                 bothAreStreams?.Invoke();

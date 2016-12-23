@@ -45,6 +45,75 @@ namespace Roslyn.Tests
         }
 
         [TestMethod()]
+        public void IOTest_WithTwo_Outputs_OnlyOneHasActionname()
+        {
+
+            var fu = FunctionUnitManager.CreateNew("foo");
+            MainModelManager.AddNewInput(fu, "(name:string)");
+            MainModelManager.AddNewOutput(fu, "(int)");
+            MainModelManager.AddNewOutput(fu, "(string)", actionName: ".onError");
+
+            var returnType = MethodsGenerator.GetReturnPart(_mygen.Generator, fu)
+                .NormalizeWhitespace().ToFullString();
+
+            Assert.AreEqual("int", returnType);
+
+            var paramSignature = MethodsGenerator.GetParameters(_mygen.Generator, fu)
+                .Select(sn => sn.NormalizeWhitespace().ToFullString()).ToList();
+
+            Assert.AreEqual("string name", paramSignature[0]);
+            Assert.AreEqual("Action<string> onError", paramSignature[1]);
+
+        }
+
+        [TestMethod()]
+        public void IOTest_OutputAsAction_WithTwoTypes()
+        {
+
+            var fu = FunctionUnitManager.CreateNew("foo");
+            MainModelManager.AddNewInput(fu, "(name:string)");
+            MainModelManager.AddNewOutput(fu, "(string, object)", actionName: ".onError");
+
+            var returnType = MethodsGenerator.GetReturnPart(_mygen.Generator, fu)?
+                .NormalizeWhitespace().ToFullString();
+
+            Assert.AreEqual(null, returnType);
+
+            var paramSignature = MethodsGenerator.GetParameters(_mygen.Generator, fu)
+                .Select(sn => sn.NormalizeWhitespace().ToFullString()).ToList();
+
+            Assert.AreEqual("string name", paramSignature[0]);
+            Assert.AreEqual("Action<string,object> onError", paramSignature[1]);
+
+        }
+
+
+        [TestMethod()]
+        public void IOTest_WithTwo_Outputs_NoActionnames()
+        {
+
+            var fu = FunctionUnitManager.CreateNew("foo");
+            MainModelManager.AddNewInput(fu, "(name:string)");
+            MainModelManager.AddNewOutput(fu, "(int)");
+            MainModelManager.AddNewOutput(fu, "(string)");
+
+            var returnType = MethodsGenerator.GetReturnPart(_mygen.Generator, fu)?
+                .NormalizeWhitespace().ToFullString();
+
+            Assert.AreEqual(null, returnType);
+
+            var paramSignature = MethodsGenerator.GetParameters(_mygen.Generator, fu)
+                .Select(sn => sn.NormalizeWhitespace().ToFullString()).ToList();
+
+            Assert.AreEqual("string name", paramSignature[0]);
+            Assert.AreEqual("Action<int> onInt", paramSignature[1]);
+            Assert.AreEqual("Action<string> onString", paramSignature[2]);
+
+
+        }
+
+
+        [TestMethod()]
         public void GetParameters_With_Input_And_OutputStream()
         {
 
@@ -59,6 +128,47 @@ namespace Roslyn.Tests
             Assert.AreEqual("Action<int> onNumber", paramSignature[1]);
 
         }
+
+
+        [TestMethod()]
+        public void IOTest_TupelOutput()
+        {
+
+            var fu = FunctionUnitManager.CreateNew("foo");
+            MainModelManager.AddNewInput(fu, "(name:string)");
+            MainModelManager.AddNewOutput(fu, "(int,string)");
+
+            var returnType = MethodsGenerator.GetReturnPart(_mygen.Generator, fu)?
+                .NormalizeWhitespace().ToFullString();
+
+            Assert.AreEqual("Tupel<int,string>", returnType);
+        }
+
+        [TestMethod()]
+        public void IOTest_InputStreamOutputStream()
+        {
+
+            var fu = FunctionUnitManager.CreateNew("foo");
+            MainModelManager.AddNewInput(fu, "(name:string)*");
+            MainModelManager.AddNewOutput(fu, "(Person)*");
+            MainModelManager.AddNewOutput(fu, "(string)", actionName: "onError");
+
+
+            var returnType = MethodsGenerator.GetReturnPart(_mygen.Generator, fu)?
+                .NormalizeWhitespace().ToFullString();
+
+            Assert.AreEqual("Person", returnType);
+
+
+            var paramSignature = MethodsGenerator.GetParameters(_mygen.Generator, fu)
+                .Select(sn => sn.NormalizeWhitespace().ToFullString()).ToList();
+
+            Assert.AreEqual("string name", paramSignature[0]);
+            Assert.AreEqual("Action<string> onError", paramSignature[1]);
+        }
+
+
+
 
         [TestMethod()]
         public void GetParameter_OneSimpleInput_WithoutNames()

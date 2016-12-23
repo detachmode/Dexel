@@ -4,6 +4,7 @@ using System.Linq;
 using Dexel.Model.DataTypes;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
+using Roslyn.Parser;
 
 namespace Roslyn
 {

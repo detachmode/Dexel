@@ -676,9 +676,37 @@ public static object TabStopGetNext(object focusedModel, MainModel mainModel)
       verbunden ist. Eine Helfer-Methode der MainModelManager-Klasse stellt
       diese Funktionalität zum Auffinden des DataStream zur Verfügung.
 
+*** Was nicht erreicht wurde
+    Hier einge Auflistung was aus zeitlichen Gründen noch nicht realisiert
+    wurde, die jedoch für den Einsatz in einem Projekt noch sehr wichtig wären:
+    - Joint-Inputs und Joint Outputs. Dies erfordert Möglicherweise noch einmal
+      eine kleine Überarbeitung der Architekur des Models. Auch die Darstellung
+      wurde noch nicht realisiert.
+    - Validierung der Synatx - Sowohl eine Validierungslogik als auch eine
+      Markierung invalider Synatx innerhalb des Editors wurden nicht realisiert.
+    - Mehr Möglichkeiten die Darstellung übersichtlicher zu gestalten: Auf und
+      Zuklappen von Integrationen. Eine 'referenzierte' Kopie einer
+      Funktionseinheit zu erstellen, um an anderer Stelle diese weiter zu
+      verwenden. 
+    - Saubere und eindeutige Darstellung einer Rekursion. 
+    - Zuordnen von Funktionseinheiten zu Klassen.
+    - Möglichkeit mehrere Flow Design in einer Art Projekt zu Organisieren.
+      Vielleicht auch in Form eines GUI-Skizzen-Editors, indem dann die
+      Interaktionen eingetragen werden können.
+    - Autosave und Undo/Redo.
+   
 
+      
 ** Roslyn - Generierung von Code aus einem Diagramm
 
+   Da eine Flow Design auf unterschiedlichen Weisen im Code umgesetzt werden
+   kann, mussten hier Entscheidungen getroffen werden, in welchen Fällen
+   welche Weise gewählt wird. Wird das Projekt weitergeführt, könnte man in
+   Betracht ziehen, dem Nutzer einige Optionen zur Konfiguration der Generierung
+   zur Verfügung zu stellen. AKtuell muss er sich jedoch damit abfinden, dass
+   nur die hier vorgestellte Weise zur Verfügung steht.
+
+ 
 *** Was erreicht wurde
     Die weniger komplexeren Aufgaben wurden vollständig implementiert.
     Diese wären: 
@@ -708,9 +736,9 @@ public static object TabStopGetNext(object focusedModel, MainModel mainModel)
     erlaubt eine automatische Generierung der Methodensignaturen.
     Dieses Feature wurde vollständig implementiert.
 
-**** Ein Output
+**** Outputs über Rückgabewert
      Der Einfachste Fall ist eine Funktionseinheit, die nur ein Output hat und
-     kein Stream, oder optional ist.
+     kein Stream und auch nicht optional ist.
      In diesem Fall werden die ausgehenden Daten als Rückgabewert herausgereicht.
 
     [[./img/roslyn_simpleOutput.png]] 
@@ -728,10 +756,37 @@ public static object TabStopGetNext(object focusedModel, MainModel mainModel)
             throw  new NotImplementedException();
         }
  #+END_SRC
+
+     Hat ein Output mehr als ein Datentyp und ist kein Stream und ist auch nicht optional, so
+     wird das Ergebnis als Tupel über den Rückgabewert geliefert.
+
+    [[./img/roslyn_twoDatatypesOneOutput.png]] 
  
-**** Optionale/Mehrere Outputs 
-     Sobald eine Funktionseinheit mehrere Ausgänge hat, müssen diese als entsprechende Actions in die Parameter mit
-     übergeben werden. Ein Return-Wert entfällt in diesem Fall.
+
+#+BEGIN_SRC cpp
+TODO
+#+END_SRC
+
+****  Outputs über Actions
+     Ob ein Ausgang über ein Action realisert wird, wird indirekt dadurch
+     festgelegt, dass ein Actionname angegeben wurde (Diese Regel wurde im
+     Rahmen dieser Anwendung so festgelegt). Ausgänge müssen nicht zwingend mit
+     der Anzahl an Aufrufe der Funktionseinheit übereinstimmen. Ein Action muss
+     nicht aufgrufen werden, oder kann bei einem einzigen Aufruf der Funktionseinheit auch
+     mehrmals aufgerufen werden (der Beginn eines Streams). 
+
+     Sobald auch eine Funktionseinheit mehrere Ausgänge hat, diese jedoch nicht
+     Optional sind, werden diese jedoch trotzdem als Actions realisiert, selbst wenn sie kein
+     Actionname zugeordnet bekommen haben. Der Name des Actions wird dann
+     automatisch generiert. (Fussnote: Durch Analyse der Datentypen. Ein
+     (Person) wird dann zu einem onPerson. Ein () wird zu einem continueWith. 
+
+     Durch diese Entscheidungen gibt es keine invaliden Kombinationen an
+     Ausgängen einer Funktionseinheit.
+     
+   
+     Werden alle Ausgänge mit Actions realisiert, entfällt der Rückgabewert in diesem Fall.
+     Die Input-Daten werden in der Signature zuerst aufgelistet, anschließend die Actions.
 
     [[./img/roslyn_multipleOutputs.png]] 
 
@@ -741,8 +796,43 @@ public static object TabStopGetNext(object focusedModel, MainModel mainModel)
             throw  new NotImplementedException();
         }
 #+END_SRC
-
 **** Streams 
+     Stream werden ananlog zu den optionalen Outputs generiert, mit einer Ausnahme: 
+     Sind ist sowohl der Input als auch der Output ein Stream und ist der Actionname
+     des Outputs nicht angegeben, so wird davon ausgegangen, dass für jeden
+     Datentyp der in die Funktionseinheit hineinfließt auch einer 
+     herausfließt. Somit kann auf eine Action verzichtet werden und der
+     Rückgabewert als Output genutzt werden. Was eine einfachers Verwenden
+     dieser Funktionseinheit im Code zur Auswirkung hat.
+
+
+    [[./img/roslyn_Stream.png]] 
+
+
+#+BEGIN_SRC cpp
+TODO
+#+END_SRC
+
+    [[./img/roslyn_StreamStream.png]] 
+
+#+BEGIN_SRC cpp
+TODO
+#+END_SRC
+
+
+     (Fussnote)
+     Das vorhandensein von einem Inputstream und einem Outputstream bedeutet nicht zwingend , dass für jeden Input auch ein
+     Output erzeugt wird. Die Notation unterscheidet beide Fälle nicht. 
+     Deswegen die Lösung über eine Vergabe eines Actionames als Kompromiss.
+     Wenn der Benutzer ein Actioname angibt, wird indirekt davon ausgegangen,
+     das die Inputs- und Outputstreams nicht übereinstimmen, anderseits wird
+     davon ausgegangen (Dieses Verhalten muss dem Benutzer bewusst sein).
+
+     Ob dieses Entscheidung richtig ist müsste  noch in der Praxis erprobt werden. Stellt sich heraus,
+     dass das schlecht ist, so müsste man über eine Anpassung der Notation
+     nachdenken.
+
+
 
 **** TDD 
 
@@ -818,3 +908,12 @@ public static object TabStopGetNext(object focusedModel, MainModel mainModel)
 **** Datenströme
 
 ** Generierung eines Diagrammes aus Code
+   Aus zeitlichen Gründen, konnte die Generierung von einem Flow Design aus Code
+   nicht angegangen werden. 
+   Da sich das Model jedoch sauber getrennt von der GUI in
+   einem speraten Unterprojekt befindet, wäre es sicherlich möglich einen anderen
+   Studenten dies als Bachelorarbeit zu übergeben. So hätte dieser bereits eine
+   Möglichkeit seine Diagramme darzustellen, ohne sich sonderlich in die
+   Codebasis von dem gesamten Dexel-Projektes einarbeiten zu müssen.
+
+

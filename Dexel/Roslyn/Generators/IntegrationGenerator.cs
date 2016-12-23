@@ -7,6 +7,7 @@ using Dexel.Model.DataTypes;
 using Dexel.Model.Manager;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
+using Roslyn.Parser;
 
 namespace Roslyn
 {
@@ -320,19 +321,19 @@ namespace Roslyn
                 .Select(nt => FindOneParameter(nt, parent, connections, ofFunctionUnit, true)).ToList();
 
 
-            DataTypeParser.AnalyseOutputs(ofFunctionUnit,
-                isComplexOutput: () =>
+            var signature =  DataTypeParser.AnalyseOutputs(ofFunctionUnit);
+
+            signature.Where(sig => sig.ImplementWith != DataTypeParser.DataFlowImplementationStyle.AsReturn).ToList().ForEach(
+                sig =>
                 {
-                    var outputNameTypes = DataStreamParser.GetOutputPart(ofFunctionUnit.OutputStreams.First().DataNames);
+                    var outputNameTypes = DataStreamParser.GetOutputPart(sig.Datanames);
 
                     outputNameTypes.Where(nt => nt.Type != "").Select(
                         nt => FindOneParameter(nt, parent, connections, ofFunctionUnit, false))
                         .ToList().ForEach(result.Add);
                 });
-
             return result;
         }
-
 
         public static Parameter FindOneParameter(NameType lookingForNameType, FunctionUnit parent,
             List<DataStream> connections, FunctionUnit ofFunctionUnit, bool isInput)

@@ -6,6 +6,7 @@ using Dexel.Model.DataTypes;
 using Dexel.Model.Manager;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
+using Roslyn.Parser;
 
 namespace Roslyn
 {
@@ -19,25 +20,22 @@ namespace Roslyn
                 null, null,
                 Accessibility.Public,
                 DeclarationModifiers.Static,
-                statements: body ?? new SyntaxNode[] {});
+                statements: body ?? new SyntaxNode[] { });
         }
 
 
         public static SyntaxNode GetReturnPart(SyntaxGenerator generator, FunctionUnit functionUnit)
         {
-            SyntaxNode result = null;
 
-            DataTypeParser.AnalyseOutputs(functionUnit,
-                isComplexOutput: () => { },
-                isSimpleOutput: () =>
-                {
-                    var outputStream = functionUnit.OutputStreams.First();
-                    result = DataTypeParser.ConvertToType(generator,
-                        DataStreamParser.GetOutputPart(outputStream.DataNames));
-                });
+            var signature = DataTypeParser.AnalyseOutputs(functionUnit);
+            var returnSignature = signature.FirstOrDefault(sig => sig.ImplementWith == DataTypeParser.DataFlowImplementationStyle.AsReturn);
 
-            return result;
+            return returnSignature != null ? 
+                DataTypeParser.ConvertToType(generator, nametypes: DataStreamParser.GetOutputPart(returnSignature.Datanames)) 
+                : null;
         }
+
+
 
 
         public static SyntaxNode GenerateStaticMethod(SyntaxGenerator generator, FunctionUnit functionUnit,
@@ -57,48 +55,58 @@ namespace Roslyn
                 null, returntype,
                 Accessibility.Public,
                 DeclarationModifiers.Static,
-                statements: body ?? new SyntaxNode[] {});
+                statements: body ?? new SyntaxNode[] { });
         }
 
 
         public static IEnumerable<SyntaxNode> GetParameters(SyntaxGenerator generator, FunctionUnit functionUnit)
         {
             var result = new List<SyntaxNode>();
-            DataTypeParser.AnalyseOutputs(functionUnit,
-                isComplexOutput: () => MethodParameterSignatureForComplexOutput(generator, functionUnit, result),
-                isSimpleOutput: () => MethodParameterSignatureFromInputs(generator, functionUnit, result));
+            MethodParameterSignatureFromInputs(generator, functionUnit, result.Add);
+
+            var outputSignature = DataTypeParser.AnalyseOutputs(functionUnit);
+
+            outputSignature
+                .Where( sig => sig.ImplementWith != DataTypeParser.DataFlowImplementationStyle.AsReturn).ToList()
+                .ForEach( sig =>
+                {
+                    MakeActionSignature(generator, sig, result.Add);
+                });
 
             return result;
         }
 
-
-        private static void MethodParameterSignatureForComplexOutput(SyntaxGenerator generator, FunctionUnit functionUnit,
-            List<SyntaxNode> result)
+        private static void MakeActionSignature(SyntaxGenerator generator, DataTypeParser.MethodSignaturePart sig, Action<SyntaxNode> onSyntaxNode)
         {
-            MethodParameterSignatureFromInputs(generator, functionUnit, result);
-            functionUnit.OutputStreams.ToList().ForEach(dsd =>
+            var nametypes = DataStreamParser.GetOutputPart(sig.Datanames);
+
+            var name = GetNameOfAction(sig, nametypes);
+            var types = string.Join(",", nametypes.Select(nt => nt.Type));
+           var typeExpression = generator.IdentifierName($"Action<{types}>");
+            onSyntaxNode(generator.ParameterDeclaration(name, typeExpression));
+
+        }
+
+
+        private static string GetNameOfAction(DataTypeParser.MethodSignaturePart sig, List<NameType> nametypes)
+        {
+            if (!string.IsNullOrWhiteSpace(sig.ActionNames))
             {
-                var outgoingDataNames = dsd.DataNames;
-                var outgoingActionName = dsd.ActionName;
-                var nametypes = DataStreamParser.GetOutputPart(outgoingDataNames);
-                nametypes.Where(nt => nt != null).ToList().ForEach(nt =>
-                {
-                    var name = GetNameOfStream(nt, outgoingActionName);
-                    var typeExpression = generator.IdentifierName($"Action<{nt.Type}>");
-                    result.Add(generator.ParameterDeclaration(name, typeExpression));
-                });
-            });
+                return sig.ActionNames.Replace(".", string.Empty);
+            }
+            if (nametypes.Count == 1)
+            {
+                var nt = nametypes.First();
+
+                if (string.IsNullOrWhiteSpace(nt.Name))
+                    return $"on{Helper.FirstCharToUpper(nt.Type)}";
+                return $"on{Helper.FirstCharToUpper(nt.Name)}";
+            }
+            return "continueWith";
         }
-
-
-        private static string GetNameOfStream(NameType nt, string outgoingActionName)
-        {
-            return outgoingActionName?.Replace(".", string.Empty) ?? $"on{nt.Type}";
-        }
-
 
         private static void MethodParameterSignatureFromInputs(SyntaxGenerator generator, FunctionUnit functionUnit,
-            List<SyntaxNode> result)
+           Action<SyntaxNode> onSyntaxNode)
         {
             if (!functionUnit.InputStreams.Any())
                 return;
@@ -109,7 +117,7 @@ namespace Roslyn
                 {
                     var name = GenerateParameterName(nametype);
                     var typeExpression = DataTypeParser.ConvertNameTypeToTypeExpression(generator, nametype);
-                    result.Add(generator.ParameterDeclaration(name, typeExpression));
+                    onSyntaxNode(generator.ParameterDeclaration(name, typeExpression));
                 });
         }
 
@@ -127,7 +135,7 @@ namespace Roslyn
         {
             if (string.IsNullOrEmpty(functionUnit.Name))
                 throw new Exception("FunctionUnit has no name");
-           
+
             return
                 functionUnit.Name.Split(' ')
                     .Where(s => !string.IsNullOrEmpty(s))
