@@ -210,7 +210,6 @@
     <Compile Include="Views\CustomControls\DataNamesControl.xaml.cs">
       <DependentUpon>DataNamesControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CustomControls\Extensions.cs" />
     <Compile Include="Views\CustomControls\Pointer.cs" />
     <Compile Include="Views\CustomControls\ZoomBorder.cs" />
     <Compile Include="Common\DebugPrinter.cs" />

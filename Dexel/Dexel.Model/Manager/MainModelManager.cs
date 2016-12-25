@@ -19,15 +19,15 @@ namespace Dexel.Model.Manager
         }
 
 
-        public static void AddNewOutput(FunctionUnit functionUnit, string datanames, string actionName = null)
+        public static DataStreamDefinition AddNewOutput(FunctionUnit functionUnit, string datanames, string actionName = null)
         {
-            FunctionUnitManager.NewOutputDef(functionUnit, datanames, actionName);
+            return FunctionUnitManager.NewOutputDef(functionUnit, datanames, actionName);
         }
 
 
-        public static void AddNewInput(FunctionUnit functionUnit, string datanames, string actionName = null)
+        public static DataStreamDefinition AddNewInput(FunctionUnit functionUnit, string datanames, string actionName = null)
         {
-            FunctionUnitManager.NewInputDef(functionUnit, datanames, actionName);
+            return FunctionUnitManager.NewInputDef(functionUnit, datanames, actionName);
         }
 
 

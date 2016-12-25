@@ -8,6 +8,7 @@ using Dexel.Editor.ViewModels;
 using Dexel.Editor.ViewModels.DrawingBoard;
 using Dexel.Editor.Views.Common;
 using Dexel.Editor.Views.CustomControls;
+using Dexel.Library;
 using Dexel.Model.DataTypes;
 
 namespace Dexel.Editor.Views.UserControls.DrawingBoard

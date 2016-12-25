@@ -7,6 +7,7 @@ using Dexel.Editor.ViewModels.DrawingBoard;
 using Dexel.Editor.Views.CustomControls;
 using Dexel.Editor.Views.DragAndDrop;
 using Dexel.Editor.Views.UserControls.DrawingBoard;
+using Dexel.Library;
 using Dexel.Model.DataTypes;
 
 namespace Dexel.Editor.Views

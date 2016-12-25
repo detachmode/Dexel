@@ -6,6 +6,7 @@ using System.Windows;
 using Dexel.Editor.Views;
 using Dexel.Editor.Views.CustomControls;
 using Dexel.Editor.Views.DragAndDrop;
+using Dexel.Library;
 using Dexel.Model.DataTypes;
 using PropertyChanged;
 
