@@ -1,0 +1,218 @@
+FunctionUnits:
+- &o7
+  Position:
+    X: 80
+    Y: 50
+  Name: main
+  ID: a1659012-4c03-4903-bfb0-7d76364fcc9e
+  IsIntegrating:
+  - &o0
+    Position:
+      X: 37
+      Y: 242.99999999999997
+    Name: create person
+    ID: edcd06ef-745b-4e2a-aa02-6f3df10d344e
+    IsIntegrating: []
+    InputStreams:
+    - DataNames: ()
+      ID: a4fa93f1-84ad-4d81-ac20-9538070ebd87
+      Parent: *o0
+    OutputStreams:
+    - &o8
+      ActionName: .onerror
+      DataNames: (error:string)
+      ID: b19b9b88-4ec0-492f-878d-2b6077490ed9
+      Connected: true
+      Parent: *o0
+    - &o10
+      ActionName: ''
+      DataNames: (Person)
+      ID: b485ef52-e676-439a-959d-ee96e29ff56f
+      Connected: true
+      Parent: *o0
+  - &o1
+    Position:
+      X: 318.66666666666663
+      Y: 179.37333333333339
+    Name: print
+    ID: bdcb5659-d68a-4c33-b8dd-ed654d973959
+    IsIntegrating: []
+    InputStreams:
+    - &o9
+      ActionName: ''
+      DataNames: (error:string)
+      ID: 762c7bf7-64e2-465e-920f-092f3df5872c
+      Connected: true
+      Parent: *o1
+    OutputStreams:
+    - ActionName: ''
+      DataNames: ()
+      ID: c0793a38-02c3-4f6d-8dfc-48041e9a5db6
+      Parent: *o1
+  - &o2
+    Position:
+      X: 327.33333333333337
+      Y: 274.87333333333339
+    Name: set radom age
+    ID: 374f1bd2-202f-4667-86d7-9af19db7865a
+    IsIntegrating: []
+    InputStreams:
+    - &o11
+      ActionName: ''
+      DataNames: (Person)
+      ID: 2f4adee4-83cc-4f2a-8cfe-5a0990148a20
+      Connected: true
+      Parent: *o2
+    OutputStreams:
+    - &o12
+      ActionName: ''
+      DataNames: ()
+      ID: 6b717c1d-9063-4e8c-95f2-3d23cd499e66
+      Connected: true
+      Parent: *o2
+  - &o3
+    Position:
+      X: 684.35601010101004
+      Y: 275.12333333333339
+    Name: set random name
+    ID: 6f780862-8cab-4147-882c-e40e2bd61819
+    IsIntegrating: []
+    InputStreams:
+    - &o13
+      ActionName: ''
+      DataNames: (Person)
+      ID: 56e50548-d32e-442e-9ba9-c5c16f6302fc
+      Connected: true
+      Parent: *o3
+    OutputStreams:
+    - &o14
+      ActionName: ''
+      DataNames: ()
+      ID: 964854bb-b7eb-4d9d-83ae-94188c6cccdd
+      Connected: true
+      Parent: *o3
+  - &o4
+    Position:
+      X: 1037.234797979798
+      Y: 261.71424242424246
+    Name: CheckAge
+    ID: a7c483ee-33a3-4027-852d-d9f1f5c3b323
+    IsIntegrating: []
+    InputStreams:
+    - &o15
+      ActionName: ''
+      DataNames: (Person)
+      ID: 23b0095d-326b-4e1e-99dc-f5b8b2b3e16a
+      Connected: true
+      Parent: *o4
+    OutputStreams:
+    - &o16
+      ActionName: onChild
+      DataNames: (child:Person)
+      ID: e0a3a6e8-10c7-4a87-9e28-4d26e6e2e548
+      Connected: true
+      Parent: *o4
+    - &o18
+      ActionName: onAdult
+      DataNames: (adult:Person)
+      ID: 65c44d88-942f-4180-b785-e788ec3af987
+      Connected: true
+      Parent: *o4
+  - &o5
+    Position:
+      X: 1396.1666666666661
+      Y: 176.87333333333339
+    Name: Print child message
+    ID: fbd819a0-4528-4616-b72b-4aa7a182b7a8
+    IsIntegrating: []
+    InputStreams:
+    - &o17
+      ActionName: ''
+      DataNames: (child:Person)
+      ID: 0f14c2a7-de45-4e06-a280-ca9a978c50b0
+      Connected: true
+      Parent: *o5
+    OutputStreams:
+    - ActionName: ''
+      DataNames: ()
+      ID: 37b9da98-9f49-4608-ad77-d3e35c8eff3d
+      Parent: *o5
+  - &o6
+    Position:
+      X: 1436.1666666666658
+      Y: 346.10410256410256
+    Name: Print Adult message
+    ID: 1ecf18fa-c629-4097-9db0-853f566f560a
+    IsIntegrating: []
+    InputStreams:
+    - &o19
+      ActionName: ''
+      DataNames: (adult:Person)
+      ID: 82e966bf-78b7-43da-b9a6-0e1eeca977ab
+      Connected: true
+      Parent: *o6
+    OutputStreams:
+    - ActionName: ''
+      DataNames: ()
+      ID: fce33fb7-5fb1-44ee-95c6-0196aa33127c
+      Parent: *o6
+  InputStreams:
+  - DataNames: ()
+    ID: dc6e0abc-a908-478b-a463-ed0d6dd35dcb
+    Parent: *o7
+  OutputStreams:
+  - ActionName: ''
+    DataNames: ()
+    ID: b0ce4ff6-1a93-4122-b3d9-3c5d626a343f
+    Parent: *o7
+- *o0
+- *o1
+- *o2
+- *o3
+- *o4
+- *o5
+- *o6
+Connections:
+- DataNames: (error:string)
+  ID: 18125c21-6986-4a75-8048-e5c094d95e8f
+  Sources:
+  - *o8
+  Destinations:
+  - *o9
+- DataNames: (Person)
+  ID: 200c25e9-0066-4c40-9f17-00d5661943e1
+  Sources:
+  - *o10
+  Destinations:
+  - *o11
+- DataNames: () | (Person)
+  ID: ab92a21b-baa7-426a-bfec-bb0994cf84ef
+  Sources:
+  - *o12
+  Destinations:
+  - *o13
+- DataNames: () | (Person)
+  ID: 19612a24-1936-4257-8553-c2ce6e12363d
+  Sources:
+  - *o14
+  Destinations:
+  - *o15
+- DataNames: (child:Person)
+  ID: 0c89a653-223f-4bd0-883a-fb8e90d11bd4
+  Sources:
+  - *o16
+  Destinations:
+  - *o17
+- DataNames: (adult:Person)
+  ID: c1792429-9a86-458e-8dec-3422e433f22f
+  Sources:
+  - *o18
+  Destinations:
+  - *o19
+DataTypes:
+- Name: Person
+  SubDataTypes:
+  - Name: age
+    Type: int
+  - Name: name
+    Type: string
