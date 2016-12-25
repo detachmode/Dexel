@@ -90,9 +90,9 @@ namespace Roslyn
 
         private static string GetNameOfAction(DataTypeParser.MethodSignaturePart sig, List<NameType> nametypes)
         {
-            if (!string.IsNullOrWhiteSpace(sig.ActionNames))
+            if (!string.IsNullOrWhiteSpace(sig.DSD.ActionName))
             {
-                return sig.ActionNames.Replace(".", string.Empty);
+                return sig.DSD.ActionName.Replace(".", string.Empty);
             }
             if (nametypes.Count == 1)
             {

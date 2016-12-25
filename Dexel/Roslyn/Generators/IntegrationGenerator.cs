@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Emit;
+using System.Security.Cryptography;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
 using Dexel.Model.Manager;
@@ -25,6 +26,7 @@ namespace Roslyn
         {
             var result = new List<SyntaxNode>();
             var body = CreateNewIntegrationBody(mainModel.Connections, integration);
+            body.Generator = generator;
             AddIntegrationParameterToLocalScope(body, integration);
             FindParameterDependencies(body);
             AddLambdaBodies(body, mainModel);
@@ -51,7 +53,7 @@ namespace Roslyn
                 integrationBody.LocalVariables.Add(new GeneratedLocalVariable
                 {
                     VariableName = name,
-                    Source = integration,
+                    Source = integration.InputStreams.First(),
                     NameTypes = new[] { nametype }
                 });
             });
@@ -63,7 +65,7 @@ namespace Roslyn
                 integrationBody.LocalVariables.Add(new GeneratedLocalVariable
                 {
                     VariableName = name,
-                    Source = integration,
+                    Source = integration.InputStreams.First(),
                     NameTypes = new[] { nametype }
                 });
             });
@@ -136,16 +138,12 @@ namespace Roslyn
 
         private static void GenerateBody(IntegrationBody integrationBody, Action<SyntaxNode> onSyntaxNode, MainModel mainModel)
         {
-            var beginning = MainModelManager.GetBeginningOfFlow(integrationBody.Integration.IsIntegrating.First(),mainModel) as DataStreamDefinition;
-            var syntaxnode = CreateMethodCall(beginning?.Parent, integrationBody);
-            onSyntaxNode(syntaxnode);
-
-            TravelOutputs(beginning?.Parent, null, mainModel, onAsAction: (definition, unit) => { },
-                onAsReturn: (dsd, fu) =>
-                {
-                    syntaxnode = CreateMethodCall(fu, integrationBody);
-                    onSyntaxNode(syntaxnode);
-                } );
+            var toplevelCalls = integrationBody.LambdaBodies.Where(x => x.InsideLambdaOf == null).ToList();
+            toplevelCalls.ForEach(c =>
+            {
+                var syntaxnode = CreateMethodCall(c.FunctionUnit, integrationBody);
+                onSyntaxNode(syntaxnode);
+            });
         }
 
         private static SyntaxNode CreateMethodCall(FunctionUnit functionUnit, IntegrationBody integrationBody)
@@ -153,16 +151,28 @@ namespace Roslyn
             SyntaxNode res = null;
 
             var parameter = new List<SyntaxNode>();
-            var methoddepencies = integrationBody.CallDependecies.First(x => x.OfFunctionUnit == functionUnit);
-            AssignmentParameter(integrationBody, methoddepencies.Parameters, parameter.Add);
+
+            AssignmentParameter_IncludingLambdaBodiesRecursive(integrationBody, functionUnit, parameter.Add);
+
             var methodname = MethodsGenerator.GetMethodName(functionUnit);
 
-            DetectLocalVariableNeeded(integrationBody, functionUnit, (localname, nametypes) =>
+            var sigs = DataTypeParser.AnalyseOutputs(functionUnit);
+            var returndsd = sigs.FirstOrDefault(sig => sig.ImplementWith == DataTypeParser.DataFlowImplementationStyle.AsReturn)?.DSD;
+
+            string localName = null;
+            if (returndsd != null)
             {
-                res = GenerateLocalMethodCall(integrationBody.Generator, methodname, parameter.ToArray(), localname);
-                RegisterLocalVaribale(integrationBody, functionUnit, localname, nametypes);
-            },
-            notVariableNeeded: () => res = GenerateLocalMethodCall(integrationBody.Generator, methodname, parameter.ToArray(), null));
+                var output = DataStreamParser.GetOutputPart(returndsd?.DataNames);
+                localName = GenerateLocalVariableName(output);
+                RegisterLocalVaribale(integrationBody, returndsd, localName, output);
+            }
+            res = GenerateLocalMethodCall(integrationBody.Generator, methodname, parameter.ToArray(), localName);
+            //DetectLocalVariableNeeded(integrationBody, functionUnit, (localname, nametypes) =>
+            //{
+            //    res = GenerateLocalMethodCall(integrationBody.Generator, methodname, parameter.ToArray(), localname);
+            //    RegisterLocalVaribale(integrationBody, functionUnit, localname, nametypes);
+            //},
+            //notVariableNeeded: () => res = GenerateLocalMethodCall(integrationBody.Generator, methodname, parameter.ToArray(), null));
 
             return res;
         }
@@ -177,7 +187,7 @@ namespace Roslyn
                 var localvar = new GeneratedLocalVariable
                 {
                     NameTypes = new List<NameType> { nt },
-                    Source = streamingOutput.Parent,
+                    Source = streamingOutput,
                     VariableName = GetUniqueLocalVariableName(integrationBody.LocalVariables, nt)
                 };
                 integrationBody.LocalVariables.Add(localvar);
@@ -193,8 +203,7 @@ namespace Roslyn
             CanBeGenerated(integrationBody, toGenerate, method =>
             {
                 var parameter = new List<SyntaxNode>();
-                AssignmentParameter(integrationBody, method.Parameters, parameter.Add);
-                GenerateLambdaExpression(integrationBody, lambdaParameter, lambdaBody, parameter.Add);
+                AssignmentParameter_IncludingLambdaBodiesRecursive(integrationBody, toGenerate, parameter.Add);
 
                 var methodname = MethodsGenerator.GetMethodName(method.OfFunctionUnit);
                 onNodeCreated(GenerateLocalMethodCall(integrationBody.Generator, methodname, parameter.ToArray(), null));
@@ -266,13 +275,13 @@ namespace Roslyn
 
 
 
-        private static void RegisterLocalVaribale(IntegrationBody integrationBody, FunctionUnit functionUnit, string localname,
+        private static void RegisterLocalVaribale(IntegrationBody integrationBody, DataStreamDefinition dsd, string localname,
             List<NameType> nametypes)
         {
             integrationBody.LocalVariables.Add(new GeneratedLocalVariable
             {
                 VariableName = localname,
-                Source = functionUnit,
+                Source = dsd,
                 NameTypes = nametypes
             });
         }
@@ -310,33 +319,48 @@ namespace Roslyn
 
         private static bool IsInBody(IntegrationBody integrationBody, Parameter param)
         {
-            return integrationBody.LocalVariables.Any(c => c.Source == param.Source.Parent);
+            return integrationBody.LocalVariables.Any(c => c.Source == param.Source);
         }
 
 
-        public static void AssignmentParameter(IntegrationBody integrationBody, List<Parameter> parameters, Action<SyntaxNode> onParameterGenerated)
+        public static void AssignmentParameter_IncludingLambdaBodiesRecursive(IntegrationBody integrationBody, FunctionUnit functionUnit, Action<SyntaxNode> onParameterGenerated)
         {
-            parameters.ToList().ForEach(p =>
+            GenereteArgumentsFromInput(integrationBody, functionUnit, onParameterGenerated);
+
+            var sigs = DataTypeParser.AnalyseOutputs(functionUnit);
+            var asAction = sigs.Where(x => x.ImplementWith == DataTypeParser.DataFlowImplementationStyle.AsAction).Select( x => x.DSD);      
+            asAction.ForEach(dsd =>
             {
-
-                if (p.AsOutput)
+                List<SyntaxNode> lambdabody = new List<SyntaxNode>();
+                var functionUnitsToGenerateInsideThisLambda =
+                integrationBody.LambdaBodies.Where(lb => lb.InsideLambdaOf == dsd).Select(x => x.FunctionUnit).ToList();
+                SyntaxNode[] param  = GenerateLambdaParameter(integrationBody, dsd);
+                
+                functionUnitsToGenerateInsideThisLambda.ForEach(fu =>
+                {      
+                    var mc = CreateMethodCall(fu, integrationBody);
+                    lambdabody.Add(mc);
+                });
+                if (functionUnitsToGenerateInsideThisLambda.Any())
                 {
-                    List<SyntaxNode> lambdaBody = new List<SyntaxNode>();
-                    integrationBody.LambdaBodies.Where(lb => lb.InsideLambdaOf == p.Source).ToList().ForEach(lb =>
-                    {
-                        integrationBody.ChildrenToGenerate.Remove(lb.FunctionUnit);
-                        lambdaBody.Add(CreateMethodCall(lb.FunctionUnit, integrationBody));                     
-                    });
-                    var lambdaParameter = GenerateLambdaParameter(integrationBody, p.Source);
-                    GenerateLambdaExpression(integrationBody, lambdaParameter, lambdaBody.ToArray(), onParameterGenerated);
-                }
-                else
-                {
-                    var variablename = integrationBody.LocalVariables.First(x => x.Source == p.Source.Parent).VariableName;
-                    onParameterGenerated(integrationBody.Generator.IdentifierName(variablename));
-
+                    GenerateLambdaExpression(integrationBody,param,lambdabody.ToArray(), onParameterGenerated);
                 }
 
+            });
+
+        }
+
+        public static void GenereteArgumentsFromInput(IntegrationBody integrationBody, FunctionUnit functionUnit,
+            Action<SyntaxNode> onParameterGenerated)
+        {
+            var inputsDsd = functionUnit.InputStreams.First();
+            var inputs = DataStreamParser.GetInputPart(inputsDsd.DataNames);
+            var dependecies = integrationBody.CallDependecies.First(x => x.OfFunctionUnit == functionUnit);
+
+            dependecies.Parameters.ToList().ForEach(x =>
+            {
+                var varname = integrationBody.LocalVariables.First(y => y.Source == x.Source).VariableName;
+                onParameterGenerated(integrationBody.Generator.IdentifierName(varname));
             });
         }
 
@@ -376,23 +400,21 @@ namespace Roslyn
             FunctionUnit parent
             )
         {
-            //var inputNameTypes = DataStreamParser.GetInputPart(ofFunctionUnit.InputStreams.First().DataNames);
-            //var result = inputNameTypes.Where(nt => nt.Type != "")
-            //    .Select(nt => FindOneParameter(nt, parent, connections, ofFunctionUnit, true)).ToList();
+            var inputNameTypes = DataStreamParser.GetInputPart(ofFunctionUnit.InputStreams.First().DataNames);
+            var result = inputNameTypes.Where(nt => nt.Type != "")
+                .Select(nt => FindOneParameter(nt, parent, connections, ofFunctionUnit, true)).ToList();
 
 
-            var signature = DataTypeParser.AnalyseOutputs(ofFunctionUnit);
+            //var signature = DataTypeParser.AnalyseOutputs(ofFunctionUnit);
+            //signature.Where(sig => sig.ImplementWith != DataTypeParser.DataFlowImplementationStyle.AsReturn).ToList().ForEach(
+            //    sig =>
+            //    {
+            //        var outputNameTypes = DataStreamParser.GetOutputPart(sig.DSD.DataNames);
 
-            List<Parameter> result = new List<Parameter>();
-            signature.Where(sig => sig.ImplementWith != DataTypeParser.DataFlowImplementationStyle.AsReturn).ToList().ForEach(
-                sig =>
-                {
-                    var outputNameTypes = DataStreamParser.GetOutputPart(sig.DSD.DataNames);
-
-                    outputNameTypes.Where(nt => nt.Type != "").Select(
-                        nt => FindOneParameter(nt, parent, connections, ofFunctionUnit, false))
-                        .ToList().ForEach(result.Add);
-                });
+            //        outputNameTypes.Where(nt => nt.Type != "").Select(
+            //            nt => FindOneParameter(nt, parent, connections, ofFunctionUnit, false))
+            //            .ToList().ForEach(result.Add);
+            //    });
             return result;
         }
 
@@ -404,7 +426,7 @@ namespace Roslyn
                 FoundFlag = Found.NotFound,
                 AsOutput = isInput == false && lookingForNameType.IsInsideStream,
                 NeededNameType = lookingForNameType,
-                Source = parent.InputStreams.First()
+                Source = parent?.InputStreams.First()
             };
 
             CheckParentForMatchingInputOutputs(parameter, parent, onNotFound: () =>
@@ -529,7 +551,7 @@ namespace Roslyn
             MainModelManager.GetBeginningOfFlow(integration.IsIntegrating.First(), mainModel)
                     .TryCast<DataStreamDefinition>(dsd => beginning = dsd.Parent);
 
-            onInLambdaBody(new LambdaBody {FunctionUnit = beginning, InsideLambdaOf = null});
+            onInLambdaBody(new LambdaBody { FunctionUnit = beginning, InsideLambdaOf = null });
 
             var outputSignature = DataTypeParser.AnalyseOutputs(beginning);
 

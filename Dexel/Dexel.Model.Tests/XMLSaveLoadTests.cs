@@ -10,16 +10,5 @@ using Dexel.Model.FileIO;
 
 namespace Dexel.Model.Tests
 {
-    [TestClass()]
-    public class XMLSaveLoadTests
-    {
-        [TestMethod()]
-        public void SaveToXMLTest()
-        {
-            var testmodel = Mockdata.Mockdata.MakeRandomPerson2();
-            //testmodel.SaveToXML("test.xml");
 
-            var loadedTestModel = XMLSaveLoad.LoadFromXml("test.xml");
-        }
-    }
 }

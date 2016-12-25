@@ -134,11 +134,11 @@ namespace Roslyn.Tests
             Assert.IsTrue(lambdaBodies.Any(c => c.FunctionUnit == print && c.InsideLambdaOf == outperson));
             Assert.IsTrue(lambdaBodies.Any(c => c.FunctionUnit == addage && c.InsideLambdaOf == outperson));
 
-            MyGenerator mygen = new MyGenerator();
-            var body = IntegrationGenerator.CreateIntegrationBody(mygen.Generator, testModel, main);
-            var mainnode = MethodsGenerator.GenerateStaticMethod(mygen.Generator, main, body);
+            //MyGenerator mygen = new MyGenerator();
+            //var body = IntegrationGenerator.CreateIntegrationBody(mygen.Generator, testModel, main);
+            //var mainnode = MethodsGenerator.GenerateStaticMethod(mygen.Generator, main, body);
 
-            var code = mainnode.NormalizeWhitespace().ToFullString();
+            //var code = mainnode.NormalizeWhitespace().ToFullString();
 
         }
 
@@ -189,12 +189,18 @@ namespace Roslyn.Tests
             Assert.IsTrue(callinbodies.Any(c => c.FunctionUnit == addage && c.InsideLambdaOf == null));
 
 
-            MyGenerator mygen = new MyGenerator();
-            var body = IntegrationGenerator.CreateIntegrationBody(mygen.Generator, testModel, x);
-            var mainnode = MethodsGenerator.MethodDeclaration(mygen.Generator, body, "test", null, null);
+            //MyGenerator mygen = new MyGenerator();
+            //var body = IntegrationGenerator.CreateIntegrationBody(mygen.Generator, testModel, x);
+            //var mainnode = MethodsGenerator.MethodDeclaration(mygen.Generator, body, "test", null, null);
 
-            var code = mainnode.NormalizeWhitespace().ToFullString();
+            //var code = mainnode.NormalizeWhitespace().ToFullString();
 
+        }
+
+        [TestMethod()]
+        public void AssignmentParameter_IncludingLambdaBodiesRecursiveTest()
+        {
+            Assert.Fail();
         }
     }
 }

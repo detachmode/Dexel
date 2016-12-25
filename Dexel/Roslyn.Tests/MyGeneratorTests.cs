@@ -76,7 +76,7 @@ namespace Roslyn.Tests
             Assert.AreEqual("public static int RandomAge()\r\n{\r\n}", alterMethod.NormalizeWhitespace().ToFullString());
 
             var personMethod = members[2];
-            Assert.AreEqual("public static Person CreatePerson(int @int, string @string)\r\n{\r\n}", personMethod.NormalizeWhitespace().ToFullString());
+            Assert.AreEqual("public static Person CreatePerson(int aint, string astring)\r\n{\r\n}", personMethod.NormalizeWhitespace().ToFullString());
 
             // Named Parameter
             person.InputStreams.Clear();

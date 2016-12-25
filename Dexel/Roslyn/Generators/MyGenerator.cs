@@ -133,7 +133,7 @@ namespace Roslyn
 
     public class GeneratedLocalVariable
     {
-        public FunctionUnit Source;
+        public DataStreamDefinition Source;
         public string VariableName;
         public IEnumerable<NameType> NameTypes;
     }

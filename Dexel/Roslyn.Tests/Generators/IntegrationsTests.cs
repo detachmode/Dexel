@@ -4,6 +4,7 @@ using Dexel.Library;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
 using Dexel.Model.Manager;
+using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Roslyn.Tests
@@ -51,20 +52,125 @@ namespace Roslyn.Tests
             Assert.IsTrue(dependecies.Any(x => x.Source.Parent == newName));
         }
 
-
         [TestMethod]
-        public void CreateIntegrationBodyTest()
+        public void FindParameters_From_Action_DSD()
         {
-            InnerStreamOnly();
-            StreamOutput();
+            // unnamed syntax test
+            var testModel = new MainModel();
+
+            var person = MainModelManager.AddNewFunctionUnit("Create Person", testModel);
+            MainModelManager.AddNewInput(person, "()");
+            var outperson = MainModelManager.AddNewOutput(person, "(Person)", actionName: "onPerson");
+
+
+            var addage = MainModelManager.AddNewFunctionUnit("Add Age", testModel);
+            var inAge = MainModelManager.AddNewInput(addage, "(Person)");
+            MainModelManager.AddNewOutput(addage, "(Person)");
+
+            MainModelManager.ConnectTwoDefintions(outperson, inAge, testModel);
+
+            var dependecies = IntegrationGenerator.FindParameters(addage, testModel.Connections, null);
+            var firstdep = dependecies.First();
+            Assert.AreEqual(outperson, firstdep.Source);
+
+        }
+        [TestMethod]
+        public void FindParameters_From_Parent()
+        {
+            // unnamed syntax test
+            var testModel = new MainModel();
+            var main = MainModelManager.AddNewFunctionUnit("main", testModel);
+            var countinParent = MainModelManager.AddNewInput(main, "(count:int)");
+            MainModelManager.AddNewOutput(main, "()");
+
+            var person = MainModelManager.AddNewFunctionUnit("Create Person", testModel);
+            MainModelManager.AddNewInput(person, "(count:int)");
+            //var outperson = MainModelManager.AddNewOutput(person, "(Person)", actionName:"onPerson");
+            main.IsIntegrating.Add(person);
+
+            var dependecies = IntegrationGenerator.FindParameters(person, testModel.Connections, main);
+            var firstdep = dependecies.First();
+            Assert.AreEqual(countinParent, firstdep.Source);
+
         }
 
+        [TestMethod]
+        public void FindParameters_NoDependecies()
+        {
+            // unnamed syntax test
+            var testModel = new MainModel();
+            var main = MainModelManager.AddNewFunctionUnit("main", testModel);
+            var countinParent = MainModelManager.AddNewInput(main, "(count:int)");
+            MainModelManager.AddNewOutput(main, "()");
+
+            var person = MainModelManager.AddNewFunctionUnit("Create Person", testModel);
+            MainModelManager.AddNewInput(person, "()");
+            var outperson = MainModelManager.AddNewOutput(person, "(Person)", actionName: "onPerson");
+            main.IsIntegrating.Add(person);
+
+            var dependecies = IntegrationGenerator.FindParameters(person, testModel.Connections, main);
+            Assert.AreEqual(0, dependecies.Count);
+
+        }
+
+        [TestMethod]
+        public void TwoOptionalOutputs()
+        {
+
+            var testModel = new MainModel();
+            var x = MainModelManager.AddNewFunctionUnit("X", testModel);
+            MainModelManager.AddNewInput(x, "()");
+            MainModelManager.AddNewOutput(x, "()");
+
+            var createPersons = MainModelManager.AddNewFunctionUnit("Create Persons", testModel);
+            MainModelManager.AddNewInput(createPersons, "()");
+            MainModelManager.AddNewOutput(createPersons, "(Person)*", actionName:"onPerson");
+
+            var checkage = MainModelManager.AddNewFunctionUnit("Check Age", testModel);
+            MainModelManager.AddNewInput(checkage, "(Person)*");
+           var onadult = MainModelManager.AddNewOutput(checkage, "(Person)*", actionName:"onAdult");
+            var onchild = MainModelManager.AddNewOutput(checkage, "(Person)*", actionName:"onChild");
+
+            var print = MainModelManager.AddNewFunctionUnit("Print", testModel);
+            MainModelManager.AddNewInput(print, "(Person)*");
+            MainModelManager.AddNewOutput(print, "()");
+
+            var printchild = MainModelManager.AddNewFunctionUnit("Print", testModel);
+            MainModelManager.AddNewInput(printchild, "(Person)*");
+            MainModelManager.AddNewOutput(printchild, "()");
+
+
+
+
+            MainModelManager.ConnectTwoDefintions(createPersons.OutputStreams.First(),
+                checkage.InputStreams.First(), testModel);
+
+            MainModelManager.ConnectTwoDefintions(onadult,
+                print.InputStreams.First(), testModel);
+
+            MainModelManager.ConnectTwoDefintions(onchild,
+                printchild.InputStreams.First(), testModel);
+
+            x.IsIntegrating.AddUnique(createPersons);
+            x.IsIntegrating.AddUnique(checkage);
+            x.IsIntegrating.AddUnique(print);
+            x.IsIntegrating.AddUnique(printchild);
+
+            var res = IntegrationGenerator.CreateIntegrationBody(_mygen.Generator, testModel, x);
+            var formatted = _mygen.CompileToString(res.ToList());
+
+
+            // finds matching outgoing Action of IsIntegrating
+            Assert.IsTrue(
+                Regex.IsMatch(
+                    formatted,
+                    @".*CreatePersons.*person.*CheckAge\(person, person2.*Print\(person2\);.*person3.*Print\(person3\);.*",
+                    RegexOptions.Singleline));
+        }
 
         [TestMethod]
         public void InnerStreamOnly()
         {
-
-
 
             var testModel = new MainModel();
             var x = MainModelManager.AddNewFunctionUnit("X", testModel);
@@ -94,6 +200,9 @@ namespace Roslyn.Tests
             MainModelManager.ConnectTwoDefintions(addAge.OutputStreams.First(),
                 addName.InputStreams.First(), testModel);
 
+            MainModelManager.ConnectTwoDefintions(addName.OutputStreams.First(),
+    sumAges.InputStreams.First(), testModel);
+
             x.IsIntegrating.AddUnique(createPersons);
             x.IsIntegrating.AddUnique(addAge);
             x.IsIntegrating.AddUnique(addName);
@@ -116,7 +225,7 @@ namespace Roslyn.Tests
             Assert.IsTrue(
                Regex.IsMatch(
                    formatted,
-                   @".*CreatePersons\(person =>.*\S* AddAge\(person\);.*AddName\(person\);.*AddName\(person\);.*",
+                   @".*CreatePersons\(person =>.*\S* AddAge\(person\);.*AddName\(person\);.*SumAges\(person\);.*",
                    RegexOptions.Singleline));
         }
 

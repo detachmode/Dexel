@@ -119,7 +119,6 @@ namespace Roslyn.Parser
         {
             public DataFlowImplementationStyle ImplementWith;
             public DataStreamDefinition DSD;
-            public string ActionNames;
         }
 
         public static List<MethodSignaturePart> AnalyseOutputs(FunctionUnit functionUnit)
