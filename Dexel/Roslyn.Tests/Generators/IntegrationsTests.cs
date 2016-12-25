@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Dexel.Library;
 using Dexel.Model;
@@ -167,6 +168,10 @@ namespace Roslyn.Tests
                     @".*CreatePersons.*person.*CheckAge\(person, person2.*Print\(person2\);.*person3.*Print\(person3\);.*",
                     RegexOptions.Singleline));
         }
+
+
+
+
 
         [TestMethod]
         public void InnerStreamOnly()
