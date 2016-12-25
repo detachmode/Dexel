@@ -31,8 +31,8 @@ namespace Roslyn.Tests
             MainModelManager.AddNewOutput(person, "Person");
 
             var dependecies = IntegrationGenerator.FindParameters(person, testModel.Connections, newName);
-            Assert.IsTrue(dependecies.Any(x => x.Source == alter));
-            Assert.IsTrue(dependecies.Any(x => x.Source == newName));
+            Assert.IsTrue(dependecies.Any(x => x.Source.Parent == alter));
+            Assert.IsTrue(dependecies.Any(x => x.Source.Parent == newName));
 
             // ...  syntax test
             testModel = new MainModel();
@@ -47,8 +47,8 @@ namespace Roslyn.Tests
             MainModelManager.AddNewOutput(person, "Person");
 
             dependecies = IntegrationGenerator.FindParameters(person, testModel.Connections, newName);
-            Assert.IsTrue(dependecies.Any(x => x.Source == alter));
-            Assert.IsTrue(dependecies.Any(x => x.Source == newName));
+            Assert.IsTrue(dependecies.Any(x => x.Source.Parent == alter));
+            Assert.IsTrue(dependecies.Any(x => x.Source.Parent == newName));
         }
 
 
@@ -99,7 +99,7 @@ namespace Roslyn.Tests
             x.IsIntegrating.AddUnique(addName);
             x.IsIntegrating.AddUnique(sumAges);
 
-            var res = IntegrationGenerator.CreateIntegrationBody(_mygen.Generator, testModel.Connections, x);
+            var res = IntegrationGenerator.CreateIntegrationBody(_mygen.Generator, testModel, x);
             var formatted = _mygen.CompileToString(res.ToList());
 
             Assert.IsTrue(
@@ -144,7 +144,7 @@ namespace Roslyn.Tests
             x.IsIntegrating.Add(addAge);
 
 
-            var res = IntegrationGenerator.CreateIntegrationBody(_mygen.Generator, testModel.Connections, x);
+            var res = IntegrationGenerator.CreateIntegrationBody(_mygen.Generator, testModel, x);
             var formatted = _mygen.CompileToString(res.ToList());
 
             Assert.IsTrue(
