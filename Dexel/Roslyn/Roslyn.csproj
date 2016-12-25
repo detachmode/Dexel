@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Extensions.cs" />
+    <Compile Include="Generators\BodyDataTypes.cs" />
     <Compile Include="Parser\DataTypeParser.cs" />
     <Compile Include="Generators\DataTypesGenerator.cs" />
     <Compile Include="Common\Helper.cs" />
@@ -113,6 +114,10 @@
     <Folder Include="bin\Debug\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dexel.Library\Dexel.Library.csproj">
+      <Project>{fa179c08-1c2a-4e4b-b708-020f235e1283}</Project>
+      <Name>Dexel.Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dexel.Model\Dexel.Model.csproj">
       <Project>{C8694B16-924D-492F-8400-577D0DDE19FF}</Project>
       <Name>Dexel.Model</Name>

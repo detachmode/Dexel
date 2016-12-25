@@ -31,7 +31,7 @@ namespace Roslyn
             var returnSignature = signature.FirstOrDefault(sig => sig.ImplementWith == DataTypeParser.DataFlowImplementationStyle.AsReturn);
 
             return returnSignature != null ? 
-                DataTypeParser.ConvertToType(generator, nametypes: DataStreamParser.GetOutputPart(returnSignature.Datanames)) 
+                DataTypeParser.ConvertToType(generator, nametypes: DataStreamParser.GetOutputPart(returnSignature.DSD.DataNames)) 
                 : null;
         }
 
@@ -49,7 +49,7 @@ namespace Roslyn
         }
 
 
-        private static SyntaxNode MethodDeclaration(SyntaxGenerator generator, SyntaxNode[] body, string methodName, IEnumerable<SyntaxNode> parameters, SyntaxNode returntype)
+        public static SyntaxNode MethodDeclaration(SyntaxGenerator generator, SyntaxNode[] body, string methodName, IEnumerable<SyntaxNode> parameters, SyntaxNode returntype)
         {
             return generator.MethodDeclaration(methodName, parameters,
                 null, returntype,
@@ -78,7 +78,7 @@ namespace Roslyn
 
         private static void MakeActionSignature(SyntaxGenerator generator, DataTypeParser.MethodSignaturePart sig, Action<SyntaxNode> onSyntaxNode)
         {
-            var nametypes = DataStreamParser.GetOutputPart(sig.Datanames);
+            var nametypes = DataStreamParser.GetOutputPart(sig.DSD.DataNames);
 
             var name = GetNameOfAction(sig, nametypes);
             var types = string.Join(",", nametypes.Select(nt => nt.Type));

@@ -2,12 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Emit;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
 using Dexel.Model.Manager;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
+using Roslyn.Generators;
 using Roslyn.Parser;
+using Dexel.Library;
 
 namespace Roslyn
 {
@@ -17,30 +20,39 @@ namespace Roslyn
         private static int _methodsToGenerateCount;
 
 
-        public static SyntaxNode[] CreateIntegrationBody(SyntaxGenerator generator, List<DataStream> connections,
+        public static SyntaxNode[] CreateIntegrationBody(SyntaxGenerator generator, MainModel mainModel,
             FunctionUnit integration)
         {
-            var body = CreateNewBody(generator, connections, integration);
+            var result = new List<SyntaxNode>();
+            var body = CreateNewIntegrationBody(mainModel.Connections, integration);
             AddIntegrationParameterToLocalScope(body, integration);
             FindParameterDependencies(body);
-            var result = new List<SyntaxNode>();
-            GenerateBody(body, result.Add);
+            AddLambdaBodies(body, mainModel);
+            GenerateBody(body, result.Add, mainModel);
 
             return result.ToArray();
         }
 
+        private static void AddLambdaBodies(IntegrationBody integrationBody, MainModel mainModel)
+        {
+            integrationBody.LambdaBodies = new List<IntegrationGenerator.LambdaBody>();
 
-        private static void AddIntegrationParameterToLocalScope(Body body, FunctionUnit integration)
+            TravelIntegration(integrationBody.Integration, mainModel,
+                onInLambdaBody: integrationBody.LambdaBodies.Add);
+        }
+
+
+        private static void AddIntegrationParameterToLocalScope(IntegrationBody integrationBody, FunctionUnit integration)
         {
             var nametypes = DataStreamParser.GetInputPart(integration.InputStreams.First().DataNames);
             nametypes.ToList().ForEach(nametype =>
             {
                 var name = MethodsGenerator.GenerateParameterName(nametype);
-                body.LocalVariables.Add(new GeneratedLocalVariable
+                integrationBody.LocalVariables.Add(new GeneratedLocalVariable
                 {
                     VariableName = name,
                     Source = integration,
-                    NameTypes = new[] {nametype}
+                    NameTypes = new[] { nametype }
                 });
             });
 
@@ -48,131 +60,187 @@ namespace Roslyn
             nametypes.ToList().ForEach(nametype =>
             {
                 var name = MethodsGenerator.GenerateParameterName(nametype);
-                body.LocalVariables.Add(new GeneratedLocalVariable
+                integrationBody.LocalVariables.Add(new GeneratedLocalVariable
                 {
                     VariableName = name,
                     Source = integration,
-                    NameTypes = new[] {nametype}
+                    NameTypes = new[] { nametype }
                 });
             });
         }
 
 
-        private static void GenerateBody(Body body, Action<SyntaxNode> onSyntaxNode)
+
+
+        public static void TravelOutputs(FunctionUnit currentFunctionUnit, object bodytoReturnTo, MainModel mainModel,
+            Action<DataStreamDefinition, FunctionUnit> onAsReturn,
+            Action<DataStreamDefinition, FunctionUnit> onAsAction)
         {
-            GetNextFunctionUnit(body,
-                outputAndInputIsStream: streamingFu =>
-                {
-                    RemoveConnectionAndFunctionUnit(body, streamingFu);
-                    CreateNonStreamMethod(body, streamingFu, onSyntaxNode);
-                    GenerateBody(body, onSyntaxNode);
-                },
-                outputIsStream: streamingFu =>
-                {
-                    RemoveConnectionAndFunctionUnit(body, streamingFu);
 
-                    var lambdaBodyObject = CreateNewBody(body.Generator, body.Connections, streamingFu);
-                    lambdaBodyObject.CallDependecies = body.CallDependecies;
-                    lambdaBodyObject.LocalVariables = body.LocalVariables;
-                    lambdaBodyObject.ChildrenToGenerate = body.ChildrenToGenerate;
 
-                    var lambdaParameter = GenerateLambdaParameter(body, streamingFu);
 
-                    var lambdaBody = new List<SyntaxNode>();
-                    GenerateBody(lambdaBodyObject, lambdaBody.Add);
+            var outputSignature = DataTypeParser.AnalyseOutputs(currentFunctionUnit);
 
-                    MakeLocalMethodCallWithLambda(body, streamingFu, lambdaParameter.ToArray(), lambdaBody.ToArray(),
-                        onSyntaxNode);
-                },
-                inputIsStream: functionUnit =>
+            var asAction = outputSignature
+                .Where(sig => sig.ImplementWith == DataTypeParser.DataFlowImplementationStyle.AsAction)
+                .ToList();
+
+            foreach (var signaturePart in asAction)
+            {
+
+                var stream = MainModelManager.FindDataStream(signaturePart.DSD, mainModel);
+                if (stream != null)
                 {
-                    RemoveConnectionAndFunctionUnit(body, functionUnit);
-                    CreateNonStreamMethod(body, functionUnit, onSyntaxNode);
-                    GenerateBody(body, onSyntaxNode);
-                },
-                noStream: functionUnit =>
+                    onAsAction(signaturePart.DSD, stream.Destinations.First().Parent);
+                    TravelOutputs(stream.Destinations.First().Parent, signaturePart.DSD, mainModel, onAsReturn: onAsReturn, onAsAction: onAsAction);
+                }
+            }
+
+            var asReturn = outputSignature.FirstOrDefault(
+                sig => sig.ImplementWith == DataTypeParser.DataFlowImplementationStyle.AsReturn);
+
+
+            if (asReturn != null)
+            {
+
+                var stream = MainModelManager.FindDataStream(asReturn.DSD, mainModel);
+                if (stream != null)
                 {
-                    RemoveConnectionAndFunctionUnit(body, functionUnit);
-                    CreateNonStreamMethod(body, functionUnit, onSyntaxNode);
-                    GenerateBody(body, onSyntaxNode);
-                });
+                    DataStreamDefinition dsd = null;
+                    bodytoReturnTo.TryCast<DataStreamDefinition>(def => dsd = def);
+                    onAsReturn(dsd, stream.Destinations.First().Parent);
+                    TravelOutputs(stream.Destinations.First().Parent, bodytoReturnTo, mainModel, onAsReturn: onAsReturn, onAsAction: onAsAction);
+                }
+            }
+
+
+            //var call = new Call();
+
+
+            //if (asReturn != null)
+            //{
+            //    var var = new Var();
+            //    var.Type = DataStreamParser.GetOutputPart(asReturn.DSD);
+            //    var.VariableName = "var";
+            //    call.ReturnToVar = var;
+            //}
+
+
+            //var dep = IntegrationBody.CallDependecies;
+
+
+
         }
 
 
-        private static SyntaxNode[] GenerateLambdaParameter(Body body, FunctionUnit streamingFu)
+
+        private static void GenerateBody(IntegrationBody integrationBody, Action<SyntaxNode> onSyntaxNode, MainModel mainModel)
         {
-            var inputs = DataStreamParser.GetOutputPart(streamingFu.OutputStreams.First().DataNames);
+            var beginning = MainModelManager.GetBeginningOfFlow(integrationBody.Integration.IsIntegrating.First(),mainModel) as DataStreamDefinition;
+            var syntaxnode = CreateMethodCall(beginning?.Parent, integrationBody);
+            onSyntaxNode(syntaxnode);
+
+            TravelOutputs(beginning?.Parent, null, mainModel, onAsAction: (definition, unit) => { },
+                onAsReturn: (dsd, fu) =>
+                {
+                    syntaxnode = CreateMethodCall(fu, integrationBody);
+                    onSyntaxNode(syntaxnode);
+                } );
+        }
+
+        private static SyntaxNode CreateMethodCall(FunctionUnit functionUnit, IntegrationBody integrationBody)
+        {
+            SyntaxNode res = null;
+
+            var parameter = new List<SyntaxNode>();
+            var methoddepencies = integrationBody.CallDependecies.First(x => x.OfFunctionUnit == functionUnit);
+            AssignmentParameter(integrationBody, methoddepencies.Parameters, parameter.Add);
+            var methodname = MethodsGenerator.GetMethodName(functionUnit);
+
+            DetectLocalVariableNeeded(integrationBody, functionUnit, (localname, nametypes) =>
+            {
+                res = GenerateLocalMethodCall(integrationBody.Generator, methodname, parameter.ToArray(), localname);
+                RegisterLocalVaribale(integrationBody, functionUnit, localname, nametypes);
+            },
+            notVariableNeeded: () => res = GenerateLocalMethodCall(integrationBody.Generator, methodname, parameter.ToArray(), null));
+
+            return res;
+        }
+
+
+        private static SyntaxNode[] GenerateLambdaParameter(IntegrationBody integrationBody, DataStreamDefinition streamingOutput)
+        {
+            var inputs = DataStreamParser.GetOutputPart(streamingOutput.DataNames);
             var lambdaNames = new List<string>();
             inputs.ForEach(nt =>
             {
                 var localvar = new GeneratedLocalVariable
                 {
-                    NameTypes = new List<NameType> {nt},
-                    Source = streamingFu,
-                    VariableName = GetUniqueLocalVariableName(body.LocalVariables, nt)
+                    NameTypes = new List<NameType> { nt },
+                    Source = streamingOutput.Parent,
+                    VariableName = GetUniqueLocalVariableName(integrationBody.LocalVariables, nt)
                 };
-                body.LocalVariables.Add(localvar);
+                integrationBody.LocalVariables.Add(localvar);
                 lambdaNames.Add(localvar.VariableName);
             });
-            return lambdaNames.Select(name => body.Generator.LambdaParameter(name)).ToArray();
+            return lambdaNames.Select(name => integrationBody.Generator.LambdaParameter(name)).ToArray();
         }
 
 
-        private static void MakeLocalMethodCallWithLambda(Body body, FunctionUnit toGenerate,
+        private static void MakeLocalMethodCallWithLambda(IntegrationBody integrationBody, FunctionUnit toGenerate,
             SyntaxNode[] lambdaParameter, SyntaxNode[] lambdaBody, Action<SyntaxNode> onNodeCreated)
         {
-            CanBeGenerated(body, toGenerate, method =>
+            CanBeGenerated(integrationBody, toGenerate, method =>
             {
                 var parameter = new List<SyntaxNode>();
-                AssignmentParameter(body.Generator, body.LocalVariables, method.Parameters, parameter.Add);
-                GenerateLambdaExpression(body, lambdaParameter, lambdaBody, parameter.Add);
-               
+                AssignmentParameter(integrationBody, method.Parameters, parameter.Add);
+                GenerateLambdaExpression(integrationBody, lambdaParameter, lambdaBody, parameter.Add);
+
                 var methodname = MethodsGenerator.GetMethodName(method.OfFunctionUnit);
-                onNodeCreated(GenerateLocalMethodCall(body.Generator, methodname, parameter.ToArray(), null));
-              
+                onNodeCreated(GenerateLocalMethodCall(integrationBody.Generator, methodname, parameter.ToArray(), null));
+
             }, cannnotCreate: errorFu => Debug.WriteLine($"Couldn't create {errorFu.Name}"));
         }
 
 
-        private static void GenerateLambdaExpression(Body body, SyntaxNode[] lambdaParameter, SyntaxNode[] lambdaBody,
+        private static void GenerateLambdaExpression(IntegrationBody integrationBody, SyntaxNode[] lambdaParameter, SyntaxNode[] lambdaBody,
             Action<SyntaxNode> onCreated)
         {
-            onCreated(body.Generator.VoidReturningLambdaExpression(lambdaParameter, lambdaBody));
+            onCreated(integrationBody.Generator.VoidReturningLambdaExpression(lambdaParameter, lambdaBody));
         }
 
 
-        private static void RemoveConnectionAndFunctionUnit(Body body, FunctionUnit functionUnit)
+        private static void RemoveConnectionAndFunctionUnit(IntegrationBody integrationBody, FunctionUnit functionUnit)
         {
-            body.Connections.RemoveAll(c => c.Sources.Any(dsd => dsd.Parent == functionUnit));
-            body.ChildrenToGenerate.RemoveAll(x => functionUnit.ID == x.ID);
+            integrationBody.Connections.RemoveAll(c => c.Sources.Any(dsd => dsd.Parent == functionUnit));
+            integrationBody.ChildrenToGenerate.RemoveAll(x => functionUnit.ID == x.ID);
         }
 
 
-        private static Body CreateNewBody(SyntaxGenerator generator, List<DataStream> connections,
+        private static IntegrationBody CreateNewIntegrationBody(List<DataStream> connections,
             FunctionUnit integration)
         {
-            var body = new Body
+            var body = new IntegrationBody
             {
-                Generator = generator,
                 LocalVariables = new List<GeneratedLocalVariable>(),
                 Connections = connections.ToList(),
                 ChildrenToGenerate = integration.IsIntegrating.ToList(),
-                CurrentParent = integration
+                Integration = integration
             };
             return body;
         }
 
 
-        private static void GetNextFunctionUnit(Body body, Action<FunctionUnit> outputAndInputIsStream,
+        private static void GetNextFunctionUnit(IntegrationBody integrationBody, Action<FunctionUnit> outputAndInputIsStream,
             Action<FunctionUnit> outputIsStream,
             Action<FunctionUnit> inputIsStream,
             Action<FunctionUnit> noStream)
         {
-            if (!body.ChildrenToGenerate.Any()) return;
+            if (!integrationBody.ChildrenToGenerate.Any()) return;
 
-            var first = body.ChildrenToGenerate.First();
+            var first = integrationBody.ChildrenToGenerate.First();
             MainModelManager.TraverseChildrenBackwards(first,
-                (fu, conn) => first = fu, body.Connections);
+                (fu, conn) => first = fu, integrationBody.Connections);
 
             DataTypeParser.OutputOrInputIsStream(first,
                 bothAreStreams: () => outputAndInputIsStream(first),
@@ -196,29 +264,12 @@ namespace Roslyn
         }
 
 
-        private static void CreateNonStreamMethod(Body body, FunctionUnit functionUnit, Action<SyntaxNode> onGenerated)
-        {
-            CanBeGenerated(body, functionUnit, method =>
-            {
-                var parameter = new List<SyntaxNode>();
-                AssignmentParameter(body.Generator, body.LocalVariables, method.Parameters, parameter.Add);
-                var methodname = MethodsGenerator.GetMethodName(functionUnit);
-
-                DetectLocalVariableNeeded(body, functionUnit, (localname, nametypes) =>
-                {                  
-                    onGenerated(GenerateLocalMethodCall(body.Generator, methodname, parameter.ToArray(), localname));
-                    RegisterLocalVaribale(body, functionUnit, localname, nametypes);
-                },
-                notVariableNeeded:() => onGenerated(GenerateLocalMethodCall(body.Generator, methodname, parameter.ToArray(), null)));
-            }, 
-            cannnotCreate: errorFu => Debug.WriteLine($"Couldn't create {errorFu.Name}"));
-        }
 
 
-        private static void RegisterLocalVaribale(Body body, FunctionUnit functionUnit, string localname,
+        private static void RegisterLocalVaribale(IntegrationBody integrationBody, FunctionUnit functionUnit, string localname,
             List<NameType> nametypes)
         {
-            body.LocalVariables.Add(new GeneratedLocalVariable
+            integrationBody.LocalVariables.Add(new GeneratedLocalVariable
             {
                 VariableName = localname,
                 Source = functionUnit,
@@ -227,7 +278,7 @@ namespace Roslyn
         }
 
 
-        private static void DetectLocalVariableNeeded(Body body, FunctionUnit functionUnit,
+        private static void DetectLocalVariableNeeded(IntegrationBody integrationBody, FunctionUnit functionUnit,
             Action<string, List<NameType>> onLocalName, Action notVariableNeeded = null)
         {
             var output = DataStreamParser.GetOutputPart(functionUnit.OutputStreams.First().DataNames);
@@ -243,12 +294,12 @@ namespace Roslyn
         }
 
 
-        private static void CanBeGenerated(Body body, FunctionUnit functionUnit,
+        private static void CanBeGenerated(IntegrationBody integrationBody, FunctionUnit functionUnit,
             Action<MethodWithParameterDependencies> doAction, Action<FunctionUnit> cannnotCreate = null)
         {
-            var methodWithParameterDependencies = body.CallDependecies.First(x => x.OfFunctionUnit == functionUnit);
+            var methodWithParameterDependencies = integrationBody.CallDependecies.First(x => x.OfFunctionUnit == functionUnit);
             if (methodWithParameterDependencies == null) return;
-            if (methodWithParameterDependencies.Parameters.TrueForAll(param => IsInBody(body, param)))
+            if (methodWithParameterDependencies.Parameters.TrueForAll(param => IsInBody(integrationBody, param)))
                 doAction(methodWithParameterDependencies);
             else
             {
@@ -257,26 +308,35 @@ namespace Roslyn
         }
 
 
-        private static bool IsInBody(Body body, Parameter param)
+        private static bool IsInBody(IntegrationBody integrationBody, Parameter param)
         {
-            return body.LocalVariables.Any(c => c.Source == param.Source);
+            return integrationBody.LocalVariables.Any(c => c.Source == param.Source.Parent);
         }
 
 
-        public static void AssignmentParameter(SyntaxGenerator generator,
-            List<GeneratedLocalVariable> generated, List<Parameter> parameters, Action<SyntaxNode> onNode)
+        public static void AssignmentParameter(IntegrationBody integrationBody, List<Parameter> parameters, Action<SyntaxNode> onParameterGenerated)
         {
-            parameters.Where(x => !x.AsOutput).ToList().ForEach(p =>
+            parameters.ToList().ForEach(p =>
             {
-                var variablename = generated.First(x => x.Source == p.Source).VariableName;
-                //ParameterSource(p,
-                //    fromParent: () => variablename = generated.First(x => x.),
-                //    fromChild: () => variablename = generated.First(x => x.Source == p.Source).VariableName);
 
-                //if (p.AsOutput)                
-                //        onNode(generator.IdentifierName(generated.First(localvar => localvar.Source == p.Source).VariableName));
-                //else
-                onNode(generator.IdentifierName(variablename));
+                if (p.AsOutput)
+                {
+                    List<SyntaxNode> lambdaBody = new List<SyntaxNode>();
+                    integrationBody.LambdaBodies.Where(lb => lb.InsideLambdaOf == p.Source).ToList().ForEach(lb =>
+                    {
+                        integrationBody.ChildrenToGenerate.Remove(lb.FunctionUnit);
+                        lambdaBody.Add(CreateMethodCall(lb.FunctionUnit, integrationBody));                     
+                    });
+                    var lambdaParameter = GenerateLambdaParameter(integrationBody, p.Source);
+                    GenerateLambdaExpression(integrationBody, lambdaParameter, lambdaBody.ToArray(), onParameterGenerated);
+                }
+                else
+                {
+                    var variablename = integrationBody.LocalVariables.First(x => x.Source == p.Source.Parent).VariableName;
+                    onParameterGenerated(integrationBody.Generator.IdentifierName(variablename));
+
+                }
+
             });
         }
 
@@ -291,12 +351,12 @@ namespace Roslyn
         }
 
 
-        public static void FindParameterDependencies(Body body)
+        public static void FindParameterDependencies(IntegrationBody integrationBody)
         {
-            body.CallDependecies = body.ChildrenToGenerate.Select(sc => new MethodWithParameterDependencies
+            integrationBody.CallDependecies = integrationBody.ChildrenToGenerate.Select(sc => new MethodWithParameterDependencies
             {
                 OfFunctionUnit = sc,
-                Parameters = FindParameters(sc, body.Connections, body.CurrentParent)
+                Parameters = FindParameters(sc, integrationBody.Connections, integrationBody.Integration)
             }).ToList();
         }
 
@@ -316,17 +376,18 @@ namespace Roslyn
             FunctionUnit parent
             )
         {
-            var inputNameTypes = DataStreamParser.GetInputPart(ofFunctionUnit.InputStreams.First().DataNames);
-            var result = inputNameTypes.Where(nt => nt.Type != "")
-                .Select(nt => FindOneParameter(nt, parent, connections, ofFunctionUnit, true)).ToList();
+            //var inputNameTypes = DataStreamParser.GetInputPart(ofFunctionUnit.InputStreams.First().DataNames);
+            //var result = inputNameTypes.Where(nt => nt.Type != "")
+            //    .Select(nt => FindOneParameter(nt, parent, connections, ofFunctionUnit, true)).ToList();
 
 
-            var signature =  DataTypeParser.AnalyseOutputs(ofFunctionUnit);
+            var signature = DataTypeParser.AnalyseOutputs(ofFunctionUnit);
 
+            List<Parameter> result = new List<Parameter>();
             signature.Where(sig => sig.ImplementWith != DataTypeParser.DataFlowImplementationStyle.AsReturn).ToList().ForEach(
                 sig =>
                 {
-                    var outputNameTypes = DataStreamParser.GetOutputPart(sig.Datanames);
+                    var outputNameTypes = DataStreamParser.GetOutputPart(sig.DSD.DataNames);
 
                     outputNameTypes.Where(nt => nt.Type != "").Select(
                         nt => FindOneParameter(nt, parent, connections, ofFunctionUnit, false))
@@ -343,7 +404,7 @@ namespace Roslyn
                 FoundFlag = Found.NotFound,
                 AsOutput = isInput == false && lookingForNameType.IsInsideStream,
                 NeededNameType = lookingForNameType,
-                Source = parent
+                Source = parent.InputStreams.First()
             };
 
             CheckParentForMatchingInputOutputs(parameter, parent, onNotFound: () =>
@@ -355,7 +416,7 @@ namespace Roslyn
                         return; // set state only when found or not already set
 
                     parameter.FoundFlag = Found.FoundInPreviousChild;
-                    parameter.Source = child;
+                    parameter.Source = conn.Sources.First();
                 }, connections);
             });
             return parameter;
@@ -438,24 +499,143 @@ namespace Roslyn
             string localname)
         {
             var invocationExpression = generator.InvocationExpression(
-                generator.IdentifierName(name), parameter ?? new SyntaxNode[] {});
+                generator.IdentifierName(name), parameter ?? new SyntaxNode[] { });
 
             // When no type then it is void method and no assignemnt to local variable is needed
             if (localname == null) return invocationExpression;
 
             return generator.LocalDeclarationStatement(localname, invocationExpression);
         }
+
+
+        public class LambdaBody
+        {
+            public DataStreamDefinition InsideLambdaOf;
+            public FunctionUnit FunctionUnit;
+        }
+
+        public static void TravelIntegration(FunctionUnit integration, MainModel mainModel, Action<LambdaBody> onInLambdaBody)
+        {
+
+
+
+            var body = CreateNewIntegrationBody(mainModel.Connections, integration);
+            AddIntegrationParameterToLocalScope(body, integration);
+            FindParameterDependencies(body);
+
+
+            FunctionUnit beginning = null;
+
+            MainModelManager.GetBeginningOfFlow(integration.IsIntegrating.First(), mainModel)
+                    .TryCast<DataStreamDefinition>(dsd => beginning = dsd.Parent);
+
+            onInLambdaBody(new LambdaBody {FunctionUnit = beginning, InsideLambdaOf = null});
+
+            var outputSignature = DataTypeParser.AnalyseOutputs(beginning);
+
+            var asAction = outputSignature
+                .Where(sig => sig.ImplementWith == DataTypeParser.DataFlowImplementationStyle.AsAction)
+                .ToList();
+
+            foreach (var signaturePart in asAction)
+            {
+
+                var stream = MainModelManager.FindDataStream(signaturePart.DSD, mainModel);
+                if (stream != null)
+                {
+                    var call = new LambdaBody();
+                    call.FunctionUnit = stream.Destinations.First().Parent;
+                    call.InsideLambdaOf = signaturePart.DSD;
+
+                    onInLambdaBody(call);
+                    TravelOutputs(stream.Destinations.First().Parent, signaturePart.DSD, mainModel,
+                        onAsReturn: (output, fu) =>
+                        {
+                            var subcall = new LambdaBody();
+                            subcall.FunctionUnit = fu;
+                            subcall.InsideLambdaOf = output;
+                            onInLambdaBody(subcall);
+                        },
+                        onAsAction: (output, fu) =>
+                        {
+                            var subcall = new LambdaBody();
+                            subcall.FunctionUnit = fu;
+                            subcall.InsideLambdaOf = output;
+                            onInLambdaBody(subcall);
+                        });
+                }
+            }
+
+            var asReturn = outputSignature.FirstOrDefault(
+                sig => sig.ImplementWith == DataTypeParser.DataFlowImplementationStyle.AsReturn);
+
+
+            if (asReturn != null)
+            {
+                var stream = MainModelManager.FindDataStream(asReturn.DSD, mainModel);
+                if (stream != null)
+                {
+                    var call = new LambdaBody();
+                    call.FunctionUnit = stream.Destinations.First().Parent;
+                    call.InsideLambdaOf = null;
+                    onInLambdaBody(call);
+
+                    TravelOutputs(stream.Destinations.First().Parent, integration, mainModel,
+                        onAsAction: (output, fu) =>
+                        {
+                            var subcall = new LambdaBody();
+                            subcall.FunctionUnit = fu;
+                            subcall.InsideLambdaOf = output;
+                            onInLambdaBody(subcall);
+                        },
+                        onAsReturn: (output, fu) =>
+                        {
+                            var subcall = new LambdaBody();
+                            subcall.FunctionUnit = fu;
+                            subcall.InsideLambdaOf = output;
+                            onInLambdaBody(subcall);
+                        });
+                }
+            }
+
+        }
+
+        private static object DetermineLastBody(DataStreamDefinition connectionSource, FunctionUnit functionUnit, IntegrationBody integrationBody, MainModel mainModel)
+        {
+            object @return = null;
+
+            var calldependecy = integrationBody.CallDependecies.First(cd => cd.OfFunctionUnit == functionUnit);
+            if (calldependecy.Parameters.Any(p => p.Source == connectionSource))
+            {
+                return connectionSource;
+            }
+            else
+            {
+                MainModelManager.TraverseChildrenBackwards(connectionSource.Parent, (fu, stream) =>
+                {
+                    if (calldependecy.Parameters.Any(p => p.Source == stream.Sources.First()))
+                    {
+                        if (@return == null)
+                            @return = stream.Sources.First();
+                    }
+                }, mainModel.Connections);
+            }
+            return @return;
+        }
     }
 
 
-    public class Body
+
+
+    public class IntegrationBody
     {
         public List<FunctionUnit> ChildrenToGenerate;
         public List<DataStream> Connections;
-        public FunctionUnit CurrentParent;
+        public FunctionUnit Integration;
         public SyntaxGenerator Generator;
         public List<GeneratedLocalVariable> LocalVariables;
         public List<MethodWithParameterDependencies> CallDependecies { get; set; }
+        public List<IntegrationGenerator.LambdaBody> LambdaBodies { get; set; }
     }
 
 }

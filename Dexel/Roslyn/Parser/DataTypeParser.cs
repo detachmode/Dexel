@@ -118,7 +118,7 @@ namespace Roslyn.Parser
         public class MethodSignaturePart
         {
             public DataFlowImplementationStyle ImplementWith;
-            public string Datanames;
+            public DataStreamDefinition DSD;
             public string ActionNames;
         }
 
@@ -131,7 +131,7 @@ namespace Roslyn.Parser
             {
                 result.Add(new MethodSignaturePart
                 {
-                    Datanames = dsdByReturn.DataNames,
+                    DSD = dsdByReturn,
                     ImplementWith = DataFlowImplementationStyle.AsReturn
                 });
                 copyOfOutputs.Remove(dsdByReturn);
@@ -141,8 +141,7 @@ namespace Roslyn.Parser
             {
                 result.Add(new MethodSignaturePart
                 {
-                    Datanames = dsd.DataNames,
-                    ActionNames =  dsd.ActionName,
+                    DSD = dsd,
                     ImplementWith = DataFlowImplementationStyle.AsAction
                 });
             });
