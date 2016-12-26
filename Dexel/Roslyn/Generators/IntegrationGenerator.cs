@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis.Editing;
 using Roslyn.Generators;
 using Roslyn.Parser;
 using Dexel.Library;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace Roslyn
 {
@@ -215,6 +216,7 @@ namespace Roslyn
         private static void GenerateLambdaExpression(IntegrationBody integrationBody, SyntaxNode[] lambdaParameter, SyntaxNode[] lambdaBody,
             Action<SyntaxNode> onCreated)
         {
+            //integrationBody.Generator.MethodDeclaration()
             onCreated(integrationBody.Generator.VoidReturningLambdaExpression(lambdaParameter, lambdaBody));
         }
 
@@ -328,9 +330,11 @@ namespace Roslyn
             GenereteArgumentsFromInput(integrationBody, functionUnit, onParameterGenerated);
 
             var sigs = DataTypeParser.AnalyseOutputs(functionUnit);
-            var asAction = sigs.Where(x => x.ImplementWith == DataTypeParser.DataFlowImplementationStyle.AsAction).Select( x => x.DSD);      
-            asAction.ForEach(dsd =>
+            var asAction = sigs.Where(x => x.ImplementWith == DataTypeParser.DataFlowImplementationStyle.AsAction);      
+            asAction.ForEach(sig =>
             {
+                var dsd = sig.DSD;
+                
                 List<SyntaxNode> lambdabody = new List<SyntaxNode>();
                 var functionUnitsToGenerateInsideThisLambda =
                 integrationBody.LambdaBodies.Where(lb => lb.InsideLambdaOf == dsd).Select(x => x.FunctionUnit).ToList();
@@ -343,7 +347,19 @@ namespace Roslyn
                 });
                 if (functionUnitsToGenerateInsideThisLambda.Any())
                 {
-                    GenerateLambdaExpression(integrationBody,param,lambdabody.ToArray(), onParameterGenerated);
+                    SyntaxNode lambda = null;
+                    GenerateLambdaExpression(integrationBody,param,lambdabody.ToArray(), node => lambda = node);
+
+                    SyntaxNode arg;
+                    if (string.IsNullOrWhiteSpace(dsd.ActionName))
+                        arg = integrationBody.Generator.Argument(lambda);
+                    else
+                    {
+                        var nts = DataStreamParser.GetOutputPart(sig.DSD.DataNames);
+                        var argumentName = MethodsGenerator.GetNameOfAction(sig, nts);
+                        arg = integrationBody.Generator.Argument(argumentName, RefKind.None, lambda);
+                    }
+                    onParameterGenerated(arg);
                 }
 
             });
@@ -360,7 +376,8 @@ namespace Roslyn
             dependecies.Parameters.ToList().ForEach(x =>
             {
                 var varname = integrationBody.LocalVariables.First(y => y.Source == x.Source).VariableName;
-                onParameterGenerated(integrationBody.Generator.IdentifierName(varname));
+                var arg = integrationBody.Generator.Argument(integrationBody.Generator.IdentifierName(varname));
+                onParameterGenerated(arg);
             });
         }
 

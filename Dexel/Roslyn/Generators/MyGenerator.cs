@@ -6,8 +6,13 @@ using Dexel.Model;
 using Dexel.Model.DataTypes;
 using Dexel.Model.Manager;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Formatting;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Editing;
+using Microsoft.CodeAnalysis.Formatting;
+using Microsoft.CodeAnalysis.MSBuild;
+using Microsoft.CodeAnalysis.Options;
 
 namespace Roslyn
 {
@@ -96,20 +101,31 @@ namespace Roslyn
 
         private void CompileAndOutput(SyntaxNode usingDirectives, SyntaxNode namespaceDeclaration)
         {
-            var newNode = Generator.CompilationUnit(usingDirectives, namespaceDeclaration).
-                NormalizeWhitespace();
+            AdhocWorkspace cw = new AdhocWorkspace();
+            var t = namespaceDeclaration.WithTrailingTrivia(SyntaxFactory.Space);
+            OptionSet options = cw.Options;
+            //options = options.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInMethods, false);
+            //options = options.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInTypes, false);
+            //options = options.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInAnonymousMethods, true);
+            options = options.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInLambdaExpressionBody, false);
+
+
+
+            var formattedResult = Formatter.Format(namespaceDeclaration, cw, options);
+            //var newNode = Generator.CompilationUnit(usingDirectives, namespaceDeclaration).
+            //    NormalizeWhitespace();
 
             try
             {
                 string desktop = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-                File.WriteAllText(Path.Combine(desktop, @"generatedFlowDesign.cs"), newNode.ToFullString());
+                File.WriteAllText(Path.Combine(desktop, @"generatedFlowDesign.cs"), formattedResult.ToFullString());
             }
             catch
             {
                 Console.WriteLine("Couldn't generate or write file");
             }
 
-            Console.Write(newNode.ToFullString());
+            Console.Write(formattedResult.ToFullString());
         }
 
 

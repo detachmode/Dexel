@@ -88,7 +88,7 @@ namespace Roslyn
         }
 
 
-        private static string GetNameOfAction(DataTypeParser.MethodSignaturePart sig, List<NameType> nametypes)
+        public static string GetNameOfAction(DataTypeParser.MethodSignaturePart sig, List<NameType> nametypes)
         {
             if (!string.IsNullOrWhiteSpace(sig.DSD.ActionName))
             {
