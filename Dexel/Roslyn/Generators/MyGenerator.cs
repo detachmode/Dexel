@@ -73,7 +73,7 @@ namespace Roslyn
         {
             model.FunctionUnits.Where(sc => sc.IsIntegrating.Count > 0).ToList().ForEach(isc =>
             {
-                var body = IntegrationGenerator.CreateIntegrationBody(Generator, model, isc);
+                var body = IntegrationGenerator.GenerateIntegrationBody(Generator, model, isc);
                 var main = MethodsGenerator.GenerateStaticMethod(Generator, isc, body);
                 operations.Add(main);
             });

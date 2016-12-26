@@ -135,7 +135,7 @@ namespace Roslyn.Tests
             Assert.IsTrue(lambdaBodies.Any(c => c.FunctionUnit == addage && c.InsideLambdaOf == outperson));
 
             //MyGenerator mygen = new MyGenerator();
-            //var body = IntegrationGenerator.CreateIntegrationBody(mygen.Generator, testModel, main);
+            //var body = IntegrationGenerator.GenerateIntegrationBody(mygen.Generator, testModel, main);
             //var mainnode = MethodsGenerator.GenerateStaticMethod(mygen.Generator, main, body);
 
             //var code = mainnode.NormalizeWhitespace().ToFullString();
@@ -190,7 +190,7 @@ namespace Roslyn.Tests
 
 
             //MyGenerator mygen = new MyGenerator();
-            //var body = IntegrationGenerator.CreateIntegrationBody(mygen.Generator, testModel, x);
+            //var body = IntegrationGenerator.GenerateIntegrationBody(mygen.Generator, testModel, x);
             //var mainnode = MethodsGenerator.MethodDeclaration(mygen.Generator, body, "test", null, null);
 
             //var code = mainnode.NormalizeWhitespace().ToFullString();
@@ -200,6 +200,42 @@ namespace Roslyn.Tests
         [TestMethod()]
         public void AssignmentParameter_IncludingLambdaBodiesRecursiveTest()
         {
+            Assert.Fail();
+        }
+
+        [TestMethod()]
+        public void GenereteArgumentsFromInputTest()
+        {
+            var testModel = new MainModel();
+
+            var main = MainModelManager.AddNewFunctionUnit("main", testModel);
+            MainModelManager.AddNewInput(main, "()");
+            MainModelManager.AddNewOutput(main, "()");
+
+
+            var x = MainModelManager.AddNewFunctionUnit("x", testModel);
+            MainModelManager.AddNewInput(x, "()");
+            var optionout = MainModelManager.AddNewOutput(x, "(int,string)", actionName:"onOutput");
+
+
+            var y = MainModelManager.AddNewFunctionUnit("y", testModel);
+            var input = MainModelManager.AddNewInput(y, "(int,string)");
+            MainModelManager.AddNewOutput(y, "()");
+
+            main.IsIntegrating.Add(x);
+            main.IsIntegrating.Add(y);
+
+            MainModelManager.ConnectTwoDefintions(optionout, input, testModel);
+
+            var mygen = new MyGenerator();
+            IntegrationGenerator.GenerateIntegrationBody(mygen.Generator, testModel, main);
+
+            var body = IntegrationGenerator.CreateNewIntegrationBody(testModel.Connections, main );
+            IntegrationGenerator.AddIntegrationParameterToLocalScope(body, main);
+            IntegrationGenerator.AnalyseParameterDependencies(body);
+
+            var calldep = body.CallDependecies.First(cd => cd.OfFunctionUnit == y);
+
             Assert.Fail();
         }
     }

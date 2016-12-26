@@ -157,7 +157,7 @@ namespace Roslyn.Tests
             x.IsIntegrating.AddUnique(print);
             x.IsIntegrating.AddUnique(printchild);
 
-            var res = IntegrationGenerator.CreateIntegrationBody(_mygen.Generator, testModel, x);
+            var res = IntegrationGenerator.GenerateIntegrationBody(_mygen.Generator, testModel, x);
             var formatted = _mygen.CompileToString(res.ToList());
 
 
@@ -213,7 +213,7 @@ namespace Roslyn.Tests
             x.IsIntegrating.AddUnique(addName);
             x.IsIntegrating.AddUnique(sumAges);
 
-            var res = IntegrationGenerator.CreateIntegrationBody(_mygen.Generator, testModel, x);
+            var res = IntegrationGenerator.GenerateIntegrationBody(_mygen.Generator, testModel, x);
             var formatted = _mygen.CompileToString(res.ToList());
 
             Assert.IsTrue(
@@ -258,7 +258,7 @@ namespace Roslyn.Tests
             x.IsIntegrating.Add(addAge);
 
 
-            var res = IntegrationGenerator.CreateIntegrationBody(_mygen.Generator, testModel, x);
+            var res = IntegrationGenerator.GenerateIntegrationBody(_mygen.Generator, testModel, x);
             var formatted = _mygen.CompileToString(res.ToList());
 
             Assert.IsTrue(
