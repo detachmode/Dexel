@@ -1,16 +1,13 @@
-﻿using Roslyn;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
-using Dexel.Model;
 using Dexel.Model.DataTypes;
 using Dexel.Model.Manager;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Roslyn.Common;
 
-namespace Roslyn.Tests
+namespace Roslyn.Tests.Generators
 {
     [TestClass]
     public class MyGeneratorTests

@@ -94,8 +94,21 @@ namespace Roslyn
 
         public string CompileToString(List<SyntaxNode> nodes)
         {
-            var res = nodes.Select(n => n.NormalizeWhitespace().ToFullString()).Aggregate((f,s) => f + "\n\n" + s);
+            AdhocWorkspace cw = new AdhocWorkspace();
+            OptionSet options = cw.Options;
+
+            options = options.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInLambdaExpressionBody, false);
+            var res = nodes.Select(n => Formatter.Format(n, cw, options).ToFullString()).Aggregate((f,s) => f + "\n\n" + s);
             return res;
+        }
+
+        public string[] CompileToStrings(List<SyntaxNode> nodes)
+        {
+            AdhocWorkspace cw = new AdhocWorkspace();
+            OptionSet options = cw.Options;
+            options = options.WithChangedOption(CSharpFormattingOptions.NewLinesForBracesInLambdaExpressionBody, false);
+            var res = nodes.Select(n => Formatter.Format(n, cw, options).ToFullString());
+            return res.ToArray();
         }
 
 

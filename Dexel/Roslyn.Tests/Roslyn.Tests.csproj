@@ -98,9 +98,8 @@
     <Compile Include="DataStreamParserTests.cs" />
     <Compile Include="DataTypeParserTests.cs" />
     <Compile Include="Generators\IntegrationGeneratorTests.cs" />
-    <Compile Include="Generators\IntegrationsTests.cs" />
     <Compile Include="MethodsGeneratorTests.cs" />
-    <Compile Include="MyGeneratorTests.cs" />
+    <Compile Include="Generators\MyGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

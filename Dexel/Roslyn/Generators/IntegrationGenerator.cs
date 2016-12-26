@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using Dexel.Model.DataTypes;
 using Dexel.Model.Manager;
@@ -16,20 +17,53 @@ namespace Roslyn
         public static SyntaxNode[] GenerateIntegrationBody(SyntaxGenerator generator, MainModel mainModel,
             FunctionUnit integration)
         {
+            // integrationbody object
+            var integrationBody = CreateNewIntegrationBody(mainModel.Connections, integration);
+            AddIntegrationInputParameterToLocalScope(integrationBody, integration);
+
+            // analyse algorithms 
+            AnalyseParameterDependencies(integrationBody);
+            AnalyseLambdaBodies(integrationBody, mainModel);
+            AnalyseMatchingOutputOfIntegration(integrationBody, mainModel);
+
+            // generate
             var result = new List<SyntaxNode>();
-
-            var body = CreateNewIntegrationBody(mainModel.Connections, integration);
-            body.Generator = generator;
-
-            AddIntegrationParameterToLocalScope(body, integration);
-
-            AnalyseParameterDependencies(body);
-            AnalyseLambdaBodies(body, mainModel);
-
-            GenerateBody(body, result.Add, mainModel);
-
+            integrationBody.Generator = generator;
+            GenerateBody(integrationBody, result.Add, mainModel);
             return result.ToArray();
         }
+
+
+
+        public static void AnalyseMatchingOutputOfIntegration(IntegrationBody body, MainModel mainModel)
+        {
+            var sigs = DataTypeParser.AnalyseOutputs(body.Integration);
+
+            var allNotConnectedOutputs = body.Integration.IsIntegrating
+                 .SelectMany(fu => fu.OutputStreams.Where(x => !x.Connected)).ToList();
+
+            var allmatches = sigs.SelectMany(sig =>
+            {
+                var actionOfIntegration = sig.DSD;
+                var allmatching = allNotConnectedOutputs
+                .Where(dsd => !(string.IsNullOrWhiteSpace(dsd.ActionName) && dsd.DataNames.Trim() == "()"))
+                .Where(dsd => AreEqualDsds(dsd, actionOfIntegration));
+
+                return allmatching.Select(dsd => new Tuple<DataStreamDefinition, DataStreamDefinition>(actionOfIntegration, dsd));
+
+            }).ToList();
+
+            body.OutputOfIntegration = allmatches;
+        }
+
+
+        private static bool AreEqualDsds(DataStreamDefinition dsd, DataStreamDefinition actionOfIntegration)
+        {
+            return (dsd.ActionName == actionOfIntegration.ActionName ||
+                    (string.IsNullOrWhiteSpace(dsd.ActionName) && string.IsNullOrWhiteSpace(actionOfIntegration.ActionName)))
+                   && dsd.DataNames == actionOfIntegration.DataNames;
+        }
+
 
         private static void AnalyseLambdaBodies(IntegrationBody integrationBody, MainModel mainModel)
         {
@@ -40,7 +74,7 @@ namespace Roslyn
         }
 
 
-        public static void AddIntegrationParameterToLocalScope(IntegrationBody integrationBody, FunctionUnit integration)
+        public static void AddIntegrationInputParameterToLocalScope(IntegrationBody integrationBody, FunctionUnit integration)
         {
             var nametypes = DataStreamParser.GetInputPart(integration.InputStreams.First().DataNames);
             nametypes.ToList().ForEach(nametype =>
@@ -130,26 +164,97 @@ namespace Roslyn
         private static SyntaxNode CreateMethodCall(FunctionUnit functionUnit, IntegrationBody integrationBody)
         {
             SyntaxNode res = null;
-
             var parameter = new List<SyntaxNode>();
+            var methodname = MethodsGenerator.GetMethodName(functionUnit);
 
             AssignmentParameter_IncludingLambdaBodiesRecursive(integrationBody, functionUnit, parameter.Add);
 
-            var methodname = MethodsGenerator.GetMethodName(functionUnit);
-
-            var sigs = DataTypeParser.AnalyseOutputs(functionUnit);
-            var returndsd = sigs.FirstOrDefault(sig => sig.ImplementWith == DataTypeParser.DataFlowImplementationStyle.AsReturn)?.DSD;
-
-            string localName = null;
-            if (returndsd != null)
+            GetDsdThatReturns(functionUnit, returndsd =>
             {
-                var output = DataStreamParser.GetOutputPart(returndsd?.DataNames);
-                localName = GenerateLocalVariableName(output);
-                RegisterLocalVaribale(integrationBody, returndsd, localName, output);
-            }
-            res = GenerateLocalMethodCall(integrationBody.Generator, methodname, parameter.ToArray(), localName);
+                IsOutputOfIntegration(integrationBody, returndsd, matchingOutputDsdOfIntegration =>
+                {
+                    var methodcall = GenerateLocalMethodCall(integrationBody.Generator, methodname, parameter.ToArray(),null);
+                    AnalayseDsd(integrationBody, matchingOutputDsdOfIntegration,
+                        implementByAction: sig =>
+                        {
+                            var nameofAction = MethodsGenerator.GetNameOfAction(sig.DSD);
+                            res = CallAction(integrationBody.Generator, nameofAction, methodcall);
+                        }, 
+                        implementByReturn: () => res = CallAndReturn(integrationBody.Generator, methodcall));
+                },
+                onNotFound: () =>
+                {
+                    var output = DataStreamParser.GetOutputPart(returndsd?.DataNames);
+                    string localName = GenerateLocalVariableName(output);
+                    RegisterLocalVaribale(integrationBody, returndsd, localName, output);
+                    res = GenerateLocalMethodCall(integrationBody.Generator, methodname, parameter.ToArray(),localName);
+                });
+            }, 
+            onNoReturn: () => 
+                res = GenerateLocalMethodCall(integrationBody.Generator, methodname, parameter.ToArray(), null));
 
             return res;
+        }
+
+
+        private static SyntaxNode CallAndReturn(SyntaxGenerator generator, SyntaxNode methodcall)
+        {
+            return generator.ReturnStatement(methodcall);
+        }
+
+
+        private static SyntaxNode CallAction(SyntaxGenerator generator, string nameofAction, SyntaxNode methodcall)
+        {
+            return generator.InvocationExpression(
+                generator.IdentifierName(nameofAction), methodcall);
+        }
+
+
+        private static void AnalayseDsd(IntegrationBody integrationBody,DataStreamDefinition matchingOutputDsdOfIntegration, 
+            Action<DataTypeParser.MethodSignaturePart> implementByAction, Action implementByReturn)
+        {
+            var signatureOfIntegrationOutput = DataTypeParser.AnalyseOutputs(integrationBody.Integration)
+                .FirstOrDefault(sig => sig.DSD == matchingOutputDsdOfIntegration);
+            Debug.Assert(signatureOfIntegrationOutput != null, "signatureOfIntegrationOutput != null");
+            if (signatureOfIntegrationOutput.ImplementWith == DataTypeParser.DataFlowImplementationStyle.AsAction)
+                implementByAction(signatureOfIntegrationOutput);
+            else
+            {
+                implementByReturn();
+            }
+
+        }
+
+
+        private static void IsOutputOfIntegration(IntegrationBody integrationBody,
+            DataStreamDefinition returndsd, Action<DataStreamDefinition> onfound, Action onNotFound)
+        {
+            var matchingOutputDsdOfIntegration =
+                integrationBody.OutputOfIntegration.FirstOrDefault(x => x.Item2 == returndsd)?.Item1;
+             
+            if (matchingOutputDsdOfIntegration != null)
+            {
+                onfound(matchingOutputDsdOfIntegration);
+            }
+            else
+            {
+                onNotFound();
+            }
+        }
+
+
+        private static void GetDsdThatReturns(FunctionUnit functionUnit, Action<DataStreamDefinition> onReturn, Action onNoReturn)
+        {
+            var sigs = DataTypeParser.AnalyseOutputs(functionUnit);
+            var returndsd = sigs.FirstOrDefault(sig => sig.ImplementWith == DataTypeParser.DataFlowImplementationStyle.AsReturn)?.DSD;
+            if (returndsd != null)
+            {
+                onReturn(returndsd);
+            }
+            else
+            {
+                onNoReturn();
+            }
         }
 
 
@@ -227,25 +332,36 @@ namespace Roslyn
             GenereteArgumentsFromInput(integrationBody, functionUnit, onParameterGenerated);
 
             var sigs = DataTypeParser.AnalyseOutputs(functionUnit);
-            var asAction = sigs.Where(x => x.ImplementWith == DataTypeParser.DataFlowImplementationStyle.AsAction);      
+            var asAction = sigs.Where(x => x.ImplementWith == DataTypeParser.DataFlowImplementationStyle.AsAction);
             asAction.ForEach(sig =>
             {
                 var dsd = sig.DSD;
-                
+
+                if (!dsd.Connected)
+                {
+                    var tupel = integrationBody.OutputOfIntegration.FirstOrDefault(x => x.Item2 == dsd);
+                    if (tupel != null)
+                    {
+                        var nts = DataStreamParser.GetOutputPart(sig.DSD.DataNames);
+                        var actionname = MethodsGenerator.GetNameOfAction(sig, nts.ToList());
+                        onParameterGenerated(integrationBody.Generator.IdentifierName(actionname));
+                    }
+                }
+
                 List<SyntaxNode> lambdabody = new List<SyntaxNode>();
                 var functionUnitsToGenerateInsideThisLambda =
                 integrationBody.LambdaBodies.Where(lb => lb.InsideLambdaOf == dsd).Select(x => x.FunctionUnit).ToList();
-                SyntaxNode[] param  = GenerateLambdaParameter(integrationBody, dsd);
-                
+                SyntaxNode[] param = GenerateLambdaParameter(integrationBody, dsd);
+
                 functionUnitsToGenerateInsideThisLambda.ForEach(fu =>
-                {      
+                {
                     var mc = CreateMethodCall(fu, integrationBody);
                     lambdabody.Add(mc);
                 });
                 if (functionUnitsToGenerateInsideThisLambda.Any())
                 {
                     SyntaxNode lambda = null;
-                    GenerateLambdaExpression(integrationBody,param,lambdabody.ToArray(), node => lambda = node);
+                    GenerateLambdaExpression(integrationBody, param, lambdabody.ToArray(), node => lambda = node);
 
                     SyntaxNode arg;
                     if (string.IsNullOrWhiteSpace(dsd.ActionName))
@@ -288,7 +404,7 @@ namespace Roslyn
 
         private static GeneratedLocalVariable GetLocalVariable(IntegrationBody integrationBody, Parameter parameter, NameType needed)
         {
-            return integrationBody.LocalVariables.First(y => y.Source == parameter.Source 
+            return integrationBody.LocalVariables.First(y => y.Source == parameter.Source
             && y.NameTypes.First().Type == needed.Type
             && y.NameTypes.First().Name == needed.Name);
         }
@@ -461,7 +577,7 @@ namespace Roslyn
 
 
             var body = CreateNewIntegrationBody(mainModel.Connections, integration);
-            AddIntegrationParameterToLocalScope(body, integration);
+            AddIntegrationInputParameterToLocalScope(body, integration);
             AnalyseParameterDependencies(body);
 
 
@@ -554,6 +670,7 @@ namespace Roslyn
         public List<GeneratedLocalVariable> LocalVariables;
         public List<MethodWithParameterDependencies> CallDependecies { get; set; }
         public List<IntegrationGenerator.LambdaBody> LambdaBodies { get; set; }
+        public List<Tuple<DataStreamDefinition, DataStreamDefinition>> OutputOfIntegration { get; set; }
     }
 
 }

@@ -88,6 +88,25 @@ namespace Roslyn
         }
 
 
+        public static string GetNameOfAction(DataStreamDefinition dsd)
+        {
+            if (!string.IsNullOrWhiteSpace(dsd.ActionName))
+            {
+                return dsd.ActionName.Replace(".", string.Empty);
+            }
+            var nametypes = DataStreamParser.GetOutputPart(dsd.DataNames);
+            if (nametypes.Count == 1)
+            {
+                var nt = nametypes.First();
+
+                if (string.IsNullOrWhiteSpace(nt.Name))
+                    return $"on{Helper.FirstCharToUpper(nt.Type)}";
+                return $"on{Helper.FirstCharToUpper(nt.Name)}";
+            }
+            return "continueWith";
+        }
+
+
         public static string GetNameOfAction(DataTypeParser.MethodSignaturePart sig, List<NameType> nametypes)
         {
             if (!string.IsNullOrWhiteSpace(sig.DSD.ActionName))
