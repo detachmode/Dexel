@@ -19,8 +19,8 @@ FunctionUnits:
       Parent: *o0
     OutputStreams:
     - &o8
-      ActionName: .onerror
-      DataNames: (error:string)
+      ActionName: .onError
+      DataNames: (str:string)
       ID: b19b9b88-4ec0-492f-878d-2b6077490ed9
       Connected: true
       Parent: *o0
@@ -40,7 +40,7 @@ FunctionUnits:
     InputStreams:
     - &o9
       ActionName: ''
-      DataNames: (error:string)
+      DataNames: (str:string)
       ID: 762c7bf7-64e2-465e-920f-092f3df5872c
       Connected: true
       Parent: *o1
@@ -53,7 +53,7 @@ FunctionUnits:
     Position:
       X: 327.33333333333337
       Y: 274.87333333333339
-    Name: set radom age
+    Name: set random age
     ID: 374f1bd2-202f-4667-86d7-9af19db7865a
     IsIntegrating: []
     InputStreams:
@@ -108,13 +108,13 @@ FunctionUnits:
     OutputStreams:
     - &o16
       ActionName: onChild
-      DataNames: (child:Person)
+      DataNames: ()
       ID: e0a3a6e8-10c7-4a87-9e28-4d26e6e2e548
       Connected: true
       Parent: *o4
     - &o18
       ActionName: onAdult
-      DataNames: (adult:Person)
+      DataNames: (p:Person)
       ID: 65c44d88-942f-4180-b785-e788ec3af987
       Connected: true
       Parent: *o4
@@ -122,13 +122,13 @@ FunctionUnits:
     Position:
       X: 1396.1666666666661
       Y: 176.87333333333339
-    Name: Print child message
+    Name: Print no access
     ID: fbd819a0-4528-4616-b72b-4aa7a182b7a8
     IsIntegrating: []
     InputStreams:
     - &o17
       ActionName: ''
-      DataNames: (child:Person)
+      DataNames: ()
       ID: 0f14c2a7-de45-4e06-a280-ca9a978c50b0
       Connected: true
       Parent: *o5
@@ -141,13 +141,13 @@ FunctionUnits:
     Position:
       X: 1436.1666666666658
       Y: 346.10410256410256
-    Name: Print Adult message
+    Name: Print welcome message
     ID: 1ecf18fa-c629-4097-9db0-853f566f560a
     IsIntegrating: []
     InputStreams:
     - &o19
       ActionName: ''
-      DataNames: (adult:Person)
+      DataNames: (p:Person)
       ID: 82e966bf-78b7-43da-b9a6-0e1eeca977ab
       Connected: true
       Parent: *o6
@@ -173,7 +173,7 @@ FunctionUnits:
 - *o5
 - *o6
 Connections:
-- DataNames: (error:string)
+- DataNames: (str:string)
   ID: 18125c21-6986-4a75-8048-e5c094d95e8f
   Sources:
   - *o8
@@ -197,13 +197,13 @@ Connections:
   - *o14
   Destinations:
   - *o15
-- DataNames: (child:Person)
+- DataNames: ()
   ID: 0c89a653-223f-4bd0-883a-fb8e90d11bd4
   Sources:
   - *o16
   Destinations:
   - *o17
-- DataNames: (adult:Person)
+- DataNames: (p:Person)
   ID: c1792429-9a86-458e-8dec-3422e433f22f
   Sources:
   - *o18
