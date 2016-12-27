@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Dexel.Model.DataTypes;
 
 namespace Dexel.Model.Manager
 {
@@ -11,6 +12,18 @@ namespace Dexel.Model.Manager
         public bool IsArray;
         public bool IsList;
         public bool IsInsideStream;
+    }
+
+    public enum DataFlowImplementationStyle
+    {
+        AsAction,
+        AsReturn
+    }
+
+    public class MethodSignaturePart
+    {
+        public DataFlowImplementationStyle ImplementWith;
+        public DataStreamDefinition DSD;
     }
 
     public static class DataStreamParser
@@ -105,7 +118,7 @@ namespace Dexel.Model.Manager
 
         private static void CommaSeparator(string datanames, Action<string> onEach)
         {
-            if (string.IsNullOrEmpty(datanames.Trim()))
+            if (String.IsNullOrEmpty(datanames.Trim()))
                 return;
             datanames.Split(',').ToList().ForEach(onEach);
         }
@@ -124,7 +137,7 @@ namespace Dexel.Model.Manager
                 if (s.Contains("[]"))
                     isArray = true;
 
-                var cleaned = Regex.Replace(s, "[@,\\.\";'*() \\[\\]\\\\]", string.Empty);
+                var cleaned = Regex.Replace(s, "[@,\\.\";'*() \\[\\]\\\\]", String.Empty);
                 return cleaned.Trim();
             }).ToArray();
 
@@ -145,6 +158,53 @@ namespace Dexel.Model.Manager
 
             var matches = Regex.Matches(dataNames, @"(.*)\|(.*)");
             return matches[0].Groups[pipePart].Value;
+        }
+
+
+        public static List<MethodSignaturePart> AnalyseOutputs(FunctionUnit functionUnit)
+        {
+            var result = new List<MethodSignaturePart>();
+
+            var copyOfOutputs = functionUnit.OutputStreams.ToList();
+            OutputByReturn(functionUnit, dsdByReturn =>
+            {
+                result.Add(new MethodSignaturePart
+                {
+                    DSD = dsdByReturn,
+                    ImplementWith = DataFlowImplementationStyle.AsReturn
+                });
+                copyOfOutputs.Remove(dsdByReturn);
+            });
+
+            copyOfOutputs.ForEach(dsd =>
+            {
+                result.Add(new MethodSignaturePart
+                {
+                    DSD = dsd,
+                    ImplementWith = DataFlowImplementationStyle.AsAction
+                });
+            });
+
+            return result;
+        }
+
+
+        private static void OutputByReturn(FunctionUnit functionUnit, Action<DataStreamDefinition> onFound)
+        {
+            var noActionsnames = functionUnit.OutputStreams.Where(dsd => string.IsNullOrWhiteSpace(dsd.ActionName)).ToList();
+            if (noActionsnames.Count == 1)
+            {
+                CheckIsStream(noActionsnames.First().DataNames,
+                    isNotStream: () =>
+                    {
+                        onFound(noActionsnames.First());
+                    },
+                    isStream: () =>
+                    {
+                        CheckIsStream(functionUnit.InputStreams.First().DataNames,
+                            isStream: () => onFound(noActionsnames.First()));
+                    });
+            }
         }
     }
 }

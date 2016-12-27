@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Dexel.Model.Manager;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
+using Roslyn.Generators;
 
 namespace Roslyn.Tests
 {
@@ -83,7 +84,7 @@ namespace Roslyn.Tests
                 .Select(sn => sn.NormalizeWhitespace().ToFullString()).ToList();
 
             Assert.AreEqual("string name", paramSignature[0]);
-            Assert.AreEqual("Action<string,object> onError", paramSignature[1]);
+            Assert.AreEqual("Action<string, object> onError", paramSignature[1]);
 
         }
 
@@ -141,7 +142,37 @@ namespace Roslyn.Tests
             var returnType = MethodsGenerator.GetReturnPart(_mygen.Generator, fu)?
                 .NormalizeWhitespace().ToFullString();
 
-            Assert.AreEqual("Tupel<int,string>", returnType);
+            Assert.AreEqual("Tupel<int, string>", returnType);
+        }
+
+        [TestMethod()]
+        public void IOTest_IEnumerbaleActionOutput()
+        {
+
+            var fu = FunctionUnitManager.CreateNew("foo");
+            MainModelManager.AddNewInput(fu, "(name:string)");
+            MainModelManager.AddNewOutput(fu, "(int*)*");
+
+
+            var paramSignature = MethodsGenerator.GetParameters(_mygen.Generator, fu)
+                     .Select(sn => sn.NormalizeWhitespace().ToFullString()).ToList();
+
+            Assert.AreEqual("Action<IEnumerable<int>> onInt", paramSignature[1]);
+        }
+
+        [TestMethod()]
+        public void IOTest_actionWithoutOutput()
+        {
+
+            var fu = FunctionUnitManager.CreateNew("foo");
+            MainModelManager.AddNewInput(fu, "()");
+            MainModelManager.AddNewOutput(fu, "()", actionName:"onEach");
+
+
+            var paramSignature = MethodsGenerator.GetParameters(_mygen.Generator, fu)
+                     .Select(sn => sn.NormalizeWhitespace().ToFullString()).ToList();
+
+            Assert.AreEqual("Action onEach", paramSignature[0]);
         }
 
         [TestMethod()]

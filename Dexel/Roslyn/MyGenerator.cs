@@ -13,6 +13,7 @@ using Microsoft.CodeAnalysis.Editing;
 using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.MSBuild;
 using Microsoft.CodeAnalysis.Options;
+using Roslyn.Generators;
 
 namespace Roslyn
 {
@@ -45,7 +46,7 @@ namespace Roslyn
         {
             return model.DataTypes.Select(dt =>
             {
-                var body = DataTypesGenerator.GenerateFields(Generator, dt);
+                var body = CustomDataTypesGenerator.GenerateFields(Generator, dt);
                 return Class(Helper.FirstCharToUpper(dt.Name), body.ToArray());
             });
         }

@@ -8,7 +8,7 @@ using Roslyn.Parser;
 
 namespace Roslyn
 {
-    public static class DataTypesGenerator
+    public static class CustomDataTypesGenerator
     {
         public static IEnumerable<SyntaxNode> GenerateFields(SyntaxGenerator generator, CustomDataType customDataType)
         {
@@ -22,7 +22,7 @@ namespace Roslyn
         {
             return generator.FieldDeclaration(
                 name: Helper.FirstCharToUpper(dt.Name),
-                type: DataTypeParser.ConvertToType(generator, dt.Type),
+                type: TypeConverter.ConvertToType(generator, dt.Type),
                 accessibility: Accessibility.Public);
         }
     }

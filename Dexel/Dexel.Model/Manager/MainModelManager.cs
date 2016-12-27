@@ -54,8 +54,7 @@ namespace Dexel.Model.Manager
 
 
         public static DataStream ConnectTwoFunctionUnits(FunctionUnit source, FunctionUnit destination, string outputs,
-            string inputs,
-            MainModel mainModel, string actionName = "")
+            string inputs, MainModel mainModel, string actionName = "")
         {
             source.OutputStreams.RemoveAll(x => x.DataNames == outputs && x.ActionName == actionName);
             destination.InputStreams.RemoveAll(x => x.DataNames == inputs && x.ActionName == actionName);
@@ -70,6 +69,11 @@ namespace Dexel.Model.Manager
         public static DataStream ConnectTwoDefintions(DataStreamDefinition sourceDSD,
             DataStreamDefinition destinationDSD, MainModel mainModel)
         {
+            if (sourceDSD.Parent == destinationDSD.Parent)
+            {
+                return null; // TODO: recursion not yet supported!
+            }
+
             // new Connection
             var datastream = DataStreamManager.NewDataStream(DataStreamManager.MergeDataNames(sourceDSD, destinationDSD));
             datastream.Sources.Add(sourceDSD);
@@ -79,7 +83,7 @@ namespace Dexel.Model.Manager
             // update definition state
             destinationDSD.Connected = true;
             sourceDSD.Connected = true;
-
+            RemoveFromIntegrationsIncludingChildren(destinationDSD.Parent, mainModel);
             AddToIntegrationIncludingChildren(sourceDSD, destinationDSD, mainModel);
 
             return datastream;

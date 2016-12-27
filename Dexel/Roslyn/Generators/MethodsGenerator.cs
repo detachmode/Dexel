@@ -1,14 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Dexel.Model;
 using Dexel.Model.DataTypes;
 using Dexel.Model.Manager;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
 using Roslyn.Parser;
 
-namespace Roslyn
+namespace Roslyn.Generators
 {
 
     public static class MethodsGenerator
@@ -27,11 +26,11 @@ namespace Roslyn
         public static SyntaxNode GetReturnPart(SyntaxGenerator generator, FunctionUnit functionUnit)
         {
 
-            var signature = DataTypeParser.AnalyseOutputs(functionUnit);
-            var returnSignature = signature.FirstOrDefault(sig => sig.ImplementWith == DataTypeParser.DataFlowImplementationStyle.AsReturn);
+            var signature = DataStreamParser.AnalyseOutputs(functionUnit);
+            var returnSignature = signature.FirstOrDefault(sig => sig.ImplementWith == DataFlowImplementationStyle.AsReturn);
 
             return returnSignature != null ? 
-                DataTypeParser.ConvertToType(generator, nametypes: DataStreamParser.GetOutputPart(returnSignature.DSD.DataNames)) 
+                TypeConverter.ConvertToType(generator, nametypes: DataStreamParser.GetOutputPart(returnSignature.DSD.DataNames)) 
                 : null;
         }
 
@@ -64,65 +63,60 @@ namespace Roslyn
             var result = new List<SyntaxNode>();
             MethodParameterSignatureFromInputs(generator, functionUnit, result.Add);
 
-            var outputSignature = DataTypeParser.AnalyseOutputs(functionUnit);
+            var outputSignature = DataStreamParser.AnalyseOutputs(functionUnit);
 
             outputSignature
-                .Where( sig => sig.ImplementWith != DataTypeParser.DataFlowImplementationStyle.AsReturn).ToList()
-                .ForEach( sig =>
-                {
-                    MakeActionSignature(generator, sig, result.Add);
-                });
+                .Where( sig => sig.ImplementWith != DataFlowImplementationStyle.AsReturn).ToList()
+                .ForEach( sig => MakeActionSignature(generator, sig, result.Add));
 
             return result;
         }
 
-        private static void MakeActionSignature(SyntaxGenerator generator, DataTypeParser.MethodSignaturePart sig, Action<SyntaxNode> onSyntaxNode)
+        private static void MakeActionSignature(SyntaxGenerator generator, MethodSignaturePart sig, Action<SyntaxNode> onSyntaxNode)
         {
             var nametypes = DataStreamParser.GetOutputPart(sig.DSD.DataNames);
 
-            var name = GetNameOfAction(sig, nametypes);
-            var types = string.Join(",", nametypes.Select(nt => nt.Type));
-           var typeExpression = generator.IdentifierName($"Action<{types}>");
-            onSyntaxNode(generator.ParameterDeclaration(name, typeExpression));
+            var nameOfAction = GetNameOfAction(sig.DSD);
+            if (nametypes.Count == 0)
+            {
+                onSyntaxNode(generator.ParameterDeclaration(nameOfAction, generator.IdentifierName("Action")));
+            }
+            else
+            {
+                var types = nametypes.Select(nt => TypeConverter.ConvertNameTypeToTypeExpression(generator, nt));
+                var typeExpression = generator.GenericName("Action", types);
+                onSyntaxNode(generator.ParameterDeclaration(nameOfAction, typeExpression));
+            }
 
+           
         }
 
 
         public static string GetNameOfAction(DataStreamDefinition dsd)
         {
-            if (!string.IsNullOrWhiteSpace(dsd.ActionName))
-            {
-                return dsd.ActionName.Replace(".", string.Empty);
-            }
-            var nametypes = DataStreamParser.GetOutputPart(dsd.DataNames);
-            if (nametypes.Count == 1)
-            {
-                var nt = nametypes.First();
+            string @return = null;
+            IntegrationGenerator.IsActionNameDefined(dsd, 
+                onDefined: () => @return = dsd.ActionName.Replace(".", string.Empty),
+                onUndefined: () => @return = GenerateNameOfActionByTypes(dsd.DataNames));
 
-                if (string.IsNullOrWhiteSpace(nt.Name))
-                    return $"on{Helper.FirstCharToUpper(nt.Type)}";
-                return $"on{Helper.FirstCharToUpper(nt.Name)}";
-            }
-            return "continueWith";
+            return @return;
         }
 
 
-        public static string GetNameOfAction(DataTypeParser.MethodSignaturePart sig, List<NameType> nametypes)
+        private static string GenerateNameOfActionByTypes(string rawdatanames)
         {
-            if (!string.IsNullOrWhiteSpace(sig.DSD.ActionName))
-            {
-                return sig.DSD.ActionName.Replace(".", string.Empty);
-            }
+            var nametypes = DataStreamParser.GetOutputPart(rawdatanames);
             if (nametypes.Count == 1)
             {
                 var nt = nametypes.First();
-
                 if (string.IsNullOrWhiteSpace(nt.Name))
-                    return $"on{Helper.FirstCharToUpper(nt.Type)}";
+                    return  $"on{Helper.FirstCharToUpper(nt.Type)}";
                 return $"on{Helper.FirstCharToUpper(nt.Name)}";
             }
-            return "continueWith";
+            return  "continueWith";
+
         }
+
 
         private static void MethodParameterSignatureFromInputs(SyntaxGenerator generator, FunctionUnit functionUnit,
            Action<SyntaxNode> onSyntaxNode)
@@ -135,7 +129,7 @@ namespace Roslyn
             nametypes.ToList().ForEach(nametype =>
                 {
                     var name = GenerateParameterName(nametype);
-                    var typeExpression = DataTypeParser.ConvertNameTypeToTypeExpression(generator, nametype);
+                    var typeExpression = TypeConverter.ConvertNameTypeToTypeExpression(generator, nametype);
                     onSyntaxNode(generator.ParameterDeclaration(name, typeExpression));
                 });
         }
@@ -167,7 +161,9 @@ namespace Roslyn
         {
             return new[]
             {
-                generator.ThrowStatement(expression: generator.IdentifierName(" new NotImplementedException()"))
+                generator.ThrowStatement(
+                   generator.ObjectCreationExpression(
+                       generator.IdentifierName("NotImplementedException")))
             };
         }
     }

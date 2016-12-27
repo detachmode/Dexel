@@ -210,8 +210,8 @@ namespace Roslyn.Tests.Generators
             IntegrationGenerator.AnalyseMatchingOutputOfIntegration(body, testModel);
 
             Assert.AreEqual(1, body.OutputOfIntegration.Count);
-            Assert.AreEqual(intOut, body.OutputOfIntegration.First().Item1);
-            Assert.AreEqual(OperationOut, body.OutputOfIntegration.First().Item2);
+            Assert.AreEqual(intOut, body.OutputOfIntegration.First().IntegrationOutput);
+            Assert.AreEqual(OperationOut, body.OutputOfIntegration.First().SubFunctionUnitOutput);
 
 
             var res = IntegrationGenerator.GenerateIntegrationBody(_mygen.Generator, testModel, main);

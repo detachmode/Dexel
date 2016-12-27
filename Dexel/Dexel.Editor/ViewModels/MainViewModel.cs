@@ -31,7 +31,6 @@ namespace Dexel.Editor.ViewModels
             Connections = new ObservableCollection<ConnectionViewModel>();
             IntegrationBorders = new ObservableCollection<FunctionUnitViewModel>();
             DataTypes = new ObservableCollection<DataTypeViewModel>();
-            VisibileDataTypes = new ObservableCollection<DataTypeViewModel>();
             FontSizeFunctionUnit = 12;
             VisibilityDatanames = Visibility.Visible;
             VisibilityBlockTextBox = Visibility.Hidden;
@@ -44,8 +43,6 @@ namespace Dexel.Editor.ViewModels
         public ObservableCollection<ConnectionViewModel> Connections { get; set; }
         public ObservableCollection<FunctionUnitViewModel> FunctionUnits { get; set; }
         public ObservableCollection<FunctionUnitViewModel> SelectedFunctionUnits { get; set; }
-        public ObservableCollection<DataTypeViewModel> VisibileDataTypes { get; set; }
-        public ConnectionViewModel TemporaryConnection { get; set; }
         public MainModel Model { get; set; }
         public int FontSizeFunctionUnit { get; set; }
         public Visibility VisibilityDatanames { get; set; }

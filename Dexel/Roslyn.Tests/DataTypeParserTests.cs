@@ -19,17 +19,17 @@ namespace Roslyn.Tests
         [TestMethod()]
         public void ConvertNameTypeToTypeExpressionTest()
         {
-            var test = DataTypeParser.ConvertNameTypeToTypeExpression(_gen.Generator, new NameType
+            var test = TypeConverter.ConvertNameTypeToTypeExpression(_gen.Generator, new NameType
             {
                 IsList = true,
                 Name = "zahlen",
                 Type = "int"
             });
             var fullstring = test.ToFullString();
-            Assert.AreEqual("List<int>", fullstring);
+            Assert.AreEqual("IEnumerable<int>", fullstring);
 
 
-            test = DataTypeParser.ConvertNameTypeToTypeExpression(_gen.Generator, new NameType
+            test = TypeConverter.ConvertNameTypeToTypeExpression(_gen.Generator, new NameType
             {
                 IsArray = true,
                 Name = "zahlen",
@@ -42,13 +42,13 @@ namespace Roslyn.Tests
         [TestMethod()]
         public void ConvertToTypeExpressionTest()
         {
-            Assert.AreEqual("char", DataTypeParser.ConvertToType(_gen.Generator, "char").ToFullString());
-            Assert.AreEqual("string", DataTypeParser.ConvertToType(_gen.Generator, "sTring").ToFullString());
-            Assert.AreEqual("double", DataTypeParser.ConvertToType(_gen.Generator, "Double").ToFullString());
-            Assert.AreEqual("Point", DataTypeParser.ConvertToType(_gen.Generator, "Point").ToFullString());
-            Assert.AreEqual("int", DataTypeParser.ConvertToType(_gen.Generator, "int").ToFullString());
+            Assert.AreEqual("char", TypeConverter.ConvertToType(_gen.Generator, "char").ToFullString());
+            Assert.AreEqual("string", TypeConverter.ConvertToType(_gen.Generator, "sTring").ToFullString());
+            Assert.AreEqual("double", TypeConverter.ConvertToType(_gen.Generator, "Double").ToFullString());
+            Assert.AreEqual("Point", TypeConverter.ConvertToType(_gen.Generator, "Point").ToFullString());
+            Assert.AreEqual("int", TypeConverter.ConvertToType(_gen.Generator, "int").ToFullString());
             
-           Assert.AreEqual("DateTime", DataTypeParser.ConvertToType(_gen.Generator, "datetime").ToFullString());
+           Assert.AreEqual("DateTime", TypeConverter.ConvertToType(_gen.Generator, "datetime").ToFullString());
 
 
         }

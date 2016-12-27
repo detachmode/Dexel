@@ -1,0 +1,112 @@
+FunctionUnits:
+- &o1
+  Position:
+    X: 80
+    Y: 50
+  Name: foo
+  ID: 80aad246-f180-4e07-ace0-02fc6a63ffba
+  IsIntegrating:
+  - &o0
+    Position:
+      X: 80
+      Y: 180
+    Name: subbar
+    ID: 23251fcf-050c-4772-90fd-5765d3c93d37
+    IsIntegrating: []
+    InputStreams:
+    - DataNames: ()
+      ID: a7d22973-bc31-4d81-b0e3-b9e8badff53b
+      Parent: *o0
+    OutputStreams:
+    - DataNames: (age:int)
+      ID: 2e5a5921-38d1-42b1-aead-f98cfb466788
+      Parent: *o0
+  InputStreams:
+  - &o8
+    DataNames: ()
+    ID: d0da6ba1-ccff-420a-8d70-51677eb5559b
+    Connected: true
+    Parent: *o1
+  OutputStreams:
+  - &o5
+    ActionName: ''
+    DataNames: (age:int)
+    ID: 12e6d116-6bd8-430d-9135-84286f09c524
+    Connected: true
+    Parent: *o1
+- *o0
+- &o2
+  Position:
+    X: 450
+    Y: 50
+  Name: create person
+  ID: 5b48ae17-ac7b-447e-94e8-153776b123a5
+  IsIntegrating: []
+  InputStreams:
+  - &o6
+    DataNames: (age:int, name:string)
+    ID: 26643404-040b-40bd-b0ad-77765a98e628
+    Connected: true
+    Parent: *o2
+  OutputStreams:
+  - DataNames: (rndPerson:Person)
+    ID: 69cb67e7-dedb-47bd-bd87-79423b70b2c0
+    Parent: *o2
+- &o4
+  Position:
+    X: 135
+    Y: -90.960000000000036
+  Name: main
+  ID: 145063f4-08a0-487f-b2de-161091be0dba
+  IsIntegrating:
+  - *o1
+  - *o2
+  - &o3
+    Position:
+      X: -208
+      Y: 54
+    Name: get Name
+    ID: 81384a47-5e2a-454f-892b-f8a292a1bd48
+    IsIntegrating: []
+    InputStreams:
+    - DataNames: ()
+      ID: cda27f0f-e845-476b-acfa-681b25e375be
+      Parent: *o3
+    OutputStreams:
+    - &o7
+      ActionName: ''
+      DataNames: (name:string)
+      ID: 795467ce-acd1-4ae4-9825-13b58446db6d
+      Connected: true
+      Parent: *o3
+  InputStreams:
+  - ActionName: ''
+    DataNames: ()
+    ID: 8ad96739-0e7f-45a7-ad95-6f41685ae5c1
+    Parent: *o4
+  OutputStreams:
+  - ActionName: ''
+    DataNames: ()
+    ID: d0a671e2-4018-4958-a0d7-df3d83278abe
+    Parent: *o4
+- *o3
+Connections:
+- DataNames: (age:int) | (age:int, name:string)
+  ID: 8c2485ee-1e66-457e-b1c7-0c63f6879900
+  Sources:
+  - *o5
+  Destinations:
+  - *o6
+- DataNames: (name:string) | ()
+  ID: e50834f2-f579-40d0-a21e-8e86f65a7192
+  Sources:
+  - *o7
+  Destinations:
+  - *o8
+DataTypes:
+- Name: Person
+  SubDataTypes:
+  - Name: age
+    Type: int
+  - Name: name
+    Type: string

@@ -93,12 +93,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\Extensions.cs" />
-    <Compile Include="Generators\BodyDataTypes.cs" />
-    <Compile Include="Parser\DataTypeParser.cs" />
-    <Compile Include="Generators\DataTypesGenerator.cs" />
+    <Compile Include="Exceptions\UnnconnectedOutputException.cs" />
+    <Compile Include="Exceptions\MissingInputDataException.cs" />
+    <Compile Include="Generators\TypeConverter.cs" />
+    <Compile Include="Generators\CustomDataTypesGenerator.cs" />
     <Compile Include="Common\Helper.cs" />
     <Compile Include="Generators\IntegrationGenerator.cs" />
-    <Compile Include="Generators\MyGenerator.cs" />
+    <Compile Include="MyGenerator.cs" />
     <Compile Include="Generators\MethodsGenerator.cs" />
     <Compile Include="FromTutorialAsReference.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

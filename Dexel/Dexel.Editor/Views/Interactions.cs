@@ -67,10 +67,9 @@ namespace Dexel.Editor.Views
         public static void ChangeConnectionDestination(DataStream dataStream, FunctionUnit newdestination,
             MainModel mainModel)
         {
-            //MainModelManager.RemoveConnection(dataStream, mainModel);
+
             DeConnect(dataStream, mainModel);
-            MainModelManager.ConnectTwoFunctionUnits(dataStream.Sources.First().Parent, newdestination, dataStream.DataNames, "",
-                mainModel);
+            MainModelManager.ConnectTwoDefintions(dataStream.Sources.First(), newdestination.InputStreams.First(),mainModel);
 
             ViewRedraw();
         }
@@ -501,7 +500,7 @@ namespace Dexel.Editor.Views
 
         public static void AddMissingDataTypes(MainModel mainModel)
         {
-            var res = DataTypeManager.GetUndefinedTypenames(mainModel).Where(x => !DataTypeParser.IsSystemType(x));
+            var res = DataTypeManager.GetUndefinedTypenames(mainModel).Where(x => !TypeConverter.IsSystemType(x));
             res.ForEach(name =>
             {
                 var dataType = new CustomDataType
@@ -517,7 +516,7 @@ namespace Dexel.Editor.Views
 
         public static void UpdateMissingDataTypesCounter(MainModel mainModel)
         {
-            MainViewModel.Instance().MissingDataTypes = DataTypeManager.GetUndefinedTypenames(mainModel).Where(x => !DataTypeParser.IsSystemType(x)).ToList().Count;
+            MainViewModel.Instance().MissingDataTypes = DataTypeManager.GetUndefinedTypenames(mainModel).Where(x => !TypeConverter.IsSystemType(x)).ToList().Count;
         }
 
 

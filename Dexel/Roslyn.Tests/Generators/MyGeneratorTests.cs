@@ -6,6 +6,7 @@ using Dexel.Model.Manager;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Roslyn.Common;
+using Roslyn.Generators;
 
 namespace Roslyn.Tests.Generators
 {

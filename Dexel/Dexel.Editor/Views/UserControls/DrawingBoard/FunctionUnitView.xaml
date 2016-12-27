@@ -28,6 +28,9 @@
             <MenuItem Header="Delete Data Stream" Click="DeleteDataStreamDefinition"  />
         </ContextMenu>
 
+        <ContextMenu x:Key="ContextMenuInput">
+        </ContextMenu>
+
     </UserControl.Resources>
     <Grid>
         <ItemsControl MinHeight="35" x:Name="InputFlow"                               
@@ -46,7 +49,7 @@
             <ItemsControl.Resources>
                 <DataTemplate DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
                     <drawingBoard:DangelingConnectionView 
-                            ContextMenu="{StaticResource MyContextMenuOutput}"
+                            ContextMenu="{StaticResource ContextMenuInput}"
                             x:Name="DangelingConnectionViews" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
