@@ -26,7 +26,7 @@ namespace Dexel.Editor.Views
         public static MainWindow Get() => _instance;
 
 
-        private MainModel ViewModel() => (DataContext as MainViewModel)?.Model;
+        private MainModel MainModel() => (DataContext as MainViewModel)?.Model;
 
 
         public void MainWindow_OnPreviewKeyDown(object sender, KeyEventArgs e)
@@ -52,7 +52,7 @@ namespace Dexel.Editor.Views
                     e.Handled = true;
                     break;
                 case Key.Return:
-                     TheDrawingBoard.NewOrFirstIntegrated(ctrlDown);
+                    TheDrawingBoard.NewOrFirstIntegrated(ctrlDown);
 
 
 
@@ -61,22 +61,22 @@ namespace Dexel.Editor.Views
             }
         }
 
-        private void MenuItem_GenerateCode(object sender, RoutedEventArgs e)
+        private void MenuItem_GenerateCodeToDesktop(object sender, RoutedEventArgs e)
         {
-            Interactions.ConsolePrintGeneratedCode(ViewModel());
+            Interactions.GeneratedCodeToDesktop(sleepBeforeErrorPrint:true, mainModel:MainModel());
         }
 
 
         private void MenuItem_DebugPrint(object sender, RoutedEventArgs e)
         {
-            Interactions.DebugPrint(ViewModel());
+            Interactions.DebugPrint(MainModel());
         }
 
 
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            Interactions.AutoPrint(ViewModel(), Interactions.DebugPrint);
+            Interactions.AutoPrint(MainModel(), Interactions.DebugPrint);
         }
 
 
@@ -88,7 +88,8 @@ namespace Dexel.Editor.Views
 
         private void AutoGenerate_Checked(object sender, RoutedEventArgs e)
         {
-            Interactions.AutoPrint(ViewModel(), Interactions.ConsolePrintGeneratedCode);
+            Interactions.AutoPrint(MainModel(), mainModel => 
+                Interactions.GeneratedCodeToDesktop(sleepBeforeErrorPrint: false, mainModel: mainModel));
         }
 
 
@@ -103,7 +104,7 @@ namespace Dexel.Editor.Views
             var saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
             if (saveFileDialog.ShowDialog() == true)
-                Interactions.SaveToFile(saveFileDialog.FileName, ViewModel());
+                Interactions.SaveToFile(saveFileDialog.FileName, MainModel());
         }
 
 
@@ -112,7 +113,7 @@ namespace Dexel.Editor.Views
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
-                Interactions.LoadFromFile(openFileDialog.FileName, ViewModel());
+                Interactions.LoadFromFile(openFileDialog.FileName, MainModel());
         }
 
 
@@ -121,12 +122,9 @@ namespace Dexel.Editor.Views
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
-                Interactions.MergeFromFile(openFileDialog.FileName, ViewModel());
+                Interactions.MergeFromFile(openFileDialog.FileName, MainModel());
         }
 
-
-
-       
 
 
 
@@ -139,8 +137,8 @@ namespace Dexel.Editor.Views
         }
 
         private void MenuItem_New(object sender, RoutedEventArgs e)
-        {         
-             MainViewModel.Instance().LoadFromModel(new MainModel());
+        {
+            MainViewModel.Instance().LoadFromModel(new MainModel());
         }
 
         private void MenuItem_OnClick(object sender, RoutedEventArgs e)
@@ -152,6 +150,18 @@ namespace Dexel.Editor.Views
         private void MenuItem_GenerateCodeToClipboard(object sender, RoutedEventArgs e)
         {
             Interactions.GenerateCodeToClipboard(MainViewModel.Instance().Model);
+        }
+
+
+        private void MenuItem_ResetView(object sender, RoutedEventArgs e)
+        {
+            TheDrawingBoard.ResetView();
+        }
+
+
+        private void MenuItem_GenerateCodeToConsole(object sender, RoutedEventArgs e)
+        {
+            Interactions.GenerateCodeToConsole(MainModel());
         }
     }
 

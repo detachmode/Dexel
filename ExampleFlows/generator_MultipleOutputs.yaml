@@ -24,7 +24,6 @@ DataTypes:
 - Name: Person
   SubDataTypes:
   - Name: name
-    Type: >
-      string
+    Type: string
   - Name: age
     Type: int

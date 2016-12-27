@@ -13,15 +13,19 @@
         Title="Sharp Flow Design" Height="850" Width="1225">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
-            <MenuItem Header="File">
+            <MenuItem Header="FILE">
                 <MenuItem Header="New" Click="MenuItem_New"></MenuItem>
-                <MenuItem Header="Save" Click="MenuItem_Save"></MenuItem>
+                <Separator></Separator>
+                <MenuItem Header="Save as" Click="MenuItem_Save"></MenuItem>
+                <Separator></Separator>
                 <MenuItem Header="Load" Click="MenuItem_Load"></MenuItem>
                 <MenuItem Header="Merge" Click="MenuItem_Merge"></MenuItem>
             </MenuItem>
-            <MenuItem Header="Output">
+            <MenuItem Header="OUTPUT">
                 <MenuItem Header="Debug Print" Click="MenuItem_DebugPrint"/>
-                <MenuItem Header="Generate Code" Click="MenuItem_GenerateCode"/>
+                <Separator></Separator>
+                <MenuItem Header="Generate Code to Desktop File" Click="MenuItem_GenerateCodeToDesktop"/>
+                <MenuItem Header="Generate Code to Console" Click="MenuItem_GenerateCodeToConsole"/>
                 <MenuItem Header="Generate Code to Clipboard" Click="MenuItem_GenerateCodeToClipboard"/>
 
                 <Separator></Separator>
@@ -29,10 +33,17 @@
                 <RadioButton Content="Auto Debug Print" Checked="CheckBox_Checked" Unchecked="CheckBox_UnChecked" GroupName="Auto"/>
                 <RadioButton Content="Auto Generate" Checked="AutoGenerate_Checked" Unchecked="AutoGenerate_UnChecked" GroupName="Auto"/>
             </MenuItem>
-            <MenuItem Header="Shortcuts cheatsheet" Click="help_OnClicked"></MenuItem>
-            <MenuItem Header="Test" Click="MenuItem_OnClick"></MenuItem>
+
+            <!--<MenuItem Header="Test" Click="MenuItem_OnClick"></MenuItem>-->
+            <MenuItem Header="VIEW">
+                <MenuItem Header="Reset" Click="MenuItem_ResetView"></MenuItem>
+            </MenuItem>
+            
+            <MenuItem Header="HELP">
+                <MenuItem Header="Shortcuts cheatsheet" Click="help_OnClicked"></MenuItem>
+            </MenuItem>
         </Menu>
-        
+
         <dataTypeEditor:DataTypesEditor DockPanel.Dock="Left" Width="250"></dataTypeEditor:DataTypesEditor>
         <drawingBoard:DrawingBoard DockPanel.Dock="Top" x:Name="TheDrawingBoard" Focusable="True" />
 

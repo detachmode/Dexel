@@ -383,6 +383,12 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
         }
 
 
+        public void ResetView()
+        {
+            TheZoomBorder.Reset();
+        }
+
+
         public void NewOrFirstIntegrated(bool ctrlDown)
         {
             Keyboard.FocusedElement.TryGetDataContext<FunctionUnitViewModel>(vm =>

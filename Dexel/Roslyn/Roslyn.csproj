@@ -102,6 +102,7 @@
     <Compile Include="MyGenerator.cs" />
     <Compile Include="Generators\MethodsGenerator.cs" />
     <Compile Include="FromTutorialAsReference.cs" />
+    <Compile Include="Outputs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

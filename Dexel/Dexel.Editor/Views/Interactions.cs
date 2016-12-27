@@ -69,7 +69,7 @@ namespace Dexel.Editor.Views
         {
 
             DeConnect(dataStream, mainModel);
-            MainModelManager.ConnectTwoDefintions(dataStream.Sources.First(), newdestination.InputStreams.First(),mainModel);
+            MainModelManager.ConnectTwoDefintions(dataStream.Sources.First(), newdestination.InputStreams.First(), mainModel);
 
             ViewRedraw();
         }
@@ -158,42 +158,67 @@ namespace Dexel.Editor.Views
 
 
 
-        public static void ConsolePrintGeneratedCode(MainModel mainModel)
+        public static void GeneratedCodeToDesktop(bool sleepBeforeErrorPrint, MainModel mainModel)
+        {
+            SafeExecute(sleepBeforeErrorPrint, safeExecute: () =>
+            {
+                var gen = new MyGenerator();
+                gen.GenerateCodeWithNamespace(mainModel, generatedCode =>
+                {
+                    Outputs.WriteToDesktopFile(generatedCode);
+                    Outputs.ClearPrintToConsole(generatedCode);
+                });
+            });
+        }
+
+
+        public static void GenerateCodeToConsole(MainModel mainModel)
+        {
+            SafeExecute(sleepBeforeErrorPrint:true, safeExecute: () =>
+            {
+                var gen = new MyGenerator();
+                gen.GenerateCodeWithNamespace(mainModel, Outputs.ClearPrintToConsole);
+            });
+        }
+
+
+        private static void SafeExecute(bool sleepBeforeErrorPrint = true , Action safeExecute = null)
         {
             try
             {
-                var gen = new MyGenerator();
-                Console.Clear();
-                gen.GenerateCodeAndPrint(mainModel);
+                safeExecute?.Invoke();
             }
+
             catch (Exception ex)
             {
-                PrintError(ex);
+                Console.Clear();
+                Console.WriteLine(@"...");
+                if (sleepBeforeErrorPrint) Thread.Sleep(400);// when same message pops up the user will see that the same error occured.           
+                Console.WriteLine(ex.Message);
             }
+
         }
-
-
-        private static void PrintError(Exception exception)
-        {
-            Console.WriteLine(exception.Message);
-        }
-
 
         public static void GenerateCodeToClipboard(MainModel mainModel)
         {
-            try
+            SafeExecute(sleepBeforeErrorPrint:true, safeExecute:() =>
             {
                 var gen = new MyGenerator();
                 var methods = gen.GenerateAllMethods(mainModel);
                 var datatypes = gen.GenerateDataTypes(mainModel);
                 var text = gen.CompileToString(datatypes.Concat(methods).ToList());
-                Clipboard.SetText(text);
-            }
-            catch (Exception ex)
-            {
-                PrintError(ex);
-            }
+                SetClipboardText(text);
+                Outputs.ClearPrintToConsole(text);
+            });
+
         }
+
+
+        private static void SetClipboardText(string text)
+        {
+            Clipboard.SetText(text);
+        }
+
 
 
         public static void DebugPrint(MainModel mainModel)
@@ -341,9 +366,9 @@ namespace Dexel.Editor.Views
                 // prefer connected outputs as next tabstop
                 // if no connected take first output defintion if there are any
                 fu.OutputStreams.GetFirstConnected(
-                    foundConnected: connectedDsd => 
+                    foundConnected: connectedDsd =>
                         @return = MainModelManager.FindDataStream(connectedDsd, mainModel),
-                    noConnected: () => 
+                    noConnected: () =>
                         @return = fu.OutputStreams.FirstOrDefault());
             });
 
@@ -360,15 +385,15 @@ namespace Dexel.Editor.Views
                 // is input definition: next tabstop is the function unit of the definition
                 // is output definition: next tabstop is the first input definition
                 // of the beginning of the whole Flow Design graph.
-                dsd.CheckIsInputOrOutput( 
+                dsd.CheckIsInputOrOutput(
                     isInput: () => @return = dsd.Parent,
                     isOutput: () =>
                     {
                         dsd.Parent.OutputStreams.GetFirstConnected(
-                            foundConnected: connectedInput => 
+                            foundConnected: connectedInput =>
                                 @return = MainModelManager.FindDataStream(connectedInput, mainModel),
                             noConnected: () => // loop tabstop focus when the end is reached
-                                @return = MainModelManager.GetBeginningOfFlow(dsd.Parent, mainModel)); 
+                                @return = MainModelManager.GetBeginningOfFlow(dsd.Parent, mainModel));
                     });
             });
             return @return;
@@ -378,26 +403,26 @@ namespace Dexel.Editor.Views
         {
             object @return = null;
 
-            focusedModel.TryCast<FunctionUnit>(fu => 
+            focusedModel.TryCast<FunctionUnit>(fu =>
             {
                 fu.InputStreams.GetFirstConnected(
-                    foundConnected: connectedDsd => 
+                    foundConnected: connectedDsd =>
                         @return = MainModelManager.FindDataStream(connectedDsd, mainModel),
                     noConnected: () =>
                         @return = fu.InputStreams.FirstOrDefault());
             });
 
-            focusedModel.TryCast<DataStream>(stream => 
+            focusedModel.TryCast<DataStream>(stream =>
             {
                 if (stream.Sources.Any())
                     @return = stream.Sources.First().Parent;
             });
 
-            focusedModel.TryCast<DataStreamDefinition>(dsd => 
+            focusedModel.TryCast<DataStreamDefinition>(dsd =>
             {
                 dsd.CheckIsInputOrOutput(
                     isOutput: () => @return = dsd.Parent,
-                    isInput: () => 
+                    isInput: () =>
                     {
                         dsd.Parent.InputStreams.GetFirstConnected(
                             foundConnected: connectedInput =>
@@ -454,7 +479,7 @@ namespace Dexel.Editor.Views
             FunctionUnit @return = null;
 
             currentFunctionUnit.IsIntegration(
-                isIntegration:() => @return = MainModelManager.GetFirstOfIntegrated(currentFunctionUnit, mainModel),
+                isIntegration: () => @return = MainModelManager.GetFirstOfIntegrated(currentFunctionUnit, mainModel),
                 isNotIntegration: () =>
                 {
                     var newFunctionUnit = FunctionUnitManager.CreateNew();
@@ -535,7 +560,7 @@ namespace Dexel.Editor.Views
 
         public static FunctionUnit GetFirstIntegrated(FunctionUnit functionUnit, MainModel mainModel)
         {
-           return MainModelManager.GetFirstOfIntegrated(functionUnit, mainModel);
+            return MainModelManager.GetFirstOfIntegrated(functionUnit, mainModel);
         }
     }
 

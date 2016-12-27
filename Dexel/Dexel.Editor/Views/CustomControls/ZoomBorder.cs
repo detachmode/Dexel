@@ -39,16 +39,18 @@ namespace Dexel.Editor.Views.CustomControls
             }
         }
 
+
+
         public void Initialize(UIElement element)
         {
             _child = element;
             if (_child == null) return;
             var group = new TransformGroup();
             var st = new ScaleTransform();
-            @group.Children.Add(st);
+            group.Children.Add(st);
             var tt = new TranslateTransform();
-            @group.Children.Add(tt);
-            _child.RenderTransform = @group;
+            group.Children.Add(tt);
+            _child.RenderTransform = group;
             _child.RenderTransformOrigin = new Point(0.0, 0.0);
             MouseWheel += child_MouseWheel;
             MouseDown += child_MouseLeftButtonDown;
@@ -67,13 +69,17 @@ namespace Dexel.Editor.Views.CustomControls
             if (_child == null) return;
             // reset zoom
             var st = GetScaleTransform(_child);
-            st.ScaleX = 0.50;
-            st.ScaleY = 0.50;
+            st.ScaleX = 1;
+            st.ScaleY = 1;
 
             // reset pan
             var tt = GetTranslateTransform(_child);
             tt.X = 0.0;
             tt.Y = 0.0;
+
+            SetFontDependingOnZoom(st);
+
+
         }
 
         #region Child Events
@@ -83,7 +89,6 @@ namespace Dexel.Editor.Views.CustomControls
             if (_child == null) return;
             var st = GetScaleTransform(_child);
             var tt = GetTranslateTransform(_child);
-
 
 
             var zoom = e.Delta > 0 ? .1 : -.1;
@@ -100,7 +105,16 @@ namespace Dexel.Editor.Views.CustomControls
             st.ScaleX += zoom;
             st.ScaleY += zoom;
 
-            Debug.WriteLine(st.ScaleX);
+
+            SetFontDependingOnZoom(st);
+
+            tt.X = abosuluteX - relative.X * st.ScaleX;
+            tt.Y = abosuluteY - relative.Y * st.ScaleY;
+        }
+
+
+        private static void SetFontDependingOnZoom(ScaleTransform st)
+        {
             if (st.ScaleX < 0.21 || st.ScaleY < 0.21)
             {
                 MainViewModel.Instance().FontSizeFunctionUnit = 32;
@@ -125,10 +139,8 @@ namespace Dexel.Editor.Views.CustomControls
                 MainViewModel.Instance().VisibilityBlockTextBox = Visibility.Hidden;
                 MainViewModel.Instance().VisibilityDatanames = Visibility.Visible;
             }
-
-            tt.X = abosuluteX - relative.X * st.ScaleX;
-            tt.Y = abosuluteY - relative.Y * st.ScaleY;
         }
+
 
         private void child_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {

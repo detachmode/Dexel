@@ -15,7 +15,7 @@
     <Border Background="{StaticResource BG}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" >
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="39*"/>
+                <RowDefinition Height="39"/>
                 <RowDefinition Height="445*"/>
             </Grid.RowDefinitions>
             <Button 
