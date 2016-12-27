@@ -431,7 +431,7 @@ namespace Dexel.Editor.Views
             newFunctionUnit.MoveX(offsetX);
 
             // default IO of new function unit: input of new function unit = output to connect to of current function unit
-            newFunctionUnit.InputStreams.Add(DataStreamManager.NewDefinition(newFunctionUnit, outputToConnect));
+            newFunctionUnit.InputStreams.Add(DataStreamManager.NewDefinition(newFunctionUnit, outputToConnect.DataNames));
             newFunctionUnit.OutputStreams.Add(DataStreamManager.NewDefinition(newFunctionUnit, "()"));
             MainModelManager.ConnectTwoDefintions(outputToConnect, newFunctionUnit.InputStreams.First(), mainModel);
 
@@ -454,7 +454,7 @@ namespace Dexel.Editor.Views
             FunctionUnit @return = null;
 
             currentFunctionUnit.IsIntegration(
-                isIntegration: () => @return = currentFunctionUnit.IsIntegrating.First(),
+                isIntegration:() => @return = MainModelManager.GetFirstOfIntegrated(currentFunctionUnit, mainModel),
                 isNotIntegration: () =>
                 {
                     var newFunctionUnit = FunctionUnitManager.CreateNew();
@@ -530,6 +530,12 @@ namespace Dexel.Editor.Views
 
             ViewRedraw();
 
+        }
+
+
+        public static FunctionUnit GetFirstIntegrated(FunctionUnit functionUnit, MainModel mainModel)
+        {
+           return MainModelManager.GetFirstOfIntegrated(functionUnit, mainModel);
         }
     }
 

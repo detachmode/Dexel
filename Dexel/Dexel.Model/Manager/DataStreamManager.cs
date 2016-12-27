@@ -25,12 +25,12 @@ namespace Dexel.Model.Manager
         }
 
 
-        public static void CheckIsInputOrOutput(this DataStreamDefinition dsd, Action isInput, Action isOutput)
+        public static void CheckIsInputOrOutput(this DataStreamDefinition dsd, Action isInput = null, Action isOutput = null)
         {
             if (dsd.IsInput())
-                isInput();
+                isInput?.Invoke();
             else if (dsd.IsOutput())
-                isOutput();
+                isOutput?.Invoke();
         }
 
         public static void GetFirstConnected(this List<DataStreamDefinition> dsds, Action<DataStreamDefinition> foundConnected, Action noConnected)

@@ -383,13 +383,17 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
         }
 
 
-        public void NewOrFirstIntegrated()
+        public void NewOrFirstIntegrated(bool ctrlDown)
         {
             Keyboard.FocusedElement.TryGetDataContext<FunctionUnitViewModel>(vm =>
             {
-                var nextmodel = Interactions.CreateNewOrGetFirstIntegrated(vm.Model, ViewModelModel());
-                SetFocusOnObject(nextmodel);
+                FunctionUnit nextmodel =null;
+                if (ctrlDown)
+                    nextmodel = Interactions.CreateNewOrGetFirstIntegrated(vm.Model, ViewModelModel());
+                else
+                    nextmodel = Interactions.GetFirstIntegrated(vm.Model, ViewModelModel());
 
+                SetFocusOnObject(nextmodel);
             });
 
         }

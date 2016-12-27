@@ -69,23 +69,26 @@ namespace Dexel.Model.Manager
         public static DataStream ConnectTwoDefintions(DataStreamDefinition sourceDSD,
             DataStreamDefinition destinationDSD, MainModel mainModel)
         {
-            if (sourceDSD.Parent == destinationDSD.Parent)
-            {
-                return null; // TODO: recursion not yet supported!
-            }
+            DataStream datastream = null;
+            // TODO: recursion not yet supported!
+            CheckIsSubFunctionUnit(destinationDSD.Parent, sourceDSD.Parent, 
+                onNotFound: () => 
+                {
+                    destinationDSD.CheckIsInputOrOutput(isInput: () =>
+                    {
+                        // new Connection
+                        datastream = DataStreamManager.NewDataStream(DataStreamManager.MergeDataNames(sourceDSD, destinationDSD));
+                        datastream.Sources.Add(sourceDSD);
+                        datastream.Destinations.Add(destinationDSD);
+                        mainModel.Connections.Add(datastream);
 
-            // new Connection
-            var datastream = DataStreamManager.NewDataStream(DataStreamManager.MergeDataNames(sourceDSD, destinationDSD));
-            datastream.Sources.Add(sourceDSD);
-            datastream.Destinations.Add(destinationDSD);
-            mainModel.Connections.Add(datastream);
-
-            // update definition state
-            destinationDSD.Connected = true;
-            sourceDSD.Connected = true;
-            RemoveFromIntegrationsIncludingChildren(destinationDSD.Parent, mainModel);
-            AddToIntegrationIncludingChildren(sourceDSD, destinationDSD, mainModel);
-
+                        // update definition state
+                        destinationDSD.Connected = true;
+                        sourceDSD.Connected = true;
+                        RemoveFromIntegrationsIncludingChildren(destinationDSD.Parent, mainModel);
+                        AddToIntegrationIncludingChildren(sourceDSD, destinationDSD, mainModel);
+                    });
+                });
             return datastream;
         }
 
@@ -94,20 +97,50 @@ namespace Dexel.Model.Manager
             DataStreamDefinition destinationDSD,
             MainModel mainModel)
         {
-            FindIntegration(sourceDSD.Parent, foundIntegration =>
+            CheckIsSubFunctionUnit(destinationDSD.Parent, sourceDSD.Parent, onNotFound: () =>
             {
-                foundIntegration.IsIntegrating.AddUnique(destinationDSD.Parent);
-                TraverseChildren(destinationDSD.Parent, child => foundIntegration.IsIntegrating.AddUnique(child),
-                    mainModel);
-            }, mainModel);
+                FindIntegration(sourceDSD.Parent, foundIntegration =>
+                {
+                    foundIntegration.IsIntegrating.AddUnique(destinationDSD.Parent);
+                    TraverseChildren(destinationDSD.Parent, child => foundIntegration.IsIntegrating.AddUnique(child),
+                        mainModel);
+                }, mainModel);
 
-            FindIntegration(destinationDSD.Parent, foundIntegration =>
-            {
-                foundIntegration.IsIntegrating.AddUnique(sourceDSD.Parent);
-                TraverseChildrenBackwards(sourceDSD.Parent, child => foundIntegration.IsIntegrating.AddUnique(child),
-                    mainModel);
-            }, mainModel);
+                FindIntegration(destinationDSD.Parent, foundIntegration =>
+                {
+                    foundIntegration.IsIntegrating.AddUnique(sourceDSD.Parent);
+                    TraverseChildrenBackwards(sourceDSD.Parent, child => foundIntegration.IsIntegrating.AddUnique(child),
+                        mainModel);
+                }, mainModel);
+            });
         }
+
+
+        private static void CheckIsSubFunctionUnit(FunctionUnit checkthis, FunctionUnit forThat, Action onNotFound)
+        {
+            bool found = false;
+            TraverseIntegrationDown(checkthis, onEachSubFunctionUnit: (integration, subfunctionunit) =>
+            {
+                if (subfunctionunit == forThat)
+                    found = true;
+            });
+            if (!found)
+            {
+                onNotFound();
+            }
+        }
+
+
+        private static void TraverseIntegrationDown(FunctionUnit functionUnit, Action<FunctionUnit, FunctionUnit> onEachSubFunctionUnit)
+        {
+            var subFunctionUnits = functionUnit.IsIntegrating;
+            subFunctionUnits.ForEach(subfu =>
+            {
+                onEachSubFunctionUnit(functionUnit, subfu);
+                TraverseIntegrationDown(subfu, onEachSubFunctionUnit);
+            });
+        }
+
 
 
         public static void SetParents(MainModel loadedMainModel)
@@ -468,6 +501,14 @@ namespace Dexel.Model.Manager
 
             }, mainModel);
 
+            return @return;
+        }
+
+
+        public static FunctionUnit GetFirstOfIntegrated(FunctionUnit functionUnit, MainModel mainModel)
+        {
+            FunctionUnit @return = null;
+            GetBeginningOfFlow(functionUnit.IsIntegrating.First(), mainModel).TryCast<DataStreamDefinition>(dsd => @return =  dsd.Parent);
             return @return;
         }
     }
