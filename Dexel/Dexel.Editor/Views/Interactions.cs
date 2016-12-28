@@ -13,6 +13,7 @@ using Dexel.Model.DataTypes;
 using Dexel.Model.Manager;
 using Roslyn;
 using Roslyn.Parser;
+using Roslyn.Validator;
 
 namespace Dexel.Editor.Views
 {
@@ -53,6 +54,9 @@ namespace Dexel.Editor.Views
 
         public static void ViewRedraw()
         {
+            List<object> errors = new List<object>();
+            FlowValidator.Validate(MainViewModel.Instance().Model, obj => errors.Add(obj));
+            MainViewModel.Instance().ShowValidationResult(errors);
             MainViewModel.Instance().Reload();
         }
 
@@ -561,6 +565,14 @@ namespace Dexel.Editor.Views
         public static FunctionUnit GetFirstIntegrated(FunctionUnit functionUnit, MainModel mainModel)
         {
             return MainModelManager.GetFirstOfIntegrated(functionUnit, mainModel);
+        }
+
+
+        public static void Validate(MainModel mainModel)
+        {
+            List<object> errors = new List<object>();
+            FlowValidator.Validate(mainModel, obj => errors.Add(obj));
+            MainViewModel.Instance().ShowValidationResult(errors);
         }
     }
 

@@ -101,6 +101,7 @@
     <Compile Include="MethodsGeneratorTests.cs" />
     <Compile Include="Generators\MyGeneratorTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validator\FlowValidatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dexel.Library\Dexel.Library.csproj">
@@ -116,6 +117,7 @@
       <Name>Roslyn</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

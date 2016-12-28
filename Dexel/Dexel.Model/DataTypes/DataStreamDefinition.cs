@@ -6,7 +6,7 @@ namespace Dexel.Model.DataTypes
 {
     [Serializable]
     [ImplementPropertyChanged]
-    public class DataStreamDefinition
+    public class DataStreamDefinition : BaseModel
     {
         public Guid ID { get;  set; }
         public string ActionName { get;  set; }

@@ -22,7 +22,12 @@
                 <ColumnDefinition Width="40*" />
                 <ColumnDefinition Width="40*" />
             </Grid.ColumnDefinitions>
-            <Grid Margin="20" Grid.ColumnSpan="2">
+            <Grid Margin="20" Grid.ColumnSpan="2" ToolTip="{Binding ValidationErrorMessage}" >
+                <Rectangle Margin="-22" Fill="#33FF0000"
+                        Stroke="#FFFF0101" StrokeEndLineCap="Square" 
+                        StrokeThickness="1"
+                        StrokeDashCap="Square" StrokeDashArray="1 2" StrokeLineJoin="Round"
+                        Visibility="{Binding IsInvalid, Converter={StaticResource VisibilityConverter}}"/>
 
                 <Ellipse Margin="-20" Fill="{DynamicResource FillFunctionUnitBrush}" 
                                 Stroke="{DynamicResource BorderFunctionUnitBrush}"
@@ -31,6 +36,13 @@
                           Visibility="{Binding IsSelected, Converter={StaticResource VisibilityConverter}}"
                                 Stroke="White"
                                 StrokeThickness="{DynamicResource StrokeThickness}" />
+
+  
+
+           
+
+               
+                
                 <TextBox MinWidth="22" 
                          FontSize="{Binding DataContext.FontSizeFunctionUnit, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"  x:Name="TheTextBox"   LostFocus="TheTextBox_OnLostFocus" 
                          Background="{Binding DataContext.VisibilityBlockTextBox, Converter={StaticResource FunctionUnitTextfieldBG}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}" 

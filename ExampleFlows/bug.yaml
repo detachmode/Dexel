@@ -1,299 +1,63 @@
 FunctionUnits:
-- &o7
+- &o1
   Position:
     X: 80
     Y: 50
   Name: foo
-  ID: 984a1c29-b2db-451d-a4de-f0651f103c87
+  ID: 2c44bf31-2225-4fb2-9505-bc01965623c0
   IsIntegrating:
   - &o0
     Position:
       X: 80
       Y: 180
     Name: subbar
-    ID: da630d98-55c7-431c-b70c-43b30cac4315
+    ID: 9949483a-c048-49df-87e5-64dfaffbf1e1
     IsIntegrating: []
     InputStreams:
     - DataNames: ()
-      ID: 3a7bda70-e703-4148-bf4f-1bf41009593a
+      ID: 64529803-e506-4936-8568-ed9b1e14d0b0
       Parent: *o0
     OutputStreams:
-    - &o24
+    - ActionName: .onSomething
       DataNames: (age:int)
-      ID: 828fa20b-16f2-41c9-96e7-58e3ee35d433
-      Connected: true
+      ID: d337b604-4bea-474d-8cdb-6f5104f149ff
       Parent: *o0
-  - &o1
-    Position:
-      X: 491.78571428571422
-      Y: 170.89714285714268
-    Name: main
-    ID: 4d5335a8-abee-4e65-99a4-dadbe1d12feb
-    IsIntegrating: []
-    InputStreams:
-    - &o25
-      ActionName: ''
-      DataNames: ()
-      ID: ce2e835b-0587-462e-b55b-daacb9485a2c
-      Connected: true
-      Parent: *o1
-    OutputStreams:
-    - ActionName: ''
-      DataNames: ()
-      ID: b6230543-c80c-4bd6-bda2-201d194db618
-      Parent: *o1
-    - &o22
-      ActionName: .onAlreadyExisiting
-      DataNames: (existingPerson:Person)
-      ID: dca50294-7ae6-40fa-bae2-33a47c810aba
-      Connected: true
-      Parent: *o1
-  - &o2
-    Position:
-      X: 1012.139943389943
-      Y: 209.30914751914736
-    Name: print Error Person Exists
-    ID: 132d34ae-8a3c-4dc3-9f84-8501db3c364c
-    IsIntegrating: []
-    InputStreams:
-    - &o23
-      ActionName: ''
-      DataNames: (existingPerson:Person)
-      ID: 4b3913b8-128c-4e3d-9b82-2cab71c5914c
-      Connected: true
-      Parent: *o2
-    OutputStreams:
-    - &o26
-      ActionName: ''
-      DataNames: ()
-      ID: 429b00a7-2d17-4937-b7ae-454fe8243914
-      Connected: true
-      Parent: *o2
-  - &o3
-    Position:
-      X: 1479.9523809523801
-      Y: 203.1092796092795
-    Name: getname
-    ID: 2213f309-ac07-45f5-a005-a29337bb847d
-    IsIntegrating: []
-    InputStreams:
-    - &o27
-      DataNames: ()
-      ID: 3de53288-f7e4-44d1-8ab7-3c3c0145a131
-      Connected: true
-      Parent: *o3
-    OutputStreams:
-    - &o20
-      ActionName: ''
-      DataNames: (name:string)
-      ID: e4d59b36-d1e0-44bd-bef9-8dca7ebec722
-      Connected: true
-      Parent: *o3
-  - &o5
-    Position:
-      X: 1813.1746031746025
-      Y: 207.57936507936489
-    Name: foo
-    ID: 64162472-7352-496d-9e55-3c303a9a7705
-    IsIntegrating:
-    - &o4
-      Position:
-        X: 1813.1746031746025
-        Y: 337.579365079365
-      Name: subbar
-      ID: 6adbd6d4-7bf9-457b-afc7-84855e26edee
-      IsIntegrating: []
-      InputStreams:
-      - DataNames: ()
-        ID: f3fa9f2e-2150-41e7-b834-d2fb3890fc3f
-        Parent: *o4
-      OutputStreams:
-      - DataNames: (age:int)
-        ID: c756dd80-5092-4540-8444-66a9d8c75d6f
-        Parent: *o4
-    InputStreams:
-    - &o21
-      DataNames: ()
-      ID: 9b8e7d15-3094-4446-bc4d-fd2b0abe2247
-      Connected: true
-      Parent: *o5
-    OutputStreams:
-    - &o18
-      ActionName: ''
-      DataNames: (age:int)
-      ID: 03da4ec3-9f7f-42d5-a472-68f41bee500c
-      Connected: true
-      Parent: *o5
-  - &o6
-    Position:
-      X: 2177.0317460317501
-      Y: 197.00793650793634
-    Name: create person
-    ID: 866cb788-bda5-4849-8626-c753fbc71094
-    IsIntegrating: []
-    InputStreams:
-    - &o19
-      DataNames: (age:int, name:string)
-      ID: 5ed9358f-3e1c-404a-aa58-81c3298cc44a
-      Connected: true
-      Parent: *o6
-    OutputStreams:
-    - DataNames: (rndPerson:Person)
-      ID: 744d4249-8afc-4e8b-944d-2b587c0b2b8c
-      Parent: *o6
   InputStreams:
-  - &o15
-    DataNames: ()
-    ID: d9c00981-0954-49e7-a903-7a9dd6f6a854
-    Connected: true
-    Parent: *o7
+  - DataNames: ()
+    ID: b650169e-f9fd-4555-b415-84f19ede84e6
+    Parent: *o1
   OutputStreams:
-  - &o12
+  - &o3
     ActionName: ''
     DataNames: (age:int)
-    ID: 490284d9-8928-4d86-86d6-e21182b2e69a
+    ID: 45378d14-b2a2-46bd-8f5d-b384c9c66db8
     Connected: true
-    Parent: *o7
+    Parent: *o1
 - *o0
-- &o8
+- &o2
   Position:
-    X: 443.85714285714289
-    Y: 39.428571428571445
+    X: 450
+    Y: 50
   Name: create person
-  ID: 6dca3305-14aa-459c-bed2-1ade4b86a340
+  ID: 5e403261-d9b0-4cec-901f-f25ed2218fa3
   IsIntegrating: []
   InputStreams:
-  - &o13
+  - &o4
     DataNames: (age:int, name:string)
-    ID: b5a943ee-89b7-42d2-86c0-7eafc15e8f81
+    ID: cbe7c0dc-7554-42c8-9e94-23579f298bdb
     Connected: true
-    Parent: *o8
+    Parent: *o2
   OutputStreams:
   - DataNames: (rndPerson:Person)
-    ID: 5bed75c9-c70d-4fd2-85b7-f88b8d768946
-    Parent: *o8
-  - ActionName: .onAlreadyExisiting
-    DataNames: (existingPerson:Person)
-    ID: 25601136-53e3-47ba-b58d-9f67eea4edee
-    Parent: *o8
-- &o10
-  Position:
-    X: 255
-    Y: -126.96000000000004
-  Name: main
-  ID: 124c6494-d3fe-4249-bcea-9307ff9b609b
-  IsIntegrating:
-  - *o7
-  - *o8
-  - &o9
-    Position:
-      X: -211
-      Y: 53.307692307692292
-    Name: getname
-    ID: 3db32f26-d5ac-4a59-9480-9b6d6ddbbc0b
-    IsIntegrating: []
-    InputStreams:
-    - DataNames: ()
-      ID: 37e3f4ea-581d-407e-b392-37843caea88b
-      Parent: *o9
-    OutputStreams:
-    - &o14
-      ActionName: ''
-      DataNames: (name:string)
-      ID: bc4725a8-4290-46e2-b06e-104204e204a0
-      Connected: true
-      Parent: *o9
-  InputStreams:
-  - ActionName: ''
-    DataNames: ()
-    ID: 61e7d3c1-df55-4e61-ac33-01f662e919f4
-    Parent: *o10
-  OutputStreams:
-  - ActionName: ''
-    DataNames: ()
-    ID: 10569978-a7a7-4391-a566-f6d93d59ddde
-    Parent: *o10
-  - &o16
-    ActionName: .onAlreadyExisiting
-    DataNames: (existingPerson:Person)
-    ID: ec8735a7-1703-466d-8bda-f25fc8c079f7
-    Connected: true
-    Parent: *o10
-- *o9
-- &o11
-  Position:
-    X: 775.16483516483493
-    Y: -95.806153846153848
-  Name: print Error Person Exists
-  ID: 694586cc-00e9-4258-8fc6-cfe803df256b
-  IsIntegrating: []
-  InputStreams:
-  - &o17
-    ActionName: ''
-    DataNames: (existingPerson:Person)
-    ID: e47235f2-a557-4946-bb39-f4375ba9d0fa
-    Connected: true
-    Parent: *o11
-  OutputStreams:
-  - ActionName: ''
-    DataNames: ()
-    ID: 311c9340-4296-452e-9f01-f2ca96fbfbea
-    Parent: *o11
-- *o1
-- *o5
-- *o4
-- *o6
-- *o3
-- *o2
+    ID: 90e5c3fa-0fad-4160-9ac3-7dd77e0c91f3
+    Parent: *o2
 Connections:
 - DataNames: (age:int) | (age:int, name:string)
-  ID: e664a9b1-0015-44fa-9f7c-9913fcfb474d
+  ID: 9414d70e-b122-43fd-8f4b-c2daf03fca3a
   Sources:
-  - *o12
+  - *o3
   Destinations:
-  - *o13
-- DataNames: (name:string) | ()
-  ID: 7e2ccbf4-4737-43e1-95ce-04e955b788e1
-  Sources:
-  - *o14
-  Destinations:
-  - *o15
-- DataNames: (existingPerson:Person)
-  ID: 6b7ee8da-5678-4a63-a0be-a0a7a8c74d43
-  Sources:
-  - *o16
-  Destinations:
-  - *o17
-- DataNames: (age:int) | (age:int, name:string)
-  ID: 06faf5d6-abab-48ca-957d-d8b5d4838452
-  Sources:
-  - *o18
-  Destinations:
-  - *o19
-- DataNames: (name:string) | ()
-  ID: 9c613ef5-fe45-4aea-bf17-12e86b04b8aa
-  Sources:
-  - *o20
-  Destinations:
-  - *o21
-- DataNames: (existingPerson:Person)
-  ID: 0a22b7cd-1940-4738-ab62-4e195a64d178
-  Sources:
-  - *o22
-  Destinations:
-  - *o23
-- DataNames: (age:int) | ()
-  ID: 8a19e986-ea1e-4d80-a931-705dc4ba06d7
-  Sources:
-  - *o24
-  Destinations:
-  - *o25
-- DataNames: ()
-  ID: cfee0ea6-e080-4e0d-96b2-b61b09199922
-  Sources:
-  - *o26
-  Destinations:
-  - *o27
+  - *o4
 DataTypes:
 - Name: Person
   SubDataTypes:

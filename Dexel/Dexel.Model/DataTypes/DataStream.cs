@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Dexel.Model.Annotations;
 using PropertyChanged;
 
 namespace Dexel.Model.DataTypes
 {
     [Serializable]
     [ImplementPropertyChanged]
-    public class DataStream
+    public class DataStream : BaseModel
     {
         public Guid ID { get; set; }
         public string DataNames { get;  set; }

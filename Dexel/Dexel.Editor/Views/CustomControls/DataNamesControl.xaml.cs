@@ -35,6 +35,7 @@ namespace Dexel.Editor.Views.CustomControls
                 DataContext.TryCast<DataStream>(ds => Interactions.ChangeConnectionDatanames(ds, currentText));
                 DataContext.TryCast<DataStreamDefinition>(dsd => dsd.DataNames = currentText);
                 Interactions.UpdateMissingDataTypesCounter(MainViewModel.Instance().Model);
+                Interactions.Validate(MainViewModel.Instance().Model);
                 TextBox.SelectionStart = caret;
             };
 

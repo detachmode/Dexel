@@ -131,7 +131,7 @@ namespace Dexel.Model.Manager
         }
 
 
-        private static void TraverseIntegrationDown(FunctionUnit functionUnit, Action<FunctionUnit, FunctionUnit> onEachSubFunctionUnit)
+        public static void TraverseIntegrationDown(FunctionUnit functionUnit, Action<FunctionUnit, FunctionUnit> onEachSubFunctionUnit)
         {
             var subFunctionUnits = functionUnit.IsIntegrating;
             subFunctionUnits.ForEach(subfu =>

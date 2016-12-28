@@ -9,6 +9,7 @@ using Dexel.Editor.Views.DragAndDrop;
 using Dexel.Library;
 using Dexel.Model.DataTypes;
 using PropertyChanged;
+using Roslyn.Validator;
 
 namespace Dexel.Editor.ViewModels.DrawingBoard
 {
@@ -54,6 +55,7 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
 
 
         public bool IsSelected { get; set; }
+        public bool IsInvalid { get; set; }
 
 
         public void UpdateConnectionsPosition(Point inputPoint, Point outputPoint)
@@ -209,6 +211,43 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         }
 
         #endregion
+
+        public void SetToValidIncludingOutputs()
+        {
+            IsInvalid = false;
+            ValidationErrorMessage = "";
+            Outputs.ForEach(dsdVM =>
+            {
+                dsdVM.IsInvalid = false;
+                dsdVM.ValidationErrorMessage = "";
+            });
+        }
+
+
+        public string ValidationErrorMessage { get; set; }
+
+
+        public void SetToInvalid(ValidationErrorInputMissing missingInputData)
+        {
+            IsInvalid = true;
+            var nt = missingInputData.notFoundNameType;
+            var container = nt.IsList ? "*" : nt.IsArray ? "[]" : "";
+
+            ValidationErrorMessage +=
+                $"Missing input data: \n ->  {nt.Name}:{nt.Type}{container}\n";
+        }
+
+
+        public void SetToInvalid(ValidationErrorUnnconnectedOutput unnconnectedOutput)
+        {
+            IsInvalid = true;
+            var dsd = unnconnectedOutput.UnnconnectedOutput;
+
+            ValidationErrorMessage +=
+                "Unconnected output inside integration:\n" +
+                $"function unit: {dsd.Parent.Name} \n" +
+                $"output:{dsd.DataNames} actionname:{dsd.ActionName}\n";
+        }
     }
 
 }

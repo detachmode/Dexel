@@ -6,6 +6,7 @@ using Dexel.Editor.Views.DragAndDrop;
 using Dexel.Library;
 using Dexel.Model.DataTypes;
 using PropertyChanged;
+using Roslyn.Validator;
 
 namespace Dexel.Editor.ViewModels.DrawingBoard
 {
@@ -19,10 +20,20 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
 
         public Guid ID;
         public DataStreamDefinition Model { get; set; }
+        public bool IsInvalid { get; set; }
+        public string ValidationErrorMessage { get; set; }
         public FunctionUnit Parent { get; set; }
         public string DataNames { get; set; }
         public string Actionname { get; set; }
         public double Width { get; set; }
+
+        public void SetToInvalid(ValidationErrorUnnconnectedOutput error)
+        {
+            IsInvalid = true;
+            ValidationErrorMessage = "Need to be connected or matching integration output";
+        }
+
+
 
         Type IDragable.DataType => typeof (DangelingConnectionViewModel);
 

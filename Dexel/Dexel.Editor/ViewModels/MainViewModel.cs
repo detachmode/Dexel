@@ -13,6 +13,7 @@ using Dexel.Model;
 using Dexel.Model.DataTypes;
 using Dexel.Model.Manager;
 using PropertyChanged;
+using Roslyn.Validator;
 
 namespace Dexel.Editor.ViewModels
 {
@@ -374,6 +375,39 @@ namespace Dexel.Editor.ViewModels
         {
             var todelte = Connections.Where(vm => datastreamsToLoad.All(fu => fu.ID != vm.Model.ID)).ToList();
             todelte.ForEach(vm => Connections.Remove(vm));
+        }
+
+        #endregion
+
+        #region Validation Result Update
+
+        public void ShowValidationResult(List<object> errors)
+        {
+            MakeEverythingValid();
+
+            errors.ForEach(error =>
+            {
+                error.TryCast<ValidationErrorInputMissing>(missingInputData =>
+                {
+                    var fuVm = FunctionUnits.FirstOrDefault(x => x.Model == missingInputData.invalidFunctionUnit);
+                    fuVm?.SetToInvalid(missingInputData);
+                });
+                error.TryCast<ValidationErrorUnnconnectedOutput>(unnconnectedOutput =>
+                {
+                    var fuVm = FunctionUnits.FirstOrDefault(x => x.Model == unnconnectedOutput.Integration);                  
+                    fuVm?.SetToInvalid(unnconnectedOutput);
+
+                    var unconnectedFuVm = FunctionUnits.FirstOrDefault(x => x.Model == unnconnectedOutput.UnnconnectedOutput.Parent);
+                    var outputVm = unconnectedFuVm?.Outputs.FirstOrDefault(dsdVm => dsdVm.Model == unnconnectedOutput.UnnconnectedOutput);
+                    outputVm?.SetToInvalid(unnconnectedOutput);
+                });
+            });
+
+        }
+
+        private void MakeEverythingValid()
+        {
+            FunctionUnits.ForEach( fuVm => fuVm.SetToValidIncludingOutputs());
         }
 
         #endregion

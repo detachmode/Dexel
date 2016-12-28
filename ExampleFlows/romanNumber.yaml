@@ -1,0 +1,128 @@
+FunctionUnits:
+- &o4
+  Position:
+    X: 135
+    Y: 3.039999999999992
+  Name: convert roman number
+  ID: 45aad926-fa36-46dd-81f3-990f6b65bace
+  IsIntegrating:
+  - &o0
+    Position:
+      X: 135
+      Y: 103.03999999999999
+    Name: split
+    ID: e2190e40-cace-4e05-bc70-9fcb22a1a31d
+    IsIntegrating: []
+    InputStreams:
+    - ActionName: ''
+      DataNames: (roman:string)
+      ID: 73cde7b6-274c-466f-8992-7c92d6a2e873
+      Parent: *o0
+    OutputStreams:
+    - &o5
+      ActionName: ''
+      DataNames: (char*)
+      ID: 408061ba-3bfc-4cae-bbee-fcb89968816f
+      Connected: true
+      Parent: *o0
+  - &o1
+    Position:
+      X: 342.19
+      Y: 103.03999999999999
+    Name: convert to decimal
+    ID: 339d66e7-83c4-4653-bfa6-d7ee558107fc
+    IsIntegrating: []
+    InputStreams:
+    - &o6
+      ActionName: ''
+      DataNames: (char*)
+      ID: d9a6367e-664b-4a4f-8dfe-81df90bf0547
+      Connected: true
+      Parent: *o1
+    OutputStreams:
+    - &o7
+      ActionName: ''
+      DataNames: (decimals:int*)
+      ID: e968329f-6091-4ebf-a771-e17ec94c7e13
+      Connected: true
+      Parent: *o1
+  - &o2
+    Position:
+      X: 628.99000000000001
+      Y: 103.03999999999999
+    Name: apply negation rule
+    ID: 6c117b2e-4533-4fbd-9621-886798262414
+    IsIntegrating: []
+    InputStreams:
+    - &o8
+      ActionName: ''
+      DataNames: (decimals:int*)
+      ID: c73469f2-3127-41a0-bd20-aa996fa401d1
+      Connected: true
+      Parent: *o2
+    OutputStreams:
+    - &o9
+      ActionName: ''
+      DataNames: (ruleapplied:int*)
+      ID: adcda620-db26-42e2-b477-13929ca118a2
+      Connected: true
+      Parent: *o2
+  - &o3
+    Position:
+      X: 1005.9100000000001
+      Y: 104.03999999999999
+    Name: sum
+    ID: 656a433e-4b52-4f57-a4fe-ef34749f4987
+    IsIntegrating: []
+    InputStreams:
+    - &o10
+      ActionName: ''
+      DataNames: (ruleapplied:int*)
+      ID: 812008a9-6359-43cd-9412-aebb2a5041b4
+      Connected: true
+      Parent: *o3
+    OutputStreams:
+    - ActionName: ''
+      DataNames: (sum:int)
+      ID: 553e510f-5931-46e9-8104-f1541cfa3a01
+      Parent: *o3
+  InputStreams:
+  - ActionName: ''
+    DataNames: (roman:string)
+    ID: fe6d2708-60de-4783-9ad0-91cd93bdbcc6
+    Parent: *o4
+  OutputStreams:
+  - ActionName: ''
+    DataNames: (int)
+    ID: d5a1204f-7cb6-4ef9-b7e3-3285b53208e4
+    Parent: *o4
+- *o0
+- *o1
+- *o2
+- *o3
+Connections:
+- DataNames: (char*)
+  ID: 53ad5dd1-8f18-489f-88df-99c0e84c35ac
+  Sources:
+  - *o5
+  Destinations:
+  - *o6
+- DataNames: (decimals:int*)
+  ID: 94217b93-4554-4aff-b87a-8a004797c757
+  Sources:
+  - *o7
+  Destinations:
+  - *o8
+- DataNames: (ruleapplied:int*)
+  ID: ee3d2fc7-e36c-44c4-8b32-44246a74fa48
+  Sources:
+  - *o9
+  Destinations:
+  - *o10
+DataTypes:
+- Name: Person
+  SubDataTypes:
+  - Name: age
+    Type: int
+  - Name: name
+    Type: string

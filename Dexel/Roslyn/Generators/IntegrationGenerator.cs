@@ -465,7 +465,7 @@ namespace Roslyn
         }
 
 
-        private static void GetAllFunctionUnitsThatAreInsideThisLambda(IntegrationBody integrationBody, MethodSignaturePart sig, Action<FunctionUnit> onEach)
+        public static void GetAllFunctionUnitsThatAreInsideThisLambda(IntegrationBody integrationBody, MethodSignaturePart sig, Action<FunctionUnit> onEach)
         {
             var functionUnitsToGenerateInsideThisLambda =
                 integrationBody.LambdaBodies.Where(lb => lb.InsideLambdaOf == sig.DSD).Select(x => x.FunctionUnit).ToList();
@@ -491,7 +491,7 @@ namespace Roslyn
         }
 
 
-        private static DataStreamDefinition GetMatchingActionFromIntegration(
+        public static DataStreamDefinition GetMatchingActionFromIntegration(
             IntegrationBody integrationBody, MethodSignaturePart sig, Action onError)
         {
             var tupel = integrationBody.OutputOfIntegration.FirstOrDefault(x => x.SubFunctionUnitOutput == sig.DSD);
@@ -502,7 +502,7 @@ namespace Roslyn
         }
 
 
-        private static void GetAllActionOutputs(FunctionUnit functionUnit,
+        public static void GetAllActionOutputs(FunctionUnit functionUnit,
             Action<MethodSignaturePart> onConnected,
             Action<MethodSignaturePart> onUnconnected
             )
@@ -675,7 +675,7 @@ namespace Roslyn
         }
 
 
-        private static bool IsMatchingNameType(NameType lookingForNameType, NameType nt)
+        public static bool IsMatchingNameType(NameType lookingForNameType, NameType nt)
         {
             return (nt.Type == lookingForNameType.Type)
                    && (nt.IsArray == lookingForNameType.IsArray)
