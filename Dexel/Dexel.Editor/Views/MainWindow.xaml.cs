@@ -53,9 +53,6 @@ namespace Dexel.Editor.Views
                     break;
                 case Key.Return:
                     TheDrawingBoard.NewOrFirstIntegrated(ctrlDown);
-
-
-
                     e.Handled = true;
                     break;
             }

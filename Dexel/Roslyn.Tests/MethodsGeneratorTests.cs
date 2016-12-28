@@ -54,7 +54,7 @@ namespace Roslyn.Tests
             MainModelManager.AddNewOutput(fu, "(int)");
             MainModelManager.AddNewOutput(fu, "(string)", actionName: ".onError");
 
-            var returnType = MethodsGenerator.GetReturnPart(_mygen.Generator, fu)
+            var returnType = MethodsGenerator.GetReturnPart(_mygen.Generator, fu, false)
                 .NormalizeWhitespace().ToFullString();
 
             Assert.AreEqual("int", returnType);
@@ -75,7 +75,7 @@ namespace Roslyn.Tests
             MainModelManager.AddNewInput(fu, "(name:string)");
             MainModelManager.AddNewOutput(fu, "(string, object)", actionName: ".onError");
 
-            var returnType = MethodsGenerator.GetReturnPart(_mygen.Generator, fu)?
+            var returnType = MethodsGenerator.GetReturnPart(_mygen.Generator, fu, false)?
                 .NormalizeWhitespace().ToFullString();
 
             Assert.AreEqual(null, returnType);
@@ -98,7 +98,7 @@ namespace Roslyn.Tests
             MainModelManager.AddNewOutput(fu, "(int)");
             MainModelManager.AddNewOutput(fu, "(string)");
 
-            var returnType = MethodsGenerator.GetReturnPart(_mygen.Generator, fu)?
+            var returnType = MethodsGenerator.GetReturnPart(_mygen.Generator, fu, false)?
                 .NormalizeWhitespace().ToFullString();
 
             Assert.AreEqual(null, returnType);
@@ -139,7 +139,7 @@ namespace Roslyn.Tests
             MainModelManager.AddNewInput(fu, "(name:string)");
             MainModelManager.AddNewOutput(fu, "(int,string)");
 
-            var returnType = MethodsGenerator.GetReturnPart(_mygen.Generator, fu)?
+            var returnType = MethodsGenerator.GetReturnPart(_mygen.Generator, fu, false)?
                 .NormalizeWhitespace().ToFullString();
 
             Assert.AreEqual("Tupel<int, string>", returnType);
@@ -185,7 +185,7 @@ namespace Roslyn.Tests
             MainModelManager.AddNewOutput(fu, "(string)", actionName: "onError");
 
 
-            var returnType = MethodsGenerator.GetReturnPart(_mygen.Generator, fu)?
+            var returnType = MethodsGenerator.GetReturnPart(_mygen.Generator, fu, false)?
                 .NormalizeWhitespace().ToFullString();
 
             Assert.AreEqual("Person", returnType);

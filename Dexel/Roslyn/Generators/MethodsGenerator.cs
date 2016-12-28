@@ -23,25 +23,25 @@ namespace Roslyn.Generators
         }
 
 
-        public static SyntaxNode GetReturnPart(SyntaxGenerator generator, FunctionUnit functionUnit)
+        public static SyntaxNode GetReturnPart(SyntaxGenerator generator, FunctionUnit functionUnit, bool isNullable)
         {
 
             var signature = DataStreamParser.AnalyseOutputs(functionUnit);
             var returnSignature = signature.FirstOrDefault(sig => sig.ImplementWith == DataFlowImplementationStyle.AsReturn);
 
             return returnSignature != null ? 
-                TypeConverter.ConvertToType(generator, nametypes: DataStreamParser.GetOutputPart(returnSignature.DSD.DataNames)) 
+                TypeConverter.ConvertToType(generator, DataStreamParser.GetOutputPart(returnSignature.DSD.DataNames), isNullable)  
                 : null;
         }
 
 
 
 
-        public static SyntaxNode GenerateStaticMethod(SyntaxGenerator generator, FunctionUnit functionUnit,
-            SyntaxNode[] body = null)
+        public static SyntaxNode GenerateStaticMethod(SyntaxGenerator generator, FunctionUnit functionUnit, SyntaxNode[] body = null,
+            bool nullableReturn = false)
         {
             var methodName = GetMethodName(functionUnit);
-            var returntype = GetReturnPart(generator, functionUnit);
+            var returntype = GetReturnPart(generator, functionUnit, nullableReturn);
             var parameters = GetParameters(generator, functionUnit);
 
             return MethodDeclaration(generator, body, methodName, parameters, returntype);

@@ -12,17 +12,45 @@ namespace Roslyn.Parser
     {
 
 
-        public static SyntaxNode ConvertToType(SyntaxGenerator generator, string type)
+        public static SyntaxNode ConvertToType(SyntaxGenerator generator, string type, bool isNullable = false)
         {
             if (type.ToLower() == "datetime")   // bug in roslyn?        
                 return generator.IdentifierName("DateTime");
 
             var res = generator.IdentifierName(type);
-
-            Convert(type, specialType => res = generator.TypeExpression(specialType));
+            Convert(type, specialType =>
+            {
+                res = GenerateTypeNullableWhenNeeded(generator, isNullable, specialType, type);
+            });
+           
             return res;
-
         }
+
+
+        private static SyntaxNode GenerateTypeNullableWhenNeeded(SyntaxGenerator generator, bool isNullable,
+            SpecialType specialType, string type)
+        {
+            var notNullabeltypes = new List<string>
+            {
+               "int",
+               "int16",
+               "int32",
+               "int64",
+               "float",
+               "double",
+               "bool",
+               "byte"
+            };
+
+            SyntaxNode res = null;
+            res = generator.TypeExpression(specialType);
+
+            if (isNullable && notNullabeltypes.Contains(type.ToLower()))
+                res = generator.NullableTypeExpression(res);
+
+            return res;
+        }
+
 
         private static void Convert(string type, Action<SpecialType> onConverted)
         {
@@ -53,22 +81,21 @@ namespace Roslyn.Parser
 
 
 
-        public static SyntaxNode ConvertNameTypeToTypeExpression(SyntaxGenerator generator, NameType nametype)
+        public static SyntaxNode ConvertNameTypeToTypeExpression(SyntaxGenerator generator, NameType nametype, bool isNullable = false)
         {
-            var singletype = ConvertToType(generator, nametype.Type);
+            var singletype = ConvertToType(generator, nametype.Type, isNullable:false);
             if (nametype.IsArray)
                 return generator.ArrayTypeExpression(singletype);
             if (nametype.IsList && nametype.IsArray == false)
                 return generator.GenericName("IEnumerable", singletype);
-
-            return singletype;
-
+            
+            return ConvertToType(generator, nametype.Type, isNullable);
         }
 
 
 
 
-        public static SyntaxNode ConvertToType(SyntaxGenerator generator, IEnumerable<NameType> nametypes)
+        public static SyntaxNode ConvertToType(SyntaxGenerator generator, IEnumerable<NameType> nametypes, bool isNullable = false)
         {
             SyntaxNode @return = null;
 
@@ -81,7 +108,7 @@ namespace Roslyn.Parser
                 },
                 isSingleType: t =>
                 {
-                    @return = ConvertNameTypeToTypeExpression(generator, t);
+                    @return = ConvertNameTypeToTypeExpression(generator, t, isNullable);
                 });
 
             return @return;

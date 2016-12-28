@@ -8,6 +8,8 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
 using Roslyn.Parser;
 using Dexel.Library;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslyn.Exceptions;
 using Roslyn.Generators;
 
@@ -17,7 +19,7 @@ namespace Roslyn
     public static class IntegrationGenerator
     {
         public static SyntaxNode[] GenerateIntegrationBody(SyntaxGenerator generator, MainModel mainModel,
-            FunctionUnit integration)
+            FunctionUnit integration, Action<IntegrationBody> getIntegrationBody = null)
         {
             // integrationbody object for storing analysed and generated information
             var integrationBody = CreateNewIntegrationBody(mainModel.Connections, integration);
@@ -27,14 +29,40 @@ namespace Roslyn
             AnalyseParameterDependencies(integrationBody);
             AnalyseLambdaBodies(integrationBody, mainModel);
             AnalyseMatchingOutputOfIntegration(integrationBody, mainModel);
+            AnalyseReturnToLocalReturnVariable(integrationBody, mainModel);
 
             // generation
             var result = new List<SyntaxNode>();
             integrationBody.Generator = generator;
             GenerateBody(integrationBody, result.Add);
+
+            // when generating integration signature, some information from the body is needed: is returning local variable nullable type
+            getIntegrationBody?.Invoke(integrationBody);
+
             return result.ToArray();
         }
 
+
+        public static void AnalyseReturnToLocalReturnVariable(IntegrationBody integrationBody, MainModel mainModel)
+        {
+            integrationBody.ReturnToLocalReturnVariable = 
+                integrationBody.LambdaBodies.Where(x => x.InsideLambdaOf != null).Select(x =>
+                {
+                    
+                    var sigs = DataStreamParser.AnalyseOutputs(x.FunctionUnit);
+                    var sigsOfIntegration = DataStreamParser.AnalyseOutputs(integrationBody.Integration);
+                    var dsdThatReturnsFromSubFunctionUnit  =  sigs.FirstOrDefault(y => y.ImplementWith == DataFlowImplementationStyle.AsReturn)?.DSD;
+                    var dsdThatReturnsFromIntegration = sigsOfIntegration.FirstOrDefault(y => y.ImplementWith == DataFlowImplementationStyle.AsReturn)?.DSD;
+
+                    var found = integrationBody.OutputOfIntegration
+                        .FirstOrDefault(matchingOutputs => 
+                            matchingOutputs.SubFunctionUnitOutput == dsdThatReturnsFromSubFunctionUnit 
+                            && matchingOutputs.IntegrationOutput == dsdThatReturnsFromIntegration);
+
+                    return found?.SubFunctionUnitOutput;
+
+                }).Where( x => x != null).ToList();
+        }
 
 
         public static void AnalyseMatchingOutputOfIntegration(IntegrationBody body, MainModel mainModel)
@@ -71,7 +99,7 @@ namespace Roslyn
         }
 
 
-        private static void AnalyseLambdaBodies(IntegrationBody integrationBody, MainModel mainModel)
+        public static void AnalyseLambdaBodies(IntegrationBody integrationBody, MainModel mainModel)
         {
             integrationBody.LambdaBodies = new List<LambdaBody>();
 
@@ -159,13 +187,47 @@ namespace Roslyn
 
         private static void GenerateBody(IntegrationBody integrationBody, Action<SyntaxNode> onSyntaxNode)
         {
+            NeedsLocalReturnVariable(integrationBody, () => GenerateReturnLocalVariable(integrationBody, onSyntaxNode));
+
             var toplevelCalls = integrationBody.LambdaBodies.Where(x => x.InsideLambdaOf == null).ToList();
             toplevelCalls.ForEach(c =>
             {
                 var syntaxnode = CreateMethodCall(c.FunctionUnit, integrationBody);
                 onSyntaxNode(syntaxnode);
             });
+
+            NeedsLocalReturnVariable(integrationBody, () => ReturnLocalReturnVariable(integrationBody, onSyntaxNode));
         }
+
+
+        private static void ReturnLocalReturnVariable(IntegrationBody integrationBody, Action<SyntaxNode> onSyntaxNode)
+        {
+            var returnVar = integrationBody.Generator.IdentifierName("@return");
+            onSyntaxNode(integrationBody.Generator.ReturnStatement(returnVar));
+        }
+
+
+        private static void GenerateReturnLocalVariable(IntegrationBody integrationBody, Action<SyntaxNode> onSyntaxNode)
+        {
+            var returnType = integrationBody.ReturnToLocalReturnVariable.First();
+            var nametypes = DataStreamParser.GetOutputPart(returnType.DataNames);
+
+            var nullabletype = TypeConverter.ConvertToType(integrationBody.Generator, nametypes, isNullable:true);
+
+
+            var nullLiteral = integrationBody.Generator.NullLiteralExpression();
+            onSyntaxNode(integrationBody.Generator.LocalDeclarationStatement(nullabletype, "@return", nullLiteral));
+        }
+
+
+        public static void NeedsLocalReturnVariable(IntegrationBody integrationBody, Action onNeeded, Action onNotNeeded = null)
+        {
+            if (integrationBody.ReturnToLocalReturnVariable.Count > 0)
+                onNeeded();
+            else
+                onNotNeeded?.Invoke();
+        }
+
 
         private static SyntaxNode CreateMethodCall(FunctionUnit functionUnit, IntegrationBody integrationBody)
         {
@@ -186,7 +248,13 @@ namespace Roslyn
                             var nameofAction = MethodsGenerator.GetNameOfAction(sig.DSD);
                             @return = CallAction(integrationBody.Generator, nameofAction, methodcall);
                         },
-                        implementByReturn: () => @return = CallAndReturn(integrationBody.Generator, methodcall));
+                        implementByReturn: () =>
+                        {
+                            NeedsLocalReturnVariable( integrationBody, 
+                                onNeeded: () => @return = CallAndAssignToReturnVariable(integrationBody.Generator, methodcall),
+                                onNotNeeded: () => @return = CallAndReturn(integrationBody.Generator, methodcall));
+                           
+                        });
                 },
                 onNotFound: () => // if method returns but is not output for integration -> save returned value in local variable
                 {
@@ -201,6 +269,15 @@ namespace Roslyn
 
             return @return;
         }
+
+
+        private static SyntaxNode CallAndAssignToReturnVariable(SyntaxGenerator generator, SyntaxNode methodcall)
+        {
+           return SyntaxFactory.AssignmentExpression(SyntaxKind.SimpleAssignmentExpression,
+                (ExpressionSyntax)generator.IdentifierName("@return"), (ExpressionSyntax)methodcall);
+
+        }
+
 
 
         private static SyntaxNode CallAndReturn(SyntaxGenerator generator, SyntaxNode methodcall)
@@ -342,32 +419,31 @@ namespace Roslyn
                  onConnected: sig =>
                  {
                      var lambdaparameter = GenerateAllLambdaParameter(integrationBody, sig.DSD);
-
+                     var lambdabody = new List<SyntaxNode>();
                      GetAllFunctionUnitsThatAreInsideThisLambda(integrationBody, sig, fu =>
                      {
-                         var lambdabody = new List<SyntaxNode>();
                          var mc = CreateMethodCall(fu, integrationBody);
                          lambdabody.Add(mc);
-
-                         SyntaxNode lambdaExpression = null;
-                         GenerateLambdaExpression(integrationBody.Generator, lambdaparameter, lambdabody.ToArray(), node => lambdaExpression = node);
-
-                         SyntaxNode arg = null;
-                         // Minor design decision here:
-                         // When action name is provided use "named arguments" when calling this method
-                         // if not provided but output needs to be implemented with action don't use named arguments             
-                         IsActionNameDefined(sig.DSD,
-                             onDefined: () =>
-                             {
-                                 var argumentName = MethodsGenerator.GetNameOfAction(sig.DSD);
-                                 arg = GenerateArgument(integrationBody.Generator, argumentName, lambdaExpression);
-                             },
-                             onUndefined: () =>
-                                arg = GenerateArgument(integrationBody.Generator, null, lambdaExpression));
-
-
-                         onParameterGenerated(arg);
                      });
+
+                     SyntaxNode lambdaExpression = null;
+                     GenerateLambdaExpression(integrationBody.Generator, lambdaparameter, lambdabody.ToArray(), node => lambdaExpression = node);
+
+                     SyntaxNode arg = null;
+                     // Minor design decision here:
+                     // When action name is provided use "named arguments" when calling this method
+                     // if not provided but output needs to be implemented with action don't use named arguments             
+                     IsActionNameDefined(sig.DSD,
+                         onDefined: () =>
+                         {
+                             var argumentName = MethodsGenerator.GetNameOfAction(sig.DSD);
+                             arg = GenerateArgument(integrationBody.Generator, argumentName, lambdaExpression);
+                         },
+                         onUndefined: () =>
+                            arg = GenerateArgument(integrationBody.Generator, null, lambdaExpression));
+
+
+                     onParameterGenerated(arg);
                  });
         }
 
@@ -737,6 +813,7 @@ namespace Roslyn
         public List<MethodWithParameterDependencies> CallDependecies { get; set; }
         public List<IntegrationGenerator.LambdaBody> LambdaBodies { get; set; }
         public List<MatchingOutputs> OutputOfIntegration { get; set; }
+        public List<DataStreamDefinition> ReturnToLocalReturnVariable { get; set; }
     }
 
 

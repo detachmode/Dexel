@@ -1,21 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Dexel.Library;
 using Dexel.Model.DataTypes;
 using Dexel.Model.Manager;
+using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using static Roslyn.IntegrationGenerator;
 
 namespace Roslyn.Tests.Generators
 {
     [TestClass()]
     public class IntegrationGeneratorTests
     {
+        private readonly MyGenerator _mygen = new MyGenerator();
+
 
         [TestMethod()]
         public void Integration_SingleChildren()
         {
-
             var testModel = new MainModel();
             var x = MainModelManager.AddNewFunctionUnit("main", testModel);
             MainModelManager.AddNewInput(x, "()");
@@ -31,11 +35,7 @@ namespace Roslyn.Tests.Generators
             //Assert.AreEqual(1, body.Expressions.Count);
             //body.Expressions.First().TryCast<Call>(call => Assert.AreEqual("Person", call.ReturnToVar.Type));
             //body.Expressions.First().TryCast<Call>(call => Assert.AreEqual("aPerson", call.ReturnToVar.VariableName));
-
-
         }
-
-        private readonly MyGenerator _mygen = new MyGenerator();
 
 
         [TestMethod]
@@ -53,7 +53,7 @@ namespace Roslyn.Tests.Generators
             MainModelManager.ConnectTwoFunctionUnits(alter, person, "int", "int, string", testModel);
             MainModelManager.AddNewOutput(person, "Person");
 
-            var dependecies = IntegrationGenerator.FindParameters(person, testModel.Connections, newName);
+            var dependecies = FindParameters(person, testModel.Connections, newName);
             Assert.IsTrue(dependecies.Any(x => x.Source.Parent == alter));
             Assert.IsTrue(dependecies.Any(x => x.Source.Parent == newName));
 
@@ -69,10 +69,11 @@ namespace Roslyn.Tests.Generators
             MainModelManager.ConnectTwoFunctionUnits(alter, person, "int", "int, string", testModel);
             MainModelManager.AddNewOutput(person, "Person");
 
-            dependecies = IntegrationGenerator.FindParameters(person, testModel.Connections, newName);
+            dependecies = FindParameters(person, testModel.Connections, newName);
             Assert.IsTrue(dependecies.Any(x => x.Source.Parent == alter));
             Assert.IsTrue(dependecies.Any(x => x.Source.Parent == newName));
         }
+
 
         [TestMethod]
         public void FindParameters_From_Action_DSD()
@@ -91,11 +92,12 @@ namespace Roslyn.Tests.Generators
 
             MainModelManager.ConnectTwoDefintions(outperson, inAge, testModel);
 
-            var dependecies = IntegrationGenerator.FindParameters(addage, testModel.Connections, null);
+            var dependecies = FindParameters(addage, testModel.Connections, null);
             var firstdep = dependecies.First();
             Assert.AreEqual(outperson, firstdep.Source);
-
         }
+
+
         [TestMethod]
         public void FindParameters_From_Parent()
         {
@@ -110,11 +112,11 @@ namespace Roslyn.Tests.Generators
             //var outperson = MainModelManager.AddNewOutput(person, "(Person)", actionName:"onPerson");
             main.IsIntegrating.Add(person);
 
-            var dependecies = IntegrationGenerator.FindParameters(person, testModel.Connections, main);
+            var dependecies = FindParameters(person, testModel.Connections, main);
             var firstdep = dependecies.First();
             Assert.AreEqual(countinParent, firstdep.Source);
-
         }
+
 
         [TestMethod]
         public void FindParameters_NoDependecies()
@@ -130,15 +132,14 @@ namespace Roslyn.Tests.Generators
             var outperson = MainModelManager.AddNewOutput(person, "(Person)", actionName: "onPerson");
             main.IsIntegrating.Add(person);
 
-            var dependecies = IntegrationGenerator.FindParameters(person, testModel.Connections, main);
+            var dependecies = FindParameters(person, testModel.Connections, main);
             Assert.AreEqual(0, dependecies.Count);
-
         }
+
 
         [TestMethod]
         public void TwoOptionalOutputs()
         {
-
             var testModel = new MainModel();
             var x = MainModelManager.AddNewFunctionUnit("X", testModel);
             MainModelManager.AddNewInput(x, "()");
@@ -155,14 +156,18 @@ namespace Roslyn.Tests.Generators
 
             var print = MainModelManager.AddNewFunctionUnit("Print", testModel);
             MainModelManager.AddNewInput(print, "(Person)*");
-            MainModelManager.AddNewOutput(print, "()");
+            var printout =  MainModelManager.AddNewOutput(print, "()");
+
+            var checkout = MainModelManager.AddNewFunctionUnit("CheckOut", testModel);
+            var checkoutIn =  MainModelManager.AddNewInput(checkout, "(Person)*");
+            MainModelManager.AddNewOutput(checkout, "()");
 
             var printchild = MainModelManager.AddNewFunctionUnit("Print", testModel);
             MainModelManager.AddNewInput(printchild, "(Person)*");
             MainModelManager.AddNewOutput(printchild, "()");
 
 
-
+            MainModelManager.ConnectTwoDefintions(printout, checkoutIn, testModel);
 
             MainModelManager.ConnectTwoDefintions(createPersons.OutputStreams.First(),
                 checkage.InputStreams.First(), testModel);
@@ -175,23 +180,22 @@ namespace Roslyn.Tests.Generators
 
             x.IsIntegrating.AddUnique(createPersons);
             x.IsIntegrating.AddUnique(checkage);
+            x.IsIntegrating.AddUnique(checkout);
             x.IsIntegrating.AddUnique(print);
             x.IsIntegrating.AddUnique(printchild);
 
-            var res = IntegrationGenerator.GenerateIntegrationBody(_mygen.Generator, testModel, x);
+            var res = GenerateIntegrationBody(_mygen.Generator, testModel, x);
             var formatted = _mygen.CompileToString(res.ToList());
 
             Assert.AreEqual(
-                "CreatePersons(onPerson: person => {\r\n    CheckAge(person, onAdult: person2 => {\r\n        Print(person2);\r\n    }, onChild: person3 => {\r\n        Print(person3);\r\n    });\r\n})", 
+                "CreatePersons(onPerson: person => {\r\n    CheckAge(person, onAdult: person2 => {\r\n        Print(person2);\r\n        CheckOut(person2);\r\n    }, onChild: person3 => {\r\n        Print(person3);\r\n    });\r\n})",
                 formatted);
-
-
         }
+
 
         [TestMethod]
         public void MakeIntegration_passActionFromIntegrationToOperation()
         {
-
             var testModel = new MainModel();
             var main = MainModelManager.AddNewFunctionUnit("main", testModel);
             MainModelManager.AddNewInput(main, "()");
@@ -207,25 +211,24 @@ namespace Roslyn.Tests.Generators
             IntegrationBody body = new IntegrationBody();
             body.Integration = main;
 
-            IntegrationGenerator.AnalyseMatchingOutputOfIntegration(body, testModel);
+            AnalyseMatchingOutputOfIntegration(body, testModel);
 
             Assert.AreEqual(1, body.OutputOfIntegration.Count);
             Assert.AreEqual(intOut, body.OutputOfIntegration.First().IntegrationOutput);
             Assert.AreEqual(OperationOut, body.OutputOfIntegration.First().SubFunctionUnitOutput);
 
 
-            var res = IntegrationGenerator.GenerateIntegrationBody(_mygen.Generator, testModel, main);
+            var res = GenerateIntegrationBody(_mygen.Generator, testModel, main);
             var formatted = _mygen.CompileToStrings(res.ToList());
-
 
 
             Assert.AreEqual("TrySomething(onError)", formatted[0]);
         }
 
+
         [TestMethod]
         public void MakeIntegration_ReturnRightVariable()
         {
-
             var testModel = new MainModel();
             var main = MainModelManager.AddNewFunctionUnit("main", testModel);
             MainModelManager.AddNewInput(main, "()");
@@ -242,17 +245,74 @@ namespace Roslyn.Tests.Generators
             body.Integration = main;
 
 
-            var res = IntegrationGenerator.GenerateIntegrationBody(_mygen.Generator, testModel, main);
+            var res = GenerateIntegrationBody(_mygen.Generator, testModel, main);
             var formatted = _mygen.CompileToStrings(res.ToList());
 
             Assert.AreEqual("return CreateString();", formatted[0]);
             Assert.AreEqual(1, formatted.Length);
         }
 
+
+
+
+        [TestMethod]
+        public void MakeIntegration_CreateAtReturnLocalVariable()
+        {
+
+
+
+
+            var testModel = new MainModel();
+            var main = MainModelManager.AddNewFunctionUnit("main", testModel);
+            MainModelManager.AddNewInput(main, "()");
+            var intOut = MainModelManager.AddNewOutput(main, "(string)");
+
+            var first = MainModelManager.AddNewFunctionUnit("first", testModel);
+            MainModelManager.AddNewInput(first, "()");
+            var optionalOut = MainModelManager.AddNewOutput(first, "()", actionName: "onOptional");
+
+
+            var second = MainModelManager.AddNewFunctionUnit("create string", testModel);
+            var secondIn =MainModelManager.AddNewInput(second, "()");
+            MainModelManager.AddNewOutput(second, "(string)");
+
+            MainModelManager.ConnectTwoDefintions(optionalOut, secondIn, testModel);
+
+                main.IsIntegrating.AddUnique(first);
+                main.IsIntegrating.AddUnique(second);
+
+                //var generator = _mygen.Generator;
+                //    //QualifiedName(generator.IdentifierName("b") ,generator.IdentifierName("c"));
+
+
+                //var testresult = test.NormalizeWhitespace().ToFullString();
+
+
+            // analyse data flow 
+            var integrationBody = CreateNewIntegrationBody(testModel.Connections, main);
+            AddIntegrationInputParameterToLocalScope(integrationBody, main);
+            AnalyseParameterDependencies(integrationBody);
+            AnalyseLambdaBodies(integrationBody, testModel);
+            AnalyseMatchingOutputOfIntegration(integrationBody, testModel);
+            AnalyseReturnToLocalReturnVariable(integrationBody, testModel);
+
+            Assert.AreEqual(1, integrationBody.ReturnToLocalReturnVariable.Count);
+
+
+
+            var res = GenerateIntegrationBody(_mygen.Generator, testModel, main);
+            var formatted = _mygen.CompileToStrings(res.ToList());
+
+            Assert.AreEqual("string @return = null;", formatted[0]);
+            Assert.AreEqual(3, formatted.Length);
+            Assert.AreEqual("First(onOptional: () => {\r\n    @return = CreateString();\r\n})", formatted[1]);
+            Assert.AreEqual("return @return;", formatted[2]);
+        }
+
+
         [TestMethod]
         public void InnerStreamOnly()
         {
-
             var testModel = new MainModel();
             var x = MainModelManager.AddNewFunctionUnit("X", testModel);
             MainModelManager.AddNewInput(x, "()");
@@ -282,14 +342,14 @@ namespace Roslyn.Tests.Generators
                 addName.InputStreams.First(), testModel);
 
             MainModelManager.ConnectTwoDefintions(addName.OutputStreams.First(),
-            sumAges.InputStreams.First(), testModel);
+                sumAges.InputStreams.First(), testModel);
 
             x.IsIntegrating.AddUnique(createPersons);
             x.IsIntegrating.AddUnique(addAge);
             x.IsIntegrating.AddUnique(addName);
             x.IsIntegrating.AddUnique(sumAges);
 
-            var res = IntegrationGenerator.GenerateIntegrationBody(_mygen.Generator, testModel, x);
+            var res = GenerateIntegrationBody(_mygen.Generator, testModel, x);
             var formatted = _mygen.CompileToString(res.ToList());
 
             Assert.IsTrue(
@@ -304,11 +364,12 @@ namespace Roslyn.Tests.Generators
                     RegexOptions.Singleline));
 
             Assert.IsTrue(
-               Regex.IsMatch(
-                   formatted,
-                   @".*CreatePersons\(person =>.*\S* AddAge\(person\);.*AddName\(person\);.*SumAges\(person\);.*",
-                   RegexOptions.Singleline));
+                Regex.IsMatch(
+                    formatted,
+                    @".*CreatePersons\(person =>.*\S* AddAge\(person\);.*AddName\(person\);.*SumAges\(person\);.*",
+                    RegexOptions.Singleline));
         }
+
 
         [TestMethod]
         public void StreamOutput()
@@ -334,7 +395,7 @@ namespace Roslyn.Tests.Generators
             x.IsIntegrating.Add(addAge);
 
 
-            var res = IntegrationGenerator.GenerateIntegrationBody(_mygen.Generator, testModel, x);
+            var res = GenerateIntegrationBody(_mygen.Generator, testModel, x);
             var formatted = _mygen.CompileToString(res.ToList());
 
             Assert.IsTrue(
@@ -346,10 +407,10 @@ namespace Roslyn.Tests.Generators
             Assert.AreEqual("CreatePersons(person => {\r\n    onPerson(AddAge(person));\r\n})", formatted);
         }
 
+
         [TestMethod()]
         public void GenerateBodyTest()
         {
-
             var testModel = new MainModel();
             var x = MainModelManager.AddNewFunctionUnit("main", testModel);
             MainModelManager.AddNewInput(x, "()");
@@ -364,7 +425,8 @@ namespace Roslyn.Tests.Generators
             MainModelManager.AddNewOutput(print, "()");
 
 
-            MainModelManager.ConnectTwoDefintions(createPersons.OutputStreams.First(), print.InputStreams.First(), testModel);
+            MainModelManager.ConnectTwoDefintions(createPersons.OutputStreams.First(), print.InputStreams.First(),
+                testModel);
 
 
             //x.IsIntegrating.AddUnique(createPersons);
@@ -391,13 +453,12 @@ namespace Roslyn.Tests.Generators
 
             //lambdaBody.Expressions.First().TryCast<Call>(
             //    call => Assert.AreEqual("person", call.Parameter.First()));
-
         }
+
 
         [TestMethod()]
         public void TravelOutputsTest_TwoCallsInsideLambda()
         {
-
             var testModel = new MainModel();
             var main = MainModelManager.AddNewFunctionUnit("main", testModel);
             MainModelManager.AddNewInput(main, "()");
@@ -424,15 +485,15 @@ namespace Roslyn.Tests.Generators
             main.IsIntegrating.AddUnique(print);
 
 
-
             var printerror = MainModelManager.AddNewFunctionUnit("PrintError", testModel);
             MainModelManager.AddNewInput(printerror, "(string)");
             MainModelManager.AddNewOutput(printerror, "()");
-            MainModelManager.ConnectTwoDefintions(createPersons.OutputStreams[1], printerror.InputStreams.First(), testModel);
+            MainModelManager.ConnectTwoDefintions(createPersons.OutputStreams[1], printerror.InputStreams.First(),
+                testModel);
             main.IsIntegrating.AddUnique(printerror);
 
-            List<IntegrationGenerator.LambdaBody> lambdaBodies = new List<IntegrationGenerator.LambdaBody>();
-            IntegrationGenerator.TravelIntegration(main, testModel,
+            List<LambdaBody> lambdaBodies = new List<LambdaBody>();
+            TravelIntegration(main, testModel,
                 onInLambdaBody: lambdaBodies.Add);
 
             Assert.IsTrue(lambdaBodies.Any(c => c.FunctionUnit == printerror && c.InsideLambdaOf == onerror));
@@ -444,13 +505,12 @@ namespace Roslyn.Tests.Generators
             //var mainnode = MethodsGenerator.GenerateStaticMethod(mygen.Generator, main, body);
 
             //var code = mainnode.NormalizeWhitespace().ToFullString();
-
         }
+
 
         [TestMethod()]
         public void TravelOutputsTest()
         {
-
             var testModel = new MainModel();
             var x = MainModelManager.AddNewFunctionUnit("main", testModel);
             MainModelManager.AddNewInput(x, "()");
@@ -477,15 +537,15 @@ namespace Roslyn.Tests.Generators
             x.IsIntegrating.AddUnique(print);
 
 
-
             var printerror = MainModelManager.AddNewFunctionUnit("PrintError", testModel);
             MainModelManager.AddNewInput(printerror, "(string)");
             MainModelManager.AddNewOutput(printerror, "()");
-            MainModelManager.ConnectTwoDefintions(createPersons.OutputStreams[1], printerror.InputStreams.First(), testModel);
+            MainModelManager.ConnectTwoDefintions(createPersons.OutputStreams[1], printerror.InputStreams.First(),
+                testModel);
             x.IsIntegrating.AddUnique(printerror);
 
-            List<IntegrationGenerator.LambdaBody> callinbodies = new List<IntegrationGenerator.LambdaBody>();
-            IntegrationGenerator.TravelIntegration(x, testModel,
+            List<LambdaBody> callinbodies = new List<LambdaBody>();
+            TravelIntegration(x, testModel,
                 onInLambdaBody: callinbodies.Add);
 
             Assert.IsTrue(callinbodies.Any(c => c.FunctionUnit == printerror && c.InsideLambdaOf == onerror));
@@ -499,9 +559,7 @@ namespace Roslyn.Tests.Generators
             //var mainnode = MethodsGenerator.MethodDeclaration(mygen.Generator, body, "test", null, null);
 
             //var code = mainnode.NormalizeWhitespace().ToFullString();
-
         }
-
 
 
         //[TestMethod()]
@@ -524,6 +582,8 @@ namespace Roslyn.Tests.Generators
         //    MainModelManager.AddNewOutput(y, "()");
 
         //    main.IsIntegrating.Add(x);
+
+
         //    main.IsIntegrating.Add(y);
 
         //    MainModelManager.ConnectTwoDefintions(optionout, input, testModel);
