@@ -6,8 +6,8 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
     public interface IInputOutputViewModel
     {
         DataStreamDefinition Model { get; set; }
-        bool IsInvalid { get; set; }
+        ValidationFlag ValidationFlag { get; set; }
         string ValidationErrorMessage { get; set; }
-        void SetToInvalid(ValidationErrorUnnconnectedOutput error );
+        void SetValidationError(ValidationError error, string msg);
     }
 }

@@ -381,33 +381,28 @@ namespace Dexel.Editor.ViewModels
 
         #region Validation Result Update
 
-        public void ShowValidationResult(List<object> errors)
+        public void ShowValidationResult(List<ValidationError> errors)
         {
             MakeEverythingValid();
 
             errors.ForEach(error =>
             {
-                error.TryCast<ValidationErrorInputMissing>(missingInputData =>
+                error.HighlightObjects.ForEach(highlight =>
                 {
-                    var fuVm = FunctionUnits.FirstOrDefault(x => x.Model == missingInputData.invalidFunctionUnit);
-                    fuVm?.SetToInvalid(missingInputData);
-                });
-                error.TryCast<ValidationErrorUnnconnectedOutput>(unnconnectedOutput =>
-                {
-                    var fuVm = FunctionUnits.FirstOrDefault(x => x.Model == unnconnectedOutput.Integration);                  
-                    fuVm?.SetToInvalid(unnconnectedOutput);
-
-                    var unconnectedFuVm = FunctionUnits.FirstOrDefault(x => x.Model == unnconnectedOutput.UnnconnectedOutput.Parent);
-                    var outputVm = unconnectedFuVm?.Outputs.FirstOrDefault(dsdVm => dsdVm.Model == unnconnectedOutput.UnnconnectedOutput);
-                    outputVm?.SetToInvalid(unnconnectedOutput);
+                    highlight.Item1.TryCast<FunctionUnit>(fu => FunctionUnits.FirstOrDefault(x => x.Model ==fu)?.SetValidationError(error, highlight.Item2));
+                    highlight.Item1.TryCast<DataStreamDefinition>(dsd =>
+                    {
+                        var fuVmOfDsd = FunctionUnits.FirstOrDefault(x => x.Model == dsd.Parent);
+                        var outputVm = fuVmOfDsd?.Outputs.FirstOrDefault(dsdVm => dsdVm.Model == dsd);
+                        outputVm?.SetValidationError(error, highlight.Item2);
+                    });
                 });
             });
-
         }
 
         private void MakeEverythingValid()
         {
-            FunctionUnits.ForEach( fuVm => fuVm.SetToValidIncludingOutputs());
+            FunctionUnits.ForEach( fuVm => fuVm.ResetToValidIncludingOutputs());
         }
 
         #endregion

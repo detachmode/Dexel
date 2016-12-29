@@ -5,6 +5,7 @@ using Dexel.Model.DataTypes;
 using Dexel.Model.Manager;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Editing;
+using Roslyn.Analyser;
 using Roslyn.Parser;
 
 namespace Roslyn.Generators
@@ -26,7 +27,7 @@ namespace Roslyn.Generators
         public static SyntaxNode GetReturnPart(SyntaxGenerator generator, FunctionUnit functionUnit, bool isNullable)
         {
 
-            var signature = DataStreamParser.AnalyseOutputs(functionUnit);
+            var signature = OutputAnalyser.AnalyseOutputs(functionUnit);
             var returnSignature = signature.FirstOrDefault(sig => sig.ImplementWith == DataFlowImplementationStyle.AsReturn);
 
             return returnSignature != null ? 
@@ -40,7 +41,7 @@ namespace Roslyn.Generators
         public static SyntaxNode GenerateStaticMethod(SyntaxGenerator generator, FunctionUnit functionUnit, SyntaxNode[] body = null,
             bool nullableReturn = false)
         {
-            var methodName = GetMethodName(functionUnit);
+            var methodName = Names.MethodName(functionUnit);
             var returntype = GetReturnPart(generator, functionUnit, nullableReturn);
             var parameters = GetParameters(generator, functionUnit);
 
@@ -63,7 +64,7 @@ namespace Roslyn.Generators
             var result = new List<SyntaxNode>();
             MethodParameterSignatureFromInputs(generator, functionUnit, result.Add);
 
-            var outputSignature = DataStreamParser.AnalyseOutputs(functionUnit);
+            var outputSignature = OutputAnalyser.AnalyseOutputs(functionUnit);
 
             outputSignature
                 .Where( sig => sig.ImplementWith != DataFlowImplementationStyle.AsReturn).ToList()
@@ -76,7 +77,7 @@ namespace Roslyn.Generators
         {
             var nametypes = DataStreamParser.GetOutputPart(sig.DSD.DataNames);
 
-            var nameOfAction = GetNameOfAction(sig.DSD);
+            var nameOfAction = Names.NewAction(sig.DSD);
             if (nametypes.Count == 0)
             {
                 onSyntaxNode(generator.ParameterDeclaration(nameOfAction, generator.IdentifierName("Action")));
@@ -92,32 +93,6 @@ namespace Roslyn.Generators
         }
 
 
-        public static string GetNameOfAction(DataStreamDefinition dsd)
-        {
-            string @return = null;
-            IntegrationGenerator.IsActionNameDefined(dsd, 
-                onDefined: () => @return = dsd.ActionName.Replace(".", string.Empty),
-                onUndefined: () => @return = GenerateNameOfActionByTypes(dsd.DataNames));
-
-            return @return;
-        }
-
-
-        private static string GenerateNameOfActionByTypes(string rawdatanames)
-        {
-            var nametypes = DataStreamParser.GetOutputPart(rawdatanames);
-            if (nametypes.Count == 1)
-            {
-                var nt = nametypes.First();
-                if (string.IsNullOrWhiteSpace(nt.Name))
-                    return  $"on{Helper.FirstCharToUpper(nt.Type)}";
-                return $"on{Helper.FirstCharToUpper(nt.Name)}";
-            }
-            return  "continueWith";
-
-        }
-
-
         private static void MethodParameterSignatureFromInputs(SyntaxGenerator generator, FunctionUnit functionUnit,
            Action<SyntaxNode> onSyntaxNode)
         {
@@ -128,32 +103,10 @@ namespace Roslyn.Generators
             var nametypes = DataStreamParser.GetInputPart(inputDataNames);
             nametypes.ToList().ForEach(nametype =>
                 {
-                    var name = GenerateParameterName(nametype);
+                    var name = Names.ParameterName(nametype);
                     var typeExpression = TypeConverter.ConvertNameTypeToTypeExpression(generator, nametype);
                     onSyntaxNode(generator.ParameterDeclaration(name, typeExpression));
                 });
-        }
-
-
-        public static string GenerateParameterName(NameType nametype)
-        {
-            var lower = nametype.Type.ToLower();
-            if (nametype.IsArray || nametype.IsList)
-                lower += "s";
-            return nametype.Name ?? $"a{lower}";
-        }
-
-
-        public static string GetMethodName(FunctionUnit functionUnit)
-        {
-            if (string.IsNullOrEmpty(functionUnit.Name))
-                throw new Exception("FunctionUnit has no name");
-
-            return
-                functionUnit.Name.Split(' ')
-                    .Where(s => !string.IsNullOrEmpty(s))
-                    .Select(Helper.FirstCharToUpper)
-                    .Aggregate((s, s2) => s + s2);
         }
 
 

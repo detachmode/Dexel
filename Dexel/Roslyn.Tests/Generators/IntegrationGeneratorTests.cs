@@ -7,6 +7,7 @@ using Dexel.Model.DataTypes;
 using Dexel.Model.Manager;
 using Microsoft.CodeAnalysis;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Roslyn.Analyser;
 using static Roslyn.IntegrationGenerator;
 
 namespace Roslyn.Tests.Generators
@@ -53,7 +54,7 @@ namespace Roslyn.Tests.Generators
             MainModelManager.ConnectTwoFunctionUnits(alter, person, "int", "int, string", testModel);
             MainModelManager.AddNewOutput(person, "Person");
 
-            var dependecies = FindParameters(person, testModel.Connections, newName);
+            var dependecies = FlowAnalyser.FindParameters(person, testModel.Connections, newName);
             Assert.IsTrue(dependecies.Any(x => x.Source.Parent == alter));
             Assert.IsTrue(dependecies.Any(x => x.Source.Parent == newName));
 
@@ -69,7 +70,7 @@ namespace Roslyn.Tests.Generators
             MainModelManager.ConnectTwoFunctionUnits(alter, person, "int", "int, string", testModel);
             MainModelManager.AddNewOutput(person, "Person");
 
-            dependecies = FindParameters(person, testModel.Connections, newName);
+            dependecies = FlowAnalyser.FindParameters(person, testModel.Connections, newName);
             Assert.IsTrue(dependecies.Any(x => x.Source.Parent == alter));
             Assert.IsTrue(dependecies.Any(x => x.Source.Parent == newName));
         }
@@ -92,7 +93,7 @@ namespace Roslyn.Tests.Generators
 
             MainModelManager.ConnectTwoDefintions(outperson, inAge, testModel);
 
-            var dependecies = FindParameters(addage, testModel.Connections, null);
+            var dependecies = FlowAnalyser.FindParameters(addage, testModel.Connections, null);
             var firstdep = dependecies.First();
             Assert.AreEqual(outperson, firstdep.Source);
         }
@@ -112,7 +113,7 @@ namespace Roslyn.Tests.Generators
             //var outperson = MainModelManager.AddNewOutput(person, "(Person)", actionName:"onPerson");
             main.IsIntegrating.Add(person);
 
-            var dependecies = FindParameters(person, testModel.Connections, main);
+            var dependecies = FlowAnalyser.FindParameters(person, testModel.Connections, main);
             var firstdep = dependecies.First();
             Assert.AreEqual(countinParent, firstdep.Source);
         }
@@ -132,7 +133,7 @@ namespace Roslyn.Tests.Generators
             var outperson = MainModelManager.AddNewOutput(person, "(Person)", actionName: "onPerson");
             main.IsIntegrating.Add(person);
 
-            var dependecies = FindParameters(person, testModel.Connections, main);
+            var dependecies = FlowAnalyser.FindParameters(person, testModel.Connections, main);
             Assert.AreEqual(0, dependecies.Count);
         }
 
@@ -211,7 +212,7 @@ namespace Roslyn.Tests.Generators
             IntegrationBody body = new IntegrationBody();
             body.Integration = main;
 
-            AnalyseMatchingOutputOfIntegration(body, testModel);
+            IntegrationAnalyser.AnalyseMatchingOutputOfIntegration(body, testModel);
 
             Assert.AreEqual(1, body.OutputOfIntegration.Count);
             Assert.AreEqual(intOut, body.OutputOfIntegration.First().IntegrationOutput);
@@ -289,12 +290,12 @@ namespace Roslyn.Tests.Generators
 
 
             // analyse data flow 
-            var integrationBody = CreateNewIntegrationBody(testModel.Connections, main);
+            var integrationBody = IntegrationAnalyser.CreateNewIntegrationBody(testModel.Connections, main);
             AddIntegrationInputParameterToLocalScope(integrationBody, main);
-            AnalyseParameterDependencies(integrationBody);
-            AnalyseLambdaBodies(integrationBody, testModel);
-            AnalyseMatchingOutputOfIntegration(integrationBody, testModel);
-            AnalyseReturnToLocalReturnVariable(integrationBody, testModel);
+            IntegrationAnalyser.AnalyseParameterDependencies(integrationBody);
+            IntegrationAnalyser.AnalyseLambdaBodies(integrationBody, testModel);
+            IntegrationAnalyser.AnalyseMatchingOutputOfIntegration(integrationBody, testModel);
+            IntegrationAnalyser.AnalyseReturnToLocalReturnVariable(integrationBody, testModel);
 
             Assert.AreEqual(1, integrationBody.ReturnToLocalReturnVariable.Count);
 
@@ -493,7 +494,7 @@ namespace Roslyn.Tests.Generators
             main.IsIntegrating.AddUnique(printerror);
 
             List<LambdaBody> lambdaBodies = new List<LambdaBody>();
-            TravelIntegration(main, testModel,
+            FlowAnalyser.TravelIntegration(main, testModel,
                 onInLambdaBody: lambdaBodies.Add);
 
             Assert.IsTrue(lambdaBodies.Any(c => c.FunctionUnit == printerror && c.InsideLambdaOf == onerror));
@@ -545,7 +546,7 @@ namespace Roslyn.Tests.Generators
             x.IsIntegrating.AddUnique(printerror);
 
             List<LambdaBody> callinbodies = new List<LambdaBody>();
-            TravelIntegration(x, testModel,
+            FlowAnalyser.TravelIntegration(x, testModel,
                 onInLambdaBody: callinbodies.Add);
 
             Assert.IsTrue(callinbodies.Any(c => c.FunctionUnit == printerror && c.InsideLambdaOf == onerror));

@@ -12,6 +12,9 @@
             <converter:VisibilityConverter x:Key="VisibilityConverter" />
             <converter:FunctionUnitTextfieldBG x:Key="FunctionUnitTextfieldBG" />
             <converter:MissingTypesButtonText x:Key="MissingTypesButtonText" />
+            <converter:ValidationFlagColorConverter x:Key="ValidationFlagColorConverter" />
+            <converter:ValidationFlagFillConverter x:Key="ValidationFlagFillConverter" />
+            <converter:ValidationFlagVisbilityConverter x:Key="ValidationFlagVisbilityConverter" />
             
             
             

@@ -36,12 +36,13 @@ namespace Dexel.Model.Manager
         public static List<NameType> GetOutputPart(string rawdatanames)
         {
             var result = new List<NameType>();
-            var isInsideStream = IsStream(rawdatanames);
-            var insideParenthesis = GetInsideParenthesis(rawdatanames);
 
-            var firstdatanames = GetPipePart(insideParenthesis, 1);
 
-            CommaSeparator(firstdatanames, onEach: s
+            var firstdatanames = GetPipePart(rawdatanames, 1);
+            var isInsideStream = IsStream(firstdatanames);
+            var insideParenthesis = GetInsideParenthesis(firstdatanames);
+
+            CommaSeparator(insideParenthesis, onEach: s
                 => ConvertToNameType(s, isInsideStream, onNewNameType: nametype
                     => result.Add(nametype)));
 
@@ -51,7 +52,7 @@ namespace Dexel.Model.Manager
 
         public static bool IsStream(string rawdatanames)
         {
-            return Regex.IsMatch(rawdatanames, @"^\(.*\)\*$");
+            return Regex.IsMatch(rawdatanames, @"^\s*\(.*\)\*\s*$");
         }
 
         public static void CheckIsStream(string rawdatanames, Action isStream = null, Action isNotStream = null)
@@ -92,7 +93,7 @@ namespace Dexel.Model.Manager
         private static string GetInsideParenthesis(string rawdatanames)
         {
             string result = rawdatanames;
-            var matches = Regex.Matches(rawdatanames, @"^\((.*)\)\*?$");
+            var matches = Regex.Matches(rawdatanames, @"^\s*\((.*)\)\*?\s*$");
             if (matches.Count == 1)
             {
                 result = matches[0].Groups[1].Value;
@@ -161,35 +162,7 @@ namespace Dexel.Model.Manager
         }
 
 
-        public static List<MethodSignaturePart> AnalyseOutputs(FunctionUnit functionUnit)
-        {
-            var result = new List<MethodSignaturePart>();
-
-            var copyOfOutputs = functionUnit.OutputStreams.ToList();
-            OutputByReturn(functionUnit, dsdByReturn =>
-            {
-                result.Add(new MethodSignaturePart
-                {
-                    DSD = dsdByReturn,
-                    ImplementWith = DataFlowImplementationStyle.AsReturn
-                });
-                copyOfOutputs.Remove(dsdByReturn);
-            });
-
-            copyOfOutputs.ForEach(dsd =>
-            {
-                result.Add(new MethodSignaturePart
-                {
-                    DSD = dsd,
-                    ImplementWith = DataFlowImplementationStyle.AsAction
-                });
-            });
-
-            return result;
-        }
-
-
-        private static void OutputByReturn(FunctionUnit functionUnit, Action<DataStreamDefinition> onFound)
+        public static void OutputByReturn(FunctionUnit functionUnit, Action<DataStreamDefinition> onFound)
         {
             var noActionsnames = functionUnit.OutputStreams.Where(dsd => string.IsNullOrWhiteSpace(dsd.ActionName)).ToList();
             if (noActionsnames.Count == 1)

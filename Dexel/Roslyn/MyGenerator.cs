@@ -67,7 +67,7 @@ namespace Roslyn
             {
                 var nullable = false;
                 var body = IntegrationGenerator.GenerateIntegrationBody(Generator, model, isc, 
-                    integrationBody => IntegrationGenerator.NeedsLocalReturnVariable(integrationBody, () => nullable = true));
+                    integrationBody => IntegrationAnalyser.NeedsLocalReturnVariable(integrationBody, () => nullable = true));
 
                 var integration = MethodsGenerator.GenerateStaticMethod(Generator, isc, body, nullable);
 

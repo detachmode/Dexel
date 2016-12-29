@@ -12,6 +12,7 @@
     mc:Ignorable="d"
     >
     <Grid Background="{DynamicResource OuterFillPointerBrush}" Height="42"
+          ToolTip="{Binding ValidationErrorMessage}"
          >
         <i:Interaction.Behaviors>
             <dragAndDrop:FrameworkElementDropBehavior  />
@@ -20,6 +21,16 @@
             <RowDefinition Height="1*" />
             <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
+
+        <Rectangle                     
+            Grid.RowSpan="2" Grid.ColumnSpan="2" 
+            Visibility="{Binding ValidationFlag, Converter={StaticResource ValidationFlagVisbilityConverter}}"  
+            Fill="{Binding ValidationFlag, Converter={StaticResource ValidationFlagFillConverter}}"
+            Stroke="{Binding ValidationFlag, Converter={StaticResource ValidationFlagColorConverter}}" 
+            StrokeEndLineCap="Square" StrokeMiterLimit="0" StrokeDashCap="Square" 
+            StrokeDashArray="1 2" StrokeLineJoin="Round"/>
+
+
         <Rectangle Grid.Column="0" Grid.RowSpan="2" Fill="{DynamicResource FillPointerBrush}" Height="{DynamicResource StrokeThickness}" VerticalAlignment="Center"  />
         <Grid Background="Transparent" Grid.Row="0" Grid.RowSpan="2">
             <i:Interaction.Behaviors>

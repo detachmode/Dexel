@@ -54,9 +54,8 @@ namespace Dexel.Editor.Views
 
         public static void ViewRedraw()
         {
-            List<object> errors = new List<object>();
-            FlowValidator.Validate(MainViewModel.Instance().Model, obj => errors.Add(obj));
-            MainViewModel.Instance().ShowValidationResult(errors);
+            Validate(MainViewModel.Instance().Model);
+
             MainViewModel.Instance().Reload();
         }
 
@@ -570,9 +569,9 @@ namespace Dexel.Editor.Views
 
         public static void Validate(MainModel mainModel)
         {
-            List<object> errors = new List<object>();
-            FlowValidator.Validate(mainModel, obj => errors.Add(obj));
-            MainViewModel.Instance().ShowValidationResult(errors);
+            List<ValidationError> errorsAndWarnings = new List<ValidationError>();
+            FlowValidator.Validate(mainModel, obj => errorsAndWarnings.Add(obj));
+            MainViewModel.Instance().ShowValidationResult(errorsAndWarnings);
         }
     }
 

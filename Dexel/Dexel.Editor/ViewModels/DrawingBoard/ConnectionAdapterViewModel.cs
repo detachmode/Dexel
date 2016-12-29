@@ -16,7 +16,7 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         public FunctionUnit Parent { get; set; }
         public string Actionname { get; set; }
         public double Width { get; set; }
-        public bool IsInvalid { get; set; }
+        public ValidationFlag ValidationFlag { get; set; }
         public string ValidationErrorMessage { get; set; }
         public DataStreamDefinition Model { get; set; }
 
@@ -37,13 +37,16 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         }
 
 
-        
 
-
-
-
-        public void SetToInvalid(ValidationErrorUnnconnectedOutput error)
+        public void SetValidationError(ValidationError error, string msg)
         {
+            if (error.TypeOfError == TypeOfError.Error)
+                ValidationFlag = ValidationFlag.Invalid;
+            if (error.TypeOfError == TypeOfError.Warning)
+                if (ValidationFlag != ValidationFlag.Invalid)
+                    ValidationFlag = ValidationFlag.Warning;
+
+            ValidationErrorMessage += msg;
         }
 
 

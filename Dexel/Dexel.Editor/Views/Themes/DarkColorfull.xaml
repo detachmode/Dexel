@@ -14,5 +14,9 @@
     <SolidColorBrush x:Key="FillFunctionUnitBrush" Color="#FF303030"/>
     <SolidColorBrush x:Key="Foreground" Color="White"/>
     <system:Double x:Key="StrokeThickness">3</system:Double>
+    <SolidColorBrush x:Key="ErrorColor" Color="#FFFF0101"/>
+    <SolidColorBrush x:Key="WarningColor" Color="#7751FF00"/>
+    <SolidColorBrush x:Key="ErrorColor20" Color="#33FF0000"/>
+    <SolidColorBrush x:Key="WarningColor20" Color="#1051FF00"/>
 
 </ResourceDictionary>

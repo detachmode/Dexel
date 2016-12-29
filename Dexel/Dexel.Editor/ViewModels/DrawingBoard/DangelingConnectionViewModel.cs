@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Windows.Media;
 using Dexel.Editor.Views;
 using Dexel.Editor.Views.CustomControls;
 using Dexel.Editor.Views.DragAndDrop;
@@ -10,32 +11,35 @@ using Roslyn.Validator;
 
 namespace Dexel.Editor.ViewModels.DrawingBoard
 {
+    public enum ValidationFlag
+    {
+        Warning,
+        Invalid,
+        Valid
+    }
+
     [ImplementPropertyChanged]
     public class DangelingConnectionViewModel : IDragable, IDropable, IInputOutputViewModel
     {
         public DangelingConnectionViewModel()
         {
+            ValidationFlag = ValidationFlag.Valid;
             DataNames = "param";
         }
 
         public Guid ID;
         public DataStreamDefinition Model { get; set; }
-        public bool IsInvalid { get; set; }
+        public ValidationFlag ValidationFlag { get; set; }
         public string ValidationErrorMessage { get; set; }
         public FunctionUnit Parent { get; set; }
         public string DataNames { get; set; }
         public string Actionname { get; set; }
         public double Width { get; set; }
 
-        public void SetToInvalid(ValidationErrorUnnconnectedOutput error)
-        {
-            IsInvalid = true;
-            ValidationErrorMessage = "Need to be connected or matching integration output";
-        }
-
 
 
         Type IDragable.DataType => typeof (DangelingConnectionViewModel);
+
 
 
         public void LoadFromModel(FunctionUnit parent, DataStreamDefinition dataStream)
@@ -66,6 +70,18 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
                dangConnVm => Interactions.SwapDataStreamOrder(dangConnVm.Model, Model, MainViewModel.Instance().Model));
             data.TryCast<ConnectionViewModel>(
                connVm => Interactions.ChangeConnectionDestination(connVm.Model, Model.Parent, MainViewModel.Instance().Model));
+        }
+
+
+        public void SetValidationError(ValidationError error, string msg)
+        {
+            if (error.TypeOfError == TypeOfError.Error)
+                ValidationFlag = ValidationFlag.Invalid;
+            if (error.TypeOfError == TypeOfError.Warning)
+                if (ValidationFlag != ValidationFlag.Invalid)
+                    ValidationFlag = ValidationFlag.Warning;
+
+            ValidationErrorMessage += msg;
         }
     }
 }

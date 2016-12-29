@@ -30,7 +30,7 @@ namespace Roslyn.Validator.Tests
             main.IsIntegrating.AddUnique(trySomething);
 
             List<ValidationErrorUnnconnectedOutput> errorsfound = new List<ValidationErrorUnnconnectedOutput>();
-            FlowValidator.Validate(testModel, onError: obj =>
+            FlowValidator.Validate(testModel, onErrorOrWarning: obj =>
             {
                 errorsfound.Add((ValidationErrorUnnconnectedOutput) obj);
             });
@@ -42,6 +42,99 @@ namespace Roslyn.Validator.Tests
             Assert.AreEqual(OperationOut2, errorsfound[1].UnnconnectedOutput);
 
 
+        }
+
+        [TestMethod()]
+        public void ValidateTest_UnusedVariableWarning()
+        {
+            var testModel = new MainModel();
+            var main = MainModelManager.AddNewFunctionUnit("main", testModel);
+            MainModelManager.AddNewInput(main, "()");
+            MainModelManager.AddNewOutput(main, "(int)");
+
+            var op1 = MainModelManager.AddNewFunctionUnit("try something", testModel);
+            MainModelManager.AddNewInput(op1, "()");
+            var op1Out = MainModelManager.AddNewOutput(op1, "(string)");
+            main.IsIntegrating.AddUnique(op1);
+
+            var op2 = MainModelManager.AddNewFunctionUnit("try something", testModel);
+            var op2In = MainModelManager.AddNewInput(op2, "()");
+            var op2Out = MainModelManager.AddNewOutput(op2, "(int)");
+            main.IsIntegrating.AddUnique(op2);
+
+            MainModelManager.ConnectTwoDefintions(op1Out, op2In, testModel);
+
+            List<ValidationWarningUnusedVariable> warningsFound = new List<ValidationWarningUnusedVariable>();
+            FlowValidator.Validate(testModel, onErrorOrWarning: obj =>
+            {
+                warningsFound.Add((ValidationWarningUnusedVariable) obj);
+            });
+           
+            Assert.AreEqual(op1Out, warningsFound[0].UnusedOutput);
+            Assert.AreEqual(1, warningsFound.Count);
+        }
+
+        [TestMethod()]
+        public void ValidateTest_UnusedVariableWarning_InsideConnected()
+        {
+            var testModel = new MainModel();
+            var main = MainModelManager.AddNewFunctionUnit("main", testModel);
+            MainModelManager.AddNewInput(main, "()");
+            MainModelManager.AddNewOutput(main, "(int)");
+
+            var op1 = MainModelManager.AddNewFunctionUnit("try something", testModel);
+            MainModelManager.AddNewInput(op1, "()");
+            var op1Out = MainModelManager.AddNewOutput(op1, "(string, float)");
+            main.IsIntegrating.AddUnique(op1);
+
+            var op2 = MainModelManager.AddNewFunctionUnit("try something", testModel);
+            var op2In = MainModelManager.AddNewInput(op2, "(float)");
+            var op2Out = MainModelManager.AddNewOutput(op2, "(int)");
+            main.IsIntegrating.AddUnique(op2);
+
+            MainModelManager.ConnectTwoDefintions(op1Out, op2In, testModel);
+
+            List<ValidationWarningUnusedVariable> warningsFound = new List<ValidationWarningUnusedVariable>();
+            FlowValidator.Validate(testModel, onErrorOrWarning: obj =>
+            {
+                warningsFound.Add((ValidationWarningUnusedVariable) obj);
+            });
+            Assert.AreEqual(1, warningsFound.Count);
+            Assert.AreEqual(op1Out, warningsFound[0].UnusedOutput);
+           
+        }
+
+
+
+        [TestMethod()]
+        public void ValidateTest_UnusedActionWarning()
+        {
+            Assert.Fail(); // TODO
+            var testModel = new MainModel();
+            var main = MainModelManager.AddNewFunctionUnit("main", testModel);
+            MainModelManager.AddNewInput(main, "()");
+            MainModelManager.AddNewOutput(main, "(int)");
+
+            var op1 = MainModelManager.AddNewFunctionUnit("try something", testModel);
+            MainModelManager.AddNewInput(op1, "()");
+            var op1Out = MainModelManager.AddNewOutput(op1, "(string)");
+            main.IsIntegrating.AddUnique(op1);
+
+            var op2 = MainModelManager.AddNewFunctionUnit("try something", testModel);
+            var op2In = MainModelManager.AddNewInput(op2, "()");
+            var op2Out = MainModelManager.AddNewOutput(op2, "(int)");
+            main.IsIntegrating.AddUnique(op2);
+
+            MainModelManager.ConnectTwoDefintions(op1Out, op2In, testModel);
+
+            List<ValidationWarningUnusedVariable> warningsFound = new List<ValidationWarningUnusedVariable>();
+            FlowValidator.Validate(testModel, onErrorOrWarning: obj =>
+            {
+                warningsFound.Add((ValidationWarningUnusedVariable) obj);
+            });
+           
+            Assert.AreEqual(op1Out, warningsFound[0].UnusedOutput);
+            Assert.AreEqual(1, warningsFound.Count);
         }
 
         [TestMethod()]
@@ -67,7 +160,7 @@ namespace Roslyn.Validator.Tests
             main.IsIntegrating.AddUnique(createPerson);
 
             List<ValidationErrorInputMissing> errorsfound = new List<ValidationErrorInputMissing>();
-            FlowValidator.Validate(testModel, onError: obj =>
+            FlowValidator.Validate(testModel, onErrorOrWarning: obj =>
             {
                 errorsfound.Add((ValidationErrorInputMissing) obj);
             });

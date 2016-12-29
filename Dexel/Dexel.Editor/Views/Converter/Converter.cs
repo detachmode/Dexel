@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 using System.Windows.Media;
+using Dexel.Editor.ViewModels.DrawingBoard;
 
 namespace Dexel.Editor.Views.Converter
 {
@@ -134,6 +135,67 @@ namespace Dexel.Editor.Views.Converter
             throw new NotImplementedException();
         }
     }
+
+
+    public class ValidationFlagVisbilityConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var flag = (ValidationFlag)value;
+            return flag == ValidationFlag.Valid ? Visibility.Hidden : Visibility.Visible;
+        }
+
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    public class ValidationFlagColorConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var flag = (ValidationFlag)value;
+            if (flag == ValidationFlag.Invalid)
+                return Application.Current.Resources["ErrorColor"];
+            if (flag == ValidationFlag.Warning)
+            {
+                return Application.Current.Resources["WarningColor"];
+            }
+            return null;
+        }
+
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
+    public class ValidationFlagFillConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var flag = (ValidationFlag)value;
+            if (flag == ValidationFlag.Invalid)
+                return Application.Current.Resources["ErrorColor20"];
+            if (flag == ValidationFlag.Warning)
+            {
+                return Application.Current.Resources["WarningColor20"];
+            }
+            return null;
+        }
+
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+
 
     public class FunctionUnitSelectionConverter : IValueConverter
     {

@@ -33,9 +33,11 @@
 
         </Grid.ColumnDefinitions>
         <Rectangle  
-            Visibility="{Binding IsInvalid, Converter={StaticResource VisibilityConverter}}"          
-            Grid.RowSpan="2" Grid.ColumnSpan="2" Fill="#33FF0000"
-            Stroke="#FFFF0101" StrokeEndLineCap="Square" StrokeMiterLimit="0" StrokeDashCap="Square" 
+            Visibility="{Binding ValidationFlag, Converter={StaticResource ValidationFlagVisbilityConverter}}"          
+            Grid.RowSpan="2" Grid.ColumnSpan="2" 
+            Fill="{Binding ValidationFlag, Converter={StaticResource ValidationFlagFillConverter}}"
+            Stroke="{Binding ValidationFlag, Converter={StaticResource ValidationFlagColorConverter}}" 
+            StrokeEndLineCap="Square" StrokeMiterLimit="0" StrokeDashCap="Square" 
             StrokeDashArray="1 2" StrokeLineJoin="Round"/>
 
         <Rectangle Grid.Column="0" Grid.RowSpan="2" Fill="{DynamicResource FillPointerBrush}" Height="{DynamicResource StrokeThickness}" VerticalAlignment="Center"  />

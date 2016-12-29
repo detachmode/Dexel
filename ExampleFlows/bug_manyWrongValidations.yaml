@@ -1,0 +1,120 @@
+FunctionUnits:
+- &o2
+  Position:
+    X: 80
+    Y: 50
+  Name: foo
+  ID: 568f495f-434c-4465-afc0-3d7d8f2cf254
+  IsIntegrating:
+  - &o0
+    Position:
+      X: 29.285714285714292
+      Y: 245.71428571428567
+    Name: subbar
+    ID: cd3d7b60-6474-4f03-93c4-42fa6a54272d
+    IsIntegrating: []
+    InputStreams:
+    - DataNames: ()
+      ID: 54e92907-c58e-4d7d-b0a1-1c9e2f88852a
+      Parent: *o0
+    OutputStreams:
+    - &o7
+      ActionName: ''
+      DataNames: (age:int)
+      ID: 38b638d1-af23-4402-ab0e-e36a23c04afa
+      Connected: true
+      Parent: *o0
+    - DataNames: ()
+      ID: c55a84b9-bcef-45ce-a668-193409fcb913
+      Parent: *o0
+  - &o1
+    Position:
+      X: 385.13186813186775
+      Y: 233.49054945054948
+    Name: print something
+    ID: f0b67e84-6f5f-45fb-882e-0878599b07e3
+    IsIntegrating: []
+    InputStreams:
+    - &o8
+      ActionName: ''
+      DataNames: ()
+      ID: 09d13f32-c51b-4d25-bd1a-cd7f8668f0e7
+      Connected: true
+      Parent: *o1
+    OutputStreams:
+    - ActionName: ''
+      DataNames: (age:int)
+      ID: 9033df85-8a6b-4313-86fb-b2875e3cf6c0
+      Parent: *o1
+  InputStreams:
+  - DataNames: ()
+    ID: 20ceca63-fdb7-4aa7-8118-a6faa13d6abb
+    Parent: *o2
+  OutputStreams:
+  - &o5
+    ActionName: ''
+    DataNames: (age:int)
+    ID: 43d29a20-ef38-4981-8c26-0295a13f183a
+    Connected: true
+    Parent: *o2
+  - DataNames: ()
+    ID: cf47a85c-d34c-4c0c-8b07-7b18f0679182
+    Parent: *o2
+- *o0
+- &o3
+  Position:
+    X: 456.42857142857156
+    Y: 42.857142857142904
+  Name: create person
+  ID: bb3343ff-b2af-4917-acbc-8eb631a194fc
+  IsIntegrating: []
+  InputStreams:
+  - &o6
+    DataNames: (age:int)
+    ID: 6a441340-dc56-4b67-9265-1f2f59a92b72
+    Connected: true
+    Parent: *o3
+  OutputStreams:
+  - DataNames: (rndPerson:Person)
+    ID: f922bffa-47de-4c69-b17c-965718b38a67
+    Parent: *o3
+- *o1
+- &o4
+  Position:
+    X: 230.52100677100702
+    Y: -129.68050172050147
+  Name: test
+  ID: 17d3bf66-db14-4448-98e2-d84c1fd94126
+  IsIntegrating:
+  - *o2
+  - *o3
+  InputStreams:
+  - ActionName: ''
+    DataNames: ()
+    ID: a236e4b9-5d4b-495d-96a2-16323af14897
+    Parent: *o4
+  OutputStreams:
+  - ActionName: ''
+    DataNames: (rndPerson:Person)
+    ID: 59acade7-33d6-4085-8ac3-6cab4db36cd3
+    Parent: *o4
+Connections:
+- DataNames: (age:int)
+  ID: a2cecf41-6415-49df-a4a1-d351c665fd3a
+  Sources:
+  - *o5
+  Destinations:
+  - *o6
+- DataNames: (age:int) | ()
+  ID: 76f299be-1bd2-4530-a30f-5fdd94b2e51b
+  Sources:
+  - *o7
+  Destinations:
+  - *o8
+DataTypes:
+- Name: Person
+  SubDataTypes:
+  - Name: age
+    Type: int
+  - Name: name
+    Type: string

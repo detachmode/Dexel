@@ -31,7 +31,7 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         public double Width { get; set; }
         public double Height { get; set; }
         public ObservableCollection<FunctionUnitViewModel> Integration { get; set; }
-
+        public string ValidationErrorMessage { get; set; }
         public Point IntegrationStartPosition { get; set; }
         public Point IntegrationEndPosition { get; set; }
 
@@ -212,41 +212,28 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
 
         #endregion
 
-        public void SetToValidIncludingOutputs()
+        public void ResetToValidIncludingOutputs()
         {
             IsInvalid = false;
             ValidationErrorMessage = "";
             Outputs.ForEach(dsdVM =>
             {
-                dsdVM.IsInvalid = false;
+                dsdVM.ValidationFlag = ValidationFlag.Valid;
+                dsdVM.ValidationErrorMessage = "";
+            });
+
+            Inputs.ForEach(dsdVM =>
+            {
+                dsdVM.ValidationFlag = ValidationFlag.Valid;
                 dsdVM.ValidationErrorMessage = "";
             });
         }
 
 
-        public string ValidationErrorMessage { get; set; }
-
-
-        public void SetToInvalid(ValidationErrorInputMissing missingInputData)
+        public void SetValidationError(ValidationError error, string msg)
         {
             IsInvalid = true;
-            var nt = missingInputData.notFoundNameType;
-            var container = nt.IsList ? "*" : nt.IsArray ? "[]" : "";
-
-            ValidationErrorMessage +=
-                $"Missing input data: \n ->  {nt.Name}:{nt.Type}{container}\n";
-        }
-
-
-        public void SetToInvalid(ValidationErrorUnnconnectedOutput unnconnectedOutput)
-        {
-            IsInvalid = true;
-            var dsd = unnconnectedOutput.UnnconnectedOutput;
-
-            ValidationErrorMessage +=
-                "Unconnected output inside integration:\n" +
-                $"function unit: {dsd.Parent.Name} \n" +
-                $"output:{dsd.DataNames} actionname:{dsd.ActionName}\n";
+            ValidationErrorMessage = msg;
         }
     }
 
