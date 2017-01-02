@@ -1,17 +1,6 @@
-% Created 2016-09-08 Do 16:45
-\documentclass[a4paper,12pt,oneside]{book}
-
-\begin{document}
-	
-	\maketitle
-	\tableofcontents
 \chapter{Entstehung und Grundgedanken}
-\label{sec:orgheadline14}
 
 \section{Einleitung}
-\label{sec:orgheadline1}
-
-
 
 Flow Design ist aus der Clean Code Development Bewegung heraus entstanden. Hauptinitiator und Erfinder ist Ralf Westphal.
 Ralf Westphal war auch Mitbegründer und Miterfinder der Clean Code Development Bewegung.
@@ -1250,84 +1239,3 @@ Die Aufgabe der UI-Logik besteht dann anschließend darin das Ergebnis der Modif
 
 
 \chapter{Die Entwurfsmethode}
-\label{sec:orgheadline70}
-Wie in der Einleitung dieser Arbeit bereits erwähnt, ist Flow Design nicht nur
-ein Methodik um Datenflüsse auf dem Papier zu modellieren, sondern Flow Design
-bietet neben dem Diagramm auch noch eine Entwurfsmethode um die Architektur einer Software
-zu entwerfen.
-
-\section{System-Umwelt-Diagramm}
-\label{sec:orgheadline66}
-Der erste Schritt beim Entwerfen einer Software nach Flow Design besteht
- darin, die Grenzen des Systems kennenzulernen. Es soll herausgefunden
- werden, welche Möglichkeiten es gibt, mit dem System zu interagieren und auf
- welche Ressourcen das System zugreifen soll. Ziel soll sein, dass das System
- so entworfen wird, dass die Businessdomäne entkoppelt bleibt von diesen
- äußeren Faktoren.
- Ein einfaches Schaubild soll einem helfen diese äußeren Faktoren zu
- identifizieren: Ein Kreis wird in der Mitte eines Papiers gezeichnet, dieser
- Kreis symbolisiert das System oder auch Domäne genannt.
- Auf der linken Seite des Kreises werden die äußeren Systeme eingetragen, die
- auf das System zugreifen und damit interagieren, diese Systeme oder
- Techniken werden auch als Portale bezeichnet. Beispiele für Portale wären:
- HTTP-Zugriff, Batch mode und GUIs.
- Auf der anderen Seite des Kreises werden die externen Ressourcen eingetragen, auf die
- das System Zugriff haben soll. Diese Ressourcen werden auch als Provider
- bezeichnet. Ein Beispiel hierfür wären, ein Filesystem oder eine Datenbank.
-
-Ralf Westphal bezeichnet diesen Kreis auch als Softwarezelle, was
-verdeutlichen soll, dass das zu entwerfende System, sich wie eine Zelle in der
-Natur verhalten soll. Eine Zelle weiß nicht viel über ihre Umwelt, sie befindet sich in
-einer Nährstofflösung und verarbeitet die Stoffe, die durch ihre Membran in
-ihr Inneres gelangen. Die Membran einer Softwarezelle trennt diese von
-ihrer Umwelt (andere Systeme) und regelt den Austausch von Daten mit dem
-Inneren des Systems. Ziel ist es später in der Implementierung darauf zu
-achten, dass die "Schicht" oder "Membran", zwischen Domäne und Außenwelt möglichst
-dünn bleibt.
-Ist das System von der Umwelt entkoppelt lässt es sich besser testen und es
-lassen sich leichter neue Portale und Provider an das System anhängen.
-
-\section{Interfaceskizze ( im Falle einer GUI Anwendung )}
-\label{sec:orgheadline67}
-In Anlehnung an das User Experience Driven Development, soll schnell die
-Features des Systems herausgefunden werden, die der Kunde wirklich
-braucht. Es stellt sich heraus, das UML oder Use Cases für diese Aufgabe nur
-bedingt hilfreich sind. Leichter für den Kunden zu verstehen ist eine
-Interfaceskizze.
-Diese soll gemeinsam mit der Kunden erarbeitet werden. Ein wichtiger Bestandteil
-dieser Skizze besteht auch darin, die Interaktionen, die der
-Nutzer mit dieser Oberfläche auslösen kann, zu identifizieren und zu benennen.
-
-\section{Flow Design Entwurf}
-\label{sec:orgheadline68}
-Für jede der definierten Interaktionen aus der Interfaceskizze(n) wird ein Flow Design Flussdiagramm
-erstellt.
-
-Nachdem die Flow Design Diagramme erstellt wurden, muss überlegt werden, wie die
-einzelnen Funktionseinheiten in Klassen, Dlls und Anwendungen zusammengefasst
-und strukturiert werden sollen.
-Dazu bietet sich an, einzelnen Funktionseinheiten zusätzlich mit dem Namen der
-Klasse (gegebenenfalls auch DLLs und Anwendung) zu beschriften. Alternative ist es
-auch üblich mehrere Funktionseinheiten mit einer gestrichelten Linien zu
-umkreisen und auch mit unterschiedlichen Farben zu arbeiten, um die Gruppierungen und Zuordnungen zu verdeutlichen. 
-
-Als letzter optionaler Schritt gilt es, Pfeile von solchen Datenströmen farblich hervorzuheben, die
-parallel laufen können.
-
-\section{Rekursive Eigenschaft}
-\label{sec:orgheadline69}
-Eine Softwarezelle hat die Eigenschaft, dass sie rekursive ist.
-Das gesamte System lässt sich als eine große Softwarezelle betrachten, die wiederum
-aus mehreren kleineren Softwarezellen bestehen können (Dlls und Anwendungen).
-Diese Untersysteme sollen wieder wie das gesamte System möglichst entkoppelt
-sein von den restlichen Untersystemen. Einer dieser Untersysteme muss sich dann
-jedoch als integrierendes System verstehen, welches die anderen Untersysteme
-kennt. Die Aufgabe dieses Untersystems besteht bestenfalls nur daraus, das
-Zusammenspiel der Untersysteme zu koordinieren und keine komplexe Logik selbst zu implementieren.
-Diese Untersysteme bestehen dann wieder aus Klassen und Methoden, die nach IOSP
-implementiert sein sollen.
-Somit könnte man selbst die Funktionseinheiten eines Flow Design
-Flussdiagrammes als einzelne Softwarezellen betrachten.
-Ralf Westphal behauptet, diese Architektur soll weniger starr und somit
-universeller einsetzbar sein, als zum Beispiel das Schichtenmodell oder das Zwiebelschalenmodell.
-\end{document}

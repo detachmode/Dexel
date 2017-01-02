@@ -904,7 +904,114 @@ TODO
 #+END_SRC
 
 *** Erzeugung der Integration-Bodies 
-**** Einfacherster Fall
+
+**** Terminologie
+     Integration und Sub-Funktionseinheit. Eine Integration kann nicht nur aus
+     Operationen bestehen, sonder auch aus anderen Integrationen bestehen.
+     Leider gibt es hierfür keine Überbegriff für beide.
+     Da im in diese Kapitel jedoch öfters von Funktionseinheiten innerhalb einer
+     Integration die Rede sein wird, muss hierfür ein Überbegriff eingeführt
+     werden. Funktionseinheiten, die sich in einer Integration befinden, werden
+     nachfolgend als Sub-Funktonseinheiten bezeichnet.
+
+**** Die Herangehensweise
+
+Die automatische Erzeugung eines Integration ist die komplexeste Aufgabe in
+diesem Projekt. Um die Aufgabe überschaubar zu halten, wurde diese im groben in
+zwei Teileaufgaben zerteilt: die Analyse und die Generierung.
+Die Analyse besteht wiederum aus unterschiedlichen Methoden, die jeweils das
+Flow Design auf eine bestimme Sache analysieren und das Ergebnis in ein Objekt
+abspeichern. Diese Objekt wurde als =IntegrationBody= bezeichnet.
+Diese beinhaltet alle Informationen aus der Analyse. Am Ende wird dieses Objekt
+der Generierungsmethode Übergeben, die anhand diesem den Code erzeugt.
+  
+#+BEGIN_SRC cpp
+
+        public static SyntaxNode[] GenerateIntegrationBody(SyntaxGenerator generator, MainModel mainModel,
+            FunctionUnit integration )
+        {
+            // integrationbody object for storing analysed and generated information
+            var integrationBody = IntegrationAnalyser.CreateNewIntegrationBody(mainModel.Connections, integration);
+            AddIntegrationInputParameterToLocalScope(integrationBody, integration);
+
+            // analyse data flow before generation 
+            IntegrationAnalyser.AnalyseParameterDependencies(integrationBody);
+            IntegrationAnalyser.AnalyseLambdaBodies(integrationBody, mainModel);
+            IntegrationAnalyser.AnalyseMatchingOutputOfIntegration(integrationBody, mainModel);
+            IntegrationAnalyser.AnalyseReturnToLocalReturnVariable(integrationBody, mainModel);
+
+            // generation
+            var result = new List<SyntaxNode>();
+            integrationBody.Generator = generator;
+            GenerateBody(integrationBody, result.Add);
+
+            return result.ToArray();
+        }
+
+#+END_SRC
+
+**** Analyse des Flow Design
+***** AnalyseParameterDependencies
+      Da die Pipe-Notation unterstützt wird, reicht es nicht einfache aus die Daten
+      aus den Datenflüssen zu nehmen, die direkt in die akutelle
+      Funktionseinheit fließen. Stattdessen muss der Fluss rückwärts
+      traversiert werden und auf Übereinstimmungen untersucht werden.
+      Für jede Sub-Funktionseinheit muss diese Analyse durchgeführt werden.
+      Für jeden Input-Datentyp jeder Funktioneinheit wird das Ergebnis gespeichert. Das Ergebnis beinhaltet ob der Datentyp überhaupt gefunden
+      wurde, ob er im Input der Integration gefunden wurde, oder ob er aus einer
+      anderen Sub-Funktionseinheit innerhalb des Datenflusses stammt. 
+      Außerdem wird die gefundene DataStreamDefinition gespeichert, in der die
+      Daten gefunden wurden. Ein Aufruf einer Sub-Funktionseinheit kann nur generiert werden, wenn alle Datentypen gefunden
+      wurden.
+
+***** AnalyseLambdaBodies
+      Manche optionale Datenflüsse oder Stream werden über Actions realisiert.
+      Das bedeutet, dass sich alle nachflogenden Funktionseinheiten innerhalb
+      des Lambda-Ausdruckes befinden müssen. Die Analyse speichert das Ergebnis
+      in folgender Form ab. 
+
+#+BEGIN_SRC cpp
+    public class LambdaBody
+    {
+        public DataStreamDefinition InsideLambdaOf;
+        public FunctionUnit FunctionUnit;
+    }
+#+END_SRC
+
+     Da die LambdaBody-Objekte in der Reihenfolge im IntegrationBody abgelegt
+     werden, in der sie im Flow Design vorkommen, kann daraus auch später die
+     Reihenfolge der zu generierenden Methoden abgeleitet werden.
+
+
+     Für jede Funktionseinheit wird solch ein Objekt angelegt, auch wenn es
+     nicht innerhalb eines Lambdas vorkommt. Ist das der Fall, so ist der Wert
+     =InsideLambdaOf= =null= . Alle Funktionseinheiten für die dieser Wert
+     =null= ist, befinden sich somit direkt im Scope der Integration und nicht
+     innerhalb eines Lambdas.
+
+***** AnalyseMatchingOutputOfIntegration
+      Hat die Integration einen Output der als Action realisert werden muss, so
+      muss herausgefunden werden, welche Funtionseinheiten im Datenfluss diesen
+      Output erzeugt bedienen. Dabei werden die Implementierungs-Stile der
+      beiden übereinstimmenden Ausgänge mit abgepeichert. Später bei der
+      Generierung gibt es somit drei Möglichkeiten:
+      - Beide sind Actions:
+        Die Action der Integration wird direkt an die Sub-Funktionseinheit
+        weitergereicht. Dadurch erlaubt man einer Sub-Funktionseinheit das
+        Aufrufen des Ausgang der Integration.
+      - Integrationsausgang ist Action, Sub-Funktionseinheitsausgang ist
+        Returnwert 
+        Die Action wird aufgerufen und die Methode wird direkt in diese
+        hingeschrieben
+      - Integrationsausgang ist Returnwert, Sub-Funktionseinheitsausgang ist
+        Action.
+        Eine lokale Variable muss vorher angelegt werden und mit =null=
+        initalisiert werden. Danach wird innerhalb des Lambas des Actions diese
+        Variable beschrieben. Am Ende wird die lokale Varibale als Rückgabewert
+        ausgegeben.
+
+
+
 **** Datenströme
 
 ** Generierung eines Diagrammes aus Code
