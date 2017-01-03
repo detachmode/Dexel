@@ -211,6 +211,7 @@ Wie die Funktionalität auf unterster Ebene implementiert wird, wird auf dem Dia
 Das ist jedoch keine negative Einschränkung, vielmehr ermöglicht dies, sich auf beim Entwurf nicht mit unnötigen Implementierungsdetails beschäftigen zu
 müssen, sondern sich auf das Große ganze - das Zusammenspiel/ Komposition der Funktionseinheiten und den Datenfluss zu konzentrieren.
 
+
 Anzumerken wäre noch, dass nicht der Kontrollfluss abgebildet wird, sondern, wie erwähnt, der Datenfluss.
 
 
@@ -218,12 +219,17 @@ Anzumerken wäre noch, dass nicht der Kontrollfluss abgebildet wird, sondern, wi
 
 \section{RomanNumbers Beispiel}
 
-\bigskip
+\begin{center}
+\begin{figure}[!htbp]
+	\includegraphics[width=1.1\linewidth]{./img/FromRomanNumerals.png}
+	\caption{Einfaches Flow Design Beispiel}
+\end{figure}
+\end{center}
 
-\includegraphics[width=1.1\linewidth]{./img/FromRomanNumerals.png}
-\bigskip
 
-Das nachfolgende Beispiel soll auf einfache Weise zeigen, wie ein Flow Design Diagramm aufgebaut ist.
+
+
+Das Beispiel soll auf einfache Weise zeigen, wie ein Flow Design Diagramm aufgebaut ist.
 Das Programm/Unterprogramm soll eine römische Zahl in eine Dezimalzahl konvertieren.
 
 Alle eingekreisten Namen sind Funktionseinheiten.
@@ -244,9 +250,16 @@ Das Ergebnis ist die Summe aller Zahlen.
 
 \section{Datenströme}
 
-\begin{center}
-	\includegraphics[width=.9\linewidth]{./img/diagram1.png}
-\end{center}
+
+\begin{figure}[!htbp]
+	\includegraphics[width=1\linewidth]{./img/diagram1.png}
+	\caption{Datenfluss zwischen drei Funktionseinheiten}
+\end{figure}
+
+
+
+
+
 
 Über den Pfeilen, die die Richtung des Datenflüssen darstellt, werden die im
 Datenfluss enthaltenen Datentypen in runden Klammern eingetragen.
@@ -259,16 +272,29 @@ Die Notation erlaubt es auch einzelne Datentypen zusätzlich noch mit einem Name
 zu versehen. Was vor allem bei primitiven Datentypen hilfreich sein kann. 
 Der optionale Namen wird dem Datentyp durch einen Doppelpunkt getrennt vorangestellt.
 
-\begin{center}	
+\begin{figure}[!htbp]
+	\centering
 	\includegraphics[width=.4\linewidth]{./img/diagramNamedType.png}
-\end{center}
+	\caption{Datentyp \textit{int} mit Namen \textit{alter}}
+\end{figure}
+
 
 Falls der Datentyp aus dem Namen hervorgeht - oder nicht allzu relevant ist - kann auch anstatt des Datentypen nur der Namen in die runden Klammern eingetragen werden.
 
+
+\clearpage
+
 \section{Hierarchische Datenflüsse}
-\begin{center}
-	\includegraphics[width=.9\linewidth]{./img/diagramHir.png}
-\end{center}
+
+
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=1\linewidth]{./img/diagramHir.png}
+	\caption{Hierarchischer Datenfluss}
+\end{figure}
+
+
 Das Flow Design Flussdiagramm unterstützt die Funktion in eine Funktionseinheit sozusagen hineinzuzoomen.
 Hier erkennt man die rekursive Eigenschaft der Funktionseinheiten:
 Eine Funktionseinheit kann wiederum aus mehreren Funktionseinheiten bestehen,
@@ -281,18 +307,31 @@ Kaptiel 4 erläutert.
 
 \section{Definition eigener Datentypen}
 
-\begin{center}
+
+
+
+
+
+\begin{figure}[!htbp]
+	\centering
 	\includegraphics[width=.35\linewidth]{./img/diagramCustomTypes.png}
-\end{center}
+	\caption{Eigener Datentype}
+\end{figure}
+
+
 Bei einen Datenstrom bestehend aus einem eigenen Datentypen, kann es helfen, den Datentyp innerhalb des Flow Design Diagrammes zu definieren.
 Dafür wird an einer beliebigen Stelle auf dem Papier eine Box gezeichnet,
 in der der Datentyp mit seinen Membervariablen aufgelistet wird.\footnote{Diese Notation ist nicht offiziell Teil der Flow Design Notation,
 sondern ist eine Ergänzung von Kevin Erath}
 
 \section{Arrays}
-\begin{center}	
-	\includegraphics[width=.5\linewidth]{./img/diagramArray.png}
-\end{center}
+
+\begin{figure}[!htbp]
+	\centering
+		\includegraphics[width=.5\linewidth]{./img/diagramArray.png}
+	\caption{Array Notation}
+\end{figure}
+
 Werden Daten als Arrays mit fester Größe übergeben, so wird hinter dem Datentyp eine leere eckige Klammer angehängt.
 Ist die Arraygröße bekannt, so kann man diese in die Klammer noch zusätzlich eintragen.
 
@@ -300,9 +339,14 @@ Ist die Arraygröße bekannt, so kann man diese in die Klammer noch zusätzlich 
 
 \section{0 bis n (Datenstrom)}
 
-\begin{center}
-\includegraphics[width=.5\linewidth]{./img/diagram0n.png}
-\end{center}
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=.5\linewidth]{./img/diagram0n.png}
+	\caption{Datenstrom Notation}
+\end{figure}
+
+
 
 Ein Datenstrom wird mit einem * außerhalb der Klammer dargestellt.
 Selten wird ein Datenstrom auch mit geschweiften Klammern dargestellt, um ihn
@@ -310,11 +354,16 @@ von einem optionalen Output ( 0 bis 1 ) unterscheiden zu können: \{int\}.
 
 Ein Datenstrom zeigt an, dass die in der Klammer stehenden Daten keinmal,
 einmal, oder auch öfters als einmal fließen können.
+
 \section{Container / Listen}
 
-\begin{center}
-\includegraphics[width=.7\linewidth]{./img/diagramCollection.png}
-\end{center}
+
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=.7\linewidth]{./img/diagramCollection.png}
+	\caption{Container Notation}
+\end{figure}
+
 
 Stern innerhalb der Klammer.
 Der Datentyp liegt in einem Container vor.
@@ -325,45 +374,55 @@ können, bevor alle anderen Daten erzeugt wurden.
 
 \section{0 bis 1 (optionaler Output)}
 
-\begin{center}
-\includegraphics[width=.5\linewidth]{./img/diagramOptional.png}
-\end{center}
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=.5\linewidth]{./img/diagramOptional.png}
+	\caption{Optionaler Output}
+\end{figure}
+
+
 Mit einer eckigen Klammer lässt sich ein optional Output - einmal oder keinmal -
-darstellen: [int].
+darstellen. \footnote{Oft wird jedoch auf diese Notation verzichtet und auch bei optionalen Ausgängen eine runde Klammer verwendet. 
+}
 
 Optionale Outputs können genau wie Datenströme nicht über ein Rückgabewert einer
 Methode realisiert werden, da nach jedem Aufruf genau ein Rückgabewert erwartet wird. Wie solche
-Datenflüsse in C\# realisiert werden, wird in Kapitel 4 gezeigt.
+Datenflüsse in C\# realisiert werden, wird in einem späteren Kapitel gezeigt.
 
 \section{Mehrere Datentypen auf einem Datenstrom}
 
-\begin{center}
-	\includegraphics[width=.5\linewidth]{./img/diagramIntString.png}
-\end{center}
 
-Besteht ein Datenstrom einer Funktionseinheit aus mehrere Datentypen , so werden diese durch Kommas getrennt in die Klammer geschrieben.
+\begin{figure}[!htbp]
+	\centering
+	\includegraphics[width=.5\linewidth]{./img/diagramIntString.png}
+	\caption{Mehrere unterschiedliche Datentypen auf einem Datenstrom}
+\end{figure}
+
+
+Besteht ein Datenstrom einer Funktionseinheit aus mehrere Datentypen, so werden diese durch Kommas getrennt in die Klammer geschrieben.
 
 Mehrere Outputs lassen sich nicht in allen Sprachen einfach realisieren.
 Wahlweise kann es mit Tupel realisiert werden, oder es werden aus den mehreren Datentypen ein 
 neuer Datentyp erzeugt, der alle Output-Daten beinhaltet.
 
 \section{Joints und Pipe-Notation}
-\begin{center}
+
+\begin{figure}[!htbp]
+	\centering
 	\includegraphics[width=.7\linewidth]{./img/diagramJoin.png}
-\end{center}
-
-
+	\caption{Joint-Notation}
+\end{figure}
 
 
 Falls der Output mehrere Funktionseinheiten in einen Datenstrom zusammenlaufen
 sollen und dieser dann als Input in eine anderen Funktionseinheit hineinfließen
-soll , wird das mit Hilfe eines s.g. Joints dargestellt. 
+soll, wird das mit Hilfe eines s.g. Joints dargestellt. 
 Dieser wird als Linie dargestellt an die mehrere Inputs zusammenlaufen.
 
 Im Code wird dies meistens als Methode umgesetzt, die mehrere Inputparameter entgegennimmt.
 Wichtig hierbei ist, dass das Bündeln der Datenflüsse nicht Aufgabe der
-Funktionseinheit F ist, sondern ihrer Umgebung ( z.B einer übergeordneten Methode).
-Die Funktionseinheit F erwartet einfach ein Datenstrom mit zwei Daten x und y
+Funktionseinheit \textit{F} ist, sondern ihrer Umgebung ( z.B einer übergeordneten Methode).
+Die Funktionseinheit \textit{F} erwartet einfach ein Datenstrom mit zwei Daten \textit{x} und \textit{y}
 und kennt deren Herkunft nicht.
 
 \bigskip
@@ -372,18 +431,23 @@ Hiermit kann der Output sich von dem Input der nachfolgenden Funktionseinheit un
 Dadurch können auch Daten, die aus vorherigen Funktionseinheiten innerhalb des Datenflusses entstanden sind, entnommen und einer Funktionseinheit
 übergeben werden.
 
-\begin{center}
+\begin{figure}[!htbp]
+	\centering
 	\includegraphics[width=\linewidth]{./img/diagramPipe.jpg}
-\end{center}
+	\caption{Pipe-Notation}
+\end{figure}
 
-In diesem Beispiel produziert G ein x und H ein y. Sowohl G als auch H nehmen keine Daten beim Aufruf entgegen.
-In die Funktionseinheit F fließen die Daten aus G und H hinein.
+In diesem Beispiel produziert \textit{G} ein \textit{x} und \textit{H} ein \textit{y}. Sowohl \textit{G} als auch \textit{H} nehmen keine Daten beim Aufruf entgegen.
+In die Funktionseinheit \textit{F} fließen die Daten aus \textit{G} und \textit{H} zusammen.
 
 \section{Tonnen}
 
-\begin{center}
-	\includegraphics[width=.7\linewidth]{./img/diagramTonne.png}
-\end{center}
+\begin{figure}[!htbp]
+	\centering
+		\includegraphics[width=.7\linewidth]{./img/diagramTonne.png}
+	\caption{Tonnensymbol}
+\end{figure}
+
 
 
 Eine Tonne zeigt an, dass die Funktionseinheit state-behaftet ist.
@@ -392,9 +456,12 @@ Schreiben einer Membervariable einer Klasse.
 
 \section{Abhängigkeiten / Provider}
 
-\begin{center}
-	\includegraphics[width=.5\linewidth]{./img/diagramProvider.png}
-\end{center}
+\begin{figure}[!htbp]
+	\centering
+		\includegraphics[width=.5\linewidth]{./img/diagramProvider.png}
+	\caption{Provider}
+\end{figure}
+
 
 
 Eine Tonne die mit einer Linie zu einer Funktionseinheit verbunden ist, soll
@@ -403,26 +470,33 @@ Beispiel eine Datei oder Datenbank.
 Geschieht der Zugriff auf die Ressource über eine Helferklasse, die den Zugriff
 kapselt, wird anstelle der Tonne ein Dreieck als Symbol verwendet. Eine solche
 Klasse wird auch als Provider bezeichnet. 
+
 Den Kreis kann man sich bildlich wie eine Hand vorstellen, an die sich die
-Funktion festhält, und daruch eine Abhängigkeit symbolisiert.
+Funktionseinheit festhält, und dadurch eine Abhängigkeit symbolisiert.
 
 \pagebreak
 
 \section{GUIS / Programmstart/ Ende}
 
-\begin{center}
-	\includegraphics[width=.9\linewidth]{./img/diagramStartEnd.png}
-\end{center}
+\begin{figure}[!htbp]
+	\centering
+		\includegraphics[width=.9\linewidth]{./img/diagramStartEnd.png}
+	\caption{Programmstart und Programmende}
+\end{figure}
+
+
 
 
 Wenn eine Funktionseinheit direkt durch den Programmstart aufgerufen wird, so
 wird dies mit einem leeren Kreis dargestellt. Genau so verhält es sich mit dem
 Programmende, mit der Unterschied, dass noch innerhalb des Kreises ein Kreuz ist.
 
+\begin{figure}[!htbp]
+	\centering
+		\includegraphics[width=.9\linewidth]{./img/diagramUI.png}
+	\caption{UI}
+\end{figure}
 
-\begin{center}
-	\includegraphics[width=.9\linewidth]{./img/diagramUI.png}
-\end{center}
 
 Soll dargestellt werden, dass eine Funktionseinheit von einem Event aus der GUI ausgelöst
 wurde, oder die ausgehenden Daten einer Funktionseinheit in das GUI übergeben werden, so
@@ -430,9 +504,13 @@ wird ein Viereck am Anfang bzw. Ende des Pfeiles eingezeichnet.
 
 \section{Klassen / Container definieren}
 
-\begin{center}
+
+\begin{figure}[!htbp]
+	\centering
 	\includegraphics[width=.4\linewidth]{./img/diagramClass.png}
-\end{center}
+	\caption{Zugehörigkeit zu einer Klasse}
+\end{figure}
+
 
 Das Definieren von Container und Zuordnen von Funktionseinheiten ist auch
 einfach möglich. Unter Container versteht man: Klassen, DLLs und Anwendungen.
@@ -440,6 +518,8 @@ Es gibt zwei Möglichkeiten eine Zugehörigkeit zu einem Container zu notieren.
 Entweder man schreibt direkt unter der Funktionseinheit den Namen des
 Containers, oder man umrandet mehrere Funktionseinheiten und notiert den Namen
 des Containers am Rand der Umrandung.
+
+%TODO wohin mit dieser Anmerkung?
 
 \blankfootnote{Bilder sind von:
 \url{http://flow-design.org/overview/implementation/\#How_to_implement_inputs_to_a_functional_unit}}
@@ -617,7 +697,7 @@ Auf Rückgabewert warten & Nein & Ja\\
 
 
 
-\begin{lstlisting}
+\begin{lstlisting}[caption=FormatAndPrintStrings nicht IOSP-konfrom]
 
 static void FormatAndPrintStrings(List<string> lines)
 {
@@ -645,7 +725,7 @@ Das so etwas nun nicht mehr erlaubt ist, braucht eine gewissen Umgewöhnungszeit
 
 Hier nun die Umsetzung in Flow Design mit einfachsten Mitteln:
 
-\begin{lstlisting}
+\begin{lstlisting}[caption=FormatAndPrintStrings Variante 1]
 // Integration
 static void FormatAndPrintStrings(List<string> lines)
 {
@@ -700,7 +780,7 @@ einer extra Methode  befand.
 
 Elegantere Lösung mit Actions:
 
-\begin{lstlisting}
+\begin{lstlisting}[caption=FormatAndPrintStrings Variante 2]
 // Integrationen
 static void FormatAndPrintStrings(List<string> lines)
 {
@@ -739,7 +819,7 @@ Als Flow Design dargestellt, würde der Code folgendermaßen aussehen:
 
 Noch eleganter mit Actions und Lambdas:
 
-\begin{lstlisting}
+\begin{lstlisting}[caption=FormatAndPrintStrings Variante 3]
 static void FormatAndPrintStrings(List<string> lines)
 {
   IterateOverLines(lines,
@@ -772,7 +852,7 @@ zusammengefasst unter dem Namen LINQ (Language-Integrated Query).
 \bigskip
 Mit Hilfe von LINQ lässt sich obiges Beispiel zu einem IOSP konformen Einzeiler reduzieren.
 
-\begin{lstlisting}
+\begin{lstlisting}[caption=FormatAndPrintStrings Variante LINQ]
 static void FormatAndPrintStrings(List<string> lines)
 {
    lines.Select( x => MyComplexFormattingFunction(x)).ToList()
