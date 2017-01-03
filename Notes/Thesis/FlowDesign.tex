@@ -1,0 +1,67 @@
+% Dokumentenkopf ---------------------------------------------------------------
+%   Diese Vorlage basiert auf "scrreprt" aus dem koma-script.
+% ------------------------------------------------------------------------------
+%\documentclass[parskip=full-]{scrrprt}
+	\documentclass[
+	12pt, % Schriftgr��e
+	DIV12,
+	ngerman, % f�r Umlaute, Silbentrennung etc.
+	a4paper, % Papierformat
+	oneside, % einseitiges Dokument
+	titlepage, % es wird eine Titelseite verwendet
+	parskip=half, % Abstand zwischen Abs�tzen (halbe Zeile)
+	headings=normal, % Gr��e der �berschriften verkleinern
+	listof=totoc, % Verzeichnisse im Inhaltsverzeichnis auff�hren
+	bibliography=totoc, % Literaturverzeichnis im Inhaltsverzeichnis auff�hren
+	index=totoc, % Index im Inhaltsverzeichnis auff�hren
+	captions=tableheading, % Beschriftung von Tabellen unterhalb ausgeben
+	]{scrreprt}
+
+
+
+\input{Packages}
+
+\begin{document}
+
+
+
+	\include{Inhalt/Deckblatt}
+	
+	
+	
+	\input{Inhalt/Ehrenwort}
+	
+	\input{Inhalt/Abstract}	
+	
+	\input{Inhalt/Danksagung}	
+	
+	\tableofcontents
+	
+%	TODO: Abkürzungsverzeichnis
+
+%	TODO: Abbildungsverzeichnis, Listingsverzeichnis, Tablellenverzeichnis
+	
+	\input{Inhalt/Einfuehrung}
+	
+	\part{Grundlagen}	
+	\input{Inhalt/Grundlagen}
+
+		
+	\part{Umsetzung}
+	\input{Inhalt/Analyse}
+	\input{Inhalt/Realisierung}
+	
+	\bookmarksetup{startatroot}% this is it
+	\addtocontents{toc}{\bigskip}% perhaps as well
+	
+
+	
+	\input{Inhalt/Zusammenfassung}
+			
+	\input{Inhalt/Appendix}
+
+%	TODO: Referenzen
+
+
+\end{document}
+

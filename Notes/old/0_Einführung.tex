@@ -1,0 +1,64 @@
+
+\section{Einführung}
+
+\subsection{Motivation}
+
+Software wird häufig einfach nur herunterprogrammiert. Dadurch entsteht
+umgangssprachlich bezeichnet "Spaghetticode" mit vielen Abhängigkeiten innerhalb
+der eingenen Codebasis. Solch eine Codebasis ist schwer zu warten und auf
+Änderungen anzupassen. Die Alternative dazu wäre, vor dem Programmieren einen
+Entwurf der Architektur zu erstellen und sich vor dem Umsetzung Gedanken zu
+der Struktur zu machen.
+
+Viele der vorhanden Entwurfsmethodiken sind jedoch zu schwergewichtig und helfen
+einem nicht zwingend dabei Abhängigkeiten zu reduzieren.
+Zusätzlich zu Entwurfsmethodiken existieren auch Clean Code Prinzipien, die
+einem Helfen sollen, besser wartbare Software zu schreiben. Viele der
+Erkenntnisse aus den Prinzipien sind jedoch leider oft nur schwer auf die eigene
+Codebasis anzuwenden, da sie zu abstrakt sind.
+Dadurch finden sie in der Praxis seltener Anwendung, als nötig wäre, um sauberen
+Code zu erzeugen.
+
+Hier möchte Flow Design Abhilfe schaffen, indem sie eine leichtgewichtige
+Entwurfsmethodik bietet, mit einem speziellen Augenmerk darauf Abhängigkeiten
+zu redzuieren. Nebenbei hilft Flow Design einem auch gängige Clean Code
+Prinzipien einzuhalten. Leider ist diese Methodik nicht weit verbreitet und das
+Entwerfen ist bisher auf dem Papier angedacht. Aus diesem Grund exisiteren keine
+ausgereiften Tools oder Hilfsprogramme die speziell auf die Erstellung
+von Flow Design Entwürfen ausgelegt sind. 
+
+Ziel dieser Arbeit ist es eine Anwendung zur Erstellung von Flow Design Diagrammen 
+zu entwerfen und einen Prototypen zu implementieren. Diese Anwendung soll darüber hinaus auch
+Funktionen zur Generierung von Quellcode aus den erstellten Diagrammen bieten, damit
+der Einsatz von Flow Design in einem Projekt komfortabler und produktiver wird.
+Unabhänig davon, ob dieses Ziel erreicht wurde oder nicht sollen die gewonnen
+Erkenntnisse aus dem Versuch hier dokumentiert und ein Fazit daraus gezogen werden.
+Der Protype soll in C\# und in Teilen unter Verwendung von Flow Design selbst umgesetzt und auf Github
+als Open-Source-Projekt veröffentlicht werden.
+
+
+\subsection{Aufbau}
+
+Der erste Teil dieser Arbeit stellt ein Grundlagenkapitel dar, dass dem Leser die Methodik Flow Design näherbringen soll.
+Der Leser bekommt die Entwurfsmethodik Flow Design anschaulich erklärt, dabei wird auch auf die Herkunft,
+den Grundgedanken dieser Methodik, sowie ihre Vor- und Nachteile eingangen.
+Dazu gehören auch, dass einige neue Prinzipien und Abkürzungen erklärt werden.
+Desweiteren wird auf die für Flow Design speziellen, dazugehörigen Implemtierungsregeln eingegangen und
+anhand von einfachen Codebeispielen in C\# dem Leser nähergebracht. 
+Bei dieser Gelegenheit werden in diesem Teil auch auf einige Sprachfeatures 
+von C\# eingegangen, die einem bei der Umsetzung von Datenströmen hilfreich sein
+können. Auch hier werden einfache Codebeispiel zum besseren Verständnis dem Leser 
+präsentiert. Im genauen handelt es sich hierbei um Lambdas und die Methodenbibliothek LINQ.
+
+Hat man einmal den Vorteil von Flow Design für sich entdeckt liegt es nahe als
+Programmierer sich Gedanken darüber zu machen wie eine Anwendung aussehen
+könnte, das einem bei der Verwendung der Methodik so gut es geht unterstützt.
+Da es solch ein Programm noch nicht gibt, geht es in diesem Teil der Arbeit
+darum die Ansprüche eines solchen Programms im Detail herauszufinden und sie
+in Form von Anforderungen aufzulisten. Anschließend werden GUI-Skizzen
+und einige Gedanken zu der Usability der Anwendung vorgestellt. 
+
+Aus Ende sollen ausgewählte Teile des Codes hier dokumentiert und das Ergebnis vorgestellt werden.
+Außerdem wird ein Ausblick auf die Zukunft des Projektes gegeben und ein Fazit gezogen werden.
+
+\end{document}

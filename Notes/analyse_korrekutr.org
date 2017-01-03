@@ -1,0 +1,302 @@
+
+* Vision
+Im Grunde geht es bei einem Editor für Flow Design vorallem darum die Vorteile aus der digitalen Welt mit
+der Methodik zu vereinen, ohne die Einfachheit der Methodik auf dem Papier zu
+verlieren.
+
+** Vorteile eines digitalen Editors
+Flow Design ist eigentlich als Entwurfsmethode auf dem Papier gedacht.
+Jedoch hat ein Flow Design auf dem Papier einige Nachteile, die ein Editor am
+Computer aufheben könnte. Das wären vorallem folgende Punkte:
+*** Einmal eingezeichnete Elemente lassen sich nicht mehr so leicht verändern.
+Während des kreativen Prozesses ein Programmierproblem zu lösen, bedarf es
+mehrer Iterationen und Veränderungen an den Diagrammen. Eine Möglichkeit Versionen
+abzuspeichern und Teile zu verschieben, umzubenennen und umzustukturieren sind
+klare Vorteile von einem digitalen Editor.
+*** Automatische Einhaltung der Notation
+Ein Editor bewirkt eine automatische Einhaltung der Notation
+*** Automaische Validierungsprozesse
+Während der Erstellung des Flow Designs können im Hintergrund
+Validierungsprozesse beim Erstellen des Diagrammes Hilfestellung bieten.
+Autovervollständigungen könnten ebenfalls an einigen Stellen eingebaut werden,
+um das Tippen zu beschleunigen.
+*** Unnötige Abtipparbeit ersparen.
+Aus den Beschriftungen im Flow Design Diagramm lassen sich die Variablennamen und
+Methoden Signaturen leicht herleiten. Liegt das Diagramm in digitaler Form vor,
+wäre eine automatische Generierung von Quellcode naheliegend und
+würde dem Anwender unnötige Abtipparbeit ersparen. Außerdem können schnell
+mehrere Iterationen eines Diagrammes erstellt werden und in
+Versionskontrollsystemen eingepflegt werden.
+Die Diagramme können auch einfacher von unterschiedlichen Orten aus und von mehreren
+Personen abgerufen und bearbeitet werden.
+
+*** Generierung von Methoden-Bodies
+Durch die strikten Implementierungsregeln von Integrationen lassen sich für
+diese Methoden nicht nur die Signaturen, sonder auch die komplette Implementierung aus dem Diagramm
+ableiten. Eine Generierung dieser Codezeilen wäre ein zustätzlicher Komfortgewinn von einem Editor.
+*** Roundtrip-Engineering
+Eine Möglichkeit aus einer bestehenden Codebasis ein Diagramm zu erstellen -
+wenn auch nur teilweise - würden die Produktivität beim Einsetzen von Flow
+Design in einem Projekt weiter steigern.
+Ein Anwendungsfall wäre: Der Anwender möchte
+Teile seines Quellcodes in ein Flow Design überführen, um dann mit Hilfe des
+Flow Designs, diesen zu überarbeiten und anschließend neu zu generieren.
+Möglicherweise würde er die erstellten Codezeilen mit Copy-Paste in sein
+bestehendes Projekt übertragen.
+
+
+Anmerkung : Aufgrund von Unterhaltungen mit meinem
+Anleiter Kevin Erath stellte sich heraus, dass ein perfekter Roundtrip umzusetzen keine triviale Aufgabe
+darstellt. Deswegen wird im Rahmen dieser Arbeit, wenn überhaupt, der Fokus auf jene Funktionalitäten
+gelegt, die leichter zu implementieren sind und doch dem Anwender möglichst viel
+Zeitersparniss einbringt.
+
+** Vorteile von einem Entwurf auf dem Papier
+Ein Papier schränkt einen nicht ein und erlaubt es schnell und einfach Pfeile
+und Kreise zu zeichnen, Notizen einzufügen und ist einfach in der Bedienung.
+Bei dem Erstellen eine Editors muss deshalb ein besonders großes Augenmerk auf
+eine gute und intuitive Bedienung gelegt werden, damit einem das Programm bei der kreativen Arbeit nicht
+behindert. Endziel wäre es, dass der Andwender von sich aus lieber zum Edtior
+greift, als zu Stift und Papier, weil ihm der Editor komfortableres und
+kreatives Arbeiten besser ermöglicht.
+
+* Anforderungen
+** Editor
+
+| Anforderungen                                                                                                       | Priorität    |
+|---------------------------------------------------------------------------------------------------------------------+--------------|
+| Erstellen von Funktionseinheiten, Benennen, Verschieben auf dem Canvas, Löschen, Duplizieren                            | must have    |
+| Navigation ( Panning, Zooming )                                                                                     | must have    |
+| Selektieren von mehreren Funktionseinheiten um mehrere auf einmal zu bearbeiten                                         | must have    |
+| Definieren von Input und Output Datastreams, für eine Funktionseinheit                                                 | must have    |
+| Verbinden eines Outputs einer Funktionseinheit mit einem Input einer anderen                                           | must have    |
+| Zusammenlaufen von mehreren Datenflüssen in ein Input einer Funktionseinheit                                           | must have    |
+| Funktionseinheit(n) einer anderen unterordnen können, um Integrationen zu erstellen inklusive visuelle Kennzeichnung   | must have    |
+| Syntaxhighlighting für die Datentypen auf den Datenflüsen                                                           | nice to have |
+| Mehrere Themes: Dark, White (Print)                                                                                 | nice to have |
+| Keyboard Hotkeys / Tabstops                                                                                         | nice to have |
+| Kommentarboxen                                                                                                      | nice to have |
+| Automatisches Spacing                                                                                               | nice to have |
+| Untergeordenete Funktionseinheiten einer Integration an einer anderen Stelle definierbar machen, falls Platz knapp wird | nice to have |
+| Speichern und Laden in ein Dateiformat                                                                              | must have    |
+| Autosave                                                                                                            | must have    |
+| Undo / Redo System                                                                                                  | nice to have |
+| Definieren von State einer Funktionseinheit                                                                            | nice to have |
+| Mouse-Hover zeigt Preview des erzeugten Codes für die Funktionseinheit                                                 | nice to have |
+| Wiederverwenden von vorhandenen Funktionseinheiten                                                                      | nice to have |
+| Autocomplete auf dem Textfeld der Datenströme                                                                       | nice to have |
+| Definieren von neuen Datentypen                                                                                     | nice to have |
+| Validierung von Datenströmen                                                                                        | must have    |
+| Anfügen von Tests an Funktionseinheit                                                                                  | nice to have |
+
+*** Anmerkungen
+**** Navigation
+Durch Inspiration aus Grafikandwendungen: Panning ( Verschieben der "Kamera" in
+der X- und Y-Achse mit Hilfe der Mittleren Maustaste. Zoomen in und aus dem
+Diagramm durch das Mausrad. Die Position der Maus bestimmt das Zentrum des
+Zooms.
+
+
+
+
+** Generierung von Code
+| Anforderungen                                                                                                        | Priorität    |
+|----------------------------------------------------------------------------------------------------------------------+--------------|
+| Generierung von Methodensignaturen aus dem Namen und Input/Output Definitionen einer Funktionseinheit                   | must have    |
+| Erzeugen des kompletten Methoden-Bodies einer Integration                                                            | must have    |
+| Live-Generierung                                                                                                     | nice to have |
+| Erzeugung von Klassen und Datentypen                                                                                 | nice to have |
+| Erzeugung von Namenspaces und Ausflösung von Usings                                                                  | nice to have |
+| Einstellungen  dem Benutzer zugänglich machen, um die Generierung zu konfigurieren                                   | nice to have |
+| Korrektes Einfügen / Integrieren von den generierten Codezeilen in die Codebasis eines bestehendes Softwareprojektes | nice to have |
+*** Anmerkungen
+**** Erzeugung des kompletten Methoden-Bodies einer Integration
+Hierbei muss erkannt werden, in welcher Reihenfolge die Methoden aufgerufen
+werden müssen, lokale Variablen erzeugt werden müssen und was einer Methode als Parameter
+übergeben werden muss. Dabei kommen IEnumerables und Lambdas zum Einsatz um
+Datenflüsse zu implementieren.
+
+**** Einstellungen für die Generierung dem Benutzer zugänglich machen
+Mögliche Optionen wären:
+- wie das Programm den Methoden-Body einer Operation
+standardmässig befüllen soll: Leer, mit NotImplementedExeption oder mit einem
+QDefault return Ausdruck abhängig von der Methodensignatur.
+- Ob innerhalb einer Integration der Rückgabewert einer Funktion erst in eine
+  lokale Variable gespeichert werden soll, oder direkt der Methodenaufruf an die
+  andere Methode weitergereicht wird. Beziehungsweise die Regel konfigurierbar
+  machen: Ab welcher Zeilenlänge, wie die Varibalen benannt werden sollen, etc.
+
+**** Einfügen von generierten Codezeilen in bestehende Codebasis
+Notwendig hierfür wäre, dass bestehende Klassen gefunden werden müssten, usings korrekt
+eingefügt und schlussendlich die generierten Methoden und Datentypen in die
+jeweiligen Klassen / Dateien eingefügt werden. Dabei muss die Syntax
+berücksichtigt werden und möglicherweise Zugriffsberechtigungen erkannt und bei
+Problemen einen Dialog zur Korrektur dem Anwender anbieten. Weiteres Problem
+wäre die Überschneidung von Namen. Wenn automatisch der generierte Code bevorzugt
+  werden soll, dann könnten durch die Überschreibung von Datentypen und Methoden
+  bestehende Codezeilen plötzlich fehlerhaft werden. Ein extra Dialog wäre
+  möglich, würde jedoch den Aufwand zur Integration des Codes möglichweise stark
+  anheben. Ebenso wäre ein solcher Dialog aufwendig zu implementieren.
+  Eine andere Option wäre es, diese einfach einzufügen und die Erkennung und Lösung der
+  Probleme der IDE zu überlassen. Gerade bei C# gibt es mit Resharper viele
+  Refactorisierungs-Tools, die einem bei der Lösung solcher Probleme unterstützen.
+
+
+** Generierung von Flow Design Diagrammen aus Code
+
+| Anforderungen                                                                                                                 | Priorität                                 |
+|-------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------|
+| Finden von Methoden und Erzeugen von Funktionseinheiten und ihre Input und Output Datenströme anhand der Methodensignatur im Code | must have                                 |
+| Erkennen, ob es sich bei der Methode um eine Operation oder Integration handelt                                               | must habe                                 |
+| Den Datenfluss einer Integration erkennen und ihn in ein Flow Design Diagramm übertragen                                      | must have                                 |
+| Umgang mit Methoden die nicht das IOSP befolgen                                                                               | nice to have                              |
+| Automatisches Spacing                                                                                                         | must have ( aber nicht unbedingt perfekt) |
+| Speichern der Inhalte, die nicht im Diagramm dargestellt werden können.                                                       | nice to have                              |
+
+*** Anmerkungen
+**** Automatische Anordnung
+Unbedingt notwendig, auch wenn es nur sehr rudimentär umgestetzt wird, ansonsten liegen
+alle Funktionseinheiten nach dem Erstellen unübersichtlich auf einem Punkt aufeinander.
+Falls das Automatische Spacing an manchen Stellen nicht perfekt funktionieren
+sollte, kann eine gute Usability ( Selektierungs- und Verschiebungsfeatures)
+hier dieser Imperfektion leichter verschmerzbarer machen.
+
+**** Schwierigkeiten
+Bei Verwendung von Events kann der Datenfluss möglicherweise nicht mehr
+nachvollzogen werden.
+
+
+* GUI Skizzen / Usabilityüberlegungen
+
+** Minimalistischer Aufbau. Fokus auf Produktivtät.
+Im folgendem einige Kerngedanken über die Funktionalität des Editors:
+
+- Keine unnötigen Menuleisten, Symbolleisten, etc. Besser kontextsensitive
+  Kontextmenus, oder Hotkeys,  damit die Strecke, die die Maus bewegt werden muss, gering
+  gehalten wird.
+- Tabulatorstops einbauen, damit schnell zwischen den Textfeldern, entlang des
+  Graphen, gesprungen werden kann.
+- Verwendung von Drag and Drop, um eine intuitive Bedienung zum Verknüpfen von
+  Funktionseinheiten zu ermöglichen. Die Flächen, die per Drag and Drop zu Bedienen
+  sind, sollen über ein Maus-Hover Feedback erkennbar sein. Außerdem sollen die
+  Flächen nicht zu klein sein, damit ein leichtes Treffen des Feldes
+  sichergestellt wird. Möglicherweise können auch unsichtbare Flächen verwendet
+  werden, um eine Drag and Drop Fläche künstlich leicht zu vergrößern und einfacher treffbar zu machen.
+- Rectangle Selection in Kombination mit Modifier-Keys um mehrere Funktionseinheiten
+  schnell und komfortable zu selektieren.
+- Shift + Drag : Schnelles Duplizieren der selektierten Elemente. Vorbild dieser
+  Funktion ist 3ds Max, das dieses Bedienkonzept an vielen Stellen einsetzt.
+  Einmal dararn gewöhnt, möchte man es nicht mehr missen. Anwendungsfälle:
+  Der Anwender möchte  schnell ein gesamtes Diagramm duplizieren und an ein andere Stelle schieben, um
+  dort eine weitere Iteration davon zu erstellen. Möglicherweise müssen solche
+  Duplikate vor der Generierung des Codes aus dem Diagramm gelöscht werden.
+  Ein andere Anwendungsfall von Duplizierten ist, dass der Anwender eine vorhandene
+  Funktionseinheit an einer anderen Stelle im Diagramm verwendet möchte. Damit
+  entstehen weitere Probleme, bei der Generierung des Codes, das gelöst werden
+  muss: Duplizierte Funktionseinheiten müssen erkannt und nur einmal generiert werden.
+- Ctrl + Drag einer Funktionseinheit: Die Funktionseinheit und alle ihre Kinder werden
+  Verschoben. Anwendungsfall ist: Der Anwender möchte etwas Platz schaffen
+  zwsichen zwei Funktionseinheiten. Mit einem Ctrl+ Drag der zweiten Funktionseinheit,
+  kann er diese und alle nachkommenden Funktionseinheiten verschieben, ohne sie
+  vorher extra selektieren zu müssen.
+
+** Textfelder
+Textfelder müssen waagerecht bleiben. Auf dem Papier schreibt man die Daten auf
+die Pfeile, somit wird Text auf einem schrägen Pfeil auch entlang des Striches
+geschrieben.
+Am Computer ist soetwas schlecht umzusetzen. Man kann Textfelder bei WPF drehen, dadurch
+entsteht jedoch eine ungewohnte Bedienung beim Markiern von Text. Ein Drehen
+beim Fokusieren/Defokusieren wäre auch möglich, damit wäre jedoch eine zustätzlicher
+Klick nötig, falls man Text markieren möchte: Ein Mausklick zum Fokusieren/Drehen
+der Textbox und ein weiterer um Text zu markieren / den Cursor zu platzieren.
+Die beste Lösung wäre aus Usability-Sicht, wenn Textfelder nicht gedreht werden,
+sondern immer waagerecht dargestellt werden. Somit muss hier die Notation an
+manchen Stellen etwas vom orginal Abweichen.
+- Mehrer Outputs
+- Pfeile zwischen zwei Funktionseinheiten, die auf unteschiedlichen Höhen platziert
+  sind.
+
+** Datentypen Organistation, Erstellung und Definition
+Da Flow Design auf Datenströmen arbeitet, ist das Definieren neuer Datentypen
+ein wesentlicher Bestandteil davon.
+Eine Möglichkeit wäre es, wie auf dem Papier, es zu erlauben an beliebigen
+Stellen im Diagramm eine Box zu erstellen, in der der Anwender einen neuen
+Datentyp benennen und seine Felder definieren kann. Vorteil davon wäre, dass der
+Anwender die nötige Information in der Nähe des Datenstroms schnell ersichtlich
+platzieren kann, wo die Daten auch vorkommen.
+Nachteil wäre, dass man beim automatischen Spacing zusätzlich komplizierter
+wird, da nun auch eine sinnvolle Platzierung der Datentypen nun mit
+berücksichtigen muss.
+Ein weiters Problem dieser Lösung taucht auf, wenn man an unterschiedlichen
+Positionen im Diagramm eine Datentypen verwendet. In diesem Fall müssten Doppelungen erlaubt
+sein, oder der Anwender würde an einer Stelle nicht die Information haben, worum
+es sich bei einem Datentyp handelt.
+Eine andere Option wäre es, die Datentypen nicht auf dem Drawing-Board zu
+platzieren, sondern seperate vom Flow Design getrennt in einem extra UI-Element
+darzustellen und dort die Defintion neuer Typen zu ermöglichen.
+Dieses UI-Element würde in Form einer Liste alle vorhanden Datentypen
+beinhalten. Zusätzliche Usability-Features wären, das Typen, die im Diagramm
+vorkommen, jedoch nicht zu den Basistypen der Sprache gehören und noch nicht in
+der Anwendung definiert wurden, erkannt und speziell hervorgehoben werden und
+den Anwender subtil auffordert diesen zu definieren.
+Um den Vorteil einer Box innerhalb des Diagrammes etwas zu entkräftigen, könnten
+die Einträge in der Liste kontextsensitiv sein: Wenn der Anwender in ein
+Textfeld eines Datenstromes klickt, könnte die Liste nur jene Datentypen
+anzeigen, die in dem Textfeld vorhanden sind. Beim klick auf eine leere Fläche (
+defokusieren des Textfeldes) würden wieder alle Datentypen im gesamten Diagramm
+angezeigt werden.
+Weitere Ideen wären:
+- Mouse-Hover über ein Datentype im Diagramm zeigt dieDefinition in einem Pop-Up
+  über dem Mauszeiger an.
+- Drag and Drop von Datentypen aus der Liste in das Drawing Board zu
+  ermöglichen, falls der Anwender für einen Screenshot - oder aus einem anderen
+  Grund - diese Information im Bild haben möchte.
+
+
+** Realisierung/ Darstellung von Joints
+Datenströme können aus verschieden Quellen stammen und an einer Funktionseinheit
+zusammenlaufen. Flow Design bietet hierfür die Pipe-Notation, oder die s.g. Joints
+an.
+
+Vorteile der Pipe-Notation / Nachteile der Joints:
+
+- Einfacher zu realiseren auf GUI Seite ( Automatisches Spacing aufgrund der
+  wenigeren Pfeile einfacher umzusetzen
+- Pfeile müssen seltener große Distanzen überbrücken, was das Diagramm weniger
+  chaotisch wirken lässt
+
+Nachteile der Pipe-Notation / Vorteile der Joints:
+
+- Datenströme sind möglicherweise nicht mehr eindeutig zu interpretieren. Bei
+  der Verwendung von Joints ist die Herkunft eines Datenstroms eindeutig
+  ersichtlich. Bei der Pipe-Notation kann man diese Problem durch eine Benennung
+  der Datenströme lösen. Diese Erkenntnis legt eine Validierung - einschließlich
+  visuellem Feedback - der Datenströme auf eine eindeutige Interpretation nahe.
+  Eine andere Option wäre, dass man beim Generieren den Datenstrom zurückläuft
+  und das erste Vorkommen nimmt und nachfolgende Überschneidungen ignoriert.
+
+
+** Validierung des Datenflusses
+Der Validierungsprozess soll subtil sein. Ein Blockieren von verbinden zweier
+Funktionseinheiten soll nicht geschehen. Diese würde sonst dem Ziel entgegen stehen,
+eine mögliche freie Gestaltung, wie beim Zeichnen auf dem Papier, zu
+gewährleisten. Der Anwender soll die Freiheit haben, nicht valide Verbindungen
+zu erstellen, die er möglicherweise nach dem Verbinden dann entsprechend
+anpasst. Eine dezente farbliche Hervorhebung soll als Feedback des
+Validierungsprozesses ( möglicherweise indem man den Pfeil einfärbt) ausreichen. Mögliche Validierungsfehler wären:
+- Mehrfaches Auftreten der selben Datentypen.
+- Fehlende Daten : Nicht alle vom Input der Funktionseinheit verlangten Daten
+  sind im Datenfluss enthalten.
+
+Im Grunde wäre jedoch auch eine Generierung von jeglichem Flow Design Diagrammen
+möglich, würde man folgende Regeln einführen:
+- Pipe-Notation: Der Graph wird zurück gelaufen, bis ein passender Datentype
+  gefunden wurde ( Das erste Vorkommen wird genommen). Falls der Datentyp nicht
+  gefunden wurde, wird er in der Integration als lokale Varibale deklariert und mit einem
+  Default-Wert initialisiert.
+
+** Validierung der Syntax
+Die Notation der Daten der Datenflüssen besteht aus einer einfachen Syntax. Diese muss zwingend eingehalten
+ werden, damit eine Generierung des Codes möglich ist.
+ Eine rote gewellte Linie unterhalb des nicht validen Textes hilft dem Anwender
+ schnell Fehler zu erkennen.

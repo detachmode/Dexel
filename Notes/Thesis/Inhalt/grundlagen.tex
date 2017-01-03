@@ -1,88 +1,4 @@
-% Created 2016-09-08 Do 16:45
-\documentclass[a4paper,12pt,oneside]{book}
-\usepackage[DIV=12,BCOR=2mm,headinclude=true,footinclude=false]{typearea}
-\usepackage[utf8]{inputenc}
-%\usepackage[T1]{fontenc}
-\usepackage[german]{babel} 
-%\usepackage{kpfonts}
-%\usepackage{mathptmx}
-%\usepackage{times,mtpro2}
-
-\usepackage{url}
-
-%\usepackage{txfonts}
-%\usepackage{newtxtext,newtxmath}
-%\usepackage{libertine} \usepackage[libertine]{newtxmath}
-\usepackage{listings}
-\usepackage{color}
-\usepackage{textcomp}
-\definecolor{bluekeywords}{rgb}{0,0,1}
-\definecolor{greencomments}{rgb}{0,0.5,0}
-\definecolor{redstrings}{rgb}{0.64,0.08,0.08}
-\definecolor{xmlcomments}{rgb}{0.5,0.5,0.5}
-\definecolor{types}{rgb}{0.17,0.57,0.68}
-
-\usepackage{listings}
-\lstset{language=[Sharp]C,
-	captionpos=a,
-	basicstyle=\fontfamily{consolas}\selectfont
-	framextopmargin=26pt,
-	framexbottommargin=26pt, 
-	frame=tb, framerule=0pt,
-	showspaces=false,
-	showtabs=false,
-	breaklines=true,
-	showstringspaces=false,
-	breakatwhitespace=true,
-	escapeinside={(*@}{@*)},
-	commentstyle=\color{greencomments},
-	morekeywords={partial, var, value, get, set},
-	keywordstyle=\color{bluekeywords},
-	stringstyle=\color{redstrings},
-	basicstyle=\ttfamily\small,
-}
-
-\usepackage{tabularx}
-\usepackage{fixltx2e}
-\usepackage{graphicx}
-\usepackage{grffile}
-\usepackage{longtable}
-\usepackage{wrapfig}
-\usepackage{rotating}
-%\usepackage{cite}
-\usepackage{cite}
-\usepackage[normalem]{ulem}
-\usepackage{amsmath}
-\usepackage{textcomp}
-\usepackage{amssymb}
-\usepackage{capt-of}
-\usepackage{hyperref}
-\usepackage[autostyle=true,german=quotes]{csquotes}
-\let\svthefootnote\thefootnote
-\newcommand\blankfootnote[1]{%
-	\let\thefootnote\relax\footnotetext{#1}%
-	\let\thefootnote\svthefootnote%
-}
-
-\date{\today}
-\title{Flow Design Grundlagen}
-\hypersetup{
-	pdfauthor={},
-	pdftitle={Flow Design Theorieteil},
-	pdfkeywords={},
-	pdfsubject={},
-	pdfcreator={Emacs 25.1.1 (Org mode 8.3.5)}, 
-	pdflang={English}}
-\begin{document}
-	
-	\maketitle
-	\tableofcontents
 \chapter{Entstehung und Grundgedanken}
-\label{sec:orgheadline14}
-
-\section{Einleitung}
-\label{sec:orgheadline1}
-
 
 
 Flow Design ist aus der Clean Code Development Bewegung heraus entstanden. Hauptinitiator und Erfinder ist Ralf Westphal.
@@ -119,7 +35,7 @@ Somit ist in größeren Softwareprojekten ein saubere Codebasis umso unverzichtb
 Prinzipien haben jedoch die Eigenheit, dass sie nicht so leicht einzuhalten sind wie konkrete Regeln.
 Somit ist es in der Praxis schwer die Prinzipien auf den eigenen Code anzuwenden.
 Hierbei soll Flow Design einen Lösungsansatz bieten. Flow Design bieten in
-Ergänzung zu den CCD Prinzipen eine Entwurfsmethodik und dazugehörende Implementierungsregeln, die
+Ergänzung zu den CCD Prinzipien eine Entwurfsmethodik und dazugehörende Implementierungsregeln, die
 die einfach zu befolgen sind und man erhält fast automatisch einen Code, der ein Großteil der CCD Prinzipien erfüllt.
 
 \section{CCD Prinzipien}
@@ -137,7 +53,7 @@ Orthogonalität & Änderungen an einer Funktion des Systems sollen auf so wenig 
 \end{tabularx}
 
 \subsubsection{KISS}
-\label{sec:orgheadline2}
+
 Die Komplexität der Lösung eines Problems soll immer in Relation zu der
 Komplexität des Problems stehen.
 
@@ -153,7 +69,7 @@ Hierbei soll Flow Design als Entwurfsmethode helfen, die einfachste und leicht
 verständlichste Lösung für ein Problem zu finden.
 
 \subsubsection{YAGNI}
-\label{sec:orgheadline3}
+
 Vielen Softwareentwickler ist es wohl schon passiert, dass sie es zu gut gemeint
 haben mit dem vorausschauendem Denken. Etliche Funktionen wurden für ein
 zukünftiges Szenario implementiert oder verkompliziert, die jedoch nie
@@ -169,7 +85,7 @@ Diese Eigenschaft des Codes bietet damit die Basis diesem Prinzip auch getrost
 zu befolgen und sich auf die aktuellen Rahmenbedingungen zu konzentrieren.
 
 \subsubsection{Lose Koppelung}
-\label{sec:orgheadline4}
+
 Ein System soll aus möglichst voneinander unabhängigen Untersystemen bestehen,
 die nur über eine  klar definierte Stelle miteinander kommunizieren.
 Bei jedem Aufruf einer Funktion oder Abrufen einer Variable entsteht eine
@@ -181,7 +97,7 @@ sich nicht an verschiedenen Stellen des Codes fortpflanzen soll.
 Flow Design fördert das Entkoppeln und zeigt Abhängigkeiten bereits bei der Modellierung.
 
 \subsubsection{Orthogonalität}
-\label{sec:orgheadline5}
+
 In einem dreidimensionalen Raum sind die 3 Achsen üblicherweise zueinander
 orthogonal. Verschiebe ich ein Objekt auf einer Achse, so bleiben die Werte der
 beiden anderen unberührt Wäre eine Achse nicht orthogonal zu den beiden anderen,
@@ -252,7 +168,7 @@ Testen kann
 \end{itemize}
 
 \subsubsection{Single Responsibiltiy Principle}
-\label{sec:orgheadline9}
+
 Ein Grundgedanke des OO-Designs besteht darin, die Funktionalität der Software auf mehrere
 Klassen zu verteilen. Jede dieser Klassen besteht aus Methoden, die thematisch zueinander gehören. 
 Das Single Responsibiltiy Principle besagt, dass eine Klasse nur eine
@@ -261,7 +177,7 @@ Oft ist mit Single Responsibility Principle auch das Trennen von
 GUI, Daten und Businesslogik gemeint.
 
 \subsubsection{Information Hiding Principle}
-\label{sec:orgheadline10}
+
 Eine Klasse besteht aus vielen Funktionen, diese werden jedoch nicht alle nach
 außen zur Verfügung gestellt.
 Oder eine API, die nach außen nur eine ganz bestimmte Schnittstelle bietet und
@@ -325,7 +241,7 @@ Das Ergebnis ist die Summe aller Zahlen.
 
 
 \chapter{Die Notation}
-\label{sec:orgheadline31}
+
 \section{Datenströme}
 
 \begin{center}
@@ -529,7 +445,7 @@ des Containers am Rand der Umrandung.
 \url{http://flow-design.org/overview/implementation/\#How_to_implement_inputs_to_a_functional_unit}}
 
 \chapter{Implementation}
-\label{sec:orgheadline65}
+
 
 Flow Design hat 2 Implementierungsregeln, die zu beachten sind:
 
@@ -542,7 +458,7 @@ Um was es sich dabei im Detail genau handelt, wird in diesem Kapitel erläutert.
 
 \pagebreak
 \section{IODA Architektur}
-\label{sec:orgheadline38}
+
 Wie schon in dem vorherigen Kapitel angemerkt, unterscheidet Flow Design zwei
 unterschiedliche Arten von Funktionseinheiten. Integrationen und Operationen.
 Die IODA Architektur beschreibt die Eigenschaften von diesen beiden genauer.
@@ -566,7 +482,7 @@ Integrieren.
 (Fußnote) Ralf Westphal spielte auch mit den Gedanken diese Funktionseinheiten als Koordinatoren oder
 Kompositionen zu bezeichnen.
 
-Integrationen "integrieren" andere Integrationen und/oder Operationen in das Programm. Sie dürfen also funktional abhängig sein
+Integrationen integrieren andere Integrationen und/oder Operationen in das Programm. Sie dürfen also funktional abhängig sein
 von anderen von Funktionseinheiten.
 
 Im Gegensatz dazu dürfen Operationen keine Integrationen oder andere Operationen
@@ -591,7 +507,7 @@ Integrationen. Alle Leaf-Knoten sind Operationen, der Rest sind Integrationen.
 
 
 \subsubsection{PoMO ( Principle of Mutual Oblivion)}
-\label{sec:orgheadline33}
+
 \begin{quote}
 Ein Producer kennt seinen Consumer nicht. Ein Consumer kennt seinen Producer
 nicht. Das nenne ich das Principle of Mutual Oblivion (PoMO,
@@ -606,7 +522,7 @@ Eine Funktionseinheit soll, nachdem sie die Daten bearbeitet hat, sie einfach na
 außen weiter reichen und nicht wissen, wer die Daten entgegennimmt.
 Dieses Prinzip verhindert eine Koppelung zwischen den einzelnen Funktionseinheiten.
 
-Um jedoch ein "Zusammenspiel" zwischen den einzelnen entkoppelten Einheiten zu ermöglichen, bedarf es einen oder
+Um jedoch ein Zusammenspiel zwischen den einzelnen entkoppelten Einheiten zu ermöglichen, bedarf es einen oder
 mehrere "Koordinatoren" welche diesem Prinzip nicht entsprechen müssen.
 Nur so kann aus vielen kleinen Funktionseinheiten ein großes Ganzes werden, dass eine komplexe Aufgabe lösen kann.
 Damit die das Zusammenspiel leicht zu modifizieren bleibt und die Verdrahtung
@@ -617,14 +533,13 @@ werden.
 
 
 \subsubsection{IOSP ( Integration Operation Segregation Principle)}
-\label{sec:orgheadline36}
 
 Dieses Prinzip besagt, dass eine Funktionseinheit entweder eine Operation oder eine Integration ist und beide
 Verantwortungsbereiche nicht vermischt werden dürfen.
 
 \begin{enumerate}
-\item Operationeno
-\label{sec:orgheadline34}
+\item Operationen
+
 
 
 
@@ -662,7 +577,7 @@ Hier wird nur gesagt, was man haben möchte und das Programm kann dann die Anfra
 und selbst bestimmen, wie es die Anfrage am besten ausführt.
 
 \item Integrationen
-\label{sec:orgheadline35}
+
 
 Die Integrationen werden nach Flow Design deklarative programmiert.
 Diese Funktionseinheiten dürfen anders als die Operationen, andere Funktionseinheiten aufrufen, sie also kennen.
@@ -680,7 +595,7 @@ Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die
 \end{enumerate}
 
 \subsubsection{Tabelle -  IOSP auf einen Blick}
-\label{sec:orgheadline37}
+
 
 \bigskip
 \begin{tabularx}{\textwidth}{lll}
@@ -877,11 +792,11 @@ Zusammenfassend könnte noch gesagt werden, dass eine größere Lesbarkeit von I
 Sprachfeatures eine Programmiersprache bietet.
 
 \section{C\# Features um Datenflüsse zu implementieren}
-\label{sec:orgheadline52}
+
 Um Flow Design gemäß der IODA Architektur umzusetzen, helfen einem in C\# einige Features die in diesem Kapitel vorgestellt werden.
 
 \subsubsection{LINQ und Lambdas}
-\label{sec:orgheadline48}
+
 Streng genommen würde es die IODA Architektur nicht erlauben die Methoden der
 Standardbibliothek innerhalb von Operationen zu verwenden. Jedoch würde das den
 Code nur unnötig verkomplizieren ohne wirklich ein Nutzen daraus zu gewinnen.
@@ -978,7 +893,7 @@ Sequenzen können mit Hilfe eines einfach Methodenaufrufs zu einem bestimmten Ty
 von Container konvertiert werden. Zum Beispiel: \texttt{ToList} oder \texttt{ToDictionary}.
 
 \item Parallele Verarbeitung
-\label{sec:orgheadline46}
+
 Datenströme können von LINQ auch parallel verarbeitet werden. Dazu konvertiert
 man die Sequenz mit \texttt{toParallel()} zu einem PLINQ Datenstrom.
 Anschließend ausgeführte Methoden werden, falls möglich parallel verarbeitet.
@@ -988,7 +903,7 @@ Anschließend ausgeführte Methoden werden, falls möglich parallel verarbeitet.
 \blankfootnote{Quelle: \url{https://www.dotnetperls.com/linq}} 
 
 \subsubsection{yield return}
-\label{sec:orgheadline51}
+
 Hiermit kann man ein Producer-Consumer Pattern implementieren.
 Voraussetzung ist hierfür, dass der Rückgabewert der Methode ein \texttt{IEnumerable} Interface ist.
 
@@ -1009,7 +924,7 @@ Das wiederholt sich, solange bis der Benutzer die Zahl 42 eingetippt hat.
 
 \begin{enumerate}
 \item Erläuterung des Schaubildes
-\label{sec:orgheadline49}
+
 Die  Main-Methode wird nach dem Programmstart ( leerer Kreis ) ohne Parameter aufgerufen.
 Danach ruft diese die Methode \\\texttt{ReadNumbersFromCmd} auf, welche aus der Konsole eine Eingabe ließt und sie
 zu einem int parset. Der int nimmt die Main-Methode entgegen und gibt diesen an FindtheAnswer weiter.
@@ -1067,9 +982,9 @@ Den Abbruch der Endlosschleife ( also das Stoppen des Datenflusses) kann somit a
 
 
 \section{Datenströme mit mehreren Wegen}
-\label{sec:orgheadline55}
+
 \subsubsection{Ein Output-Weg mehrere Empfänger}
-\label{sec:orgheadline53}
+
 \begin{center}
 \includegraphics[width=.7\linewidth]{./img/diagramOut1to2.png}
 \end{center}
@@ -1111,7 +1026,7 @@ static void H(int number){}
 
 
 \subsubsection{Mehrere Output-Wege}
-\label{sec:orgheadline54}
+
 \begin{center}
 \includegraphics[width=.5\linewidth]{./img/diagramOut2.png}
 \end{center}
@@ -1239,11 +1154,11 @@ static List<string> FormatStrings(List<string> lines , Func<string,string> forma
 
 
 \section{Nutzen von IOSP}
-\label{sec:orgheadline60}
+
 Im diesem Abschnitt wird versucht zu erschließen was der Mehraufwand für die
 Einhaltung des IOSP in der Praxis für einen Nutzen hat.
 \subsubsection{Die Perlenkette}
-\label{sec:orgheadline58}
+
 Die Codebasis, die nach IOSP implementiert wurde, soll bildlich gesprochen einer
 Perlenkette ähneln. Der Code besteht aus aneinandergereihte Funktionseinheiten,
 die zusammen ein großes Ganzes bilden. Möchte man Änderungen an dem Programm
@@ -1263,7 +1178,7 @@ einer externen API gehören, ist möglicherweise eine Abänderung nicht
 einfach umsetzbar. Dann bleibt nur die Option eine Adpater-Funktionseinheit zu verwenden.
 
 \subsubsection{Funktionale Abhängigkeiten}
-\label{sec:orgheadline59}
+
 Funktionale Abhängigkeiten sind auch in anderen Gebieten außerhalb von der
 Softwareentwicklung ein Problem. Dann wenn es darum geht produktive
 Arbeitsabläufe zu gestalten.
@@ -1281,19 +1196,19 @@ Zusammenspiel der Operationen bleibt leichter zu modifizieren, wodurch die
 Codebasis an geänderte Anforderungen besser angepasst werden kann.
 
 \section{Ausnahmen}
-\label{sec:orgheadline64}
+
 Generell gilt  wenn eine bewusste Entscheidung getroffen wird an einer Stelle gegen die IOSP
 Regel zu verstoßen, ist das dann in Ordnung, solange sie gut überlegt ist und
 die Auswirkungen in dem Fall keinen großen Einfluss haben.
 Es gibt jedoch bereits einige Fälle, bei denen sich ein Aufheben der Regel als gut
 herausgestellt hat.
 \subsubsection{Rekursion}
-\label{sec:orgheadline61}
+
 Operationen ist es erlaubt sich selbst aufzurufen und wiederum auf das Ergebnis
 zu warten. Besteht die Rekursion aus einer Kette an Operationen, so muss die letzte
 Operation die erste Operation aufrufen und auf ihr Ergebnis warten dürfen.
 \subsubsection{LINQ / Standard-Library Methoden}
-\label{sec:orgheadline62}
+
 Eine Koppelung an Methoden, die die Sprache selbst bereitstellt, hat keine
 großen negativen Auswirkungen. Würde diese Ausnahme nicht gemacht werden, hätte
 das zur Folge, dass unnötig viele Actions einer Methode mitgegeben werden
@@ -1301,7 +1216,7 @@ müssten. Beispiele von Methoden aus der Standardbibliothek von C\#:
 \texttt{int.TryParse} , \texttt{List<>.Sort}, \texttt{Dictionary<>.Insert}, etc.
 
 \subsubsection{UI-Logik}
-\label{sec:orgheadline63}
+
 Die UI-Logik ist von sich aus sehr state-behaftet und dadurch hat ein
 konsequentes Einhalten des IOSP und Arbeiten mit Datenflüssen innerhalb des UI-Frameworks oft nur eine
 Verkomplizierung des Codes zur Folge, ohne die Vorteile von IOSP wirklich zu
@@ -1321,31 +1236,33 @@ Die Aufgabe der UI-Logik besteht dann anschließend darin das Ergebnis der Modif
 
 
 
+
+
 \chapter{Die Entwurfsmethode}
-\label{sec:orgheadline70}
+
 Wie in der Einleitung dieser Arbeit bereits erwähnt, ist Flow Design nicht nur
 ein Methodik um Datenflüsse auf dem Papier zu modellieren, sondern Flow Design
 bietet neben dem Diagramm auch noch eine Entwurfsmethode um die Architektur einer Software
 zu entwerfen.
 
 \section{System-Umwelt-Diagramm}
-\label{sec:orgheadline66}
+
 Der erste Schritt beim Entwerfen einer Software nach Flow Design besteht
- darin, die Grenzen des Systems kennenzulernen. Es soll herausgefunden
- werden, welche Möglichkeiten es gibt, mit dem System zu interagieren und auf
- welche Ressourcen das System zugreifen soll. Ziel soll sein, dass das System
- so entworfen wird, dass die Businessdomäne entkoppelt bleibt von diesen
- äußeren Faktoren.
- Ein einfaches Schaubild soll einem helfen diese äußeren Faktoren zu
- identifizieren: Ein Kreis wird in der Mitte eines Papiers gezeichnet, dieser
- Kreis symbolisiert das System oder auch Domäne genannt.
- Auf der linken Seite des Kreises werden die äußeren Systeme eingetragen, die
- auf das System zugreifen und damit interagieren, diese Systeme oder
- Techniken werden auch als Portale bezeichnet. Beispiele für Portale wären:
- HTTP-Zugriff, Batch mode und GUIs.
- Auf der anderen Seite des Kreises werden die externen Ressourcen eingetragen, auf die
- das System Zugriff haben soll. Diese Ressourcen werden auch als Provider
- bezeichnet. Ein Beispiel hierfür wären, ein Filesystem oder eine Datenbank.
+darin, die Grenzen des Systems kennenzulernen. Es soll herausgefunden
+werden, welche Möglichkeiten es gibt, mit dem System zu interagieren und auf
+welche Ressourcen das System zugreifen soll. Ziel soll sein, dass das System
+so entworfen wird, dass die Businessdomäne entkoppelt bleibt von diesen
+äußeren Faktoren.
+Ein einfaches Schaubild soll einem helfen diese äußeren Faktoren zu
+identifizieren: Ein Kreis wird in der Mitte eines Papiers gezeichnet, dieser
+Kreis symbolisiert das System oder auch Domäne genannt.
+Auf der linken Seite des Kreises werden die äußeren Systeme eingetragen, die
+auf das System zugreifen und damit interagieren, diese Systeme oder
+Techniken werden auch als Portale bezeichnet. Beispiele für Portale wären:
+HTTP-Zugriff, Batch mode und GUIs.
+Auf der anderen Seite des Kreises werden die externen Ressourcen eingetragen, auf die
+das System Zugriff haben soll. Diese Ressourcen werden auch als Provider
+bezeichnet. Ein Beispiel hierfür wären, ein Filesystem oder eine Datenbank.
 
 Ralf Westphal bezeichnet diesen Kreis auch als Softwarezelle, was
 verdeutlichen soll, dass das zu entwerfende System, sich wie eine Zelle in der
@@ -1360,7 +1277,7 @@ Ist das System von der Umwelt entkoppelt lässt es sich besser testen und es
 lassen sich leichter neue Portale und Provider an das System anhängen.
 
 \section{Interfaceskizze ( im Falle einer GUI Anwendung )}
-\label{sec:orgheadline67}
+
 In Anlehnung an das User Experience Driven Development, soll schnell die
 Features des Systems herausgefunden werden, die der Kunde wirklich
 braucht. Es stellt sich heraus, das UML oder Use Cases für diese Aufgabe nur
@@ -1371,7 +1288,7 @@ dieser Skizze besteht auch darin, die Interaktionen, die der
 Nutzer mit dieser Oberfläche auslösen kann, zu identifizieren und zu benennen.
 
 \section{Flow Design Entwurf}
-\label{sec:orgheadline68}
+
 Für jede der definierten Interaktionen aus der Interfaceskizze(n) wird ein Flow Design Flussdiagramm
 erstellt.
 
@@ -1387,7 +1304,7 @@ Als letzter optionaler Schritt gilt es, Pfeile von solchen Datenströmen farblic
 parallel laufen können.
 
 \section{Rekursive Eigenschaft}
-\label{sec:orgheadline69}
+
 Eine Softwarezelle hat die Eigenschaft, dass sie rekursive ist.
 Das gesamte System lässt sich als eine große Softwarezelle betrachten, die wiederum
 aus mehreren kleineren Softwarezellen bestehen können (Dlls und Anwendungen).
@@ -1402,4 +1319,3 @@ Somit könnte man selbst die Funktionseinheiten eines Flow Design
 Flussdiagrammes als einzelne Softwarezellen betrachten.
 Ralf Westphal behauptet, diese Architektur soll weniger starr und somit
 universeller einsetzbar sein, als zum Beispiel das Schichtenmodell oder das Zwiebelschalenmodell.
-\end{document}
