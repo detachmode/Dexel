@@ -1,0 +1,72 @@
+FunctionUnits:
+- &o2
+  Position:
+    X: 441.55501443001435
+    Y: -313.38834054834012
+  Name: Main
+  ID: 1d46be19-44b0-48e5-acb0-44a371d0722a
+  IsIntegrating:
+  - &o0
+    Position:
+      X: 400.72168109668098
+      Y: -179.2216738816735
+    Name: Maybe generate int
+    ID: b614d8a4-e0c3-4c2c-9dba-c30686cae672
+    IsIntegrating: []
+    InputStreams:
+    - ActionName: ''
+      DataNames: ()
+      ID: ea9eb960-c20c-42c3-bf5e-39197c7b3119
+      Parent: *o0
+    OutputStreams:
+    - &o3
+      ActionName: onInt
+      DataNames: (x:int)
+      ID: ed7dd00b-df34-4d12-b3a1-53e22c9769be
+      Connected: true
+      Parent: *o0
+  - &o1
+    Position:
+      X: 755.92887223887226
+      Y: -182.14125430125392
+    Name: plus1
+    ID: ced80683-4113-403a-9cc7-6428908132a8
+    IsIntegrating: []
+    InputStreams:
+    - &o4
+      ActionName: ''
+      DataNames: (x:int)
+      ID: 413877ad-3d97-47bd-8a77-7fd6c6d625c9
+      Connected: true
+      Parent: *o1
+    OutputStreams:
+    - ActionName: ''
+      DataNames: (int)
+      ID: 09a2211d-6cf8-4256-8d79-3b213d6b1d18
+      Parent: *o1
+  InputStreams:
+  - ActionName: ''
+    DataNames: ()
+    ID: 63ef9a42-c880-428e-942e-ad221aa0f62e
+    Parent: *o2
+  OutputStreams:
+  - ActionName: ''
+    DataNames: (int)
+    ID: 572855c8-38f6-4f6a-82a9-ff32c329895b
+    Parent: *o2
+- *o0
+- *o1
+Connections:
+- DataNames: (x:int)
+  ID: d97f28ab-de46-496d-a40e-b2e074d87e11
+  Sources:
+  - *o3
+  Destinations:
+  - *o4
+DataTypes:
+- Name: Person
+  SubDataTypes:
+  - Name: age
+    Type: int
+  - Name: name
+    Type: string

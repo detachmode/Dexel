@@ -55,6 +55,7 @@
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
+    <Reference Include="System.Activities" />
     <Reference Include="System.Collections.Immutable, Version=1.1.36.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Collections.Immutable.1.1.36\lib\portable-net45+win8+wp8+wpa81\System.Collections.Immutable.dll</HintPath>
       <Private>True</Private>
@@ -86,17 +87,29 @@
       <HintPath>..\packages\System.Reflection.Metadata.1.0.21\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Analyser\FlowAnalyser.cs" />
+    <Compile Include="Analyser\FunctionUnitAnalyser.cs" />
+    <Compile Include="Analyser\IntegrationAnalyser.cs" />
+    <Compile Include="Analyser\OutputAnalyser.cs" />
     <Compile Include="Common\Extensions.cs" />
-    <Compile Include="DataTypeParser.cs" />
-    <Compile Include="Integrations.cs" />
+    <Compile Include="Exceptions\UnnconnectedOutputException.cs" />
+    <Compile Include="Exceptions\MissingInputDataException.cs" />
+    <Compile Include="Generators\Names.cs" />
+    <Compile Include="Validator\FlowValidator.cs" />
+    <Compile Include="Generators\TypeConverter.cs" />
+    <Compile Include="Generators\CustomDataTypesGenerator.cs" />
+    <Compile Include="Common\Helper.cs" />
+    <Compile Include="Generators\IntegrationGenerator.cs" />
     <Compile Include="MyGenerator.cs" />
-    <Compile Include="MethodsGenerator.cs" />
-    <Compile Include="ExampleProgramm.cs" />
+    <Compile Include="Generators\MethodsGenerator.cs" />
+    <Compile Include="FromTutorialAsReference.cs" />
+    <Compile Include="Outputs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +123,10 @@
     <Folder Include="bin\Debug\" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Dexel.Library\Dexel.Library.csproj">
+      <Project>{fa179c08-1c2a-4e4b-b708-020f235e1283}</Project>
+      <Name>Dexel.Library</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dexel.Model\Dexel.Model.csproj">
       <Project>{C8694B16-924D-492F-8400-577D0DDE19FF}</Project>
       <Name>Dexel.Model</Name>

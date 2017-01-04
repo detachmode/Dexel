@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Dexel.Library
 {
@@ -19,6 +20,13 @@ namespace Dexel.Library
                 stream.Position = 0;
                 return (T)formatter.Deserialize(stream);
             }
+        }
+
+        public static void TryCast<T>(this object data, Action<T> onCastSuccess)
+        {
+            if (data.GetType() != typeof(T)) return;
+            var casted = (T)data;
+            onCastSuccess(casted);
         }
     }
 }

@@ -9,7 +9,7 @@
 ** Motivation
 ** Aufbau
 
-* Grundlagen Flow Design (~ 30 Seiten)
+* Flow Design Grundlagen (~ 35 Seiten)
 ** Entstehung und Grundgedanke
 ** Prinzipien
 ** Erklärung und Beispiele

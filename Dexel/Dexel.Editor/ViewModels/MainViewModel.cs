@@ -3,12 +3,17 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
-using Dexel.Editor.CustomControls;
-using Dexel.Editor.DragAndDrop;
+using Dexel.Editor.ViewModels.DataTypeEditor;
+using Dexel.Editor.ViewModels.DrawingBoard;
+using Dexel.Editor.Views;
+using Dexel.Editor.Views.CustomControls;
+using Dexel.Editor.Views.DragAndDrop;
 using Dexel.Library;
 using Dexel.Model;
 using Dexel.Model.DataTypes;
+using Dexel.Model.Manager;
 using PropertyChanged;
+using Roslyn.Validator;
 
 namespace Dexel.Editor.ViewModels
 {
@@ -16,191 +21,117 @@ namespace Dexel.Editor.ViewModels
     [ImplementPropertyChanged]
     public class MainViewModel : IDropable
     {
-        private static MainViewModel self;
+        private static MainViewModel _self;
+        public bool LoadingModelFlag;
 
 
         public MainViewModel()
         {
-            SoftwareCells = new ObservableCollection<IOCellViewModel>();
-            SelectedSoftwareCells = new ObservableCollection<IOCellViewModel>();
+            FunctionUnits = new ObservableCollection<FunctionUnitViewModel>();
+            SelectedFunctionUnits = new ObservableCollection<FunctionUnitViewModel>();
             Connections = new ObservableCollection<ConnectionViewModel>();
-            IntegrationBorders = new ObservableCollection<IOCellViewModel>();
-            SelectedSoftwareCells.CollectionChanged += (sender, args) => Update();
+            IntegrationBorders = new ObservableCollection<FunctionUnitViewModel>();
+            DataTypes = new ObservableCollection<DataTypeViewModel>();
+            FontSizeFunctionUnit = 12;
+            VisibilityDatanames = Visibility.Visible;
+            VisibilityBlockTextBox = Visibility.Hidden;
+            SelectedFunctionUnits.CollectionChanged += (sender, args) => UpdateSelectionState();
         }
 
 
-        public ObservableCollection<IOCellViewModel> IntegrationBorders { get; set; }
+        public ObservableCollection<DataTypeViewModel> DataTypes { get; set; }
+        public ObservableCollection<FunctionUnitViewModel> IntegrationBorders { get; set; }
         public ObservableCollection<ConnectionViewModel> Connections { get; set; }
-        public ObservableCollection<IOCellViewModel> SoftwareCells { get; set; }
-        public ObservableCollection<IOCellViewModel> SelectedSoftwareCells { get; set; }
-        public ConnectionViewModel TemporaryConnection { get; set; }
-
+        public ObservableCollection<FunctionUnitViewModel> FunctionUnits { get; set; }
+        public ObservableCollection<FunctionUnitViewModel> SelectedFunctionUnits { get; set; }
         public MainModel Model { get; set; }
+        public int FontSizeFunctionUnit { get; set; }
+        public Visibility VisibilityDatanames { get; set; }
+        public Visibility VisibilityBlockTextBox { get; set; }
+        public int MissingDataTypes { get; set; }
+
+        public static MainViewModel Instance() => _self ?? (_self = new MainViewModel());
 
 
-        private void Update()
+
+
+        #region Modify Selection
+
+        private void UpdateSelectionState()
         {
-            SoftwareCells.ForEach(x => x.IsSelected = false);
-            SelectedSoftwareCells.ForEach(x => x.IsSelected = true);
+            FunctionUnits.ForEach(x => x.IsSelected = false);
+            SelectedFunctionUnits.ForEach(x => x.IsSelected = true);
         }
 
 
-        public static MainViewModel Instance()
+        public void SetSelection(FunctionUnitViewModel functionUnitViewModel)
         {
-            return self ?? (self = new MainViewModel());
+            if (SelectedFunctionUnits.Contains(functionUnitViewModel)) return;
+
+            SelectedFunctionUnits.Clear();
+            SelectedFunctionUnits.Add(functionUnitViewModel);
         }
 
 
-        public void Reload()
+        public void SetSelectionCTRLMod(FunctionUnitViewModel functionUnitViewModel)
         {
-            if (Model != null)
-            {
-                LoadFromModel(Model);
-            }
-        }
-
-
-        public void SetSelection(IOCellViewModel ioCellViewModel)
-        {
-            if (SelectedSoftwareCells.Contains(ioCellViewModel)) return;
-
-            SelectedSoftwareCells.Clear();
-            SelectedSoftwareCells.Add(ioCellViewModel);
-        }
-
-
-        public void SetSelectionCTRLMod(IOCellViewModel ioCellViewModel)
-        {
-            //
-            // Control key was held down.
-            // Toggle the selection.
-            //
-            if (SelectedSoftwareCells.Contains(ioCellViewModel))
-            {
-                //
-                // Item was already selected, control-click removes it from the selection.
-                //
-                SelectedSoftwareCells.Remove(ioCellViewModel);
-            }
+            if (SelectedFunctionUnits.Contains(functionUnitViewModel))
+                SelectedFunctionUnits.Remove(functionUnitViewModel);
             else
-            {
-                // 
-                // Item was not already selected, control-click adds it to the selection.
-                //
-                SelectedSoftwareCells.Add(ioCellViewModel);
-            }
+                SelectedFunctionUnits.Add(functionUnitViewModel);
         }
 
 
-        public void MoveSelectedIOCells(Vector dragDelta)
+        public void MoveSelectedFunctionUnit(Vector dragDelta)
         {
-            foreach (var iocell in SelectedSoftwareCells)
-            {
-                var pt = iocell.Model.Position;
-                pt.X += dragDelta.X;
-                pt.Y += dragDelta.Y;
-                iocell.Model.Position = pt;
-            }
+            SelectedFunctionUnits.ForEach(sc => Interactions.MoveFunctionUnit(sc.Model, dragDelta.X, dragDelta.Y));
         }
 
 
         public void DuplicateSelectionAndSelectNew()
         {
-            var duplicted = Duplicate();
-
-
-            // select the duplicated
-            SelectedSoftwareCells.Clear();
-            SoftwareCells.Where(sc => duplicted.Contains(sc.Model)).ForEach(vm => SelectedSoftwareCells.Add(vm));
+            var duplicted = DuplicateSelection();
+            Select(duplicted);
         }
 
 
-        private class CopiedCells
+        private void Select(List<FunctionUnit> duplicted)
         {
-            public Guid originGuid;
-            public SoftwareCell newCell;
+            SelectedFunctionUnits.Clear();
+            FunctionUnits.Where(sc => duplicted.Contains(sc.Model)).ForEach(vm => SelectedFunctionUnits.Add(vm));
         }
 
-        private List<SoftwareCell> Duplicate()
-        {           
-            var copiedList = DuplicateSelection();
-            ReConnetCopiedCells(copiedList);
-            SetIntegrationOfCopiedCells(copiedList);
+
+        public FunctionUnit DuplicateIncludingChildrenAndIntegrated(FunctionUnit functionUnit)
+        {
+            var list = MainModelManager.GetChildrenAndIntegrated(functionUnit, new List<FunctionUnit>(), Model);
+            var copiedlist = MainModelManager.Duplicate(list, Model);
+            var first = copiedlist.First(x => x.OriginGuid == functionUnit.ID);
+            return first.NewFunctionUnit;
+        }
+
+
+        private List<FunctionUnit> DuplicateSelection()
+        {
+            var copiedList = MainModelManager.Duplicate(SelectedFunctionUnits.Select(vm => vm.Model).ToList(), Model);
 
             Reload();
-            return copiedList.Select(x => x.newCell).ToList();
-        }
-
-
-        private void SetIntegrationOfCopiedCells(List<CopiedCells> copiedList)
-        {
-            var allnew = copiedList.Select(x => x.newCell).ToList();
-            copiedList.ForEach(cc =>
-            {
-                var orginal = SoftwareCells.First(sc => sc.Model.ID == cc.originGuid);
-                orginal.Integration.ForEach(isc =>
-                {
-                    var incopied = copiedList.FirstOrDefault(x => x.originGuid == isc.Model.ID);
-                    if (incopied != null)
-                    {
-                        cc.newCell.Integration.Add(incopied.newCell);
-                    }
-                   
-                });
-            });
-        }
-
-
-        private void ReConnetCopiedCells(List<CopiedCells> copiedList)
-        {
-
-            var connectionsOfSelectedCells = Connections.Where(c =>
-               c.Model.Sources.Any(y => SelectedSoftwareCells.Any(x => x.Model == y.Parent))
-               &&
-               c.Model.Destinations.Any(y => SelectedSoftwareCells.Any(x => x.Model == y.Parent))
-               ).ToList();
-
-
-            connectionsOfSelectedCells.ForEach(x =>
-            {
-                var datastream = x.Model;
-                SoftwareCell destination = datastream.Destinations.Select(y => y.Parent).First();
-                SoftwareCell source = datastream.Sources.Select(y => y.Parent).First();
-
-                var sourcedsd = copiedList.First(y => y.originGuid == source.ID).newCell.OutputStreams.First(
-                    dsd => dsd.DataNames == datastream.Sources.First().DataNames);
-                var destinationdsd = copiedList.First(y => y.originGuid ==  destination.ID).newCell.InputStreams.First(
-                   dsd => dsd.DataNames == datastream.Destinations.First().DataNames);
-
-                var newConnection = MainModelManager.ConnectTwoDefintions(sourcedsd, destinationdsd, Model);
-            });
-        }
-
-
-        private List<CopiedCells> DuplicateSelection()
-        {
-            var copiedList = new List<CopiedCells>();
-            SelectedSoftwareCells.ForEach(iocellvm =>
-            {
-                var newCell = Interactions.Duplicate(iocellvm.Model, Model);
-                var copiedCell = new CopiedCells {originGuid = iocellvm.Model.ID, newCell = newCell};
-                copiedList.Add(copiedCell);
-                Model.SoftwareCells.Add(newCell);
-            });
-            return copiedList;
+            return copiedList.Select(x => x.NewFunctionUnit).ToList();
         }
 
 
         public void ClearSelection()
         {
-            SelectedSoftwareCells.Clear();
+            SelectedFunctionUnits.Clear();
         }
 
 
-        public void AddToSelection(IOCellViewModel ioCellViewModel)
+        public void AddToSelection(FunctionUnitViewModel functionUnitViewModel)
         {
-            SelectedSoftwareCells.Add(ioCellViewModel);
+            SelectedFunctionUnits.Add(functionUnitViewModel);
         }
+
+        #endregion
 
         #region Drop
 
@@ -220,86 +151,258 @@ namespace Dexel.Editor.ViewModels
 
         #region Update Positions
 
-        public void UpdateConnectionsPosition(Point inputPoint, Point outputPoint, IOCellViewModel ioCellViewModel)
+        public void UpdateConnectionsPosition(Point inputPoint, Point outputPoint, FunctionUnitViewModel functionUnitViewModel)
         {
-            var allOutputs = Connections.Where(conn => conn.Model.Sources.Any(x => x.Parent == ioCellViewModel.Model));
-            var allInputs =
-                Connections.Where(conn => conn.Model.Destinations.Any(x => x.Parent == ioCellViewModel.Model));
 
-            allInputs.ToList().ForEach(x => x.End = inputPoint);
-            allOutputs.ToList().ForEach(x => x.Start = outputPoint);
+
+            var allOutputs = Connections.Where(conn => conn.Model.Sources.Any(x => x.Parent == functionUnitViewModel.Model));
+            var allInputs = Connections.Where(conn => conn.Model.Destinations.Any(x => x.Parent == functionUnitViewModel.Model));
+
+            allInputs.ToList().ForEach(connVm =>
+            {
+                SetInputPosition(inputPoint, connVm, functionUnitViewModel);
+            });
+
+            allOutputs.ToList().ForEach(connVm =>
+            {
+                SetOutputPosition(outputPoint, connVm, functionUnitViewModel);
+            });
         }
 
 
-        public void UpdateIntegrationBorderPositions()
+        private void SetInputPosition(Point point, ConnectionViewModel connVm, FunctionUnitViewModel functionUnitViewModel)
         {
-            IntegrationBorders.ForEach(iocellvm =>
-            {
-                if (iocellvm.Integration.Count == 0)
-                {
-                    return;
-                }
-                var tempIntegrations =
-                    iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.X + cellvm1.CellWidth);
-                var min = tempIntegrations.First();
-                var max = tempIntegrations.Last();
+            var inputVm = (ConnectionAdapterViewModel)functionUnitViewModel.Inputs.First(ioVm => ioVm.Model == connVm.Model.Destinations.First());
+            var index = functionUnitViewModel.Inputs.IndexOf(inputVm);
+            var count = functionUnitViewModel.Inputs.Count;
 
-                tempIntegrations = iocellvm.Integration.OrderBy(cellvm1 => cellvm1.Model.Position.Y + cellvm1.CellHeight);
-                var miny = tempIntegrations.First();
-                iocellvm.IntegrationStartPosition = new Point(min.Model.Position.X - 60, miny.Model.Position.Y);
-                iocellvm.IntegrationEndPosition = new Point(max.Model.Position.X + max.CellWidth + 60,
-                    miny.Model.Position.Y);
-            });
+            var pt = OffsetPos(point, count, index, inputVm, isOutput:false);
+
+            connVm.End = pt;
+        }
+
+
+        private void SetOutputPosition(Point point, ConnectionViewModel connVm, FunctionUnitViewModel functionUnitViewModel)
+        {
+            var outputVm = (ConnectionAdapterViewModel)functionUnitViewModel.Outputs.First(ioVm => ioVm.Model == connVm.Model.Sources.First());
+            var index = functionUnitViewModel.Outputs.IndexOf(outputVm);
+            var count = functionUnitViewModel.Outputs.Count;
+
+            var pt = OffsetPos(point, count, index, outputVm);
+
+            connVm.Start = pt;
+        }
+
+
+        private static Point OffsetPos(Point point, int count, int index, ConnectionAdapterViewModel adapterViewModel, bool isOutput = true)
+        {
+            const int dsdHeight = 42;
+
+            var pt = new Point
+            {
+                X = point.X,
+                Y = point.Y
+            };
+
+            pt.Y -= (count - 1)*(dsdHeight/2);
+            pt.Y += index*dsdHeight + 2;
+
+            if (isOutput)
+                pt.X += adapterViewModel.Width - 1;
+
+
+            return pt;
+        }
+
+
+        public void UpdateIntegrationBorderPositions(ObservableCollection<FunctionUnitViewModel> integrationsBorders)
+        {
+            integrationsBorders.ForEach(UpdateIntegrationBorderPosition);
+        }
+
+
+        public void UpdateIntegrationBorderPosition(FunctionUnitViewModel fuVm)
+        {
+            if (fuVm.Integration.Count == 0)
+                return;
+            var tempIntegrations =
+                fuVm.Integration.OrderBy(vm => vm.Model.Position.X + vm.Width);
+            var min = tempIntegrations.First();
+            var max = tempIntegrations.Last();
+
+            tempIntegrations = fuVm.Integration.OrderBy(vm => vm.Model.Position.Y + vm.Height);
+            var miny = tempIntegrations.First();
+            fuVm.IntegrationStartPosition = new Point(min.Model.Position.X - 60, miny.Model.Position.Y);
+            fuVm.IntegrationEndPosition = new Point(max.Model.Position.X + max.Width + 60,
+                miny.Model.Position.Y);
         }
 
         #endregion
 
         #region Load Model
 
+        public void Reload()
+        {
+            if (Model != null)
+                LoadFromModel(Model);
+        }
+
+
         public void LoadFromModel(MainModel mainModel)
         {
-            Model = mainModel;
-            LoadConnection(mainModel.Connections);
-            LoadSoftwareCells(mainModel.SoftwareCells);
-            LoadIntegrations();
+            LoadingModelFlag = true;
+            try
+            {
+                Model = mainModel;
+                LoadFunctionUnits(mainModel.FunctionUnits);
+                LoadConnection(mainModel.Connections);               
+                LoadIntegrations();
+                LoadDataTypes(mainModel.DataTypes);
+            }
+            finally
+            {
+                LoadingModelFlag = false;
+            }
+        }
+
+
+        private void LoadDataTypes(List<CustomDataType> dataTypes)
+        {
+            DataTypes.Clear();
+            dataTypes.ForEach(dataType =>
+            {
+                var vm = new DataTypeViewModel();
+                vm.Model = dataType;
+
+                if ((dataType.SubDataTypes == null) || !dataType.SubDataTypes.Any())
+                    vm.Definitions = "";
+                else
+                    vm.Definitions = dataType.SubDataTypes
+                        .Select(x => string.IsNullOrEmpty(x.Name) ? x.Type : $"{x.Name}:{x.Type}")
+                        .Aggregate((str, type) => str + "\n" + type);
+
+                DataTypes.Add(vm);
+            });
         }
 
 
         private void LoadIntegrations()
         {
-            IntegrationBorders.Clear();
-            SoftwareCells.Where(x => x.Model.Integration.Count != 0).ToList().ForEach(hasIntegration =>
+            var newcollection = new ObservableCollection<FunctionUnitViewModel>();
+            FunctionUnits.Where(x => x.Model.IsIntegrating.Count != 0).ToList().ForEach(hasIntegration =>
             {
                 var integratedVMs =
-                    SoftwareCells.Where(otherVM => hasIntegration.Model.Integration.Contains(otherVM.Model));
-                integratedVMs.ToList().ForEach(hasIntegration.Integration.Add);
-                IntegrationBorders.Add(hasIntegration);
+                    FunctionUnits.Where(otherVM => hasIntegration.Model.IsIntegrating.Contains(otherVM.Model));
+                var list = new ObservableCollection<FunctionUnitViewModel>();
+                integratedVMs.ToList().ForEach(list.Add);
+                hasIntegration.Integration = list;
+                newcollection.Add(hasIntegration);
             });
-            UpdateIntegrationBorderPositions();
+
+            UpdateIntegrationBorderPositions(newcollection);
+            IntegrationBorders = newcollection;
         }
 
 
-        private void LoadSoftwareCells(List<SoftwareCell> softwareCells)
+        private void LoadFunctionUnits(List<FunctionUnit> functionUnitsToLoad)
         {
-            SoftwareCells.Clear();
-            softwareCells.ForEach(modelSoftwareCell =>
-            {
-                var vm = new IOCellViewModel();
-                vm.LoadFromModel(modelSoftwareCell);
-                SoftwareCells.Add(vm);
-            });
+            RemoveDeletedFunctionUnits(functionUnitsToLoad);
+
+            var lookup = FunctionUnits.ToLookup(x => x.Model.ID, x => x);
+            functionUnitsToLoad.ForEach(model => FindFunctionUnitViewModel(lookup, model,
+                onFound: viewModel => FunctionUnitViewModel.LoadFromModel(viewModel, model),
+                onNotFound: () => AddNewFunctionUnit(model)));
         }
 
 
-        private void LoadConnection(List<DataStream> dataStreams)
+        private void AddNewFunctionUnit(FunctionUnit model)
         {
-            Connections.Clear();
-            dataStreams.Where(x => x.Sources.Any() && x.Destinations.Any()).ToList().ForEach(modelConnection =>
+            var vm = new FunctionUnitViewModel();
+            vm.LoadFromModel(model);
+            FunctionUnits.Add(vm);
+        }
+
+
+        private void FindFunctionUnitViewModel(ILookup<Guid, FunctionUnitViewModel> lookup, FunctionUnit model,
+            Action<FunctionUnitViewModel> onFound, Action onNotFound)
+        {
+            var found = lookup[model.ID].ToList();
+            if (found.Any())
+                onFound(found.First());
+            else
+                onNotFound();
+        }
+
+
+        private void FindConnectionViewModel(ILookup<Guid, ConnectionViewModel> lookup, DataStream model,
+            Action<ConnectionViewModel> onFound, Action onNotFound)
+        {
+            var found = lookup[model.ID].ToList();
+            if (found.Any())
+                onFound(found.First());
+            else
+                onNotFound();
+        }
+
+
+        private void RemoveDeletedFunctionUnits(List<FunctionUnit> functionUnitsToLoad)
+        {
+            var todelte = FunctionUnits.Where(vm => functionUnitsToLoad.All(fu => fu.ID != vm.Model.ID)).ToList();
+            todelte.ForEach(vm => FunctionUnits.Remove(vm));
+        }
+
+
+        private void LoadConnection(List<DataStream> datastreamsToLoad)
+        {
+            RemoveDeletedConnections(datastreamsToLoad);
+
+            var lookup = Connections.ToLookup(x => x.Model.ID, x => x);
+            datastreamsToLoad.ForEach(model => FindConnectionViewModel(lookup, model,
+                onFound: viewModel => ConnectionViewModel.LoadFromModel(viewModel, model),
+                onNotFound: () => AddNewConnection(model)));
+        }
+
+
+        private void AddNewConnection(DataStream model)
+        {
+            var vm = new ConnectionViewModel();
+            vm.LoadFromModel(model);
+            Connections.Add(vm);
+        }
+
+
+        private void RemoveDeletedConnections(List<DataStream> datastreamsToLoad)
+        {
+            var todelte = Connections.Where(vm => datastreamsToLoad.All(fu => fu.ID != vm.Model.ID)).ToList();
+            todelte.ForEach(vm => Connections.Remove(vm));
+        }
+
+        #endregion
+
+        #region Validation Result Update
+
+        public void ShowValidationResult(List<ValidationError> errors)
+        {
+            MakeEverythingValid();
+
+            errors.ForEach(error =>
             {
-                var vm = new ConnectionViewModel();
-                vm.LoadFromModel(modelConnection);
-                Connections.Add(vm);
+                error.HighlightObjects.ForEach(highlight =>
+                {
+                    highlight.Item1.TryCast<FunctionUnit>(fu => FunctionUnits.FirstOrDefault(x => x.Model ==fu)?.SetValidationError(error, highlight.Item2));
+                    highlight.Item1.TryCast<DataStreamDefinition>(dsd =>
+                    {
+                        var fuVmOfDsd = FunctionUnits.FirstOrDefault(x => x.Model == dsd.Parent);
+                        var outputVm = fuVmOfDsd?.Outputs.FirstOrDefault(dsdVm => dsdVm.Model == dsd);
+                        outputVm?.SetValidationError(error, highlight.Item2);
+                    });
+                });
             });
+        }
+
+        private void MakeEverythingValid()
+        {
+            FunctionUnits.ForEach( fuVm => fuVm.ResetToValidIncludingOutputs());
         }
 
         #endregion

@@ -1,0 +1,51 @@
+*** FRAGEN API-Aufruf, Filehandling?, Daten in Integrationen?
+
+Was ist erlaubt in Integrationen?
+
+#+BEGIN_SRC cpp
+static void Foo ()
+{
+
+   var json = http.get(adress);
+
+   Person p = new Person();
+   p.name = "Peter"
+
+   with (var f = File.Open(path))
+   {
+      dosomething();
+   }
+   OtherFunc();
+}
+
+#+END_SRC
+
+
+
+** FRAGEN Zusammenfassung
+
+   Tabelle:
+   Daten - Methoden in Daten-Objekte aufrufen? Darf Operation die Methode kennen?
+   Daten - was bedeutet die eigentlich? Methoden die zum Datentyp
+   gehören/gekapselt sind, sind die in Operationen erlaubt? file open handlers?
+
+   
+   
+   
+** Leserlichkeit
+In diesem Kapitel werde ich mich speziell mit der Frage der Lesbarkeit mancher Flow Design Implementationen beschäftigen.
+Ziel von CCD ist es nicht nur den Code evolvierbar zu halten, sondern ihn auch besser leserlich zu machen.
+
+*** Integration gibt Funktionszeiger an Operationen, welche diesen jedoch auch nur an die nächste Operation weitergibt.
+Auf Ebene der Integration, wo man eigentlich das Zusammenspiel der einzelnen Operationen leicht erkennen soll, ist es bei solch einem Beispiel den
+Fluss nachzuvollziehen.
+
+-> main ->
+->DecideValidationProcess -> Validation -> DoSomething ->
+
+Lösung: erstellen einer weiteren Integration, die die beiden letzten Operationen integriert.
+-> main ->
+-> DecideValidationProcess -> Validation1AndDoSomething ->
+                          -> Validation -> DoSomething ->
+
+

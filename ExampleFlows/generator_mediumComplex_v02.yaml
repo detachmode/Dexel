@@ -1,0 +1,235 @@
+FunctionUnits:
+- &o8
+  Position:
+    X: 80
+    Y: 50
+  Name: main
+  ID: a1659012-4c03-4903-bfb0-7d76364fcc9e
+  IsIntegrating:
+  - &o0
+    Position:
+      X: 37
+      Y: 242.99999999999997
+    Name: create person
+    ID: edcd06ef-745b-4e2a-aa02-6f3df10d344e
+    IsIntegrating: []
+    InputStreams:
+    - DataNames: ()
+      ID: a4fa93f1-84ad-4d81-ac20-9538070ebd87
+      Parent: *o0
+    OutputStreams:
+    - &o9
+      ActionName: .onError
+      DataNames: (str:string)
+      ID: b19b9b88-4ec0-492f-878d-2b6077490ed9
+      Connected: true
+      Parent: *o0
+    - &o11
+      ActionName: ''
+      DataNames: (Person)
+      ID: b485ef52-e676-439a-959d-ee96e29ff56f
+      Connected: true
+      Parent: *o0
+  - &o1
+    Position:
+      X: 318.66666666666663
+      Y: 179.37333333333339
+    Name: print
+    ID: bdcb5659-d68a-4c33-b8dd-ed654d973959
+    IsIntegrating: []
+    InputStreams:
+    - &o10
+      ActionName: ''
+      DataNames: (str:string)
+      ID: 762c7bf7-64e2-465e-920f-092f3df5872c
+      Connected: true
+      Parent: *o1
+    OutputStreams:
+    - ActionName: ''
+      DataNames: ()
+      ID: c0793a38-02c3-4f6d-8dfc-48041e9a5db6
+      Parent: *o1
+  - &o2
+    Position:
+      X: 327.33333333333337
+      Y: 274.87333333333339
+    Name: set random age
+    ID: 374f1bd2-202f-4667-86d7-9af19db7865a
+    IsIntegrating: []
+    InputStreams:
+    - &o12
+      ActionName: ''
+      DataNames: (Person)
+      ID: 2f4adee4-83cc-4f2a-8cfe-5a0990148a20
+      Connected: true
+      Parent: *o2
+    OutputStreams:
+    - &o13
+      ActionName: ''
+      DataNames: ()
+      ID: 6b717c1d-9063-4e8c-95f2-3d23cd499e66
+      Connected: true
+      Parent: *o2
+  - &o3
+    Position:
+      X: 684.35601010101004
+      Y: 275.12333333333339
+    Name: set random name
+    ID: 6f780862-8cab-4147-882c-e40e2bd61819
+    IsIntegrating: []
+    InputStreams:
+    - &o14
+      ActionName: ''
+      DataNames: (Person)
+      ID: 56e50548-d32e-442e-9ba9-c5c16f6302fc
+      Connected: true
+      Parent: *o3
+    OutputStreams:
+    - &o15
+      ActionName: ''
+      DataNames: ()
+      ID: 964854bb-b7eb-4d9d-83ae-94188c6cccdd
+      Connected: true
+      Parent: *o3
+  - &o7
+    Position:
+      X: 1087.472893217893
+      Y: 278.49995670995679
+    Name: CheckAgeAndPrint
+    ID: a7c483ee-33a3-4027-852d-d9f1f5c3b323
+    IsIntegrating:
+    - &o4
+      Position:
+        X: 893.30622655122647
+        Y: 526.1190043290045
+      Name: CheckAge
+      ID: 80e4751d-5bcb-4799-ae5d-d66f27408f4a
+      IsIntegrating: []
+      InputStreams:
+      - ActionName: ''
+        DataNames: (Person)
+        ID: c00ae0bd-59e1-46c0-830a-df9d3deb9b37
+        Parent: *o4
+      OutputStreams:
+      - &o17
+        ActionName: onChild
+        DataNames: ()
+        ID: 61c62ba6-7f45-4339-826c-8a32bb2fb419
+        Connected: true
+        Parent: *o4
+      - &o19
+        ActionName: onAdult
+        DataNames: (p:Person)
+        ID: d3a57823-6af0-4c6f-99fd-acc285366efc
+        Connected: true
+        Parent: *o4
+    - &o5
+      Position:
+        X: 1252.2380952380945
+        Y: 441.27809523809549
+      Name: Print no access
+      ID: 84aa943c-27c3-48fb-a9d9-d8701b11de90
+      IsIntegrating: []
+      InputStreams:
+      - &o18
+        ActionName: ''
+        DataNames: ()
+        ID: 78e715e7-7493-46ec-a921-314552d9d49f
+        Connected: true
+        Parent: *o5
+      OutputStreams:
+      - ActionName: ''
+        DataNames: ()
+        ID: 81c84ed5-d401-4d58-b7f2-5bf385553966
+        Parent: *o5
+    - &o6
+      Position:
+        X: 1292.2380952380943
+        Y: 610.50886446886477
+      Name: Print welcome message
+      ID: 6a8f9849-8a22-4fbc-899b-e548bcc8cc66
+      IsIntegrating: []
+      InputStreams:
+      - &o20
+        ActionName: ''
+        DataNames: (p:Person)
+        ID: 10c7e7a2-e991-4543-acdb-e83b0b956f28
+        Connected: true
+        Parent: *o6
+      OutputStreams:
+      - ActionName: ''
+        DataNames: ()
+        ID: 988d3756-4c4f-4551-8210-67f02992c264
+        Parent: *o6
+    InputStreams:
+    - &o16
+      ActionName: ''
+      DataNames: (Person)
+      ID: 23b0095d-326b-4e1e-99dc-f5b8b2b3e16a
+      Connected: true
+      Parent: *o7
+    OutputStreams:
+    - DataNames: ()
+      ID: c459b3e3-33b8-44dc-8e03-1dff05e438eb
+      Parent: *o7
+  InputStreams:
+  - DataNames: ()
+    ID: dc6e0abc-a908-478b-a463-ed0d6dd35dcb
+    Parent: *o8
+  OutputStreams:
+  - ActionName: ''
+    DataNames: ()
+    ID: b0ce4ff6-1a93-4122-b3d9-3c5d626a343f
+    Parent: *o8
+- *o0
+- *o1
+- *o2
+- *o3
+- *o7
+- *o4
+- *o5
+- *o6
+Connections:
+- DataNames: (str:string)
+  ID: 18125c21-6986-4a75-8048-e5c094d95e8f
+  Sources:
+  - *o9
+  Destinations:
+  - *o10
+- DataNames: (Person)
+  ID: 200c25e9-0066-4c40-9f17-00d5661943e1
+  Sources:
+  - *o11
+  Destinations:
+  - *o12
+- DataNames: () | (Person)
+  ID: ab92a21b-baa7-426a-bfec-bb0994cf84ef
+  Sources:
+  - *o13
+  Destinations:
+  - *o14
+- DataNames: () | (Person)
+  ID: 19612a24-1936-4257-8553-c2ce6e12363d
+  Sources:
+  - *o15
+  Destinations:
+  - *o16
+- DataNames: ()
+  ID: c113b60d-3ba9-476f-b2bc-965980936889
+  Sources:
+  - *o17
+  Destinations:
+  - *o18
+- DataNames: (p:Person)
+  ID: cd3a064f-a8d2-403e-8840-fad86bdd8b69
+  Sources:
+  - *o19
+  Destinations:
+  - *o20
+DataTypes:
+- Name: Person
+  SubDataTypes:
+  - Name: age
+    Type: int
+  - Name: name
+    Type: string

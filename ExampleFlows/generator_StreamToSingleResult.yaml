@@ -1,0 +1,85 @@
+FunctionUnits:
+- &o1
+  Position:
+    X: 80
+    Y: 50
+  Name: foo
+  ID: dc7f37f1-82e8-43e6-a806-673987e0bc61
+  IsIntegrating:
+  - &o0
+    Position:
+      X: 80
+      Y: 180
+    Name: subbar
+    ID: 2d531a64-60f2-4c2a-a5a1-137aebcb017c
+    IsIntegrating: []
+    InputStreams:
+    - DataNames: ()
+      ID: 6c371d74-e458-46aa-9fed-f2c62662ae65
+      Parent: *o0
+    OutputStreams:
+    - DataNames: (string,age:int)*
+      ID: a6706d71-785b-40ef-a6a1-e52ec578b714
+      Parent: *o0
+  InputStreams:
+  - DataNames: ()
+    ID: a147e9d0-97b8-4d37-bbd8-5c914c143b34
+    Parent: *o1
+  OutputStreams:
+  - &o4
+    ActionName: ''
+    DataNames: (string, age:int)*
+    ID: 6811502b-5bd8-4cce-9227-d2954c27615e
+    Connected: true
+    Parent: *o1
+- *o0
+- &o2
+  Position:
+    X: 450
+    Y: 50
+  Name: create person
+  ID: cd99d92a-e069-4e11-9b77-5ad3ea9b2e00
+  IsIntegrating: []
+  InputStreams:
+  - &o5
+    DataNames: (age:int)*
+    ID: 576e5f6d-de1c-4155-8635-ceb4781ce801
+    Connected: true
+    Parent: *o2
+  OutputStreams:
+  - DataNames: (rndPerson:Person)*
+    ID: e8b4a9b7-3b9f-47b9-a283-ab7c8bd60075
+    Parent: *o2
+- &o3
+  Position:
+    X: 222
+    Y: -83.960000000000008
+  Name: te
+  ID: a6bb76c5-3ff0-4c78-a9f2-a84c073e3734
+  IsIntegrating:
+  - *o1
+  - *o2
+  InputStreams:
+  - ActionName: ''
+    DataNames: ()
+    ID: cd13f612-8202-49bf-9f3e-c9076a2bd3fe
+    Parent: *o3
+  OutputStreams:
+  - ActionName: ''
+    DataNames: (rndPerson:Person)
+    ID: f727a717-58e3-4b40-b35b-96550c7e5b6b
+    Parent: *o3
+Connections:
+- DataNames: (string, age:int)* | (age:int)*
+  ID: 836874ec-ad63-4eb3-8ea1-71aa391b69ce
+  Sources:
+  - *o4
+  Destinations:
+  - *o5
+DataTypes:
+- Name: Person
+  SubDataTypes:
+  - Name: age
+    Type: int
+  - Name: name
+    Type: string

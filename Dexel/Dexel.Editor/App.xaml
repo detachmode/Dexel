@@ -1,21 +1,27 @@
 ﻿<Application x:Class="Dexel.Editor.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:Dexel.Editor"
-             xmlns:converter="clr-namespace:Dexel.Editor.Converter">
+             xmlns:converter="clr-namespace:Dexel.Editor.Views.Converter">
     <Application.Resources>
         <ResourceDictionary>
             <converter:DebugConverter x:Key="DebugConverter" />
-            <converter:IOCellSelectionConverter x:Key="SelectionConverter" />
+            <converter:FunctionUnitSelectionConverter x:Key="SelectionConverter" />
             <converter:PercentageConverter x:Key="PercentageConverter" />
             <converter:TextDocumentConverter x:Key="TextDocumentConverter" />
             <converter:IntegrationBorderTopPointConverter x:Key="IntegrationBorderTopPointConverter" />
             <converter:VisibilityConverter x:Key="VisibilityConverter" />
+            <converter:FunctionUnitTextfieldBG x:Key="FunctionUnitTextfieldBG" />
+            <converter:MissingTypesButtonText x:Key="MissingTypesButtonText" />
+            <converter:ValidationFlagColorConverter x:Key="ValidationFlagColorConverter" />
+            <converter:ValidationFlagFillConverter x:Key="ValidationFlagFillConverter" />
+            <converter:ValidationFlagVisbilityConverter x:Key="ValidationFlagVisbilityConverter" />
+            
+            
             
             <ItemsPanelTemplate x:Key="DrawingBoardItemControl">
                 <Canvas />
             </ItemsPanelTemplate>
-
+            
 
             <VisualBrush x:Key="MyVisualBrush" TileMode="Tile" Viewport="0,0,15,15" ViewportUnits="Absolute"
                  Viewbox="0,0,15,15" ViewboxUnits="Absolute">
@@ -28,13 +34,13 @@
             </VisualBrush>
 
             <Style x:Key="BaseContentControlStyle" TargetType="{x:Type ContentControl}">
-                <Setter Property="Foreground" Value="Bisque" />
+                <Setter Property="Foreground" Value="WhiteSmoke" />
             </Style>
             <Style TargetType="{x:Type Label}" BasedOn="{StaticResource BaseContentControlStyle}" />
 
 
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Themes/DarkColorfull.xaml" />
+                <ResourceDictionary Source="Views/Themes/DarkColorfull.xaml" />
                 <!--<ResourceDictionary Source="Print.xaml"></ResourceDictionary>-->
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

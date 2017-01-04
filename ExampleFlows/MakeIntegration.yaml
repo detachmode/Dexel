@@ -1,0 +1,509 @@
+FunctionUnits:
+- &o16
+  Position:
+    X: 493.0306915306918
+    Y: -260.4860295260292
+  Name: create body
+  ID: c90047b3-2f56-49f9-9ee5-77f553f2ff5e
+  Integration:
+  - &o0
+    Position:
+      X: -139.15734265734204
+      Y: -49.76808080808047
+    Name: get next FunctionUnit
+    ID: 66b0199a-f74d-4f38-b082-34882397b7e4
+    Integration: []
+    InputStreams:
+    - ActionName: ''
+      DataNames: (Body, result:SyntaxNode*)
+      ID: 73e576e1-e41c-4fff-aab7-e24309a4051e
+      Parent: *o0
+    OutputStreams:
+    - ActionName: noNextCell
+      DataNames: ()
+      ID: 74368b2d-7c11-4d61-94c9-3e9bcda9c2ed
+      Parent: *o0
+    - &o34
+      ActionName: isStream
+      DataNames: (Body, streamingCell:FunctionUnit, result)
+      ID: f8cd344d-8169-4c12-9fe9-998d45297a6e
+      Connected: true
+      Parent: *o0
+    - &o24
+      ActionName: isNotStream
+      DataNames: (Body,FunctionUnit)
+      ID: 61dfc90e-fcc0-4dc8-aa9d-2191a27d9e8b
+      Connected: true
+      Parent: *o0
+  - &o7
+    Position:
+      X: 645.14618714618757
+      Y: 502.85249306249318
+    Name: create non stream method call
+    ID: e9e17ec0-7f0d-402e-8dae-5c8427e5cc66
+    Integration:
+    - &o1
+      Position:
+        X: 357.32186794686834
+        Y: 676.9576353276359
+      Name: remove cell and connections from body
+      ID: d26d727a-0769-4033-856b-69e82d225f71
+      Integration: []
+      InputStreams:
+      - ActionName: ''
+        DataNames: (Body, FunctionUnit)
+        ID: 807ad621-fff9-4878-8c69-bb4cacabe0d0
+        Parent: *o1
+      OutputStreams:
+      - &o36
+        ActionName: ''
+        DataNames: (Body)
+        ID: d99fd35d-e284-4972-bef0-e3d72ef4dc0f
+        Connected: true
+        Parent: *o1
+    - &o6
+      Position:
+        X: 1088.785642505643
+        Y: 676.57801494801561
+      Name: generate method call
+      ID: bf9802eb-3062-4f5f-877b-fe55cccc1984
+      Integration:
+      - &o2
+        Position:
+          X: 261.68948865948937
+          Y: 869.7831431531439
+        Name: create parameter from available local variables
+        ID: ef551064-48af-4a8f-b815-cffb3b5f4657
+        Integration: []
+        InputStreams:
+        - ActionName: ''
+          DataNames: (generated:LocalVariable*, togenerate:FunctionUnit)
+          ID: 1b15c0a8-7003-4727-9e93-36c326ad61da
+          Parent: *o2
+        OutputStreams:
+        - &o38
+          ActionName: ''
+          DataNames: (parameter:SyntaxNode*)
+          ID: f50e2272-63ca-4da0-b16e-735157477f25
+          Connected: true
+          Parent: *o2
+      - &o3
+        Position:
+          X: 922.68365602045412
+          Y: 869.57177717585466
+        Name: get method name
+        ID: bd162257-a1d7-4894-a311-4617a1d6a0a4
+        Integration: []
+        InputStreams:
+        - &o39
+          ActionName: ''
+          DataNames: (FunctionUnit)
+          ID: 434eb197-4d86-436c-8c86-fd94fa2670c9
+          Connected: true
+          Parent: *o3
+        OutputStreams:
+        - &o40
+          ActionName: ''
+          DataNames: (methodname:string)
+          ID: 7963de7f-8e20-4486-9638-4d599eeae7bc
+          Connected: true
+          Parent: *o3
+      - &o4
+        Position:
+          X: 1530.0118611486596
+          Y: 872.34100794508538
+        Name: create local variable to return to
+        ID: 345c0a18-1f26-4b1f-8fdc-76bec67f8738
+        Integration: []
+        InputStreams:
+        - &o41
+          ActionName: ''
+          DataNames: (generated:LocalVariable*,FunctionUnit)
+          ID: 038bbd39-ee3c-4d58-a5df-bb6a44bd0111
+          Connected: true
+          Parent: *o4
+        OutputStreams:
+        - &o42
+          ActionName: ''
+          DataNames: (assignTo:SyntaxNode)
+          ID: a908c509-287b-4411-8e70-11ac3ee87390
+          Connected: true
+          Parent: *o4
+      - &o5
+        Position:
+          X: 2238.6300707168703
+          Y: 870.70687981831009
+        Name: make method
+        ID: e4a87baf-5ab0-4f1b-9046-265fad78da1e
+        Integration: []
+        InputStreams:
+        - &o43
+          ActionName: ''
+          DataNames: (parameter:SyntaxNode*, FunctionUnit)
+          ID: afad1c90-bcec-4a07-9c23-6c10337732f4
+          Connected: true
+          Parent: *o5
+        OutputStreams:
+        - ActionName: ''
+          DataNames: (SyntaxNode)
+          ID: f3e84584-0dae-4a3c-9b49-6eb140887f7b
+          Parent: *o5
+      InputStreams:
+      - &o37
+        ActionName: ''
+        DataNames: (generated:LocalVariable*, FunctionUnit)
+        ID: 1a07b0a5-2a60-466f-8114-f79204b6f0b2
+        Connected: true
+        Parent: *o6
+      OutputStreams:
+      - ActionName: ''
+        DataNames: (SyntaxNode)
+        ID: eb22287d-076d-477e-a14d-2e101023068f
+        Parent: *o6
+    InputStreams:
+    - &o25
+      ActionName: ''
+      DataNames: (Body,FunctionUnit)
+      ID: 998642b3-14dc-4bdc-bfbd-8e9f6bef13a6
+      Connected: true
+      Parent: *o7
+    OutputStreams:
+    - &o30
+      ActionName: ''
+      DataNames: (SyntaxNode)
+      ID: 84879266-b4f5-4318-9971-95dab8a20ed5
+      Connected: true
+      Parent: *o7
+  - &o8
+    Position:
+      X: 1179.4145546719094
+      Y: 501.75080539286591
+    Name: add to result
+    ID: 80afb517-8b33-4e4a-9d71-deed2ddb7fd6
+    Integration: []
+    InputStreams:
+    - &o31
+      ActionName: ''
+      DataNames: (SyntaxNode, result)
+      ID: c65237ee-0200-4019-93dc-178e05b6b36a
+      Connected: true
+      Parent: *o8
+    OutputStreams:
+    - ActionName: ''
+      DataNames: (result)
+      ID: 2f3734dc-5fa8-4860-b6ac-404329e1c5fa
+      Parent: *o8
+  - &o14
+    Position:
+      X: 877.19620712620758
+      Y: -19.936911976911517
+    Name: create method call with lambda
+    ID: f1f27dc0-e360-4c0f-8c3a-94b7e3dbb530
+    Integration:
+    - &o9
+      Position:
+        X: 548.0556341806348
+        Y: 133.12321974322032
+      Name: remove cell and connections from body
+      ID: 921557f7-8be5-4e7c-9664-c396c7b44bf9
+      Integration: []
+      InputStreams:
+      - ActionName: ''
+        DataNames: (Body, FunctionUnit)
+        ID: 9c70a33b-d07e-4b6c-9b20-22663bb8ab83
+        Parent: *o9
+      OutputStreams:
+      - &o26
+        ActionName: ''
+        DataNames: (Body)
+        ID: 37bca821-8d57-4dea-996c-469d420864cd
+        Connected: true
+        Parent: *o9
+    - &o10
+      Position:
+        X: 1102.3393055745994
+        Y: 132.85442154795317
+      Name: set body parent
+      ID: b844550d-49dd-4587-a06e-3d9b17d811bf
+      Integration: []
+      InputStreams:
+      - &o27
+        ActionName: ''
+        DataNames: (FunctionUnit, Body)
+        ID: d79173c2-3586-433c-bc85-8c06b0d61cc6
+        Connected: true
+        Parent: *o10
+      OutputStreams:
+      - &o28
+        ActionName: ''
+        DataNames: (Body)
+        ID: ec0dae9c-bd48-40c9-8814-ccdcdb0dbed9
+        Connected: true
+        Parent: *o10
+    - &o11
+      Position:
+        X: 1636.2422299922307
+        Y: 132.97550893550914
+      Name: create body
+      ID: b31f5e41-a48f-4a88-b346-d4a3d16721da
+      Integration: []
+      InputStreams:
+      - &o29
+        ActionName: ''
+        DataNames: (Body, subresult:SyntaxNode*)
+        ID: fc18ce9b-8893-4b0c-8d3a-a19e0ddd8c40
+        Connected: true
+        Parent: *o11
+      OutputStreams:
+      - &o44
+        ActionName: ''
+        DataNames: (lambdaBody:SyntaxNode*)
+        ID: fc70ba94-9b77-4f73-af3d-6ab4c127a348
+        Connected: true
+        Parent: *o11
+    - &o12
+      Position:
+        X: 2098.3402143272669
+        Y: 131.89070260243938
+      Name: make lambda parameter
+      ID: 579bdbff-cd50-4e1f-ac21-c225c9c02079
+      Integration: []
+      InputStreams:
+      - &o45
+        ActionName: ''
+        DataNames: (FunctionUnit, Body)
+        ID: 708ec43c-46b1-4cd8-8bcf-d23b73f10376
+        Connected: true
+        Parent: *o12
+      OutputStreams:
+      - &o46
+        ActionName: ''
+        DataNames: (lambdaParameter:SyntaxNode*)
+        ID: e480d9f9-864e-456d-b147-dca83a578e55
+        Connected: true
+        Parent: *o12
+    - &o13
+      Position:
+        X: 3037.0249442822992
+        Y: 131.46725560931617
+      Name: methodcall  lambda
+      ID: 8b22740c-7e70-4540-84e4-9de0b4cc4ad0
+      Integration: []
+      InputStreams:
+      - &o47
+        ActionName: ''
+        DataNames: (lambdaBody:SyntaxNode*, lambdaParameter:SyntaxNode*, FunctionUnit)
+        ID: dae748fd-7ffd-49f0-9a39-cdf58c916509
+        Connected: true
+        Parent: *o13
+      OutputStreams:
+      - ActionName: ''
+        DataNames: (SyntaxNode)
+        ID: 7b181195-fdb2-489b-a268-0bcfac925c8b
+        Parent: *o13
+    InputStreams:
+    - &o35
+      ActionName: ''
+      DataNames: (Body, streamingCell:FunctionUnit, result)
+      ID: 3d2de09d-ac0c-4fd8-a662-0321a82729a5
+      Connected: true
+      Parent: *o14
+    OutputStreams:
+    - &o32
+      ActionName: ''
+      DataNames: (SyntaxNode)
+      ID: ce177a5f-e0e8-43fc-9096-da59e3f31365
+      Connected: true
+      Parent: *o14
+  - &o15
+    Position:
+      X: 1478.4035656609203
+      Y: -18.760183618123165
+    Name: add to result
+    ID: 96275e7f-9dcb-4437-b142-6785f0d12536
+    Integration: []
+    InputStreams:
+    - &o33
+      ActionName: ''
+      DataNames: (SyntaxNode, result)
+      ID: 2951e089-195b-4b5b-8140-36386dba5a64
+      Connected: true
+      Parent: *o15
+    OutputStreams:
+    - ActionName: ''
+      DataNames: (result)
+      ID: 683e5319-6a82-493e-ab2d-a73d11688a61
+      Parent: *o15
+  InputStreams:
+  - &o23
+    ActionName: ''
+    DataNames: (Body, result:SyntaxNode*)
+    ID: ec379b08-a77b-4728-8728-e8c4b33cda95
+    Connected: true
+    Parent: *o16
+  OutputStreams:
+  - ActionName: ''
+    DataNames: (SyntaxNode*)
+    ID: 3c6a9c05-ee47-4c6b-a3ea-2b3539a925c8
+    Parent: *o16
+- *o0
+- &o19
+  Position:
+    X: -116.88461538461536
+    Y: -478.30615384615373
+  Name: make integration body
+  ID: f9d463ab-a82a-443b-a209-19182d03b7b0
+  Integration:
+  - &o17
+    Position:
+      X: -176.23504273504267
+      Y: -253.89162393162386
+    Name: defines FunctionUnit dependencies
+    ID: 2de5eb88-8ec2-40a6-8c1c-355acd924f6f
+    Integration: []
+    InputStreams:
+    - &o21
+      ActionName: ''
+      DataNames: (Body)
+      ID: f2c15943-0121-41f9-a7e4-137cf85a3469
+      Connected: true
+      Parent: *o17
+    OutputStreams:
+    - &o22
+      ActionName: ''
+      DataNames: (Body)
+      ID: 9ff7aaed-b313-4d8e-9436-a0fd758b5303
+      Connected: true
+      Parent: *o17
+  - &o18
+    Position:
+      X: -563.35042735042725
+      Y: -252.6523076923076
+    Name: new  body object
+    ID: 5e0ce8e3-0449-4bd7-91c5-325d93addaad
+    Integration: []
+    InputStreams:
+    - ActionName: ''
+      DataNames: (Generator, FunctionUnit, MainModel)
+      ID: abf8e48d-c780-4b64-84a2-754029dbb0c4
+      Parent: *o18
+    OutputStreams:
+    - &o20
+      ActionName: ''
+      DataNames: (Body)
+      ID: 04019e86-7c79-4346-93e3-477052103423
+      Connected: true
+      Parent: *o18
+  - *o16
+  InputStreams:
+  - ActionName: ''
+    DataNames: (Generator, FunctionUnit, MainModel)
+    ID: 8929f03f-9f2c-4257-8293-8863c793bdaa
+    Parent: *o19
+  OutputStreams:
+  - ActionName: ''
+    DataNames: (SyntaxNode*)
+    ID: 3d632076-52f7-4bbd-82ed-352a9cd375c1
+    Parent: *o19
+- *o17
+- *o18
+- *o14
+- *o7
+- *o11
+- *o9
+- *o13
+- *o10
+- *o15
+- *o8
+- *o1
+- *o6
+- *o2
+- *o5
+- *o3
+- *o4
+- *o12
+Connections:
+- DataNames: (Body)
+  ID: b03dbb7e-b3a2-4ce5-bd99-5156db6414ef
+  Sources:
+  - *o20
+  Destinations:
+  - *o21
+- DataNames: (Body) | (Body, result:SyntaxNode*)
+  ID: a8fe50c3-8519-4584-a922-b58a855f7170
+  Sources:
+  - *o22
+  Destinations:
+  - *o23
+- DataNames: (Body,FunctionUnit)
+  ID: f7509465-32e5-484b-87d6-9eee4eaf75e0
+  Sources:
+  - *o24
+  Destinations:
+  - *o25
+- DataNames: (Body) | (FunctionUnit, Body)
+  ID: 210b20da-c16e-465c-abf5-37c742ddf64b
+  Sources:
+  - *o26
+  Destinations:
+  - *o27
+- DataNames: (Body) | (Body, subresult:SyntaxNode*)
+  ID: 8073ac00-cf2a-40bf-977a-9135b7ec1264
+  Sources:
+  - *o28
+  Destinations:
+  - *o29
+- DataNames: (SyntaxNode) | (SyntaxNode, result)
+  ID: 78b3ad2f-c734-45e4-9bfd-26c842fb6b6e
+  Sources:
+  - *o30
+  Destinations:
+  - *o31
+- DataNames: (SyntaxNode) | (SyntaxNode, result)
+  ID: a18ae0a9-9667-445a-9f7b-a469e3664081
+  Sources:
+  - *o32
+  Destinations:
+  - *o33
+- DataNames: (Body, streamingCell:FunctionUnit, result)
+  ID: a02b0404-68ee-414e-96ef-fe46bdec481c
+  Sources:
+  - *o34
+  Destinations:
+  - *o35
+- DataNames: (Body) | (generated:LocalVariable*, FunctionUnit)
+  ID: 69904a5c-ca72-4846-9b2b-6676115e46e4
+  Sources:
+  - *o36
+  Destinations:
+  - *o37
+- DataNames: (parameter:SyntaxNode*) | (FunctionUnit)
+  ID: 443c9f4b-5389-41e0-902e-d6db72c8a517
+  Sources:
+  - *o38
+  Destinations:
+  - *o39
+- DataNames: (methodname:string)|(generated:LocalVariable*,FunctionUnit)
+  ID: e7ede975-d1c5-4913-bc94-0b92f25d4c86
+  Sources:
+  - *o40
+  Destinations:
+  - *o41
+- DataNames: (assignTo:SyntaxNode) | (parameter:SyntaxNode*, FunctionUnit)
+  ID: 352ed06b-8edb-4da4-a506-c4ba15e0aa03
+  Sources:
+  - *o42
+  Destinations:
+  - *o43
+- DataNames: (lambdaBody:SyntaxNode*) | (FunctionUnit, Body)
+  ID: b7c6df35-6fb8-431c-9f58-5f791437e397
+  Sources:
+  - *o44
+  Destinations:
+  - *o45
+- DataNames: (lambdaParameter:SyntaxNode*) | (lambdaBody:SyntaxNode*, lambdaParameter:SyntaxNode*, FunctionUnit)
+  ID: 50c16348-c59e-402e-8c18-32350d8bc316
+  Sources:
+  - *o46
+  Destinations:
+  - *o47

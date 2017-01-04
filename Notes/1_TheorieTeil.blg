@@ -1,5 +1,0 @@
-[0] Config.pm:324> INFO - This is Biber 2.1
-[0] Config.pm:327> INFO - Logfile is '1_TheorieTeil.blg'
-[49] biber-darwin:276> INFO - === Wed Jan  4, 2017, 01:30:54
-[164] Utils.pm:162> ERROR - Cannot find control file '1_TheorieTeil.bcf'! - did you pass the "backend=biber" option to BibLaTeX?
-[165] Biber.pm:110> INFO - ERRORS: 1

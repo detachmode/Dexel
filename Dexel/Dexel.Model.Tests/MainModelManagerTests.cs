@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Dexel.Model.DataTypes;
+using Dexel.Model.Manager;
 
 namespace Dexel.Model.Tests
 {
@@ -17,39 +18,57 @@ namespace Dexel.Model.Tests
         [TestMethod()]
         public void TraverseChildrenTest()
         {
-            var testmodel = Mockdata.MakeRandomPerson2();
-            var randname = testmodel.SoftwareCells[0];
-            var found = new List<SoftwareCell>();
-            MainModelManager.TraverseChildren(randname, cell => found.Add(cell), testmodel);
+            var testmodel = Mockdata.Mockdata.MakeRandomPerson2();
+            var randname = testmodel.FunctionUnits[0];
+            var found = new List<FunctionUnit>();
+            MainModelManager.TraverseChildren(randname, fu => found.Add(fu), testmodel);
             Assert.IsTrue(found.Any(sc => sc.Name == "Random Age"));
             Assert.IsTrue(found.Any(sc => sc.Name == "Create Person"));
         }
 
+
+
         [TestMethod()]
-        public void RemoveFromIntegrationIncludingChildrenTest()
+        public void DeleteFunctionUnitTest()
         {
             var testModel = new MainModel();
-            var main = MainModelManager.AddNewSoftwareCell("Main", testModel);
-          
-            var firstOp = MainModelManager.AddNewSoftwareCell("Operation", testModel);
-            var secondOp = MainModelManager.AddNewSoftwareCell("Operation", testModel);
-            var thirdOp = MainModelManager.AddNewSoftwareCell("Operation", testModel);
-            MainModelManager.ConnectTwoCells(firstOp, secondOp, "", "", testModel);
-            MainModelManager.ConnectTwoCells(secondOp, thirdOp, "", "", testModel);
+            var main = MainModelManager.AddNewFunctionUnit("Main", testModel);
 
-            main.Integration.Add(firstOp);
-            main.Integration.Add(secondOp);
-            main.Integration.Add(thirdOp);
+            var firstOp = MainModelManager.AddNewFunctionUnit("Operation 1", testModel);
+            var secondOp = MainModelManager.AddNewFunctionUnit("Operation 2", testModel);
+            var thirdOp = MainModelManager.AddNewFunctionUnit("Operation 3", testModel);
+            main.IsIntegrating.Add(firstOp);
 
-            var found = new List<SoftwareCell>();
-            MainModelManager.TraverseChildren(firstOp, cell => found.Add(cell), testModel);
-            Assert.IsTrue(found.Any(sc => sc == secondOp));
-            Assert.IsTrue(found.Any(sc => sc == thirdOp));
+            MainModelManager.ConnectTwoFunctionUnits(firstOp, secondOp, "", "", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(secondOp, thirdOp, "", "", testModel);
 
-            var connectionToRemove = testModel.Connections.First(c => c.Sources.Any(dsd => dsd.Parent == firstOp));
-            MainModelManager.RemoveFromIntegrationIncludingChildren(connectionToRemove, testModel);
+            // first functionunit in integration deleted -> assert that only this will get deleted
+            MainModelManager.DeleteFunctionUnit(firstOp,testModel);
 
-            Assert.IsTrue(main.Integration.Count == 1);
+            CollectionAssert.DoesNotContain(main.IsIntegrating, firstOp);
+            CollectionAssert.Contains(main.IsIntegrating, secondOp);
+            CollectionAssert.Contains(main.IsIntegrating, thirdOp);
+
+
+            testModel = new MainModel();
+            main = MainModelManager.AddNewFunctionUnit("Main", testModel);
+
+            firstOp = MainModelManager.AddNewFunctionUnit("Operation 1", testModel);
+            secondOp = MainModelManager.AddNewFunctionUnit("Operation 2", testModel);
+            thirdOp = MainModelManager.AddNewFunctionUnit("Operation 3", testModel);
+            main.IsIntegrating.Add(firstOp);
+
+            MainModelManager.ConnectTwoFunctionUnits(firstOp, secondOp, "", "", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(secondOp, thirdOp, "", "", testModel);
+
+            // second functionunit in integration deleted -> assert that all following will also be removed from integration
+            MainModelManager.DeleteFunctionUnit(secondOp, testModel);
+
+            CollectionAssert.Contains(main.IsIntegrating, firstOp);
+            CollectionAssert.DoesNotContain(main.IsIntegrating, secondOp);
+            CollectionAssert.DoesNotContain(main.IsIntegrating, thirdOp);
+
+
 
 
         }

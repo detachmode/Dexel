@@ -1,0 +1,273 @@
+{
+  "$id": "1",
+  "SoftwareCells": [
+    {
+      "$id": "2",
+      "Position": "36.6666666666667,43.3333333333333",
+      "Name": "Random Name",
+      "ID": "a32691ee-f425-4b8d-9b15-8f6e71cfaa13",
+      "Attribute": 0,
+      "Integration": [
+        {
+          "$id": "3",
+          "Position": "-187.392857142857,175.642857142857",
+          "Name": "GetSeed",
+          "ID": "211fe89a-bdb0-4f66-9886-bfec060ec094",
+          "Attribute": 0,
+          "Integration": [],
+          "InputStreams": [
+            {
+              "$id": "4",
+              "ActionName": null,
+              "DataNames": "()",
+              "ID": "e1fcbaf1-4cfd-4454-bee8-c02e864f393a",
+              "Connected": false,
+              "Parent": {
+                "$ref": "3"
+              }
+            }
+          ],
+          "OutputStreams": [
+            {
+              "$id": "5",
+              "ActionName": null,
+              "DataNames": "int",
+              "ID": "5060ca0d-cad6-4bf6-9d78-3fc9066a6b2c",
+              "Connected": true,
+              "Parent": {
+                "$ref": "3"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "6",
+          "Position": "27.8214285714287,174.642857142857",
+          "Name": "GetRandomIndex",
+          "ID": "2d9251e6-b8bc-4769-84ca-6dba6e70a0a2",
+          "Attribute": 0,
+          "Integration": [],
+          "InputStreams": [
+            {
+              "$id": "7",
+              "ActionName": null,
+              "DataNames": "int",
+              "ID": "2c581078-d513-40d3-97a5-60dea5412b43",
+              "Connected": true,
+              "Parent": {
+                "$ref": "6"
+              }
+            }
+          ],
+          "OutputStreams": [
+            {
+              "$id": "8",
+              "ActionName": null,
+              "DataNames": "index:int",
+              "ID": "8d9c79bd-8a46-4ae6-859c-716ecc12d2d2",
+              "Connected": true,
+              "Parent": {
+                "$ref": "6"
+              }
+            }
+          ]
+        },
+        {
+          "$id": "9",
+          "Position": "294.642857142857,175.508571428571",
+          "Name": "GetNameFromList",
+          "ID": "c650027c-a9d8-42ad-bab8-c72e91588ebc",
+          "Attribute": 0,
+          "Integration": [],
+          "InputStreams": [
+            {
+              "$id": "10",
+              "ActionName": "",
+              "DataNames": "index:int",
+              "ID": "7b458bc2-95e8-4b2f-ae7b-5e2827d432cd",
+              "Connected": true,
+              "Parent": {
+                "$ref": "9"
+              }
+            }
+          ],
+          "OutputStreams": [
+            {
+              "$id": "11",
+              "ActionName": "",
+              "DataNames": "name:string",
+              "ID": "8ccf6613-5eb3-4395-b1db-5e9a1f50db56",
+              "Connected": false,
+              "Parent": {
+                "$ref": "9"
+              }
+            }
+          ]
+        }
+      ],
+      "InputStreams": [
+        {
+          "$id": "12",
+          "ActionName": null,
+          "DataNames": "",
+          "ID": "60c2790c-9bb3-427c-bfcf-b932ddcaec0d",
+          "Connected": false,
+          "Parent": {
+            "$ref": "2"
+          }
+        }
+      ],
+      "OutputStreams": [
+        {
+          "$id": "13",
+          "ActionName": "",
+          "DataNames": "name:string",
+          "ID": "3043d64d-baf8-41b2-ab26-b407812335bb",
+          "Connected": true,
+          "Parent": {
+            "$ref": "2"
+          }
+        }
+      ]
+    },
+    {
+      "$ref": "3"
+    },
+    {
+      "$ref": "6"
+    },
+    {
+      "$id": "14",
+      "Position": "413.333333333333,44.6666666666666",
+      "Name": "Random Age",
+      "ID": "9aa63123-a98f-4f7f-b611-d03ea78b0cc9",
+      "Attribute": 0,
+      "Integration": [],
+      "InputStreams": [
+        {
+          "$id": "15",
+          "ActionName": null,
+          "DataNames": "",
+          "ID": "d94fa8cc-6030-4bc8-bd33-3c571b7a1bbc",
+          "Connected": true,
+          "Parent": {
+            "$ref": "14"
+          }
+        }
+      ],
+      "OutputStreams": [
+        {
+          "$id": "16",
+          "ActionName": "",
+          "DataNames": "age:int",
+          "ID": "8c43c58b-1cbb-463c-8fdd-3617fc292693",
+          "Connected": true,
+          "Parent": {
+            "$ref": "14"
+          }
+        }
+      ]
+    },
+    {
+      "$id": "17",
+      "Position": "808.5,47",
+      "Name": "Create Person",
+      "ID": "3c8aec16-4a97-4958-b6e0-f439bc61fcd4",
+      "Attribute": 0,
+      "Integration": [],
+      "InputStreams": [
+        {
+          "$id": "18",
+          "ActionName": null,
+          "DataNames": "age:int, name:string",
+          "ID": "af5bee89-fc22-4354-922e-725063493451",
+          "Connected": true,
+          "Parent": {
+            "$ref": "17"
+          }
+        }
+      ],
+      "OutputStreams": [
+        {
+          "$id": "19",
+          "ActionName": "",
+          "DataNames": "rndPerson:Person",
+          "ID": "cbefaf44-10d7-45a4-ad58-9179c940cbb3",
+          "Connected": false,
+          "Parent": {
+            "$ref": "17"
+          }
+        }
+      ]
+    },
+    {
+      "$ref": "9"
+    }
+  ],
+  "Connections": [
+    {
+      "$id": "20",
+      "DataNames": "name:string | ",
+      "ID": "8641d13a-f663-4af2-be56-bd567f68aecd",
+      "ActionName": "",
+      "Sources": [
+        {
+          "$ref": "13"
+        }
+      ],
+      "Destinations": [
+        {
+          "$ref": "15"
+        }
+      ]
+    },
+    {
+      "$id": "21",
+      "DataNames": "age:int  | age:int, name:string",
+      "ID": "4dddc53f-f513-414c-8290-34b2784f2798",
+      "ActionName": "",
+      "Sources": [
+        {
+          "$ref": "16"
+        }
+      ],
+      "Destinations": [
+        {
+          "$ref": "18"
+        }
+      ]
+    },
+    {
+      "$id": "22",
+      "DataNames": " index:int",
+      "ID": "2cb2079c-84f7-45ac-97b7-7212a34b480b",
+      "ActionName": "",
+      "Sources": [
+        {
+          "$ref": "8"
+        }
+      ],
+      "Destinations": [
+        {
+          "$ref": "10"
+        }
+      ]
+    },
+    {
+      "$id": "23",
+      "DataNames": "int",
+      "ID": "d6daf78a-9a56-43a1-81db-7f1fc7f0e810",
+      "ActionName": "",
+      "Sources": [
+        {
+          "$ref": "5"
+        }
+      ],
+      "Destinations": [
+        {
+          "$ref": "7"
+        }
+      ]
+    }
+  ]
+}

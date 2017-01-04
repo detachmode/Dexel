@@ -1,0 +1,63 @@
+SoftwareCells:
+- &o2
+  Position:
+    X: 190
+    Y: 37
+  Name: foo
+  ID: 87d5f845-8382-4672-913c-28f5f1b5cbb8
+  Integration:
+  - &o0
+    Position:
+      X: -8
+      Y: 178
+    Name: PersonStream
+    ID: 7f51b3af-7f4e-461a-9de8-ea5c4f3e933a
+    Integration: []
+    InputStreams:
+    - DataNames: ()
+      ID: 08f554ec-2c9b-4395-b138-b521dc8b8b3c
+      Parent: *o0
+    OutputStreams:
+    - &o3
+      DataNames: (Person)*
+      ID: 7fc5aef3-e901-4954-bdea-76d558bafb5b
+      Connected: true
+      Parent: *o0
+  - &o1
+    Position:
+      X: 338.71500000000003
+      Y: 178
+    Name: AddAge
+    ID: 11dedde6-4054-4ac7-abcb-cf78f6fe0143
+    Integration: []
+    InputStreams:
+    - &o4
+      DataNames: (Person)*
+      ID: 5f3d6e51-412d-457d-a9f6-2e5b3f9b96c8
+      Connected: true
+      Parent: *o1
+    OutputStreams:
+    - ActionName: ''
+      DataNames: (Person)*
+      ID: 7a17ca14-e0c0-49aa-87af-56f6ba2b9236
+      Parent: *o1
+  InputStreams:
+  - DataNames: ()
+    ID: 7bfcfac1-9610-476f-8abf-6191e84ae43a
+    Parent: *o2
+  OutputStreams:
+  - ActionName: ''
+    DataNames: (Person)*
+    ID: aa45b087-3a38-4007-91f3-96c15b25d541
+    Parent: *o2
+- *o0
+- *o1
+Connections:
+- DataNames: (Person)*
+  ID: 3430b94e-ee30-48e9-aba1-cd09599be7f5
+  ActionName: ''
+  Sources:
+  - *o3
+  Destinations:
+  - *o4
+DataTypes: []

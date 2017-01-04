@@ -1,0 +1,100 @@
+FunctionUnits:
+- &o3
+  Position:
+    X: 172
+    Y: 19
+  Name: main
+  ID: 3f008d89-64c7-4890-95b2-fd59b8305bac
+  IsIntegrating:
+  - &o0
+    Position:
+      X: 49
+      Y: 133
+    Name: test
+    ID: 4eb81246-26b9-4fd3-b84c-b6f4bf50408f
+    IsIntegrating: []
+    InputStreams:
+    - DataNames: ()
+      ID: 605a27b7-31b0-4d1d-b96c-0b24925f5468
+      Parent: *o0
+    OutputStreams:
+    - &o4
+      ActionName: .onSometimes
+      DataNames: ()
+      ID: 78a68e41-5090-4de9-aff8-513e216946e9
+      Connected: true
+      Parent: *o0
+  - &o1
+    Position:
+      X: 355
+      Y: 121.99999999999997
+    Name: subbar
+    ID: 2dd001fb-f8f4-4c85-8414-708602a170fd
+    IsIntegrating: []
+    InputStreams:
+    - &o5
+      DataNames: ()
+      ID: aa987820-6b45-41da-805e-af59690d98ec
+      Connected: true
+      Parent: *o1
+    OutputStreams:
+    - DataNames: (string)
+      ID: 4810586d-5018-402a-9ada-f845968938fb
+      Parent: *o1
+    - &o6
+      ActionName: .onError
+      DataNames: (string)
+      ID: c35205d3-0bbc-44c3-acf4-d0c5ea84c956
+      Connected: true
+      Parent: *o1
+  - &o2
+    Position:
+      X: 653.9083333333333
+      Y: 155
+    Name: print Error
+    ID: 8077acd6-674d-4497-b483-a09aa3b6ede2
+    IsIntegrating: []
+    InputStreams:
+    - &o7
+      ActionName: ''
+      DataNames: (string)
+      ID: 104bb4a0-156a-4b37-aec2-024460548405
+      Connected: true
+      Parent: *o2
+    OutputStreams:
+    - ActionName: ''
+      DataNames: ()
+      ID: 9bfa5853-3837-4c43-9abe-89f630ac2f4d
+      Parent: *o2
+  InputStreams:
+  - DataNames: ()
+    ID: 47ac5896-c272-4274-8436-30b3733ca30a
+    Parent: *o3
+  OutputStreams:
+  - ActionName: ''
+    DataNames: (string)
+    ID: d41dcab3-5fbe-470d-9572-6e07f30251cd
+    Parent: *o3
+- *o1
+- *o0
+- *o2
+Connections:
+- DataNames: ()
+  ID: 9b9c0db3-def1-4eae-bd39-983d711b69f6
+  Sources:
+  - *o4
+  Destinations:
+  - *o5
+- DataNames: (string)
+  ID: bc0a7908-a779-46e5-b1b3-064e720a3342
+  Sources:
+  - *o6
+  Destinations:
+  - *o7
+DataTypes:
+- Name: Person
+  SubDataTypes:
+  - Name: age
+    Type: int
+  - Name: name
+    Type: string

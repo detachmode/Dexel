@@ -1,66 +1,94 @@
-﻿using System.IO;
+﻿using System.Linq;
 using System.Windows;
+using System.Windows.Input;
 using Dexel.Editor.ViewModels;
-using Dexel.Model;
 using Dexel.Model.DataTypes;
 using Microsoft.Win32;
 
 namespace Dexel.Editor.Views
 {
+
     /// <summary>
-    /// Interaktionslogik für MainWindow.xaml
+    ///     Interaktionslogik für MainWindow.xaml
     /// </summary>
     public partial class MainWindow
     {
+        private static MainWindow _instance;
+
 
         public MainWindow(MainViewModel vm)
         {
+            _instance = this;
             InitializeComponent();
             DataContext = vm;
         }
 
+        public static MainWindow Get() => _instance;
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
+
+        private MainModel MainModel() => (DataContext as MainViewModel)?.Model;
+
+
+        public void MainWindow_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-           var myWindow = GetWindow(this);
-            var transform = myWindow?.TransformToVisual(TheDrawingBoard.SoftwareCellsList);
-            if (transform == null) return;
-           var myUiElementPosition = transform.Transform(TheDrawingBoard.TheZoomBorder.BeforeContextMenuPoint);
+            var shiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
+            var ctrlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
 
-            Interactions.AddNewIOCell(myUiElementPosition, getModelFromDataContext());
+            if (e.Key == Key.Delete)
+            {
+                Interactions.Delete(MainViewModel.Instance().SelectedFunctionUnits.Select(x => x.Model),
+                    MainViewModel.Instance().Model);
+            }
+
+            switch (e.Key)
+            {
+                case Key.Tab:
+                    if (ctrlDown)
+                        TheDrawingBoard.AppendNewFunctionUnit();
+                    else if (shiftDown)
+                        TheDrawingBoard.TabStopMove(Interactions.TabStopGetPrevious);
+                    else
+                        TheDrawingBoard.TabStopMove(Interactions.TabStopGetNext);
+                    e.Handled = true;
+                    break;
+                case Key.Return:
+                    TheDrawingBoard.NewOrFirstIntegrated(ctrlDown);
+                    e.Handled = true;
+                    break;
+            }
         }
 
-        private void MenuItem_GenerateCode(object sender, RoutedEventArgs e)
+        private void MenuItem_GenerateCodeToDesktop(object sender, RoutedEventArgs e)
         {
-            Interactions.ConsolePrintGeneratedCode(getModelFromDataContext());
+            Interactions.GeneratedCodeToDesktop(sleepBeforeErrorPrint:true, mainModel:MainModel());
         }
+
 
         private void MenuItem_DebugPrint(object sender, RoutedEventArgs e)
         {
-            Interactions.DebugPrint(getModelFromDataContext());
+            Interactions.DebugPrint(MainModel());
         }
 
-
-        private MainModel getModelFromDataContext()
-        {
-            return (DataContext as MainViewModel).Model;
-        }
 
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            Interactions.AutoPrint(getModelFromDataContext(), Interactions.DebugPrint);
+            Interactions.AutoPrint(MainModel(), Interactions.DebugPrint);
         }
+
 
         private void CheckBox_UnChecked(object sender, RoutedEventArgs e)
         {
             Interactions.AutoOutputTimerDispose();
         }
 
+
         private void AutoGenerate_Checked(object sender, RoutedEventArgs e)
         {
-            Interactions.AutoPrint(getModelFromDataContext(), Interactions.ConsolePrintGeneratedCode);
+            Interactions.AutoPrint(MainModel(), mainModel => 
+                Interactions.GeneratedCodeToDesktop(sleepBeforeErrorPrint: false, mainModel: mainModel));
         }
+
 
         private void AutoGenerate_UnChecked(object sender, RoutedEventArgs e)
         {
@@ -73,7 +101,7 @@ namespace Dexel.Editor.Views
             var saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
             if (saveFileDialog.ShowDialog() == true)
-                Interactions.SaveToFile(saveFileDialog.FileName, getModelFromDataContext());
+                Interactions.SaveToFile(saveFileDialog.FileName, MainModel());
         }
 
 
@@ -82,11 +110,56 @@ namespace Dexel.Editor.Views
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
-                Interactions.LoadFromFile(openFileDialog.FileName, getModelFromDataContext());
+                Interactions.LoadFromFile(openFileDialog.FileName, MainModel());
+        }
+
+
+        private void MenuItem_Merge(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+                Interactions.MergeFromFile(openFileDialog.FileName, MainModel());
+        }
+
+
+
+
+
+
+        private void help_OnClicked(object sender, RoutedEventArgs e)
+        {
+            var helpdia = new AdditionalWindows.HelpWindow();
+            helpdia.ShowDialog();
+        }
+
+        private void MenuItem_New(object sender, RoutedEventArgs e)
+        {
+            MainViewModel.Instance().LoadFromModel(new MainModel());
+        }
+
+        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            Interactions.AddMissingDataTypes(MainViewModel.Instance().Model);
+
+        }
+
+        private void MenuItem_GenerateCodeToClipboard(object sender, RoutedEventArgs e)
+        {
+            Interactions.GenerateCodeToClipboard(MainViewModel.Instance().Model);
+        }
+
+
+        private void MenuItem_ResetView(object sender, RoutedEventArgs e)
+        {
+            TheDrawingBoard.ResetView();
+        }
+
+
+        private void MenuItem_GenerateCodeToConsole(object sender, RoutedEventArgs e)
+        {
+            Interactions.GenerateCodeToConsole(MainModel());
         }
     }
 
-
-
 }
-

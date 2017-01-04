@@ -72,26 +72,36 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataStreamParser.cs" />
-    <Compile Include="Extensions.cs" />
-    <Compile Include="JsonSaveLoad.cs" />
-    <Compile Include="Mockdata.cs" />
+    <Compile Include="DataTypes\BaseModel.cs" />
+    <Compile Include="Manager\DataStreamParser.cs" />
+    <Compile Include="Manager\DataTypeManager.cs" />
+    <Compile Include="DataTypes\CustomDataType.cs" />
+    <Compile Include="Common\Extensions.cs" />
+    <Compile Include="FileIO\JsonSaveLoad.cs" />
+    <Compile Include="Mockdata\Mockdata.cs" />
     <Compile Include="DataTypes\DataStream.cs" />
     <Compile Include="DataTypes\DataStreamDefinition.cs" />
-    <Compile Include="DataStreamManager.cs" />
+    <Compile Include="Manager\DataStreamManager.cs" />
     <Compile Include="DataTypes\MainModel.cs" />
-    <Compile Include="MainModelManager.cs" />
-    <Compile Include="DataTypes\SoftwareCell.cs" />
-    <Compile Include="SoftwareCellsManager.cs" />
+    <Compile Include="Manager\MainModelManager.cs" />
+    <Compile Include="DataTypes\FunctionUnit.cs" />
+    <Compile Include="Manager\FunctionUnitManager.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XMLSaveLoad.cs" />
-    <Compile Include="YAMLSaveLoader.cs" />
+    <Compile Include="FileIO\XMLSaveLoad.cs" />
+    <Compile Include="FileIO\YAMLSaveLoader.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Dexel.Library\Dexel.Library.csproj">
+      <Project>{FA179C08-1C2A-4E4B-B708-020F235E1283}</Project>
+      <Name>Dexel.Library</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />

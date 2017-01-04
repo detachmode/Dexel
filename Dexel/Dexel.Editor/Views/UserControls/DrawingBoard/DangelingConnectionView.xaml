@@ -1,0 +1,71 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:viewModels="clr-namespace:Dexel.Editor.ViewModels"
+    xmlns:views="clr-namespace:Dexel.Editor.Views"
+    xmlns:drawingBoard1="clr-namespace:Dexel.Editor.ViewModels.DrawingBoard"
+    xmlns:dragAndDrop="clr-namespace:Dexel.Editor.Views.DragAndDrop"
+    xmlns:customControls="clr-namespace:Dexel.Editor.Views.CustomControls"
+    xmlns:drawingBoard="clr-namespace:Dexel.Editor.Views.UserControls.DrawingBoard"
+    x:Class="Dexel.Editor.Views.UserControls.DrawingBoard.DangelingConnectionView"
+    d:DataContext="{d:DesignInstance drawingBoard1:DangelingConnectionViewModel, IsDesignTimeCreatable=True}"
+    mc:Ignorable="d"
+    >
+
+
+    <Grid Background="{DynamicResource OuterFillPointerBrush}"
+          ToolTip="{Binding ValidationErrorMessage}"
+          Height="42" >
+        <i:Interaction.Behaviors>
+            <dragAndDrop:FrameworkElementDropBehavior  />
+        </i:Interaction.Behaviors>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+
+            <ColumnDefinition Width="11*"/>
+            <ColumnDefinition Width="5*"/>
+
+        </Grid.ColumnDefinitions>
+        <Rectangle  
+            Visibility="{Binding ValidationFlag, Converter={StaticResource ValidationFlagVisbilityConverter}}"          
+            Grid.RowSpan="2" Grid.ColumnSpan="2" 
+            Fill="{Binding ValidationFlag, Converter={StaticResource ValidationFlagFillConverter}}"
+            Stroke="{Binding ValidationFlag, Converter={StaticResource ValidationFlagColorConverter}}" 
+            StrokeEndLineCap="Square" StrokeMiterLimit="0" StrokeDashCap="Square" 
+            StrokeDashArray="1 2" StrokeLineJoin="Round"/>
+
+        <Rectangle Grid.Column="0" Grid.RowSpan="2" Fill="{DynamicResource FillPointerBrush}" Height="{DynamicResource StrokeThickness}" VerticalAlignment="Center"  />
+        <Grid Background="Transparent" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
+            <i:Interaction.Behaviors>
+                <dragAndDrop:FrameworkElementDragBehavior  />
+                <dragAndDrop:MouseHoverFeedBack/>
+            </i:Interaction.Behaviors>
+            <Path x:Name="ThePath"  Fill="{DynamicResource FillPointerBrush}" 
+              VerticalAlignment="Center" Data="M30,7.5 L0,0 L0,15 L30,7.5">
+
+            </Path>
+        </Grid>
+        <TextBox Grid.Row="1" FontSize="11"
+                 TextChanged="ActionNameTextBox_OnTextChanged"
+                 Visibility="{Binding DataContext.VisibilityDatanames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"
+                 Grid.Column="0" x:Name="ActionNameTextBox" VerticalAlignment="Top"
+                
+                 Text="{Binding Model.ActionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Margin="0,-2,0,0"
+                         CaretBrush="{DynamicResource Foreground}" Background="{x:Null}"
+                            Foreground="DarkGray" BorderBrush="{x:Null}" />
+
+        <customControls:DataNamesControl  Height="20" VerticalAlignment="Bottom"
+            Visibility="{Binding DataContext.VisibilityDatanames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"
+            x:Name="TheDataNamesControl" 
+            Grid.Row="0" Margin="4,-4,10,0" Grid.Column="0"  
+           DataContext="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+
+
+    </Grid>
+</UserControl>

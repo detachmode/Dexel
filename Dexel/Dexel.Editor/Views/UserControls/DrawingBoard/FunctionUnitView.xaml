@@ -1,0 +1,85 @@
+﻿<UserControl
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:drawingBoard1="clr-namespace:Dexel.Editor.ViewModels.DrawingBoard"
+    xmlns:drawingBoard="clr-namespace:Dexel.Editor.Views.UserControls.DrawingBoard"
+    x:Class="Dexel.Editor.Views.UserControls.DrawingBoard.FunctionUnitView"
+    x:Name="TheFunctionUnit"
+    d:DataContext="{d:DesignInstance drawingBoard1:FunctionUnitViewModel, IsDesignTimeCreatable=True}"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ContextMenu x:Key="MyContextMenu">
+            <!--<MenuItem Header="Add New Input" Click="NewInput_click" />-->
+            <MenuItem Header="Add New Output" Click="NewOutput_click" />
+            <Separator />
+            <MenuItem Header="Make to Integration of (pick)" Click="MakeIntegration_OnClick" />
+            <MenuItem Header="Remove from Integration" Click="RemoveFromIntegration_OnClick" />
+            <Separator />
+
+            <MenuItem Header="Copy" Click="Copy_click" />
+            <!--<MenuItem Header="Cut" Click="Cut_click" />-->
+            <MenuItem Header="Delete" Click="Delete_click" />
+        </ContextMenu>
+        
+        <ContextMenu x:Key="MyContextMenuOutput">
+            <MenuItem Header="Delete Data Stream" Click="DeleteDataStreamDefinition"  />
+        </ContextMenu>
+
+        <ContextMenu x:Key="ContextMenuInput">
+        </ContextMenu>
+
+    </UserControl.Resources>
+    <Grid>
+        <ItemsControl MinHeight="35" x:Name="InputFlow"                               
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Center"
+                      ItemsSource="{Binding Inputs}" RenderTransformOrigin="0.5,0.5">
+            <ItemsControl.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform />
+                    <TranslateTransform
+                        X="{Binding ActualWidth, ConverterParameter=-1, Converter={StaticResource PercentageConverter}, Mode=OneWay, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ItemsControl}}}" />
+                </TransformGroup>
+            </ItemsControl.RenderTransform>
+            <ItemsControl.Resources>
+                <DataTemplate DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
+                    <drawingBoard:DangelingConnectionView 
+                            ContextMenu="{StaticResource ContextMenuInput}"
+                            x:Name="DangelingConnectionViews" />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
+                    <drawingBoard:ConnectionAdapterView x:Name="ConnectionAdapterView" />
+                </DataTemplate>
+            </ItemsControl.Resources>
+        </ItemsControl>
+
+        <StackPanel
+            ContextMenu="{StaticResource MyContextMenu}"
+            MinHeight="60"
+            Orientation="Horizontal">
+            <drawingBoard:FunctionUnitBody x:Name="Fu"
+                                       Focusable="False"
+                                       LabelContent="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+            <ItemsControl VerticalAlignment="Center"                         
+                          HorizontalAlignment="Center" Panel.ZIndex="20"
+                          x:Name="OutputFlow" ItemsSource="{Binding Outputs, Mode=TwoWay}" >
+                <ItemsControl.Resources>
+                    <!-- Do NOT set the x:Key -->
+                    <DataTemplate DataType="{x:Type drawingBoard1:DangelingConnectionViewModel}">
+                        <drawingBoard:DangelingConnectionView 
+                            ContextMenu="{StaticResource MyContextMenuOutput}"
+                            x:Name="DangelingConnectionViews" />
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
+                        <drawingBoard:ConnectionAdapterView x:Name="ConnectionAdapterView" />
+                    </DataTemplate>
+                </ItemsControl.Resources>
+            </ItemsControl>
+        </StackPanel>
+    </Grid>
+</UserControl>
