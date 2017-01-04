@@ -1,0 +1,29 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\usepackage[
+backend=biber,
+style=alphabetic,
+]{biblatex}
+
+\usepackage{biblatex}
+\addbibresource{ref.bib}
+
+\begin{document}
+	
+	book \footfullcite[S. 12]{ioda} are physics related items. 
+	book \footcite[S. 12]{Martin2009} are physics related items. 
+	
+	\bigskip
+	
+	Lose Koppelung  \cite[S. 12]{messaging} are physics related items. 
+		
+\footnote{Definition befindet sich in: \cite[S. 123]{schummelzettel}}
+	
+	\nocite{*}
+	\clearpage
+	\printbibliography
+	
+	
+\end{document}
