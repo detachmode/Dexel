@@ -117,7 +117,7 @@
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>sortlocale</bcf:key>
-      <bcf:value>english</bcf:value>
+      <bcf:value>ngerman</bcf:value>
     </bcf:option>
     <bcf:option type="singlevalued">
       <bcf:key>sortscheme</bcf:key>
@@ -2237,10 +2237,11 @@
     <bcf:datasource type="file" datatype="bibtex">ref.bib</bcf:datasource>
   </bcf:bibdata>
   <bcf:section number="0">
-    <bcf:citekey order="1">ioda</bcf:citekey>
+    <bcf:citekey order="1">Martin2009</bcf:citekey>
     <bcf:citekey order="2">Martin2009</bcf:citekey>
-    <bcf:citekey order="3">messaging</bcf:citekey>
+    <bcf:citekey order="3">Martin2009</bcf:citekey>
     <bcf:citekey order="4">schummelzettel</bcf:citekey>
+    <bcf:citekey order="5">flowdesignorg</bcf:citekey>
     <bcf:citekey order="0">*</bcf:citekey>
   </bcf:section>
   <bcf:sortlist section="0" name="anyt" type="entry" sortscheme="anyt">

@@ -1,0 +1,15 @@
+[0] Config.pm:324> INFO - This is Biber 2.1
+[0] Config.pm:327> INFO - Logfile is 'FlowDesign.blg'
+[41] biber-darwin:276> INFO - === Wed Jan  4, 2017, 01:50:07
+[41] Biber.pm:333> INFO - Reading 'FlowDesign.bcf'
+[135] Biber.pm:642> INFO - Using all citekeys in bib section 0
+[157] Biber.pm:2977> INFO - Processing section 0
+[177] Biber.pm:3115> INFO - Looking for bibtex format file 'ref.bib' for section 0
+[178] bibtex.pm:1021> INFO - Decoding LaTeX character macros into UTF-8
+[180] bibtex.pm:895> INFO - Found BibTeX data source 'ref.bib'
+[267] UCollate.pm:66> INFO - Overriding locale 'de-DE' defaults 'variable = shifted' with 'variable = non-ignorable'
+[267] UCollate.pm:66> INFO - Overriding locale 'de-DE' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[267] Biber.pm:2854> INFO - Sorting list 'anyt' of type 'entry' with scheme 'anyt' and locale 'de-DE'
+[267] Biber.pm:2858> INFO - No sort tailoring available for locale 'de-DE'
+[277] bbl.pm:505> INFO - Writing 'FlowDesign.bbl' with encoding 'UTF-8'
+[277] bbl.pm:596> INFO - Output to FlowDesign.bbl

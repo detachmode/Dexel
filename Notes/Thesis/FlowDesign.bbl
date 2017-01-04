@@ -47,13 +47,13 @@
       }
       \strng{namehash}{4931846e75da8be6bca9cac98c006a70}
       \strng{fullhash}{4931846e75da8be6bca9cac98c006a70}
-      \field{labelalpha}{CLEAN}
+      \field{labelalpha}{CLNCD}
       \field{sortinit}{C}
       \field{sortinithash}{59f25d509f3381b07695554a9f35ecb2}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{isbn}{978-3-8266-5548-7}
-      \field{shorthand}{CLEAN}
+      \field{shorthand}{CLNCD}
       \field{title}{Clean Code - Refactoring, Patterns, Testen und Techniken für sauberen Code - Deutsche Ausgabe}
       \field{year}{2009}
     \endentry

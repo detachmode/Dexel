@@ -44,10 +44,10 @@
   <internal package="biblatex" priority="9" active="0">
     <generic>latex</generic>
     <provides type="dynamic">
-      <file>biberTest.bcf</file>
+      <file>FlowDesign.bcf</file>
     </provides>
     <requires type="dynamic">
-      <file>biberTest.bbl</file>
+      <file>FlowDesign.bbl</file>
     </requires>
     <requires type="static">
       <file>blx-dm.def</file>
@@ -57,26 +57,27 @@
       <file>standard.bbx</file>
       <file>alphabetic.cbx</file>
       <file>biblatex.cfg</file>
-      <file>english.lbx</file>
+      <file>ngerman.lbx</file>
+      <file>german.lbx</file>
     </requires>
   </internal>
   <external package="biblatex" priority="5" active="0">
     <generic>biber</generic>
     <cmdline>
       <binary>biber</binary>
-      <infile>biberTest</infile>
+      <infile>FlowDesign</infile>
     </cmdline>
     <input>
-      <file>biberTest.bcf</file>
+      <file>FlowDesign.bcf</file>
     </input>
     <output>
-      <file>biberTest.bbl</file>
+      <file>FlowDesign.bbl</file>
     </output>
     <provides type="dynamic">
-      <file>biberTest.bbl</file>
+      <file>FlowDesign.bbl</file>
     </provides>
     <requires type="dynamic">
-      <file>biberTest.bcf</file>
+      <file>FlowDesign.bcf</file>
     </requires>
     <requires type="editable">
       <file>ref.bib</file>

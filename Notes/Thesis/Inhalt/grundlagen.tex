@@ -40,7 +40,7 @@ die einfach zu befolgen sind und man erhält fast automatisch einen Code, der ei
 
 \section{CCD Prinzipien}
 
-Flow Design legt den Schwerpunkt vor allem auf folgende Prinzipien von CCD:
+Flow Design legt den Schwerpunkt vor allem auf folgende Prinzipien von CCD \footnote{\url{http://clean-code-developer.de/die-grade/roter-grad/}}:
 
 \bigskip
 
@@ -113,13 +113,14 @@ Orthogonalität erfüllt.
 
 \section{Weitere Prinzipien die Beachtung finden sollen}
 
+%TODO Punkt setzen? Halbsätze auch ok hier?
 \bigskip
 \begin{tabularx}{\textwidth}{p{160 pt}|X}
-DRY  (Don't Repeat Yourself) & Coderedundanzen vermeiden, zerlegen in Codebestandteile, die man an mehreren Stellen wiederverwenden kann \\
-Kleine Funktionen / Methoden & Viele kleine Funktionen , anstatt eine große Funktion \\
-Single Responsibility Principle & Jede Funktion/Klasse soll sich nur um eine Sache kümmern. Falls eine Funktion mehrere 
-Aufgaben erledigt, sollten sie diese nicht selbst implementieren, sondern an Unterfunktionen weitergeben \\
-Information Hiding Principle & Ein Untersystem soll seiner Inneren Funktionalität vor anderen Systemen verbergen und eine möglichst fokussierte Schnittstelle bieten, mit dem äußere Systeme dieses System steuern können. \\
+DRY  (Don't Repeat Yourself) \footcite[S. 80 und S. 342]{Martin2009}  & Coderedundanzen vermeiden, zerlegen in Codebestandteile, die man an mehreren Stellen wiederverwenden kann. \\
+Kleine Funktionen / Methoden \footcite[S. 64]{Martin2009} & Viele kleine Methoden sind besser als eine große. \\
+Single Responsibility Principle \footcite[S. 176 f.]{Martin2009} & Jede Funktion/Klasse soll sich nur um eine Sache kümmern. Falls eine Funktion mehrere 
+Aufgaben erledigt, sollten sie diese nicht selbst implementieren, sondern an Unterfunktionen weitergeben. \\
+Information Hiding Principle \footcite[S. 48 f.]{schummelzettel}  & Ein Untersystem soll seiner Inneren Funktionalität vor anderen Systemen verbergen und eine möglichst fokussierte Schnittstelle bieten, mit dem äußere Systeme dieses System steuern können.\\
 \end{tabularx}
 
 
@@ -198,6 +199,7 @@ Flow Design soll im Gegensatz zu UML besser geeignet sein, bereits in der Entwur
 Ziel ist es sich auf dem Papier bereits ein Entwurf der Programmstruktur überlegen zu können.
 Aktuell sei es aus der Mode gekommen, vor dem Programmieren einen Entwurf zu erzeugen, was vor allem daran läge, dass die vorhandenen
 Entwurfsmethodiken eher hinderlich seien und einen unnötigen Overhead erzeugen ( laut Ralf Westphal)
+%TODO
 Es sei somit üblich geworden die Denkarbeit, wie man seinen Code möglichst sauber strukturieren kann,
 während dem Programmieren direkt im/vor dem Sourcecode zu verrichten.
 Dies sei jedoch laut Ralf Westphal eine eher ungünstige Lösung und behindere eher den kreativen Denkprozess mit
@@ -245,12 +247,19 @@ Am Ende wird der Datenstrom einer Funktionseinheit übergeben, die alle Zahlen a
 Das Ergebnis ist die Summe aller Zahlen.
 
 
+\newcommand\blfootnote[1]{%
+	\begingroup
+	\renewcommand\thefootnote{}\footnote{#1}%
+	\addtocounter{footnote}{-1}%
+	\endgroup
+}
 
 \chapter{Die Notation}
 
 \section{Datenströme}
 
-
+ \blfootnote{Die meisten der Bilder in diesem Kapitel stammen von \cite{flowdesignorg}}
+ 
 \begin{figure}[!htbp]
 	\includegraphics[width=1\linewidth]{./img/diagram1.png}
 	\caption{Datenfluss zwischen drei Funktionseinheiten}
@@ -405,18 +414,18 @@ Mehrere Outputs lassen sich nicht in allen Sprachen einfach realisieren.
 Wahlweise kann es mit Tupel realisiert werden, oder es werden aus den mehreren Datentypen ein 
 neuer Datentyp erzeugt, der alle Output-Daten beinhaltet.
 
-\section{Joints und Pipe-Notation}
+\section{Joined Inputs und Pipe-Notation}
 
 \begin{figure}[!htbp]
 	\centering
 	\includegraphics[width=.7\linewidth]{./img/diagramJoin.png}
-	\caption{Joint-Notation}
+	\caption{Joined Inputs}
 \end{figure}
 
 
 Falls der Output mehrere Funktionseinheiten in einen Datenstrom zusammenlaufen
 sollen und dieser dann als Input in eine anderen Funktionseinheit hineinfließen
-soll, wird das mit Hilfe eines s.g. Joints dargestellt. 
+soll, wird das mit Hilfe eines s.g. Joined Inputs dargestellt. 
 Dieser wird als Linie dargestellt an die mehrere Inputs zusammenlaufen.
 
 Im Code wird dies meistens als Methode umgesetzt, die mehrere Inputparameter entgegennimmt.
@@ -426,7 +435,7 @@ Die Funktionseinheit \textit{F} erwartet einfach ein Datenstrom mit zwei Daten \
 und kennt deren Herkunft nicht.
 
 \bigskip
-Eine andere Schreibweise, die im Diagramm platzsparender ist als die Joints, ist die Pipe-Notation.
+Eine andere Schreibweise, die im Diagramm platzsparender ist als die Joined Inputs, ist die Pipe-Notation.
 Hiermit kann der Output sich von dem Input der nachfolgenden Funktionseinheit unterscheiden.
 Dadurch können auch Daten, die aus vorherigen Funktionseinheiten innerhalb des Datenflusses entstanden sind, entnommen und einer Funktionseinheit
 übergeben werden.

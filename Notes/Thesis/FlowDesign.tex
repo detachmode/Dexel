@@ -19,7 +19,13 @@
 
 
 
+\usepackage[
+backend=biber,
+style=alphabetic,
+]{biblatex}
 
+\usepackage{biblatex}
+\addbibresource{ref.bib}
 
 \input{Packages}
 \usepackage{listings}
@@ -81,9 +87,6 @@
 	\input{Inhalt/Appendix}
 	
 	
-	Random citation 
-	\footcite[S. 111]{messaging} embeddeed in text.
-	
 
 	%%%%%%%%%%%%%%%%
 	% Verzeichnisse
@@ -96,8 +99,9 @@
 	%TODO Clean Code Buch, CCD, Blogs, Youtube Video
 	% Literaturverzeichnis
 	\nocite{*}
-	\bibliography{ref} 
-	\bibliographystyle{ieeetr}
+	\clearpage
+	
+	\printbibliography[title={Quellenverzeichnis}]
 	
 	% Verzeichnis der Listings
 	\renewcommand{\lstlistlistingname}{Verzeichnis der Listings}
@@ -105,7 +109,8 @@
 
 	% Abbildungsverzeichnis
 	\listoffigures 
-	
+
+		
 	%TODO Tablellenverzeichnis
 
 
