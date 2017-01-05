@@ -1,6 +1,6 @@
 
-\section{Realisierung ( \textasciitilde{} 20- 30 Seiten )}
-\label{sec:orgheadline54}
+\chapter{Realisierung }
+
 In diesem Kapitel soll vorgestellt werden, was in dem Zeitraum dieser
 Bachelorarbeit erreicht wurde. Es soll die Funktionalität des Editors
 anhand von Screenshots vorgestellt werden und die Architekur der Anwendung, die selbst nach
@@ -8,23 +8,21 @@ Flow Design umgesetzt wurde.
 
 Als Arbeitstitel für die Anwendung wurde der Name Dexel gewählt.
 
-\subsection{Übersicht über die unterschiedlichen Projekte}
-\label{sec:orgheadline5}
+\section{Übersicht über die unterschiedlichen Projekte}
 
-Die Anwendung besteht aus einer Solution, die aus folgenden Projekten:
-(Fußnote: Bei komplexen Funktionalitäten wurde nach TDD (Test Driven Development)
+Die Anwendung besteht aus einer \textit{Solution}, die folgende Unterprojekte beinhaltet \footnote{Bei komplexen Funktionalitäten wurde nach TDD (Test Driven Development)
 programmiert, bei dem zuerst der Test geschrieben wird, der das zu erwartende
 Ergebnis definiert, und anschließend wurd die Methode erst implementiert, diese
-Tests werden in einem extra Test-Projekt für jedes Projekt zusammengefasst)
+Tests werden in einem extra Test-Projekt für jedes Projekt zusammengefasst.}:
 
 \subsubsection{Dexel.Model / Dexel.Model.Tests}
-\label{sec:orgheadline1}
+
 Dieses Projekt beinhaltet alle Datentypen die zur internen Repräsentation
 eines Flow Design Diagrammes nötig sind. Außerdem beinhaltet dieses Projekt
 statische Manager-Klassen, die das Arbeiten mit den Datentypen vereinfachen.
 
 \subsubsection{Dexel.Editor / Dexel.Editor.Tests}
-\label{sec:orgheadline2}
+
 Das Hauptprojekt, das alle anderen Projekte integriert. Hier wurde das IOSP
 Prinzip nicht eingehalten. Dieses Projekt hat nicht nur die Aufgabe die
 anderen Projekte zu integrieren, sondern beinhaltet selbst den
@@ -37,7 +35,7 @@ Komplexität einer Entkoppelung zu verzichten und der Einfachheit halber
 dieses Projekt als UI und integrierendes Projekt zu nutzen.
 
 \subsubsection{Roslyn / Rosyln.Tests}
-\label{sec:orgheadline3}
+
 Diese Projekt beinhaltet die Logik zur Erstellung von C\#-Code aus einem Flow
 Design. Mircosoft Rosyln ist die Technik, die hier zum Erstellen von Code zum
 Einsatz kommt.
@@ -55,13 +53,13 @@ Properties, machte die Entkoppelung nicht wert und der Beschluss auf die
 Interfaces zu verzichten wurde gefällt.
 
 \subsubsection{Dexel.Library}
-\label{sec:orgheadline4}
+
 Beinhaltet einige Methoden ( meist Extension-Methoden), die ein Arbeiten
-nach Flow Design erleichter. Diese wurden in ein separates Projekt
+nach Flow Design erleichtern. Diese wurden in ein separates Projekt
 ausgelagert, damit alle anderen Projekte darauf zugreifen können.
 
-\subsection{Das Model}
-\label{sec:orgheadline14}
+\section{Das Model}
+
 Um nachfolgende Kapitel der Realisierung und die darin enthaltenden
 Codeauschnitte verstehen zu können, braucht es ein Verständnis darüber, wie die
 grundlegenden Datentypen des Models aufgebaut sind. Um die Funktionalität der
@@ -69,46 +67,42 @@ jeweiligen Datentypten besser zu veranschaulichen, werden in diesem Kapitel
 Bilder verwendet, welche die spätere Darstellung des Datentypen in der UI zeigen.
 
 \subsubsection{{\bfseries\sffamily MISSING IMAGES} MainModel}
-\label{sec:orgheadline6}
+
 Das MainModel ist, wie der Name schon sagt, das Haupt-Modell, das alle
 anderen Modelle per Komposition beinhaltet. Somit kann man eine Objektinstanz
 eines MainModels an eine Methode übergeben und diese Instanz beinhaltet alle
 Informationen über das aktuelle Flow Design Diagramm. 
-Das MainModel beinhaltet alle Funktonseinheiten (\texttt{SoftwareCells}), alle verbindende
-Datenströme (\texttt{Connections}) und alle benutzerdefinierten Datentypen (\texttt{DataTypes}).
+Das \textit{MainModel} beinhaltet alle Funktonseinheiten, alle verbindende
+Datenströme (\textit{Connections}) und alle benutzerdefinierten Datentypen (\textit{DataTypes}).
 
 \begin{verbatim}
 [ImplementPropertyChanged]
 public class MainModel
 {
-	public List<SoftwareCell> SoftwareCells { get; set; }
+	public List<FunctionUnit> FunctionUnits { get; set; }
 	public List<DataStream> Connections { get;  set; }
 	public List<DataType> DataTypes { get; set; } 
 }
 \end{verbatim}
 
-\subsubsection{{\bfseries\sffamily MISSING IMAGES} SoftwareCell}
-\label{sec:orgheadline8}
-In Anlehnung an den Gedanken der Softwarezellen-Architekur und den Schluss
-daraus, dass auf unterster Ebene eine Funktionseinheit auch als
-Softwarezellen gedacht werden kann, wurden Funktionseinheiten als
-Softwarezellen bezeichnet.
+\subsubsection{{\bfseries\sffamily MISSING IMAGES} FunctionUnit}
+
 
 \begin{verbatim}
 [ImplementPropertyChanged]
-public class SoftwareCell
+public class FunctionUnit
 {
-public Guid ID { get; set; }
-public string Name { get; set; }
-public Point Position { get; set; }
-public List<SoftwareCell> Integration { get; set; }
-public List<DataStreamDefinition> InputStreams { get; set; }
-public List<DataStreamDefinition> OutputStreams { get; set; }
+	public Guid ID { get; set; }
+	public string Name { get; set; }
+	public Point Position { get; set; }
+	public List<FunctionUnit> IsIntegrating { get; set; }
+	public List<DataStreamDefinition> InputStreams { get; set; }
+	public List<DataStreamDefinition> OutputStreams { get; set; }
 }
 \end{verbatim}
 
 Der Name ist der Name der Funktionseinheit ( der Text, der bei der
-Darstellung später innhalb des Kreises erscheint). Dieser wird später per Binding
+Darstellung später innerhalb des Kreises erscheint). Dieser wird später per Binding
 direkt an die UI gebunden. Aus diesem Grund implementiert dieses Klasse,
 genau wie alle anderen des Models, die ImplementPropertyChanged
 Funktionalität. Diese bewirkt, dass bei einer Änderung im UI automatisch das
@@ -125,9 +119,8 @@ Die Input- und OutputStreams definieren die möglichen ein- und ausgehenden
 Datenströme der Softwarezelle. An diese DataStreamDefinitionen können sich DataStreams
 verbinden. Dadurch lassen sie die Datenflüsse modelieren.
 
-\begin{enumerate}
-	\item {\bfseries\sffamily MISSING IMAGES} DataStreamDefinition
-	\label{sec:orgheadline7}
+
+	\subsubsection{MISSING IMAGES DataStreamDefinition}
 	
 	\begin{verbatim}
 	[ImplementPropertyChanged]
@@ -154,10 +147,10 @@ verbinden. Dadurch lassen sie die Datenflüsse modelieren.
 	dem Ein-/ Ausgang fließen. Für Ausgänge ist auch die Angabe eines
 	Actionnames manchmal nötig. Dieser soll später unterhalb des Pfeiles
 	dargstellt werden.
-\end{enumerate}
+
 
 \subsubsection{{\bfseries\sffamily MISSING IMAGES} DataStream (Connections)}
-\label{sec:orgheadline9}
+
 Um Datenflüsse zwischen Funktionseinheitn zu beschreiben, bedarf es einer
 Verbindungsklasse. Die DataStream-Klasse stellt diese Verbindungsklasse dar.
 
@@ -193,7 +186,7 @@ Der akutelle Stand der UI kann akutell nur Datenflüsse mit einer Quelle und
 einem Ziel darstellen.
 
 \subsubsection{DataType}
-\label{sec:orgheadline10}
+
 
 \begin{verbatim}
 [ImplementPropertyChanged]
@@ -219,10 +212,10 @@ des Types (zum Beispiel string, int oder auch ein anderen benutzerdefinierten
 Datentypen).
 
 \subsubsection{Manager-Klassen}
-\label{sec:orgheadline13}
+
 \begin{enumerate}
 	\item MainModelManager
-	\label{sec:orgheadline11}
+	
 	Einer der relevantesten Manager-Klassen ist die MainModelManager-Klasse,
 	diese stellt die wichtigsten Funktionalitäten zur Verfügung die mit dem
 	Arbeiten des MainModels gebraucht werden. Einige dieser Funktionalitäten
@@ -232,7 +225,7 @@ Datentypen).
 	von Funktionseinheiten, oder Teile des Graphen.
 	
 	\item DataStreamManager
-	\label{sec:orgheadline12}
+	
 	Diese statische Klasse bietet einige Funktionalitäten, die das Arbeiten mit
 	Objekten der DataStream-Klasse vereinfachen soll.
 	
@@ -242,24 +235,23 @@ Datentypen).
 	angepasst werden. 
 	
 	Um dies nochmal zu verdeutlichen, zwei konkrete Beispiele:
-	Falls der Datenfluss auf (int)|(string) geändert werden
-	soll, muss die Source-DataStreamDefinition auf (int) gesetzt werden und der
-	die Destination-DataStreamDefinition auf (string). 
-	Falls der Datenfluss auf (double) geändert werden soll, so werden Source
-	und Destination Daten auf (double) gesetzt.
-	
-	Fussnote: Da aktuell nur DataStreams mit einer Source und einer Destination im Editor unterstützt
-	werden, wurde akutell auch nur dieses Szenario implementiert. Ändert sich
-	diese Einschränkung müsste man sich Gedanken darüber machen, was in diesen
-	Fällen zu tun wäre. Ein Option wäre, die Pipe-Notation in diesen Fällen zu
-	verbieten. Die UI würde die Daten der DataStreamDefinitionen direkt
-	anzeigen und der Benutzer würde diese dann direkt ändern. Der Datenstrom
-	selbst würde dann kein eigenes Textfeld besitzen und die Dataname
-	Eigenschaft hätte in diesen Fall keine Bedeutung. 
-	Vielleicht wäre es dann auch besser im Modell zwei separate Klassen
-	anzulegen und die
-	einfache DataStream-Klasse hätte anstatt einer Liste von DatastreamDefinitionen nur noch ein einfaches Feld
-	für eine Source-DataStreamDefinition und eine Destionation-DataStreamDefinition.
+	Falls der Datenfluss auf \textbf{(int) | (string) } geändert wurde
+	, so muss die Source-DataStreamDefinition auf \textbf{(int)} gesetzt werden und der
+	die Destination-DataStreamDefinition auf \textbf{(string)}. 
+	Falls der Datenfluss auf \textbf{(double)} geändert wurde, so müssen Source-
+	und Destination-Daten auf  \textbf{(double)}  gesetzt werden.\footnote{	Da aktuell nur DataStreams mit einer Source und einer Destination im Editor unterstützt
+		
+		werden, wurde akutell auch nur dieses Szenario implementiert. Ändert sich
+		diese Einschränkung müsste man sich Gedanken darüber machen, was in diesen
+		Fällen zu tun wäre. Ein Option wäre, die Pipe-Notation in diesen Fällen zu
+		verbieten. Die UI würde die Daten der DataStreamDefinitionen direkt
+		anzeigen und der Benutzer würde diese dann direkt ändern. Der Datenstrom
+		selbst würde dann kein eigenes Textfeld besitzen und die Dataname
+		Eigenschaft hätte in diesen Fall keine Bedeutung. 
+		Vielleicht wäre es dann auch besser im Modell zwei separate Klassen
+		anzulegen und die
+		einfache DataStream-Klasse hätte anstatt einer Liste von DatastreamDefinitionen nur noch ein einfaches Feld
+		für eine Source-DataStreamDefinition und eine Destionation-DataStreamDefinition.}
 	
 	\begin{verbatim}
 	public static void ChangeDatanames(DataStream datastream, string newDatanames)
@@ -283,22 +275,22 @@ Datentypen).
 	});
 	}
 	\end{verbatim}
+	
 \end{enumerate}
 
 
 
-\subsection{Der Editor}
-\label{sec:orgheadline33}
-\subsubsection{Vorstellung was erreicht wurde}
-\label{sec:orgheadline22}
+\section{Der Editor}
 
-Die Grundlegenden Basisfunktionen aus Kaptitel 3 wurden größtenteils
-implementiert. Hierbei kam WPF als GUI-Framework zum Einsatz.
+\subsection{Vorstellung was erreicht wurde}
+
+
+Die Grundlegenden Basisfunktionen aus dem Anforderungs-Kaptitel wurden größtenteils implementiert. Hierbei kam WPF als GUI-Framework zum Einsatz.
 Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 
-\begin{enumerate}
-	\item {\bfseries\sffamily MISSING IMAGES} Erstellen von Funktionseinheiten, Verschieben, Benennen, Selektieren
-	\label{sec:orgheadline15}
+
+\subsubsection{	MISSING IMAGES Erstellen von Funktionseinheiten, Verschieben, Benennen, Selektieren}
+
 	Das Drawing-Board wurde implementiert, auf dem der Benutzer mit einem
 	Rechtsklick->Create New Function Unit eine erste Funktionseinheit erzeugen
 	kann. Per Drag an Drop kann er diese dann innerhalb des DrawingBoards frei
@@ -318,8 +310,8 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 	einem Textfeld gewohnt ist).
 	
 	
-	\item {\bfseries\sffamily MISSING IMAGES} Erstellen/Löschen/Manipulieren von Inputs und Outputs
-	\label{sec:orgheadline16}
+\subsubsection{	 MISSING IMAGES Erstellen/Löschen/Manipulieren von Inputs und Outputs}
+
 	Eine Funktionseinheit wird standardmässig mit einem Input und einem Output
 	erstellt. Die Daten die aus diesen hinein- oder herausfließen können auf
 	dem Textfeld eingetragen werden. Dabei bietet diese Textfeld ein einfaches
@@ -335,8 +327,8 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 	
 	Die Reihenfolge bei mehreren Outputs kann per Drag and Drop verändert werden.
 	
-	\item {\bfseries\sffamily MISSING IMAGES} Verknüpfen und Trennen von Funktionseinheiten über Drag and Drop
-	\label{sec:orgheadline17}
+\subsubsection{MISSING IMAGES Verknüpfen und Trennen von Funktionseinheiten über Drag\&Drop }
+
 	Wird das Ende eines Pfeiles eines Output auf ein Input Pfeil gedropt, so werden beide
 	miteinandern Verbunden. Die Datennamen des Flusses werden bei nicht
 	Übereinstimmung der beiden Daten des Input und Outputs mit
@@ -347,16 +339,15 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 	und Outputs mit Berücksichtigung auf die Pipe-Notation angepasst, sodass
 	beim Trennen der Beiden Funktionseinheiten, die Änderungen erhalten bleiben.
 	
-	Ein Drag and Drop eines Outputs direkt auf eine Funktionseinheit: TODO
+	Ein Drag \&Drop eines Outputs direkt auf eine Funktionseinheit: TODO
 	
 	Durch Drag and Drop eines verbunden Pfeiles auf eine leere Stelle auf dem
 	DrawingBoard, kann eine Verbindung getrennt werden. Wird sie auf eine
 	anderen Input gedropt, so wird diese als neues Ziel gesetzt und die 
 	Verbindung zur vorherigen Funktionseinheit gelöscht. TODO
 	
-	
-	\item {\bfseries\sffamily MISSING IMAGES} Erstellen von Integrationen
-	\label{sec:orgheadline18}
+\subsubsection{	MISSING IMAGES Erstellen von Integrationen}
+
 	Durch Rechtsklick auf eine Funktionseinheit kann im Kontextmenu der Eintrag
 	'Make to Integration of (Pick)' ausgewählt werden. Der Cursor verändert
 	sich und wird nun eine andere Funktionseinheit angeklickt, so wird der
@@ -374,8 +365,8 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 	ebenfalls aus der Integration entfernt. Wird die erste Funktionseinheit
 	entfernt, gilt diese Regel nicht.
 	
-	\item Definieren von Datentypen
-	\label{sec:orgheadline19}
+	\subsubsection{Definieren von Datentypen}
+
 	Eigene DatenTypen können auf der rechten Seite des Editors angelegt werden.
 	Durch Rechtsklick -> Add New DataType. Außerdem zeigt der obere Button an,
 	ob im akutellen Diagramm Datenflüsse mit Daten fließen, die nicht definiert
@@ -389,8 +380,8 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 	
 	Der Editor würde überprüfen ob der Address Datentyp definiert wurde oder nicht.
 	
-	\item {\bfseries\sffamily MISSING IMAGES} Navigation und Shortcuts
-	\label{sec:orgheadline20}
+\subsubsection{MISSING IMAGES Navigation und Shortcuts}
+
 	Zur Navigation innerhalb des DrawingBoards wird das Mausrad verwendet.
 	Durch Scrollen wird in das DrawingBoard herein und herausgezoomt.
 	Durch gedrückthalten des Mausrades (mittlere Maustaste) und Bewegen der
@@ -407,18 +398,15 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 	das Textfeld klicken kann.
 	
 	
-	\item Weitere Features
-	\label{sec:orgheadline21}
+	\subsubsection{Weitere Features}
+
 	\begin{itemize}
 		\item Speichern, Laden, Mergen.
 		Speichern und Laden in 3 Dateiformate werden unterstüzt.
 		(yaml, json und xml - nach Dateigröße aufsteigend sortiert)
 		Auch das Laden eines anderen Flow Design in das akutelle geladene wird 
 		mit der Merge-Funktion unterstützt.
-	\end{itemize}
-	
-	
-	\begin{itemize}
+
 		\item Unhandled Exception ErrorDialog
 		Wird eine Exception geworfen, die nicht behandelt wurde, so wurde eine
 		allgemeine Fehlerbehandlung aufgerufen. Das Programm stürzt nicht ab,
@@ -427,21 +415,17 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 		hier das Programm Beenden will, oder weiter den Fehler ignorieren will.
 		Der Stacktrace kann gegenenfalls kopiert und an den Entwickler als
 		Bugreport zuschicken werden.
-	\end{itemize}
-	
-	
-	\begin{itemize}
+		
 		\item Help-Window
 		Ein kleines einfaches Fenster gibt dem Benutzer einen Überblick über die
 		vorhandenen Shortcuts und die Navigation mit der Maus wird erklärt.
 	\end{itemize}
-\end{enumerate}
+	
 
 
 
+\subsection{Views / ViewModels}
 
-\subsubsection{Views / ViewModels}
-\label{sec:orgheadline23}
 Das Projekt wurde nicht strikt nach MVVM-Regeln (Model-View-ViewModel) 
 umgesetzt, jedoch bedient es sich der Idee, das es eine View gibt, die
 als Datenkontext ein ViewModel zugewiesen hat. Das zuweisen eines
@@ -468,9 +452,9 @@ Diagramme mit mehrern hundert Nodes keine spürbaren Perfomanceverluste mit
 sich führt. Einzig das Duplizieren von vielen Nodes dauert nach wie vor
 mehrere Sekunden. 
 
-\subsubsection{Interaktionen}
-\label{sec:orgheadline26}
-Wie bereits in Kapitel 2 (Abschnitt Entwurfsmethode) schlägt Flow Design
+\subsection{Interaktionen}
+
+Wie bereits im Grundlagen-Teil erwähnt, (Abschnitt Entwurfsmethode) schlägt Flow Design
 vor, alle Events als Interaktionen zu bezeichnen und für jedes dieser
 Änderungen ein eigenen Flow Design zu erstellen. 
 Es bietet sich somit an, alle Interaktionen in einer Klasse zu sammeln.
@@ -542,9 +526,8 @@ return @return;
 
 
 
-\begin{enumerate}
-	\item {\bfseries\sffamily MISSING IMAGES} Auswirkungen der beiden Interaktionen (Listing Caption)
-	\label{sec:orgheadline24}
+
+
 	Die \texttt{AppendNewCell} Methode erzeugt eine neue SoftwareCell und und
 	verschiebt diese entlang der X Postion.
 	Außerdem setzt sie den Input gleich der DataStreamDefinition die
@@ -552,15 +535,12 @@ return @return;
 	\texttt{AppendNewCell} wird durch die Tastenkombination Ctrl-Tab ausgelöst, wenn
 	sich der Tastaturfokus innerhalb eines Textfeldes einer View einer Softwarecell oder
 	DatastreamDefinition befindet. Bei ersterem wird der erste unverbunden Output als der
-	DataStreamDefinition genommen, andem die neue SoftwareCell angehängt wird (
-	nicht Teil dieser Methode).
+	DataStreamDefinition genommen, andem die neue SoftwareCell angehängt wird \footnote{nicht Teil der gezeigten Methode} .
 	
 	Beide Methoden geben eine
 	Model-Instanz als \texttt{object} an die GUI zurück. Die GUI-Logik findet dann die
-	dazugehörige View und setzt den Focus darauf.
+	dazugehörige View und setzt den Fokus auf diese.
 	
-	\item Coderedundanzen
-	\label{sec:orgheadline25}
 	Beide Methoden sind Methoden aus der Interaktions-Klasse, sind werden also
 	direkt aus einem Event von der GUI ausgelöst. 
 	Beide Methoden haben ähnliche Methodenaufrufe ( Neue Funktionseinheit
@@ -573,36 +553,34 @@ return @return;
 	Coderedundanz als etwas nicht schlimmes anzusehen und diese zu belassen.
 	So ist auf einen Blick ersichtlich, was die Interaktion genau macht, ohne
 	im Code herumspringen zu müssen.
-\end{enumerate}
 
-\subsubsection{Eigene Tabstop-Logik}
-\label{sec:orgheadline31}
+\subsection{Eigene Tabstop-Logik}
+
 Mit Tab und Shift-Tab soll es dem Nutzer möglich sein den Tastaturfokus zu
-verändern. Dieses Beispiel zeigt dabei noch einmal, das Coderedundanzen innerhalb
+verändern\footnote{Dieses Beispiel zeigt dabei noch einmal, das Coderedundanzen innerhalb
 von mehreren Integrationen nichts Schlechtes sein muss.
 Außerdem macht es auch deutlich, wie eine etwas komplexerer Integration mit
-mehreren verschachteteln Lambda-Ausdrücken in der Praxis aussehen kann.
-Auch das Arbeiten mit dem Model und Managerklassen soll
-dieses Beispiel dem Leser verdeutlichen.
+mehreren verschachtelten Lambda-Ausdrücken in der Praxis aussehen kann. Auch das Arbeiten mit dem \textit{Model} und den Managerklassen soll dem Leser hier noch einmal verdeutlicht werden.}.
+
 
 
 Der nächsten Tabstop soll nach folgenden Regeln und abhängig vom aktuell
-fokusierten Model bestimmt werden:
+fokussierten \textit{Model} bestimmt werden:
 
 \begin{enumerate}
 	\item {\bfseries\sffamily MISSING IMAGES} FunctionUnit
-	\label{sec:orgheadline27}
+
 	Besitzt akutell die View einer FunctionUnit den Tastaturfokus, so soll als
-	nächste Stop der erste Datenfluss, der verbunden ist gewählt werden. Ist keiner
+	nächster Tabstop der erste Datenfluss, der verbunden ist gewählt werden. Ist keiner
 	verbunden, wähle als nächsten Tabstop den ersten Output.
 	
 	\item {\bfseries\sffamily MISSING IMAGES} DataStream
-	\label{sec:orgheadline28}
+
 	Der sehr einfache Fall trifft ein, wenn der Fokus aktuell auf einem
 	DataStream liegt. Der nächste Stop ist dnn die Ziel-Funktionseinheit des Datenflusses
 	
 	\item {\bfseries\sffamily MISSING IMAGES} DataStreamDefinition
-	\label{sec:orgheadline29}
+
 	Der komplexeste Fall: 
 	Zu erst muss überprüft werden, ob es sich um ein Input oder Output
 	handelt. Ist es ein Input, so soll als nächster Stop die Funktionseinheit
@@ -699,34 +677,36 @@ fokusierten Model bestimmt werden:
 	\end{verbatim}
 	
 	
-	\item Erläuterung
-	\label{sec:orgheadline30}
+
 	Auf oberster Ebene wird überprüft um welchen Typ von Objekt es sich
-	handelt, der aktuell fokusiert ist (Fussnote: Teile davon war Aufgabe der UI und die
+	handelt, der aktuell fokusiert ist \footnote{Teile davon war Aufgabe der UI und die
 	Interaktion bekommt das Model dann als \texttt{object} übergeben. Deshalb bedarf es
-	innerhalb der Methode einer Überprüfung des Typen mit TryCast). Nun
-	existieren die drei Fälle, abhängig vom übergebenen Typen.
-	
-	Beachte: Die Sources-Eigenschaft eines DataStream beinhaltet nicht die Funktionseinheit,
-	sondern die DataStreamDefinition einer Funktionseinheit. Die eigentliche
-	Funktionseinheit enthält die Parent-Eigenschaft der DataStreamDefinition.
-	Analog dazu enthält die InputStream- und OutputStream-Eigenschaft der
-	FunctionUnit auch nur die DataStreamDefinitionen nicht ein DataStream-Objekt.
-	Eine DataStreamDefinition kennt jedoch nicht den Datenfluss, mit dem sie
-	verbunden ist. Eine Helfer-Methode der MainModelManager-Klasse stellt
-	diese Funktionalität zum Auffinden des DataStream zur Verfügung.
+	innerhalb der Methode einer Überprüfung des Typen mit TryCast.}. Nun existieren die drei Fälle, abhängig vom übergebenen Typen.\footnote{Zur Erinnerung: Die \texttt{Sources}-Eigenschaft eines \texttt{DataStream} beinhaltet nicht die Funktionseinheit,
+	sondern die \texttt{DataStreamDefinition} einer Funktionseinheit. Die eigentliche
+	Funktionseinheit enthält die \texttt{Parent}-Eigenschaft der \texttt{DataStreamDefinition}.
+	Analog dazu enthält die \texttt{InputStream}- und \texttt{OutputStream}-Eigenschaft der
+	Funktionseinheit auch nur die \texttt{DataStreamDefinition}-Objekte nicht ein \texttt{DataStream}-Objekt.
+	Eine \texttt{DataStreamDefinition} kennt jedoch nicht den Datenfluss, mit dem sie
+	verbunden ist. Eine Helfer-Methode der \texttt{MainModelManager}-Klasse stellt
+	diese Funktionalität zum Auffinden des \texttt{DataStream} zur Verfügung.}
 \end{enumerate}
 
-\subsubsection{Was nicht erreicht wurde}
-\label{sec:orgheadline32}
-Hier einge Auflistung was aus zeitlichen Gründen noch nicht realisiert
+\subsection{Validierung des Datenflusses - Farbliche Kennzeichnung }
+
+Eigne ValidationException Klasse, die dem ViewModel übergeben werden kann. .
+Die ValidationException beinhaltet die Information, ob es sich um eine Error oder um eine Warning handelt (Error wird rot markiert, Warnings grün), welche  Element den Fehler anzeigen sollen, und einen Fehlertedt, der als Tooltip an dem Element abgezeigt wird.
+
+
+\subsection{Was nicht erreicht wurde}
+
+Hier einige Auflistung was aus zeitlichen Gründen noch nicht realisiert
 wurde, die jedoch für den Einsatz in einem Projekt noch sehr wichtig wären:
 \begin{itemize}
-	\item Joint-Inputs und Joint Outputs. Dies erfordert Möglicherweise noch einmal
-	eine kleine Überarbeitung der Architekur des Models. Auch die Darstellung
-	wurde noch nicht realisiert.
-	\item Validierung der Synatx - Sowohl eine Validierungslogik als auch eine
-	Markierung invalider Synatx innerhalb des Editors wurden nicht realisiert.
+	\item Joined-Inputs und auch Joined Outputs ( Das weiterreichen von einem Ergebnis an mehrere). Dies erfordert Möglicherweise noch einmal
+	eine kleine Überarbeitung der Architekur des Models. Auch die Darstellung wurde noch nicht realisiert. Zusätzlich wird die Generierung etwas komplexer und wirft weitere Fragen auf eine eindeutige Interpretation auf.
+	
+	\item Validierung der Syntax - Markierung invalider Syntax innerhalb des Editors wurden nicht realisiert (z.B sind die Klammern richtig gesetzt).
+	
 	\item Mehr Möglichkeiten die Darstellung übersichtlicher zu gestalten: Auf und
 	Zuklappen von Integrationen. Eine 'referenzierte' Kopie einer
 	Funktionseinheit zu erstellen, um an anderer Stelle diese weiter zu
@@ -741,163 +721,45 @@ wurde, die jedoch für den Einsatz in einem Projekt noch sehr wichtig wären:
 
 
 
-\subsection{Roslyn - Generierung von Code aus einem Diagramm}
-\label{sec:orgheadline52}
+\section{Roslyn - Generierung von Code aus einem Diagramm}
 
 Da eine Flow Design auf unterschiedlichen Weisen im Code umgesetzt werden
 kann, mussten hier Entscheidungen getroffen werden, in welchen Fällen
 welche Weise gewählt wird. Wird das Projekt weitergeführt, könnte man in
 Betracht ziehen, dem Nutzer einige Optionen zur Konfiguration der Generierung
-zur Verfügung zu stellen. AKtuell muss er sich jedoch damit abfinden, dass
-nur die hier vorgestellte Weise zur Verfügung steht.
+zur Verfügung zu stellen. Aktuell muss er sich jedoch damit abfinden, dass nur die hier vorgestellte Weise zur Verfügung steht.
 
 
-\subsubsection{Was erreicht wurde}
-\label{sec:orgheadline34}
+\subsection{Was erreicht wurde}
+
 Die weniger komplexeren Aufgaben wurden vollständig implementiert.
 Diese wären: 
 \begin{itemize}
-	\item Generieung der benutzerdefinierten DatenTypen, und Generierung
-	\item der Methodensignaturen anhand einer Funktionseinheit.
+	\item Generierung der benutzerdefinierten Datentypen, und 
+	\item Generierung der Methodensignaturen einer Funktionseinheit.
 \end{itemize}
 
-Die weitaus komplexere Aufgabe: die Generierung der Methoden-Bodys einer Integration wurde nicht
-vollständig implementiert.
+Die weitaus komplexere Aufgabe: die Generierung der Methoden-Bodys einer Integration wurde nicht ganz vollständig implementiert.
+Das liegt vorallem daran, dass eine vollständige Umsetzung einiges an manuellem Testen erfordert, um herauszufinden, welche Datenströme noch falsch interpretiert werden. 
 
-Um Code zu generieren muss im Editor in der Menuleiste der Eintrag Output
-angesteuert werden.
-Hier gibt es die Möglichkeit das aktuelle Flow Design in eine Datei zu
-generieren, oder aber den Code direkt in das Clipboard zu kopieren( damit man den erzeugten Code bequem an
-eine gewünschte Stelle copy-pasten kann).
+Die Validierung des Datenflusses ist eng an die Generierung gekoppelt und deswegen gilt das selbe auch für diese. 
+
+Um Code zu generieren muss im Editor in der Menüleiste der Eintrag Output angesteuert werden.
+Hier gibt es die Möglichkeit das aktuelle Flow Design in eine Datei auf den Desktop zu
+generieren, den Code in die Konsole auszugeben, oder aber den Code direkt in die Zwischenablage zu kopieren( um den erzeugten Code bequem an eine gewünschte Stelle eingefügt werden kann).
 
 Außerdem gibt es die Option eine automatische Generierung einzuschalten, die
 den Code während der Bearbeitung immer neu generiert und in die Datei
-schreibt. So lässt sich das Ergebnis der Generierung während der Bearbeitung
-des Datenflusses beobachten (vorallem in Kombination mit einem
-Textedtitoren, wie zum Beispiel Atom, die bei einer Änderung der Datei diese automatische neu laden).
+auf den Desktop schreibt. So lässt sich das Ergebnis der Generierung während der Bearbeitung
+des Datenflusses beobachten (vor allem in Kombination mit einem
+Texteditor, wie zum Beispiel Atom, die bei einer Änderung der Datei diese automatische neu laden).
 
 Das Ergebnis wird auch immer mit in die Konsole ausgegeben, die beim
 Programmstart mit geöffnet wird.
 
-\subsubsection{Erzeugung von Methodensignaturen}
-\label{sec:orgheadline41}
-Das Analysieren einzelner Funktionseinheiten anhand ihrer Ein und Ausgänge
-erlaubt eine automatische Generierung der Methodensignaturen.
-Dieses Feature wurde vollständig implementiert.
 
-\begin{enumerate}
-	\item Outputs über Rückgabewert
-	\label{sec:orgheadline35}
-	Der Einfachste Fall ist eine Funktionseinheit, die nur ein Output hat und
-	kein Stream und auch nicht optional ist.
-	In diesem Fall werden die ausgehenden Daten als Rückgabewert herausgereicht.
-	
-	\includegraphics[width=.9\linewidth]{./img/roslyn_simpleOutput.png} 
-	
-	Die Generierung erzeugt folgenden Code:
-	\begin{verbatim}
-	public class Person
-	{
-	public string Name;
-	public int Age;
-	}
-	
-	public static Person NewPerson(int aint, string astring)
-	{
-	throw  new NotImplementedException();
-	}
-	\end{verbatim}
-	
-	Hat ein Output mehr als ein Datentyp und ist kein Stream und ist auch nicht optional, so
-	wird das Ergebnis als Tupel über den Rückgabewert geliefert.
-	
-	\includegraphics[width=.9\linewidth]{./img/roslyn_twoDatatypesOneOutput.png} 
-	
-	
-	\begin{verbatim}
-	TODO
-	\end{verbatim}
-	
-	\item Outputs über Actions
-	\label{sec:orgheadline36}
-	Ob ein Ausgang über ein Action realisert wird, wird indirekt dadurch
-	festgelegt, dass ein Actionname angegeben wurde (Diese Regel wurde im
-	Rahmen dieser Anwendung so festgelegt). Ausgänge müssen nicht zwingend mit
-	der Anzahl an Aufrufe der Funktionseinheit übereinstimmen. Ein Action muss
-	nicht aufgrufen werden, oder kann bei einem einzigen Aufruf der Funktionseinheit auch
-	mehrmals aufgerufen werden (der Beginn eines Streams). 
-	
-	Sobald auch eine Funktionseinheit mehrere Ausgänge hat, diese jedoch nicht
-	Optional sind, werden diese jedoch trotzdem als Actions realisiert, selbst wenn sie kein
-	Actionname zugeordnet bekommen haben. Der Name des Actions wird dann
-	automatisch generiert. (Fussnote: Durch Analyse der Datentypen. Ein
-	(Person) wird dann zu einem onPerson. Ein () wird zu einem continueWith. 
-	
-	Durch diese Entscheidungen gibt es keine invaliden Kombinationen an
-	Ausgängen einer Funktionseinheit.
-	
-	
-	Werden alle Ausgänge mit Actions realisiert, entfällt der Rückgabewert in diesem Fall.
-	Die Input-Daten werden in der Signature zuerst aufgelistet, anschließend die Actions.
-	
-	\includegraphics[width=.9\linewidth]{./img/roslyn_multipleOutputs.png} 
-	
-	\begin{verbatim}
-	public static void NewPerson(int aint, string astring, Action<Person> onPerson, Action<string> onError)
-	{
-	throw  new NotImplementedException();
-	}
-	\end{verbatim}
-	\item Streams
-	\label{sec:orgheadline37}
-	Stream werden ananlog zu den optionalen Outputs generiert, mit einer Ausnahme: 
-	Sind ist sowohl der Input als auch der Output ein Stream und ist der Actionname
-	des Outputs nicht angegeben, so wird davon ausgegangen, dass für jeden
-	Datentyp der in die Funktionseinheit hineinfließt auch einer 
-	herausfließt. Somit kann auf eine Action verzichtet werden und der
-	Rückgabewert als Output genutzt werden. Was eine einfachers Verwenden
-	dieser Funktionseinheit im Code zur Auswirkung hat.
-	
-	
-	\includegraphics[width=.9\linewidth]{./img/roslyn_Stream.png} 
-	
-	
-	\begin{verbatim}
-	TODO
-	\end{verbatim}
-	
-	\includegraphics[width=.9\linewidth]{./img/roslyn_StreamStream.png} 
-	
-	\begin{verbatim}
-	TODO
-	\end{verbatim}
-	
-	
-	(Fussnote)
-	Das vorhandensein von einem Inputstream und einem Outputstream bedeutet nicht zwingend , dass für jeden Input auch ein
-	Output erzeugt wird. Die Notation unterscheidet beide Fälle nicht. 
-	Deswegen die Lösung über eine Vergabe eines Actionames als Kompromiss.
-	Wenn der Benutzer ein Actioname angibt, wird indirekt davon ausgegangen,
-	das die Inputs- und Outputstreams nicht übereinstimmen, anderseits wird
-	davon ausgegangen (Dieses Verhalten muss dem Benutzer bewusst sein).
-	
-	Ob dieses Entscheidung richtig ist müsste  noch in der Praxis erprobt werden. Stellt sich heraus,
-	dass das schlecht ist, so müsste man über eine Anpassung der Notation
-	nachdenken.
-	
-	
-	
-	\item TDD
-	\label{sec:orgheadline38}
-	
-	\item Codeauschnitte
-	\label{sec:orgheadline39}
-	
-	\item DatanameParser
-	\label{sec:orgheadline40}
-\end{enumerate}
-\subsubsection{Kleiner Einblick in die API von Roslyn}
-\label{sec:orgheadline43}
+\subsection{Kleiner Einblick in die API von Roslyn}
+
 Das Projekt Rosyln von Microsoft ist ein .NET-Compiler, der eine API bietet, um beliebigen C\#-Quelltext zu erstellten,
 zu analysieren und zu modifizieren.
 
@@ -921,7 +783,7 @@ des SyntaxGenerators lieferen am Ende immer eine SyntaxNode zurück.
 Beim Erstellen einer Methode oder Klasse kann der Inhalt des Scopes durch
 ein Array von SyntaxNodes bestimmt werden.
 
-Nachfolgend ein einfaches Beispiel zum erstellen von einem
+Nachfolgend ein einfaches Beispiel zum Erstellen von einem
 benutzerdefinierten Datentyp.
 
 \begin{enumerate}
@@ -963,22 +825,163 @@ benutzerdefinierten Datentyp.
 	\end{verbatim}
 \end{enumerate}
 
-\subsubsection{Erzeugung der Integration-Bodies}
+
+\subsection{Erzeugung von Methodensignaturen}
+
+Das Analysieren einzelner Funktionseinheiten anhand ihrer Ein und Ausgänge erlaubt eine automatische Generierung der Methodensignaturen.
+Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die Einfluss auf die Methodensignatur haben überschaubar sind und somit alle Kombinationen sich schnell herauskristallisiert haben.
+
+\subsubsection{Output über Rückgabewert}
+
+	Der einfachste Fall ist eine Funktionseinheit, die nur ein Output hat und
+	dieser auch kein Stream und auch nicht optional ist.\footnote{Im Editor ist das vorhanden sein eines Inputs vorgeben und es gibt auch keine Möglichkeit einen weiteren Input-Datenstrom zu einer Funktionseinheit hinzuzufügen. Nur Outputs lassen sich hinzufügen und entfernen.}
+	
+	In diesem Fall werden die ausgehenden Daten einfach als Rückgabewert heraus gereicht.
+	
+	
+	\begin{figure}[!htbp]
+		\centering
+			\includegraphics[width=\linewidth]{./img/roslyn_simpleOutput.png} 
+		\caption{Dexel-Screenshot:TODO Einfach Funktionseinheit mit benutzerdefinierten Datentyp}
+	\end{figure}
+
+	
+	Die Generierung erzeugt folgenden Code:
+	\begin{verbatim}
+	public class Person
+	{
+	public string Name;
+	public int Age;
+	}
+	
+	public static Person NewPerson(int aint, string astring)
+	{
+	throw  new NotImplementedException();
+	}
+	\end{verbatim}
+	
+	Hat ein Output mehr als ein Datentyp und ist kein Stream und ist auch nicht optional, so
+	wird das Ergebnis als Tupel über den Rückgabewert geliefert.
+	
+		\begin{figure}[!htbp]
+			\centering
+			\includegraphics[width=.8\linewidth]{./img/roslyn_twoDatatypesOneOutput.png} 
+			\caption{Dexel-Screenshot:  TODO Funktionseinheit mit Tupel-Output}
+		\end{figure}
+
+	
+	
+	\begin{verbatim}
+	TODO
+	\end{verbatim}
+	
+\subsubsection{Outputs über Actions}
+
+	Ob ein Ausgang über ein Action realisert wird, wird indirekt dadurch
+	festgelegt, dass ein Actionname angegeben wurde \footnote{Diese Regel wurde im
+		Rahmen dieser Anwendung so festgelegt}. 
+	
+	Ausgänge müssen nicht zwingend mit
+	der Anzahl an Aufrufe der Funktionseinheit übereinstimmen. Ein Action muss
+	nicht aufgerufen werden, oder kann bei einem einzigen Aufruf der Funktionseinheit auch
+	mehrmals aufgerufen werden (der Beginn eines Streams). 
+	
+	Sobald auch eine Funktionseinheit mehrere Ausgänge hat, diese jedoch nicht
+	Optional sind, werden diese jedoch trotzdem als Actions realisiert, selbst wenn sie kein
+	Actionname zugeordnet bekommen haben. Der Name des Actions wird dann
+	automatisch generiert\footnote{	Durch Analyse der Datentypen. Ein
+	(Person) wird dann zu einem onPerson. Ein () wird zu einem continueWith}.
+	
+	Durch diese Entscheidungen gibt es keine invaliden Kombinationen an
+	Ausgängen einer Funktionseinheit.
+	
+	
+	Werden alle Ausgänge mit Actions realisiert, entfällt der Rückgabewert in diesem Fall komplett.
+	
+	Die Input-Daten werden in der Signature zuerst aufgelistet, anschließend die Actions.
+	
+			\begin{figure}[!htbp]
+				\centering
+				\includegraphics[width=\linewidth]{./img/roslyn_multipleOutputs.png} 
+				\caption{Dexel-Screenshot: Funktionseinheit mit zwei Outputs mit definierten Actionnamen}
+			\end{figure}
+			
+	
+
+	
+	\begin{verbatim}
+	public static void NewPerson(int aint, string astring, Action<Person> onPerson, Action<string> onError)
+	{
+	throw  new NotImplementedException();
+	}
+	\end{verbatim}
+	 \subsubsection{Streams}
+
+	Streams werden in Dexel ebenfalls mit Actions realisiert, mit einer Ausnahme:
+	
+	Sind ist sowohl der Input als auch der Output ein Stream und ist der \textit{Actionname} dieses Outputs \textit{nicht} angegeben, so wird  implizit davon ausgegangen, dass für jeden Aufruf der Funktionseinheit dieser Output erzeugt wird. 
+	
+	Somit kann für diesen Output auf eine Action verzichtet werden und der Rückgabewert genutzt werden, was eine einfachere Verwendung dieser Funktionseinheit im Code zur Folge hat.
+	\footnote{	Das Vorhandensein von einem Inputstream und einem Outputstream bedeutet eigentlich nicht zwingend , dass für jeden Input auch ein	Output erzeugt wird. Die Notation unterscheidet beide Fälle nicht. Deswegen die Lösung über eine Vergabe eines \textit{Actionamen} als Kompromiss, um dem Benutzer hier eine Kontrolle über die Erzeugung des Codes zu geben. Wenn der Benutzer ein \textit{Actionname} angibt, wird also indirekt davon ausgegangen, dass der Benutzer den Output auch als Action umsetzten möchte und die Funktionseinheit somit beliebig oft diese Action aufrufen kann. Ob dieses Entscheidung richtig war müsste  noch in der Praxis erprobt werden. Stellt sich heraus,	dass sie schlecht ist, müsste man über eine Anpassung der Notation nachdenken.}
+	
+		
+		\begin{figure}[!htbp]
+			\centering
+			\includegraphics[width=.9\linewidth]{./img/roslyn_Stream.png} 
+			\caption{Dexel-Screenshot: TODO Funktionseinheit mit Output-Stream}
+		\end{figure}
+		
+	
+
+	
+	
+	\begin{verbatim}
+	TODO
+	\end{verbatim}
+	
+			
+			\begin{figure}[!htbp]
+				\centering
+				\includegraphics[width=.9\linewidth]{./img/roslyn_StreamStream.png} 
+				\caption{Dexel-Screenshot: Funktionseinheit mit Input-Stream und Output-Stream und undefinierten Actionnamen}
+			\end{figure}
+			
+
+	
+	\begin{verbatim}
+	TODO
+	\end{verbatim}
+	
+	
+	
+
+	
+	
+	
+	 \subsubsection{TDD}
+
+	
+	 \subsubsection{Codeauschnitte}
+	
+	 \subsubsection{DatanameParser}
+	 
+
+\subsection{Erzeugung der Integration-Bodies}
 \label{sec:orgheadline51}
 
-\begin{enumerate}
-	\item Terminologie
-	\label{sec:orgheadline44}
+
+	 \subsubsection{Terminologie}
+
 	Integration und Sub-Funktionseinheit. Eine Integration kann nicht nur aus
-	Operationen bestehen, sonder auch aus anderen Integrationen bestehen.
+	Operationen bestehen, sondern auch aus anderen Integrationen bestehen.
 	Leider gibt es hierfür keine Überbegriff für beide.
 	Da im in diese Kapitel jedoch öfters von Funktionseinheiten innerhalb einer
 	Integration die Rede sein wird, muss hierfür ein Überbegriff eingeführt
 	werden. Funktionseinheiten, die sich in einer Integration befinden, werden
 	nachfolgend als Sub-Funktonseinheiten bezeichnet.
 	
-	\item Die Herangehensweise
-	\label{sec:orgheadline45}
+	\subsubsection{Die Herangehensweise}
+
 	
 	Die automatische Erzeugung eines Integration ist die komplexeste Aufgabe in
 	diesem Projekt. Um die Aufgabe überschaubar zu halten, wurde diese im groben in
@@ -987,7 +990,7 @@ benutzerdefinierten Datentyp.
 	Flow Design auf eine bestimme Sache analysieren und das Ergebnis in ein Objekt
 	abspeichern. Diese Objekt wurde als \texttt{IntegrationBody} bezeichnet.
 	Diese beinhaltet alle Informationen aus der Analyse. Am Ende wird dieses Objekt
-	der Generierungsmethode Übergeben, die anhand diesem den Code erzeugt.
+	der Generierungsmethode Übergeben, die anhand diesem den Code erzeugt\footnote{Ein weiterer Vorteil dieser Aufteilung ist, dass ein großer Teil frei von der Roslyn-API bleibt. Die eigenen Datentypen lassen sich dazu auch besser testen, als die SyntaxNodes von Roslyn. Möchte man das Ergebnis von Roslyn testen, bleibt einem  oft keine andere Wahl, als den erzeugten Code samt Whitespaces über ein string-Vergleich zu erschlagen, was bei mehrzeiligem Code doch etwas ausufern kann. Stattdessen lässt sich das Ergebnis aus den eigenen Analysen hingegen einfach über ein Vergleich von den gefundenen Objekt-Referenzen überprüfen.}.
 	
 	\begin{verbatim}
 	public static SyntaxNode[] GenerateIntegrationBody(SyntaxGenerator generator, MainModel mainModel,
@@ -1012,11 +1015,11 @@ benutzerdefinierten Datentyp.
 	}
 	\end{verbatim}
 	
-	\item Analyse des Flow Design
-	\label{sec:orgheadline49}
+	\subsubsection{Analyse des Flow Designs}
+
 	\begin{enumerate}
 		\item AnalyseParameterDependencies
-		\label{sec:orgheadline46}
+
 		Da die Pipe-Notation unterstützt wird, reicht es nicht einfache aus die Daten
 		aus den Datenflüssen zu nehmen, die direkt in die akutelle
 		Funktionseinheit fließen. Stattdessen muss der Fluss rückwärts
@@ -1030,7 +1033,7 @@ benutzerdefinierten Datentyp.
 		wurden.
 		
 		\item AnalyseLambdaBodies
-		\label{sec:orgheadline47}
+
 		Manche optionale Datenflüsse oder Stream werden über Actions realisiert.
 		Das bedeutet, dass sich alle nachflogenden Funktionseinheiten innerhalb
 		des Lambda-Ausdruckes befinden müssen. Die Analyse speichert das Ergebnis
@@ -1056,7 +1059,7 @@ benutzerdefinierten Datentyp.
 		innerhalb eines Lambdas.
 		
 		\item AnalyseMatchingOutputOfIntegration
-		\label{sec:orgheadline48}
+
 		Hat die Integration einen Output der als Action realisert werden muss, so
 		muss herausgefunden werden, welche Funtionseinheiten im Datenfluss diesen
 		Output erzeugt bedienen. Dabei werden die Implementierungs-Stile der
@@ -1081,15 +1084,12 @@ benutzerdefinierten Datentyp.
 	\end{enumerate}
 	
 	
-	
-	\item Datenströme
-	\label{sec:orgheadline50}
-\end{enumerate}
+	\subsubsection{Datenströme}
 
-\subsection{Generierung eines Diagrammes aus Code}
-\label{sec:orgheadline53}
-Aus zeitlichen Gründen, konnte die Generierung von einem Flow Design aus Code
-nicht angegangen werden. 
+
+\section{Generierung eines Diagrammes aus Code}
+
+Aus zeitlichen Gründen, konnte die Generierung von einem Flow Design aus Code nicht angegangen werden. 
 Da sich das Model jedoch sauber getrennt von der GUI in
 einem speraten Unterprojekt befindet, wäre es sicherlich möglich einen anderen
 Studenten dies als Bachelorarbeit zu übergeben. So hätte dieser bereits eine

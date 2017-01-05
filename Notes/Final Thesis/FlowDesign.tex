@@ -19,12 +19,19 @@
 
 
 
+\usepackage[
+backend=biber,
+style=alphabetic,
+]{biblatex}
 
+
+\usepackage{biblatex}
+\addbibresource{ref.bib}
 
 \input{Packages}
 \usepackage{listings}
 
-
+\usepackage[T1]{fontenc}
 
 \begin{document}
 
@@ -60,9 +67,9 @@
 
 		
 	%%%%%%%%%%%%%%%%
-	% TEIL 2 Umsetzung
+	% TEIL 2 DEXEL
 	%%%%%%%%%%%%%%%%	
-	\part{Umsetzung}
+	\part{Dexel}
 	\input{Inhalt/Analyse}
 	\input{Inhalt/Realisierung}
 	
@@ -92,8 +99,9 @@
 	%TODO Clean Code Buch, CCD, Blogs, Youtube Video
 	% Literaturverzeichnis
 	\nocite{*}
-	\bibliography{ref} 
-	\bibliographystyle{ieeetr}
+	\clearpage
+	
+	\printbibliography[title={Quellenverzeichnis}]
 	
 	% Verzeichnis der Listings
 	\renewcommand{\lstlistlistingname}{Verzeichnis der Listings}
@@ -101,7 +109,8 @@
 
 	% Abbildungsverzeichnis
 	\listoffigures 
-	
+
+		
 	%TODO Tablellenverzeichnis
 
 

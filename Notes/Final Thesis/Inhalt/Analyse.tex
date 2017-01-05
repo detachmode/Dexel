@@ -49,17 +49,15 @@ Design in einem Projekt weiter steigern.
 Ein Anwendungsfall wäre: Der Anwender möchte
 Teile seines Quellcodes in ein Flow Design überführen, um dann mit Hilfe des
 Flow Designs, diesen zu überarbeiten und anschließend neu zu generieren.
-Möglicherweise würde er die erstellten Codezeilen mit Copy-Paste in sein
+Möglicherweise würde er die erstellten Codezeilen mit Copy\&Paste in sein
 bestehendes Projekt übertragen.
-
-
 \footnote{Aufgrund von Unterhaltungen mit meinem
 Anleiter Kevin Erath stellte sich heraus, dass ein perfekter Roundtrip umzusetzen keine triviale Aufgabe
 darstellt. Deswegen wird im Rahmen dieser Arbeit, wenn überhaupt, der Fokus auf jene Funktionalitäten
 gelegt, die leichter zu implementieren sind und doch dem Anwender möglichst viel
-Zeitersparnis einbringt.}
+Zeitersparnis einbringen.}
 
-\subsection{Vorteile von einem Entwurf auf dem Papier}
+\section{Vorteile von einem Entwurf auf dem Papier}
 
 Ein Papier schränkt einen nicht ein und erlaubt es schnell und einfach Pfeile
 und Kreise zu zeichnen, Notizen einzufügen und ist einfach in der Bedienung.
@@ -102,21 +100,21 @@ Anfügen von Tests an Funktionseinheiten & niedrig\\ \hline
 Mehrere Themes: Dark, White (Print) & niedrig\\ \hline
 \end{tabularx}
 
-\subsection{Anmerkungen}
 
-\begin{enumerate}
-\item Navigation
+
+
+\subsubsection{Navigation}
 
 Durch Inspiration aus Grafikanwendungen: Panning ( Verschieben der Kamera in
 der X- und Y-Achse mit Hilfe der Mittleren Maustaste. Zoomen in und aus dem
 Diagramm durch das Mausrad. Die Position der Maus bestimmt das Zentrum des
 Zooms.
-\end{enumerate}
 
 
 
 
-\subsection{Generierung von Code}
+
+\section{Generierung von Code}
 
 
 \begin{tabularx}{\textwidth}{X|l}
@@ -139,24 +137,22 @@ Live-Generierung & niedrig\\
 \end{tabularx}
 
 
-\subsubsection{Anmerkungen}
 
-\begin{enumerate}
-\item Erzeugung des kompletten Methoden-Bodies einer Integration
+\subsubsection{Erzeugung des kompletten Methoden-Bodies einer Integration}
 
 Hierbei muss erkannt werden, in welcher Reihenfolge die Methoden aufgerufen
 werden müssen, lokale Variablen erzeugt werden müssen und was einer Methode als Parameter
 übergeben werden muss. Dabei kommen IEnumerables und Lambdas zum Einsatz um
 Datenflüsse zu implementieren.
 
-\item Einstellungen für die Generierung dem Benutzer zugänglich machen
-
+\subsubsection{Einstellungen für die Generierung dem Benutzer zugänglich machen
+}
 Mögliche Optionen wären:
 \begin{itemize}
 \item wie das Programm den Methoden-Body einer Operation
-\end{itemize}
-standardmäßig befüllen soll: Leer, mit NotImplementedExeption oder mit einem
+standardmäßig befüllen soll: Leer, mit \textit{NotImplementedExeption} oder mit einem
 Return-Ausdruck eines Standardwertes abhängig von der Methodensignatur.
+\end{itemize}
 \begin{itemize}
 \item Ob innerhalb einer Integration der Rückgabewert einer Funktion erst in eine
 lokale Variable gespeichert werden soll, oder direkt der Methodenaufruf an die
@@ -164,7 +160,7 @@ andere Methode weitergereicht wird. Beziehungsweise die Regel konfigurierbar
 machen: Ab welcher Zeilenlänge, wie die Variablen benannt werden sollen, etc.
 \end{itemize}
 
-\item Einfügen von generierten Codezeilen in bestehende Codebasis
+\subsubsection{Einfügen von generierten Codezeilen in bestehende Codebasis}
 
 Notwendig hierfür wäre, dass bestehende Klassen gefunden werden müssten, Usings korrekt
 eingefügt und schlussendlich die generierten Methoden und Datentypen in die
@@ -180,10 +176,10 @@ wäre die Überschneidung von Namen. Wenn automatisch der generierte Code bevorz
   Eine andere Option wäre es, dies Codezeilen einfach einzufügen und die Erkennung und Lösung der
   Probleme der IDE zu überlassen. Gerade bei C\# gibt es mit Resharper viele
   Refactorisierungs-Tools, die einem bei der Lösung solcher Probleme unterstützen.
-\end{enumerate}
 
 
-\subsection{Generierung von Flow Design Diagrammen aus Code}
+
+\section{Generierung von Flow Design Diagrammen aus Code}
 
 \begin{tabularx}{\textwidth}{X|l}
 Anforderungen & Priorität\\
@@ -196,10 +192,10 @@ Umgang mit Methoden die nicht das IOSP befolgen & mittel\\ \hline
 Speichern der Inhalte, die nicht im Diagramm dargestellt werden können. & mittel\\ \hline
 \end{tabularx}
 
-\subsubsection{Anmerkungen}
 
-\begin{enumerate}
-\item Automatische Anordnung
+
+
+\subsubsection{Automatische Anordnung}
 
 Unbedingt notwendig, auch wenn es nur sehr rudimentär umgesetzt wird, ansonsten liegen
 alle Funktionseinheiten nach dem Erstellen unübersichtlich auf einem Punkt aufeinander.
@@ -207,11 +203,9 @@ Falls das Automatische Spacing an manchen Stellen nicht perfekt funktionieren
 sollte, kann eine gute Usability ( Selektierungs- und Verschiebungsfeatures)
 hier dieser Imperfektion leichter verschmerzbarer machen.
 
-\item Schwierigkeiten
+\subsubsection{Schwierigkeiten}
+Bei Verwendung von Events kann der Datenfluss möglicherweise nicht mehr nachvollzogen werden, da die \enquote{Verdrahtung} an beliebiger Stelle stattfinden kann und auch dynamisch zur Laufzeit.
 
-Bei Verwendung von Events kann der Datenfluss möglicherweise nicht mehr
-nachvollzogen werden.
-\end{enumerate}
 
 \pagebreak
 \chapter{GUI Skizzen / Usabilityüberlegungen}
@@ -230,7 +224,7 @@ bieten.
 \includegraphics[width=.9\linewidth]{./img/ContextMenu.jpg}
 
 Bei einem Rechtsklick auf eine leere Stelle in der Zeichenfläche erscheint ein
-Kontextmenu, dass dem Anwender erlaubt an dieser Stelle eine neue Softwarezelle einzufügen.
+Kontextmenu, dass dem Anwender erlaubt an dieser Stelle eine neue Funktionseinheit einzufügen.
 
 \includegraphics[width=.9\linewidth]{./img/NewCell.jpg}
 
@@ -251,9 +245,11 @@ sichergestellt wird. Möglicherweise können auch unsichtbare Flächen verwendet
 werden, um eine Drag\&Drop Fläche künstlich leicht zu vergrößern und einfacher treffbar zu machen.
 \item Rectangle-Selection in Kombination mit Modifier-Keys um mehrere Funktionseinheiten
 schnell und komfortable zu selektieren.
-\item Shift + Drag : Schnelles Duplizieren der selektierten Elemente. Vorbild dieser
-Funktion ist 3ds Max, das dieses Bedienkonzept an vielen Stellen einsetzt.
-Einmal daran gewöhnt, möchte man es nicht mehr missen. Anwendungsfälle:
+\item Shift + Drag : Schnelles Duplizieren der selektierten Elemente. 
+\footnote{Vorbild dieser Funktion ist die CAD-Anwendung 3ds Max, das dieses Bedienkonzept an vielen Stellen einsetzt.
+Einmal daran gewöhnt, möchte man es nicht mehr missen.} 
+
+Anwendungsfälle:
 Der Anwender möchte  schnell ein gesamtes Diagramm duplizieren und an ein andere Stelle schieben, um
 dort eine weitere Iteration davon zu erstellen. Möglicherweise müssen solche
 Duplikate vor der Generierung des Codes aus dem Diagramm gelöscht werden.
@@ -296,16 +292,16 @@ sind.
 \bigskip
 
 \emph{
-Pfeile zwischen zwei Softwarezellen, die auf unterschiedlichen Höhen platziert
+Pfeile zwischen zwei Funktionseinheit, die auf unterschiedlichen Höhen platziert
 sind}
 
 \includegraphics[width=.9\linewidth]{./img/NotationChanges2.jpg}
 
 
 
-\section{Datentypen Organisation, Erstellung und Definition}
+\section{Datentypen - Definition und Organisation}
 
-Da Flow Design auf Datenströmen arbeitet, ist das Definieren neuer Datentypen
+Da Flow Design mit Datenströmen arbeitet, ist das Definieren neuer Datentypen
 ein wesentlicher Bestandteil davon.
 Eine Möglichkeit wäre es, wie auf dem Papier, es zu erlauben an beliebigen
 Stellen im Diagramm eine Box zu erstellen, in der der Anwender einen neuen
@@ -342,25 +338,24 @@ verwendeten Datentypen auch denkbar.
 \includegraphics[width=.9\linewidth]{./img/DatatypesCrop.jpg}
 
 
-Weitere Ideen wären: 
+Weitere Ideen: 
 \begin{itemize}
 \item Mouse-Hover über ein Datentype im Diagramm zeigt die Definition in einem Pop-Up
 über dem Mauszeiger an.
-\item Drag\&Drop von Datentypen aus der Liste in das Drawing Board zu
+\item Drag\&Drop von Datentypen aus der Liste in das \textit{DrawingBoard} zu
 ermöglichen, falls der Anwender für einen Screenshot - oder aus einem anderen
 Grund - diese Information im Bild haben möchte.
 \end{itemize}
 
 
-\subsection{Realisierung/ Darstellung von Joints}
+\section{Darstellung von Joined Inputs}
 
 Datenströme können aus verschieden Quellen stammen und an einer Funktionseinheit
-zusammenlaufen. Flow Design bietet hierfür die Pipe-Notation, oder die s.g. Joints
-an. 
+zusammenlaufen. Flow Design bietet hierfür die Pipe-Notation, oder die s.g. Joined Inputs an. 
 
 \bigskip
 
-Vorteile der Pipe-Notation / Nachteile der Joints:
+Vorteile der Pipe-Notation:
 
 \begin{itemize}
 \item Einfacher zu realisieren auf GUI Seite ( Automatisches Spacing aufgrund der
@@ -369,24 +364,19 @@ geringeren Anzahl an Pfeilen einfacher umzusetzen
 chaotisch wirken lässt
 \end{itemize}
 
-Nachteile der Pipe-Notation / Vorteile der Joints:
+Nachteile der Pipe-Notation / Vorteile der Joined Inputs:
 
 \begin{itemize}
-\item Datenströme sind möglicherweise nicht mehr eindeutig zu interpretieren. Bei
-der Verwendung von Joints ist die Herkunft eines Datenstroms eindeutig
-ersichtlich. Bei der Pipe-Notation kann man diese Problem durch eine Benennung
-der Datenströme lösen. Diese Erkenntnis legt eine Validierung - einschließlich
-visuellem Feedback - der Datenströme auf eine eindeutige Interpretation nahe.
-Eine andere Option wäre, dass man beim Generieren den Datenstrom zurück läuft
-und das erste Vorkommen nimmt und nachfolgende Überschneidungen ignoriert.
+\item Datenströme sind möglicherweise nicht mehr eindeutig zu interpretieren. 
+Bei der Verwendung von Joined Inputs ist die Herkunft eines Datenstroms eindeutig
+ersichtlich. Bei der Pipe-Notation kann man diese Problem durch eine Benennung der Daten auf den Datenströmen lösen. Diese Erkenntnis legt eine Validierung - einschließlich visuellem Feedback - der Datenströme auf eine eindeutige Interpretation nahe.
 \end{itemize}
 
 Da beide Notationen ihre Vor- und Nachteile haben, soll die Anwendung beide Darstellungen unterstützen.
 
-\subsection{Validierung des Datenflusses}
+\section{Validierung des Datenflusses}
 
-Der Validierungsprozess soll subtil sein. Ein Blockieren von verbinden zweier
-Funktionseinheiten soll nicht geschehen. Diese würde sonst dem Ziel entgegen stehen,
+Der Validierungsprozess soll subtil sein. Ein Blockieren beim Verbinden zweier Funktionseinheiten soll nicht geschehen. Diese würde sonst dem Ziel entgegen stehen,
 eine möglichst freie Gestaltung, wie beim Zeichnen auf dem Papier, zu
 gewährleisten. Der Anwender soll die Freiheit haben, nicht valide Verbindungen
 zu erstellen, die er möglicherweise erst nach dem Verbinden dann entsprechend
@@ -400,14 +390,13 @@ sind im Datenfluss enthalten.
 
 Im Grunde wäre jedoch auch eine Generierung von jeglichen Flow Design Diagrammen
 möglich, würde man folgende Regeln einführen:
-\begin{itemize}
-\item Der Graph wird zurück gelaufen, bis ein passender Datentype
-gefunden wird ( Das erste Vorkommen wird genommen). Falls der Datentyp nicht
-gefunden wurde, wird er in der Integration als lokale Variable deklariert und mit einem
-Standardwert initialisiert.
-\end{itemize}
 
-\subsection{Validierung der Syntax}
+Der Graph wird zurück gelaufen, bis ein passender Datentype
+gefunden wird (das erste Vorkommen wird genommen). Falls der Datentyp nicht
+gefunden wird, wird er in der Integration als lokale Variable deklariert und mit einem Standardwert initialisiert.
+
+
+\section{Validierung der Syntax}
 
 Die Notation der Daten der Datenflüssen besteht aus einer einfachen Syntax. Diese muss zwingend eingehalten
  werden, damit eine Generierung des Codes möglich ist.
