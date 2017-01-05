@@ -12,6 +12,14 @@ namespace Roslyn
             return input.First().ToString().ToUpper() + input.Substring(1);
         }
 
+        public static string FirstCharToLower(string input)
+        {
+            if (String.IsNullOrEmpty(input))
+                throw new Exception("Couldn't convert to lower camel case");
+            return input.First().ToString().ToLower() + input.Substring(1);
+        }
+
+
 
         public static T TryCatch<T>(Func<T> func, string errormsg)
         {

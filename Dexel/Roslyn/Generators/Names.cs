@@ -47,7 +47,13 @@ namespace Roslyn.Generators
             {
                 return "tupel";
             }
-            return output.First().Name ?? "a" + output.First().Type;
+            
+            string generatedname = "a" + Helper.FirstCharToUpper(output.First().Type);
+            if (output.First().IsArray || output.First().IsList)
+            {
+                generatedname = Helper.FirstCharToLower(output.First().Type) + "s";
+            }
+            return output.First().Name ?? generatedname;
         }
 
 
@@ -66,10 +72,12 @@ namespace Roslyn.Generators
 
         public static string ParameterName(NameType nametype)
         {
-            var lower = nametype.Type.ToLower();
+            string generatedname = "a" + Helper.FirstCharToUpper(nametype.Type);
             if (nametype.IsArray || nametype.IsList)
-                lower += "s";
-            return nametype.Name ?? $"a{lower}";
+            {
+                generatedname = Helper.FirstCharToLower(nametype.Type) + "s";
+            }
+            return nametype.Name ?? generatedname;
         }
     }
 }
