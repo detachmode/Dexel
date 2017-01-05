@@ -42,17 +42,22 @@
            
 
                
-                
+               
                 <TextBox MinWidth="22" 
-                         FontSize="{Binding DataContext.FontSizeFunctionUnit, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"  x:Name="TheTextBox"   LostFocus="TheTextBox_OnLostFocus" 
+                         
+                         FontSize="{Binding DataContext.FontSizeFunctionUnit, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"  
+                         x:Name="TheTextBox"   
+                         LostFocus="TheTextBox_OnLostFocus" 
                          Background="{Binding DataContext.VisibilityBlockTextBox, Converter={StaticResource FunctionUnitTextfieldBG}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}" 
                                  Text="{Binding Path=LabelContent, 
                                         UpdateSourceTrigger=PropertyChanged,
                                         RelativeSource={RelativeSource FindAncestor, 
                                         AncestorType=drawingBoard:FunctionUnitBody,  AncestorLevel=1}}"
-                                 Foreground="{DynamicResource Foreground}"
-                                 VerticalAlignment="Center"
-                                 BorderBrush="{x:Null}" />
+                        Foreground="{DynamicResource Foreground}"
+                        VerticalAlignment="Center"
+                        AcceptsReturn="True"
+                        BorderBrush="{x:Null}" HorizontalContentAlignment="Center" />
+                
                 <Ellipse Margin="-20" Fill="Transparent"
                          Visibility="{Binding DataContext.VisibilityBlockTextBox, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"/>
             </Grid>

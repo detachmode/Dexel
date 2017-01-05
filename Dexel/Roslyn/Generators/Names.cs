@@ -57,10 +57,10 @@ namespace Roslyn.Generators
                 throw new Exception("FunctionUnit has no name");
 
             return
-                functionUnit.Name.Split(' ')
+                functionUnit.Name.Split(new string[] { "\r\n", "\n", " " }, StringSplitOptions.None)
                     .Where(s => !String.IsNullOrEmpty(s))
                     .Select(Helper.FirstCharToUpper)
-                    .Aggregate((s, s2) => s + s2);
+                    .Aggregate((s, s2) => s + s2.Trim());
         }
 
 
