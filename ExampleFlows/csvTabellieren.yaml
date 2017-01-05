@@ -1,0 +1,136 @@
+FunctionUnits:
+- &o0
+  Position:
+    X: 285.5
+    Y: 151.53999999999999
+  Name: Spaltenbreiten ermitteln
+  ID: 596c25f0-1499-409c-b671-150401084470
+  IsIntegrating: []
+  InputStreams:
+  - ActionName: ''
+    DataNames: (t:Tabelle)
+    ID: 3336a28a-053c-4018-9b34-7476f7147812
+    Parent: *o0
+  OutputStreams:
+  - &o5
+    ActionName: ''
+    DataNames: (breiten:int*)
+    ID: 8629ac09-60be-401e-9cae-d15730b605c0
+    Connected: true
+    Parent: *o0
+- &o4
+  Position:
+    X: 670.5
+    Y: -22.710000000000036
+  Name: Tabelle bauen
+  ID: b5718963-a97e-488f-8395-82fab34d7b43
+  IsIntegrating:
+  - *o0
+  - &o1
+    Position:
+      X: 623.72928571428577
+      Y: 150.79793650793653
+    Name: Header formattieren
+    ID: 904ad465-5138-4ce9-98df-343c455894b4
+    IsIntegrating: []
+    InputStreams:
+    - &o6
+      ActionName: ''
+      DataNames: (breiten:int*, t:Tabelle)
+      ID: 658d4436-cd28-4f40-a137-af2324aa2971
+      Connected: true
+      Parent: *o1
+    OutputStreams:
+    - &o7
+      ActionName: ''
+      DataNames: (header:string*)
+      ID: cb3e6f19-b38a-4ae3-bfdb-6ac82b7bef68
+      Connected: true
+      Parent: *o1
+  - &o2
+    Position:
+      X: 987.07055555555564
+      Y: 149.95666666666665
+    Name: Body formattieren
+    ID: fa710dc4-6bc7-4073-9cdb-978fdb69262f
+    IsIntegrating: []
+    InputStreams:
+    - &o8
+      ActionName: ''
+      DataNames: (breiten:int*,t:Tabelle)
+      ID: e4d0e6d8-9cd9-4d7f-9a17-37eb35dd5b2a
+      Connected: true
+      Parent: *o2
+    OutputStreams:
+    - &o9
+      ActionName: ''
+      DataNames: (body:string*)
+      ID: 36d893d1-9a20-4469-8e10-64ebeffda1ab
+      Connected: true
+      Parent: *o2
+  - &o3
+    Position:
+      X: 358.37698412698478
+      Y: 310.18285714285707
+    Name: Tabelle zusammensetzen
+    ID: 9f7c008c-e654-4652-9912-98ac3085cc3b
+    IsIntegrating: []
+    InputStreams:
+    - &o10
+      ActionName: ''
+      DataNames: (header:string*,body:string*)
+      ID: c1af73bd-c878-47de-bf7a-9dfc3fec55ed
+      Connected: true
+      Parent: *o3
+    OutputStreams:
+    - ActionName: ''
+      DataNames: (string*)
+      ID: e0b0cb93-9491-4927-909a-aa2e523716ab
+      Parent: *o3
+  InputStreams:
+  - ActionName: ''
+    DataNames: (t:Tabelle)
+    ID: efb9d73f-121e-4b02-8e67-a80b54b204e3
+    Parent: *o4
+  OutputStreams:
+  - ActionName: ''
+    DataNames: (string*)
+    ID: fb32fc19-fe3d-4669-aef3-21716366ff20
+    Parent: *o4
+- *o1
+- *o2
+- *o3
+Connections:
+- DataNames: "(breiten:int*) | \r\n   (... t:Tabelle)"
+  ID: 96ddd4c6-1aed-4bd0-8c16-d51a7ec52a44
+  Sources:
+  - *o5
+  Destinations:
+  - *o6
+- DataNames: >-
+    (header:string*) |
+
+       (breiten:int*,t:Tabelle)
+  ID: 072e3442-d766-4f0d-a18d-a5f20ba75481
+  Sources:
+  - *o7
+  Destinations:
+  - *o8
+- DataNames: "(body:string*) | \r\n   (header:string*,body:string*)"
+  ID: d32a577f-3306-4ab3-9330-235407358845
+  Sources:
+  - *o9
+  Destinations:
+  - *o10
+DataTypes:
+- Name: Tabelle
+  SubDataTypes:
+  - Name: Header
+    Type: >
+      Record
+  - Name: Body
+    Type: List<Record>
+- Name: Record
+  SubDataTypes:
+  - Name: Data
+    Type: List<string>

@@ -1,0 +1,434 @@
+FunctionUnits:
+- &o3
+  Position:
+    X: 195.11111111111094
+    Y: -117.37666666666679
+  Name: "Create \r\nRandom\r\nPersons"
+  ID: 1d08477e-d424-4145-8bb3-2769d6c679ce
+  IsIntegrating:
+  - &o0
+    Position:
+      X: 180.57264957265019
+      Y: -10.793333333331731
+    Name: "Add Rnd\r\nName and \r\nRnd Age"
+    ID: cd73f44a-720e-49c5-804f-2458962a12c6
+    IsIntegrating: []
+    InputStreams:
+    - &o36
+      ActionName: ''
+      DataNames: (p:Person)*
+      ID: 012db9bf-df22-4aa7-861e-9a184d7a5e9c
+      Connected: true
+      Parent: *o0
+    OutputStreams:
+    - &o37
+      ActionName: ''
+      DataNames: (rndP:Person)*
+      ID: 27891dc7-c7b0-4b85-ada1-a215629562a0
+      Connected: true
+      Parent: *o0
+  - &o1
+    Position:
+      X: 420.57264957265016
+      Y: -10.793333333331802
+    Name: "Add Rnd \r\nBudget"
+    ID: f6438a1f-e852-49a4-bfd1-74fa7799b4b5
+    IsIntegrating: []
+    InputStreams:
+    - &o38
+      ActionName: ''
+      DataNames: (rndP:Person)*
+      ID: 1f6e12de-934f-435b-a5fe-a315ec97eae4
+      Connected: true
+      Parent: *o1
+    OutputStreams:
+    - ActionName: ''
+      DataNames: (Person)*
+      ID: 9e3e6ed9-5aa7-49ce-9095-5ef5d105f079
+      Parent: *o1
+  - &o2
+    Position:
+      X: -26.179487179486799
+      Y: -8.827521367519708
+    Name: "Create \r\nNew Person"
+    ID: e493eacc-54be-45dc-985f-ba727f610a13
+    IsIntegrating: []
+    InputStreams:
+    - ActionName: ''
+      DataNames: (customerCount:int)
+      ID: 0bd75f3e-5f40-4625-af0a-4a15c82a1f3a
+      Parent: *o2
+    OutputStreams:
+    - &o35
+      ActionName: ''
+      DataNames: (p:Person)*
+      ID: dac6ceea-415a-4f08-b5d7-d730dc9b39dd
+      Connected: true
+      Parent: *o2
+  InputStreams:
+  - ActionName: ''
+    DataNames: (customerCount:int)
+    ID: 4a1100b4-3d7b-4394-804f-0bba4776d960
+    Parent: *o3
+  OutputStreams:
+  - &o15
+    ActionName: ''
+    DataNames: (Person)*
+    ID: 7f8c904e-0b74-4816-b84a-a5701834b940
+    Connected: true
+    Parent: *o3
+- &o4
+  Position:
+    X: 710.70666666666625
+    Y: -126.90444444444458
+  Name: "Create \r\nrandom\r\nshopping\r\ncart"
+  ID: 55839756-a6f7-4c47-9393-1db5446d2f0d
+  IsIntegrating: []
+  InputStreams:
+  - &o16
+    ActionName: ''
+    DataNames: ()*
+    ID: e51b3ada-2a88-4e11-b467-490d3db5f772
+    Connected: true
+    Parent: *o4
+  OutputStreams:
+  - &o21
+    ActionName: ''
+    DataNames: (Cart)*
+    ID: 923967ca-36c5-4d53-a747-f5e10942ab20
+    Connected: true
+    Parent: *o4
+- &o14
+  Position:
+    X: 388.63888888888863
+    Y: -216.54333333333344
+  Name: Shopping Simulator 3000
+  ID: 9db53a87-e7aa-4589-be25-ae0e92e97061
+  IsIntegrating:
+  - *o4
+  - *o3
+  - &o5
+    Position:
+      X: 78.944444444444002
+      Y: 295.12333333333311
+    Name: "Check \r\nAge"
+    ID: ffd5c00b-65dc-44ae-a3bf-31633f0ba3be
+    IsIntegrating: []
+    InputStreams:
+    - &o22
+      ActionName: ''
+      DataNames: (Person)*
+      ID: b97d0daf-0a11-469b-a4ea-edbce1451711
+      Connected: true
+      Parent: *o5
+    OutputStreams:
+    - &o17
+      ActionName: onAdult
+      DataNames: ()
+      ID: 7cab5854-81e8-4c96-a06c-d4a0cc8d35b7
+      Connected: true
+      Parent: *o5
+    - &o19
+      ActionName: onChild
+      DataNames: ()
+      ID: 67c264c9-4b9b-47b0-8430-7768a9d6affa
+      Connected: true
+      Parent: *o5
+  - &o6
+    Position:
+      X: 306.72222222222177
+      Y: 270.87333333333311
+    Name: >-
+      Check
+
+      Money
+    ID: 2eddbcef-8e86-49c4-95e7-5aa4c4f1c641
+    IsIntegrating: []
+    InputStreams:
+    - &o18
+      ActionName: ''
+      DataNames: (Cart)
+      ID: 7eb79aa6-dd16-44f8-84f7-e3a8c4bca890
+      Connected: true
+      Parent: *o6
+    OutputStreams:
+    - &o23
+      ActionName: onEnough
+      DataNames: ()
+      ID: d9d9cb40-2b75-4dde-a99d-b69f0d6f3a06
+      Connected: true
+      Parent: *o6
+    - &o29
+      ActionName: onTooExpensive
+      DataNames: ()
+      ID: 9fd6f8d5-f195-4b1c-803d-3ef0054f604c
+      Connected: true
+      Parent: *o6
+  - &o7
+    Position:
+      X: 283.22222222222177
+      Y: 393.37333333333322
+    Name: >-
+      Add
+
+      Discount
+    ID: 7aea0f34-660d-41a3-973c-b947307d28b5
+    IsIntegrating: []
+    InputStreams:
+    - &o20
+      ActionName: ''
+      DataNames: (Cart)
+      ID: b85fa5d2-a246-4206-8ebb-824e2e7d2c8e
+      Connected: true
+      Parent: *o7
+    OutputStreams:
+    - &o27
+      ActionName: ''
+      DataNames: ()
+      ID: a84b71a5-52c2-4f0e-b45a-5834dd9e0cce
+      Connected: true
+      Parent: *o7
+  - &o8
+    Position:
+      X: 516.55555555555566
+      Y: 191.87333333333342
+    Name: Checkout
+    ID: 98527dcf-59a2-40a4-94b7-adac0dce719b
+    IsIntegrating: []
+    InputStreams:
+    - &o24
+      ActionName: ''
+      DataNames: (Cart,Person)
+      ID: ddbb365b-e80e-4461-924f-2c550b5df16e
+      Connected: true
+      Parent: *o8
+    OutputStreams:
+    - &o25
+      ActionName: ''
+      DataNames: ()
+      ID: 9b6a7bb4-3659-4389-b644-c6fb5fc49933
+      Connected: true
+      Parent: *o8
+  - &o9
+    Position:
+      X: 778.55555555555566
+      Y: 188.87333333333342
+    Name: >-
+      Subscribe
+
+      to Newsletter
+    ID: 166de34d-eb42-4186-ada6-afb65afd35dc
+    IsIntegrating: []
+    InputStreams:
+    - &o26
+      ActionName: ''
+      DataNames: (Person)
+      ID: a1d289b9-637e-48e4-be8d-af91cf8a9dff
+      Connected: true
+      Parent: *o9
+    OutputStreams:
+    - ActionName: ''
+      DataNames: ()
+      ID: d0f9a418-b5f5-46c5-afde-7de1f4548687
+      Parent: *o9
+  - &o10
+    Position:
+      X: 537.0555555555552
+      Y: 389.53999999999962
+    Name: >-
+      Check
+
+      Money
+    ID: db662954-048f-4dac-a004-b3c7a35c9fb9
+    IsIntegrating: []
+    InputStreams:
+    - &o28
+      ActionName: ''
+      DataNames: ()
+      ID: a892dbb2-0a00-4e71-9a37-24b380d22e92
+      Connected: true
+      Parent: *o10
+    OutputStreams:
+    - &o33
+      ActionName: onEnough
+      DataNames: ()
+      ID: 27cabb84-cc05-45aa-9960-8d6dcfb33553
+      Connected: true
+      Parent: *o10
+    - &o31
+      ActionName: onTooExpensive
+      DataNames: ()
+      ID: 0401e4ca-46dc-44b2-b457-a9b29d647a11
+      Connected: true
+      Parent: *o10
+  - &o11
+    Position:
+      X: 606.55555555555566
+      Y: 295.87333333333333
+    Name: "Print not enough \r\nmoney message"
+    ID: ebf5c48f-621c-4d8f-b55d-59888ee7de0b
+    IsIntegrating: []
+    InputStreams:
+    - &o30
+      ActionName: ''
+      DataNames: ()
+      ID: bc4c8356-e7bb-410c-9a74-444c709aad0f
+      Connected: true
+      Parent: *o11
+    OutputStreams:
+    - ActionName: ''
+      DataNames: ()
+      ID: 7002b475-ed95-4e0f-9fcc-b8e476b55f31
+      Parent: *o11
+  - &o12
+    Position:
+      X: 780.2222222222224
+      Y: 488.87333333333333
+    Name: "Print not enough \r\nmoney message"
+    ID: bd1665ad-9360-45f0-a57f-af16a0126346
+    IsIntegrating: []
+    InputStreams:
+    - &o32
+      ActionName: ''
+      DataNames: ()
+      ID: 968d33b0-8f10-4fbc-bb12-7946f38b1e25
+      Connected: true
+      Parent: *o12
+    OutputStreams:
+    - ActionName: ''
+      DataNames: ()
+      ID: caf7cfcd-a622-44de-9708-8f2ef36c3b1b
+      Parent: *o12
+  - &o13
+    Position:
+      X: 797.38888888888891
+      Y: 369.37333333333333
+    Name: Checkout
+    ID: 1d4c381c-b5b5-4b0e-8752-5399866a6398
+    IsIntegrating: []
+    InputStreams:
+    - &o34
+      ActionName: ''
+      DataNames: (Cart,Person)
+      ID: df82765b-763d-4e42-9415-626a881a9d2c
+      Connected: true
+      Parent: *o13
+    OutputStreams:
+    - ActionName: ''
+      DataNames: ()
+      ID: 60e20614-968a-4bc6-a4d2-b076dbd53bcd
+      Parent: *o13
+  InputStreams:
+  - ActionName: ''
+    DataNames: (customerCount:int)
+    ID: ee202c8a-e6d7-42bd-8ab5-64698fe9a45a
+    Parent: *o14
+  OutputStreams:
+  - ActionName: ''
+    DataNames: ()
+    ID: 034e5093-15fe-4ffa-92c6-a153c675e62c
+    Parent: *o14
+- *o5
+- *o6
+- *o7
+- *o8
+- *o9
+- *o10
+- *o11
+- *o12
+- *o13
+- *o2
+- *o0
+- *o1
+Connections:
+- DataNames: (Person)*|()*
+  ID: cd48348d-851f-4de5-ad4c-de8ba5cf3222
+  Sources:
+  - *o15
+  Destinations:
+  - *o16
+- DataNames: ()|(Cart)
+  ID: 662ce846-de53-40dd-b33d-32cd7d3ef2f3
+  Sources:
+  - *o17
+  Destinations:
+  - *o18
+- DataNames: ()|(Cart)
+  ID: 8f65075c-e2c4-4950-bf2b-749e980c96ee
+  Sources:
+  - *o19
+  Destinations:
+  - *o20
+- DataNames: "(Cart)* | \r\n   (Person)*"
+  ID: 681c23bc-8fdd-4057-8992-ff1b6c5d08cf
+  Sources:
+  - *o21
+  Destinations:
+  - *o22
+- DataNames: () | (Cart,Person)
+  ID: d262176c-d636-4c43-9be6-6c6f561110ca
+  Sources:
+  - *o23
+  Destinations:
+  - *o24
+- DataNames: () | (Person)
+  ID: 00f62d7c-f135-4d1e-9257-31f2b3d52e99
+  Sources:
+  - *o25
+  Destinations:
+  - *o26
+- DataNames: ()
+  ID: 06a3d1fb-d039-4a47-a72e-1bae15b349cc
+  Sources:
+  - *o27
+  Destinations:
+  - *o28
+- DataNames: ()
+  ID: 029b9cbc-386e-4a0d-8d15-8ad0ce30e2ae
+  Sources:
+  - *o29
+  Destinations:
+  - *o30
+- DataNames: ()
+  ID: ae31d1b7-33c2-49ae-a204-2054cf63c002
+  Sources:
+  - *o31
+  Destinations:
+  - *o32
+- DataNames: () | (Cart,Person)
+  ID: 12365f3e-8a65-4afa-91da-0a61ed699814
+  Sources:
+  - *o33
+  Destinations:
+  - *o34
+- DataNames: (p:Person)*
+  ID: e23ebfef-4092-4b44-9486-79022097de90
+  Sources:
+  - *o35
+  Destinations:
+  - *o36
+- DataNames: (rndP:Person)*
+  ID: a5449332-61c6-40d1-bed6-2e3bdca1aad1
+  Sources:
+  - *o37
+  Destinations:
+  - *o38
+DataTypes:
+- Name: Person
+  SubDataTypes:
+  - Name: Age
+    Type: int
+  - Name: Name
+    Type: string
+  - Name: Budget
+    Type: double
+- Name: Cart
+  SubDataTypes:
+  - Name: Products
+    Type: >
+      List<string>
+  - Name: Discount
+    Type: >
+      double
+  - Name: PriceTotal
+    Type: double
