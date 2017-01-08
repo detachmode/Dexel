@@ -10,7 +10,7 @@
         mc:Ignorable="d"
         Focusable="True"
         KeyDown="MainWindow_OnPreviewKeyDown"
-        Title="Sharp Flow Design" Height="850" Width="1225">
+        Title="Dexel" Height="850" Width="1225">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="FILE">

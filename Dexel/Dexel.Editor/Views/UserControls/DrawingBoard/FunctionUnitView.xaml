@@ -53,7 +53,7 @@
                             x:Name="DangelingConnectionViews" />
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type drawingBoard1:ConnectionAdapterViewModel}">
-                    <drawingBoard:ConnectionAdapterView x:Name="ConnectionAdapterView" />
+                    
                 </DataTemplate>
             </ItemsControl.Resources>
         </ItemsControl>
