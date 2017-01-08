@@ -1,5 +1,5 @@
 % $ biblatex auxiliary file $
-% $ biblatex bbl format version 2.5 $
+% $ biblatex bbl format version 2.8 $
 % Do not modify the above lines!
 %
 % This is an auxiliary file used by the 'biblatex' package.
@@ -18,16 +18,20 @@
 
 
 \refsection{0}
-  \sortlist{anyt}{anyt}
+  \sortlist[entry]{anyt/global/}
     \entry{ccd}{online}{}
       \name{author}{1}{}{%
-        {{hash=7cd239c3dc15a6fffc0a07013b11fe2d}{clean-code-developer.de}{c\bibinithyphendelim c\bibinithyphendelim d\bibinitperiod}{}{}{}{}{}{}}%
+        {{hash=7cd239c3dc15a6fffc0a07013b11fe2d}{%
+           family={clean-code-developer.de},
+           familyi={c\bibinithyphendelim c\bibinithyphendelim d\bibinitperiod}}}%
       }
       \strng{namehash}{7cd239c3dc15a6fffc0a07013b11fe2d}
       \strng{fullhash}{7cd239c3dc15a6fffc0a07013b11fe2d}
+      \strng{authornamehash}{7cd239c3dc15a6fffc0a07013b11fe2d}
+      \strng{authorfullhash}{7cd239c3dc15a6fffc0a07013b11fe2d}
       \field{labelalpha}{CCD}
       \field{sortinit}{C}
-      \field{sortinithash}{59f25d509f3381b07695554a9f35ecb2}
+      \field{sortinithash}{095692fd22cc3c74d7fe223d02314dbd}
       \field{labelnamesource}{author}
       \field{note}{[Online, abgefragt 03.01.2017]}
       \field{shorthand}{CCD}
@@ -37,7 +41,11 @@
     \endentry
     \entry{Martin2009}{book}{}
       \name{author}{1}{}{%
-        {{hash=4931846e75da8be6bca9cac98c006a70}{Martin}{M\bibinitperiod}{Robert\bibnamedelima C.}{R\bibinitperiod\bibinitdelim C\bibinitperiod}{}{}{}{}}%
+        {{hash=4931846e75da8be6bca9cac98c006a70}{%
+           family={Martin},
+           familyi={M\bibinitperiod},
+           given={Robert\bibnamedelima C.},
+           giveni={R\bibinitperiod\bibinitdelim C\bibinitperiod}}}%
       }
       \list{location}{1}{%
         {Heidelberg}%
@@ -47,9 +55,11 @@
       }
       \strng{namehash}{4931846e75da8be6bca9cac98c006a70}
       \strng{fullhash}{4931846e75da8be6bca9cac98c006a70}
+      \strng{authornamehash}{4931846e75da8be6bca9cac98c006a70}
+      \strng{authorfullhash}{4931846e75da8be6bca9cac98c006a70}
       \field{labelalpha}{CLNCD}
       \field{sortinit}{C}
-      \field{sortinithash}{59f25d509f3381b07695554a9f35ecb2}
+      \field{sortinithash}{095692fd22cc3c74d7fe223d02314dbd}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{isbn}{978-3-8266-5548-7}
@@ -59,13 +69,17 @@
     \endentry
     \entry{flowdesignorg}{online}{}
       \name{author}{1}{}{%
-        {{hash=64d29e15fc7be5a7e120dfd3a5b79828}{flow-design.org}{f\bibinithyphendelim d\bibinitperiod}{}{}{}{}{}{}}%
+        {{hash=64d29e15fc7be5a7e120dfd3a5b79828}{%
+           family={flow-design.org},
+           familyi={f\bibinithyphendelim d\bibinitperiod}}}%
       }
       \strng{namehash}{64d29e15fc7be5a7e120dfd3a5b79828}
       \strng{fullhash}{64d29e15fc7be5a7e120dfd3a5b79828}
+      \strng{authornamehash}{64d29e15fc7be5a7e120dfd3a5b79828}
+      \strng{authorfullhash}{64d29e15fc7be5a7e120dfd3a5b79828}
       \field{labelalpha}{F-D.ORG}
       \field{sortinit}{F}
-      \field{sortinithash}{c6a7d9913bbd7b20ea954441c0460b78}
+      \field{sortinithash}{276475738cc058478c1677046f857703}
       \field{labelnamesource}{author}
       \field{note}{[Online, abgefragt 03.01.2017, Die Seite ist leider nie ganz fertig gestellt worden. Aktuell werden auch noch die Code-Beispiele unter der Rubrik Implementation nicht mehr angezeigt. Ein Aufsuchen der Github-Links im HTML-Code und manuelles Aufrufen dieser zeigt sie dann jedoch an.]}
       \field{shorthand}{F-D.ORG}
@@ -76,7 +90,7 @@
     \entry{ioda}{online}{}
       \field{labelalpha}{IODA}
       \field{sortinit}{I}
-      \field{sortinithash}{25e99d37ba90f7c4fb20baf4e310faf3}
+      \field{sortinithash}{a3dcedd53b04d1adfd5ac303ecd5e6fa}
       \field{labeltitlesource}{title}
       \field{note}{[Online, abgefragt 03.01.2017]}
       \field{shorthand}{IODA}
@@ -87,16 +101,24 @@
     \endentry
     \entry{kata}{book}{}
       \name{author}{1}{}{%
-        {{hash=6e4c4aaba62ff1e1f7ef79eb8da3ab9f}{Stefan\bibnamedelima Lieser}{S\bibinitperiod\bibinitdelim L\bibinitperiod}{Ralf\bibnamedelima Westphal}{R\bibinitperiod\bibinitdelim W\bibinitperiod}{und}{u\bibinitperiod}{}{}}%
+        {{hash=6e4c4aaba62ff1e1f7ef79eb8da3ab9f}{%
+           family={Stefan\bibnamedelima Lieser},
+           familyi={S\bibinitperiod\bibinitdelim L\bibinitperiod},
+           given={Ralf\bibnamedelima Westphal},
+           giveni={R\bibinitperiod\bibinitdelim W\bibinitperiod},
+           prefix={und},
+           prefixi={u\bibinitperiod}}}%
       }
       \list{publisher}{1}{%
         {Leanpub}%
       }
       \strng{namehash}{6e4c4aaba62ff1e1f7ef79eb8da3ab9f}
       \strng{fullhash}{6e4c4aaba62ff1e1f7ef79eb8da3ab9f}
+      \strng{authornamehash}{6e4c4aaba62ff1e1f7ef79eb8da3ab9f}
+      \strng{authorfullhash}{6e4c4aaba62ff1e1f7ef79eb8da3ab9f}
       \field{labelalpha}{KATA}
       \field{sortinit}{K}
-      \field{sortinithash}{a7d5b3aec5a0890aae7baf85a209abfc}
+      \field{sortinithash}{4c244ceae61406cdc0cc2ce1cb1ff703}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{shorthand}{KATA}
@@ -105,16 +127,22 @@
     \endentry
     \entry{messaging}{book}{}
       \name{author}{1}{}{%
-        {{hash=c977d941c059b5a18e5a718d46963521}{Westphal}{W\bibinitperiod}{Ralf}{R\bibinitperiod}{}{}{}{}}%
+        {{hash=c977d941c059b5a18e5a718d46963521}{%
+           family={Westphal},
+           familyi={W\bibinitperiod},
+           given={Ralf},
+           giveni={R\bibinitperiod}}}%
       }
       \list{publisher}{1}{%
         {Leanpub}%
       }
       \strng{namehash}{c977d941c059b5a18e5a718d46963521}
       \strng{fullhash}{c977d941c059b5a18e5a718d46963521}
+      \strng{authornamehash}{c977d941c059b5a18e5a718d46963521}
+      \strng{authorfullhash}{c977d941c059b5a18e5a718d46963521}
       \field{labelalpha}{MSG}
       \field{sortinit}{M}
-      \field{sortinithash}{2684bec41e9697b92699b46491061da2}
+      \field{sortinithash}{c26a05ef03e4429073ed5c825140fac3}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{shorthand}{MSG}
@@ -123,16 +151,22 @@
     \endentry
     \entry{schummelzettel}{book}{}
       \name{author}{1}{}{%
-        {{hash=c977d941c059b5a18e5a718d46963521}{Westphal}{W\bibinitperiod}{Ralf}{R\bibinitperiod}{}{}{}{}}%
+        {{hash=c977d941c059b5a18e5a718d46963521}{%
+           family={Westphal},
+           familyi={W\bibinitperiod},
+           given={Ralf},
+           giveni={R\bibinitperiod}}}%
       }
       \list{publisher}{1}{%
         {Leanpub}%
       }
       \strng{namehash}{c977d941c059b5a18e5a718d46963521}
       \strng{fullhash}{c977d941c059b5a18e5a718d46963521}
+      \strng{authornamehash}{c977d941c059b5a18e5a718d46963521}
+      \strng{authorfullhash}{c977d941c059b5a18e5a718d46963521}
       \field{labelalpha}{SCHMZL}
       \field{sortinit}{S}
-      \field{sortinithash}{fd1e7c5ab79596b13dbbb67f8d70fb5a}
+      \field{sortinithash}{3c1547c63380458f8ca90e40ed14b83e}
       \field{labelnamesource}{author}
       \field{labeltitlesource}{title}
       \field{shorthand}{SCHMZL}
@@ -142,7 +176,7 @@
     \entry{youtubevideos}{online}{}
       \field{labelalpha}{YT}
       \field{sortinit}{Y}
-      \field{sortinithash}{3cbc1e3d286284cedb5e5218a3248f94}
+      \field{sortinithash}{f86c10978eb0c0879609ce6a4f43da7b}
       \field{labeltitlesource}{title}
       \field{note}{[Online, abgefragt 03.01.2017]}
       \field{shorthand}{YT}

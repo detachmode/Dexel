@@ -1,5 +1,15 @@
 
+
+
 \chapter{Realisierung }
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1\linewidth]{./img/Dexel.png} 
+		\caption{Dexel}
+	\end{figure}
+
+
 
 In diesem Kapitel soll vorgestellt werden, was in dem Zeitraum dieser
 Bachelorarbeit erreicht wurde. Es soll die Funktionalität des Editors
@@ -65,9 +75,9 @@ grundlegenden Datentypen des Models aufgebaut sind. Um die Funktionalität der
 jeweiligen Datentypten besser zu veranschaulichen, werden in diesem Kapitel
 Bilder verwendet, welche die spätere Darstellung des Datentypen in der UI zeigen.
 
-\subsubsection{{\bfseries\sffamily MISSING IMAGES} MainModel}
+\subsubsection{MainModel}
 
-Das MainModel ist, wie der Name schon sagt, das Haupt-Modell, das alle
+Das MainModel ist, wie der Name schon sagt, das Haupt-Model, das alle
 anderen Modelle per Komposition beinhaltet. Somit kann man eine Objektinstanz
 eines MainModels an eine Methode übergeben und diese Instanz beinhaltet alle
 Informationen über das aktuelle Flow Design Diagramm. 
@@ -84,7 +94,7 @@ public class MainModel
 }
 \end{lstlisting}
 
-\subsubsection{{\bfseries\sffamily MISSING IMAGES} FunctionUnit}
+\subsubsection{FunctionUnit}
 
 
 \begin{lstlisting}[caption=FunctionUnit Klasse]
@@ -100,6 +110,13 @@ public class FunctionUnit
 }
 \end{lstlisting}
 
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.9\linewidth]{./img/FunctionUnitView.png} 
+		\caption{Dexel-Screenshot: FunctionUnit-View}
+	\end{figure}
+
 Der Name ist der Name der Funktionseinheit ( der Text, der bei der
 Darstellung später innerhalb des Kreises erscheint). Dieser wird später per Binding
 direkt an die UI gebunden. Aus diesem Grund implementiert dieses Klasse,
@@ -110,7 +127,7 @@ entsprechende Property im Model aktualisiert wird und umgekehrt.
 Die Position beschreibt die Position der Softwarezelle innherhalb des
 Diagrammes.  
 
-Das Integration Property gibt an, ob diese Softwarezelle eine Integration
+Das IsIntegrating Property gibt an, ob diese Softwarezelle eine Integration
 ist und welche andere Instanzen von Softwarezellen sie integriert.
 Eine leere Liste besagt, dass die Softwarezelle keine Integration ist.
 
@@ -119,7 +136,7 @@ Datenströme der Softwarezelle. An diese DataStreamDefinitionen können sich Dat
 verbinden. Dadurch lassen sie die Datenflüsse modelieren.
 
 
-	\subsubsection{MISSING IMAGES DataStreamDefinition}
+	\subsubsection{DataStreamDefinition}
 	
 	\begin{lstlisting}[caption=DataStreamDefinition Klasse]
 [ImplementPropertyChanged]
@@ -132,6 +149,13 @@ public class DataStreamDefinition
 	public bool Connected { get;  set; }
 }
 	\end{lstlisting}
+	
+		
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.6\linewidth]{./img/DataStreamDefinitionView.png} 
+			\caption{Dexel-Screenshot: DataStreamDefinition-View}
+		\end{figure}
 	
 	Eine Funktionseinheit verfügt über ein oder mehrere ein- und ausgehende
 	DataStreamDefinitionen. Diese können verbunden sein oder nicht. Wenn eine
@@ -148,7 +172,7 @@ public class DataStreamDefinition
 	dargstellt werden.
 
 
-\subsubsection{{\bfseries\sffamily MISSING IMAGES} DataStream (Connections)}
+\subsubsection{DataStream (Connections)}
 
 Um Datenflüsse zwischen Funktionseinheitn zu beschreiben, bedarf es einer
 Verbindungsklasse. Die DataStream-Klasse stellt diese Verbindungsklasse dar.
@@ -165,6 +189,13 @@ public class DataStream
 
 }
 \end{lstlisting}
+
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.9\linewidth]{./img/DataStreamView.png} 
+			\caption{Dexel-Screenshot: DataStream-View}
+		\end{figure}
+
 
 Ein DataStream hat ein oder mehrere Referenzen an DataStreamDefinition als
 Quellen und ein oder mehrere Referenzen an DataStreamDefinition als Ziele.
@@ -202,6 +233,14 @@ public class SubDataType
 	public string Type { get; set; }
 }
 \end{lstlisting}
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\linewidth]{./img/CustomDataType.png} 
+	\caption{Dexel-Screenshot: CustomDataType-View}
+\end{figure}
+
 
 Ein benutzerdefinierter Datentyp besteht aus einem Namen und einer Liste von mehreren
 \texttt{SubDataType}-Objekten. 
@@ -398,13 +437,15 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 	\subsubsection{Weitere Features}
 
 	\begin{itemize}
-		\item Speichern, Laden, Mergen.
-		Speichern und Laden in 3 Dateiformate werden unterstüzt.
-		(yaml, json und xml - nach Dateigröße aufsteigend sortiert)
-		Auch das Laden eines anderen Flow Design in das akutelle geladene wird 
+		\item Speichern, Laden, Mergen
+		
+		Das Speichern und Laden in 3 Dateiformate wird unterstüzt
+		(yaml, json und xml - nach Dateigröße aufsteigend sortiert).
+		Auch das Laden eines anderen Flow Designs in das aktuelle geladene wird 
 		mit der Merge-Funktion unterstützt.
 
 		\item Unhandled Exception ErrorDialog
+		
 		Wird eine Exception geworfen, die nicht behandelt wurde, so wurde eine
 		allgemeine Fehlerbehandlung aufgerufen. Das Programm stürzt nicht ab,
 		sondern ein Dialog errscheint, mit einem Stacktrace und Informationen
@@ -414,7 +455,8 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 		Bugreport zuschicken werden.
 		
 		\item Help-Window
-		Ein kleines einfaches Fenster gibt dem Benutzer einen Überblick über die
+		
+		Ein simples Fenster gibt dem Benutzer einen Überblick über die
 		vorhandenen Shortcuts und die Navigation mit der Maus wird erklärt.
 	\end{itemize}
 	
@@ -425,28 +467,28 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 
 Das Projekt wurde nicht strikt nach MVVM-Regeln (Model-View-ViewModel) 
 umgesetzt, jedoch bedient es sich der Idee, das es eine View gibt, die
-als Datenkontext ein ViewModel zugewiesen hat. Das zuweisen eines
-Datenkontextes erlaubt es Elemente der View an Properties des ViewModels zu
-binden. Ein Binding bewirkt, dass sich die UI-Element automatisch updatet,
+als Datenkontext ein ViewModel zugewiesen hat. Das Zuweisen eines
+Datenkontextes erlaubt es GUI-Elemente der View an Propertys des ViewModels zu
+binden. Ein Binding bewirkt, dass sich das GUI-Element automatisch aktualisiert,
 sobald sich das dazugehörige Property ändert. Eine Änderung einer
-Eigenschaft des ViewModels ändert also automatisch die View.
+Eigenschaft des ViewModels ändert somit automatisch die View.
 
 Die GUI besteht aus mehreren Views (xaml-Dateien) und dazugehörigen ViewModels.
-Die Aufgabe des ViewModels besteht vorallem darin, ein Model entgegenzunehmen und dieses
+Die Aufgabe des ViewModels besteht vor allem darin, ein Model entgegenzunehmen und dieses
 darzustellen, bzw. die aktuelle Darstellung zu aktualisieren.
 
 Nach jeder Änderung am Model - zum Beispiel das Hinzufügen einer neuen
-Node -  dieses komplet neu zu laden (Löschen und neu Hinzufügen aller
+Funktionseinheit -  dieses komplett neu zu laden (Löschen und neu Hinzufügen aller
 ViewModels, die wiederum ein neu Generieren der UI-Framework-Elemente zur
 Folge hatte) erwies sich als nicht sehr performant. 
 Ab Diagrammen, mit über 20 Nodes, stieg die Zeit zur Aktualisierung der View
 bereits auf mehrere Sekunden an.
 Die Lösung bestand darin, nicht einfach stur alles zu Löschen und neu
 hinzuzufügen, sondern darin, die Änderungen am Model zu lokalisieren und nur
-diese neu zu erstellen, bzw nur die Properties neu zu setzen. Durch
+diese neu zu erstellen, bzw. nur die Propertys neu zu setzen. Durch
 diese Verbesserungen wurde die Performance deutlich gesteigert, sodass
-Diagramme mit mehrern hundert Nodes keine spürbaren Perfomanceverluste mit
-sich führt. Einzig das Duplizieren von vielen Nodes dauert nach wie vor
+Diagramme mit mehreren hundert Funktionseinheiten keine spürbaren Perfomanceverluste mit
+sich führt. Einzig das Duplizieren von vielen Funktionseinheiten dauert nach wie vor
 mehrere Sekunden. 
 
 \subsection{Interaktionen}
@@ -464,13 +506,13 @@ laden und somit die Änderungen der Interaktion in der GUI sichtbar macht.
 Deshalb erwies es sich als schlecht, wenn eine Interaktion eine andere
 Interaktion aufruft, um ihre Funktionalität umzusetzen. 
 Stattdessen war es eine bessere Lösung, den Code der einen Interaktion in
-die andere zu Kopieren. Dies wiederspricht zwar dem DRY Prinzip, jedoch eine
+die andere zu Kopieren. Dies widerspricht zwar dem DRY Prinzip, jedoch eine
 Coderedundanz innerhalb von Integrationen stellt sich als nicht sehr schlimm
-heraus. Integrationen beinhalten schließlich keine Logik (Fussnote: Beim
+heraus. Integrationen beinhalten schließlich keine Logik \footnote{Beim
 Aufruf einer Funktionseinheit, die mehrere Outputs liefert, existiert
-eigentlich auch eine Logik in der Integration ( Bsp: IsIntegration: Wenn ja,
-dann X wenn nicht, dann Y. Dadurch verlieren Integrationen etwas ihre
-Leichtgewichtigkeit und sind nicht mehr ganz so einfach zu verstehen ) und haben eine hohe
+eigentlich doch Logik in der Integration ( Bsp: IsIntegration: Wenn ja,
+dann X wenn nicht, dann Y). Dadurch verlieren Integrationen etwas an ihrer
+Leichtgewichtigkeit und sind nicht mehr ganz so einfach zu verstehen} und haben eine hohe
 Abstraktion.
 
 Beispiel dieser Aussage:
@@ -531,14 +573,14 @@ public static FunctionUnit CreateNewOrGetFirstIntegrated(FunctionUnit currentFun
 
 
 
-	Die \texttt{AppendNewCell} Methode erzeugt eine neue SoftwareCell und und
+	Die \texttt{AppendNewCell} Methode erzeugt eine neue Funktionseinheit und und
 	verschiebt diese entlang der X Postion.
 	Außerdem setzt sie den Input gleich der DataStreamDefinition die
 	übergebenen wurde und verbindet diese beiden.
 	\texttt{AppendNewCell} wird durch die Tastenkombination Ctrl-Tab ausgelöst, wenn
-	sich der Tastaturfokus innerhalb eines Textfeldes einer View einer Softwarecell oder
+	sich der Tastaturfokus innerhalb eines Textfeldes einer View einer Funktionseinheit oder
 	DatastreamDefinition befindet. Bei ersterem wird der erste unverbunden Output als der
-	DataStreamDefinition genommen, andem die neue SoftwareCell angehängt wird \footnote{nicht Teil der gezeigten Methode} .
+	DataStreamDefinition genommen, an dem die neue Funktionseinheit angehängt wird \footnote{nicht Teil der gezeigten Methode} .
 	
 	Beide Methoden geben eine
 	Model-Instanz als \texttt{object} an die GUI zurück. Die GUI-Logik findet dann die
@@ -571,27 +613,45 @@ Der nächsten Tabstop soll nach folgenden Regeln und abhängig vom aktuell
 fokussierten \textit{Model} bestimmt werden:
 
 \begin{enumerate}
-	\item {\bfseries\sffamily MISSING IMAGES} FunctionUnit
+	\item FunctionUnit
 
 	Besitzt akutell die View einer FunctionUnit den Tastaturfokus, so soll als
 	nächster Tabstop der erste Datenfluss, der verbunden ist gewählt werden. Ist keiner
 	verbunden, wähle als nächsten Tabstop den ersten Output.
 	
-	\item {\bfseries\sffamily MISSING IMAGES} DataStream
-
-	Der sehr einfache Fall trifft ein, wenn der Fokus aktuell auf einem
-	DataStream liegt. Der nächste Stop ist dnn die Ziel-Funktionseinheit des Datenflusses
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.6\linewidth]{./img/tabstop_functionunit.png}
+		\caption{Aufgabe - Tabstop von FunctionUnit aus}
+	\end{figure}
 	
-	\item {\bfseries\sffamily MISSING IMAGES} DataStreamDefinition
+	\item DataStream
+
+	 Wenn der Fokus aktuell auf einem DataStream liegt, so ist der nächste Tabstop die Ziel-Funktionseinheit des Datenflusses.
+
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.6\linewidth]{./img/tabstop_datastream.png}
+		\caption{Aufgabe - Tabstop von DataStream aus}
+	\end{figure}
+	
+	\item DataStreamDefinition
 
 	Der komplexeste Fall: 
 	Zu erst muss überprüft werden, ob es sich um ein Input oder Output
-	handelt. Ist es ein Input, so soll als nächster Stop die Funktionseinheit
-	selbst zurückgegeben werden, von der die DataStreamDefinition der Input ist. 
+	handelt. Ist es ein Input (A), so soll als nächster Stop die Funktionseinheit
+	zurückgegeben werden, von der die DataStreamDefinition der Input ist. 
 	Bei einem Output muss überprüft werden, ob das Ende des Flows erreicht
 	wurde, oder nicht. Wird ein verbundener Output entdeckt, wird der
-	entsprechende DataStream als nächster Stop zurückgegeben. Ist das Ende
-	erreicht, so soll zum Anfang des kompletten Flows gesprungen werden.
+	entsprechende DataStream als nächster Stop zurückgegeben (B). Ist das Ende
+	erreicht, so soll zum Anfang des kompletten Flows gesprungen werden (C).
+	
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=\linewidth]{./img/tabstop_datastreamdefiniton.png}
+		\caption{Aufgabe - Tabstop von DataStreamDefinition aus}
+	\end{figure}
 	
 	\begin{lstlisting}[caption=Tabstop vorwärts]
 public static object TabStopGetNext(object focusedModel, MainModel mainModel)
@@ -706,9 +766,13 @@ public static object TabStopGetPrevious(object focusedModel, MainModel mainModel
 \subsection{Validierung des Datenflusses - Farbliche Kennzeichnung }
 
 Eigne ValidationException Klasse, die dem ViewModel übergeben werden kann. .
-Die ValidationException beinhaltet die Information, ob es sich um eine Error oder um eine Warning handelt (Error wird rot markiert, Warnings grün), welche  Element den Fehler anzeigen sollen, und einen Fehlertedt, der als Tooltip an dem Element abgezeigt wird.
+Die ValidationException beinhaltet die Information, ob es sich um eine Error oder um eine Warning handelt (Error wird rot markiert, Warnings grün), welche  Element den Fehler anzeigen sollen, und einen Fehlertext, der als Tooltip an dem Element abgezeigt wird.
 
-
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\linewidth]{./img/DexelValidation.png}
+	\caption{Dexel - Warning- und Error-Darstellung}
+\end{figure}
 
 
 
@@ -722,9 +786,57 @@ zur Verfügung zu stellen. Aktuell muss er sich jedoch damit abfinden, dass nur 
 
 
 \subsection{Vorstellung - was erreicht wurde}
-\subsubsection{CSV Tabellieren -  Beispiel aus YouTube Video von Ralf Westphal}
+
+Um den aktuellen Stand der Code-Generierung zu präsentieren, werden nachfolgend zwei Beispiele 
+vorgestellt.
+
+\subsubsection{CSV Tabellieren -  Beispiel aus YouTube Video von Ralf Westphal und Stefan Lieser}
+
+Die Aufgabe besteht darin, den Inhalt einer CSV-Datei in eine ACSII-Tabelle zu formattieren.
+\footcite[S.12]{kata}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\linewidth]{./img/csvAufgabe.png}
+	\caption{Aufgabe - CSV Tabellieren}
+\end{figure}
+
+
+Das Flow Design, das Ralf Westphal und Stefan Lieser in dem Video entwerfen sieht folgendermaßen aus. \footnote{Video CSV-Tabellieren \cite{youtubevideos}}
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1\linewidth]{./img/youtubeflowdesign.png}
+	\caption{CSV Tabellieren - Flow Design aus YouTube Video}
+\end{figure}
+
+
+Nun das Flow Design umgesetzt in Dexel. Zu beachten ist, das die Joined Output und Joined Input Notation mit der Pipe-Notation ersetzt wurde, da Dexel akutell keine Joined-Notation unterstützt.
+
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\linewidth]{./img/csvtabellierenDexelDataTypes.png}
+	\caption{CSV Tabellieren - Flow Design aus YouTube Video}
+\end{figure}
+
+
+
+
+\begin{figure}[H]
+	\makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{./img/csvtabellierenDexel.png}}%
+	\caption{CSV Tabellieren - Flow Design aus YouTube Video}
+\end{figure}
+
+
+
+
+
 
 \begin{lstlisting} [caption = CSV tabellieren mit Dexel generierter Code]
+
+// Datentypen
+
 public class Tabelle
 {
     public Record Header;
@@ -745,10 +857,6 @@ public static IEnumerable<string> CSVTabellieren( IEnumerable<string> strings)
 	return TabelleBauen(tbl);
 }
 
-
-
-
-
 public static IEnumerable<string> TabelleBauen(Tabelle tbl)
 {
 	var breiten = SpaltenbreitenErmitteln(tbl);
@@ -757,9 +865,8 @@ public static IEnumerable<string> TabelleBauen(Tabelle tbl)
 	return TabelleZusammensetzen(body, header);
 }
 
-
-
 // Operationen
+
 public static IEnumerable<int> SpaltenbreitenErmitteln(Tabelle tbl)
 {
     throw new NotImplementedException();
@@ -793,14 +900,19 @@ public static IEnumerable<Record> CSVParsen(IEnumerable<string> strings)
 
 \end{lstlisting}
 
-\subsubsection{Shopping Simulator - Komplexes Beispiel}
+\subsubsection{Shopping Simulator - Komplexeres Beispiel}
+
+
 \begin{figure}[H]
-	\centering
-	\includegraphics[width=1.1\linewidth]{../Screenshots/Dexel_v03.png}
+	\makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{./img/shoppingSimulator.png}}%
 	\caption{Shopping Simulator}
 \end{figure}
 
-\begin{lstlisting}[caption=Shopping Simulator - automatisch generierter Code]
+
+\begin{lstlisting}[caption=Shopping Simulator - automatisch generierter Code mit Dexel]
+
+// Datentypen
+
 public class Person
 {
     public int Age;
@@ -814,6 +926,8 @@ public class Cart
     public double Discount;
     public double PriceTotal;
 }
+
+// Integration
 
 public static void ShoppingSimulator(int customerCount)
 {
@@ -836,6 +950,8 @@ public static void ShoppingSimulator(int customerCount)
 		});
 	});
 }
+
+// Operationen
 
 public static void CreateRandomPersons(int customerCount, Action<Person> onPerson)
 {
@@ -913,6 +1029,8 @@ public static Person AddRndBudget(Person rndP)
 
 \end{lstlisting}
 
+\subsubsection{Aktueller Stand}
+
 Die weniger komplexeren Aufgaben wurden vollständig implementiert.
 Diese wären: 
 \begin{itemize}
@@ -924,6 +1042,10 @@ Die weitaus komplexere Aufgabe: die Generierung der Methoden-Bodys einer Integra
 Das liegt vor allem daran, dass eine vollständige Umsetzung einiges an manuellem Testen erfordert, um herauszufinden, welche Datenströme noch falsch interpretiert werden. 
 
 Die Validierung des Datenflusses ist eng an die Generierung gekoppelt und deswegen gilt das selbe auch für diese. 
+
+Auch bei der Generierung von Namen wird aktuell noch nicht in jedem Fall überprüft, ob es zu einer Überschneidung kommt und ob gegebenenfalls der Name angepasst werden muss.
+
+\bigskip
 
 Um Code zu generieren muss im Editor in der Menüleiste der Eintrag Output angesteuert werden.
 Hier gibt es die Möglichkeit das aktuelle Flow Design in eine Datei auf den Desktop zu
@@ -967,37 +1089,35 @@ ein Array von SyntaxNodes bestimmt werden.
 Nachfolgend ein einfaches Beispiel zum Erstellen von einem
 benutzerdefinierten Datentyp.
 
-\begin{enumerate}
-	\item Erzeugung eines Datentypen als einfaches Beispiel
-	\label{sec:orgheadline42}
+
+	\subsubsection{Erzeugung eines Datentypen als einfaches Beispiel}
+
 	
 	\begin{lstlisting}[caption=Erzeugung einer Person-Klasse mit Roslyn]
-	SyntaxNode fieldAlter = generator.FieldDeclaration(
-		name: "Alter",
-		type: generator.TypeExpression(
-			SpecialType.System_Int32),
-		accessibility: Accessibility.Public);
-	
-	SyntaxNode fieldName = generator.FieldDeclaration(
-		name: "Name",
-		type: generator.TypeExpression(
-			SpecialType.System_String),
-		accessibility: Accessibility.Public);
-	
-	
-	SyntaxNode[] allFields =  new[] {fieldName, fieldAlter};
-	
-	
-	// Generate the class
-	SyntaxNode classDefinition = Generator.ClassDeclaration(
-		"Person", 
-		typeParameters: null,
-		accessibility: Accessibility.Public,
-		modifiers: DeclarationModifiers.None,
-		baseType: null,
-		interfaceTypes: null,
-		members:allFields
-	);
+SyntaxNode fieldAlter = generator.FieldDeclaration(
+	name: "Alter",
+	type: generator.TypeExpression( SpecialType.System_Int32),
+	accessibility: Accessibility.Public);
+
+SyntaxNode fieldName = generator.FieldDeclaration(
+	name: "Name",
+	type: generator.TypeExpression( SpecialType.System_String),
+	accessibility: Accessibility.Public);
+
+
+SyntaxNode[] allFields =  new[] {fieldName, fieldAlter};
+
+
+// Generate the class
+SyntaxNode classDefinition = Generator.ClassDeclaration(
+	"Person", 
+	typeParameters: null,
+	accessibility: Accessibility.Public,
+	modifiers: DeclarationModifiers.None,
+	baseType: null,
+	interfaceTypes: null,
+	members:allFields
+);
 	\end{lstlisting}
 	
 	Um am Ende den Code in Form eines Strings zu erhalten muss auf die oberstere
@@ -1006,12 +1126,11 @@ benutzerdefinierten Datentyp.
 	\begin{lstlisting}[caption=Erhalten des Codes als string]
 	string code = classDefinition.NormalizeWhitespace().ToFullString();
 	\end{lstlisting}
-\end{enumerate}
 
 
 \subsection{Erzeugung von Methodensignaturen}
 
-Das Analysieren einzelner Funktionseinheiten anhand ihrer Ein und Ausgänge erlaubt eine automatische Generierung der Methodensignaturen.
+Das Analysieren einzelner Funktionseinheiten anhand ihrer Ein- und Ausgänge erlaubt eine automatische Generierung der Methodensignaturen.
 Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die Einfluss auf die Methodensignatur haben überschaubar sind und somit alle Kombinationen sich schnell herauskristallisiert haben.
 
 \subsubsection{Output über Rückgabewert}
@@ -1025,22 +1144,22 @@ Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die
 	\begin{figure}[H]
 		\centering
 			\includegraphics[width=\linewidth]{./img/roslyn_simpleOutput.png} 
-		\caption{Dexel-Screenshot:TODO Einfach Funktionseinheit mit benutzerdefinierten Datentyp}
+		\caption{Dexel-Screenshot: Einfache Funktionseinheit mit benutzerdefinierten Datentyp}
 	\end{figure}
 
 	
 	Die Generierung erzeugt folgenden Code:
 	\begin{lstlisting}[caption=Mit Dexel generierter Code ]
-	public class Person
-	{
-		public string Name;
-		public int Age;
-	}
-	
-	public static Person NewPerson(int aint, string astring)
-	{
-		throw new NotImplementedException();
-	}
+public class Person
+{
+	public string Name;
+	public int Age;
+}
+
+public static Person NewPerson(int aint, string astring)
+{
+	throw new NotImplementedException();
+}
 	\end{lstlisting}
 	
 	Hat ein Output mehr als ein Datentyp und ist kein Stream und ist auch nicht optional, so
@@ -1049,13 +1168,16 @@ Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die
 		\begin{figure}[H]
 			\centering
 			\includegraphics[width=.8\linewidth]{./img/roslyn_twoDatatypesOneOutput.png} 
-			\caption{Dexel-Screenshot:  TODO Funktionseinheit mit Tupel-Output}
+			\caption{Dexel-Screenshot: Funktionseinheit mit Tupel-Output}
 		\end{figure}
 
 	
 	
 	\begin{lstlisting}[caption=Mit Dexel generierter Code ]
-	TODO
+public static Tupel<Person, int> NewPerson(int aInt, string aString)
+{
+	throw new NotImplementedException();
+}
 	\end{lstlisting}
 
 	
@@ -1112,31 +1234,37 @@ Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die
 		\begin{figure}[H]
 			\centering
 			\includegraphics[width=.9\linewidth]{./img/roslyn_Stream.png} 
-			\caption{Dexel-Screenshot: TODO Funktionseinheit mit Output-Stream}
+			\caption{Dexel-Screenshot: Funktionseinheit mit Output-Stream}
 		\end{figure}
 		
 	
 
 	
 	
-	\begin{lstlisting}[caption=Mit Dexel generierter Code ]
-	TODO
-	\end{lstlisting}
+\begin{lstlisting}[caption=Mit Dexel generierter Code ]
+public static void NewPersons(int aInt, string aString, Action<Person> onPerson)
+{
+	throw new NotImplementedException();
+}
+\end{lstlisting}
 	
-			
-			\begin{figure}[H]
-				\centering
-				\includegraphics[width=.9\linewidth]{./img/roslyn_StreamStream.png} 
-				\caption{Dexel-Screenshot: Funktionseinheit mit Input-Stream und Output-Stream und undefinierten Actionnamen}
-			\end{figure}
+		
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=.9\linewidth]{./img/roslyn_StreamStream.png} 
+		\caption{Dexel-Screenshot: Funktionseinheit mit Input-Stream und Output-Stream und undefinierten Actionnamen}
+	\end{figure}
 			
 
 	\begin{lstlisting}[caption=Mit Dexel generierter Code ]
-	TODO
+public static Person NewPersons(int age, string name)
+{
+	throw new NotImplementedException();
+}
 	\end{lstlisting}
 	 
 
-\subsection{Erzeugung der Integration-Bodies}
+\subsection{Erzeugung der Integration-Bodys}
 \label{sec:orgheadline51}
 
 
@@ -1148,13 +1276,13 @@ Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die
 	Da im in diese Kapitel jedoch öfters von Funktionseinheiten innerhalb einer
 	Integration die Rede sein wird, muss hierfür ein Überbegriff eingeführt
 	werden. Funktionseinheiten, die sich in einer Integration befinden, werden
-	nachfolgend als Sub-Funktonseinheiten bezeichnet.
+	nachfolgend als Sub-Funktionseinheiten bezeichnet.
 	
 	\subsubsection{Die Herangehensweise}
 
 	
 	Die automatische Erzeugung eines Integration ist die komplexeste Aufgabe in
-	diesem Projekt. Um die Aufgabe überschaubar zu halten, wurde diese im groben in
+	diesem Projekt. Um die Aufgabe überschaubar zu halten, wurde diese im Groben in
 	zwei Teileaufgaben zerteilt: die Analyse und die Generierung.
 	Die Analyse besteht wiederum aus unterschiedlichen Methoden, die jeweils das
 	Flow Design auf eine bestimme Sache analysieren und das Ergebnis in ein Objekt
@@ -1187,7 +1315,7 @@ public static SyntaxNode[] GenerateIntegrationBody( SyntaxGenerator generator, M
 	\subsubsection{Analyse des Flow Designs}
 
 	\begin{enumerate}
-		\item AnalyseParameterDependencies
+		\item \texttt{AnalyseParameterDependencies}
 
 		Da die Pipe-Notation unterstützt wird, reicht es nicht einfache aus die Daten
 		aus den Datenflüssen zu nehmen, die direkt in die akutelle
@@ -1201,7 +1329,7 @@ public static SyntaxNode[] GenerateIntegrationBody( SyntaxGenerator generator, M
 		Daten gefunden wurden. Ein Aufruf einer Sub-Funktionseinheit kann nur generiert werden, wenn alle Datentypen gefunden
 		wurden.
 		
-		\item AnalyseLambdaBodies
+		\item \texttt{AnalyseLambdaBodies}
 
 		Manche optionale Datenflüsse oder Stream werden über Actions realisiert.
 		Das bedeutet, dass sich alle nachflogenden Funktionseinheiten innerhalb
@@ -1209,11 +1337,11 @@ public static SyntaxNode[] GenerateIntegrationBody( SyntaxGenerator generator, M
 		in folgender Form ab. 
 		
 		\begin{lstlisting}[caption=LambdaBody Klasse]
-		public class LambdaBody
-		{
-			public DataStreamDefinition InsideLambdaOf;
-			public FunctionUnit FunctionUnit;
-		}
+public class LambdaBody
+{
+	public DataStreamDefinition InsideLambdaOf;
+	public FunctionUnit FunctionUnit;
+}
 		\end{lstlisting}
 		
 		Da die LambdaBody-Objekte in der Reihenfolge im IntegrationBody abgelegt
@@ -1227,23 +1355,41 @@ public static SyntaxNode[] GenerateIntegrationBody( SyntaxGenerator generator, M
 		\texttt{null} ist, befinden sich somit direkt im Scope der Integration und nicht
 		innerhalb eines Lambdas.
 		
-		\item AnalyseMatchingOutputOfIntegration
+		\item \texttt{AnalyseMatchingOutputOfIntegration}
 
-		Hat die Integration einen Output der als Action realisert werden muss, so
-		muss herausgefunden werden, welche Funtionseinheiten im Datenfluss diesen
-		Output erzeugt bedienen. Dabei werden die Implementierungs-Stile der
-		beiden übereinstimmenden Ausgänge mit abgepeichert. Später bei der
+		Hat die Integration einen Output der als Action realisiert werden muss, so
+		muss herausgefunden werden, welche Sub-Funkionseinheiten diesen
+		Output bedienen. Dabei werden die Implementierungs-Stile der
+		beiden übereinstimmenden Ausgänge mit abgespeichert. Später bei der
 		Generierung gibt es somit vier Möglichkeiten:
 		\begin{itemize}
-			\item Beide sind Actions:
+			\item Beide sind Actions
+			
 			Die Action der Integration wird direkt an die Sub-Funktionseinheit
 			weitergereicht. Dadurch erlaubt man einer Sub-Funktionseinheit das
 			Aufrufen des Ausgang der Integration.
+			
+			\begin{lstlisting}[caption=Action-Action-Beziehung]
+// Integration
+public static void Main(Action<string> onError)
+{
+	DoSomething(onError);
+}
+
+// Operation
+public static void DoSomething(Action<string> onError)
+{
+	throw new NotImplementedException();
+}
+			\end{lstlisting}
+			
+			
 			\item Integrationsausgang ist Action, Sub-Funktionseinheitsausgang ist
 			Returnwert 
-			Die Action wird aufgerufen und die Methode wird direkt in diese
-			hingeschrieben
-			\begin{lstlisting}[caption=Action-Return-Beziehung]
+			
+			Die Action wird aufgerufen mit dem Methodenaufruf als Parameter.
+			
+\begin{lstlisting}[caption=Action-Return-Beziehung]
 public static void CreateRandomPersons(int customerCount, Action<Person> onPerson)
 {
 	CreateNewPerson(customerCount, p => {
@@ -1251,18 +1397,51 @@ public static void CreateRandomPersons(int customerCount, Action<Person> onPerso
 		onPerson(AddRndBudget(rndP));
 	});
 }
-			\end{lstlisting}
+\end{lstlisting}
 			\item Integrationsausgang ist Returnwert, Sub-Funktionseinheitsausgang ist
 			Action.
+			
 			Eine lokale Variable muss vorher angelegt werden und mit \texttt{null}
 			initalisiert werden. Danach wird innerhalb des Lambas des Actions diese
 			Variable beschrieben. Am Ende wird die lokale Varibale als Rückgabewert
 			ausgegeben.
-			\item Beide Ausgänge werden über Returnwert realisiert 
+			
+\begin{lstlisting}[caption=Return-Action-Beziehung]
+public static void TryGetMessage(Action<string> onError)
+{
+	throw new NotImplementedException();
+}
+
+public static string Main()
+{
+	string @return = null;
+	TryGetMessage(msg =>  @return = msg );
+	return @return;	
+}
+\end{lstlisting}
+
+			\item Beide Ausgänge werden über Returnwert realisiert
+			
 		    Das Ergebnis der Sub-Funktionseinheit wird durch ein return-Ausdruck aus der Integration herausgereicht.
+		    
+\begin{lstlisting}[caption=Return-Return-Beziehung]
+public static string GetMessage()
+{
+	throw new NotImplementedException();
+}
+
+public static string Main()
+{
+	var msg = GetMessage();
+	return msg;
+}
+\end{lstlisting}		    
+		    
 		\end{itemize}
-			\item AnalyseReturnToLocalReturnVariable
-			Wird der Ausgang einer Integration mit dem Returnwert realisiert, so muss noch herausgefunden werden, ob eine locale Variable nötig ist, um den Returnwert zwischenzuspeichern. Ist eine Return-Return Beziehung vorhanden, so muss innerhalb des Lambdas der Returnwert der Sub-Funktionseinheit in die lokale return-Variable gespeichert werden.
+			\item \texttt{AnalyseReturnToLocalReturnVariable}
+			
+			Wird der Ausgang einer Integration mit dem Returnwert realisiert, so muss noch herausgefunden werden, ob eine lokale Variable nötig ist, um den Returnwert aus
+			einem Lambda herauszureichen. Ist eine Return-Return Beziehung vorhanden und befindet sich die betroffene Methode innerhalb eines Lambda-Ausdrucks, so muss der Returnwert in die lokale \texttt{@return}-Variable geschrieben werden.
 	\end{enumerate}
 	
 

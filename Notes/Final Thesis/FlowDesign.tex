@@ -20,17 +20,44 @@
 
 \input{Packages}
 
+\usepackage{geometry}
+\geometry{margin=2cm}
+%\usepackage{kmath,kerkis}
+
+%\usepackage[sc]{mathpazo}
+
+\usepackage{fouriernc}
+
 \usepackage{epigraph}
 \usepackage{float}
-\usepackage{tablefootnote}
+\usepackage{graphicx}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\rightmark}
+\fancyhead[R]{\thepage}
+%\renewcommand{\headrulewidth}{0.4pt}
+
+
+
 
 % Tabellen Padding
+
 \setlength{\tabcolsep}{10pt}
 \renewcommand{\arraystretch}{1.7}
 
 
+\makeatletter
+\renewcommand*\l@figure{\@dottedtocline{1}{1.5em}{3em}}% 3em instead of 2.3em
+\let\l@table\l@figure
+\let\l@lstlisting\l@figure
+
+\makeatother
+
 \begin{document}
 
+	%TODO Kriha im Titel? Erst und Zweitprüfer
 	\include{Inhalt/Deckblatt}
 	
 	%TODO Ehrenwort
@@ -48,12 +75,10 @@
 
 	\input{Inhalt/Einfuehrung}
 	
+	%TODO Models auf deutsch Modell abändern?
 	
 	%TODO Verweise auf Bücher und Zitate richtig machen
-	%TODO Bilder einfügen Realisierung - CSV-Tabellieren
-	%TODO Bilder für Editor vorstellung - Shopping Simulator
-	%TODO Code für Methodensignaturen generierung
-	%TODO Code für Output-Beziehungen
+
 	%TODO System-Umwelt-Diagramm	
 	%%%%%%%%%%%%%%%%
 	% TEIL 1 Grundlagen

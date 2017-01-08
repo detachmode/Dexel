@@ -1,0 +1,100 @@
+FunctionUnits:
+- &o1
+  Position:
+    X: 195.11111111111094
+    Y: -117.37666666666679
+  Name: "Create \r\nRandom\r\nCustomer"
+  ID: 1d08477e-d424-4145-8bb3-2769d6c679ce
+  IsIntegrating:
+  - &o0
+    Position:
+      X: 189.93162393162436
+      Y: 44.728034188035778
+    Name: "Create \r\nNew Person"
+    ID: e493eacc-54be-45dc-985f-ba727f610a13
+    IsIntegrating: []
+    InputStreams:
+    - ActionName: ''
+      DataNames: (customerCount:int)
+      ID: 0bd75f3e-5f40-4625-af0a-4a15c82a1f3a
+      Parent: *o0
+    OutputStreams:
+    - ActionName: ''
+      DataNames: (Person)*
+      ID: dac6ceea-415a-4f08-b5d7-d730dc9b39dd
+      Parent: *o0
+  InputStreams:
+  - ActionName: ''
+    DataNames: (customerCount:int)
+    ID: 4a1100b4-3d7b-4394-804f-0bba4776d960
+    Parent: *o1
+  OutputStreams:
+  - &o4
+    ActionName: ''
+    DataNames: (Customer)*
+    ID: 7f8c904e-0b74-4816-b84a-a5701834b940
+    Connected: true
+    Parent: *o1
+- &o2
+  Position:
+    X: 690.70666666666625
+    Y: -25.904444444444579
+  Name: "Create \r\nrandom\r\nshopping\r\ncart"
+  ID: 55839756-a6f7-4c47-9393-1db5446d2f0d
+  IsIntegrating: []
+  InputStreams:
+  - &o5
+    ActionName: ''
+    DataNames: ()*
+    ID: e51b3ada-2a88-4e11-b467-490d3db5f772
+    Connected: true
+    Parent: *o2
+  OutputStreams:
+  - ActionName: ''
+    DataNames: (Cart)*
+    ID: 923967ca-36c5-4d53-a747-f5e10942ab20
+    Parent: *o2
+- &o3
+  Position:
+    X: 388.63888888888863
+    Y: -216.54333333333344
+  Name: Shopping Simulator
+  ID: 9db53a87-e7aa-4589-be25-ae0e92e97061
+  IsIntegrating:
+  - *o2
+  - *o1
+  InputStreams:
+  - ActionName: ''
+    DataNames: (customerCount:int)
+    ID: ee202c8a-e6d7-42bd-8ab5-64698fe9a45a
+    Parent: *o3
+  OutputStreams:
+  - ActionName: ''
+    DataNames: ()
+    ID: 034e5093-15fe-4ffa-92c6-a153c675e62c
+    Parent: *o3
+- *o0
+Connections:
+- DataNames: (Customer)*|()*
+  ID: cd48348d-851f-4de5-ad4c-de8ba5cf3222
+  Sources:
+  - *o4
+  Destinations:
+  - *o5
+DataTypes:
+- Name: Person
+  SubDataTypes:
+  - Name: Age
+    Type: int
+  - Name: Name
+    Type: string
+  - Name: Budget
+    Type: double
+- Name: Cart
+  SubDataTypes:
+  - Name: Products
+    Type: List<string>
+  - Name: Discount
+    Type: double
+  - Name: PriceTotal
+    Type: double

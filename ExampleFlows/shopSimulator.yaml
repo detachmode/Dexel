@@ -102,7 +102,7 @@ FunctionUnits:
   Position:
     X: 388.63888888888863
     Y: -216.54333333333344
-  Name: Shopping Simulator 3000
+  Name: Shopping Simulator
   ID: 9db53a87-e7aa-4589-be25-ae0e92e97061
   IsIntegrating:
   - *o4
@@ -147,7 +147,7 @@ FunctionUnits:
     InputStreams:
     - &o18
       ActionName: ''
-      DataNames: (Cart)
+      DataNames: (Person,Cart)
       ID: 7eb79aa6-dd16-44f8-84f7-e3a8c4bca890
       Connected: true
       Parent: *o6
@@ -198,7 +198,7 @@ FunctionUnits:
     InputStreams:
     - &o24
       ActionName: ''
-      DataNames: (Cart,Person)
+      DataNames: (Person,Cart)
       ID: ddbb365b-e80e-4461-924f-2c550b5df16e
       Connected: true
       Parent: *o8
@@ -244,7 +244,7 @@ FunctionUnits:
     InputStreams:
     - &o28
       ActionName: ''
-      DataNames: ()
+      DataNames: (Person,Cart)
       ID: a892dbb2-0a00-4e71-9a37-24b380d22e92
       Connected: true
       Parent: *o10
@@ -309,7 +309,7 @@ FunctionUnits:
     InputStreams:
     - &o34
       ActionName: ''
-      DataNames: (Cart,Person)
+      DataNames: (Person,Cart)
       ID: df82765b-763d-4e42-9415-626a881a9d2c
       Connected: true
       Parent: *o13
@@ -347,7 +347,7 @@ Connections:
   - *o15
   Destinations:
   - *o16
-- DataNames: ()|(Cart)
+- DataNames: ()|(Person,Cart)
   ID: 662ce846-de53-40dd-b33d-32cd7d3ef2f3
   Sources:
   - *o17
@@ -365,7 +365,7 @@ Connections:
   - *o21
   Destinations:
   - *o22
-- DataNames: () | (Cart,Person)
+- DataNames: () | (Person,Cart)
   ID: d262176c-d636-4c43-9be6-6c6f561110ca
   Sources:
   - *o23
@@ -377,7 +377,7 @@ Connections:
   - *o25
   Destinations:
   - *o26
-- DataNames: ()
+- DataNames: ()|(Person,Cart)
   ID: 06a3d1fb-d039-4a47-a72e-1bae15b349cc
   Sources:
   - *o27
@@ -395,7 +395,7 @@ Connections:
   - *o31
   Destinations:
   - *o32
-- DataNames: () | (Cart,Person)
+- DataNames: () | (Person,Cart)
   ID: 12365f3e-8a65-4afa-91da-0a61ed699814
   Sources:
   - *o33
@@ -425,10 +425,8 @@ DataTypes:
 - Name: Cart
   SubDataTypes:
   - Name: Products
-    Type: >
-      List<string>
+    Type: List<string>
   - Name: Discount
-    Type: >
-      double
+    Type: double
   - Name: PriceTotal
     Type: double
