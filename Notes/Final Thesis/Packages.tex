@@ -1,7 +1,18 @@
 \usepackage{url}
+\usepackage[
+backend=biber,
+style=alphabetic,
+]{biblatex}
+
+\usepackage{biblatex}
+\addbibresource{ref.bib}
+
+\usepackage{array}
+
+\usepackage{listings}
+
 
 \usepackage[utf8]{inputenc}
-\usepackage{listings}
 \usepackage{color}
 \usepackage{textcomp}
 \definecolor{bluekeywords}{rgb}{0,0,1}
@@ -10,20 +21,24 @@
 \definecolor{xmlcomments}{rgb}{0.5,0.5,0.5}
 \definecolor{types}{rgb}{0.17,0.57,0.68}
 \usepackage{bookmark,hyperref}
+\definecolor{lightgrey}{rgb}{0.95,0.95,0.95}
 \lstset{language=[Sharp]C,
-	captionpos=a,
+	captionpos=b,
 	basicstyle=\fontfamily{consolas}\selectfont
 	framextopmargin=26pt,
-	framexbottommargin=26pt, 
+	tabsize=3,
+	framexbottommargin=0pt, 
 	frame=tb, framerule=0pt,
 	showspaces=false,
 	showtabs=false,
 	breaklines=true,
 	showstringspaces=false,
 	breakatwhitespace=true,
+	frame=single,
+	backgroundcolor=\color{lightgrey},
 	escapeinside={(*@}{@*)},
 	commentstyle=\color{greencomments},
-	morekeywords={partial, var, value, get, set},
+	morekeywords={partial, var, value, get, set, Action, Func, IEnumerable},
 	keywordstyle=\color{bluekeywords},
 	stringstyle=\color{redstrings},
 	basicstyle=\ttfamily\small,
@@ -52,11 +67,18 @@
 }
 
 \date{\today}
-\title{Flow Design Grundlagen}
+\title{Flow Design}
 \hypersetup{
 	pdfauthor={},
-	pdftitle={Flow Design Theorieteil},
+	pdftitle={Flow Design},
 	pdfkeywords={},
 	pdfsubject={},
 	pdfcreator={Emacs 25.1.1 (Org mode 8.3.5)}, 
 	pdflang={German}}
+
+
+\usepackage[T1]{fontenc}
+
+\usepackage[german, refpage]{nomencl}
+\makenomenclature
+\let\abk\nomenclature 

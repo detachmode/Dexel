@@ -1,9 +1,10 @@
 \chapter{Entstehung und Grundgedanken}
 
 
-Flow Design ist aus der Clean Code Development Bewegung heraus entstanden. Hauptinitiator und Erfinder ist Ralf Westphal.
+Flow Design ist aus der Clean Code Development  (CCD) Bewegung heraus entstanden. Hauptinitiator und Erfinder ist Ralf Westphal.
 Ralf Westphal war auch Mitbegründer und Miterfinder der Clean Code Development Bewegung.
 
+\abk{CCD}{Clean Code Development } 
 
 Clean Code Development ist eine Ansammlung aus Prinzipien, die einem helfen
 sollen sauber programmierte Software zu schreiben. Diese Prinzipien sind aus dem Buch \enquote{Clean Code} von Robert C. Martin entnommen. Sauber programmierte Software hat 
@@ -44,15 +45,28 @@ Flow Design legt den Schwerpunkt vor allem auf folgende Prinzipien von CCD \foot
 
 \bigskip
 
-\begin{tabularx}{\textwidth}{p{160 pt}|X}
-KISS (Keep It Stupid Simple) & Ein System sollte so einfach wie möglich gestaltet werden. \\
-YAGNI ( You Ain't Gonna Need It ) & Es soll nicht unnötig viel Zeit damit verbracht werden für zukünftige Eventualitäten zu programmieren. 
-Der Fokus sollte darauf liegen, was aktuell wirklich benötigt wird. \\
-Lose Koppelung & Separate Einheiten eines Systems sollen über nur möglichst  wenige Punkte miteinander kommunizieren. \\
-Orthogonalität & Änderungen an einer Funktion des Systems sollen auf so wenig wie möglich andere Funktionen des Systems negativen Einfluss haben. \\
-\end{tabularx}
+
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{ | p{5cm} | p{9.5cm} | } 
+	\hline
+	KISS \linebreak (Keep It Stupid Simple)  & Ein System sollte so einfach wie möglich gestaltet werden. \\
+	\hline
+	YAGNI  \linebreak (You Ain't Gonna Need It) & Es soll nicht unnötig viel Zeit damit verbracht werden für zukünftige Eventualitäten zu programmieren. 
+	Der Fokus sollte darauf liegen, was aktuell wirklich benötigt wird. \\
+	\hline
+	Lose Koppelung & Separate Einheiten eines Systems sollen über nur möglichst  wenige Punkte miteinander kommunizieren. \\
+	\hline
+	Orthogonalität & Änderungen an einer Funktion des Systems sollen auf so wenig wie möglich andere Funktionen des Systems negativen Einfluss haben. \\
+	\hline
+	\end{tabular}
+	\medskip
+	\caption{CCD Prinzipien}
+\end{table}
 
 \subsubsection{KISS}
+\abk{KISS}{Keep It Stupid Simple} 
 
 Die Komplexität der Lösung eines Problems soll immer in Relation zu der
 Komplexität des Problems stehen.
@@ -69,6 +83,7 @@ Hierbei soll Flow Design als Entwurfsmethode helfen, die einfachste und leicht
 verständlichste Lösung für ein Problem zu finden.
 
 \subsubsection{YAGNI}
+\abk{YAGNI}{You Ain't Gonna Need It}  
 
 Vielen Softwareentwickler ist es wohl schon passiert, dass sie es zu gut gemeint
 haben mit dem vorausschauendem Denken. Etliche Funktionen wurden für ein
@@ -115,17 +130,23 @@ Orthogonalität erfüllt.
 
 %TODO Punkt setzen? Halbsätze auch ok hier?
 \bigskip
-\begin{tabularx}{\textwidth}{p{160 pt}|X}
-DRY  (Don't Repeat Yourself) \footcite[S. 80 und S. 342]{Martin2009}  & Coderedundanzen vermeiden, zerlegen in Codebestandteile, die man an mehreren Stellen wiederverwenden kann. \\
-Kleine Funktionen / Methoden \footcite[S. 64]{Martin2009} & Viele kleine Methoden sind besser als eine große. \\
-Single Responsibility Principle \footcite[S. 176 f.]{Martin2009} & Jede Funktion/Klasse soll sich nur um eine Sache kümmern. Falls eine Funktion mehrere 
-Aufgaben erledigt, sollten sie diese nicht selbst implementieren, sondern an Unterfunktionen weitergeben. \\
-Information Hiding Principle \footcite[S. 48 f.]{schummelzettel}  & Ein Untersystem soll seiner Inneren Funktionalität vor anderen Systemen verbergen und eine möglichst fokussierte Schnittstelle bieten, mit dem äußere Systeme dieses System steuern können.\\
-\end{tabularx}
-
+\begin{table}[H]
+	\centering
+\begin{tabularx}{\textwidth}{| p{160 pt} | X |}
+	\hline
+DRY  (Don't Repeat Yourself) \cite[S. 80 und S. 342]{Martin2009}  & Coderedundanzen vermeiden, zerlegen in Codebestandteile, die man an mehreren Stellen wiederverwenden kann. \\ \hline
+Kleine Funktionen / Methoden {\cite[S. 64]{Martin2009}} & Viele kleine Methoden sind besser als eine große. \\ \hline
+Single Responsibility Principle \cite[S. 176 f.]{Martin2009} & Jede Funktion/Klasse soll sich nur um eine Sache kümmern. Falls eine Funktion mehrere 
+Aufgaben erledigt, sollten sie diese nicht selbst implementieren, sondern an Unterfunktionen weitergeben. \\ \hline
+Information Hiding Principle \cite[S. 48 f.]{schummelzettel}  & Ein Untersystem soll seiner Inneren Funktionalität vor anderen Systemen verbergen und eine möglichst fokussierte Schnittstelle bieten, mit dem äußere Systeme dieses System steuern können.\\ \hline
+	\end{tabularx}
+	\medskip
+	\caption{Weitere Prinzipien}
+\end{table}
 
 \subsubsection{DRY}
-
+\abk{DRY}{Don't Repeat Yourself}
+  
 Einer der wichtigsten Aspekte von sauberen Codebasen. Der Grund warum es überhaupt 
 Programmstrukturen wie Funktionen, Methoden, Klassen etc. gibt.
 Durch Coderedundanzen (Copy-Paste) können schnell Fehler entstehen, der Code
@@ -222,7 +243,7 @@ Anzumerken wäre noch, dass nicht der Kontrollfluss abgebildet wird, sondern, wi
 \section{RomanNumbers Beispiel}
 
 \begin{center}
-\begin{figure}[!htbp]
+\begin{figure}[H]
 	\includegraphics[width=1.1\linewidth]{./img/FromRomanNumerals.png}
 	\caption{Einfaches Flow Design Beispiel}
 \end{figure}
@@ -260,7 +281,7 @@ Das Ergebnis ist die Summe aller Zahlen.
 
  \blfootnote{Die meisten der Bilder in diesem Kapitel stammen von \cite{flowdesignorg}}
  
-\begin{figure}[!htbp]
+\begin{figure}[H]
 	\includegraphics[width=1\linewidth]{./img/diagram1.png}
 	\caption{Datenfluss zwischen drei Funktionseinheiten}
 \end{figure}
@@ -281,7 +302,7 @@ Die Notation erlaubt es auch einzelne Datentypen zusätzlich noch mit einem Name
 zu versehen. Was vor allem bei primitiven Datentypen hilfreich sein kann. 
 Der optionale Namen wird dem Datentyp durch einen Doppelpunkt getrennt vorangestellt.
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=.4\linewidth]{./img/diagramNamedType.png}
 	\caption{Datentyp \textit{int} mit Namen \textit{alter}}
@@ -297,7 +318,7 @@ Falls der Datentyp aus dem Namen hervorgeht - oder nicht allzu relevant ist - ka
 
 
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{./img/diagramHir.png}
 	\caption{Hierarchischer Datenfluss}
@@ -321,7 +342,7 @@ Kaptiel 4 erläutert.
 
 
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=.35\linewidth]{./img/diagramCustomTypes.png}
 	\caption{Eigener Datentype}
@@ -335,7 +356,7 @@ sondern ist eine Ergänzung von Kevin Erath}
 
 \section{Arrays}
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
 	\centering
 		\includegraphics[width=.5\linewidth]{./img/diagramArray.png}
 	\caption{Array Notation}
@@ -349,7 +370,7 @@ Ist die Arraygröße bekannt, so kann man diese in die Klammer noch zusätzlich 
 \section{0 bis n (Datenstrom)}
 
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=.5\linewidth]{./img/diagram0n.png}
 	\caption{Datenstrom Notation}
@@ -367,7 +388,7 @@ einmal, oder auch öfters als einmal fließen können.
 \section{Container / Listen}
 
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=.7\linewidth]{./img/diagramCollection.png}
 	\caption{Container Notation}
@@ -383,7 +404,7 @@ können, bevor alle anderen Daten erzeugt wurden.
 
 \section{0 bis 1 (optionaler Output)}
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=.5\linewidth]{./img/diagramOptional.png}
 	\caption{Optionaler Output}
@@ -401,7 +422,7 @@ Datenflüsse in C\# realisiert werden, wird in einem späteren Kapitel gezeigt.
 \section{Mehrere Datentypen auf einem Datenstrom}
 
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=.5\linewidth]{./img/diagramIntString.png}
 	\caption{Mehrere unterschiedliche Datentypen auf einem Datenstrom}
@@ -416,7 +437,7 @@ neuer Datentyp erzeugt, der alle Output-Daten beinhaltet.
 
 \section{Joined Inputs und Pipe-Notation}
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=.7\linewidth]{./img/diagramJoin.png}
 	\caption{Joined Inputs}
@@ -440,7 +461,7 @@ Hiermit kann der Output sich von dem Input der nachfolgenden Funktionseinheit un
 Dadurch können auch Daten, die aus vorherigen Funktionseinheiten innerhalb des Datenflusses entstanden sind, entnommen und einer Funktionseinheit
 übergeben werden.
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=\linewidth]{./img/diagramPipe.jpg}
 	\caption{Pipe-Notation}
@@ -451,7 +472,7 @@ In die Funktionseinheit \textit{F} fließen die Daten aus \textit{G} und \textit
 
 \section{Tonnen}
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
 	\centering
 		\includegraphics[width=.7\linewidth]{./img/diagramTonne.png}
 	\caption{Tonnensymbol}
@@ -465,7 +486,7 @@ Schreiben einer Membervariable einer Klasse.
 
 \section{Abhängigkeiten / Provider}
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
 	\centering
 		\includegraphics[width=.5\linewidth]{./img/diagramProvider.png}
 	\caption{Provider}
@@ -487,7 +508,7 @@ Funktionseinheit festhält, und dadurch eine Abhängigkeit symbolisiert.
 
 \section{GUIS / Programmstart/ Ende}
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
 	\centering
 		\includegraphics[width=.9\linewidth]{./img/diagramStartEnd.png}
 	\caption{Programmstart und Programmende}
@@ -500,7 +521,7 @@ Wenn eine Funktionseinheit direkt durch den Programmstart aufgerufen wird, so
 wird dies mit einem leeren Kreis dargestellt. Genau so verhält es sich mit dem
 Programmende, mit der Unterschied, dass noch innerhalb des Kreises ein Kreuz ist.
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
 	\centering
 		\includegraphics[width=.9\linewidth]{./img/diagramUI.png}
 	\caption{UI}
@@ -514,7 +535,7 @@ wird ein Viereck am Anfang bzw. Ende des Pfeiles eingezeichnet.
 \section{Klassen / Container definieren}
 
 
-\begin{figure}[!htbp]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=.4\linewidth]{./img/diagramClass.png}
 	\caption{Zugehörigkeit zu einer Klasse}
@@ -548,6 +569,8 @@ Um was es sich dabei im Detail genau handelt, wird in diesem Kapitel erläutert.
 \pagebreak
 \section{IODA Architektur}
 
+\abk{IODA}{Integration Operation Data API}
+
 Wie schon in dem vorherigen Kapitel angemerkt, unterscheidet Flow Design zwei
 unterschiedliche Arten von Funktionseinheiten. Integrationen und Operationen.
 Die IODA Architektur beschreibt die Eigenschaften von diesen beiden genauer.
@@ -555,9 +578,12 @@ Die IODA Architektur beschreibt die Eigenschaften von diesen beiden genauer.
 IODA steht für: Integration Operation Data API
 
 
-\begin{center}
-\includegraphics[width=.9\linewidth]{./img/ioda1.png}
-\end{center}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\linewidth]{./img/ioda1.png}
+	\caption{IODA Architektur}
+\end{figure}
+
 
 
 \let\thefootnote\relax\footnotetext{\url{http://blog.ralfw.de/2015/04/die-ioda-architektur.html}}
@@ -597,12 +623,25 @@ Integrationen. Alle Leaf-Knoten sind Operationen, der Rest sind Integrationen.
 
 \subsubsection{PoMO ( Principle of Mutual Oblivion)}
 
-\begin{quote}
-Ein Producer kennt seinen Consumer nicht. Ein Consumer kennt seinen Producer
-nicht. Das nenne ich das Principle of Mutual Oblivion (PoMO,
-Prinzip der gegenseitigen Nichtbeachtung) - Ralf Westphal 
-\footnote{architect napkin, Seite 80}
-\end{quote}
+\abk{PoMO}{Principle of Mutual Oblivion}
+
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+		\hbox{}\nobreak\hfil(#1)%
+		\parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+{\savebox\mybox{#1}\begin{quote}}
+	{\signed{\usebox\mybox}\end{quote}}
+
+\begin{aquote}{Ralf Westphal \cite[S. 80]{schummelzettel}}
+	Ein Producer kennt seinen Consumer nicht. Ein Consumer kennt seinen Producer
+	nicht. Das nenne ich das Principle of Mutual Oblivion (PoMO,
+	Prinzip der gegenseitigen Nichtbeachtung) 
+\end{aquote}
+
+
+
 
 Dieses Prinzip besagt, dass Funktionseinheiten sich nicht gegenseitig kennen sollen.
 Es soll auch verhindert werden, dass eine Einheit eine andere aufruft und von deren Ergebnis
@@ -622,6 +661,8 @@ werden.
 
 
 \subsubsection{IOSP ( Integration Operation Segregation Principle)}
+
+\abk{IOSP}{Integration Operation Segregation Principle}
 
 Dieses Prinzip besagt, dass eine Funktionseinheit entweder eine Operation oder eine Integration ist und beide
 Verantwortungsbereiche nicht vermischt werden dürfen.
@@ -687,17 +728,23 @@ Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die
 
 
 \bigskip
-\begin{tabularx}{\textwidth}{lll}
+\begin{table}[H]
+	\centering
+\begin{tabularx}{\textwidth}{|X|l|l|}
+	\hline
  & Operationen & Integrationen\\
 \hline
-Rechenoperationen ( +, *, \%, \ldots{} ) & Ja & Nein\\
-Kontrollstrukturen (if, else, while, for, foreach, \ldots{}) & Ja & Nein\\
-API-Aufrufe (Methoden von Bibliotheken) & Ja & Nein\\
-Ressourcen-Zugriffe (Dateien, Datenbanken etc.) & Ja & Nein\\
-Standard Library, LINQ & Ja & Ja\\
-Namen andere Funktionseinheiten kennen & Nein & Ja\\
-Auf Rückgabewert warten & Nein & Ja\\
+Rechenoperationen ( +, *, \%, \ldots{} ) & Ja & Nein\\ \hline
+Kontrollstrukturen (if, else, while, for, foreach, \ldots{}) & Ja & Nein\\ \hline
+API-Aufrufe (Methoden von Bibliotheken) & Ja & Nein\\ \hline
+Ressourcen-Zugriffe (Dateien, Datenbanken etc.) & Ja & Nein\\ \hline
+Standard Library, LINQ & Ja & Ja\\ \hline
+Namen andere Funktionseinheiten kennen & Nein & Ja\\ \hline
+Auf Rückgabewert warten & Nein & Ja\\ \hline
 \end{tabularx}
+	\medskip
+	\caption{IOSP Übersicht}
+\end{table}
 
 
 
@@ -707,7 +754,6 @@ Auf Rückgabewert warten & Nein & Ja\\
 
 
 \begin{lstlisting}[caption=FormatAndPrintStrings nicht IOSP-konfrom]
-
 static void FormatAndPrintStrings(List<string> lines)
 {
    foreach(line in lines)
@@ -764,13 +810,14 @@ static void PrintLines(List<string> lines)
 }
 \end{lstlisting}
 
-\pagebreak
 
 Als Flow Design dargestellt, würde der Code folgendermaßen aussehen:
-
-\begin{center}
+\begin{figure}[H]
+	\centering
 	\includegraphics[width=1\linewidth]{./img/flowForeach1.png}
-\end{center}
+	\caption{FormatAndPrintStrings Variante 1 - Flow Design}
+\end{figure}
+
 
 Die Methode wurde aufgeteilt in eine Integration (\texttt{FormatAndPrintStrings}) und zwei Operationen.
 Im ersten Beispiel hat die Methode zwei Aufgaben erfüllt, sie hat die Formatierung-Methode integriert und
@@ -821,9 +868,12 @@ static void Print(string line)
 
 Als Flow Design dargestellt, würde der Code folgendermaßen aussehen:
 
-\begin{center}
+\begin{figure}[H]
+	\centering
 	\includegraphics[width=1\linewidth]{./img/FlowsForeach.png}
-\end{center}
+	\caption{FormatAndPrintStrings Variante 2 - Flow Design}
+\end{figure}
+
 
 
 Noch eleganter mit Actions und Lambdas:
@@ -857,6 +907,7 @@ Eine weitere Möglichkeit besteht darin Datenfluss orientierte Sprachfeatures zu
 Somit hängt diese Möglichkeit stark von der verwendetet Programmiersprache ab.
 In C\# existiert eine Kategorie an Methoden, die speziell auf das Arbeiten mit Datenflüssen ausgerichtet ist, diese werden
 zusammengefasst unter dem Namen LINQ (Language-Integrated Query).
+\abk{LINQ}{Language-Integrated Query}
 
 \bigskip
 Mit Hilfe von LINQ lässt sich obiges Beispiel zu einem IOSP konformen Einzeiler reduzieren.
@@ -919,33 +970,52 @@ Folgende Methoden verändern den Datenstrom und liefern einen neuen Datenstrom
 zurück (mit Ausnahme von ForEach).
 
 \bigskip
-\begin{tabularx}{\textwidth}{p{130 pt}|X}
-Select & Selektiert jedes Element und der Sequenz und modifiziert es. Zurückgegeben wird eine Sequenz der modifizierten Elemente\\
-ForEach (nur für List-Klasse) & Iteriert über die Sequenz und führt mit jedem Element den Selector-Ausdruck aus. Im Gegensatz zu Select wird kein Sequenz zurückgeliefert. Diese Methode ist nicht Teil von LINQ sondern gehört ausschließlich zu der List-Klasse. Da sie jedoch oft Verwendung findet in LINQ-Ausdrücke, wird sie hier mit aufgezählt\\
-First,  Last & Gibt das erste/letzte Element der Sequenz zurück, das eine bestimmte Bedingung erfüllt.\\
-OrderBy & Ordnet die Sequenz mit Hilfe eines \texttt{keySelector}-Ausdrucks. Dieser bestimmt das Sortierkriterium. In manchen Fällen (Elemente sind Zahlenwerte, oder Strings), kann dieser weggelassen werden, falls das Default-Verhalten gewünscht ist\\
-Distinct & Duplikate werden aus der Sequenz gelöst.\\
-Join & Zwei Sequenzen werden zu einer zusammengefasst\\
+\begin{table}[H]
+	\centering
+\begin{tabularx}{\textwidth}{|p{130 pt}|X|}
+		\hline
+Select & Selektiert jedes Element und der Sequenz und modifiziert es. Zurückgegeben wird eine Sequenz der modifizierten Elemente\\	\hline
+ForEach (nur für List-Klasse) & Iteriert über die Sequenz und führt mit jedem Element den Selector-Ausdruck aus. Im Gegensatz zu Select wird kein Sequenz zurückgeliefert. Diese Methode ist nicht Teil von LINQ sondern gehört ausschließlich zu der List-Klasse. Da sie jedoch oft Verwendung findet in LINQ-Ausdrücke, wird sie hier mit aufgezählt\\	\hline
+First,  Last & Gibt das erste/letzte Element der Sequenz zurück, das eine bestimmte Bedingung erfüllt.\\	\hline
+OrderBy & Ordnet die Sequenz mit Hilfe eines \texttt{keySelector}-Ausdrucks. Dieser bestimmt das Sortierkriterium. In manchen Fällen (Elemente sind Zahlenwerte, oder Strings), kann dieser weggelassen werden, falls das Default-Verhalten gewünscht ist\\	\hline
+Distinct & Duplikate werden aus der Sequenz gelöst.\\	\hline
+Join & Zwei Sequenzen werden zu einer zusammengefasst\\	\hline
 \end{tabularx}
+	\medskip
+	\caption{LINQ - Sequenzen Modifizieren}
+\end{table}
 
 
 \item Filtern
 
 \bigskip
-\begin{tabularx}{\textwidth}{p{130 pt}|X}
-Where & Filtern der Sequenz anhand des Predicate. Zurückgegeben wird eine Sequenz von Elementen, die das Filterkriterium entsprachen.\\
+
+\begin{table}[H]
+	\centering
+\begin{tabularx}{\textwidth}{|p{130 pt}|X|}
+		\hline
+Where & Filtern der Sequenz anhand des Predicate. Zurückgegeben wird eine Sequenz von Elementen, die das Filterkriterium entsprachen.\\	\hline
 \end{tabularx}
+	\medskip
+	\caption{LINQ - Sequenzen Filtern}
+\end{table}
 
 \item Überprüfungen
 
 Diese Methoden liefern einen Boolean als Rückgabewert zurück.
 
 \bigskip
-\begin{tabularx}{\textwidth}{p{130 pt}|X}
-Any & Wendet auf jedes Element den Selector-Ausdruck solange an, bis bei einem Element der Ausdruck wahr wird. Dann wird \texttt{true} zurückgegeben, ansonsten \texttt{false}\\
-Contains & Ähnlich wie \texttt{Any}, nur dass kein Selector übergeben wird, sondern ein Element, der selben Klasse, wie die Elemente des Containers. Befindet sich das Element in dem Container, dann wird \texttt{true} zurückgeben, ansonsten \texttt{false}\\
-All & Ähnlich wie \texttt{Any} mit dem Unterschied, dass nur dann \texttt{true} zurückgeben wird, wenn für alle Elemente des Containers der Ausdruck wahr ist.\\
+\begin{table}[H]
+	\centering
+\begin{tabularx}{\textwidth}{|p{130 pt}|X|}
+		\hline
+Any & Wendet auf jedes Element den Selector-Ausdruck solange an, bis bei einem Element der Ausdruck wahr wird. Dann wird \texttt{true} zurückgegeben, ansonsten \texttt{false}\\	\hline
+Contains & Ähnlich wie \texttt{Any}, nur dass kein Selector übergeben wird, sondern ein Element, der selben Klasse, wie die Elemente des Containers. Befindet sich das Element in dem Container, dann wird \texttt{true} zurückgeben, ansonsten \texttt{false}\\	\hline
+All & Ähnlich wie \texttt{Any} mit dem Unterschied, dass nur dann \texttt{true} zurückgeben wird, wenn für alle Elemente des Containers der Ausdruck wahr ist.\\	\hline
 \end{tabularx}
+	\medskip
+	\caption{LINQ - Sequenzen Überprüfen}
+\end{table}
 
 \item Berechnungen
 
@@ -956,13 +1026,19 @@ Lambda-Ausdruck, mit übergeben werden. Mit dem Selector kann bestimmt werden, w
 die mathematische Rechenoperationen mit jedem Element umzugehen hat.
 
 \bigskip
-\begin{tabularx}{\textwidth}{p{130pt}|X}
-Sum & Aufsummieren der Elemente\\
-Max & Gibt das Element mit dem höchsten Wert zurück\\
-Min & Gibt das Element mit dem niedrigsten Wert zurück\\
-Count & Zählt die Elemente des Containers und gibt die Anzahl zurück\\
-Average & Berechnet den Durchschnitt der Sequenz\\
+\begin{table}[H]
+	\centering
+\begin{tabularx}{\textwidth}{|p{130pt}|X|}
+	\hline
+Sum & Aufsummieren der Elemente\\ 	\hline
+Max & Gibt das Element mit dem höchsten Wert zurück\\	\hline
+Min & Gibt das Element mit dem niedrigsten Wert zurück\\ 	\hline
+Count & Zählt die Elemente des Containers und gibt die Anzahl zurück\\	\hline
+Average & Berechnet den Durchschnitt der Sequenz\\	\hline
 \end{tabularx}
+	\medskip
+	\caption{LINQ - Berechnungen}
+\end{table}
 
 \item Überspringen und Nehmen
 
@@ -970,15 +1046,22 @@ Diese Methoden liefern genau wie die modifizierenden Methoden als Rückgabewert
 eine neue Sequenz an Daten zurück.
 
 \bigskip
-\begin{tabularx}{\textwidth}{p{130pt}|X}
-TakeWhile & Nimmt Elemente solange aus dem Container, bis eine Bedingung erfüllt ist. Es wird eine Sequenz von allen genommenen Elementen zurückgegeben\\
-Skip & Überspringt eine Anzahl an Elementen\\
-SkipWhile & Überspringt die ersten Elemente einer Sequenz, solange bis bis die Bedingung von einem Element nicht erfüllt wird, dann wird ohne weitere Überprüfungen der Rest der Sequenz zurückgegeben\\
+\begin{table}[H]
+	\centering
+\begin{tabularx}{\textwidth}{|p{130pt}|X|}
+	\hline
+TakeWhile & Nimmt Elemente solange aus dem Container, bis eine Bedingung erfüllt ist. Es wird eine Sequenz von allen genommenen Elementen zurückgegeben\\	\hline
+Skip & Überspringt eine Anzahl an Elementen\\	\hline
+SkipWhile & Überspringt die ersten Elemente einer Sequenz, solange bis die Bedingung von einem Element nicht erfüllt wird, dann wird ohne weitere Überprüfungen der Rest der Sequenz zurückgegeben\\	\hline
 \end{tabularx}
+	\medskip
+	\caption{LINQ - Überspringen und Nehmen}
+	
+\end{table}
 
 \item Konvertieren
 
-Sequenzen können mit Hilfe eines einfach Methodenaufrufs zu einem bestimmten Typ
+Sequenzen können mit Hilfe eines einfachen Methodenaufrufs zu einem bestimmten Typ
 von Container konvertiert werden. Zum Beispiel: \texttt{ToList} oder \texttt{ToDictionary}.
 
 \item Parallele Verarbeitung
@@ -998,14 +1081,18 @@ Voraussetzung ist hierfür, dass der Rückgabewert der Methode ein \texttt{IEnum
 
 Das folgende Flow Design soll mit \texttt{yield return} realisiert werden.
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=\linewidth]{./img/FlowDesign2.png}
+	\caption{FindTheAnswer - Flow Design}
+\end{figure}
 
 
-\includegraphics[width=\linewidth]{./img/FlowDesign2.png}
 
 \blankfootnote{\url{http://www.code-whisperer.de/preview/2015/06/14/eva/}}
 
 \bigskip
-Das Programm ist eine Konsolenanwendung, die den Benutzer eine Eingabe erlaubt.
+Das Programm ist eine Konsolenanwendung, die dem Benutzer eine Eingabe erlaubt.
 Wenn die Eingabe die Zahl 42 entspricht, wird das Programm beendet, wenn nicht,
 dann wird die Zahl ausgegeben und der Benutzer kann wieder eine Zahl eingeben.
 Das wiederholt sich, solange bis der Benutzer die Zahl 42 eingetippt hat.
@@ -1024,7 +1111,8 @@ Wenn der Datenstrom abbricht, returned die Main-Methode und das Programm wird be
 
 \item Implementation
 
-\begin{lstlisting}
+
+\begin{lstlisting} [caption=Find the answer Implementation]
 class Program
 {
   static void Main()
@@ -1074,9 +1162,11 @@ Den Abbruch der Endlosschleife ( also das Stoppen des Datenflusses) kann somit a
 
 \subsubsection{Ein Output-Weg mehrere Empfänger}
 
-\begin{center}
-\includegraphics[width=.7\linewidth]{./img/diagramOut1to2.png}
-\end{center}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.7\linewidth]{./img/diagramOut1to2.png}
+	\caption{Ein Ausgang mehrere Empfänger}
+\end{figure}
 
 
 Falls ein Output an mehrere Empfänger weitergereicht werden soll, so gibt es
@@ -1089,25 +1179,20 @@ Die dritte Möglichkeit besteht darin Events zu nutzen.
 Leider bedarf es dann bei der Benutzung der API mehr Vorsicht, da man sich vorher auf ein Events registrieren muss, bevor man
 die gewünschte Funktion aufrufen kann.
 
-Implementierungsbeispiel mit Lambda und Action:
-\begin{lstlisting}
+\begin{lstlisting}[caption= Mehrere Empfänger eines Outputs]
 static void Main()
 { 
-    F(
-    onResult:number => {
-        G(number);
-        H(number);
-    });
+    var number = F();
+    G(number);
+    H(number);
 }
 
-static void F(Action<int> onResult)
+static int F()
 {
-    int n = 100;
-    onResult(n);
+	return 42;
 }
 
 static void G(int number){}
-
 static void H(int number){}
 \end{lstlisting}
 
@@ -1116,9 +1201,12 @@ static void H(int number){}
 
 \subsubsection{Mehrere Output-Wege}
 
-\begin{center}
-\includegraphics[width=.5\linewidth]{./img/diagramOut2.png}
-\end{center}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.5\linewidth]{./img/diagramOut2.png}
+	\caption{Eine Funktionseinheit mit mehreren Ausgängen}
+\end{figure}
+
 
 
 Wäre es für eine Operation erlaubt eine andere Funktionseinheit zu kennen, so
@@ -1152,7 +1240,7 @@ If-Else-Logik verwendet.
 \pagebreak
 
 Ein typischer Programmierstil in C\# veranschaulicht folgendes Beispiel:
-\begin{lstlisting}
+\begin{lstlisting}[caption= {Typerischer Programmierstil, der nicht IOSP-konform ist}]
 static void CheckAndSaveToFile(string inputstring)
 {
    var filename = @"C:/test.txt";
@@ -1182,7 +1270,7 @@ in die Methode zu übergeben. Mithilfe der \enquote{Named Parameter} lässt sich
 Leserlichkeit weiter steigern (vor allem wenn es mehr als zwei Ausgänge
 gibt, da man jedem Ausgang einen sinnvollen Namen geben kann).
 
-\begin{lstlisting}
+\begin{lstlisting}[caption= {IOSP-konforme Variante}]
 static void CheckAndSaveToFile(string inputstring)
 {
    var filename = @"C:/test.txt";
@@ -1215,8 +1303,6 @@ bestimmen, welche Methoden als nächstes aufgerufen werden.
 Dadurch schränkt man die möglichen nachfolgenden Methodenaufrufe nicht durch
 die Operation ein. In Sprachen die dieses Feature
 nicht unterstützen, macht das die Umsetzung von Flow Design deutlich umständlicher.
-Dazu mehr im Anhang "Flow Design in anderen Sprachen".
-
 
 \section{Auf Rückgabewert warten}
 
@@ -1228,7 +1314,7 @@ würde zwar das IOSP erfüllen - die Operation würde die andere Funktion nicht
 kennen - jedoch würde trotzdem eine funktionale Abhängigkeit entstehen.
 Aus diesem Grund ist das nachfolgende Beispiel nicht Flow Design konform.
 
-\begin{lstlisting}
+\begin{lstlisting}[caption=Auf Rückgabewert warten]
 static List<string> FormatStrings(List<string> lines , Func<string,string> formatFunc )
 {
    List<string> result = new List<string>();

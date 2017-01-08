@@ -3,9 +3,9 @@
 % ------------------------------------------------------------------------------
 %\documentclass[parskip=full-]{scrrprt}
 	\documentclass[
-	12pt, % Schriftgr��e
+	12pt, % Schriftgröße
 	DIV12,
-	ngerman, % f�r Umlaute, Silbentrennung etc.
+	ngerman, % für Umlaute, Silbentrennung etc.
 	a4paper, % Papierformat
 	oneside, % einseitiges Dokument
 	titlepage, % es wird eine Titelseite verwendet
@@ -18,20 +18,16 @@
 	]{scrreprt}
 
 
-
-\usepackage[
-backend=biber,
-style=alphabetic,
-]{biblatex}
-
-
-\usepackage{biblatex}
-\addbibresource{ref.bib}
-
 \input{Packages}
-\usepackage{listings}
 
-\usepackage[T1]{fontenc}
+\usepackage{epigraph}
+\usepackage{float}
+\usepackage{tablefootnote}
+
+% Tabellen Padding
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.7}
+
 
 \begin{document}
 
@@ -40,7 +36,6 @@ style=alphabetic,
 	%TODO Ehrenwort
 	\input{Inhalt/Ehrenwort}
 	
-	%TODO Abstract
 	\input{Inhalt/Abstract}	
 	
 	%TODO Danksagung
@@ -54,11 +49,12 @@ style=alphabetic,
 	\input{Inhalt/Einfuehrung}
 	
 	
-	
-	%TODO Tabellen schöner
 	%TODO Verweise auf Bücher und Zitate richtig machen
-	%TODO Listings beschriften
-	
+	%TODO Bilder einfügen Realisierung - CSV-Tabellieren
+	%TODO Bilder für Editor vorstellung - Shopping Simulator
+	%TODO Code für Methodensignaturen generierung
+	%TODO Code für Output-Beziehungen
+	%TODO System-Umwelt-Diagramm	
 	%%%%%%%%%%%%%%%%
 	% TEIL 1 Grundlagen
 	%%%%%%%%%%%%%%%%		
@@ -84,7 +80,8 @@ style=alphabetic,
 	%%%%%%%%%%%%%%%%
 
 	\input{Inhalt/Zusammenfassung}	
-						
+					
+	%TODO TDD 	
 	\input{Inhalt/Appendix}
 	
 
@@ -93,26 +90,21 @@ style=alphabetic,
 	%%%%%%%%%%%%%%%%
 	
 	
-	%TODO Abkürzungsverzeichnis anlegen
+	\renewcommand{\nomname}{Abkürzungsverzeichnis}
+	\printnomenclature
 	
-	
-	%TODO Clean Code Buch, CCD, Blogs, Youtube Video
+
 	% Literaturverzeichnis
 	\nocite{*}
-	\clearpage
-	
+	\clearpage	
 	\printbibliography[title={Quellenverzeichnis}]
 	
-	% Verzeichnis der Listings
+	% Weitere Verzeichnisse
 	\renewcommand{\lstlistlistingname}{Verzeichnis der Listings}
 	\lstlistoflistings % Listings-Verzeichnis
-
-	% Abbildungsverzeichnis
-	\listoffigures 
-
+	\listoffigures 		
+	\listoftables
 		
-	%TODO Tablellenverzeichnis
-
 
 \end{document}
 

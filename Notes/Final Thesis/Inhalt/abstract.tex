@@ -1,45 +1,34 @@
 
 \chapter*{Abstract}
 
-Dieses Arbeit wurde in zwei Teile aufgeteilt: 
-Ein Grundlagenteil und ein Realisierungsteil.
+Der erste Teil diese Arbeit vermittelt dem Leser ein Grundwissen über Flow Design. Eine Methodik die Softwareentwickler helfen soll saubereren Code zu schreiben.
 
-Der Grundlagenteil vermittelt dem Leser ein Grundwissen über Flow Design.
-Der Hauptfokus dabei wurde auf das Flussdiagramm gelegt.
-Die Notation wird erläutert und die Implementierung des Datenflusses in C\#
-wird anhand von Beispielen dem Leser nähergebracht.
+Der Hauptfokus wurde auf das Flussdiagramm gelegt,
+eine auf Datenfluss fokussierte Entwurfsmethodik.
+Die Notation wird erläutert und die Implementierung des Datenflusses in C\# wird anhand von Beispielen dem Leser nähergebracht.
+Es werden Regeln und Prinzipien vorgestellt, die bei der Umsetzung des Datenflusses einzuhalten sind, um Abhängigkeiten im Code zu reduzieren.
 
-Dem Leser wird im ersten Teil die Grundlagen nähergebracht, die er braucht, um die
-nachfolgenden Kapitel in der Realisierung zu verstehen.
-
-Im zweiten Teil dieser Arbeit wird die Vision erläutert und die Überlegungen wie ein
-Editor für Flow Design aussehen könnte beschrieben.
-
-Im darauf folgendem Kapitel wird der Prototyp vorgestellt, wie der akutelle Stand des
-Editors ist. Dabei wurden ein großteil der Hauptfeatures umgesetzt.
-Auch wurde Wert darauf gelegt, ein saubere Codebasis zu haben, die es ermöglicht 
-das Projekt weiter zu entwickeln.
-Der Architektur des Projektes wird vorgestellt und erklärt, warum man sich für 
-diese Aufteilung entschieden hat.
-
-Es fehlen jedoch noch ein paar Features um den Editor für Projekte einzusetzen.
-Es wurde jedoch ein Grundstein gelegt, auf dem aufgebaut werden kann.
-Auch nicht jede Notation wurde umgesetzt, sodass zum Beispiel Rekursionen
-nicht sauber dargestellt werden können.
-
-
-Es wurde ein Prototyp erstellt, um Flow Design Diagramme zu erstellen.
-Auch die Generierung von C\# Code anhand der erstellten Diagramme wurde umgesetzt.
-Dabei beinhaltet die Generierung sowohl die Generierung von Operationen-Signaturen und 
-die komplette Generieung von Integrationen.
-
+Der zweite Teil dieser Arbeit beschäftigt sich mit dem Prototypen eines
+Editors für Flow Design. Ein Editor mit dem es möglich ist Datenflüsse in Form von Flow Design zu modellieren. Dieser Prototyp bietet darüber hinaus die Möglichkeit C\# Code aus diesen Flussdiagrammen zu generieren. 
+Zuerst wird eine Systemanalyse durchgeführt mit einem
+speziellen Fokus auf eine gute Usability.
+Danach wird der aktuelle Stand des Prototypen vorgestellt, sowie ein Einblick in die Architektur gewährt. Dabei werden auch einige
+ausgewählte Codeauschnitte präsentiert, die ebenfalls nach den Regeln und Prinzipien aus Teil eins implementiert wurden.
+Diese Codeauschnitte sind komplexer als die Beispiele in Teil eins und sollen dem Leser somit einen Einblick gewähren, wie ein Code nach Flow Design in der Praxis aussehen kann.
+Damit wird dem Leser eine Möglichkeit geboten, Flow Design besser für sich bewerten zu können.
 
 Als Arbeitstitel für den Prototyp wurde der Projektname \enquote{Dexel} gewählt.
-
 
 Dexel ist auf Github als Open-Source-Projekt unter folgender URL einsehbar:
 
 \url{https://github.com/detachmode/Dexel}
+
+Das Zustand von Dexel zum Zeitpunkt dieser Arbeit ist eine
+Anwendung, die für den Einsatz in einem Projekt noch nicht ausgereift genug ist. 
+Es wurde jedoch ein Grundstein gelegt, auf dem aufgebaut werden kann.
+Die Anwendung hat einen Punkt erreicht hat, an dem die
+Richtung des Projektes deutlich wird und eine Vision wie ein Editor für Flow Design aussehen kann, vermittelt wird.
+
 
 
 

@@ -3,8 +3,7 @@
 
 In diesem Kapitel soll vorgestellt werden, was in dem Zeitraum dieser
 Bachelorarbeit erreicht wurde. Es soll die Funktionalität des Editors
-anhand von Screenshots vorgestellt werden und die Architekur der Anwendung, die selbst nach
-Flow Design umgesetzt wurde. 
+anhand von Screenshots vorgestellt werden und die Architekur der Anwendung, die selbst nach  Flow Design umgesetzt wurde. 
 
 Als Arbeitstitel für die Anwendung wurde der Name Dexel gewählt.
 
@@ -75,20 +74,20 @@ Informationen über das aktuelle Flow Design Diagramm.
 Das \textit{MainModel} beinhaltet alle Funktonseinheiten, alle verbindende
 Datenströme (\textit{Connections}) und alle benutzerdefinierten Datentypen (\textit{DataTypes}).
 
-\begin{verbatim}
+\begin{lstlisting}[caption=MainModel Klasse]
 [ImplementPropertyChanged]
 public class MainModel
 {
 	public List<FunctionUnit> FunctionUnits { get; set; }
 	public List<DataStream> Connections { get;  set; }
-	public List<DataType> DataTypes { get; set; } 
+	public List<CustomDataType> DataTypes { get; set; } 
 }
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{{\bfseries\sffamily MISSING IMAGES} FunctionUnit}
 
 
-\begin{verbatim}
+\begin{lstlisting}[caption=FunctionUnit Klasse]
 [ImplementPropertyChanged]
 public class FunctionUnit
 {
@@ -99,7 +98,7 @@ public class FunctionUnit
 	public List<DataStreamDefinition> InputStreams { get; set; }
 	public List<DataStreamDefinition> OutputStreams { get; set; }
 }
-\end{verbatim}
+\end{lstlisting}
 
 Der Name ist der Name der Funktionseinheit ( der Text, der bei der
 Darstellung später innerhalb des Kreises erscheint). Dieser wird später per Binding
@@ -122,17 +121,17 @@ verbinden. Dadurch lassen sie die Datenflüsse modelieren.
 
 	\subsubsection{MISSING IMAGES DataStreamDefinition}
 	
-	\begin{verbatim}
-	[ImplementPropertyChanged]
-	public class DataStreamDefinition
-	{
+	\begin{lstlisting}[caption=DataStreamDefinition Klasse]
+[ImplementPropertyChanged]
+public class DataStreamDefinition
+{
 	public Guid ID { get;  set; }
 	public string DataNames { get;  set; }
 	public string ActionName { get;  set; }
-	public SoftwareCell Parent { get;  set; }
+	public FunctionUnit Parent { get;  set; }
 	public bool Connected { get;  set; }
-	}
-	\end{verbatim}
+}
+	\end{lstlisting}
 	
 	Eine Funktionseinheit verfügt über ein oder mehrere ein- und ausgehende
 	DataStreamDefinitionen. Diese können verbunden sein oder nicht. Wenn eine
@@ -155,17 +154,17 @@ Um Datenflüsse zwischen Funktionseinheitn zu beschreiben, bedarf es einer
 Verbindungsklasse. Die DataStream-Klasse stellt diese Verbindungsklasse dar.
 
 
-\begin{verbatim}
+\begin{lstlisting}[caption=DataStream]
 [ImplementPropertyChanged]
 public class DataStream
 {
-public Guid ID { get; set; }
-public string DataNames { get;  set; }
-public List<DataStreamDefinition> Sources { get;  set; }
-public List<DataStreamDefinition> Destinations { get;  set; }
+	public Guid ID { get; set; }
+	public string DataNames { get;  set; }
+	public List<DataStreamDefinition> Sources { get;  set; }
+	public List<DataStreamDefinition> Destinations { get;  set; }
 
 }
-\end{verbatim}
+\end{lstlisting}
 
 Ein DataStream hat ein oder mehrere Referenzen an DataStreamDefinition als
 Quellen und ein oder mehrere Referenzen an DataStreamDefinition als Ziele.
@@ -188,21 +187,21 @@ einem Ziel darstellen.
 \subsubsection{DataType}
 
 
-\begin{verbatim}
+\begin{lstlisting}[caption= CustomDataType und SubDataType Klasse]
 [ImplementPropertyChanged]
 public class CustomDataType
 {
-public string Name { get; set; }
-public List<SubDataType> SubDataTypes { get; set; }
+	public string Name { get; set; }
+	public List<SubDataType> SubDataTypes { get; set; }
 }
 
 [ImplementPropertyChanged]
 public class SubDataType
 {
-public string Name { get; set; }
-public string Type { get; set; }
+	public string Name { get; set; }
+	public string Type { get; set; }
 }
-\end{verbatim}
+\end{lstlisting}
 
 Ein benutzerdefinierter Datentyp besteht aus einem Namen und einer Liste von mehreren
 \texttt{SubDataType}-Objekten. 
@@ -253,28 +252,26 @@ Datentypen).
 		einfache DataStream-Klasse hätte anstatt einer Liste von DatastreamDefinitionen nur noch ein einfaches Feld
 		für eine Source-DataStreamDefinition und eine Destionation-DataStreamDefinition.}
 	
-	\begin{verbatim}
-	public static void ChangeDatanames(DataStream datastream, string newDatanames)
-	{
+	\begin{lstlisting}[caption=ChangeDatanames Methode]
+public static void ChangeDatanames(DataStream datastream, string newDatanames)
+{
 	// update datanames of connection itself
 	datastream.DataNames = newDatanames;
 	
 	// update datanames of DSDs
 	TrySolveWithPipeNotation(newDatanames,
-	onSuccess: (outputPart, inputPart) =>
-	{
-	// TODO: doesn't support mutliple sources yet
-	datastream.Sources.First().DataNames = outputPart;
-	datastream.Destinations.First().DataNames = inputPart;
-	},
-	onNoSuccess: () =>
-	{
-	// TODO: doesn't support mutliple destinations yet
-	datastream.Sources.First().DataNames = newDatanames.Trim();
-	datastream.Destinations.First().DataNames = newDatanames.Trim();
-	});
-	}
-	\end{verbatim}
+		onSuccess: (outputPart, inputPart) =>
+		{
+			datastream.Sources.First().DataNames = outputPart;
+			datastream.Destinations.First().DataNames = inputPart;
+		},
+		onNoSuccess: () =>
+		{
+			datastream.Sources.First().DataNames = newDatanames.Trim();
+			datastream.Destinations.First().DataNames = newDatanames.Trim();
+		});
+}
+\end{lstlisting}
 	
 \end{enumerate}
 
@@ -477,52 +474,58 @@ Leichtgewichtigkeit und sind nicht mehr ganz so einfach zu verstehen ) und haben
 Abstraktion.
 
 Beispiel dieser Aussage:
-\begin{verbatim}
+\begin{lstlisting}[caption=AppendNewFunctionUnit]
 public static object AppendNewFunctionUnit(FunctionUnit currentFunctionUnit, double offsetX, DataStreamDefinition outputToConnect, MainModel mainModel)
 {
-var newFunctionUnit = FunctionUnitManager.CreateNew();
-
-newFunctionUnit.Position = currentFunctionUnit.Position;
-newFunctionUnit.MoveX(offsetX);
-
-// default IO of new function unit: input of new function unit = output to connect to of current function unit
-newFunctionUnit.InputStreams.Add(DataStreamManager.NewDefinition(newFunctionUnit, outputToConnect));
-newFunctionUnit.OutputStreams.Add(DataStreamManager.NewDefinition(newFunctionUnit, "()"));
-MainModelManager.ConnectTwoDefintions(outputToConnect, newFunctionUnit.InputStreams.First(), mainModel);
-
-mainModel.FunctionUnits.Add(newFunctionUnit);
-
-ViewRedraw();
-
-return newFunctionUnit;
+	var newFunctionUnit = FunctionUnitManager.CreateNew();
+	
+	newFunctionUnit.Position = currentFunctionUnit.Position;
+	newFunctionUnit.MoveX(offsetX);
+	
+	// default IO of new function unit: input of new function unit = output to connect to of current function unit
+	newFunctionUnit.InputStreams.Add(
+		DataStreamManager.NewDefinition(newFunctionUnit, outputToConnect));
+	newFunctionUnit.OutputStreams.Add(
+		DataStreamManager.NewDefinition(newFunctionUnit, "()"));
+	MainModelManager.ConnectTwoDefintions(outputToConnect, newFunctionUnit.InputStreams.First(), mainModel);
+	
+	mainModel.FunctionUnits.Add(newFunctionUnit);
+	
+	ViewRedraw();
+	
+	return newFunctionUnit;
 }
+\end{lstlisting}
 
+\begin{lstlisting}[caption=CreateNewOrGetFirstIntegrated]
 public static FunctionUnit CreateNewOrGetFirstIntegrated(FunctionUnit currentFunctionUnit, MainModel mainModel)
 {
-FunctionUnit @return = null;
-
-currentFunctionUnit.IsIntegration(
-isIntegration: () => @return = currentFunctionUnit.IsIntegrating.First(),
-isNotIntegration: () =>
-{
-var newFunctionUnit = FunctionUnitManager.CreateNew();
-newFunctionUnit.Position = currentFunctionUnit.Position;
-newFunctionUnit.MoveY(100);
-
-newFunctionUnit.InputStreams.Add(DataStreamManager.NewDefinition(newFunctionUnit, currentFunctionUnit.InputStreams.First()));
-newFunctionUnit.OutputStreams.Add(DataStreamManager.NewDefinition(newFunctionUnit, "()"));
-
-currentFunctionUnit.IsIntegrating.Add(newFunctionUnit);
-
-mainModel.FunctionUnits.Add(newFunctionUnit);
-
-@return = newFunctionUnit;
-ViewRedraw();
-});
-
-return @return;
+	FunctionUnit @return = null;
+	
+	currentFunctionUnit.IsIntegration(
+		isIntegration: () => @return = 		currentFunctionUnit.IsIntegrating.First(),
+		isNotIntegration: () =>
+		{
+			var newFunctionUnit = FunctionUnitManager.CreateNew();
+			newFunctionUnit.Position = currentFunctionUnit.Position;
+			newFunctionUnit.MoveY(100);
+			
+			newFunctionUnit.InputStreams.Add(
+			DataStreamManager.NewDefinition(newFunctionUnit, currentFunctionUnit.InputStreams.First()));
+			newFunctionUnit.OutputStreams.Add(
+			DataStreamManager.NewDefinition(newFunctionUnit, "()"));
+			
+			currentFunctionUnit.IsIntegrating.Add(newFunctionUnit);
+			
+			mainModel.FunctionUnits.Add(newFunctionUnit);
+			
+			@return = newFunctionUnit;
+			ViewRedraw();
+		});
+	
+	return @return;
 }
-\end{verbatim}
+	\end{lstlisting}
 
 
 
@@ -590,91 +593,100 @@ fokussierten \textit{Model} bestimmt werden:
 	entsprechende DataStream als nächster Stop zurückgegeben. Ist das Ende
 	erreicht, so soll zum Anfang des kompletten Flows gesprungen werden.
 	
-	\begin{verbatim}
-	public static object TabStopGetNext(object focusedModel, MainModel mainModel)
-	{
+	\begin{lstlisting}[caption=Tabstop vorwärts]
+public static object TabStopGetNext(object focusedModel, MainModel mainModel)
+{
 	object @return = null;
 	
 	focusedModel.TryCast<FunctionUnit>(fu =>
 	{
-	// prefer connected outputs as next tabstop
-	// if no connected take first output defintion if there are any
-	fu.OutputStreams.GetFirstConnected(
-	foundConnected: connectedDsd => 
-	@return = MainModelManager.FindDataStream(connectedDsd, mainModel),
-	noConnected: () => 
-	@return = fu.OutputStreams.FirstOrDefault());
-	});
-	
-	focusedModel.TryCast<DataStream>(stream =>
-	{
-	// if focus was inside datastream take its destination function unit as next tabstop
-	if (stream.Destinations.Any())
-	@return = stream.Destinations.First().Parent;
-	});
-	
-	focusedModel.TryCast<DataStreamDefinition>(dsd =>
-	{
-	// if focus was inside definition there are two case:
-	// is input definition: next tabstop is the function unit of the definition
-	// is output definition: in case the end of the flow was reached ( no connected output ) 
-	// the next tabstop is the first input definition of the beginning of the whole flow.
-	// Is the end not reached go to first connected output datastream
-	dsd.CheckIsInputOrOutput( 
-	isInput: () => @return = dsd.Parent,
-	isOutput: () =>
-	{
-	dsd.Parent.OutputStreams.GetFirstConnected(
-	foundConnected: connectedInput => 
-	@return = MainModelManager.FindDataStream(connectedInput, mainModel),
-	noConnected: () => // loop tabstop focus when the end is reached
-	@return = MainModelManager.GetBeginningOfFlow(dsd.Parent, mainModel)); 
-	});
+		// prefer connected outputs as next tabstop
+		// if no connected take first output defintion if there are any
+		fu.OutputStreams.GetFirstConnected(
+			foundConnected: connectedDsd => 
+				@return =MainModelManager.FindDataStream(
+				connectedDsd, mainModel),
+			noConnected: () => 
+				@return = fu.OutputStreams.FirstOrDefault());
+		});
+		
+		focusedModel.TryCast<DataStream>(stream =>
+		{
+			// if focus was inside datastream take its destination function unit as next tabstop
+			if (stream.Destinations.Any())
+				@return = stream.Destinations.First().Parent;
+		});
+		
+		focusedModel.TryCast<DataStreamDefinition>(dsd =>
+		{
+			// if focus was inside definition there are two case:
+			// is input definition: next tabstop is the function unit of the definition
+			// is output definition: in case the end of the flow was reached ( no connected output ) 
+			// the next tabstop is the first input definition of the beginning of the whole flow.
+			// Is the end not reached go to first connected output datastream
+			dsd.CheckIsInputOrOutput( 
+				isInput: () => @return = dsd.Parent,
+				isOutput: () =>
+			{
+				dsd.Parent.OutputStreams.GetFirstConnected(
+					foundConnected: connectedInput => 
+						@return = MainModelManager.FindDataStream(
+						connectedInput, mainModel),
+					noConnected: () =>
+					 // loop tabstop focus when the 
+					 // end is reached
+						@return = MainModelManager.GetBeginningOfFlow(
+							dsd.Parent, mainModel)); 
+			});
 	});
 	return @return;
-	}
-	\end{verbatim}
-	
+}
+
+\end{lstlisting}
 	Analog dazu die Tabstop-Methode in die entgegengesetzte Richtung.
 	
 	
-	\begin{verbatim}
-	public static object TabStopGetPrevious(object focusedModel, MainModel mainModel)
-	{
+\begin{lstlisting}[caption=Tabstop rückwärts]
+public static object TabStopGetPrevious(object focusedModel, MainModel mainModel)
+{
 	object @return = null;
 	
 	focusedModel.TryCast<FunctionUnit>(fu => 
 	{
-	fu.InputStreams.GetFirstConnected(
-	foundConnected: connectedDsd => 
-	@return = MainModelManager.FindDataStream(connectedDsd, mainModel),
-	noConnected: () =>
-	@return = fu.InputStreams.FirstOrDefault());
+		fu.InputStreams.GetFirstConnected(
+			foundConnected: connectedDsd => 
+				@return = MainModelManager.FindDataStream(
+				connectedDsd, mainModel),
+		noConnected: () =>
+			@return = fu.InputStreams.FirstOrDefault());
 	});
 	
 	focusedModel.TryCast<DataStream>(stream => 
 	{
-	if (stream.Sources.Any())
-	@return = stream.Sources.First().Parent;
+		if (stream.Sources.Any())
+			@return = stream.Sources.First().Parent;
 	});
 	
 	focusedModel.TryCast<DataStreamDefinition>(dsd => 
 	{
-	dsd.CheckIsInputOrOutput(
-	isOutput: () => @return = dsd.Parent,
-	isInput: () => 
-	{
-	dsd.Parent.InputStreams.GetFirstConnected(
-	foundConnected: connectedInput =>
-	@return = MainModelManager.FindDataStream(connectedInput, mainModel),
-	noConnected: () => // loop tabstop focus when the beginning is reached
-	@return = MainModelManager.GetEndOfFlow(dsd.Parent, mainModel));
-	});
-	});
-	
+		dsd.CheckIsInputOrOutput(
+			isOutput: () => @return = dsd.Parent,
+			isInput: () => 
+			{
+				dsd.Parent.InputStreams.GetFirstConnected(
+					foundConnected: connectedInput =>
+						@return = MainModelManager.FindDataStream(
+						connectedInput, mainModel),
+					noConnected: () =>
+						// loop tabstop focus when
+						// the beginning is reached
+						@return = MainModelManager.GetEndOfFlow(
+						dsd.Parent, mainModel));
+		});
+	});	
 	return @return;
-	}
-	\end{verbatim}
+}
+\end{lstlisting}
 	
 	
 
@@ -697,27 +709,6 @@ Eigne ValidationException Klasse, die dem ViewModel übergeben werden kann. .
 Die ValidationException beinhaltet die Information, ob es sich um eine Error oder um eine Warning handelt (Error wird rot markiert, Warnings grün), welche  Element den Fehler anzeigen sollen, und einen Fehlertedt, der als Tooltip an dem Element abgezeigt wird.
 
 
-\subsection{Was nicht erreicht wurde}
-
-Hier einige Auflistung was aus zeitlichen Gründen noch nicht realisiert
-wurde, die jedoch für den Einsatz in einem Projekt noch sehr wichtig wären:
-\begin{itemize}
-	\item Joined-Inputs und auch Joined Outputs ( Das weiterreichen von einem Ergebnis an mehrere). Dies erfordert Möglicherweise noch einmal
-	eine kleine Überarbeitung der Architekur des Models. Auch die Darstellung wurde noch nicht realisiert. Zusätzlich wird die Generierung etwas komplexer und wirft weitere Fragen auf eine eindeutige Interpretation auf.
-	
-	\item Validierung der Syntax - Markierung invalider Syntax innerhalb des Editors wurden nicht realisiert (z.B sind die Klammern richtig gesetzt).
-	
-	\item Mehr Möglichkeiten die Darstellung übersichtlicher zu gestalten: Auf und
-	Zuklappen von Integrationen. Eine 'referenzierte' Kopie einer
-	Funktionseinheit zu erstellen, um an anderer Stelle diese weiter zu
-	verwenden.
-	\item Saubere und eindeutige Darstellung einer Rekursion.
-	\item Zuordnen von Funktionseinheiten zu Klassen.
-	\item Möglichkeit mehrere Flow Design in einer Art Projekt zu Organisieren.
-	Vielleicht auch in Form eines GUI-Skizzen-Editors, indem dann die
-	Interaktionen eingetragen werden können.
-	\item Autosave und Undo/Redo.
-\end{itemize}
 
 
 
@@ -730,7 +721,197 @@ Betracht ziehen, dem Nutzer einige Optionen zur Konfiguration der Generierung
 zur Verfügung zu stellen. Aktuell muss er sich jedoch damit abfinden, dass nur die hier vorgestellte Weise zur Verfügung steht.
 
 
-\subsection{Was erreicht wurde}
+\subsection{Vorstellung - was erreicht wurde}
+\subsubsection{CSV Tabellieren -  Beispiel aus YouTube Video von Ralf Westphal}
+
+\begin{lstlisting} [caption = CSV tabellieren mit Dexel generierter Code]
+public class Tabelle
+{
+    public Record Header;
+    public List<Record> Body;
+}
+
+public class Record
+{
+    public List<string> Data;
+}
+
+// Integrationen
+
+public static IEnumerable<string> CSVTabellieren( IEnumerable<string> strings)
+{
+	var records = CSVParsen(strings);
+	var tbl = HeaderVomBodyTrennen(records);
+	return TabelleBauen(tbl);
+}
+
+
+
+
+
+public static IEnumerable<string> TabelleBauen(Tabelle tbl)
+{
+	var breiten = SpaltenbreitenErmitteln(tbl);
+	var header = HeaderFormattieren(breiten, tbl);
+	var body = BodyFormattieren(breiten, tbl);
+	return TabelleZusammensetzen(body, header);
+}
+
+
+
+// Operationen
+public static IEnumerable<int> SpaltenbreitenErmitteln(Tabelle tbl)
+{
+    throw new NotImplementedException();
+}
+
+public static IEnumerable<string> HeaderFormattieren(IEnumerable<int> breiten, Tabelle tbl)
+{
+    throw new NotImplementedException();
+}
+
+public static IEnumerable<string> BodyFormattieren(IEnumerable<int> breiten, Tabelle tbl)
+{
+    throw new NotImplementedException();
+}
+
+public static IEnumerable<string> TabelleZusammensetzen(IEnumerable<string> body, IEnumerable<string> header)
+{
+    throw new NotImplementedException();
+}
+
+public static Tabelle HeaderVomBodyTrennen(IEnumerable<Record> records)
+{
+    throw new NotImplementedException();
+}
+
+public static IEnumerable<Record> CSVParsen(IEnumerable<string> strings)
+{
+    throw new NotImplementedException();
+}
+
+
+\end{lstlisting}
+
+\subsubsection{Shopping Simulator - Komplexes Beispiel}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.1\linewidth]{../Screenshots/Dexel_v03.png}
+	\caption{Shopping Simulator}
+\end{figure}
+
+\begin{lstlisting}[caption=Shopping Simulator - automatisch generierter Code]
+public class Person
+{
+    public int Age;
+    public string Name;
+    public double Budget;
+}
+
+public class Cart
+{
+    public List<string> Products;
+    public double Discount;
+    public double PriceTotal;
+}
+
+public static void ShoppingSimulator(int customerCount)
+{
+	CreateRandomPersons(customerCount, person => {
+		var aCart = CreateRandomShoppingCart();
+		CheckAge(person, onAdult: () => {
+			CheckMoney(person, aCart, onEnough: () => {
+				Checkout(aCart, person);
+				SubscribeToNewsletter(person);
+			}, onTooExpensive: () => {
+				PrintNotEnoughMoneyMessage();
+			});
+		}, onChild: () => {
+			AddDiscount(aCart);
+			CheckMoney(person, aCart, onEnough: () => {
+				Checkout(aCart, person);
+			}, onTooExpensive: () => {
+				PrintNotEnoughMoneyMessage();
+			});
+		});
+	});
+}
+
+public static void CreateRandomPersons(int customerCount, Action<Person> onPerson)
+{
+	CreateNewPerson(customerCount, p => {
+		var rndP = AddRndNameAndRndAge(p);
+		onPerson(AddRndBudget(rndP));
+	});
+}
+
+public static Cart CreateRandomShoppingCart()
+{
+    throw new NotImplementedException();
+}
+
+public static void CheckAge(Person aPerson, Action onAdult, Action onChild)
+{
+    throw new NotImplementedException();
+}
+
+public static void CheckMoney(Person aPerson, Cart aCart, Action onEnough, Action onTooExpensive)
+{
+    throw new NotImplementedException();
+}
+
+public static void AddDiscount(Cart aCart)
+{
+    throw new NotImplementedException();
+}
+
+public static void Checkout(Cart aCart, Person aPerson)
+{
+    throw new NotImplementedException();
+}
+
+public static void SubscribeToNewsletter(Person aPerson)
+{
+    throw new NotImplementedException();
+}
+
+public static void CheckMoney(Person aPerson, Cart aCart, Action onEnough, Action onTooExpensive)
+{
+    throw new NotImplementedException();
+}
+
+public static void PrintNotEnoughMoneyMessage()
+{
+    throw new NotImplementedException();
+}
+
+public static void PrintNotEnoughMoneyMessage()
+{
+    throw new NotImplementedException();
+}
+
+public static void Checkout(Cart aCart, Person aPerson)
+{
+    throw new NotImplementedException();
+}
+
+public static void CreateNewPerson(int customerCount, Action<Person> onP)
+{
+    throw new NotImplementedException();
+}
+
+public static Person AddRndNameAndRndAge(Person p)
+{
+    throw new NotImplementedException();
+}
+
+public static Person AddRndBudget(Person rndP)
+{
+    throw new NotImplementedException();
+}
+
+
+\end{lstlisting}
 
 Die weniger komplexeren Aufgaben wurden vollständig implementiert.
 Diese wären: 
@@ -740,7 +921,7 @@ Diese wären:
 \end{itemize}
 
 Die weitaus komplexere Aufgabe: die Generierung der Methoden-Bodys einer Integration wurde nicht ganz vollständig implementiert.
-Das liegt vorallem daran, dass eine vollständige Umsetzung einiges an manuellem Testen erfordert, um herauszufinden, welche Datenströme noch falsch interpretiert werden. 
+Das liegt vor allem daran, dass eine vollständige Umsetzung einiges an manuellem Testen erfordert, um herauszufinden, welche Datenströme noch falsch interpretiert werden. 
 
 Die Validierung des Datenflusses ist eng an die Generierung gekoppelt und deswegen gilt das selbe auch für diese. 
 
@@ -771,11 +952,11 @@ Der Datentypen auf dem die Methoden zum Erstellen von Code arbeitet lautet:
 Diese SyntaxNodes werden von einem SyntaxGenerator erstellt werden.
 Diese muss beim Initialsieren konfiguriert werden.
 
-\begin{verbatim}
+\begin{lstlisting}[caption=SyntaxGenerator für C\# erhalten]
 var workspace = new AdhocWorkspace();
 // Get the SyntaxGenerator for the specified language
 var generator = SyntaxGenerator.GetGenerator(workspace, LanguageNames.CSharp);
-\end{verbatim}
+\end{lstlisting}
 
 
 Das Erstellen eines Ausdruckes, Klasse oder Methode mit Hilfe von Methoden
@@ -790,39 +971,41 @@ benutzerdefinierten Datentyp.
 	\item Erzeugung eines Datentypen als einfaches Beispiel
 	\label{sec:orgheadline42}
 	
-	\begin{verbatim}
-	var fieldAlter = generator.FieldDeclaration(
-	name: "Alter",
-	type: generator.TypeExpression(SpecialType.System_Int32),
-	accessibility: Accessibility.Public);
+	\begin{lstlisting}[caption=Erzeugung einer Person-Klasse mit Roslyn]
+	SyntaxNode fieldAlter = generator.FieldDeclaration(
+		name: "Alter",
+		type: generator.TypeExpression(
+			SpecialType.System_Int32),
+		accessibility: Accessibility.Public);
 	
-	var fieldName = generator.FieldDeclaration(
-	name: "Name",
-	type: generator.TypeExpression(SpecialType.System_String),
-	accessibility: Accessibility.Public);
+	SyntaxNode fieldName = generator.FieldDeclaration(
+		name: "Name",
+		type: generator.TypeExpression(
+			SpecialType.System_String),
+		accessibility: Accessibility.Public);
 	
 	
-	var allFields =  new[] {fieldName, fieldAlter};
+	SyntaxNode[] allFields =  new[] {fieldName, fieldAlter};
 	
 	
 	// Generate the class
-	var classDefinition = Generator.ClassDeclaration(
-	"Person", 
-	typeParameters: null,
-	accessibility: Accessibility.Public,
-	modifiers: DeclarationModifiers.None,
-	baseType: null,
-	interfaceTypes: null,
-	members:allFields
+	SyntaxNode classDefinition = Generator.ClassDeclaration(
+		"Person", 
+		typeParameters: null,
+		accessibility: Accessibility.Public,
+		modifiers: DeclarationModifiers.None,
+		baseType: null,
+		interfaceTypes: null,
+		members:allFields
 	);
-	\end{verbatim}
+	\end{lstlisting}
 	
 	Um am Ende den Code in Form eines Strings zu erhalten muss auf die oberstere
 	SyntaxNode folgende beide Methoden aufgerufen werden:
 	
-	\begin{verbatim}
-	var code = classDefinition.NormalizeWhitespace().ToFullString();
-	\end{verbatim}
+	\begin{lstlisting}[caption=Erhalten des Codes als string]
+	string code = classDefinition.NormalizeWhitespace().ToFullString();
+	\end{lstlisting}
 \end{enumerate}
 
 
@@ -839,7 +1022,7 @@ Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die
 	In diesem Fall werden die ausgehenden Daten einfach als Rückgabewert heraus gereicht.
 	
 	
-	\begin{figure}[!htbp]
+	\begin{figure}[H]
 		\centering
 			\includegraphics[width=\linewidth]{./img/roslyn_simpleOutput.png} 
 		\caption{Dexel-Screenshot:TODO Einfach Funktionseinheit mit benutzerdefinierten Datentyp}
@@ -847,23 +1030,23 @@ Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die
 
 	
 	Die Generierung erzeugt folgenden Code:
-	\begin{verbatim}
+	\begin{lstlisting}[caption=Mit Dexel generierter Code ]
 	public class Person
 	{
-	public string Name;
-	public int Age;
+		public string Name;
+		public int Age;
 	}
 	
 	public static Person NewPerson(int aint, string astring)
 	{
-	throw  new NotImplementedException();
+		throw new NotImplementedException();
 	}
-	\end{verbatim}
+	\end{lstlisting}
 	
 	Hat ein Output mehr als ein Datentyp und ist kein Stream und ist auch nicht optional, so
 	wird das Ergebnis als Tupel über den Rückgabewert geliefert.
 	
-		\begin{figure}[!htbp]
+		\begin{figure}[H]
 			\centering
 			\includegraphics[width=.8\linewidth]{./img/roslyn_twoDatatypesOneOutput.png} 
 			\caption{Dexel-Screenshot:  TODO Funktionseinheit mit Tupel-Output}
@@ -871,9 +1054,10 @@ Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die
 
 	
 	
-	\begin{verbatim}
+	\begin{lstlisting}[caption=Mit Dexel generierter Code ]
 	TODO
-	\end{verbatim}
+	\end{lstlisting}
+
 	
 \subsubsection{Outputs über Actions}
 
@@ -900,7 +1084,7 @@ Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die
 	
 	Die Input-Daten werden in der Signature zuerst aufgelistet, anschließend die Actions.
 	
-			\begin{figure}[!htbp]
+			\begin{figure}[H]
 				\centering
 				\includegraphics[width=\linewidth]{./img/roslyn_multipleOutputs.png} 
 				\caption{Dexel-Screenshot: Funktionseinheit mit zwei Outputs mit definierten Actionnamen}
@@ -909,12 +1093,12 @@ Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die
 	
 
 	
-	\begin{verbatim}
+	\begin{lstlisting}[caption=Mit Dexel generierter Code ]
 	public static void NewPerson(int aint, string astring, Action<Person> onPerson, Action<string> onError)
 	{
 	throw  new NotImplementedException();
 	}
-	\end{verbatim}
+	\end{lstlisting}
 	 \subsubsection{Streams}
 
 	Streams werden in Dexel ebenfalls mit Actions realisiert, mit einer Ausnahme:
@@ -925,7 +1109,7 @@ Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die
 	\footnote{	Das Vorhandensein von einem Inputstream und einem Outputstream bedeutet eigentlich nicht zwingend , dass für jeden Input auch ein	Output erzeugt wird. Die Notation unterscheidet beide Fälle nicht. Deswegen die Lösung über eine Vergabe eines \textit{Actionamen} als Kompromiss, um dem Benutzer hier eine Kontrolle über die Erzeugung des Codes zu geben. Wenn der Benutzer ein \textit{Actionname} angibt, wird also indirekt davon ausgegangen, dass der Benutzer den Output auch als Action umsetzten möchte und die Funktionseinheit somit beliebig oft diese Action aufrufen kann. Ob dieses Entscheidung richtig war müsste  noch in der Praxis erprobt werden. Stellt sich heraus,	dass sie schlecht ist, müsste man über eine Anpassung der Notation nachdenken.}
 	
 		
-		\begin{figure}[!htbp]
+		\begin{figure}[H]
 			\centering
 			\includegraphics[width=.9\linewidth]{./img/roslyn_Stream.png} 
 			\caption{Dexel-Screenshot: TODO Funktionseinheit mit Output-Stream}
@@ -935,35 +1119,21 @@ Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die
 
 	
 	
-	\begin{verbatim}
+	\begin{lstlisting}[caption=Mit Dexel generierter Code ]
 	TODO
-	\end{verbatim}
+	\end{lstlisting}
 	
 			
-			\begin{figure}[!htbp]
+			\begin{figure}[H]
 				\centering
 				\includegraphics[width=.9\linewidth]{./img/roslyn_StreamStream.png} 
 				\caption{Dexel-Screenshot: Funktionseinheit mit Input-Stream und Output-Stream und undefinierten Actionnamen}
 			\end{figure}
 			
 
-	
-	\begin{verbatim}
+	\begin{lstlisting}[caption=Mit Dexel generierter Code ]
 	TODO
-	\end{verbatim}
-	
-	
-	
-
-	
-	
-	
-	 \subsubsection{TDD}
-
-	
-	 \subsubsection{Codeauschnitte}
-	
-	 \subsubsection{DatanameParser}
+	\end{lstlisting}
 	 
 
 \subsection{Erzeugung der Integration-Bodies}
@@ -972,7 +1142,7 @@ Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die
 
 	 \subsubsection{Terminologie}
 
-	Integration und Sub-Funktionseinheit. Eine Integration kann nicht nur aus
+	Eine Integration kann nicht nur aus
 	Operationen bestehen, sondern auch aus anderen Integrationen bestehen.
 	Leider gibt es hierfür keine Überbegriff für beide.
 	Da im in diese Kapitel jedoch öfters von Funktionseinheiten innerhalb einer
@@ -992,19 +1162,18 @@ Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die
 	Diese beinhaltet alle Informationen aus der Analyse. Am Ende wird dieses Objekt
 	der Generierungsmethode Übergeben, die anhand diesem den Code erzeugt\footnote{Ein weiterer Vorteil dieser Aufteilung ist, dass ein großer Teil frei von der Roslyn-API bleibt. Die eigenen Datentypen lassen sich dazu auch besser testen, als die SyntaxNodes von Roslyn. Möchte man das Ergebnis von Roslyn testen, bleibt einem  oft keine andere Wahl, als den erzeugten Code samt Whitespaces über ein string-Vergleich zu erschlagen, was bei mehrzeiligem Code doch etwas ausufern kann. Stattdessen lässt sich das Ergebnis aus den eigenen Analysen hingegen einfach über ein Vergleich von den gefundenen Objekt-Referenzen überprüfen.}.
 	
-	\begin{verbatim}
-	public static SyntaxNode[] GenerateIntegrationBody(SyntaxGenerator generator, MainModel mainModel,
-	FunctionUnit integration )
-	{
+	\begin{lstlisting}[caption=GenerateIntegrationBody Methode]
+public static SyntaxNode[] GenerateIntegrationBody( SyntaxGenerator generator, MainModel mainModel, FunctionUnit integration )
+{
 	// integrationbody object for storing analysed and generated information
-	var integrationBody = IntegrationAnalyser.CreateNewIntegrationBody(mainModel.Connections, integration);
+	var integrationBody = IntegrationAnalyser.CreateNewIntegrationBody( mainModel.Connections, integration);
 	AddIntegrationInputParameterToLocalScope(integrationBody, integration);
 	
 	// analyse data flow before generation 
-	IntegrationAnalyser.AnalyseParameterDependencies(integrationBody);
-	IntegrationAnalyser.AnalyseLambdaBodies(integrationBody, mainModel);
-	IntegrationAnalyser.AnalyseMatchingOutputOfIntegration(integrationBody, mainModel);
-	IntegrationAnalyser.AnalyseReturnToLocalReturnVariable(integrationBody, mainModel);
+	IntegrationAnalyser.AnalyseParameterDependencies( integrationBody);
+	IntegrationAnalyser.AnalyseLambdaBodies( integrationBody, mainModel);
+	IntegrationAnalyser.AnalyseMatchingOutputOfIntegration( integrationBody, mainModel);
+	IntegrationAnalyser.AnalyseReturnToLocalReturnVariable( integrationBody, mainModel);
 	
 	// generation
 	var result = new List<SyntaxNode>();
@@ -1012,8 +1181,8 @@ Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die
 	GenerateBody(integrationBody, result.Add);
 	
 	return result.ToArray();
-	}
-	\end{verbatim}
+}
+	\end{lstlisting}
 	
 	\subsubsection{Analyse des Flow Designs}
 
@@ -1039,13 +1208,13 @@ Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die
 		des Lambda-Ausdruckes befinden müssen. Die Analyse speichert das Ergebnis
 		in folgender Form ab. 
 		
-		\begin{verbatim}
+		\begin{lstlisting}[caption=LambdaBody Klasse]
 		public class LambdaBody
 		{
-		public DataStreamDefinition InsideLambdaOf;
-		public FunctionUnit FunctionUnit;
+			public DataStreamDefinition InsideLambdaOf;
+			public FunctionUnit FunctionUnit;
 		}
-		\end{verbatim}
+		\end{lstlisting}
 		
 		Da die LambdaBody-Objekte in der Reihenfolge im IntegrationBody abgelegt
 		werden, in der sie im Flow Design vorkommen, kann daraus auch später die
@@ -1064,7 +1233,7 @@ Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die
 		muss herausgefunden werden, welche Funtionseinheiten im Datenfluss diesen
 		Output erzeugt bedienen. Dabei werden die Implementierungs-Stile der
 		beiden übereinstimmenden Ausgänge mit abgepeichert. Später bei der
-		Generierung gibt es somit drei Möglichkeiten:
+		Generierung gibt es somit vier Möglichkeiten:
 		\begin{itemize}
 			\item Beide sind Actions:
 			Die Action der Integration wird direkt an die Sub-Funktionseinheit
@@ -1074,17 +1243,29 @@ Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die
 			Returnwert 
 			Die Action wird aufgerufen und die Methode wird direkt in diese
 			hingeschrieben
+			\begin{lstlisting}[caption=Action-Return-Beziehung]
+public static void CreateRandomPersons(int customerCount, Action<Person> onPerson)
+{
+	CreateNewPerson(customerCount, p => {
+		var rndP = AddRndNameAndRndAge(p);
+		onPerson(AddRndBudget(rndP));
+	});
+}
+			\end{lstlisting}
 			\item Integrationsausgang ist Returnwert, Sub-Funktionseinheitsausgang ist
 			Action.
 			Eine lokale Variable muss vorher angelegt werden und mit \texttt{null}
 			initalisiert werden. Danach wird innerhalb des Lambas des Actions diese
 			Variable beschrieben. Am Ende wird die lokale Varibale als Rückgabewert
 			ausgegeben.
+			\item Beide Ausgänge werden über Returnwert realisiert 
+		    Das Ergebnis der Sub-Funktionseinheit wird durch ein return-Ausdruck aus der Integration herausgereicht.
 		\end{itemize}
+			\item AnalyseReturnToLocalReturnVariable
+			Wird der Ausgang einer Integration mit dem Returnwert realisiert, so muss noch herausgefunden werden, ob eine locale Variable nötig ist, um den Returnwert zwischenzuspeichern. Ist eine Return-Return Beziehung vorhanden, so muss innerhalb des Lambdas der Returnwert der Sub-Funktionseinheit in die lokale return-Variable gespeichert werden.
 	\end{enumerate}
 	
-	
-	\subsubsection{Datenströme}
+
 
 
 \section{Generierung eines Diagrammes aus Code}

@@ -71,9 +71,10 @@ kreatives Arbeiten besser ermöglicht.
 
 \section{Editor}
 
+\begin{table}[H]
 \begin{tabularx}{\textwidth}{X|l}
 Anforderungen & Priorität\\
-\hline
+\hline \hline
 Erstellen von Funktionseinheiten, Benennen, Verschieben auf dem Canvas, Löschen, Duplizieren & hoch\\ \hline
 Navigation ( Panning, Zooming ) & hoch\\ \hline
 Selektieren von mehreren Funktionseinheiten um mehrere auf einmal zu bearbeiten & hoch\\ \hline
@@ -82,6 +83,14 @@ Verbinden eines Outputs einer Funktionseinheit mit einem Input einer anderen & h
 Zusammenlaufen von mehreren Datenflüssen in ein Input einer Funktionseinheit (Joined Inputs) & hoch\\ \hline
 Funktionseinheit(en) einer anderen unterordnen können, um Integrationen zu erstellen inklusive visuelle Kennzeichnung & hoch\\ \hline
 Speichern und Laden in ein Dateiformat & hoch\\ \hline
+\end{tabularx}
+\caption{Anforderungen mit hoher Priorität}
+\end{table}
+
+\begin{table}[H]
+\begin{tabularx}{\textwidth}{X|l}
+	Anforderungen & Priorität\\
+	\hline \hline
 Funktionseinheiten Klassen zuordnen & mittel\\ \hline
 Syntaxhighlighting für die Datentypen auf den Datenflüssen & mittel\\ \hline
 Keyboard Hotkeys / Tabstops & mittel\\ \hline
@@ -92,6 +101,16 @@ Autosave & mittel\\ \hline
 Undo / Redo System & mittel\\ \hline
 Definieren von State einer Funktionseinheit & mittel\\ \hline
 Definieren von neuen Datentypen & mittel\\ \hline
+\end{tabularx}
+\caption{Anforderungen mit mittlerer Priorität}
+\end{table}
+
+
+\begin{table}[H]
+\begin{tabularx}{\textwidth}{X|l}
+
+	Anforderungen & Priorität\\
+	\hline \hline
 Mouse-Hover zeigt eine Vorschau des erzeugten Codes für die Funktionseinheit & niedrig\\ \hline
 Wiederverwenden von vorhandenen Funktionseinheiten & niedrig\\ \hline
 Autocomplete auf dem Textfeld der Datenströme & niedrig\\ \hline
@@ -99,7 +118,8 @@ Kommentarboxen & niedrig\\ \hline
 Anfügen von Tests an Funktionseinheiten & niedrig\\ \hline
 Mehrere Themes: Dark, White (Print) & niedrig\\ \hline
 \end{tabularx}
-
+\caption{Anforderungen mit niedriger Priorität}
+\end{table}
 
 
 
@@ -111,14 +131,12 @@ Diagramm durch das Mausrad. Die Position der Maus bestimmt das Zentrum des
 Zooms.
 
 
-
-
-
 \section{Generierung von Code}
 
-
+\begin{table}[H]
 \begin{tabularx}{\textwidth}{X|l}
 Anforderungen & Priorität\\
+\hline
 \hline
 Generierung von Methodensignaturen aus dem Namen und Input/Output Definitionen einer Funktionseinheit & hoch\\
 \hline
@@ -135,7 +153,8 @@ Korrektes Einfügen / Integrieren von den generierten Codezeilen in die Codebasi
 Live-Generierung & niedrig\\
 \hline
 \end{tabularx}
-
+\caption{Anforderungen der Code-Generierung}
+\end{table}
 
 
 \subsubsection{Erzeugung des kompletten Methoden-Bodies einer Integration}
@@ -180,10 +199,10 @@ wäre die Überschneidung von Namen. Wenn automatisch der generierte Code bevorz
 
 
 \section{Generierung von Flow Design Diagrammen aus Code}
-
+\begin{table}[H]
 \begin{tabularx}{\textwidth}{X|l}
 Anforderungen & Priorität\\
-\hline
+ \hline \hline
 Finden von Methoden und Erzeugen von Funktionseinheiten und ihre Input und Output Datenströme anhand der Methodensignatur im Code & hoch\\ \hline
 Automatisches Spacing & hoch ( aber nicht unbedingt perfekt)\\ \hline
 Den Datenfluss einer Integration erkennen und ihn in ein Flow Design Diagramm übertragen & hoch\\ \hline
@@ -191,7 +210,8 @@ Erkennen, ob es sich bei der Methode um eine Operation oder Integration handelt 
 Umgang mit Methoden die nicht das IOSP befolgen & mittel\\ \hline
 Speichern der Inhalte, die nicht im Diagramm dargestellt werden können. & mittel\\ \hline
 \end{tabularx}
-
+\caption{Anforderungen der Diagramm-Generierung}
+\end{table}
 
 
 
@@ -214,19 +234,34 @@ Bei Verwendung von Events kann der Datenfluss möglicherweise nicht mehr nachvol
 \section{Minimalistischer Aufbau. Fokus auf Produktivität.}
 
 
-Die Hauptansicht
 
+
+\begin{figure}[H]
+	\centering
 \includegraphics[width=.9\linewidth]{./img/MainCrop.jpg}
+	\caption{Die Hauptansicht. Die Anwendung soll möglichst viel Platz für die Zeichenfläche
+		bieten}
+\end{figure}
 
-Die Anwendung soll möglichst viel Platz für die Zeichenfläche
-bieten.
 
-\includegraphics[width=.9\linewidth]{./img/ContextMenu.jpg}
 
-Bei einem Rechtsklick auf eine leere Stelle in der Zeichenfläche erscheint ein
-Kontextmenu, dass dem Anwender erlaubt an dieser Stelle eine neue Funktionseinheit einzufügen.
 
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\linewidth]{./img/ContextMenu.jpg}
+	\caption{Bei einem Rechtsklick auf eine leere Stelle in der Zeichenfläche erscheint ein Kontextmenu, dass dem Anwender erlaubt an dieser Stelle eine neue Funktionseinheit einzufügen.}
+\end{figure}
+
+
+\begin{figure}[H]
+	\centering
 \includegraphics[width=.9\linewidth]{./img/NewCell.jpg}
+	\caption{Eine neue Funktionseinheit wurde erstellt}
+\end{figure}
+
+
+
 
 \bigskip
 Im folgendem einige Kerngedanken über die Funktionalität des Editors:
@@ -283,7 +318,6 @@ manchen Stellen etwas vom original Abweichen.
 sind.
 \end{itemize}
 
-\pagebreak
 \emph{Mehrere Outputs}
 
 
@@ -335,7 +369,13 @@ angezeigt werden. Desweiteren wäre eine visuelle Hervorhebung von nicht
 verwendeten Datentypen auch denkbar.
 \bigskip
 
-\includegraphics[width=.9\linewidth]{./img/DatatypesCrop.jpg}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.9\linewidth]{./img/DatatypesCrop.jpg}
+	\caption{Datentypen Editor}
+\end{figure}
+
+
 
 
 Weitere Ideen: 
