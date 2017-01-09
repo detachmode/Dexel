@@ -42,12 +42,20 @@ namespace Dexel.Editor.Views.CustomControls
             DependencyObject dependencyObject,
             DependencyPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
         {
-            var behavior = dependencyObject as AvalonEditBehaviour;
-            var editor = behavior?.AssociatedObject;
-            if (editor?.Document == null) return;
-            var caretOffset = editor.CaretOffset;
-            editor.Document.Text = dependencyPropertyChangedEventArgs.NewValue.ToString();
-            editor.CaretOffset = caretOffset;
+        
+            try
+            {
+                var behavior = dependencyObject as AvalonEditBehaviour;
+                var editor = behavior?.AssociatedObject;
+                if (editor?.Document == null) return;
+                var caretOffset = editor.CaretOffset;
+                editor.Document.Text = dependencyPropertyChangedEventArgs.NewValue.ToString();
+                editor.CaretOffset = caretOffset;
+            }
+            catch 
+            {
+
+            }
         }
     }
 }

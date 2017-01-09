@@ -34,10 +34,18 @@
 
             <Border
                 Visibility="{Binding DataContext.VisibilityDatanames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"
-                Panel.ZIndex="999" Background="{DynamicResource BG}" BorderBrush="{DynamicResource FillPointerBrush}"
-                BorderThickness="2">
-                <customControls:DataNamesControl x:Name="DataNamesControl" Panel.ZIndex="1000"
+                Panel.ZIndex="999"   BorderBrush="{DynamicResource FillPointerBrush}"
+                BorderThickness="0.5">
+                <Grid>
+                    
+                    <Grid Opacity="0.93" Background="{DynamicResource BG}">
+                        <Grid.Effect>
+                            <BlurEffect Radius="4" KernelType="Box"/>
+                        </Grid.Effect>
+                    </Grid>
+                    <customControls:DataNamesControl x:Name="DataNamesControl" Panel.ZIndex="1000" 
                                                  DataContext="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
             </Border>
 
         </Grid>
