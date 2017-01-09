@@ -19,7 +19,8 @@ namespace Dexel.Editor
         public static void SetConfig(string key, string value)
         {
             Configuration config = ConfigurationManager.OpenExeConfiguration(System.Reflection.Assembly.GetExecutingAssembly().Location);
-            config.AppSettings.Settings[key].Value = value;
+            config.AppSettings.Settings.Remove(key);
+            config.AppSettings.Settings.Add(key,value);
             config.Save(ConfigurationSaveMode.Minimal);
         }
 
