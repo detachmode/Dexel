@@ -20,7 +20,7 @@ namespace Dexel.Editor.Views.UserControls.DataTypeEditor
         {
 
             InitializeComponent();
-            LoadColorSchema(@"Views/Themes/FlowDesignColor.xshd");
+            LoadColorSchema(MainWindow.SyntaxColortheme);
 
 
             
@@ -41,12 +41,12 @@ namespace Dexel.Editor.Views.UserControls.DataTypeEditor
        
 
         #region load color schema
-        private static XshdSyntaxDefinition _xshd;
+       
         private static readonly HighlightingManager Man = new HighlightingManager();
 
         private void LoadColorSchema(string url)
         {
-            if (_xshd == null)
+            if (MainWindow.Xshd == null)
             {
                 if (!File.Exists(url))
                 {
@@ -54,11 +54,11 @@ namespace Dexel.Editor.Views.UserControls.DataTypeEditor
                 }
                 using (var reader = new XmlTextReader(url))
                 {
-                    _xshd = HighlightingLoader.LoadXshd(reader);
+                    MainWindow.Xshd = HighlightingLoader.LoadXshd(reader);
                 }
             }
 
-            TheDefinitionTextBox.SyntaxHighlighting = HighlightingLoader.Load(_xshd, Man);
+            TheDefinitionTextBox.SyntaxHighlighting = HighlightingLoader.Load(MainWindow.Xshd, Man);
         }
 
         #endregion

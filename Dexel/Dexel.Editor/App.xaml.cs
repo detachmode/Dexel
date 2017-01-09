@@ -1,4 +1,6 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Configuration;
+using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Threading;
 using Dexel.Editor.ViewModels;
@@ -14,6 +16,24 @@ namespace Dexel.Editor
     /// </summary>
     public partial class App : Application
     {
+        public static void SetConfig(string key, string value)
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            config.AppSettings.Settings[key].Value = value;
+            config.Save(ConfigurationSaveMode.Minimal);
+        }
+
+
+        public static void TryGetConfig(string key, Action<string> onValue)
+        {
+            Configuration config = ConfigurationManager.OpenExeConfiguration(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            var value =  config.AppSettings.Settings[key];
+            if (value != null)
+            {
+                onValue(value.Value);
+            }
+        }
+
         [DllImport("kernel32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool AllocConsole();
@@ -27,14 +47,27 @@ namespace Dexel.Editor
             var mockMainModel = Mockdata.StartMainModel();
             var mainviewModel = MainViewModel.Instance();
             mainviewModel.LoadFromModel(mockMainModel);
-
             var mainwindow = new MainWindow(mainviewModel);
 
-            //var mainwindow = new TestWindow();
+            LoadLastUsedTheme();
+
             mainwindow.Show();
 
             App.Current.DispatcherUnhandledException += AppOnDispatcherUnhandledException;
         }
+
+
+        private static void LoadLastUsedTheme()
+        {
+            App.TryGetConfig("Theme", s =>
+            {
+                if (s == "Print")
+                {
+                    MainViewModel.Instance().ChangeTheme("Views/Themes/Print.xaml", @"Views/Themes/FlowDesignColorPrint.xshd");
+                }
+            });
+        }
+
 
         private void AppOnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs args)
         {
@@ -44,5 +77,7 @@ namespace Dexel.Editor
                 App.Current.Shutdown();
         }
 
+
+      
     }
 }

@@ -15,35 +15,35 @@
     </UserControl.Resources>
 
     <Grid Margin="3" ContextMenu="{StaticResource MyContextMenu}">
-        <Border BorderBrush="{StaticResource BorderBrush}"
-                Background="{StaticResource BG}"
+        <Border BorderBrush="{DynamicResource BorderBrush}"
+                Background="{DynamicResource  BG}"
 
                 BorderThickness="1">
             <StackPanel Orientation="Vertical"
                         d:DataContext="{d:DesignData DataTypeViewModel}">
                 <TextBox
                     x:Name="TheNameTextBox"
-                    Background="{StaticResource BGBrighter}"
-                    BorderBrush="{StaticResource BGBrighter}"
+                    Background="{DynamicResource  BGBrighter}"
+                    BorderBrush="{DynamicResource  BGBrighter}"
                     ContextMenu="{StaticResource MyContextMenu}"
                     FontSize="14"
-                    Foreground="{StaticResource Foreground}" Text="{Binding Model.Name, Mode=TwoWay}" />
+                    Foreground="{DynamicResource  Foreground}" Text="{Binding Model.Name, Mode=TwoWay}" />
                 <avalonEdit:TextEditor
                      x:Name="TheDefinitionTextBox"                   
                     Margin="2,6"
                     xmlns:avalonEdit="http://icsharpcode.net/sharpdevelop/avalonedit"               
                     ShowLineNumbers="True"
-                    LineNumbersForeground="{StaticResource BG}"
+                    LineNumbersForeground="{DynamicResource  BG}"
                     MinWidth="12"
                     FontSize="14"
-                    Foreground="{DynamicResource Foreground}"
+                    Foreground="{DynamicResource  Foreground}"
                     BorderBrush="{x:Null}"
                     Document="{Binding Definitions, Mode=TwoWay, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource TextDocumentConverter}}"
                     HorizontalScrollBarVisibility="Hidden"
                     VerticalScrollBarVisibility="Disabled"
                     FontFamily="Consolas"
                     WordWrap="False"
-                    Background="{StaticResource BG}"
+                    Background="{DynamicResource  BG}"
                     SyntaxHighlighting="FlowDesign" />
 
             </StackPanel>

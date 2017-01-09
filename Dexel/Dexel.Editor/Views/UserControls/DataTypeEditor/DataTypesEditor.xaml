@@ -12,7 +12,7 @@
         </ContextMenu>
     </UserControl.Resources>
 
-    <Border Background="{StaticResource BG}" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" >
+    <Border Background="{DynamicResource  BG}" BorderBrush="{DynamicResource  BorderBrush}" BorderThickness="1" >
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="39"/>
@@ -20,9 +20,9 @@
             </Grid.RowDefinitions>
             <Button 
                     Height="26"
-                    Background="{StaticResource BGBrighter}" Foreground="{StaticResource Foreground}"
-                    Content="{Binding MissingDataTypes, Converter={StaticResource MissingTypesButtonText}}"  Click="CreateMissingTypes_click" Grid.Row="0"></Button>
-            <Border  Grid.Row="1" BorderBrush="{StaticResource BorderBrush}" BorderThickness="1" Background="{StaticResource BGDarker}"  Margin="6">
+                    Background="{DynamicResource  BGBrighter}" Foreground="{DynamicResource  Foreground}"
+                    Content="{Binding MissingDataTypes, Converter={StaticResource  MissingTypesButtonText}}"  Click="CreateMissingTypes_click" Grid.Row="0"></Button>
+            <Border  Grid.Row="1" BorderBrush="{DynamicResource  BorderBrush}" BorderThickness="1" Background="{DynamicResource  BGDarker}"  Margin="6">
            
 
                

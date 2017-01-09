@@ -37,6 +37,8 @@
             <!--<MenuItem Header="Test" Click="MenuItem_OnClick"></MenuItem>-->
             <MenuItem Header="VIEW">
                 <MenuItem Header="Reset" Click="MenuItem_ResetView"></MenuItem>
+                <MenuItem Header="Dark Theme" Click="MenuItem_DarkTheme"></MenuItem>
+                <MenuItem Header="Light Theme" Click="MenuItem_PrintTheme"></MenuItem>
             </MenuItem>
             
             <MenuItem Header="HELP">

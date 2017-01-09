@@ -1,8 +1,12 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 using Dexel.Editor.ViewModels;
+using Dexel.Editor.Views.AdditionalWindows;
 using Dexel.Model.DataTypes;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using Microsoft.Win32;
 
 namespace Dexel.Editor.Views
@@ -15,6 +19,8 @@ namespace Dexel.Editor.Views
     {
         private static MainWindow _instance;
 
+        public static string SyntaxColortheme = @"Views/Themes/FlowDesignColorDark.xshd";
+        public static XshdSyntaxDefinition Xshd;
 
         public MainWindow(MainViewModel vm)
         {
@@ -133,7 +139,7 @@ namespace Dexel.Editor.Views
 
         private void help_OnClicked(object sender, RoutedEventArgs e)
         {
-            var helpdia = new AdditionalWindows.HelpWindow();
+            var helpdia = new HelpWindow();
             helpdia.ShowDialog();
         }
 
@@ -163,6 +169,16 @@ namespace Dexel.Editor.Views
         private void MenuItem_GenerateCodeToConsole(object sender, RoutedEventArgs e)
         {
             Interactions.GenerateCodeToConsole(MainModel());
+        }
+        private void MenuItem_DarkTheme(object sender, RoutedEventArgs e)
+        {
+            Interactions.ChangeToDarkTheme();
+        }
+
+        private void MenuItem_PrintTheme(object sender, RoutedEventArgs e)
+        {
+            Interactions.ChangeToPrintTheme();
+          
         }
     }
 

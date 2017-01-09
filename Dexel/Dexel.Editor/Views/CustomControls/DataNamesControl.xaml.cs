@@ -17,12 +17,13 @@ namespace Dexel.Editor.Views.CustomControls
     /// </summary>
     public partial class DataNamesControl : UserControl
     {
-        
+
+       
 
         public DataNamesControl()
         {
             InitializeComponent();
-            LoadColorSchema(@"Views/Themes/FlowDesignColor.xshd");
+            LoadColorSchema(MainWindow.SyntaxColortheme);
 
             TextBox.LostFocus += (sender, args) => TextBox.TextArea.ClearSelection();
 
@@ -51,12 +52,13 @@ namespace Dexel.Editor.Views.CustomControls
         }
 
         #region load color schema
-        private static XshdSyntaxDefinition _xshd;
+        
         private static readonly HighlightingManager Man = new HighlightingManager();
+
 
         private void LoadColorSchema(string url)
         {
-            if (_xshd == null)
+            if (MainWindow.Xshd == null)
             {
                 if (!File.Exists(url))
                 {
@@ -64,11 +66,11 @@ namespace Dexel.Editor.Views.CustomControls
                 }
                 using (var reader = new XmlTextReader(url))
                 {
-                    _xshd = HighlightingLoader.LoadXshd(reader);
+                    MainWindow.Xshd = HighlightingLoader.LoadXshd(reader);
                 }
             }
 
-            TextBox.SyntaxHighlighting = HighlightingLoader.Load(_xshd, Man);
+            TextBox.SyntaxHighlighting = HighlightingLoader.Load(MainWindow.Xshd, Man);
         }
 
         #endregion

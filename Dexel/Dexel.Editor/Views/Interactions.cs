@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Threading;
 using System.Windows;
@@ -17,6 +18,9 @@ using Roslyn.Validator;
 
 namespace Dexel.Editor.Views
 {
+
+
+
 
     public static class Interactions
     {
@@ -37,6 +41,20 @@ namespace Dexel.Editor.Views
         private static FunctionUnit _startPickingAt;
 
 
+        public static void ChangeToPrintTheme()
+        {
+            MainViewModel.Instance().ChangeTheme("Views/Themes/Print.xaml", @"Views/Themes/FlowDesignColorPrint.xshd");
+            App.SetConfig("Theme", "Print");
+            
+        }
+
+        public static void ChangeToDarkTheme()
+        {
+            MainViewModel.Instance().ChangeTheme("Views/Themes/DarkColorfull.xaml", @"Views/Themes/FlowDesignColorDark.xshd");
+            App.SetConfig("Theme", "Dark");
+        }
+
+
         public static FunctionUnit AddNewFunctionUnit(Point pos, MainModel mainModel)
         {
             var functionUnit = FunctionUnitManager.CreateNew();
@@ -55,7 +73,6 @@ namespace Dexel.Editor.Views
         public static void ViewRedraw()
         {
             Validate(MainViewModel.Instance().Model);
-
             MainViewModel.Instance().Reload();
         }
 

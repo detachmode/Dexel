@@ -20,7 +20,7 @@
             HorizontalScrollBarVisibility="Disabled"
             VerticalScrollBarVisibility="Disabled"          
             FontFamily="Consolas"
-            Background="{StaticResource BG}"
+            Background="{DynamicResource BG}"
             SyntaxHighlighting="FlowDesign">
             <i:Interaction.Behaviors>
                 <customControls:AvalonEditBehaviour GiveMeTheText="{Binding DataNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>

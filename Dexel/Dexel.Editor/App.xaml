@@ -23,15 +23,6 @@
             </ItemsPanelTemplate>
             
 
-            <VisualBrush x:Key="MyVisualBrush" TileMode="Tile" Viewport="0,0,15,15" ViewportUnits="Absolute"
-                 Viewbox="0,0,15,15" ViewboxUnits="Absolute">
-                <VisualBrush.Visual>
-                    <Grid Background="{StaticResource BG}">
-                        <Path Data="M 0 0 L 15 0" Stroke="{DynamicResource GridColor}" />
-                        <Path Data="M 15 0 L 15 15" Stroke="{DynamicResource GridColor}" />
-                    </Grid>
-                </VisualBrush.Visual>
-            </VisualBrush>
 
             <Style x:Key="BaseContentControlStyle" TargetType="{x:Type ContentControl}">
                 <Setter Property="Foreground" Value="WhiteSmoke" />
@@ -41,7 +32,7 @@
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Views/Themes/DarkColorfull.xaml" />
-                <!--<ResourceDictionary Source="Print.xaml"></ResourceDictionary>-->
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

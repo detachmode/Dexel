@@ -2,15 +2,45 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <SolidColorBrush x:Key="BG" Color="White"/>
-    <SolidColorBrush x:Key="GridColor" Color="White" />
+
+
+    <SolidColorBrush x:Key="BGBrighter" Color="#c1c1c1"/>
+    <SolidColorBrush x:Key="BGDarker" Color="#dadada"/>
+    <SolidColorBrush x:Key="BorderBrush" Color="#c3c3c3" />
+    <SolidColorBrush x:Key="ErrorColor" Color="#FFFF0101"/>
+    <SolidColorBrush x:Key="WarningColor" Color="#0f9101"/>
+    <SolidColorBrush x:Key="ErrorColor20" Color="#33FF0000"/>
+    <SolidColorBrush x:Key="WarningColor20" Color="#1051FF00"/>
+
+
+    <SolidColorBrush x:Key="BG" Color="#d2d2d2"/>
+    <SolidColorBrush x:Key="GridColor" Color="#c7c7c7" />
+
     <SolidColorBrush x:Key="OuterFillPointerBrush" Color="Transparent"/>
+    <SolidColorBrush x:Key="FillPointerBrush" Color="#057fe6"/>
+    <SolidColorBrush x:Key="BorderFunctionUnitBrush" Color="#057fe6"/>
+    
+    <!--154555-->
+    <!--<SolidColorBrush x:Key="OuterFillPointerBrush" Color="Transparent"/>
     <SolidColorBrush x:Key="FillPointerBrush" Color="DimGray"/>
-    <SolidColorBrush x:Key="BorderFunctionUnitBrush" Color="Black"/>
-    <SolidColorBrush x:Key="FillFunctionUnitBrush" Color="White"/>
+    <SolidColorBrush x:Key="BorderFunctionUnitBrush" Color="Black"/>-->
+
+    <SolidColorBrush x:Key="FillFunctionUnitBrush" Color="#d2d2d2"/>
     <SolidColorBrush x:Key="Foreground" Color="Black"/>
     <Color x:Key="DropShadowColor">Transparent</Color>
 
-    <system:Double x:Key="StrokeThickness">2</system:Double>
+    <system:Double x:Key="StrokeThickness">1.5</system:Double>
+    <SolidColorBrush x:Key="Actionname" Color="#5c5c5c"/>
+
+
+    <VisualBrush x:Key="MyVisualBrush" TileMode="Tile" Viewport="0,0,45,45" ViewportUnits="Absolute"
+                 Viewbox="0,0,45,45" ViewboxUnits="Absolute">
+        <VisualBrush.Visual>
+            <Grid Background="{DynamicResource  BG}">
+                <Path Data="M 0 0 L 45 0" Stroke="{DynamicResource GridColor}" />
+                <Path Data="M 45 0 L 45 45" Stroke="{DynamicResource GridColor}" />
+            </Grid>
+        </VisualBrush.Visual>
+    </VisualBrush>
 
 </ResourceDictionary>

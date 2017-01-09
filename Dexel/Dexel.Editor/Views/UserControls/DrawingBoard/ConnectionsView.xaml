@@ -34,7 +34,7 @@
 
             <Border
                 Visibility="{Binding DataContext.VisibilityDatanames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"
-                Panel.ZIndex="999" Background="{StaticResource BG}" BorderBrush="{StaticResource FillPointerBrush}"
+                Panel.ZIndex="999" Background="{DynamicResource BG}" BorderBrush="{DynamicResource FillPointerBrush}"
                 BorderThickness="2">
                 <customControls:DataNamesControl x:Name="DataNamesControl" Panel.ZIndex="1000"
                                                  DataContext="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
