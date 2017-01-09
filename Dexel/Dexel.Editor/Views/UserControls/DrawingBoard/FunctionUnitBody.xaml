@@ -31,7 +31,11 @@
 
                 <Ellipse Margin="-20" Fill="{DynamicResource FillFunctionUnitBrush}" 
                                 Stroke="{DynamicResource BorderFunctionUnitBrush}"
-                                StrokeThickness="{DynamicResource StrokeThickness}" />
+                                StrokeThickness="{DynamicResource StrokeThickness}" >
+                    <Ellipse.Effect>
+                        <DropShadowEffect ShadowDepth="3" Opacity="0.3"/>
+                    </Ellipse.Effect>
+                </Ellipse>
                 <Ellipse Margin="-20" Fill="DeepSkyBlue" 
                           Visibility="{Binding IsSelected, Converter={StaticResource VisibilityConverter}}"
                                 Stroke="White"
@@ -59,6 +63,7 @@
                         BorderBrush="{x:Null}" HorizontalContentAlignment="Center" />
                 
                 <Ellipse Margin="-20" Fill="Transparent"
+                         
                          Visibility="{Binding DataContext.VisibilityBlockTextBox, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"/>
             </Grid>
         </Grid>

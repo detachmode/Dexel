@@ -36,11 +36,15 @@
                 Visibility="{Binding DataContext.VisibilityDatanames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"
                 Panel.ZIndex="999"   BorderBrush="{DynamicResource FillPointerBrush}"
                 BorderThickness="0.5">
+                <!--<Border.Effect>
+                    <DropShadowEffect Opacity="0.5" BlurRadius="4" ShadowDepth="1"/>
+                </Border.Effect>-->
                 <Grid>
                     
-                    <Grid Opacity="0.93" Background="{DynamicResource BG}">
+                    <Grid Opacity="0.93" Background="{DynamicResource BGDatanames}">
                         <Grid.Effect>
-                            <BlurEffect Radius="4" KernelType="Box"/>
+                            <DropShadowEffect ShadowDepth="3" Opacity="0.3"/>
+                            <!--<BlurEffect Radius="5" KernelType="Gaussian"/>-->
                         </Grid.Effect>
                     </Grid>
                     <customControls:DataNamesControl x:Name="DataNamesControl" Panel.ZIndex="1000" 
