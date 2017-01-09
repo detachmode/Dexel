@@ -13,6 +13,7 @@ namespace Roslyn.Validator
     {
         public static void Validate(MainModel mainModel, Action<ValidationError> onErrorOrWarning)
         {
+            
             mainModel.FunctionUnits.Where(sc => sc.IsIntegrating.Count > 0).ToList().ForEach(isc =>
             {
                 Validate(isc, mainModel, onErrorOrWarning);

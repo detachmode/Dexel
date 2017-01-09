@@ -40,7 +40,6 @@
                     <DropShadowEffect Opacity="0.5" BlurRadius="4" ShadowDepth="1"/>
                 </Border.Effect>-->
                 <Grid>
-                    
                     <Grid Opacity="0.93" Background="{DynamicResource BGDatanames}">
                         <Grid.Effect>
                             <DropShadowEffect ShadowDepth="3" Opacity="0.3"/>

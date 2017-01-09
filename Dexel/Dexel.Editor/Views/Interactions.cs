@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -587,7 +588,13 @@ namespace Dexel.Editor.Views
         public static void Validate(MainModel mainModel)
         {
             List<ValidationError> errorsAndWarnings = new List<ValidationError>();
-            FlowValidator.Validate(mainModel, obj => errorsAndWarnings.Add(obj));
+
+            try
+            {
+                FlowValidator.Validate(mainModel, obj => errorsAndWarnings.Add(obj));
+            }
+            catch {}
+
             MainViewModel.Instance().ShowValidationResult(errorsAndWarnings);
         }
     }
