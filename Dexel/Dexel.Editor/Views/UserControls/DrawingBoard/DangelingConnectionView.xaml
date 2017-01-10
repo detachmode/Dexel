@@ -17,7 +17,7 @@
     >
 
 
-    <Grid Background="{DynamicResource OuterFillPointerBrush}"
+    <Grid Background="{DynamicResource OuterFillPointerBrush}"  Canvas.ZIndex="100"
           ToolTip="{Binding ValidationErrorMessage}"
           Height="42" >
         <i:Interaction.Behaviors>
@@ -67,8 +67,9 @@
                  TextChanged="ActionNameTextBox_OnTextChanged"
                  Visibility="{Binding DataContext.VisibilityDatanames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"
                  Grid.Column="0" x:Name="ActionNameTextBox" VerticalAlignment="Top"
-                
+                KeyDown="ActionNameTextBox_OnKeyDown"
                  Text="{Binding Model.ActionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Margin="0,-2,0,0"
+                 
                          CaretBrush="{DynamicResource Foreground}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="{DynamicResource Actionname}" />
 
         <Border
@@ -83,9 +84,13 @@
                         <!--<BlurEffect Radius="5" KernelType="Gaussian"/>-->
                     </Grid.Effect>
                 </Grid>
-                <customControls:DataNamesControl  Height="20" VerticalAlignment="Bottom"
+                <customControls:DataNamesControl
+                   
+                    KeyDown="TheDataNamesControl_OnKeyDown"
+                    Height="20" VerticalAlignment="Bottom"
                      Visibility="{Binding DataContext.VisibilityDatanames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"
             x:Name="TheDataNamesControl" 
+                    
             Grid.Row="0" 
            DataContext="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>

@@ -19,7 +19,7 @@
     <SolidColorBrush x:Key="OuterFillPointerBrush" Color="Transparent"/>
     <SolidColorBrush x:Key="FillPointerBrush" Color="#057fe6"/>
     <SolidColorBrush x:Key="BorderFunctionUnitBrush" Color="#057fe6"/>
-    <SolidColorBrush x:Key="HoverColor" Color="#44000000"/>
+    <SolidColorBrush x:Key="HoverColor" Color="#44FFFFFF"/>
     <!--154555-->
     <!--<SolidColorBrush x:Key="OuterFillPointerBrush" Color="Transparent"/>
     <SolidColorBrush x:Key="FillPointerBrush" Color="DimGray"/>

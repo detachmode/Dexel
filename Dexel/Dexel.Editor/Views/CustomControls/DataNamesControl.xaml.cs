@@ -77,9 +77,13 @@ namespace Dexel.Editor.Views.CustomControls
 
 
 
-        public void SetFocus()
+        public void SetFocus(bool keepPosition = false)
         {
             TextBox.Focus();
+            if (keepPosition)
+            {
+                return;
+            }
             TextBox.SelectionStart = TextBox.Text.Length;
             TextBox.SelectionLength = 0;
         }
@@ -92,5 +96,7 @@ namespace Dexel.Editor.Views.CustomControls
                 MainWindow.Get().MainWindow_OnPreviewKeyDown(sender, e);
 
         }
+
+
     }
 }

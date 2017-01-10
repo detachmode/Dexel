@@ -60,7 +60,7 @@ namespace Dexel.Editor.Views
                 case Key.Return:
                     if (ctrlDown)
                     {
-                        TheDrawingBoard.NewOrFirstIntegrated(ctrlDown);
+                        TheDrawingBoard.EnterShortcut(ctrlDown);
                         e.Handled = true;
                     }
                         

@@ -18,8 +18,15 @@ namespace Dexel.Editor.Views.DragAndDrop
             _hoverBrush = (SolidColorBrush)Application.Current.Resources["HoverColor"];
 
 
-            AssociatedObject.MouseEnter += (sender, args) => AssociatedObject.Background = _hoverBrush;
-            AssociatedObject.MouseLeave += (sender, args) => AssociatedObject.Background = _defaultColor;
+            AssociatedObject.MouseEnter += (sender, args) =>
+            {
+                AssociatedObject.Background = _hoverBrush;              
+            };
+
+            AssociatedObject.MouseLeave += (sender, args) =>
+            {
+                AssociatedObject.Background = _defaultColor;
+            };
         }
     }
 }

@@ -39,7 +39,8 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         public List<Type> AllowedDropTypes => new List<Type>
         {
             typeof(IInputOutputViewModel),
-            typeof(ConnectionViewModel)
+            typeof(ConnectionViewModel),
+             typeof(DangelingConnectionViewModel)
         };
 
 

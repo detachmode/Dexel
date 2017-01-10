@@ -161,8 +161,8 @@ namespace Dexel.Editor.Views
         public static void ConnectDangelingConnectionAndFunctionUnit(DataStreamDefinition defintionDSD,
             FunctionUnit destination, MainModel mainModel)
         {
-            var inputDefinition = FunctionUnitManager.NewInputDef(destination, "", null);
-            MainModelManager.ConnectTwoDefintions(defintionDSD, inputDefinition, mainModel);
+           
+            MainModelManager.ConnectTwoDefintions(defintionDSD, destination.InputStreams.First(), mainModel);
 
             ViewRedraw();
         }
