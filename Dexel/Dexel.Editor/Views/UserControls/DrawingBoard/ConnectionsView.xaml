@@ -17,7 +17,7 @@
             Thickness="{DynamicResource StrokeThickness}"
             Start="{Binding Start}"
             End="{Binding End}"
-            ArrowSize="30,15" />
+            ArrowSize="10,10" />
 
 
         <Grid x:Name="TheGrid" Canvas.Left="{Binding Center.X}" Canvas.Top="{Binding Center.Y}">
@@ -42,7 +42,7 @@
                 <Grid>
                     <Grid Opacity="0.93" Background="{DynamicResource BGDatanames}">
                         <Grid.Effect>
-                            <DropShadowEffect ShadowDepth="3" Opacity="0.3"/>
+                            <DropShadowEffect ShadowDepth="3" Opacity="0.3" BlurRadius="6"/>
                             <!--<BlurEffect Radius="5" KernelType="Gaussian"/>-->
                         </Grid.Effect>
                     </Grid>

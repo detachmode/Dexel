@@ -33,7 +33,7 @@
                                 Stroke="{DynamicResource BorderFunctionUnitBrush}"
                                 StrokeThickness="{DynamicResource StrokeThickness}" >
                     <Ellipse.Effect>
-                        <DropShadowEffect ShadowDepth="3" Opacity="0.3"/>
+                        <DropShadowEffect  ShadowDepth="3" Opacity="0.3" BlurRadius="6"/>
                     </Ellipse.Effect>
                 </Ellipse>
                 <Ellipse Margin="-20" Fill="DeepSkyBlue" 

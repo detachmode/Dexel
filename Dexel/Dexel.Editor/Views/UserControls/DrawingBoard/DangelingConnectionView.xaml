@@ -30,27 +30,38 @@
         <Grid.ColumnDefinitions>
 
             <ColumnDefinition Width="11*"/>
-            <ColumnDefinition Width="5*"/>
+            <ColumnDefinition Width="30"/>
 
         </Grid.ColumnDefinitions>
         <Rectangle  
             Visibility="{Binding ValidationFlag, Converter={StaticResource ValidationFlagVisbilityConverter}}"          
             Grid.RowSpan="2" Grid.ColumnSpan="2" 
+            
             Fill="{Binding ValidationFlag, Converter={StaticResource ValidationFlagFillConverter}}"
             Stroke="{Binding ValidationFlag, Converter={StaticResource ValidationFlagColorConverter}}" 
             StrokeEndLineCap="Square" StrokeMiterLimit="0" StrokeDashCap="Square" 
             StrokeDashArray="1 2" StrokeLineJoin="Round"/>
 
-        <Rectangle Grid.Column="0" Grid.RowSpan="2" Fill="{DynamicResource FillPointerBrush}" Height="{DynamicResource StrokeThickness}" VerticalAlignment="Center"  />
+        <Rectangle Grid.Column="0" Grid.RowSpan="2" Margin="0,0,-28,0" Fill="{DynamicResource FillPointerBrush}" Height="{DynamicResource StrokeThickness}" VerticalAlignment="Center"  />
         <Grid Background="Transparent" Grid.Column="1" Grid.Row="0" Grid.RowSpan="2">
             <i:Interaction.Behaviors>
                 <dragAndDrop:FrameworkElementDragBehavior  />
                 <dragAndDrop:MouseHoverFeedBack/>
             </i:Interaction.Behaviors>
-            <Path x:Name="ThePath"  Fill="{DynamicResource FillPointerBrush}" 
-              VerticalAlignment="Center" Data="M30,5 L0,0 L0,10 L30,5">
-
+            <Grid Margin="0,1,0,0" HorizontalAlignment="Right" VerticalAlignment="Center">
+                
+         
+            <Path x:Name="ThePath" StrokeThickness="2" Stroke="{DynamicResource FillPointerBrush}" 
+              Data="M10,5 L0,0">
+                    <Path.StrokeStartLineCap>Round</Path.StrokeStartLineCap>
+                    <Path.StrokeEndLineCap>Round</Path.StrokeEndLineCap>
             </Path>
+            <Path x:Name="The2Path" StrokeThickness="2" Stroke="{DynamicResource FillPointerBrush}" 
+              Data="M0,10 L10,5">
+                    <Path.StrokeStartLineCap>Round</Path.StrokeStartLineCap>
+                    <Path.StrokeEndLineCap>Round</Path.StrokeEndLineCap>
+            </Path>
+            </Grid>
         </Grid>
         <TextBox Grid.Row="1" FontSize="11"
                  TextChanged="ActionNameTextBox_OnTextChanged"
@@ -68,7 +79,7 @@
             <Grid>
                 <Grid Opacity="0.93" Background="{DynamicResource BGDatanames}">
                     <Grid.Effect>
-                        <DropShadowEffect ShadowDepth="3" Opacity="0.3"/>
+                        <DropShadowEffect ShadowDepth="3" Opacity="0.3" BlurRadius="6"/>
                         <!--<BlurEffect Radius="5" KernelType="Gaussian"/>-->
                     </Grid.Effect>
                 </Grid>

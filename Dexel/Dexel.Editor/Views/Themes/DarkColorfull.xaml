@@ -2,9 +2,9 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib">
 
-    <SolidColorBrush x:Key="BGDatanames" Color="#FF36363A"/>
+    <SolidColorBrush x:Key="BGDatanames" Color="#EE27272C"/>
     <SolidColorBrush x:Key="BG" Color="#2d2d30"/>
-    <SolidColorBrush x:Key="BGBrighter" Color="#3e3e40"/>
+    <SolidColorBrush x:Key="BGBrighter" Color="#FF313132"/>
     <SolidColorBrush x:Key="BGDarker" Color="#252526"/>
     
     <SolidColorBrush x:Key="GridColor" Color="#353538" />
@@ -12,7 +12,7 @@
     <SolidColorBrush x:Key="OuterFillPointerBrush" Color="Transparent"/>
     <SolidColorBrush x:Key="FillPointerBrush" Color="DeepSkyBlue"/>
     <SolidColorBrush x:Key="BorderFunctionUnitBrush" Color="DeepSkyBlue"/>
-    <SolidColorBrush x:Key="FillFunctionUnitBrush" Color="#FF36363A"/>
+    <SolidColorBrush x:Key="FillFunctionUnitBrush" Color="#FF27272C"/>
     <SolidColorBrush x:Key="Foreground" Color="White"/>
     <system:Double x:Key="StrokeThickness">2</system:Double>
     <SolidColorBrush x:Key="ErrorColor" Color="#FFFF0101"/>

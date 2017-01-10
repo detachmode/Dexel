@@ -97,12 +97,12 @@ namespace Dexel.Editor.Views.CustomControls
             };
 
 
-            _arrowShape.MouseEnter += (sender, args) => { _arrowShape.Fill = Brushes.Red; };
+            _arrowShape.MouseEnter += (sender, args) => { _arrowShape.Stroke = Brushes.Red; };
 
             _arrowShape.MouseLeave += (sender, args) =>
             {
                 if (_isDragging) return;
-                _arrowShape.Fill = FillColor;
+                _arrowShape.Stroke = FillColor;
             };
 
 
@@ -182,7 +182,8 @@ namespace Dexel.Editor.Views.CustomControls
         private void Update()
         {
             _arrowShape.Stroke = FillColor;
-            _arrowShape.Fill = FillColor;
+            _arrowShape.Fill = null;
+            _arrowShape.StrokeThickness = Thickness;
             _pathShape.Stroke = FillColor;
             _pathShape.StrokeThickness = Thickness;
             _outerPathShape.Stroke = OuterFillColor;
@@ -199,15 +200,15 @@ namespace Dexel.Editor.Views.CustomControls
         {
             var position = End;
             position.X -= ArrowSize.X;
+            position.Y -= ArrowSize.Y/2;
 
             var figure = new PathFigure();
             figure.StartPoint = position;
-            figure.IsClosed = true;
+            figure.IsClosed = false;
 
             var pts = new List<Point>();
-            pts.Add(new Point(position.X, position.Y - ArrowSize.Y/2));
-            pts.Add(new Point(position.X + ArrowSize.X, position.Y));
-            pts.Add(new Point(position.X, position.Y + ArrowSize.Y/2));
+            pts.Add(new Point(position.X+ArrowSize.X, position.Y + ArrowSize.Y / 2));
+            pts.Add(new Point(position.X, position.Y + ArrowSize.Y));
             figure.Segments.Add(new PolyLineSegment(pts, true));
 
             OverrideShapeData(_arrowShape, figure);
@@ -237,7 +238,7 @@ namespace Dexel.Editor.Views.CustomControls
 
             var end = End;
             var start = Start;
-            end.X -= ArrowSize.X;
+            
             var startextend = new Point(start.X + _connectionExtensionLength, start.Y);
             var endextend = new Point(end.X - _connectionExtensionLength, end.Y);
 
