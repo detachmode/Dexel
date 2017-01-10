@@ -63,6 +63,7 @@
             MinHeight="60"
             Orientation="Horizontal">
             <drawingBoard:FunctionUnitBody x:Name="Fu"
+                                            Canvas.ZIndex="30" 
                                        Focusable="False"
                                        LabelContent="{Binding Model.Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
             <ItemsControl VerticalAlignment="Center"                         
