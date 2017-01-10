@@ -12,7 +12,7 @@
 
 
 In diesem Kapitel soll vorgestellt werden, was in dem Zeitraum dieser
-Bachelorarbeit erreicht wurde. Die Architekur der Anwendung wurde selbst nach
+Bachelorarbeit erreicht wurde. Die Architektur der Anwendung wurde selbst nach
 Flow Design umgesetzt und bietet somit dem Leser eine Quelle an weiteren
 konkreten Beispielen aus der Praxis, wie eine Methode nach IOSP in der Praxis aussieht.
 
@@ -28,7 +28,7 @@ Ergebnis definiert, und erst anschließend die Methode implementiert wird.
 \subsubsection{Dexel.Model / Dexel.Model.Tests}
 
 Dieses Projekt beinhaltet das Domänenmodell - alle Datentypen die zur internen Repräsentation
-eines Flow Design Diagrammes nötig sind. Außerdem beinhaltet dieses Projekt
+eines Flow Design Diagramms nötig sind. Außerdem beinhaltet dieses Projekt
 statische Manager-Klassen, die das Arbeiten mit den Datentypen vereinfachen.
 
 \subsubsection{Dexel.Editor / Dexel.Editor.Tests}
@@ -43,7 +43,7 @@ finden, wie ein Event aus dem UI mit einer Funktionalität verbunden werden
 könnte, dass sich in einem Projekt befindet, war zeitlich zu
 aufwendig. Aus diesem Grund wurde entschieden auf die zusätzliche
 Komplexität einer Entkoppelung zu verzichten und es einfacher zu halten, indem
-dieses Projekt sowohl die UI beinhalter, als auch alle anderen Projekte
+dieses Projekt sowohl die UI beinhaltet, als auch alle anderen Projekte
 kennt.
 
 \subsubsection{Roslyn / Rosyln.Tests}
@@ -51,7 +51,7 @@ kennt.
 Diese Projekt beinhaltet die Logik zur Erstellung von C\#-Code aus einem Flow
 Design. Mircosoft Rosyln ist die Technik, die hier zum Erstellen von Code zum
 Einsatz kommt.
-Das Flow Design Diagramm muss in Form eines Mainmodels aus dem
+Das Flow Design Diagramm muss in Form eines MainModels aus dem
 Dexel.Model Projekt vorliegen. Aus diesem Grund gibt es eine Abhängigkeit
 zwischen diesem Projekt und dem Dexel.Model Projekt. 
 
@@ -60,7 +60,7 @@ programmiert wurde, anstatt gegen die konkrete Implementation in
 Dexel.Model. Diese Interfaces der Datentypen und Manager-Klassen wurde dann
 in ein Contracts-Projekt ausgelagert, von dem alle anderen Projekte abhängig
 sein durften. Die zusätzliche Komplexität, Mehraufwand und ein Problem bei
-der Serialisierung von Datentypen, die Interfaces als Eigenchaften besaßen,
+der Serialisierung von Datentypen, die Interfaces als Eigenschaften besaßen,
 machte es nicht wert hier eine Entkoppelung zu schaffen. Somit wurde der
 Beschluss gefällt auf die Interfaces zu verzichten.
 
@@ -73,7 +73,7 @@ ausgelagert, damit alle anderen Projekte darauf zugreifen können.
 \section{Das Domänenmodell}
 
 Um nachfolgende Kapitel der Realisierung und die darin enthaltenden
-Codeauschnitte verstehen zu können, braucht es ein Verständnis darüber, wie die
+Codeausschnitte verstehen zu können, braucht es ein Verständnis darüber, wie die
 grundlegenden Datentypen des Domänenmodells aufgebaut sind. Um die Funktionalität der
 jeweiligen Datentypen besser zu veranschaulichen, werden in diesem Kapitel
 Bilder verwendet, welche die spätere Darstellung des Datentypen in der UI zeigen.
@@ -83,7 +83,7 @@ Bilder verwendet, welche die spätere Darstellung des Datentypen in der UI zeige
 Das MainModel ist, wie der Name schon sagt, das Haupt-Modell, das alle
 anderen Modelle per Komposition beinhaltet. Somit kann einer Methode einfach eine Objektinstanz
 eines MainModels übergeben werden und erhält dadurch alle Informationen über das aktuelle Flow Design Diagramm. 
-Das \textit{MainModel} beinhaltet alle Funktonseinheiten, alle verbindende
+Das \textit{MainModel} beinhaltet alle Funktionseinheiten, alle verbindende
 Datenströme (\textit{Connections}) und alle benutzerdefinierten Datentypen (\textit{DataTypes}).
 
 \begin{lstlisting}[caption=MainModel Klasse]
@@ -120,16 +120,16 @@ public class FunctionUnit
 	\end{figure}
 
 Der Name ist der Name der Funktionseinheit ( der Text, der bei der
-Darstellung später innerhalb des Kreises erscheint). Dieser wird später per Binding
+Darstellung später innerhalb des Kreises erscheint). Dieser wird später per \textit{Binding}
 direkt an die UI gebunden. Aus diesem Grund implementiert dieses Klasse,
 genau wie alle anderen des Modells, die ImplementPropertyChanged
 Funktionalität. Diese bewirkt, dass bei einer Änderung im UI automatisch das
-entsprechende Property im Modell aktualisiert wird und umgekehrt.
+entsprechende Eigenschaft im Modell aktualisiert wird und umgekehrt.
 
-Die Position beschreibt die Position der Funktionseinheiten innherhalb des
-Diagrammes.  
+Die Position beschreibt die Position der Funktionseinheiten innerhalb des
+Diagramms.  
 
-Das IsIntegrating Property gibt an, ob diese Funktionseinheit eine Integration
+Das IsIntegrating-Eigenschaft gibt an, ob diese Funktionseinheit eine Integration
 ist und welche andere Instanzen von Funktionseinheiten sie integriert.
 Eine leere Liste besagt, dass die Funktionseinheit keine Integration ist.
 
@@ -161,22 +161,21 @@ public class DataStreamDefinition
 	
 	Eine Funktionseinheit verfügt über ein oder mehrere ein- und ausgehende
 	DataStreamDefinitionen. Diese können verbunden sein oder nicht. Wenn eine
-	Verbindung erstellt und gelöscht wird, muss deshalb auch das Connected
-	Property immer gesetzt werden, damit das Model valide bleibt.
-	Ob eine DataStreamDefinition verbunden ist, oder nicht, ist vorallem später
+	Verbindung erstellt und gelöscht wird, muss deshalb auch die Connected-Eigenschaft
+	immer angepasst werden, damit das Modell valide bleibt.
+	Ob eine DataStreamDefinition verbunden ist, oder nicht, ist später
 	für die Darstellung relevant.
 	Eine DataStreamDefinition kennt auch die Funktionseinheit, von der sie ein
 	Ein- oder Ausgang ist.
 	
-	Eine weitere grundlegende Eigenschaft ist die Benennung der Daten, die in/aus
-	dem Ein-/ Ausgang fließen. Für Ausgänge ist auch die Angabe eines
-	Actionnames manchmal nötig. Dieser soll später unterhalb des Pfeiles
-	dargstellt werden.
-
+	Eine weitere grundlegende Eigenschaft ist die Benennung der Daten, die auf dem
+  Datenfluss fließen. Für Ausgänge ist auch die Angabe eines
+	ActionNames manchmal nötig. Dieser soll später unterhalb des Pfeiles
+	dargestellt werden.
 
 \subsubsection{DataStream (Connections)}
 
-Um Datenflüsse zwischen Funktionseinheitn zu beschreiben, bedarf es einer
+Um Datenflüsse zwischen Funktionseinheiten zu beschreiben, bedarf es einer
 Verbindungsklasse. Die DataStream-Klasse stellt diese Verbindungsklasse dar.
 
 
@@ -202,23 +201,21 @@ public class DataStream
 Ein DataStream hat ein oder mehrere Referenzen an DataStreamDefinition als
 Quellen und ein oder mehrere Referenzen an DataStreamDefinition als Ziele.
 Um ein Datenstrom zu beschreiben, der aus mehren Quellen Daten bezieht und
-an einer Stelle zusammenläuft, benötigt man ein DataStream, der mehrer
+an einer Stelle zusammenläuft, wird ein DataStream benötigt, der mehrere
 Einträge in der Source-Liste besitzt und ein Eintrag in der
-Destination-Liste. Diese Datenstrom wäre dann ein Joint-Input.
-Ein Datenstrom mit einer Quelle und mehreren Zielen wäre ein Joint-Output ( TODO:
-Referenz auf vorheriges Kapitel)
+Destination-Liste. Diese Datenstrom wäre dann ein Joined Input.
+Ein Datenstrom mit einer Quelle und mehreren Zielen wäre ein s.g. Split.
 
-Das DataNames Property stellt den Text dar, der später in der Mitte des
+Die DataNames Eigenschaft beinhaltet den Text, der später in der Mitte des
 Pfeiles dargestellt werden soll. Eine Änderung dieser Eigenschaft bedarf
 einer Aktualisierung der DataNames aller Sources und Destinations.
-Eine Aktualisierung muss die optionalen Pipe-Notation kennen und
-entsprechend dieser die Ein und Ausgänge akutalisieren.
+Die Aktualisierungsmethode muss die optionalen Pipe-Notation kennen und
+entsprechend dieser die Ein und Ausgänge aktualisieren.
 
-Der akutelle Stand der UI kann akutell nur Datenflüsse mit einer Quelle und
+Der aktuelle Stand der UI kann nur Datenflüsse mit einer Quelle und
 einem Ziel darstellen.
 
 \subsubsection{DataType}
-
 
 \begin{lstlisting}[caption= CustomDataType und SubDataType Klasse]
 [ImplementPropertyChanged]
@@ -248,8 +245,8 @@ Ein benutzerdefinierter Datentyp besteht aus einem Namen und einer Liste von meh
 \texttt{SubDataType}-Objekten. 
 
 Ein SubDataType besteht aus einem Namen und den Namen
-des Types (zum Beispiel string, int oder auch ein anderen benutzerdefinierten
-Datentypen).
+des Typen (zum Beispiel string, int oder auch ein anderen benutzerdefinierten
+Datentyp).
 
 \subsubsection{Manager-Klassen}
 
@@ -269,28 +266,28 @@ Datentypen).
 	Diese statische Klasse bietet einige Funktionalitäten, die das Arbeiten mit
 	Objekten der DataStream-Klasse vereinfachen soll.
 	
-	Ein Beispiel hierfür wäre das Ändern des Datanames eines DataStreams. 
-	Wie bereits in letzten Abschnitt erwähnt, muss beim Ändern der Daten
+	Ein Beispiel hierfür wäre das Ändern der DataNames-Eigenschaft eines DataStreams. 
+	Wie bereits im letzten Abschnitt erwähnt, muss beim Ändern der Daten
 	eines Datenflusses auch die Daten seiner Sources und Destinations
 	angepasst werden. 
 	
 	Um dies nochmal zu verdeutlichen, zwei konkrete Beispiele:
 	Falls der Datenfluss auf \textbf{(int) | (string) } geändert wurde
-	, so muss die Source-DataStreamDefinition auf \textbf{(int)} gesetzt werden und der
-	die Destination-DataStreamDefinition auf \textbf{(string)}. 
+	, so muss die DataNames-Eigenschaft der Source-DataStreamDefinition auf
+  \textbf{(int)} gesetzt werden und die der
+	Destination-DataStreamDefinition auf \textbf{(string)}. 
 	Falls der Datenfluss auf \textbf{(double)} geändert wurde, so müssen Source-
-	und Destination-Daten auf  \textbf{(double)}  gesetzt werden.\footnote{	Da aktuell nur DataStreams mit einer Source und einer Destination im Editor unterstützt
+	und Destination-Daten auf  \textbf{(double)} gesetzt werden.\footnote{	Da aktuell nur DataStreams mit einer Source und einer Destination im Editor unterstützt
 		
-		werden, wurde akutell auch nur dieses Szenario implementiert. Ändert sich
+		werden, wurde aktuell auch nur dieses Szenario implementiert. Ändert sich
 		diese Einschränkung müsste man sich Gedanken darüber machen, was in diesen
 		Fällen zu tun wäre. Ein Option wäre, die Pipe-Notation in diesen Fällen zu
 		verbieten. Die UI würde die Daten der DataStreamDefinitionen direkt
 		anzeigen und der Benutzer würde diese dann direkt ändern. Der Datenstrom
-		selbst würde dann kein eigenes Textfeld besitzen und die Dataname
-		Eigenschaft hätte in diesen Fall keine Bedeutung. 
-		Vielleicht wäre es dann auch besser im Modell zwei separate Klassen
-		anzulegen und die
-		einfache DataStream-Klasse hätte anstatt einer Liste von DatastreamDefinitionen nur noch ein einfaches Feld
+		selbst würde dann kein eigenes Textfeld besitzen und die DataNames-Eigenschaft hätte in diesen Fall keine Bedeutung. 
+		Vielleicht wäre es dann auch besser im Modell separate Klassen
+		anzulegen für Split Outputs und Joined Input. Dadurch hätte die
+		einfache DataStream-Klasse dann anstatt einer Liste von DatastreamDefinitionen nur noch ein einfaches Feld
 		für eine Source-DataStreamDefinition und eine Destionation-DataStreamDefinition.}
 	
 	\begin{lstlisting}[caption=ChangeDatanames Methode]
@@ -322,35 +319,34 @@ public static void ChangeDatanames(DataStream datastream, string newDatanames)
 
 \subsection{Vorstellung was erreicht wurde}
 
-
 Die Grundlegenden Basisfunktionen aus dem Anforderungs-Kaptitel wurden größtenteils implementiert. Hierbei kam WPF als GUI-Framework zum Einsatz.
 Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 
 
-\subsubsection{	MISSING IMAGES Erstellen von Funktionseinheiten, Verschieben, Benennen, Selektieren}
+\subsubsection{Erstellen von Funktionseinheiten, Verschieben, Benennen, Selektieren}
 
-	Das Drawing-Board wurde implementiert, auf dem der Benutzer mit einem
+	Das DrawingBoard wurde implementiert, auf dem der Benutzer über 
 	Rechtsklick->Create New Function Unit eine erste Funktionseinheit erzeugen
-	kann. Per Drag an Drop kann er diese dann innerhalb des DrawingBoards frei
-	verschieben. Mit einer Rect-Selektion ist es mögliche mehrere
-	Funktionseinheiten zu Selektieren. Selektierte Funktionseinheiten können
+	kann. Per Drag\&Drop kann er diese dann innerhalb des DrawingBoards frei
+	verschieben. Mit einer Rectangle-Selection ist es mögliche mehrere
+	Funktionseinheiten zu selektieren. Selektierte Funktionseinheiten können
 	gemeinsam verschoben, dupliziert und gelöscht werden.
 	
 	Nach dem Erstellen einer neuen Funktionseinheit, wird diese automatisch
 	selektiert und der Tastaturfokus wird in das Textfeld des Kreises gesetzt.
-	Durch lässt sich diese Benennen.
+	Dadurch lässt sich diese Benennen.
 	
 	Beim Klicken auf den äußeren Teil des Kreises wird die Funktionseinheit
 	selektiert. Beim Klicken auf das Textfeld, wechselt der Tastaturfokus auf
-	das Textfeld ( ein Mouse-Hover zeigt auch an, über welchen Teil des Kreises
-	man sich gerade befindet, auch ein Klicken und Ziehen um sofort ein Teil
-	des Textes zu markieren bleibt damit dem Benutzer möglich. Wie er es von
+	das Textfeld ( ein Mouseover zeigt auch an, über welchen Teil des Kreises
+	die Maus sich gerade befindet, auch ein Klicken und Ziehen um sofort ein Teil
+	des Textes zu markieren bleibt damit dem Benutzer weiterhin möglich, so wie er es von
 	einem Textfeld gewohnt ist).
 	
 	
-\subsubsection{	 MISSING IMAGES Erstellen/Löschen/Manipulieren von Inputs und Outputs}
+\subsubsection{Erstellen/Löschen/Manipulieren von Inputs und Outputs}
 
-	Eine Funktionseinheit wird standardmässig mit einem Input und einem Output
+	Eine Funktionseinheit wird standardmäßig mit einem Eingang und einem Ausgang
 	erstellt. Die Daten die aus diesen hinein- oder herausfließen können auf
 	dem Textfeld eingetragen werden. Dabei bietet diese Textfeld ein einfaches
 	Syntaxhighlighting, dass mit Doppelpunkt getrennte Namen-Type-Paare
@@ -358,43 +354,40 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 	
 	Der Action-Name kann unterhalb des Pfeiles eingetragen werden.
 	
-	Eine Funktionseinheit kann mehr als nur einen Output besitzen.
-	Zum Hinfzufügen eines neuen Outputs: Rechtsklick -> Add New Output
-	Das Löschen eines Outputs ist durch auch möglich: Rechtsklick auf ein
-	Output -> Delete.    
-	
-	Die Reihenfolge bei mehreren Outputs kann per Drag and Drop verändert werden.
-	
-\subsubsection{MISSING IMAGES Verknüpfen und Trennen von Funktionseinheiten über Drag\&Drop }
+	Eine Funktionseinheit kann mehr als nur einen Ausgang besitzen.
+	Das Hinzufügen eines neuen Ausgangs ist über Rechtsklick -> Add New Output möglich.
+	Das Löschen eines Ausgangs ist ebenso möglich.
 
-	Wird das Ende eines Pfeiles eines Output auf ein Input Pfeil gedropt, so werden beide
-	miteinandern Verbunden. Die Datennamen des Flusses werden bei nicht
-	Übereinstimmung der beiden Daten des Input und Outputs mit
-	der Pipe-Notation beschrieben. Stimmen beide Überein, kann darauf
-	verzichtete werden.
+	Die Reihenfolge bei mehreren Ausgängen kann per Drag\&Drop verändert werden.
 	
-	Werden die Daten eines verbundenen Datenflusses geändert, werden die Inputs
-	und Outputs mit Berücksichtigung auf die Pipe-Notation angepasst, sodass
-	beim Trennen der Beiden Funktionseinheiten, die Änderungen erhalten bleiben.
-	
-	Ein Drag \&Drop eines Outputs direkt auf eine Funktionseinheit: TODO
-	
-	Durch Drag and Drop eines verbunden Pfeiles auf eine leere Stelle auf dem
-	DrawingBoard, kann eine Verbindung getrennt werden. Wird sie auf eine
-	anderen Input gedropt, so wird diese als neues Ziel gesetzt und die 
-	Verbindung zur vorherigen Funktionseinheit gelöscht. TODO
-	
-\subsubsection{	MISSING IMAGES Erstellen von Integrationen}
+\subsubsection{Verknüpfen und Trennen von Funktionseinheiten über Drag\&Drop }
 
-	Durch Rechtsklick auf eine Funktionseinheit kann im Kontextmenu der Eintrag
+	Wird das Ende eines Pfeiles eines Ausgangs auf eine andere Funktionseinheit gedropt, so werden beide
+	miteinander Verbunden. Die Datennamen des Flusses werden bei nicht
+	Übereinstimmung dieser mit Hilfe der Pipe-Notation in das Textfeld des nun neu
+   erzeugten Datenstromes eingetragen. Stimmen beide überein, wird auf die Pipe-Notation
+	verzichtete.
+	
+	Werden die Daten eines verbundenen Datenflusses geändert, werden die Eingänge
+	und Ausgänge mit Berücksichtigung auf die Pipe-Notation angepasst, sodass
+	beim Trennen der beiden Funktionseinheiten, die Änderungen erhalten bleiben.
+	
+	Durch Drag and Drop eines verbunden Pfeiles auf eine leere Stelle des
+	DrawingBoard kann eine Verbindung getrennt werden. Wird sie auf eine
+	andere Funktionseinheit gedropt, so wird diese als neues Ziel gesetzt und die 
+	Verbindung zur vorherigen Funktionseinheit gelöscht. 
+	
+\subsubsection{Erstellen von Integrationen}
+
+	Durch Rechtsklick auf eine Funktionseinheit kann im Kontextmenü der Eintrag
 	'Make to Integration of (Pick)' ausgewählt werden. Der Cursor verändert
 	sich und wird nun eine andere Funktionseinheit angeklickt, so wird der
-	komplette Flow, in der diese Funktionseinheit Teil ist, als zu
-	Sub-Flow der Integration genommen.
+	komplette Flow, von der diese Funktionseinheit Teil ist, zu einem
+	Sub-Flow der Integration gemacht.
 	
-	Das Entfernen eines Flows von einer Integration geschieht indem auf eine
-	Funktonseinheit rechtsklickt und dann auf 'Remove from Integration'
-	ausgewählt wird. Der komplette zusammenhängede Flow wird dann aus der
+	Das Entfernen eines Flows von einer Integration ist auch über das Kontextmenü
+  möglich.
+  Dabei wird der komplette zusammenhängende Flow aus der
 	Integration entfernt. 
 	
 	
@@ -405,35 +398,35 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 	
 	\subsubsection{Definieren von Datentypen}
 
-	Eigene DatenTypen können auf der rechten Seite des Editors angelegt werden.
+	Eigene Datentypen können auf der rechten Seite des Editors angelegt werden.
 	Durch Rechtsklick -> Add New DataType. Außerdem zeigt der obere Button an,
-	ob im akutellen Diagramm Datenflüsse mit Daten fließen, die nicht definiert
+	ob im aktuellen Diagramm Datenflüsse mit Daten fließen, die nicht definiert
 	sind. ( int, string, double, usw. werden automatisch ignoriert). Ein Klick
-	auf diesen erstellt für jeden nicht-definierten Datentyp ein neuen Eintrag.
+	auf diesen erstellt für jeden nicht-definierten Datentyp einen neuen Eintrag.
 	Auch Datentypen innerhalb eines eigenen Datentypen werden überprüft, ob sie 
 	bekannt sind oder nicht. Bsp. 
 	Person 
 	name:string
 	address:Address  
 	
-	Der Editor würde überprüfen ob der Address Datentyp definiert wurde oder nicht.
+	Der Editor würde überprüfen ob für Address ein Datentyp definiert wurde oder nicht.
 	
-\subsubsection{MISSING IMAGES Navigation und Shortcuts}
+\subsubsection{Navigation und Tastenkürzel}
 
 	Zur Navigation innerhalb des DrawingBoards wird das Mausrad verwendet.
-	Durch Scrollen wird in das DrawingBoard herein und herausgezoomt.
-	Durch gedrückthalten des Mausrades (mittlere Maustaste) und Bewegen der
+	Durch Scrollen wird in das DrawingBoard herein und heraus gezoomt.
+	Durch gedrückt halten des Mausrades (mittlere Maustaste) und Bewegen der
 	Maus kann die Ansicht verschoben werden ( das DrawingBoard ist endlos groß)
 	
 	Ein weiteres Feature besteht darin, dass ab bestimmten Zoom-Stufen die
-	Font-Größen der Namen der Funktionseinheiten angepasst werden und die 
+	Schriftgrößen der Namen der Funktionseinheiten angepasst werden und die 
 	Textfelder der Datenflüsse ausgeblendet werden.
-	Außerdem können Textfelder nicht mehr fokusiert werden, was ein einfachers
-	Verschieben der Funktionseinheiten ermöglichen soll. Diese Eigenschaft wird
-	visuell erkenntlich gemacht, dass die Hintergrundfarbe des Textfeldes bei
-	einer selektierten Funktionseinheit nicht mehr dunkel ist.
-	Auch der Mousecursor zeigt bei einem Mouse-Over an, dass man nicht mehr in
-	das Textfeld klicken kann.
+	Außerdem können Textfelder nicht mehr fokussiert werden, was ein einfacheres
+	Verschieben der Funktionseinheiten ermöglichen soll. Diese Gegebenheit wird
+	visuell kenntlich gemacht, indem die Hintergrundfarbe des Textfeldes bei
+	einer selektierten Funktionseinheit mit der Selektierungsfarbe übereinstimmt.
+	Auch der Mauszeiger zeigt bei einem Mouseover an, dass nun nicht mehr in
+	das Textfeld geklickt werden kann.
 	
 	
 	\subsubsection{Weitere Features}
@@ -441,25 +434,25 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 	\begin{itemize}
 		\item Speichern, Laden, Mergen
 		
-		Das Speichern und Laden in 3 Dateiformate wird unterstüzt
+		Das Speichern und Laden in 3 Dateiformate wird unterstützt
 		(yaml, json und xml - nach Dateigröße aufsteigend sortiert).
 		Auch das Laden eines anderen Flow Designs in das aktuelle geladene wird 
 		mit der Merge-Funktion unterstützt.
 
-		\item Unhandled Exception ErrorDialog
+		\item Unhandled Exception Error Dialog
 		
-		Wird eine Exception geworfen, die nicht behandelt wurde, so wurde eine
-		allgemeine Fehlerbehandlung aufgerufen. Das Programm stürzt nicht ab,
-		sondern ein Dialog errscheint, mit einem Stacktrace und Informationen
+		Wird eine Exception geworfen, die nicht behandelt wurde, so wird eine
+		allgemeine Fehlerbehandlung aufgerufen. Das Programm stürzt somit nicht ab,
+		sondern ein Dialog erscheint, mit einem Stacktrace und Informationen
 		über die geflogenen Exception. Der Benutzer kann das entscheiden, ob er
 		hier das Programm Beenden will, oder weiter den Fehler ignorieren will.
 		Der Stacktrace kann gegenenfalls kopiert und an den Entwickler als
-		Bugreport zuschicken werden.
+		Bugreport zugeschickt werden.
 		
 		\item Help-Window
 		
-		Ein simples Fenster gibt dem Benutzer einen Überblick über die
-		vorhandenen Shortcuts und die Navigation mit der Maus wird erklärt.
+		Ein einfaches Hilfefenster, dass dem Benutzer einen Überblick über die
+		vorhandenen Tastenkürzel zeigt und die Navigation mit der Maus erklärt.
 	\end{itemize}
 	
 
@@ -469,29 +462,29 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 
 Das Projekt wurde nicht strikt nach MVVM-Regeln (Model-View-ViewModel) 
 umgesetzt, jedoch bedient es sich der Idee, das es eine View gibt, die
-als Datenkontext ein ViewModel zugewiesen hat. Das Zuweisen eines
-Datenkontextes erlaubt es GUI-Elemente der View an Propertys des ViewModels zu
-binden. Ein Binding bewirkt, dass sich das GUI-Element automatisch aktualisiert,
-sobald sich das dazugehörige Property ändert. Eine Änderung einer
+als Datenkontext ein ViewModel zugewiesen bekommen hat. Durch das Zuweisen eines
+Datenkontextes wird es GUI-Elementen der View ermöglicht sich an Eigenschaften des ViewModels zu
+binden. Ein Bindung bewirkt, dass sich das GUI-Element automatisch aktualisiert,
+sobald sich die dazugehörige Eigenschaft ändert. Eine Änderung einer
 Eigenschaft des ViewModels ändert somit automatisch die View.
 
 Die GUI besteht aus mehreren Views (xaml-Dateien) und dazugehörigen ViewModels.
-Die Aufgabe des ViewModels besteht vor allem darin, ein Model entgegenzunehmen und dieses
+Die Aufgabe des ViewModels besteht vor allem darin, ein Domänenmodell entgegenzunehmen und dieses
 darzustellen, bzw. die aktuelle Darstellung zu aktualisieren.
 
-Nach jeder Änderung am Model - zum Beispiel das Hinzufügen einer neuen
+Nach jeder Änderung am Domänenmodell - zum Beispiel das Hinzufügen einer neuen
 Funktionseinheit -  dieses komplett neu zu laden (Löschen und neu Hinzufügen aller
-ViewModels, die wiederum ein neu Generieren der UI-Framework-Elemente zur
+ViewModels, die wiederum ein Neugenerieren der UI-Framework-Elemente zur
 Folge hatte) erwies sich als nicht sehr performant. 
 Ab Diagrammen, mit über 20 Nodes, stieg die Zeit zur Aktualisierung der View
 bereits auf mehrere Sekunden an.
-Die Lösung bestand darin, nicht einfach stur alles zu Löschen und neu
-hinzuzufügen, sondern darin, die Änderungen am Model zu lokalisieren und nur
-diese neu zu erstellen, bzw. nur die Propertys neu zu setzen. Durch
+Die Lösung bestand darin, nicht einfach alles zu Löschen und neu
+hinzuzufügen, sondern darin, die Änderungen am Modell zu lokalisieren und nur
+diese neu zu erstellen, bzw. nur die Eigenschaften neu zu setzen. Durch
 diese Verbesserungen wurde die Performance deutlich gesteigert, sodass
 Diagramme mit mehreren hundert Funktionseinheiten keine spürbaren Perfomanceverluste mit
-sich führt. Einzig das Duplizieren von vielen Funktionseinheiten dauert nach wie vor
-mehrere Sekunden. 
+sich führen. Einzig das Duplizieren von vielen Funktionseinheiten dauert nach wie vor
+etwas länger. 
 
 \subsection{Interaktionen}
 
@@ -499,13 +492,13 @@ Wie bereits im Grundlagen-Teil erwähnt, (Abschnitt Entwurfsmethode) schlägt Fl
 vor, alle Events als Interaktionen zu bezeichnen und für jedes dieser
 Änderungen ein eigenen Flow Design zu erstellen. 
 Es bietet sich somit an, alle Interaktionen in einer Klasse zu sammeln.
-Diese bietet somit eine Überblick über alle Funktionalitäten der GUI.
+Diese bietet somit einen Überblick über alle Funktionalitäten der GUI.
 Da diese Integrationen sind, sind sie leicht zu verstehen (mit Ausnahmen). Die
 Interaktionen rufen Methoden von anderen Klassen auf, die die Operationen am
 Mainmodel vereinfachen. Am Ende fast jeder Interaktion wird die \texttt{ViewRedraw}
 Methode aufgerufen, die das \texttt{MainViewModel} veranlasst, das Model neu zu
 laden und somit die Änderungen der Interaktion in der GUI sichtbar macht.
-Deshalb erwies es sich als schlecht, wenn eine Interaktion eine andere
+Aus diesem Grund erwies es sich als schlecht, wenn eine Interaktion eine andere
 Interaktion aufruft, um ihre Funktionalität umzusetzen. 
 Stattdessen war es eine bessere Lösung, den Code der einen Interaktion in
 die andere zu Kopieren. Dies widerspricht zwar dem DRY Prinzip, jedoch eine
@@ -575,87 +568,87 @@ public static FunctionUnit CreateNewOrGetFirstIntegrated(FunctionUnit currentFun
 
 
 
-	Die \texttt{AppendNewCell} Methode erzeugt eine neue Funktionseinheit und und
-	verschiebt diese entlang der X Postion.
+	Die \texttt{AppendNewCell} Methode erzeugt eine neue Funktionseinheit und 
+	verschiebt diese entlang der X-Postion.
 	Außerdem setzt sie den Input gleich der DataStreamDefinition die
-	übergebenen wurde und verbindet diese beiden.
+	übergebenen wurde und verbindet diese beide.
 	\texttt{AppendNewCell} wird durch die Tastenkombination Ctrl-Tab ausgelöst, wenn
 	sich der Tastaturfokus innerhalb eines Textfeldes einer View einer Funktionseinheit oder
-	DatastreamDefinition befindet. Bei ersterem wird der erste unverbunden Output als der
-	DataStreamDefinition genommen, an dem die neue Funktionseinheit angehängt wird \footnote{nicht Teil der gezeigten Methode} .
+	DatastreamDefinition befindet. Bei ersterem wird der erste unverbundene
+  Ausgang als die	DataStreamDefinition genommen, an dem die neue Funktionseinheit angehängt wird \footnote{nicht Teil der gezeigten Methode} .
 	
 	Beide Methoden geben eine
-	Model-Instanz als \texttt{object} an die GUI zurück. Die GUI-Logik findet dann die
+	Domänenmodell-Instanz als \texttt{object} an die GUI zurück. Die GUI-Logik findet dann die
 	dazugehörige View und setzt den Fokus auf diese.
 	
 	Beide Methoden sind Methoden aus der Interaktions-Klasse, sind werden also
 	direkt aus einem Event von der GUI ausgelöst. 
 	Beide Methoden haben ähnliche Methodenaufrufe ( Neue Funktionseinheit
 	erzeugen, sie auf die gleiche Position zu setzten wie die der übergebenen
-	Funktionseinheit, neue Default-Werte für den Output-Stream der neuen
-	Funktionseinheit setzen, dem MainModel die neue Funktionseinheit zu geben
-	und die Ansicht neu zu zeichnen). Diese könnten in eine neue
-	Integration ausgelagert werden, hätte jedoch eine unnötige
-	Verschachtelung von Code als Auswirkung. Besser ist es hier die
-	Coderedundanz als etwas nicht schlimmes anzusehen und diese zu belassen.
+	Funktionseinheit, neue Standardwerte für den Output-Stream der neuen
+	Funktionseinheit setzen, dem MainModel die neue Funktionseinheit hinzufügen
+  und die Ansicht neu zu zeichnen).
+  Diese könnten in eine neue Integration ausgelagert werden, hätte jedoch eine unnötige
+	Verschachtlung von Code als Auswirkung. Besser ist es hier die
+	Coderedundanzen nicht als Code-Smell zu sehen und diese zu belassen.
 	So ist auf einen Blick ersichtlich, was die Interaktion genau macht, ohne
-	im Code herumspringen zu müssen.
+	im Code herum springen zu müssen.
 
-\subsection{Eigene Tabstop-Logik}
+\subsection{Eigene Tabstopp-Logik}
 
 Mit Tab und Shift-Tab soll es dem Nutzer möglich sein den Tastaturfokus zu
 verändern\footnote{Dieses Beispiel zeigt dabei noch einmal, das Coderedundanzen innerhalb
 von mehreren Integrationen nichts Schlechtes sein muss.
 Außerdem macht es auch deutlich, wie eine etwas komplexerer Integration mit
-mehreren verschachtelten Lambda-Ausdrücken in der Praxis aussehen kann. Auch das Arbeiten mit dem \textit{Model} und den Managerklassen soll dem Leser hier noch einmal verdeutlicht werden.}.
+mehreren verschachtelten Lambda-Ausdrücken in der Praxis aussehen kann. Auch das Arbeiten mit dem Domänenmodell und den Managerklassen soll dem Leser hier noch einmal verdeutlicht werden.}.
 
 
 
-Der nächsten Tabstop soll nach folgenden Regeln und abhängig vom aktuell
+Der nächsten Tabstopp soll nach folgenden Regeln und abhängig vom aktuell
 fokussierten \textit{Model} bestimmt werden:
 
 \begin{enumerate}
 	\item FunctionUnit
 
-	Besitzt akutell die View einer FunctionUnit den Tastaturfokus, so soll als
-	nächster Tabstop der erste Datenfluss, der verbunden ist gewählt werden. Ist keiner
-	verbunden, wähle als nächsten Tabstop den ersten Output.
+	Besitzt aktuell die View einer FunctionUnit den Tastaturfokus, so soll als
+	nächster Tabstopp der erste Datenfluss, der verbunden ist gewählt werden. Ist keiner
+	verbunden, wähle als nächsten Tabstop den ersten Ausgang der Funktionseinheit.
 	
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.6\linewidth]{./img/tabstop_functionunit.png}
-		\caption{Aufgabe - Tabstop von FunctionUnit aus}
+		\caption{Aufgabe - Tabstopp von FunctionUnit aus}
 	\end{figure}
 	
 	\item DataStream
 
-	 Wenn der Fokus aktuell auf einem DataStream liegt, so ist der nächste Tabstop die Ziel-Funktionseinheit des Datenflusses.
+	 Wenn der Fokus aktuell auf einem DataStream liegt, so ist der nächste Tabstopp die Ziel-Funktionseinheit des Datenflusses.
 
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=0.6\linewidth]{./img/tabstop_datastream.png}
-		\caption{Aufgabe - Tabstop von DataStream aus}
+		\caption{Aufgabe - Tabstopp von DataStream aus}
 	\end{figure}
 	
 	\item DataStreamDefinition
 
 	Der komplexeste Fall: 
-	Zu erst muss überprüft werden, ob es sich um ein Input oder Output
-	handelt. Ist es ein Input (A), so soll als nächster Stop die Funktionseinheit
-	zurückgegeben werden, von der die DataStreamDefinition der Input ist. 
+	Zu erst muss überprüft werden, ob es sich um ein Eingang oder Ausgang
+	handelt. Ist es ein Eingang (A), so soll als nächster Tabstopp die Funktionseinheit
+	zurückgegeben werden, von der die DataStreamDefinition der Eingang ist. 
 	Bei einem Output muss überprüft werden, ob das Ende des Flows erreicht
 	wurde, oder nicht. Wird ein verbundener Output entdeckt, wird der
-	entsprechende DataStream als nächster Stop zurückgegeben (B). Ist das Ende
+	entsprechende DataStream als nächster Tabstopp zurückgegeben (B). Ist das Ende
 	erreicht, so soll zum Anfang des kompletten Flows gesprungen werden (C).
 	
 	
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=\linewidth]{./img/tabstop_datastreamdefiniton.png}
-		\caption{Aufgabe - Tabstop von DataStreamDefinition aus}
+		\caption{Aufgabe - Tabstopp von DataStreamDefinition aus}
 	\end{figure}
 	
-	\begin{lstlisting}[caption=Tabstop vorwärts]
+	\begin{lstlisting}[caption=Tabstopp vorwärts]
 public static object TabStopGetNext(object focusedModel, MainModel mainModel)
 {
 	object @return = null;
@@ -705,7 +698,7 @@ public static object TabStopGetNext(object focusedModel, MainModel mainModel)
 }
 
 \end{lstlisting}
-	Analog dazu die Tabstop-Methode in die entgegengesetzte Richtung.
+	Analog dazu die Tabstopp-Methode in die entgegengesetzte Richtung.
 	
 	
 \begin{lstlisting}[caption=Tabstop rückwärts]
@@ -753,9 +746,12 @@ public static object TabStopGetPrevious(object focusedModel, MainModel mainModel
 	
 
 	Auf oberster Ebene wird überprüft um welchen Typ von Objekt es sich
-	handelt, der aktuell fokusiert ist \footnote{Teile davon war Aufgabe der UI und die
+	handelt, der aktuell fokussiert ist \footnote{Teile davon war Aufgabe der UI und die
 	Interaktion bekommt das Model dann als \texttt{object} übergeben. Deshalb bedarf es
-	innerhalb der Methode einer Überprüfung des Typen mit TryCast.}. Nun existieren die drei Fälle, abhängig vom übergebenen Typen.\footnote{Zur Erinnerung: Die \texttt{Sources}-Eigenschaft eines \texttt{DataStream} beinhaltet nicht die Funktionseinheit,
+	innerhalb der Methode einer Überprüfung des Typen mit TryCast. Natürlich
+  könnte man dies auch durch ein Interface verhindern, dann würden die 3 Fälle
+  jedoch nicht mehr klar vor einem liegen, sondern in den jeweiligen
+  Implementierungen der Klassen versteckt.}. Nun existieren die drei Fälle, abhängig vom übergebenen Typen.\footnote{Zur Erinnerung: Die \texttt{Sources}-Eigenschaft eines \texttt{DataStream} beinhaltet nicht die Funktionseinheit,
 	sondern die \texttt{DataStreamDefinition} einer Funktionseinheit. Die eigentliche
 	Funktionseinheit enthält die \texttt{Parent}-Eigenschaft der \texttt{DataStreamDefinition}.
 	Analog dazu enthält die \texttt{InputStream}- und \texttt{OutputStream}-Eigenschaft der
@@ -766,9 +762,9 @@ public static object TabStopGetPrevious(object focusedModel, MainModel mainModel
 \end{enumerate}
 
 \subsection{Validierung des Datenflusses - Farbliche Kennzeichnung }
-
+CONTINUE HERE
 Eigne ValidationException Klasse, die dem ViewModel übergeben werden kann. .
-Die ValidationException beinhaltet die Information, ob es sich um eine Error oder um eine Warning handelt (Error wird rot markiert, Warnings grün), welche  Element den Fehler anzeigen sollen, und einen Fehlertext, der als Tooltip an dem Element abgezeigt wird.
+Die ValidationException beinhaltet die Information, ob es sich um eine Error oder um eine Warning handelt (Error wird rot markiert, Warnings grün), welche  Element den Fehler anzeigen sollen, und einen Fehlertext, der als Tooltip an dem Element angezeigt wird.
 
 \begin{figure}[H]
 	\centering
@@ -819,16 +815,24 @@ Nun das Flow Design umgesetzt in Dexel. Zu beachten ist, das die Joined Output u
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.4\linewidth]{./img/csvtabellierenDexelDataTypes.png}
-	\caption{CSV Tabellieren - Flow Design aus YouTube Video}
+	\caption{CSV Tabellieren - Datentypen}
 \end{figure}
 
 
 
 
-\begin{figure}[H]
-	\makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{./img/csvtabellierenDexel.png}}%
-	\caption{CSV Tabellieren - Flow Design aus YouTube Video}
+\begin{landscape}
+\begin{figure}
+	    \hspace*{-1.5cm}
+	    \makebox[\linewidth]{
+	    		\includegraphics[width=1.25\linewidth]{./img/csvtabellierenDexel.png}
+	    }
+
+	\caption{CSV Tabellieren - Dexel Flow Design}
 \end{figure}
+\end{landscape}
+
+
 
 
 
@@ -904,11 +908,17 @@ public static IEnumerable<Record> CSVParsen(IEnumerable<string> strings)
 
 \subsubsection{Shopping Simulator - Komplexeres Beispiel}
 
-
-\begin{figure}[H]
-	\makebox[\textwidth][c]{\includegraphics[width=1.2\textwidth]{./img/shoppingSimulator.png}}%
-	\caption{Shopping Simulator}
-\end{figure}
+\begin{landscape}
+	\begin{figure}
+		\vspace*{-1.5cm}
+		\hspace*{-2cm}
+		\makebox[\linewidth]{
+			\includegraphics[width=1.15\linewidth]{./img/shoppingSimulator.png}
+		}
+		
+		\caption{Shopping Simulator}
+	\end{figure}
+\end{landscape}
 
 
 \begin{lstlisting}[caption=Shopping Simulator - automatisch generierter Code mit Dexel]
