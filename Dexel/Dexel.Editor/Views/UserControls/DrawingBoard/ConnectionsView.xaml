@@ -7,20 +7,57 @@
     xmlns:converter="clr-namespace:Dexel.Editor.Views.Converter"
     xmlns:customControls="clr-namespace:Dexel.Editor.Views.CustomControls"
     xmlns:drawingBoard="clr-namespace:Dexel.Editor.Views.UserControls.DrawingBoard"
+    xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+    xmlns:dragAndDrop="clr-namespace:Dexel.Editor.Views.DragAndDrop"
     x:Class="Dexel.Editor.Views.UserControls.DrawingBoard.ConnectionsView"
     mc:Ignorable="d"
     d:DataContext="{d:DesignInstance {x:Type viewModels:ConnectionViewModel}, IsDesignTimeCreatable=True}">
     <Canvas>
         <customControls:Pointer
             FillColor="{DynamicResource FillPointerBrush}"
-            OuterFillColor="{DynamicResource OuterFillPointerBrush}"
             Thickness="{DynamicResource StrokeThickness}"
             Start="{Binding Start}"
-            End="{Binding End}"
-            ArrowSize="30,15" />
+            End="{Binding End}" 
+            />
+
+        <Grid x:Name="ArrowHead" Background="Transparent" ZIndex="5" Height="30" Width="30"
+              Margin="-15,-15"   Canvas.Left="{Binding End.X}" Canvas.Top="{Binding End.Y}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid 
+                Margin="0,10,-1,0"
+                Grid.Column="0"  HorizontalAlignment="Right">
+                <Path x:Name="ThePath" StrokeThickness="2" Stroke="{DynamicResource FillPointerBrush}" 
+                        Data="M10,5 L0,0">
+                    <Path.StrokeStartLineCap>Round</Path.StrokeStartLineCap>
+                    <Path.StrokeEndLineCap>Round</Path.StrokeEndLineCap>
+                </Path>
+                <Path x:Name="The2Path" StrokeThickness="2" Stroke="{DynamicResource FillPointerBrush}" 
+                        Data="M0,10 L10,5">
+                    <Path.StrokeStartLineCap>Round</Path.StrokeStartLineCap>
+                    <Path.StrokeEndLineCap>Round</Path.StrokeEndLineCap>
+                </Path>
+            </Grid>
+        </Grid>
 
 
-        <Grid x:Name="TheGrid" Canvas.Left="{Binding Center.X}" Canvas.Top="{Binding Center.Y}">
+        <Grid x:Name="ArrowHeadTouch" Background="Transparent" ZIndex="10" Height="30" Width="30"
+              Margin="-25,-15,0,0"             
+              Canvas.Left="{Binding End.X}" Canvas.Top="{Binding End.Y}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <i:Interaction.Behaviors>
+                <dragAndDrop:FrameworkElementDropBehavior  />
+                <dragAndDrop:FrameworkElementDragBehavior  />
+                <dragAndDrop:MouseHoverFeedBack/>
+            </i:Interaction.Behaviors>
+        </Grid>
+
+        <Grid x:Name="TheGrid"   Canvas.ZIndex="999" Canvas.Left="{Binding Center.X}" Canvas.Top="{Binding Center.Y}">
             <Grid.RenderTransform>
                 <TransformGroup>
                     <ScaleTransform />
@@ -34,10 +71,18 @@
 
             <Border
                 Visibility="{Binding DataContext.VisibilityDatanames, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type drawingBoard:DrawingBoard}}}"
-                Panel.ZIndex="999" Background="{StaticResource BG}" BorderBrush="{StaticResource FillPointerBrush}"
-                BorderThickness="2">
-                <customControls:DataNamesControl x:Name="DataNamesControl" Panel.ZIndex="1000"
+                Panel.ZIndex="999"   BorderBrush="{DynamicResource FillPointerBrush}"
+                BorderThickness="0.5">
+                <Grid>
+                    <Grid Opacity="0.93" Background="{DynamicResource BGDatanames}">
+                        <Grid.Effect>
+                            <DropShadowEffect ShadowDepth="3" Opacity="0.3" BlurRadius="6"/>
+                            <!--<BlurEffect Radius="5" KernelType="Gaussian"/>-->
+                        </Grid.Effect>
+                    </Grid>
+                    <customControls:DataNamesControl x:Name="DataNamesControl" Panel.ZIndex="1000" 
                                                  DataContext="{Binding Model, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
+                </Grid>
             </Border>
 
         </Grid>

@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -17,6 +19,9 @@ using Roslyn.Validator;
 
 namespace Dexel.Editor.Views
 {
+
+
+
 
     public static class Interactions
     {
@@ -37,6 +42,20 @@ namespace Dexel.Editor.Views
         private static FunctionUnit _startPickingAt;
 
 
+        public static void ChangeToPrintTheme()
+        {
+            MainViewModel.Instance().ChangeTheme("Views/Themes/Print.xaml", @"Views/Themes/FlowDesignColorPrint.xshd");
+            App.SetConfig("Theme", "Print");
+            
+        }
+
+        public static void ChangeToDarkTheme()
+        {
+            MainViewModel.Instance().ChangeTheme("Views/Themes/DarkColorfull.xaml", @"Views/Themes/FlowDesignColorDark.xshd");
+            App.SetConfig("Theme", "Dark");
+        }
+
+
         public static FunctionUnit AddNewFunctionUnit(Point pos, MainModel mainModel)
         {
             var functionUnit = FunctionUnitManager.CreateNew();
@@ -55,7 +74,6 @@ namespace Dexel.Editor.Views
         public static void ViewRedraw()
         {
             Validate(MainViewModel.Instance().Model);
-
             MainViewModel.Instance().Reload();
         }
 
@@ -143,8 +161,8 @@ namespace Dexel.Editor.Views
         public static void ConnectDangelingConnectionAndFunctionUnit(DataStreamDefinition defintionDSD,
             FunctionUnit destination, MainModel mainModel)
         {
-            var inputDefinition = FunctionUnitManager.NewInputDef(destination, "", null);
-            MainModelManager.ConnectTwoDefintions(defintionDSD, inputDefinition, mainModel);
+           
+            MainModelManager.ConnectTwoDefintions(defintionDSD, destination.InputStreams.First(), mainModel);
 
             ViewRedraw();
         }
@@ -570,7 +588,13 @@ namespace Dexel.Editor.Views
         public static void Validate(MainModel mainModel)
         {
             List<ValidationError> errorsAndWarnings = new List<ValidationError>();
-            FlowValidator.Validate(mainModel, obj => errorsAndWarnings.Add(obj));
+
+            try
+            {
+                FlowValidator.Validate(mainModel, obj => errorsAndWarnings.Add(obj));
+            }
+            catch {}
+
             MainViewModel.Instance().ShowValidationResult(errorsAndWarnings);
         }
     }

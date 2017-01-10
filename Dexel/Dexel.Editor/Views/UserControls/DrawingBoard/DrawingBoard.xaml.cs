@@ -389,7 +389,7 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
         }
 
 
-        public void NewOrFirstIntegrated(bool ctrlDown)
+        public void EnterShortcut(bool ctrlDown)
         {
             Keyboard.FocusedElement.TryGetDataContext<FunctionUnitViewModel>(vm =>
             {

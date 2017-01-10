@@ -34,7 +34,7 @@
         </i:Interaction.Behaviors>
 
         <customControls:ZoomBorder x:Name="TheZoomBorder" ClipToBounds="True"
-                                   Background="{StaticResource MyVisualBrush}">
+                                   Background="{DynamicResource  MyVisualBrush}">
             <Grid x:Name="GridInsideZoomBorder">
 
                 <!-- 
@@ -45,7 +45,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <customControls:IntegrationBorders
-                                FillColor="{StaticResource FillPointerBrush}"
+                                FillColor="{DynamicResource  FillPointerBrush}"
                                 Thickness="2"
                                 TopWidth="{Binding Width}"
                                 End="{Binding IntegrationEndPosition}"

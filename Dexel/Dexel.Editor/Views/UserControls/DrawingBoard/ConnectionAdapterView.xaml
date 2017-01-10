@@ -31,7 +31,7 @@
             StrokeDashArray="1 2" StrokeLineJoin="Round"/>
 
 
-        <Rectangle Grid.Column="0" Grid.RowSpan="2" Fill="{DynamicResource FillPointerBrush}" Height="{DynamicResource StrokeThickness}" VerticalAlignment="Center"  />
+        <Rectangle Grid.Column="0" Grid.RowSpan="2" Margin="-20,0,0,0" Canvas.ZIndex="0"  Fill="{DynamicResource FillPointerBrush}" Height="{DynamicResource StrokeThickness}" VerticalAlignment="Center"  />
         <Grid Background="Transparent" Grid.Row="0" Grid.RowSpan="2">
             <i:Interaction.Behaviors>
                 <dragAndDrop:FrameworkElementDragBehavior  />
@@ -43,6 +43,6 @@
                  Grid.Column="0" x:Name="ActionNameTextBox" TextChanged="ActionNameTextBox_OnTextChanged" VerticalAlignment="Top"
                  Text="{Binding Model.ActionName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  Margin="0,-2,0,0"
                          CaretBrush="{DynamicResource Foreground}" Background="{x:Null}"
-                         Foreground="DarkGray" BorderBrush="{x:Null}" />
+                         Foreground="{DynamicResource Actionname}" BorderBrush="{x:Null}" />
     </Grid>
 </UserControl>

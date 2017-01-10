@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 
@@ -14,11 +15,18 @@ namespace Dexel.Editor.Views.DragAndDrop
             base.OnAttached();
 
             _defaultColor = (SolidColorBrush) AssociatedObject.Background;
-            _hoverBrush = new SolidColorBrush(Color.FromArgb(25, 255, 255, 255));
+            _hoverBrush = (SolidColorBrush)Application.Current.Resources["HoverColor"];
 
-            
-            AssociatedObject.MouseEnter += (sender, args) => AssociatedObject.Background = _hoverBrush;
-            AssociatedObject.MouseLeave += (sender, args) => AssociatedObject.Background = _defaultColor;
+
+            AssociatedObject.MouseEnter += (sender, args) =>
+            {
+                AssociatedObject.Background = _hoverBrush;              
+            };
+
+            AssociatedObject.MouseLeave += (sender, args) =>
+            {
+                AssociatedObject.Background = _defaultColor;
+            };
         }
     }
 }

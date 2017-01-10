@@ -15,9 +15,6 @@ namespace Dexel.Editor.Views.CustomControls
         public static readonly DependencyProperty EndProperty =
             DependencyProperty.Register("End", typeof(Point), typeof(Pointer));
 
-        public static readonly DependencyProperty ArrowSizeProperty =
-            DependencyProperty.Register("ArrowSize", typeof(Point), typeof(Pointer));
-
         public static readonly DependencyProperty ThicknessProperty =
             DependencyProperty.Register("Thickness", typeof(double), typeof(Pointer));
 
@@ -30,14 +27,14 @@ namespace Dexel.Editor.Views.CustomControls
         public static readonly DependencyProperty OuterFillColorProperty =
             DependencyProperty.Register("OuterFillColor", typeof(SolidColorBrush), typeof(Pointer));
 
-        private static bool _isDragging;
+        //private static bool _isDragging;
 
-        private readonly Path _arrowShape;
+
 
         private double _connectionExtensionLength = 100;
         private readonly Path _outerPathShape;
         private readonly Path _pathShape;
-        private bool _isMouseClicked;
+        //private bool _isMouseClicked;
 
         public Pointer()
         {
@@ -50,65 +47,60 @@ namespace Dexel.Editor.Views.CustomControls
             _outerPathShape = new Path
             {
                 Stroke = FillColor,
-                StrokeThickness = 35
+                StrokeThickness = 12
             };
 
-            _arrowShape = new Path
-            {
-                Stroke = FillColor,
-                Fill = FillColor,
-                StrokeThickness = 0
-            };
+          
 
-            _arrowShape.MouseLeave += (sender, args) =>
-            {
-                if (!_isMouseClicked) return;
+            //_arrowShape.MouseLeave += (sender, args) =>
+            //{
+            //    if (!_isMouseClicked) return;
 
-                FrameworkElementDragBehavior.DragDropInProgressFlag = true;
+            //    FrameworkElementDragBehavior.DragDropInProgressFlag = true;
 
-                try
-                {
-                    ((ConnectionViewModel) DataContext).End = null;
-                    var data = new DataObject();
-                    data.SetData(typeof(ConnectionViewModel), DataContext);
-                    DragDrop.DoDragDrop((DependencyObject)args.Source, data, DragDropEffects.Move);
+            //    try
+            //    {
+            //        ((ConnectionViewModel) DataContext).End = null;
+            //        var data = new DataObject();
+            //        data.SetData(typeof(ConnectionViewModel), DataContext);
+            //        DragDrop.DoDragDrop((DependencyObject)args.Source, data, DragDropEffects.Move);
 
-                }
-                catch
-                {
-                    // ignored
-                }
+            //    }
+            //    catch
+            //    {
+            //        // ignored
+            //    }
 
-                FrameworkElementDragBehavior.DragDropInProgressFlag = false;
-                _isDragging = false;
-                _isMouseClicked = false;
-            };
+            //    FrameworkElementDragBehavior.DragDropInProgressFlag = false;
+            //    _isDragging = false;
+            //    _isMouseClicked = false;
+            //};
 
-            _arrowShape.MouseDown += (sender, args) =>
-            {
-                _isMouseClicked = true;
-                args.Handled = true;
-            };
+            //_arrowShape.MouseDown += (sender, args) =>
+            //{
+            //    _isMouseClicked = true;
+            //    args.Handled = true;
+            //};
 
-            _arrowShape.MouseUp += (sender, args) =>
-            {
-                _isMouseClicked = false;
-                args.Handled = true;
-            };
+            //_arrowShape.MouseUp += (sender, args) =>
+            //{
+            //    _isMouseClicked = false;
+            //    args.Handled = true;
+            //};
 
 
-            _arrowShape.MouseEnter += (sender, args) => { _arrowShape.Fill = Brushes.Red; };
+            //_arrowShape.MouseEnter += (sender, args) => { _arrowShape.Stroke = Brushes.Red; };
 
-            _arrowShape.MouseLeave += (sender, args) =>
-            {
-                if (_isDragging) return;
-                _arrowShape.Fill = FillColor;
-            };
+            //_arrowShape.MouseLeave += (sender, args) =>
+            //{
+            //    if (_isDragging) return;
+            //    _arrowShape.Stroke = FillColor;
+            //};
 
 
             Children.Add(_outerPathShape);
             Children.Add(_pathShape);
-            Children.Add(_arrowShape);
+
 
             DependencyPropertyDescriptor
                 .FromProperty(EndProperty, typeof(Pointer))
@@ -116,11 +108,6 @@ namespace Dexel.Editor.Views.CustomControls
 
             DependencyPropertyDescriptor
                 .FromProperty(StartProperty, typeof(Pointer))
-                .AddValueChanged(this, (s, e) => Update());
-
-
-            DependencyPropertyDescriptor
-                .FromProperty(ArrowSizeProperty, typeof(Pointer))
                 .AddValueChanged(this, (s, e) => Update());
 
             DependencyPropertyDescriptor
@@ -160,11 +147,7 @@ namespace Dexel.Editor.Views.CustomControls
             set { SetValue(StartProperty, value); }
         }
 
-        public Point ArrowSize
-        {
-            get { return (Point) GetValue(ArrowSizeProperty); }
-            set { SetValue(ArrowSizeProperty, value); }
-        }
+
 
         public SolidColorBrush FillColor
         {
@@ -181,8 +164,7 @@ namespace Dexel.Editor.Views.CustomControls
 
         private void Update()
         {
-            _arrowShape.Stroke = FillColor;
-            _arrowShape.Fill = FillColor;
+
             _pathShape.Stroke = FillColor;
             _pathShape.StrokeThickness = Thickness;
             _outerPathShape.Stroke = OuterFillColor;
@@ -191,27 +173,11 @@ namespace Dexel.Editor.Views.CustomControls
             UpdatePath();
 
             UpdateViewModel();
-            UpdateArrowHead();
+
         }
 
 
-        private void UpdateArrowHead()
-        {
-            var position = End;
-            position.X -= ArrowSize.X;
-
-            var figure = new PathFigure();
-            figure.StartPoint = position;
-            figure.IsClosed = true;
-
-            var pts = new List<Point>();
-            pts.Add(new Point(position.X, position.Y - ArrowSize.Y/2));
-            pts.Add(new Point(position.X + ArrowSize.X, position.Y));
-            pts.Add(new Point(position.X, position.Y + ArrowSize.Y/2));
-            figure.Segments.Add(new PolyLineSegment(pts, true));
-
-            OverrideShapeData(_arrowShape, figure);
-        }
+       
 
 
         private void OverrideShapeData(Path shape, PathFigure figure)
@@ -237,9 +203,9 @@ namespace Dexel.Editor.Views.CustomControls
 
             var end = End;
             var start = Start;
-            end.X -= ArrowSize.X;
+            
             var startextend = new Point(start.X + _connectionExtensionLength, start.Y);
-            var endextend = new Point(end.X - _connectionExtensionLength, end.Y);
+            var endextend = new Point(end.X - _connectionExtensionLength -30, end.Y);
 
             var figure = new PathFigure();
             figure.IsClosed = false;

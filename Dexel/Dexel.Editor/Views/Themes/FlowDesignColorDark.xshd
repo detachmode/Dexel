@@ -1,0 +1,61 @@
+﻿<SyntaxDefinition name="FlowDesignColor"
+        xmlns="http://icsharpcode.net/sharpdevelop/syntaxdefinition/2008">
+
+  <Color name="Pipe" foreground="Orange" />
+  <Color name="Symbol" foreground="#FFFF8888" />
+  <Color name="Comment" foreground="Green" />
+  <Color name="NamedParameter" foreground="#FF69CBA3" />
+  <Color name="ParameterSep" foreground="#FF618CFF" />
+
+
+
+  <Color name="String" foreground="Blue" />
+
+  <!-- This is the main ruleset. -->
+  <RuleSet>
+    <!--<Span color="Comment" begin="//" />
+        <Span color="Comment" multiline="true" begin="/\*" end="\*/" />
+
+        <Span color="String">
+            <Begin>"</Begin>
+            <End>"</End>
+            <RuleSet>
+                -->
+    <!-- nested span for escape sequences -->
+    <!--
+                <Span begin="\\" end="." />
+            </RuleSet>
+        </Span>-->
+
+    <Keywords fontWeight="bold" color="Pipe">
+      <Word>|</Word>
+      <Word>,</Word>
+
+    </Keywords>
+
+    <Keywords fontWeight="bold" color="Symbol">
+      <Word>*</Word>
+      <Word>[]</Word>
+    </Keywords>
+
+    <Keywords fontWeight="bold"  color="ParameterSep">
+      <Word>...</Word>
+    </Keywords>
+    <Rule color="NamedParameter">
+      \w*:
+    </Rule>
+    <Rule color="NamedParameter">
+      \w*:
+    </Rule>
+    <!-- Digits -->
+    <!--
+        <Rule foreground="Orange">
+            \b0[xX][0-9a-fA-F]+  # hex number
+        |    \b
+            (    \d+(\.[0-9]+)?   #number with optional floating point
+            |    \.[0-9]+         #or just starting with floating point
+            )
+            ([eE][+-]?[0-9]+)? # optional exponent
+        </Rule>-->
+  </RuleSet>
+</SyntaxDefinition>

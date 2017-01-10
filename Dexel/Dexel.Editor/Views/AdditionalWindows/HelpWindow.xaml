@@ -6,20 +6,20 @@
         xmlns:local="clr-namespace:Dexel.Editor.Views"
         mc:Ignorable="d"
         Title="Help Window"  Width="400">
-    <StackPanel Background="{StaticResource BG}">
-        <Label>Mouse:</Label>
-        <Label>Middle Mouse Drag : move canvas</Label>
-        <Label>Mouse Wheel : zoom</Label>
-        <Label>Ctrl + Mouse drag : move function unit with its children</Label>
-        <Label>Shift + Mouse drag : duplicate dragged / selected function unit</Label>
-        <Label></Label>
-        <Label>Keyboard:</Label>
-        <Label>Ctrl + Tab : append new function unit</Label>
-        <Label>Ctrl + Enter  : new/first function unit as integrated</Label>
-        <Label>nter  : select first integrated function unit</Label>
-        <Label>Delete : delete selected function unit</Label>
-        <Label>Tab : cycle through text fields</Label>
-        <Label>Shift + Tab : Cycle through text fields backwards</Label>
+    <StackPanel  Background="{DynamicResource BG}">
+        <Label Foreground="{DynamicResource Foreground}" >Mouse:</Label>
+        <Label Foreground="{DynamicResource Foreground}">Middle Mouse Drag : move canvas</Label>
+        <Label Foreground="{DynamicResource Foreground}">Mouse Wheel : zoom</Label>
+        <Label Foreground="{DynamicResource Foreground}">Ctrl + Mouse drag : move function unit with its children</Label>
+        <Label Foreground="{DynamicResource Foreground}">Shift + Mouse drag : duplicate dragged / selected function unit</Label>
+        <Label Foreground="{DynamicResource Foreground}"></Label>
+        <Label Foreground="{DynamicResource Foreground}">Keyboard:</Label>
+        <Label Foreground="{DynamicResource Foreground}">Ctrl + Tab : append new function unit</Label>
+        <Label Foreground="{DynamicResource Foreground}">Ctrl + Enter  : new/first function unit as integrated</Label>
+        <Label Foreground="{DynamicResource Foreground}">nter  : select first integrated function unit</Label>
+        <Label Foreground="{DynamicResource Foreground}">Delete : delete selected function unit</Label>
+        <Label Foreground="{DynamicResource Foreground}">Tab : cycle through text fields</Label>
+        <Label Foreground="{DynamicResource Foreground}">Shift + Tab : Cycle through text fields backwards</Label>
         
     </StackPanel>
 </Window>
