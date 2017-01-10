@@ -9,7 +9,7 @@ Ralf Westphal war auch Mitbegründer und Miterfinder der Clean Code Development 
 Clean Code Development ist eine Ansammlung aus Prinzipien, die einem helfen
 sollen sauber programmierte Software zu schreiben. Diese Prinzipien sind aus dem Buch \enquote{Clean Code} von Robert C. Martin entnommen. Sauber programmierte Software hat 
 die vor allem die Eigenschaft, dass Änderungen und Erweiterungen an ihrer Funktionalität
-leicht zu realisieren sind. Laut Robert C. Martin\footnote{TODO:Buch und Seite angeben} gibt es in der Softwareentwicklung
+leicht zu realisieren sind. Laut Robert C. Martin \cite{Martin2009} gibt es in der Softwareentwicklung
 keine Garantie dafür, dass sich eine für die Software relevanten
 Rahmenbedingungen nicht jederzeit plötzlich ändern können. Sauber programmierte
 Software kann leichter auf solche Änderungen angepasst werden. 
@@ -18,10 +18,11 @@ Es bedarf zwar anfänglich mehr Zeit ein Feature zu implementieren, dass den CCD
 Sicht jedoch steigt dieser Zeitaufwand nicht mit jedem neuen Feature stark
 an. Im Vergleich dazu steigt bei einer unsauber programmierten Software der Zeitaufwand ein neues
 Feature zu implementierten mit der Anzahl an bereits implementieren Features
-exponentiell an \footnote{Clean Code Buch, Seite xx}. Irgendwann erreicht der Quellcode der Software dann einen Punkt, an
+exponentiell an \footnote{\url{http://clean-code-developer.de/das-wertesystem/\#Evolvierbarkeit}}.
+ Irgendwann erreicht der Quellcode der Software dann einen Punkt, an
 dem der Zeitaufwand ein neues Feature zu implementieren derart groß geworden ist, dass es besser ist die Software neu zu schreiben, anstatt sie anzupassen.
 
-CCD bezeichnet eine saubere programmierte Software aus diesem Grund auch als \emph{evolvierbar}\footnote{\url{http://clean-code-developer.de/das-wertesystem/\#Evolvierbarkeit}}.
+CCD bezeichnet eine saubere programmierte Software aus diesem Grund auch als \emph{evolvierbar}.
 Software die mit dem Fokus auf Evolvierbarkeit hin programmiert wurde,
 kann leicht an neue Rahmenbedingungen oder Kundenwünsche angepasst werden.
 
@@ -543,16 +544,12 @@ wird ein Viereck am Anfang bzw. Ende des Pfeiles eingezeichnet.
 
 
 Das Definieren von Container und Zuordnen von Funktionseinheiten ist auch
-einfach möglich. Unter Container versteht man: Klassen, DLLs und Anwendungen.
+einfach möglich. Unter Container versteht man: Klassen, DLLs und Anwendungen.\footnote{Definition des Container-Begriffs: \cite[S. 50 ff.]{schummelzettel}}
+
 Es gibt zwei Möglichkeiten eine Zugehörigkeit zu einem Container zu notieren.
 Entweder man schreibt direkt unter der Funktionseinheit den Namen des
 Containers, oder man umrandet mehrere Funktionseinheiten und notiert den Namen
 des Containers am Rand der Umrandung.
-
-%TODO wohin mit dieser Anmerkung?
-
-\blankfootnote{Bilder sind von:
-\url{http://flow-design.org/overview/implementation/\#How_to_implement_inputs_to_a_functional_unit}}
 
 \chapter{Implementation}
 
@@ -594,8 +591,8 @@ dürfen aus diesem Grund andere Funktionseinheiten nicht kennen.
 
 Die Aufgabe einer Integration ist, die unabhängigen Operationen in das große Ganze zu
 Integrieren. 
-(Fußnote) Ralf Westphal spielte auch mit den Gedanken diese Funktionseinheiten als Koordinatoren oder
-Kompositionen zu bezeichnen.
+\footnote{Ralf Westphal spielte auch mit den Gedanken diese Funktionseinheiten als Koordinatoren oder
+Kompositionen zu bezeichnen.}
 
 Integrationen integrieren andere Integrationen und/oder Operationen in das Programm. Sie dürfen also funktional abhängig sein
 von anderen von Funktionseinheiten.

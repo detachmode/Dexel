@@ -82,3 +82,24 @@ style=alphabetic,
 \usepackage[german, refpage]{nomencl}
 \makenomenclature
 \let\abk\nomenclature 
+
+
+\usepackage{epigraph}
+\usepackage{float}
+\usepackage{tablefootnote}
+
+% Tabellen Padding
+\setlength{\tabcolsep}{10pt}
+\renewcommand{\arraystretch}{1.7}
+
+\newcommand{\titledate}[2][2.5in]{%
+	\noindent%
+	\begin{tabular}{@{}p{#1}@{}}
+		\\ \hline \\[-.75\normalbaselineskip]
+		#2
+	\end{tabular} \hspace{1in}
+	\begin{tabular}{@{}p{#1}@{}}
+		\\ \hline \\[-.75\normalbaselineskip]
+		Unterschrift
+	\end{tabular}
+}

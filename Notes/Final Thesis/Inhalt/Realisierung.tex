@@ -2,8 +2,9 @@
 \chapter{Realisierung }
 
 In diesem Kapitel soll vorgestellt werden, was in dem Zeitraum dieser
-Bachelorarbeit erreicht wurde. Es soll die Funktionalität des Editors
-anhand von Screenshots vorgestellt werden und die Architekur der Anwendung, die selbst nach  Flow Design umgesetzt wurde. 
+Bachelorarbeit erreicht wurde. Die Architekur der Anwendung wurde selbst nach
+Flow Design umgesetzt und bietet somit dem Leser eine Quelle an weiteren
+konkreten Beispielen aus der Praxis, wie eine Methode nach IOSP in der Praxis aussieht.
 
 Als Arbeitstitel für die Anwendung wurde der Name Dexel gewählt.
 
@@ -11,27 +12,29 @@ Als Arbeitstitel für die Anwendung wurde der Name Dexel gewählt.
 
 Die Anwendung besteht aus einer \textit{Solution}, die folgende Unterprojekte beinhaltet \footnote{Bei komplexen Funktionalitäten wurde nach TDD (Test Driven Development)
 programmiert, bei dem zuerst der Test geschrieben wird, der das zu erwartende
-Ergebnis definiert, und anschließend wurd die Methode erst implementiert, diese
-Tests werden in einem extra Test-Projekt für jedes Projekt zusammengefasst.}:
+Ergebnis definiert, und erst anschließend die Methode implementiert wird.
+. Diese Tests wurden in einem extra Test-Projekt für jedes Projekt zusammengefasst.}:
 
 \subsubsection{Dexel.Model / Dexel.Model.Tests}
 
-Dieses Projekt beinhaltet alle Datentypen die zur internen Repräsentation
+Dieses Projekt beinhaltet das Domänenmodell - alle Datentypen die zur internen Repräsentation
 eines Flow Design Diagrammes nötig sind. Außerdem beinhaltet dieses Projekt
 statische Manager-Klassen, die das Arbeiten mit den Datentypen vereinfachen.
 
 \subsubsection{Dexel.Editor / Dexel.Editor.Tests}
 
-Das Hauptprojekt, das alle anderen Projekte integriert. Hier wurde das IOSP
+Dies ist das Hauptprojekt, das alle anderen Projekte integriert.
+Nach Flow Design kann man IOSP auf Projekt-Ebene anwenden, hier wurde jedoch das IOSP
 Prinzip nicht eingehalten. Dieses Projekt hat nicht nur die Aufgabe die
 anderen Projekte zu integrieren, sondern beinhaltet selbst den
 UI-Sourcecode. Diese Entscheidung wurde gefällt, da ein Extrahieren der UI
 in ein anderes Projekt sich als zu schwierig erwies. Eine Lösung dafür zu
 finden, wie ein Event aus dem UI mit einer Funktionalität verbunden werden
-könnte, aus einem Projekt, welches es selbst nicht, war zeitlich zu
+könnte, dass sich in einem Projekt befindet, war zeitlich zu
 aufwendig. Aus diesem Grund wurde entschieden auf die zusätzliche
-Komplexität einer Entkoppelung zu verzichten und der Einfachheit halber
-dieses Projekt als UI und integrierendes Projekt zu nutzen.
+Komplexität einer Entkoppelung zu verzichten und es einfacher zu halten, indem
+dieses Projekt sowohl die UI beinhalter, als auch alle anderen Projekte
+kennt.
 
 \subsubsection{Roslyn / Rosyln.Tests}
 
@@ -47,30 +50,29 @@ programmiert wurde, anstatt gegen die konkrete Implementation in
 Dexel.Model. Diese Interfaces der Datentypen und Manager-Klassen wurde dann
 in ein Contracts-Projekt ausgelagert, von dem alle anderen Projekte abhängig
 sein durften. Die zusätzliche Komplexität, Mehraufwand und ein Problem bei
-der Serialisierung von Datentypen, bestehend aus weiteren Interfaces als
-Properties, machte die Entkoppelung nicht wert und der Beschluss auf die
-Interfaces zu verzichten wurde gefällt.
+der Serialisierung von Datentypen, die Interfaces als Eigenchaften besaßen,
+machte es nicht wert hier eine Entkoppelung zu schaffen. Somit wurde der
+Beschluss gefällt auf die Interfaces zu verzichten.
 
 \subsubsection{Dexel.Library}
 
-Beinhaltet einige Methoden ( meist Extension-Methoden), die ein Arbeiten
+Dieses Projekt beinhaltet einige Methoden ( meist Extension-Methoden), die ein Arbeiten
 nach Flow Design erleichtern. Diese wurden in ein separates Projekt
 ausgelagert, damit alle anderen Projekte darauf zugreifen können.
 
-\section{Das Model}
+\section{Das Domänenmodell}
 
 Um nachfolgende Kapitel der Realisierung und die darin enthaltenden
 Codeauschnitte verstehen zu können, braucht es ein Verständnis darüber, wie die
-grundlegenden Datentypen des Models aufgebaut sind. Um die Funktionalität der
-jeweiligen Datentypten besser zu veranschaulichen, werden in diesem Kapitel
+grundlegenden Datentypen des Domänenmodells aufgebaut sind. Um die Funktionalität der
+jeweiligen Datentypen besser zu veranschaulichen, werden in diesem Kapitel
 Bilder verwendet, welche die spätere Darstellung des Datentypen in der UI zeigen.
 
 \subsubsection{{\bfseries\sffamily MISSING IMAGES} MainModel}
 
 Das MainModel ist, wie der Name schon sagt, das Haupt-Modell, das alle
-anderen Modelle per Komposition beinhaltet. Somit kann man eine Objektinstanz
-eines MainModels an eine Methode übergeben und diese Instanz beinhaltet alle
-Informationen über das aktuelle Flow Design Diagramm. 
+anderen Modelle per Komposition beinhaltet. Somit kann einer Methode einfach eine Objektinstanz
+eines MainModels übergeben werden und erhält dadurch alle Informationen über das aktuelle Flow Design Diagramm. 
 Das \textit{MainModel} beinhaltet alle Funktonseinheiten, alle verbindende
 Datenströme (\textit{Connections}) und alle benutzerdefinierten Datentypen (\textit{DataTypes}).
 
@@ -103,20 +105,20 @@ public class FunctionUnit
 Der Name ist der Name der Funktionseinheit ( der Text, der bei der
 Darstellung später innerhalb des Kreises erscheint). Dieser wird später per Binding
 direkt an die UI gebunden. Aus diesem Grund implementiert dieses Klasse,
-genau wie alle anderen des Models, die ImplementPropertyChanged
+genau wie alle anderen des Modells, die ImplementPropertyChanged
 Funktionalität. Diese bewirkt, dass bei einer Änderung im UI automatisch das
-entsprechende Property im Model aktualisiert wird und umgekehrt.
+entsprechende Property im Modell aktualisiert wird und umgekehrt.
 
-Die Position beschreibt die Position der Softwarezelle innherhalb des
+Die Position beschreibt die Position der Funktionseinheiten innherhalb des
 Diagrammes.  
 
-Das Integration Property gibt an, ob diese Softwarezelle eine Integration
-ist und welche andere Instanzen von Softwarezellen sie integriert.
-Eine leere Liste besagt, dass die Softwarezelle keine Integration ist.
+Das IsIntegrating Property gibt an, ob diese Funktionseinheit eine Integration
+ist und welche andere Instanzen von Funktionseinheiten sie integriert.
+Eine leere Liste besagt, dass die Funktionseinheit keine Integration ist.
 
 Die Input- und OutputStreams definieren die möglichen ein- und ausgehenden
-Datenströme der Softwarezelle. An diese DataStreamDefinitionen können sich DataStreams
-verbinden. Dadurch lassen sie die Datenflüsse modelieren.
+Datenströme der Funktionseinheiten. An diese DataStreamDefinitionen können sich DataStreams
+verbinden. Dadurch lassen sie die Datenflüsse modellieren.
 
 
 	\subsubsection{MISSING IMAGES DataStreamDefinition}
