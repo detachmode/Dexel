@@ -1,100 +1,70 @@
 FunctionUnits:
-- &o1
+- &o0
   Position:
-    X: 195.11111111111094
-    Y: -117.37666666666679
-  Name: "Create \r\nRandom\r\nCustomer"
-  ID: 1d08477e-d424-4145-8bb3-2769d6c679ce
-  IsIntegrating:
-  - &o0
-    Position:
-      X: 189.93162393162436
-      Y: 44.728034188035778
-    Name: "Create \r\nNew Person"
-    ID: e493eacc-54be-45dc-985f-ba727f610a13
-    IsIntegrating: []
-    InputStreams:
-    - ActionName: ''
-      DataNames: (customerCount:int)
-      ID: 0bd75f3e-5f40-4625-af0a-4a15c82a1f3a
-      Parent: *o0
-    OutputStreams:
-    - ActionName: ''
-      DataNames: (Person)*
-      ID: dac6ceea-415a-4f08-b5d7-d730dc9b39dd
-      Parent: *o0
+    X: 70.982905982905834
+    Y: -244.61811965811921
+  Name: "Create \r\nNew Persons"
+  ID: 3e842a34-8d77-43b7-94fe-66634b49b447
+  IsIntegrating: []
   InputStreams:
   - ActionName: ''
-    DataNames: (customerCount:int)
-    ID: 4a1100b4-3d7b-4394-804f-0bba4776d960
-    Parent: *o1
+    DataNames: (int)
+    ID: 0c98a921-d1eb-453e-aa98-a6ddabab9185
+    Parent: *o0
   OutputStreams:
+  - &o3
+    ActionName: .onPerson
+    DataNames: (Person)*
+    ID: 3bf80ae6-d807-4efc-bb4a-5a27726a438c
+    Connected: true
+    Parent: *o0
+  - ActionName: .onError
+    DataNames: ()
+    ID: 06ff7403-2e2d-47a9-83ce-a4ad3a3d10b2
+    Parent: *o0
+- &o1
+  Position:
+    X: 350.28142138906833
+    Y: -253.04388996624252
+  Name: Print Name
+  ID: 6143f459-dd6b-4a60-a848-b925fe50160a
+  IsIntegrating: []
+  InputStreams:
   - &o4
     ActionName: ''
-    DataNames: (Customer)*
-    ID: 7f8c904e-0b74-4816-b84a-a5701834b940
+    DataNames: (Person)*
+    ID: a6884c62-8466-4530-8f7c-f29646a0b296
     Connected: true
+    Parent: *o1
+  OutputStreams:
+  - ActionName: ''
+    DataNames: (string)
+    ID: 6a62f19a-2938-4c05-9a1b-9a03cdaa213c
     Parent: *o1
 - &o2
   Position:
-    X: 690.70666666666625
-    Y: -25.904444444444579
-  Name: "Create \r\nrandom\r\nshopping\r\ncart"
-  ID: 55839756-a6f7-4c47-9393-1db5446d2f0d
-  IsIntegrating: []
-  InputStreams:
-  - &o5
-    ActionName: ''
-    DataNames: ()*
-    ID: e51b3ada-2a88-4e11-b467-490d3db5f772
-    Connected: true
-    Parent: *o2
-  OutputStreams:
-  - ActionName: ''
-    DataNames: (Cart)*
-    ID: 923967ca-36c5-4d53-a747-f5e10942ab20
-    Parent: *o2
-- &o3
-  Position:
-    X: 388.63888888888863
-    Y: -216.54333333333344
-  Name: Shopping Simulator
-  ID: 9db53a87-e7aa-4589-be25-ae0e92e97061
+    X: 213.72250620896125
+    Y: -358.5607861677363
+  Name: Main
+  ID: bce74d64-c8ee-4ce1-9c8a-e297a0e4d9ac
   IsIntegrating:
-  - *o2
+  - *o0
   - *o1
   InputStreams:
   - ActionName: ''
-    DataNames: (customerCount:int)
-    ID: ee202c8a-e6d7-42bd-8ab5-64698fe9a45a
-    Parent: *o3
-  OutputStreams:
-  - ActionName: ''
     DataNames: ()
-    ID: 034e5093-15fe-4ffa-92c6-a153c675e62c
-    Parent: *o3
-- *o0
+    ID: 31201f07-584f-4cf1-b240-15a8815d53ef
+    Parent: *o2
+  OutputStreams:
+  - ActionName: .onError
+    DataNames: ()
+    ID: cdbd8120-84ed-45e8-895b-b50724061efa
+    Parent: *o2
 Connections:
-- DataNames: (Customer)*|()*
-  ID: cd48348d-851f-4de5-ad4c-de8ba5cf3222
+- DataNames: (Person)*
+  ID: db3cf22c-4011-4de0-ad8b-f074a4e1b393
   Sources:
-  - *o4
+  - *o3
   Destinations:
-  - *o5
-DataTypes:
-- Name: Person
-  SubDataTypes:
-  - Name: Age
-    Type: int
-  - Name: Name
-    Type: string
-  - Name: Budget
-    Type: double
-- Name: Cart
-  SubDataTypes:
-  - Name: Products
-    Type: List<string>
-  - Name: Discount
-    Type: double
-  - Name: PriceTotal
-    Type: double
+  - *o4
+DataTypes: []
