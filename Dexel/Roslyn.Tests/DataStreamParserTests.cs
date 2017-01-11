@@ -44,18 +44,22 @@ namespace Roslyn.Tests
         public void GetInputPartTest()
         {
 
-            var inputDataTypes = DataStreamParser.GetInputPart("( double | int, string)*").ToList();
+            var inputDataTypes = DataStreamParser.GetInputPart("(double) | (int, string)*").ToList();
             Assert.IsTrue(inputDataTypes.Any( dt => dt.IsInsideStream == true && dt.IsList== false && dt.Type == "int"));
             Assert.IsTrue(inputDataTypes.Any(dt => dt.IsInsideStream == true && dt.IsList == false && dt.Type == "string"));
             Assert.IsFalse(inputDataTypes.Any(dt => dt.Type == "double"));
 
-            inputDataTypes = DataStreamParser.GetInputPart("double | ... string*").ToList();
+            inputDataTypes = DataStreamParser.GetInputPart("(double) | (... string*)").ToList();
+            Assert.AreEqual("double", inputDataTypes[0].Type);
             Assert.IsTrue(inputDataTypes.Any(dt => dt.IsInsideStream == false && dt.IsList == true && dt.Type == "string"));
             Assert.IsTrue(inputDataTypes.Any(dt => dt.IsInsideStream == false && dt.IsList == false && dt.Type == "double"));
 
-            inputDataTypes = DataStreamParser.GetInputPart("( double | ... string)*").ToList();
-            Assert.IsTrue(inputDataTypes.Any(dt => dt.IsInsideStream == true && dt.IsList == false && dt.Type == "string"));
-            Assert.IsTrue(inputDataTypes.Any(dt => dt.IsInsideStream == true && dt.IsList == false && dt.Type == "double"));
+            inputDataTypes = DataStreamParser.GetInputPart("(double)* | (... string)*").ToList();
+            Assert.AreEqual("string", inputDataTypes[1].Type);
+            Assert.AreEqual("double", inputDataTypes.First().Type);
+            Assert.AreEqual(false, inputDataTypes.First().IsList);
+            Assert.AreEqual(true, inputDataTypes.First().IsInsideStream);
+
         }
     
     }

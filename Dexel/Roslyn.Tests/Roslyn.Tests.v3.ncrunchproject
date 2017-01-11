@@ -1,0 +1,12 @@
+﻿<ProjectConfiguration>
+  <Settings>
+    <AllowCodeAnalysis>True</AllowCodeAnalysis>
+    <IgnoredTests>
+      <NamedTestSelector>
+        <TestName>Roslyn.Validator.Tests.FlowValidatorTests.ValidateTest_UnusedVariableWarning_InsideConnected</TestName>
+      </NamedTestSelector>
+    </IgnoredTests>
+    <PreloadReferencedAssemblies>True</PreloadReferencedAssemblies>
+    <PreviouslyBuiltSuccessfully>True</PreviouslyBuiltSuccessfully>
+  </Settings>
+</ProjectConfiguration>

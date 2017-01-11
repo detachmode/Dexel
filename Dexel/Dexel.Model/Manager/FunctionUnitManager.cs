@@ -66,6 +66,21 @@ namespace Dexel.Model.Manager
         }
 
 
+        public static FunctionUnit CreateNew(string name , string input, string output)
+        {
+
+            var fu =  new FunctionUnit
+            {
+                ID = Guid.NewGuid(),
+                Name = name
+            };
+
+            MainModelManager.AddNewInput(fu, input);
+            MainModelManager.AddNewOutput(fu, output);
+            return fu;
+        }
+
+
         public static void RemoveDefinitionsFromSourceAndDestination(DataStreamDefinition defintion, FunctionUnit source,
             FunctionUnit destination)
         {

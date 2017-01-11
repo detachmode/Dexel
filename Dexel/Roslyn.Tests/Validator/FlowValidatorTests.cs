@@ -109,32 +109,26 @@ namespace Roslyn.Validator.Tests
         [TestMethod()]
         public void ValidateTest_UnusedActionWarning()
         {
-            Assert.Fail(); // TODO
+          
             var testModel = new MainModel();
             var main = MainModelManager.AddNewFunctionUnit("main", testModel);
             MainModelManager.AddNewInput(main, "()");
             MainModelManager.AddNewOutput(main, "(int)");
 
-            var op1 = MainModelManager.AddNewFunctionUnit("try something", testModel);
+            var op1 = MainModelManager.AddNewFunctionUnit("unnconnected action output", testModel);
             MainModelManager.AddNewInput(op1, "()");
-            var op1Out = MainModelManager.AddNewOutput(op1, "(string)");
+            var op1Out = MainModelManager.AddNewOutput(op1, "(string)", "onString");
             main.IsIntegrating.AddUnique(op1);
 
-            var op2 = MainModelManager.AddNewFunctionUnit("try something", testModel);
-            var op2In = MainModelManager.AddNewInput(op2, "()");
-            var op2Out = MainModelManager.AddNewOutput(op2, "(int)");
-            main.IsIntegrating.AddUnique(op2);
 
-            MainModelManager.ConnectTwoDefintions(op1Out, op2In, testModel);
-
-            List<ValidationWarningUnusedVariable> warningsFound = new List<ValidationWarningUnusedVariable>();
+            List<ValidationErrorUnnconnectedOutput> errors = new List<ValidationErrorUnnconnectedOutput>();
             FlowValidator.Validate(testModel, onErrorOrWarning: obj =>
             {
-                warningsFound.Add((ValidationWarningUnusedVariable) obj);
+                errors.Add((ValidationErrorUnnconnectedOutput) obj);
             });
            
-            Assert.AreEqual(op1Out, warningsFound[0].UnusedOutput);
-            Assert.AreEqual(1, warningsFound.Count);
+            Assert.AreEqual(op1Out, errors[0].UnnconnectedOutput);
+            Assert.AreEqual(1, errors.Count);
         }
 
         [TestMethod()]

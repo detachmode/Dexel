@@ -106,7 +106,7 @@ namespace Dexel.Model.Manager
 
         private static void HasThreeDotSyntax(string rawdatanames, Action onTrue)
         {
-            var getAlsoLastOutput = Regex.IsMatch(rawdatanames, @"\|\s*\.{3}\s+");
+            var getAlsoLastOutput = Regex.IsMatch(rawdatanames, @".*\s*\.{3}\s+");
             if (getAlsoLastOutput)
             {
                 onTrue();

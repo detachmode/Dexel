@@ -75,11 +75,11 @@ namespace Roslyn.Tests.Generators
             Assert.AreEqual("public static int RandomAge()\r\n{\r\n}", alterMethod.NormalizeWhitespace().ToFullString());
 
             var personMethod = members[2];
-            Assert.AreEqual("public static Person CreatePerson(int aint, string astring)\r\n{\r\n}", personMethod.NormalizeWhitespace().ToFullString());
+            Assert.AreEqual("public static Person CreatePerson(int aInt, string aString)\r\n{\r\n}", personMethod.NormalizeWhitespace().ToFullString());
 
             // Named Parameter
             person.InputStreams.Clear();
-            FunctionUnitManager.NewInputDef(person, "int | age:int, name:string", "");
+            FunctionUnitManager.NewInputDef(person, "(int) | (age:int, name:string)", "");
             var personMethodNamedParams = MethodsGenerator.GenerateStaticMethod(_mygen.Generator, person);
             Assert.AreEqual("public static Person CreatePerson(int age, string name)\r\n{\r\n}",
                 personMethodNamedParams.NormalizeWhitespace().ToFullString());

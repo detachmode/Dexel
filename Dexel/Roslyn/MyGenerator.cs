@@ -45,12 +45,6 @@ namespace Roslyn
         }
 
 
-        public string GenerateMethods(MainModel mainModel)
-        {
-            var methods = GenerateAllMethods(mainModel);
-            return CompileToString(methods);
-        }
-
 
         public List<SyntaxNode> GenerateAllMethods(MainModel model)
         {

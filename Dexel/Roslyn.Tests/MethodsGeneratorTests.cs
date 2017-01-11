@@ -213,7 +213,7 @@ namespace Roslyn.Tests
             var paramSignature = MethodsGenerator.GetParameters(_mygen.Generator, fu)
                 .Select(sn => sn.NormalizeWhitespace().ToFullString()).ToList();
 
-            Assert.AreEqual("string astring", paramSignature[0]);
+            Assert.AreEqual("string aString", paramSignature[0]);
 
         }
 

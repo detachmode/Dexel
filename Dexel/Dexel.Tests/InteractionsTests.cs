@@ -46,20 +46,20 @@ namespace Dexel.Editor.Tests
             var sB = FunctionUnitManager.CreateNew("B");
             testModel.FunctionUnits.Add(sA);
             testModel.FunctionUnits.Add(sB);
-            MainModelManager.ConnectTwoFunctionUnits(sA, sB, "dataAB", "dataAB", testModel);
+            MainModelManager.ConnectTwoFunctionUnits(sA, sB, "(dataAB)", "(dataAB)", testModel);
 
             var fristconnection = testModel.Connections.First();
             Interactions.DeConnect(fristconnection, testModel);
 
-            Assert.IsTrue(testModel.Connections.Count == 0);
-            Assert.IsTrue(testModel.FunctionUnits.First(x => x.Name == "A").OutputStreams.First().DataNames == "dataAB");
-            Assert.IsTrue(testModel.FunctionUnits.First(x => x.Name == "B").InputStreams.First().DataNames == "dataAB");
+            Assert.AreEqual(0, testModel.Connections.Count);
+            Assert.AreEqual("(dataAB)", testModel.FunctionUnits.First(x => x.Name == "A").OutputStreams.First().DataNames);
+            Assert.AreEqual("(dataAB)", testModel.FunctionUnits.First(x => x.Name == "B").InputStreams.First().DataNames);
 
 
             testModel = new MainModel();
             sA = FunctionUnitManager.CreateNew("A");
             testModel.FunctionUnits.Add(sA);
-            Interactions.AddNewOutput(sA, "dataA");
+            Interactions.AddNewOutput(sA, "(dataA)");
 
             sB = FunctionUnitManager.CreateNew("B");
             testModel.FunctionUnits.Add(sB);
@@ -68,12 +68,12 @@ namespace Dexel.Editor.Tests
 
             Interactions.DeConnect(testModel.Connections.First(), testModel);
 
-            Assert.IsTrue(testModel.Connections.Count == 0);
-            Assert.IsTrue(sA.OutputStreams.First().DataNames == "dataA");
-            Assert.IsTrue(sA.OutputStreams.First().Connected == false);
+            Assert.AreEqual(0, testModel.Connections.Count);
+            Assert.AreEqual("dataA", sA.OutputStreams.First().DataNames);
+            Assert.AreEqual(false, sA.OutputStreams.First().Connected);
 
-            Assert.IsTrue(sB.InputStreams.First().DataNames == "");
-            Assert.IsTrue(sB.InputStreams.First().Connected == false);
+            Assert.AreEqual("",sB.InputStreams.First().DataNames);
+            Assert.AreEqual(false, sB.InputStreams.First().Connected);
         }
 
 
@@ -82,7 +82,7 @@ namespace Dexel.Editor.Tests
         {
             var testModel = new MainModel();
 
-            var sA = FunctionUnitManager.CreateNew("A");
+            var sA = FunctionUnitManager.CreateNew("A", "()" , "(dataAB)");
             var sB = FunctionUnitManager.CreateNew("B");
             var sC = FunctionUnitManager.CreateNew("C");
             testModel.FunctionUnits.Add(sA);
@@ -122,21 +122,25 @@ namespace Dexel.Editor.Tests
         [TestMethod]
         public void ConnectDangelingConnectionAndFunctionUnitTest()
         {
+
             var mainModel = new MainModel();
             var oneFu = MainModelManager.AddNewFunctionUnit("one", mainModel);
-            Interactions.AddNewOutput(oneFu, "testdata");
+            Interactions.AddNewOutput(oneFu, "(testdata)");
+
             var secondFu = MainModelManager.AddNewFunctionUnit("second", mainModel);
+            MainModelManager.AddNewInput(secondFu, "()");
+
             Interactions.ConnectDangelingConnectionAndFunctionUnit(oneFu.OutputStreams.First(), secondFu, mainModel);
 
-            Assert.IsTrue(mainModel.Connections.Any(x => x.DataNames.Equals("testdata | ")));
-            Assert.IsTrue(mainModel.Connections.Any(x => x.Sources.Any(dsd => dsd.Parent == oneFu)));
-            Assert.IsTrue(mainModel.Connections.Any(x => x.Destinations.Any(dsd => dsd.Parent == secondFu)));
+            Assert.AreEqual("(testdata) | ()", mainModel.Connections.First().DataNames);
+            Assert.AreEqual(oneFu, mainModel.Connections.First().Sources.First().Parent);
+            Assert.AreEqual(secondFu, mainModel.Connections.First().Destinations.First().Parent);
 
-            Assert.IsTrue(oneFu.OutputStreams.First().DataNames == "testdata");
-            Assert.IsTrue(oneFu.OutputStreams.First().Connected);
+            Assert.AreEqual("(testdata)", oneFu.OutputStreams.First().DataNames);
+            Assert.AreEqual(true, oneFu.OutputStreams.First().Connected);
 
-            Assert.IsTrue(secondFu.InputStreams.First().Connected);
-            Assert.IsTrue(secondFu.InputStreams.First().DataNames == "");
+            Assert.AreEqual(true, secondFu.InputStreams.First().Connected);
+            Assert.AreEqual("()", secondFu.InputStreams.First().DataNames);
         }
 
 

@@ -1,0 +1,10 @@
+﻿<ProjectConfiguration>
+  <Settings>
+    <AllowCodeAnalysis>True</AllowCodeAnalysis>
+    <IgnoredTests>
+      <AllTestsSelector />
+    </IgnoredTests>
+    <PreloadReferencedAssemblies>True</PreloadReferencedAssemblies>
+    <PreviouslyBuiltSuccessfully>True</PreviouslyBuiltSuccessfully>
+  </Settings>
+</ProjectConfiguration>

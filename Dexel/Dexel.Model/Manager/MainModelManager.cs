@@ -46,11 +46,6 @@ namespace Dexel.Model.Manager
         }
 
 
-        public static void ConnectTwoFunctionUnits(FunctionUnit source, FunctionUnit destination, DataStreamDefinition defintion,
-            MainModel mainModel)
-        {
-            ConnectTwoFunctionUnits(source, destination, defintion.DataNames, "", mainModel, defintion.ActionName);
-        }
 
 
         public static DataStream ConnectTwoFunctionUnits(FunctionUnit source, FunctionUnit destination, string outputs,

@@ -8,46 +8,6 @@ namespace Dexel.Model.Mockdata
     public static class Mockdata
     {
 
-        public static MainModel RomanNumbers()
-        {
-
-            var mainModel = new MainModel();
-            var splitter= MainModelManager.AddNewFunctionUnit("Splitt Roman Numerals", mainModel);
-
-            MainModelManager.AddNewInput(splitter, "RomanNumber", actionName:".test");
-            var convertEach = MainModelManager.AddNewFunctionUnit("Convert to decimal", mainModel);
-            MainModelManager.ConnectTwoFunctionUnits(splitter, convertEach, "Roman Numeral*", "Roman Numeral*", mainModel, actionName:".eachSplitted");
-
-            var negatelogicID = MainModelManager.AddNewFunctionUnit("Negate when larger", mainModel);
-            MainModelManager.ConnectTwoFunctionUnits(convertEach, negatelogicID, "Decimal*", "Decimal*", mainModel);
-
-
-            return mainModel;
-
-        }
-
-        public static MainModel MakeRandomPerson()
-        {
-
-            var testModel = new MainModel();
-            var first = MainModelManager.AddNewFunctionUnit("Random Name", testModel);
-            first.Position = new Point(20, 50);
-            MainModelManager.AddNewInput(first, "");
-
-            var alter = MainModelManager.AddNewFunctionUnit("Random Age", testModel);
-             alter.Position = new Point(280, 50);
-            MainModelManager.ConnectTwoFunctionUnits(first, alter, "string", "", testModel);
-
-            var person = MainModelManager.AddNewFunctionUnit("Create Person", testModel);
-            person.Position = new Point(540, 50);
-            MainModelManager.ConnectTwoFunctionUnits(alter, person, "int ","int, string", testModel);
-            var definition = DataStreamManager.NewDefinition(person, "Person");
-            person.OutputStreams.Add(definition);
-
-
-            return testModel;
-
-        }
         public static MainModel MakeRandomPerson2()
         {
 

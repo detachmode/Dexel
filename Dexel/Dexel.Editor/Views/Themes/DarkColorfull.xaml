@@ -31,4 +31,5 @@
             </Grid>
         </VisualBrush.Visual>
     </VisualBrush>
+    <DropShadowEffect x:Key="EffectDropShadowFu"  ShadowDepth="3" Opacity="0.3" BlurRadius="6"/>
 </ResourceDictionary>
