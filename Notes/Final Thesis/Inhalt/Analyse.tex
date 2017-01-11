@@ -36,7 +36,7 @@ Versionskontrollsystemen eingepflegt werden.
 Die Diagramme können auch einfacher von unterschiedlichen Orten aus und von mehreren
 Personen abgerufen und bearbeitet werden.
 
-\subsubsection{Generierung von Methoden-Bodys}
+\subsubsection{Generierung von Methodenrümpfe}
 
 Durch die strikten Implementierungsregeln von Integrationen lassen sich für
 diese Methoden nicht nur die Signaturen, sonder auch die komplette Implementierung aus dem Diagramm
@@ -78,9 +78,9 @@ Anforderungen & Priorität\\
 Erstellen von Funktionseinheiten, Benennen, Verschieben auf dem Canvas, Löschen, Duplizieren & hoch\\ \hline
 Navigation ( Panning, Zooming ) & hoch\\ \hline
 Selektieren von mehreren Funktionseinheiten um mehrere auf einmal zu bearbeiten & hoch\\ \hline
-Definieren von Input und Output Datastreams, für eine Funktionseinheit & hoch\\ \hline
-Verbinden eines Outputs einer Funktionseinheit mit einem Input einer anderen & hoch\\ \hline
-Zusammenlaufen von mehreren Datenflüssen in ein Input einer Funktionseinheit (Joined Inputs) & hoch\\ \hline
+Definieren von Eingangs- und Ausgangs-Datenströmen, für eine Funktionseinheit & hoch\\ \hline
+Verbinden eines Ausgangs einer Funktionseinheit mit einem Eingang einer anderen & hoch\\ \hline
+Zusammenlaufen/ Auseinanderlaufen von Datenflüssen (Joined- und Split-Notation ) & hoch\\ \hline
 Funktionseinheit(en) einer anderen unterordnen können, um Integrationen zu erstellen inklusive visuelle Kennzeichnung & hoch\\ \hline
 Speichern und Laden in ein Dateiformat & hoch\\ \hline
 \end{tabularx}
@@ -111,12 +111,12 @@ Definieren von neuen Datentypen & mittel\\ \hline
 
 	Anforderungen & Priorität\\
 	\hline \hline
-Mouse-Hover zeigt eine Vorschau des erzeugten Codes für die Funktionseinheit & niedrig\\ \hline
+Mouseover zeigt eine Vorschau des erzeugten Codes für die Funktionseinheit & niedrig\\ \hline
 Wiederverwenden von vorhandenen Funktionseinheiten & niedrig\\ \hline
-Autocomplete auf dem Textfeld der Datenströme & niedrig\\ \hline
+Autovervollständigung auf dem Textfeld der Datenströme & niedrig\\ \hline
 Kommentarboxen & niedrig\\ \hline
 Anfügen von Tests an Funktionseinheiten & niedrig\\ \hline
-Mehrere Themes: Dark, White (Print) & niedrig\\ \hline
+Mehrere Themes: Dark, Light (Print) & niedrig\\ \hline
 \end{tabularx}
 \caption{Anforderungen mit niedriger Priorität}
 \end{table}
@@ -138,9 +138,9 @@ Zooms.
 Anforderungen & Priorität\\
 \hline
 \hline
-Generierung von Methodensignaturen aus dem Namen und Input/Output Definitionen einer Funktionseinheit & hoch\\
+Generierung von Methodensignaturen anhand der ein- und ausgehenden Datenflüssen einer Funktionseinheit & hoch\\
 \hline
-Erzeugen des kompletten Methoden-Bodys einer Integration & hoch\\
+Erzeugen des kompletten Methodenrumpfes einer Integration & hoch\\
 \hline
 Erzeugung von Klassen und Datentypen & hoch\\
 \hline
@@ -157,7 +157,7 @@ Live-Generierung & niedrig\\
 \end{table}
 
 
-\subsubsection{Erzeugung des kompletten Methoden-Bodies einer Integration}
+\subsubsection{Erzeugung des kompletten Methodenrumpfes einer Integration}
 
 Hierbei muss erkannt werden, in welcher Reihenfolge die Methoden aufgerufen
 werden müssen, lokale Variablen erzeugt werden müssen und was einer Methode als Parameter
@@ -168,7 +168,7 @@ Datenflüsse zu implementieren.
 }
 Mögliche Optionen wären:
 \begin{itemize}
-\item wie das Programm den Methoden-Body einer Operation
+\item wie das Programm den Methodenrumpf einer Operation
 standardmäßig befüllen soll: Leer, mit \textit{NotImplementedExeption} oder mit einem
 Return-Ausdruck eines Standardwertes abhängig von der Methodensignatur.
 \end{itemize}
@@ -203,7 +203,7 @@ wäre die Überschneidung von Namen. Wenn automatisch der generierte Code bevorz
 \begin{tabularx}{\textwidth}{X|l}
 Anforderungen & Priorität\\
  \hline \hline
-Finden von Methoden und Erzeugen von Funktionseinheiten und ihre Input und Output Datenströme anhand der Methodensignatur im Code & hoch\\ \hline
+Finden von Methoden und Erzeugen von Funktionseinheiten und ihre Datenströme anhand der Methodensignatur im Code & hoch\\ \hline
 Automatisches Spacing & hoch ( aber nicht unbedingt perfekt)\\ \hline
 Den Datenfluss einer Integration erkennen und ihn in ein Flow Design Diagramm übertragen & hoch\\ \hline
 Erkennen, ob es sich bei der Methode um eine Operation oder Integration handelt & hoch\\ \hline
@@ -268,13 +268,13 @@ Im folgendem einige Kerngedanken über die Funktionalität des Editors:
 
 \begin{itemize}
 \item Keine unnötigen Menüleisten, Symbolleisten, etc. Besser kontextsensitive
-Kontextmenüs, oder Hotkeys,  damit die Strecke, die die Maus bewegt werden muss, gering
+Kontextmenüs, oder Tastenkürzel,  damit die Strecke, die die Maus bewegt werden muss, gering
 gehalten wird.
 \item Tabulatorstopps einbauen, damit schnell zwischen den Textfeldern, entlang des
 Graphen, gesprungen werden kann.
 \item Verwendung von Drag\&Drop, um eine intuitive Bedienung zum Verknüpfen von
 Funktionseinheiten zu ermöglichen. Die Flächen, die per Drag\&Drop zu Bedienen
-sind, sollen über ein Mouse-Hover Feedback erkennbar sein. Außerdem sollen die
+sind, sollen über ein Mouseover Feedback erkennbar sein. Außerdem sollen die
 Flächen nicht zu klein sein, damit ein leichtes Treffen des Feldes
 sichergestellt wird. Möglicherweise können auch unsichtbare Flächen verwendet
 werden, um eine Drag\&Drop Fläche künstlich leicht zu vergrößern und einfacher treffbar zu machen.
@@ -313,12 +313,12 @@ Die beste Lösung wäre aus Usability-Sicht, wenn Textfelder nicht gedreht werde
 sondern immer waagerecht dargestellt werden. Somit muss hier die Notation an
 manchen Stellen etwas vom original Abweichen.
 \begin{itemize}
-\item Mehrere Outputs
+\item Mehrere Ausgänge
 \item Pfeile zwischen zwei Funktionseinheiten, die auf unterschiedlichen Höhen platziert
 sind.
 \end{itemize}
 
-\emph{Mehrere Outputs}
+\emph{Mehrere Ausgänge}
 
 
 
@@ -351,7 +351,7 @@ Positionen im Diagramm den selben Datentypen verwendet. In diesem Fall müssten 
 sein, oder der Anwender würde an einer Stelle nicht die Information haben, worum
 es sich bei einem Datentyp handelt.
 
-Eine andere Option wäre es, die Datentypen nicht auf dem Drawing-Board zu
+Eine andere Option wäre es, die Datentypen nicht auf dem DrawingBoard zu
 platzieren, sondern separate vom Flow Design getrennt in einem extra GUI-Element
 darzustellen und dort die Definition eigener Datentypen zu ermöglichen.
 Dieses GUI-Element würde in Form einer Liste alle vorhanden Datentypen
@@ -365,7 +365,7 @@ die Einträge in der Liste kontextsensitiv sein: Wenn der Anwender in ein
 Textfeld eines Datenstromes klickt, könnte die Liste nur jene Datentypen
 anzeigen, die in dem Textfeld vorhanden sind. Beim klick auf eine leere Fläche (
 defokussieren des Textfeldes) würden wieder alle Datentypen im gesamten Diagramm
-angezeigt werden. Desweiteren wäre eine visuelle Hervorhebung von nicht
+angezeigt werden. Des weiteren wäre eine visuelle Hervorhebung von nicht
 verwendeten Datentypen auch denkbar.
 \bigskip
 
@@ -388,10 +388,10 @@ Grund - diese Information im Bild haben möchte.
 \end{itemize}
 
 
-\section{Darstellung von Joined Inputs}
+\section{Darstellung von Joined Inputs \& Split Outputs}
 
 Datenströme können aus verschieden Quellen stammen und an einer Funktionseinheit
-zusammenlaufen. Flow Design bietet hierfür die Pipe-Notation, oder die s.g. Joined Inputs an. 
+zusammenlaufen oder aus einer Quelle an viele andere Funktionseinheiten weitergereicht werden. Flow Design bietet hierfür die Pipe-Notation, oder die s.g. Joined Inputs und Split Outputs an. 
 
 \bigskip
 
@@ -404,7 +404,7 @@ geringeren Anzahl an Pfeilen einfacher umzusetzen
 chaotisch wirken lässt
 \end{itemize}
 
-Nachteile der Pipe-Notation / Vorteile der Joined Inputs:
+Nachteile der Pipe-Notation / Vorteile der Joined Inputs \& Split Outputs:
 
 \begin{itemize}
 \item Datenströme sind möglicherweise nicht mehr eindeutig zu interpretieren. 
@@ -424,7 +424,7 @@ anpasst. Eine dezente farbliche Hervorhebung soll als Feedback des
 Validierungsprozesses ( möglicherweise indem man den Pfeil einfärbt) ausreichen. Mögliche Validierungsfehler wären:
 \begin{itemize}
 \item Pipe-Notation : Überschneidung von Datentypen.
-\item Fehlende Daten : Nicht alle vom Input der Funktionseinheit verlangten Daten
+\item Fehlende Daten : Nicht alle vom Eingang der Funktionseinheit verlangten Daten
 sind im Datenfluss enthalten.
 \end{itemize}
 

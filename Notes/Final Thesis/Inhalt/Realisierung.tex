@@ -762,14 +762,14 @@ public static object TabStopGetPrevious(object focusedModel, MainModel mainModel
 \end{enumerate}
 
 \subsection{Validierung des Datenflusses - Farbliche Kennzeichnung }
-CONTINUE HERE
-Eigne ValidationException Klasse, die dem ViewModel übergeben werden kann. .
-Die ValidationException beinhaltet die Information, ob es sich um eine Error oder um eine Warning handelt (Error wird rot markiert, Warnings grün), welche  Element den Fehler anzeigen sollen, und einen Fehlertext, der als Tooltip an dem Element angezeigt wird.
+
+Eine Instanz vom Typ ValidationException kann dem ViewModel übergeben werden.
+Die ValidationException beinhaltet die Information, ob es sich um eine Fehler oder um eine Warnung handelt (Fehler wird rot markiert, Warnungen grün), welche Elemente den Fehler anzeigen sollen, sowie einen Fehlertext, der als Tooltip an dem Element angezeigt wird.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\linewidth]{./img/DexelValidation.png}
-	\caption{Dexel - Warning- und Error-Darstellung}
+	\caption{Dexel - Warnung- und Fehler-Darstellung}
 \end{figure}
 
 
@@ -778,9 +778,9 @@ Die ValidationException beinhaltet die Information, ob es sich um eine Error ode
 
 Da eine Flow Design auf unterschiedlichen Weisen im Code umgesetzt werden
 kann, mussten hier Entscheidungen getroffen werden, in welchen Fällen
-welche Weise gewählt wird. Wird das Projekt weitergeführt, könnte man in
+welche Weise gewählt wird. Wird das Projekt fortgeführt, könnte man in
 Betracht ziehen, dem Nutzer einige Optionen zur Konfiguration der Generierung
-zur Verfügung zu stellen. Aktuell muss er sich jedoch damit abfinden, dass nur die hier vorgestellte Weise zur Verfügung steht.
+zur Verfügung zu stellen. Aktuell bietet das Programm nur die hier vorgestellte Weise zur Verfügung.
 
 
 \subsection{Vorstellung - was erreicht wurde}
@@ -790,7 +790,7 @@ vorgestellt.
 
 \subsubsection{CSV Tabellieren -  Beispiel aus YouTube Video von Ralf Westphal und Stefan Lieser}
 
-Die Aufgabe besteht darin, den Inhalt einer CSV-Datei in eine ACSII-Tabelle zu formattieren.
+Die Aufgabe besteht darin, den Inhalt einer CSV-Datei in eine ACSII-Tabelle zu formatieren.
 \footcite[S.12]{kata}
 \begin{figure}[H]
 	\centering
@@ -799,23 +799,23 @@ Die Aufgabe besteht darin, den Inhalt einer CSV-Datei in eine ACSII-Tabelle zu f
 \end{figure}
 
 
-Das Flow Design, das Ralf Westphal und Stefan Lieser in dem Video entwerfen sieht folgendermaßen aus. \footnote{Video CSV-Tabellieren \cite{youtubevideos}}
+Das Flow Design, das Ralf Westphal und Stefan Lieser in dem Video entwerfen sieht folgendermaßen aus. \footnote{Video CSV Tabellarisieren \cite{youtubevideos}}
 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{./img/youtubeflowdesign.png}
-	\caption{CSV Tabellieren - Flow Design aus YouTube Video}
+	\caption{CSV Tabellarisieren - Flow Design aus YouTube Video}
 \end{figure}
 
 
-Nun das Flow Design umgesetzt in Dexel. Zu beachten ist, das die Joined Output und Joined Input Notation mit der Pipe-Notation ersetzt wurde, da Dexel akutell keine Joined-Notation unterstützt.
+Nun das Flow Design umgesetzt in Dexel. Zu beachten ist, das die Split Output und Joined Input Notation mit der Pipe-Notation ersetzt wurde, da Dexel aktuell keine Joined-Notation unterstützt.
 
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.4\linewidth]{./img/csvtabellierenDexelDataTypes.png}
-	\caption{CSV Tabellieren - Datentypen}
+	\caption{CSV Tabellarisieren - Datentypen}
 \end{figure}
 
 
@@ -828,7 +828,7 @@ Nun das Flow Design umgesetzt in Dexel. Zu beachten ist, das die Joined Output u
 	    		\includegraphics[width=1.25\linewidth]{./img/csvtabellierenDexel.png}
 	    }
 
-	\caption{CSV Tabellieren - Dexel Flow Design}
+	\caption{CSV Tabellarisieren - Dexel Flow Design}
 \end{figure}
 \end{landscape}
 
@@ -837,25 +837,8 @@ Nun das Flow Design umgesetzt in Dexel. Zu beachten ist, das die Joined Output u
 
 
 
-
-
 \begin{lstlisting} [caption = CSV tabellieren mit Dexel generierter Code]
-
-// Datentypen
-
-public class Tabelle
-{
-    public Record Header;
-    public List<Record> Body;
-}
-
-public class Record
-{
-    public List<string> Data;
-}
-
 // Integrationen
-
 public static IEnumerable<string> CSVTabellieren( IEnumerable<string> strings)
 {
 	var records = CSVParsen(strings);
@@ -870,9 +853,24 @@ public static IEnumerable<string> TabelleBauen(Tabelle tbl)
 	var body = BodyFormattieren(breiten, tbl);
 	return TabelleZusammensetzen(body, header);
 }
+\end{lstlisting}
 
+\begin{lstlisting} [caption = CSV tabellieren mit Dexel generierter Code]
+// Datentypen
+public class Tabelle
+{
+	public Record Header;
+	public List<Record> Body;
+}
+
+public class Record
+{
+	public List<string> Data;
+}
+\end{lstlisting}
+
+\begin{lstlisting} [caption = CSV tabellieren mit Dexel generierter Code]
 // Operationen
-
 public static IEnumerable<int> SpaltenbreitenErmitteln(Tabelle tbl)
 {
     throw new NotImplementedException();
@@ -902,8 +900,6 @@ public static IEnumerable<Record> CSVParsen(IEnumerable<string> strings)
 {
     throw new NotImplementedException();
 }
-
-
 \end{lstlisting}
 
 \subsubsection{Shopping Simulator - Komplexeres Beispiel}
@@ -921,26 +917,10 @@ public static IEnumerable<Record> CSVParsen(IEnumerable<string> strings)
 \end{landscape}
 
 
+
+
 \begin{lstlisting}[caption=Shopping Simulator - automatisch generierter Code mit Dexel]
-
-// Datentypen
-
-public class Person
-{
-    public int Age;
-    public string Name;
-    public double Budget;
-}
-
-public class Cart
-{
-    public List<string> Products;
-    public double Discount;
-    public double PriceTotal;
-}
-
 // Integration
-
 public static void ShoppingSimulator(int customerCount)
 {
 	CreateRandomPersons(customerCount, person => {
@@ -962,9 +942,28 @@ public static void ShoppingSimulator(int customerCount)
 		});
 	});
 }
+\end{lstlisting}
 
+\begin{lstlisting}[caption=Shopping Simulator - automatisch generierter Code mit Dexel]
+// Datentypen
+public class Person
+{
+	public int Age;
+	public string Name;
+	public double Budget;
+}
+
+public class Cart
+{
+	public List<string> Products;
+	public double Discount;
+	public double PriceTotal;
+}
+\end{lstlisting}
+
+
+\begin{lstlisting}[caption=Shopping Simulator - automatisch generierter Code mit Dexel]
 // Operationen
-
 public static void CreateRandomPersons(int customerCount, Action<Person> onPerson)
 {
 	CreateNewPerson(customerCount, p => {
@@ -993,22 +992,7 @@ public static void AddDiscount(Cart aCart)
     throw new NotImplementedException();
 }
 
-public static void Checkout(Cart aCart, Person aPerson)
-{
-    throw new NotImplementedException();
-}
-
 public static void SubscribeToNewsletter(Person aPerson)
-{
-    throw new NotImplementedException();
-}
-
-public static void CheckMoney(Person aPerson, Cart aCart, Action onEnough, Action onTooExpensive)
-{
-    throw new NotImplementedException();
-}
-
-public static void PrintNotEnoughMoneyMessage()
 {
     throw new NotImplementedException();
 }
@@ -1050,7 +1034,7 @@ Diese wären:
 	\item Generierung der Methodensignaturen einer Funktionseinheit.
 \end{itemize}
 
-Die weitaus komplexere Aufgabe: die Generierung der Methoden-Bodys einer Integration wurde nicht ganz vollständig implementiert.
+Die weitaus komplexere Aufgabe: die Generierung der Methodenrümpfe einer Integration wurde nicht ganz vollständig implementiert.
 Das liegt vor allem daran, dass eine vollständige Umsetzung einiges an manuellem Testen erfordert, um herauszufinden, welche Datenströme noch falsch interpretiert werden. 
 
 Die Validierung des Datenflusses ist eng an die Generierung gekoppelt und deswegen gilt das selbe auch für diese. 
@@ -1061,7 +1045,7 @@ Auch bei der Generierung von Namen wird aktuell noch nicht in jedem Fall überpr
 
 Um Code zu generieren muss im Editor in der Menüleiste der Eintrag Output angesteuert werden.
 Hier gibt es die Möglichkeit das aktuelle Flow Design in eine Datei auf den Desktop zu
-generieren, den Code in die Konsole auszugeben, oder aber den Code direkt in die Zwischenablage zu kopieren( um den erzeugten Code bequem an eine gewünschte Stelle eingefügt werden kann).
+generieren, den Code in die Konsole auszugeben, oder den Code direkt in die Zwischenablage zu kopieren( um den erzeugten Code bequem an eine gewünschte Stelle eingefügt werden kann).
 
 Außerdem gibt es die Option eine automatische Generierung einzuschalten, die
 den Code während der Bearbeitung immer neu generiert und in die Datei
@@ -1078,13 +1062,13 @@ Programmstart mit geöffnet wird.
 Das Projekt Rosyln von Microsoft ist ein .NET-Compiler, der eine API bietet, um beliebigen C\#-Quelltext zu erstellten,
 zu analysieren und zu modifizieren.
 
-Das hier verwendetet Packet ist: Microsoft.CodeAnalysis
+Das hier verwendetet Paket ist: Microsoft.CodeAnalysis
 
 Der Datentypen auf dem die Methoden zum Erstellen von Code arbeitet lautet:
 \texttt{SyntaxNode} 
 
 Diese SyntaxNodes werden von einem SyntaxGenerator erstellt werden.
-Diese muss beim Initialsieren konfiguriert werden.
+Diese muss beim Initialisieren konfiguriert werden.
 
 \begin{lstlisting}[caption=SyntaxGenerator für C\# erhalten]
 var workspace = new AdhocWorkspace();
@@ -1094,7 +1078,7 @@ var generator = SyntaxGenerator.GetGenerator(workspace, LanguageNames.CSharp);
 
 
 Das Erstellen eines Ausdruckes, Klasse oder Methode mit Hilfe von Methoden
-des SyntaxGenerators lieferen am Ende immer eine SyntaxNode zurück.
+des SyntaxGenerators liefern am Ende immer eine SyntaxNode zurück.
 Beim Erstellen einer Methode oder Klasse kann der Inhalt des Scopes durch
 ein Array von SyntaxNodes bestimmt werden.
 
@@ -1132,7 +1116,7 @@ SyntaxNode classDefinition = Generator.ClassDeclaration(
 );
 	\end{lstlisting}
 	
-	Um am Ende den Code in Form eines Strings zu erhalten muss auf die oberstere
+	Um am Ende den Code in Form eines Strings zu erhalten muss auf die oberste
 	SyntaxNode folgende beide Methoden aufgerufen werden:
 	
 	\begin{lstlisting}[caption=Erhalten des Codes als string]
@@ -1147,8 +1131,8 @@ Dieses Feature wurde vollständig implementiert, da die möglichen Faktoren, die
 
 \subsubsection{Output über Rückgabewert}
 
-	Der einfachste Fall ist eine Funktionseinheit, die nur ein Output hat und
-	dieser auch kein Stream und auch nicht optional ist.\footnote{Im Editor ist das vorhanden sein eines Inputs vorgeben und es gibt auch keine Möglichkeit einen weiteren Input-Datenstrom zu einer Funktionseinheit hinzuzufügen. Nur Outputs lassen sich hinzufügen und entfernen.}
+	Der einfachste Fall ist eine Funktionseinheit, die nur ein Ausgang hat und
+	dieser auch kein Stream und auch nicht optional ist.\footnote{Im Editor ist das vorhanden sein eines Eingangs vorgeben und es gibt auch keine Möglichkeit einen weiteren Eingangs-Datenstrom zu einer Funktionseinheit hinzuzufügen. Nur Ausgänge lassen sich hinzufügen und entfernen.}
 	
 	In diesem Fall werden die ausgehenden Daten einfach als Rückgabewert heraus gereicht.
 	
@@ -1195,7 +1179,7 @@ public static Tupel<Person, int> NewPerson(int aInt, string aString)
 	
 \subsubsection{Outputs über Actions}
 
-	Ob ein Ausgang über ein Action realisert wird, wird indirekt dadurch
+	Ob ein Ausgang über ein Action realisiert wird, wird indirekt dadurch
 	festgelegt, dass ein Actionname angegeben wurde \footnote{Diese Regel wurde im
 		Rahmen dieser Anwendung so festgelegt}. 
 	
@@ -1205,10 +1189,10 @@ public static Tupel<Person, int> NewPerson(int aInt, string aString)
 	mehrmals aufgerufen werden (der Beginn eines Streams). 
 	
 	Sobald auch eine Funktionseinheit mehrere Ausgänge hat, diese jedoch nicht
-	Optional sind, werden diese jedoch trotzdem als Actions realisiert, selbst wenn sie kein
+	optional sind, werden diese jedoch trotzdem als Actions realisiert, selbst wenn sie kein
 	Actionname zugeordnet bekommen haben. Der Name des Actions wird dann
 	automatisch generiert\footnote{	Durch Analyse der Datentypen. Ein
-	(Person) wird dann zu einem onPerson. Ein () wird zu einem continueWith}.
+	(Person) wird zu einem onPerson. Ein () wird zu einem continueWith}.
 	
 	Durch diese Entscheidungen gibt es keine invaliden Kombinationen an
 	Ausgängen einer Funktionseinheit.
@@ -1216,7 +1200,7 @@ public static Tupel<Person, int> NewPerson(int aInt, string aString)
 	
 	Werden alle Ausgänge mit Actions realisiert, entfällt der Rückgabewert in diesem Fall komplett.
 	
-	Die Input-Daten werden in der Signature zuerst aufgelistet, anschließend die Actions.
+	Die Input-Daten werden in der Signatur zuerst aufgelistet, anschließend die Actions.
 	
 			\begin{figure}[H]
 				\centering
@@ -1237,19 +1221,18 @@ public static Tupel<Person, int> NewPerson(int aInt, string aString)
 
 	Streams werden in Dexel ebenfalls mit Actions realisiert, mit einer Ausnahme:
 	
-	Sind ist sowohl der Input als auch der Output ein Stream und ist der \textit{Actionname} dieses Outputs \textit{nicht} angegeben, so wird  implizit davon ausgegangen, dass für jeden Aufruf der Funktionseinheit dieser Output erzeugt wird. 
+	Sind ist sowohl der Eingang als auch der Ausgang ein Stream und ist der \textit{Actionname} dieses Ausgangs \textit{nicht} angegeben, so wird  implizit davon ausgegangen, dass für jeden Aufruf der Funktionseinheit dieser Ausgang erzeugt wird. 
 	
-	Somit kann für diesen Output auf eine Action verzichtet werden und der Rückgabewert genutzt werden, was eine einfachere Verwendung dieser Funktionseinheit im Code zur Folge hat.
-	\footnote{	Das Vorhandensein von einem Inputstream und einem Outputstream bedeutet eigentlich nicht zwingend , dass für jeden Input auch ein	Output erzeugt wird. Die Notation unterscheidet beide Fälle nicht. Deswegen die Lösung über eine Vergabe eines \textit{Actionamen} als Kompromiss, um dem Benutzer hier eine Kontrolle über die Erzeugung des Codes zu geben. Wenn der Benutzer ein \textit{Actionname} angibt, wird also indirekt davon ausgegangen, dass der Benutzer den Output auch als Action umsetzten möchte und die Funktionseinheit somit beliebig oft diese Action aufrufen kann. Ob dieses Entscheidung richtig war müsste  noch in der Praxis erprobt werden. Stellt sich heraus,	dass sie schlecht ist, müsste man über eine Anpassung der Notation nachdenken.}
+	Somit kann für diesen Ausgang auf eine Action verzichtet werden und der Rückgabewert genutzt werden, was eine einfachere Verwendung dieser Funktionseinheit im Code zur Folge hat.
+	\footnote{	Das Vorhandensein von einem Inputstream und einem Outputstream bedeutet eigentlich nicht zwingend , dass für jeden Input auch ein Output erzeugt wird. Die Notation unterscheidet beide Fälle nicht. Deswegen die Lösung über eine Vergabe eines \textit{Actionnamen} als Kompromiss zu sehen, wodurch dem Benutzer hier eine Kontrolle über die Erzeugung des Codes geben wird. Wenn der Benutzer ein \textit{Actionname} angibt, wird indirekt davon ausgegangen, dass der Benutzer den Output auch als Action umsetzten möchte und die Funktionseinheit somit beliebig oft diese Action aufrufen kann. Ob dieses Entscheidung richtig war müsste  noch in der Praxis erprobt werden. Stellt sich heraus,	dass sie schlecht ist, müsste man über eine Anpassung der Notation nachdenken.}
 	
-		
-		\begin{figure}[H]
-			\centering
-			\includegraphics[width=.9\linewidth]{./img/roslyn_Stream.png} 
-			\caption{Dexel-Screenshot: Funktionseinheit mit Output-Stream}
-		\end{figure}
-		
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=.9\linewidth]{./img/roslyn_Stream.png} 
+		\caption{Dexel-Screenshot: Funktionseinheit mit Stream als Ausgang}
+	\end{figure}
 	
+
 
 	
 	
@@ -1264,7 +1247,7 @@ public static void NewPersons(int aInt, string aString, Action<Person> onPerson)
 	\begin{figure}[H]
 		\centering
 		\includegraphics[width=.9\linewidth]{./img/roslyn_StreamStream.png} 
-		\caption{Dexel-Screenshot: Funktionseinheit mit Input-Stream und Output-Stream und undefinierten Actionnamen}
+		\caption{Dexel-Screenshot: Funktionseinheit mit eingehendem und ausgehendem Stream und undefinierten Actionnamen}
 	\end{figure}
 			
 
@@ -1276,7 +1259,7 @@ public static Person NewPersons(int age, string name)
 	\end{lstlisting}
 	 
 
-\subsection{Erzeugung der Integration-Bodys}
+\subsection{Erzeugung des Methodenrumpfes einer Integration}
 \label{sec:orgheadline51}
 
 
@@ -1300,7 +1283,7 @@ public static Person NewPersons(int age, string name)
 	Flow Design auf eine bestimme Sache analysieren und das Ergebnis in ein Objekt
 	abspeichern. Diese Objekt wurde als \texttt{IntegrationBody} bezeichnet.
 	Diese beinhaltet alle Informationen aus der Analyse. Am Ende wird dieses Objekt
-	der Generierungsmethode Übergeben, die anhand diesem den Code erzeugt\footnote{Ein weiterer Vorteil dieser Aufteilung ist, dass ein großer Teil frei von der Roslyn-API bleibt. Die eigenen Datentypen lassen sich dazu auch besser testen, als die SyntaxNodes von Roslyn. Möchte man das Ergebnis von Roslyn testen, bleibt einem  oft keine andere Wahl, als den erzeugten Code samt Whitespaces über ein string-Vergleich zu erschlagen, was bei mehrzeiligem Code doch etwas ausufern kann. Stattdessen lässt sich das Ergebnis aus den eigenen Analysen hingegen einfach über ein Vergleich von den gefundenen Objekt-Referenzen überprüfen.}.
+	der Generierungsmethode übergeben, die anhand diesem den Code erzeugt\footnote{Ein weiterer Vorteil dieser Aufteilung ist, dass ein großer Teil frei von der Roslyn-API bleibt. Die eigenen Datentypen lassen sich dazu auch besser testen, als die SyntaxNodes von Roslyn. Möchte man das Ergebnis von Roslyn testen, bleibt einem  oft keine andere Wahl, als den erzeugten Code samt Whitespaces über ein String-Vergleich zu erschlagen, was bei mehrzeiligem Code doch etwas ausufern kann. Stattdessen lässt sich das Ergebnis aus den eigenen Analysen hingegen einfach über ein Vergleich von den gefundenen Objekt-Referenzen überprüfen.}.
 	
 	\begin{lstlisting}[caption=GenerateIntegrationBody Methode]
 public static SyntaxNode[] GenerateIntegrationBody( SyntaxGenerator generator, MainModel mainModel, FunctionUnit integration )
@@ -1330,12 +1313,12 @@ public static SyntaxNode[] GenerateIntegrationBody( SyntaxGenerator generator, M
 		\item \texttt{AnalyseParameterDependencies}
 
 		Da die Pipe-Notation unterstützt wird, reicht es nicht einfache aus die Daten
-		aus den Datenflüssen zu nehmen, die direkt in die akutelle
+		aus den Datenflüssen zu nehmen, die direkt in die aktuelle
 		Funktionseinheit fließen. Stattdessen muss der Fluss rückwärts
 		traversiert werden und auf Übereinstimmungen untersucht werden.
 		Für jede Sub-Funktionseinheit muss diese Analyse durchgeführt werden.
-		Für jeden Input-Datentyp jeder Funktioneinheit wird das Ergebnis gespeichert. Das Ergebnis beinhaltet ob der Datentyp überhaupt gefunden
-		wurde, ob er im Input der Integration gefunden wurde, oder ob er aus einer
+		Für jeden Input-Datentyp jeder Funkionseinheit wird das Ergebnis gespeichert. Das Ergebnis beinhaltet ob der Datentyp überhaupt gefunden
+		wurde, ob er im Eingang der Integration gefunden wurde, oder ob er aus einer
 		anderen Sub-Funktionseinheit innerhalb des Datenflusses stammt. 
 		Außerdem wird die gefundene DataStreamDefinition gespeichert, in der die
 		Daten gefunden wurden. Ein Aufruf einer Sub-Funktionseinheit kann nur generiert werden, wenn alle Datentypen gefunden
@@ -1344,7 +1327,7 @@ public static SyntaxNode[] GenerateIntegrationBody( SyntaxGenerator generator, M
 		\item \texttt{AnalyseLambdaBodies}
 
 		Manche optionale Datenflüsse oder Stream werden über Actions realisiert.
-		Das bedeutet, dass sich alle nachflogenden Funktionseinheiten innerhalb
+		Das bedeutet, dass sich alle nachfolgenden Funktionseinheiten innerhalb
 		des Lambda-Ausdruckes befinden müssen. Die Analyse speichert das Ergebnis
 		in folgender Form ab. 
 		
@@ -1369,9 +1352,9 @@ public class LambdaBody
 		
 		\item \texttt{AnalyseMatchingOutputOfIntegration}
 
-		Hat die Integration einen Output der als Action realisiert werden muss, so
+		Hat die Integration einen Ausgang der als Action realisiert werden muss, so
 		muss herausgefunden werden, welche Sub-Funkionseinheiten diesen
-		Output bedienen. Dabei werden die Implementierungs-Stile der
+		Ausgang bedienen. Dabei werden die Implementierungs-Stile der
 		beiden übereinstimmenden Ausgänge mit abgespeichert. Später bei der
 		Generierung gibt es somit vier Möglichkeiten:
 		\begin{itemize}
@@ -1397,7 +1380,7 @@ public static void DoSomething(Action<string> onError)
 			
 			
 			\item Integrationsausgang ist Action, Sub-Funktionseinheitsausgang ist
-			Returnwert 
+			Rückgabewert 
 			
 			Die Action wird aufgerufen mit dem Methodenaufruf als Parameter.
 			
@@ -1410,12 +1393,12 @@ public static void CreateRandomPersons(int customerCount, Action<Person> onPerso
 	});
 }
 \end{lstlisting}
-			\item Integrationsausgang ist Returnwert, Sub-Funktionseinheitsausgang ist
+			\item Integrationsausgang ist Rückgabewert, Sub-Funktionseinheitsausgang ist
 			Action.
 			
 			Eine lokale Variable muss vorher angelegt werden und mit \texttt{null}
-			initalisiert werden. Danach wird innerhalb des Lambas des Actions diese
-			Variable beschrieben. Am Ende wird die lokale Varibale als Rückgabewert
+			initialisiert werden. Danach wird innerhalb des Lambdas des Actions diese
+			Variable beschrieben. Am Ende wird die lokale Variable als Rückgabewert
 			ausgegeben.
 			
 \begin{lstlisting}[caption=Return-Action-Beziehung]
@@ -1432,9 +1415,9 @@ public static string Main()
 }
 \end{lstlisting}
 
-			\item Beide Ausgänge werden über Returnwert realisiert
+			\item Beide Ausgänge werden über Rückgabewert realisiert
 			
-		    Das Ergebnis der Sub-Funktionseinheit wird durch ein return-Ausdruck aus der Integration herausgereicht.
+		    Das Ergebnis der Sub-Funktionseinheit wird durch ein Rückgabewert-Ausdruck aus der Integration heraus gereicht.
 		    
 \begin{lstlisting}[caption=Return-Return-Beziehung]
 public static string GetMessage()
@@ -1452,8 +1435,8 @@ public static string Main()
 		\end{itemize}
 			\item \texttt{AnalyseReturnToLocalReturnVariable}
 			
-			Wird der Ausgang einer Integration mit dem Returnwert realisiert, so muss noch herausgefunden werden, ob eine lokale Variable nötig ist, um den Returnwert aus
-			einem Lambda herauszureichen. Ist eine Return-Return Beziehung vorhanden und befindet sich die betroffene Methode innerhalb eines Lambda-Ausdrucks, so muss der Returnwert in die lokale \texttt{@return}-Variable geschrieben werden.
+			Wird der Ausgang einer Integration mit dem Rückgabewert realisiert, so muss noch herausgefunden werden, ob eine lokale Variable nötig ist, um den Rückgabewert aus
+			einem Lambda heraus zu reichen. Ist eine Return-Return-Beziehung vorhanden und befindet sich die betroffene Methode innerhalb eines Lambda-Ausdrucks, so muss der Rückgabewert in die lokale \texttt{@return}-Variable geschrieben werden.
 	\end{enumerate}
 	
 
@@ -1462,8 +1445,8 @@ public static string Main()
 \section{Generierung eines Diagrammes aus Code}
 
 Aus zeitlichen Gründen, konnte die Generierung von einem Flow Design aus Code nicht angegangen werden. 
-Da sich das Model jedoch sauber getrennt von der GUI in
-einem speraten Unterprojekt befindet, wäre es sicherlich möglich einen anderen
-Studenten dies als Bachelorarbeit zu übergeben. So hätte dieser bereits eine
+Da sich das Modell jedoch sauber getrennt von der GUI in
+einem separaten Unterprojekt befindet, wäre es sicherlich möglich einen anderen
+Studenten dies als Projekt zu übergeben. So hätte dieser bereits eine
 Möglichkeit seine Diagramme darzustellen, ohne sich sonderlich in die
-Codebasis von dem gesamten Dexel-Projektes einarbeiten zu müssen.
+Codebasis von dem gesamten Dexel-Projekts einarbeiten zu müssen.

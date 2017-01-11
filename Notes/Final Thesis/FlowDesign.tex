@@ -16,11 +16,25 @@
 	index=totoc, % Index im Inhaltsverzeichnis auff�hren
 	captions=tableheading, % Beschriftung von Tabellen unterhalb ausgeben
 	]{scrreprt}
+\usepackage{geometry}
+\geometry{margin=3cm}
 
+\usepackage{float}
+\usepackage{lscape}
 
 \input{Packages}
 
-\usepackage{lscape}
+\makeatletter
+\renewcommand*\l@figure{\@dottedtocline{1}{1.5em}{3em}}% 3em instead of 2.3em
+\let\l@listings\l@figure
+\let\l@table\l@figure
+
+\makeatother
+
+
+
+
+
 
 \begin{document}
 
@@ -32,7 +46,7 @@
 	
 	%TOOO in englisch?
 	\input{Inhalt/Abstract}	
-	
+	%TODO Büsra Nachname
 	\input{Inhalt/Danksagung}	
 	
 	%%%%%%%%%%%%%%%%
@@ -42,13 +56,7 @@
 
 	\input{Inhalt/Einfuehrung}
 	
-	%TODO Models auf deutsch Modell abändern?
-	
-	%TODO Verweise auf Bücher und Zitate richtig machen
-	%TODO Bilder einfügen Realisierung - CSV-Tabellieren
-	%TODO Bilder für Editor vorstellung - Shopping Simulator
-	%TODO Code für Methodensignaturen generierung
-	%TODO Code für Output-Beziehungen
+
 	%TODO System-Umwelt-Diagramm	
 	%%%%%%%%%%%%%%%%
 	% TEIL 1 Grundlagen
@@ -76,15 +84,12 @@
 
 	\input{Inhalt/Zusammenfassung}	
 					
-	%TODO TDD 	
-	\input{Inhalt/Appendix}
-	
 
 	%%%%%%%%%%%%%%%%
 	% Verzeichnisse
 	%%%%%%%%%%%%%%%%
 	
-	
+
 	\renewcommand{\nomname}{Abkürzungsverzeichnis}
 	\printnomenclature
 	
@@ -93,6 +98,8 @@
 	\nocite{*}
 	\clearpage	
 	\printbibliography[title={Quellenverzeichnis}]
+	
+	%TODO Check spacing
 	
 	% Weitere Verzeichnisse
 	\renewcommand{\lstlistlistingname}{Verzeichnis der Listings}
