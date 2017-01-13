@@ -1,15 +1,8 @@
-[0] Config.pm:354> INFO - This is Biber 2.7
-[0] Config.pm:357> INFO - Logfile is 'FlowDesign.blg'
-[24] biber-MSWIN32:303> INFO - === 
-[42] Biber.pm:359> INFO - Reading 'FlowDesign.bcf'
-[111] Biber.pm:832> INFO - Using all citekeys in bib section 0
-[121] Biber.pm:3670> INFO - Processing section 0
-[134] Biber.pm:3840> INFO - Looking for bibtex format file 'ref.bib' for section 0
-[137] bibtex.pm:1435> INFO - Decoding LaTeX character macros into UTF-8
-[141] bibtex.pm:1292> INFO - Found BibTeX data source 'ref.bib'
-[178] UCollate.pm:68> INFO - Overriding locale 'de-DE' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[178] UCollate.pm:68> INFO - Overriding locale 'de-DE' defaults 'variable = shifted' with 'variable = non-ignorable'
-[178] Biber.pm:3499> INFO - Sorting list 'anyt/global/' of type 'entry' with scheme 'anyt' and locale 'de-DE'
-[178] Biber.pm:3505> INFO - No sort tailoring available for locale 'de-DE'
-[184] bbl.pm:608> INFO - Writing 'FlowDesign.bbl' with encoding 'UTF-8'
-[185] bbl.pm:712> INFO - Output to FlowDesign.bbl
+[0] Config.pm:343> INFO - This is Biber 2.5
+[0] Config.pm:346> INFO - Logfile is 'FlowDesign.blg'
+[36] biber-MSWIN32:290> INFO - === 
+[61] Biber.pm:351> INFO - Reading 'FlowDesign.bcf'
+[165] Utils.pm:165> ERROR - Error: Found biblatex control file version 3.3, expected version 3.1.
+This means that your biber (2.5) and biblatex (3.7) versions are incompatible.
+See compat matrix in biblatex or biber PDF documentation.
+[165] Biber.pm:112> INFO - ERRORS: 1
