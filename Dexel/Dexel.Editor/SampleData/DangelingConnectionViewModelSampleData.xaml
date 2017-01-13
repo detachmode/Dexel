@@ -1,0 +1,20 @@
+﻿<DrawingBoard:DangelingConnectionViewModel 
+    xmlns:DrawingBoard="clr-namespace:Dexel.Editor.ViewModels.DrawingBoard"
+    xmlns:DataTypes="clr-namespace:Dexel.Model.DataTypes;assembly=Dexel.Model" 
+    xmlns:System="clr-namespace:System;assembly=mscorlib"
+    xmlns:Windows="clr-namespace:System.Windows;assembly=WindowsBase" 
+    Actionname="Tempus tortor aliquet morbi"
+    DataNames="Tempor nam" ValidationFlag="Invalid" 
+    ValidationErrorMessage="Per sed parturient" Width="588.26">
+    <DrawingBoard:DangelingConnectionViewModel.Model>
+       
+        <DataTypes:DataStreamDefinition
+            ActionName="Class vestibulum aenean"
+            Connected="True"
+            DataNames="Mauris">
+            <DataTypes:DataStreamDefinition.ID>
+                <System:Guid/>
+            </DataTypes:DataStreamDefinition.ID>
+        </DataTypes:DataStreamDefinition>
+    </DrawingBoard:DangelingConnectionViewModel.Model>
+</DrawingBoard:DangelingConnectionViewModel>

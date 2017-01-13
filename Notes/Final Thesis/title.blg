@@ -1,8 +1,0 @@
-[0] Config.pm:343> INFO - This is Biber 2.5
-[0] Config.pm:346> INFO - Logfile is 'title.blg'
-[37] biber-MSWIN32:290> INFO - === 
-[61] Biber.pm:351> INFO - Reading 'title.bcf'
-[164] Utils.pm:165> ERROR - Error: Found biblatex control file version 3.3, expected version 3.1.
-This means that your biber (2.5) and biblatex (3.7) versions are incompatible.
-See compat matrix in biblatex or biber PDF documentation.
-[164] Biber.pm:112> INFO - ERRORS: 1
