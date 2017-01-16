@@ -1,0 +1,67 @@
+* Bei Split Notation
+  Man könnte hier fälschlicherweise annehmen, dass es hierbei darum geht,
+  Paralelle Datenflüsse zu modellieren. Das ist jedoch nicht der Fall, es geht
+  hier schlicht darum, dass zwei Datenflüsse aus einer Funktionseinheit fließen.
+  Es wird sogar eher implizit davon ausgegangen, dass die Daten nicht parallel
+  fließen, es gibt jedoch eine Erweiterung der Notation, bei der noch einmal
+  extra darauf eingegangen wird, welche Datenflüsse in welchem Thread laufen.
+  Mehr dazu im Anhang.
+
+* Anhang 
+** Skalierbarkeit
+   Flow Design ist eine Methodik mit dem Fokus auf wartbare Software.
+   Der Fokus liegt in erste Linie erstmal nicht darauf, Skalierbare Software zu schreiben.
+
+   Die Idee in Datenflüssen zu Denken anstatt in Kontrollflüssen und
+   Funktionseinheiten, die mit diesen Daten arbeiten ohne sich um ihre Umwelt zu
+   kümmern fördert zu dem auch indirekt Software zu schrieben, die sich gut in
+   großen Softwaresystemen einbinden lässt.
+
+   Der Datenfluss kann anhand eines Flow Designs leicht untersucht werden, auf
+   parallele Verarbeitungsmöglichkeiten und Synchronisatiosnpunkten.
+
+   Im Grund spricht jedoch nichts dagegen, die Methodik und die damit
+   verbundenen Implementierungsregeln in ultralarge-Systemen einzusetzen.
+   Jede Art von Software profitiert davon, dass sie gut wartbar is.
+   da auch dort Software geschrieben werden muss, die wartbar ist
+   auch entkoppelte Funktionseinheiten, die genau eine Aufgabe erledigen und nur
+   von ihren Eingangsdaten abhängig sind, fördert dies ( Da jede
+   Funktionseinheit die zustandbehaftet ist extra hervorgehoben werden sollen)
+
+   Auch in großen System möchte man einzeln Teile herausnehmen können, sie durch
+   eine andere erstetzen, ohne dabei das System kaputt zu machen. Also auch hier
+   sind entkoppelte Einheiten sinnvoll und sehr erwünscht.
+
+   Auch die Idee das Software weie ein Perlenkette ist, die man aufmachen kann
+   und neue Teile hinzufügen, ist für skalierbarkeit wichtig.
+
+
+**** Mircoservices
+   Auch die Idee einer Softwarezelle kann einsatz finden, eine Software
+   aufzuteilen in viele Mircoservices, die alle in ihrem eigenen Prozess laufen,
+   in unterschiedlichen Sprachen geschrieben sein können und über eine
+   Platform-unbhänige Schnittstelle miteinander kommunizieren ( Json-Datein und HTTP-Verbindungen)
+   Solche Mircoservices haben eine spezielle Schnittstelle und somit stark
+   entkoppelt von ihrer Umwelt.
+
+   Die Domäne möglichst frei von dieser Schnittstellen logik zu halten ist auch
+   eine gute Idee.
+
+**** Parallele Datenflüsse
+   Auch ein Flow Design Diagramm hilft einem dabei, Software zu schreiben, die
+   parallele Verarbeitung unterstützen soll.
+   Da im Diagramm die zustandsbehafteten Funktionseinheiten mit 
+   einer Tonne und Zugriffe auf Resourcen mit einem Dreieck  dies
+   hilft dabei den Datenfluss auf Stellen zu untersuchen, die parallel ausgeführt
+   werden können. 
+  
+**** IODA und Akka-Framework 
+   Auch in einem Artikel von Ralf Westphal beschreibt er, die IODA Architektur mit
+   dem Akka-Framework zusammen gut harmonieren.
+   Hierbei kommt auch noch eine zusätzliche untersuchungsphase hinzu, bei der er
+   die Pfeile des Datenflusses in unterschiedlichen Farben zeichnet, um
+   hervorzuheben, was in welchem Thread geschieht.
+   Damit lassen sich Funktionseinheiten herausfinden, die auf shared-state
+   zugreifen. Diese Funktionseinheiten müssen dann speziell behandelt werden.
+   In dem oben erähnten Artikel übergibt er die Aufgabe zu synchronisieren an ein
+   Actor weiter.

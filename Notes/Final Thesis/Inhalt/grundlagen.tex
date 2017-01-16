@@ -19,7 +19,7 @@ Sicht jedoch steigt dieser Zeitaufwand nicht mit jedem neuen Feature stark
 an. Im Vergleich dazu steigt bei einer unsauber programmierten Software der Zeitaufwand ein neues
 Feature zu implementierten mit der Anzahl an bereits implementieren Features
 exponentiell an \footnote{\url{http://clean-code-developer.de/das-wertesystem/\#Evolvierbarkeit}}.
- Irgendwann erreicht der Quellcode der Software dann einen Punkt, an
+Irgendwann erreicht der Quellcode der Software dann einen Punkt, an
 dem der Zeitaufwand ein neues Feature zu implementieren derart groß geworden ist, dass es besser ist die Software neu zu schreiben, anstatt sie anzupassen.
 
 CCD bezeichnet eine saubere programmierte Software aus diesem Grund auch als \emph{evolvierbar}.
@@ -27,9 +27,9 @@ Software die mit dem Fokus auf Evolvierbarkeit hin programmiert wurde,
 kann leicht an neue Rahmenbedingungen oder Kundenwünsche angepasst werden.
 
 
-Eine weitere Eigenschaft von sauber programmierter Software ist dass sie gut zu
+Eine weitere Eigenschaft von sauber programmierter Software ist, dass sie gut zu
 lesen ist und möglichst ohne Kommentare verstanden werden kann.
-Programmcode wird öfters gelesen als geschrieben. Aus diesem Grund sind gute
+Programmcode wird öfters gelesen als geschrieben. Aus diesem Grund ist gute
 Lesbarkeit eine wichtige Eigenschaft. Gute Lesbarkeit ist auch dann von großer
 Bedeutsamkeit, wenn eine andere Person den Programmcode nachvollziehen muss, als diejenige Person, die ihn geschrieben hat.
 Somit ist in größeren Softwareprojekten ein saubere Codebasis umso unverzichtbarer.
@@ -38,7 +38,7 @@ Prinzipien haben jedoch die Eigenheit, dass sie nicht so leicht einzuhalten sind
 Somit ist es in der Praxis schwer die Prinzipien auf den eigenen Code anzuwenden.
 Hierbei soll Flow Design einen Lösungsansatz bieten. Flow Design bieten in
 Ergänzung zu den CCD Prinzipien eine Entwurfsmethodik und dazugehörende Implementierungsregeln, die
-die einfach zu befolgen sind und man erhält fast automatisch einen Code, der ein Großteil der CCD Prinzipien erfüllt.
+einfach zu befolgen sind und man erhält fast automatisch einen Code, der ein Großteil der CCD Prinzipien erfüllt.
 
 \section{CCD Prinzipien}
 
@@ -116,13 +116,13 @@ Flow Design fördert das Entkoppeln und zeigt Abhängigkeiten bereits bei der Mo
 
 In einem dreidimensionalen Raum sind die 3 Achsen üblicherweise zueinander
 orthogonal. Verschiebe ich ein Objekt auf einer Achse, so bleiben die Werte der
-beiden anderen unberührt Wäre eine Achse nicht orthogonal zu den beiden anderen,
+beiden anderen unberührt. Wäre eine Achse nicht orthogonal zu den beiden anderen,
 so würde eine Verschiebung entlang dieser Achse auch eine Änderung der Werte
 einer anderen Achse bewirken. Diese Eigenschaft wird nun auch auf Code und wie
 er auf Änderungen reagiert, projiziert.
 Wird an einer Stelle der Code geändert, soll diese Änderung möglichst keinen Einfluss auf
 andere Teile des Codes haben. Flow Design fördert eine starke Entkoppelung der
-einzelnen Funktionseinheiten, dadurch wird auch das das Prinzip der
+einzelnen Funktionseinheiten, dadurch wird auch das Prinzip der
 Orthogonalität erfüllt.
 
 \blankfootnote{\url{http://clean-code-developer.de/die-grade/roter-grad/}}
@@ -187,7 +187,7 @@ leichter Änderungen an der Codebasis realisieren, da sie nicht den kompletten
 Code nachvollziehen brauchen, sondern direkt zu den für sie relevanten Stellen
 springen können.
 \item Automatische Test / Unittest sind besser realisierbar, da man feingranularer
-Testen kann
+testen kann
 \end{itemize}
 
 \subsubsection{Single Responsibiltiy Principle}
@@ -220,7 +220,8 @@ Diagramm nur ein Teil davon ist.
 Flow Design soll im Gegensatz zu UML besser geeignet sein, bereits in der Entwurfsphase Anwendung zu finden.
 Ziel ist es sich auf dem Papier bereits ein Entwurf der Programmstruktur überlegen zu können.
 Aktuell sei es aus der Mode gekommen, vor dem Programmieren einen Entwurf zu erzeugen, was vor allem daran läge, dass die vorhandenen
-Entwurfsmethodiken eher hinderlich seien und einen unnötigen Overhead erzeugen ( laut Ralf Westphal)
+Entwurfsmethodiken eher hinderlich seien und einen unnötigen Overhead erzeugen ( laut Ralf Westphal).
+
 %TODO
 Es sei somit üblich geworden die Denkarbeit, wie man seinen Code möglichst sauber strukturieren kann,
 während dem Programmieren direkt im/vor dem Sourcecode zu verrichten.
@@ -232,8 +233,7 @@ ausprobieren, Änderungen machen, oder auch wieder verwerfen, als direkt im Sour
 Es geht jedoch nicht darum den Sourcecode bis ins kleinste Detail in eine Art visuelle Programmiersprache zu pressen,
 sondern darum, wie man den Code am sinnvollsten in Funktionseinheiten zerlegt (die einen möglichst aussagekräftigen Namen haben sollten).
 Wie die Funktionalität auf unterster Ebene implementiert wird, wird auf dem Diagramm nicht berücksichtigt.
-Das ist jedoch keine negative Einschränkung, vielmehr ermöglicht dies, sich auf beim Entwurf nicht mit unnötigen Implementierungsdetails beschäftigen zu
-müssen, sondern sich auf das Große ganze - das Zusammenspiel/ Komposition der Funktionseinheiten und den Datenfluss zu konzentrieren.
+Das ist jedoch keine negative Einschränkung, vielmehr ermöglicht dies, sich beim Entwurf nicht mit unnötigen Implementierungsdetails zu beschäftigen, sondern sich auf das große Ganze - das Zusammenspiel/ Komposition der Funktionseinheiten und den Datenfluss - zu konzentrieren.
 
 
 Anzumerken wäre noch, dass nicht der Kontrollfluss abgebildet wird, sondern, wie erwähnt, der Datenfluss.
@@ -292,7 +292,7 @@ Das Ergebnis ist die Summe aller Zahlen.
 
 
 
-Über den Pfeilen, die die Richtung des Datenflüssen darstellt, werden die im
+Über den Pfeilen, die die Richtung der Datenflüsse darstellen, werden die im
 Datenfluss enthaltenen Datentypen in runden Klammern eingetragen.
 
 Eine leere Klammer bedeutet, dass ein Datenstrom ohne Daten fließt.
@@ -350,7 +350,7 @@ Kaptiel 4 erläutert.
 \end{figure}
 
 
-Bei einen Datenstrom bestehend aus einem eigenen Datentypen, kann es helfen, den Datentyp innerhalb des Flow Design Diagrammes zu definieren.
+Bei einem Datenstrom, bestehend aus einem eigenen Datentypen, kann es helfen, den Datentyp innerhalb des Flow Design Diagrammes zu definieren.
 Dafür wird an einer beliebigen Stelle auf dem Papier eine Box gezeichnet,
 in der der Datentyp mit seinen Membervariablen aufgelistet wird.\footnote{Diese Notation ist nicht offiziell Teil der Flow Design Notation,
 sondern ist eine Ergänzung von Kevin Erath}
@@ -445,7 +445,7 @@ neuer Datentyp erzeugt, der alle Output-Daten beinhaltet.
 \end{figure}
 
 
-Falls der Output mehrere Funktionseinheiten in einen Datenstrom zusammenlaufen
+Falls der Output mehrerer Funktionseinheiten in einen Datenstrom zusammenlaufen
 sollen und dieser dann als Input in eine anderen Funktionseinheit hineinfließen
 soll, wird das mit Hilfe eines s.g. Joined Inputs dargestellt. 
 Dieser wird als Linie dargestellt an die mehrere Inputs zusammenlaufen.
@@ -519,8 +519,8 @@ Funktionseinheit festhält, und dadurch eine Abhängigkeit symbolisiert.
 
 
 Wenn eine Funktionseinheit direkt durch den Programmstart aufgerufen wird, so
-wird dies mit einem leeren Kreis dargestellt. Genau so verhält es sich mit dem
-Programmende, mit der Unterschied, dass noch innerhalb des Kreises ein Kreuz ist.
+wird dies mit einem leeren Kreis dargestellt. Genauso verhält es sich mit dem
+Programmende, mit dem Unterschied, dass noch innerhalb des Kreises ein Kreuz ist.
 
 \begin{figure}[H]
 	\centering
@@ -554,7 +554,7 @@ des Containers am Rand der Umrandung.
 \chapter{Implementation}
 
 
-Flow Design hat 2 Implementierungsregeln, die zu beachten sind:
+Flow Design hat zwei Implementierungsregeln, die zu beachten sind:
 
 \begin{itemize}
 \item Trennen von Integrationen und Operationen
@@ -590,19 +590,18 @@ Operationen sollen komplett unabhängig vom Rest ihrer Umwelt funktionieren und
 dürfen aus diesem Grund andere Funktionseinheiten nicht kennen.
 
 Die Aufgabe einer Integration ist, die unabhängigen Operationen in das große Ganze zu
-Integrieren. 
+integrieren. 
 \footnote{Ralf Westphal spielte auch mit den Gedanken diese Funktionseinheiten als Koordinatoren oder
 Kompositionen zu bezeichnen.}
 
-Integrationen integrieren andere Integrationen und/oder Operationen in das Programm. Sie dürfen also funktional abhängig sein
-von anderen von Funktionseinheiten.
+Integrationen integrieren andere Integrationen und/oder Operationen in das Programm. Sie dürfen also anderen von Funktionseinheiten funktional abhängig sein.
 
 Im Gegensatz dazu dürfen Operationen keine Integrationen oder andere Operationen
 kennen. Sie dürfen aber auf Daten zugreifen. Über diese entsteht auch die einzige Möglichkeit der
-Kommunikation zwischen Operationen. Mit Daten sind hauptsächlich die inpersitente
+Kommunikation zwischen Operationen. Mit Daten sind hauptsächlich die nicht-persistente
 Daten gemeint. Daten in Form von Objekten und primitive Datentypen, die von den
 integrierenden Funktionseinheiten koordiniert werden.
-Sowohl Operationen als auch Integrationen dürfen Daten Erzeugen.
+Sowohl Operationen als auch Integrationen dürfen Daten erzeugen.
 Beispielsweise das Aufrufen eines Konstruktors oder Deklarieren einer lokalen Variablen.
 Das "Verdrahten" von Datenflüssen übernehmen jedoch die Integrationen ( was auf
 dem Schaubild leider nicht so deutlich herauskommt). 
@@ -644,15 +643,15 @@ Dieses Prinzip besagt, dass Funktionseinheiten sich nicht gegenseitig kennen sol
 Es soll auch verhindert werden, dass eine Einheit eine andere aufruft und von deren Ergebnis
 abhängig ist, bzw. auf das Ergebnis wartet.
 Eine Funktionseinheit soll, nachdem sie die Daten bearbeitet hat, sie einfach nach
-außen weiter reichen und nicht wissen, wer die Daten entgegennimmt.
+außen weiterreichen und nicht wissen, wer die Daten entgegennimmt.
 Dieses Prinzip verhindert eine Koppelung zwischen den einzelnen Funktionseinheiten.
 
 Um jedoch ein Zusammenspiel zwischen den einzelnen entkoppelten Einheiten zu ermöglichen, bedarf es einen oder
-mehrere "Koordinatoren" welche diesem Prinzip nicht entsprechen müssen.
+mehrere \enquote{Koordinatoren},welche diesem Prinzip nicht entsprechen müssen.
 Nur so kann aus vielen kleinen Funktionseinheiten ein großes Ganzes werden, dass eine komplexe Aufgabe lösen kann.
-Damit die das Zusammenspiel leicht zu modifizieren bleibt und die Verdrahtung
-leicht zu verstehen sind gelten für Integrationen einige Einschränkungen, die
-unter der Namen "Integration Operationen Segregation Principle" zusammengefasst
+Damit das Zusammenspiel leicht zu modifizieren bleibt und die Verdrahtung
+leicht zu verstehen sind, gelten für Integrationen einige Einschränkungen, die
+unter der Namen \enquote{Integration Operationen Segregation Principle} zusammengefasst
 werden.
 
 
@@ -683,15 +682,16 @@ Operationen sind Methoden, die Logik/ Kontrollstrukturen enthalten dürfen. In C
 
 
 
-Gleichzeitig müssen die Operationen das PoMO Prinzip erfüllen, sie dürfen nicht
-wissen, er die Daten bekommt oder was damit passiert, aus diesem Grund darf auch
-kein Rückgabewert erwartet werden, sonst lassen sich daraus Rückschlüsse bzw. Erwartungen verknüpfen.
-Ein Funktionsaufruf ist nur über Actions ( Funktionszeiger ), die man als Funktionsparameter mit übergibt, oder Events möglich.
+Gleichzeitig müssen die Operationen das PoMO Prinzip erfüllen.
+Nach dieser Regel dürfen sie keine Kenntnisse über die Herkunft der Daten haben. Auch soll den Operationen unbekannt sein,
+was im Anschluss mit den Daten passiert. Aus diesem Grund darf auch kein Rückgabewert erwartet werden,
+da sich daraus Rückschlüsse bzw. Erwartungen verknüpfen würden. 
+Ein Funktionsaufruf ist nur über Actions (Funktionszeiger), die man als Funktionsparameter mit übergibt, oder Events möglich.
 Beide dürfen keine Rückgabewerte haben, was bei Actions implizit der Fall ist.
 Durch diese Regel wird einer Operation ermöglicht eine andere Funktion
-aufzurufen, ohne das sie das PoMO bricht. Sie bestimmt nicht selbst, welche
-Funktion sie aufruft, sondern die übergeordnete Funktion, welche die Operation
-aufruft ( und somit automatisch eine Integration sein muss, welche die PoMO Bedingung nicht erfüllen muss).
+aufzurufen, ohne dass sie das PoMO bricht. Sie bestimmt nicht selbst, welche
+Funktionseinheit sie aufruft, sondern die übergeordnete, welche die Operation
+aufruft (und somit automatisch eine Integration sein muss, welche die PoMO Bedingung nicht erfüllen muss).
 Wie das praktisch aussieht, wird im Laufe des Kapitels anhand von konkreten
 Beispiel genauer veranschaulicht.
 
@@ -699,7 +699,7 @@ Operationen sind also imperative programmiert. Imperative Programmierung ist ein
 mit dem Fokus auf das \textbf{wie} ein Problem gelöst werden soll.
 Im Gegensatz dazu steht der deklarative Ansatz.
 Beim deklarativen Programmieren steht der Fokus auf das \textbf{was} getan werden soll und nicht so sehr,
-wie es im Detail genau angestellt wird. Ein Beispiel hierfür wären zum Beispiel SQL Befehle.
+wie es im Detail genau angestellt wird. Ein Beispiel hierfür wären SQL Befehle.
 Hier wird nur gesagt, was man haben möchte und das Programm kann dann die Anfrage nochmal untersuchen
 und selbst bestimmen, wie es die Anfrage am besten ausführt.
 
@@ -708,17 +708,17 @@ und selbst bestimmen, wie es die Anfrage am besten ausführt.
 
 Die Integrationen werden nach Flow Design deklarative programmiert.
 Diese Funktionseinheiten dürfen anders als die Operationen, andere Funktionseinheiten aufrufen, sie also kennen.
-Die Integrationen erfüllen also nicht das \emph{Principle of Mutual Oblivion}
+Die Integrationen erfüllen also nicht das \emph{Principle of Mutual Oblivion}.
 Der Unterschied beim Flow Design ist jedoch, dass eine bewusste Trennung eingehalten wird.
 
-Integrationen dürfen auch auf die Terminierung einer Funktionseinheit warten und den Rückgabewert  weiterreichen an andere Funktionseinheiten.
+Integrationen dürfen auch auf die Terminierung einer Funktionseinheit warten und den Rückgabewert an andere Funktionseinheiten weiterreichen.
 Dafür dürfen sie keine Logik im Sinne von Kontrollstrukturen beinhalten.
 Auch dürfen sie keine API-spezifischen Befehle kennen, wie zum Beispiel Zugriffe
 auf Ressourcen wie Konsole, UI oder Dateien.
 
-Die Businesslogik, das was die Funktionalität erzeugt, diese befinden sich in Operationen und sind entkoppelt von ihrer Umgebung.
+Die Businesslogik, das was die Funktionalität erzeugt, befindet sich in Operationen und sind entkoppelt von ihrer Umgebung.
 Sie bekommen einfach nur von irgendwo her einen Input (bzw. bei keinen Inputparametern einfach ausgeführt werden) und führen damit die von ihnen implementierte
-Logik aus und geben das Ergebnis nach außen. Beim nach außen Reichen kennt die Funktionseinheit jedoch nicht den Empfänger.
+Logik aus und geben das Ergebnis nach außen. Beim Weiterreichen nach außen kennt die Funktionseinheit jedoch nicht den Empfänger.
 \end{enumerate}
 
 \subsubsection{Tabelle -  IOSP auf einen Blick}
@@ -820,9 +820,9 @@ Die Methode wurde aufgeteilt in eine Integration (\texttt{FormatAndPrintStrings}
 Im ersten Beispiel hat die Methode zwei Aufgaben erfüllt, sie hat die Formatierung-Methode integriert und
 das Ergebnis ausgegeben.
 
-Nun sind Integration, Ausgabe und Formatierung sauber getrennt. Womit das SRP
-auch erfüllt ist. Womit das SRP auch erfüllt ist. Dadurch wurde eine Entkopplung geschaffen, 
-die Änderungen am Code leichter macht. Besonders vorteilhaft, das UI ist getrennt vom Rest
+Nun sind Integration, Ausgabe und Formatierung sauber getrennt.
+Womit das SRP auch erfüllt ist. Dadurch wurde eine Entkopplung geschaffen, 
+die Änderungen am Code leichter macht. Besonders vorteilhaft ist, dass das UI vom Rest getrennt ist. 
 
 Jedoch wurde der Code nun deutlich länger. Die Foreach-Schleife ist in beide Operationen gelandet und das Initialisieren und
 Befüllen der temporären Liste in \texttt{FormatLines} nimmt auch etwas Platz ein.
@@ -930,7 +930,7 @@ Sprachfeatures eine Programmiersprache bietet.
 
 \section{C\# Features um Datenflüsse zu implementieren}
 
-Um Flow Design gemäß der IODA Architektur umzusetzen, helfen einem in C\# einige Features die in diesem Kapitel vorgestellt werden.
+Um Flow Design gemäß der IODA Architektur umzusetzen, helfen einem in C\# einige Features, die in diesem Kapitel vorgestellt werden.
 
 \subsubsection{LINQ und Lambdas}
 
@@ -958,7 +958,7 @@ Integrationen auch eine Operation sein.
 
 
 \bigskip
-Im Folgendem werden hier nur ein paar der häufigsten verwendeten Methoden erläutert.
+Im folgenden Abschnitt werden hier nur ein paar der häufigsten verwendeten Methoden erläutert.
 
 \begin{enumerate}
 \item Modifizieren
@@ -971,12 +971,12 @@ zurück (mit Ausnahme von ForEach).
 	\centering
 \begin{tabularx}{\textwidth}{|p{130 pt}|X|}
 		\hline
-Select & Selektiert jedes Element und der Sequenz und modifiziert es. Zurückgegeben wird eine Sequenz der modifizierten Elemente\\	\hline
-ForEach (nur für List-Klasse) & Iteriert über die Sequenz und führt mit jedem Element den Selector-Ausdruck aus. Im Gegensatz zu Select wird kein Sequenz zurückgeliefert. Diese Methode ist nicht Teil von LINQ sondern gehört ausschließlich zu der List-Klasse. Da sie jedoch oft Verwendung findet in LINQ-Ausdrücke, wird sie hier mit aufgezählt\\	\hline
+Select & Selektiert jedes Element und der Sequenz und modifiziert es. Zurückgegeben wird eine Sequenz der modifizierten Elemente.\\	\hline
+ForEach (nur für List-Klasse) & Iteriert über die Sequenz und führt mit jedem Element den Selector-Ausdruck aus. Im Gegensatz zu Select wird keine Sequenz zurückgeliefert. Diese Methode ist nicht Teil von LINQ, sondern gehört ausschließlich zu der List-Klasse. Da sie jedoch oft Verwendung in LINQ-Ausdrücke findet, wird sie hier mit aufgezählt.\\	\hline
 First,  Last & Gibt das erste/letzte Element der Sequenz zurück, das eine bestimmte Bedingung erfüllt.\\	\hline
-OrderBy & Ordnet die Sequenz mit Hilfe eines \texttt{keySelector}-Ausdrucks. Dieser bestimmt das Sortierkriterium. In manchen Fällen (Elemente sind Zahlenwerte, oder Strings), kann dieser weggelassen werden, falls das Default-Verhalten gewünscht ist\\	\hline
+OrderBy & Ordnet die Sequenz mit Hilfe eines \texttt{keySelector}-Ausdrucks. Dieser bestimmt das Sortierkriterium. In manchen Fällen (Elemente sind Zahlenwerte, oder Strings), kann dieser weggelassen werden, falls das Standard-Verhalten gewünscht ist.\\	\hline
 Distinct & Duplikate werden aus der Sequenz gelöst.\\	\hline
-Join & Zwei Sequenzen werden zu einer zusammengefasst\\	\hline
+Join & Zwei Sequenzen werden zu einer zusammengefasst.\\	\hline
 \end{tabularx}
 	\medskip
 	\caption{LINQ - Sequenzen Modifizieren}
@@ -1006,8 +1006,8 @@ Diese Methoden liefern einen Boolean als Rückgabewert zurück.
 	\centering
 \begin{tabularx}{\textwidth}{|p{130 pt}|X|}
 		\hline
-Any & Wendet auf jedes Element den Selector-Ausdruck solange an, bis bei einem Element der Ausdruck wahr wird. Dann wird \texttt{true} zurückgegeben, ansonsten \texttt{false}\\	\hline
-Contains & Ähnlich wie \texttt{Any}, nur dass kein Selector übergeben wird, sondern ein Element, der selben Klasse, wie die Elemente des Containers. Befindet sich das Element in dem Container, dann wird \texttt{true} zurückgeben, ansonsten \texttt{false}\\	\hline
+Any & Wendet auf jedes Element den Selector-Ausdruck solange an, bis bei einem Element der Ausdruck wahr wird. Dann wird \texttt{true} zurückgegeben, ansonsten \texttt{false}.\\	\hline
+Contains & Ähnlich wie \texttt{Any}, nur dass kein Selector übergeben wird, sondern ein Element, der selben Klasse, wie die Elemente des Containers. Befindet sich das Element in dem Container, dann wird \texttt{true} zurückgeben, ansonsten \texttt{false}.\\	\hline
 All & Ähnlich wie \texttt{Any} mit dem Unterschied, dass nur dann \texttt{true} zurückgeben wird, wenn für alle Elemente des Containers der Ausdruck wahr ist.\\	\hline
 \end{tabularx}
 	\medskip
@@ -1065,7 +1065,7 @@ von Container konvertiert werden. Zum Beispiel: \texttt{ToList} oder \texttt{ToD
 
 Datenströme können von LINQ auch parallel verarbeitet werden. Dazu konvertiert
 man die Sequenz mit \texttt{toParallel()} zu einem PLINQ Datenstrom.
-Anschließend ausgeführte Methoden werden, falls möglich parallel verarbeitet.
+Anschließend ausgeführte Methoden werden, falls möglich, parallel verarbeitet.
 
 \end{enumerate}
 
@@ -1098,12 +1098,12 @@ Das wiederholt sich, solange bis der Benutzer die Zahl 42 eingetippt hat.
 \begin{enumerate}
 \item Erläuterung des Schaubildes
 
-Die  Main-Methode wird nach dem Programmstart ( leerer Kreis ) ohne Parameter aufgerufen.
-Danach ruft diese die Methode \\\texttt{ReadNumbersFromCmd} auf, welche aus der Konsole eine Eingabe ließt und sie
-zu einem int parset. Der int nimmt die Main-Methode entgegen und gibt diesen an FindtheAnswer weiter.
-Diese Methode hat die Aufgabe den entgegengenommenen int mit der Zahl 42 zu vergleichen. Wenn die Zahl 42 ist, wird der Datenstrom
-abgebrochen. Wenn es nicht die 42 war, dann wird der int nach außen gereicht und die  Main-Methode reicht die Zahl an die
-PrintNumber-Methode weiter. PrintNumber gibt die Zahl in die Konsole aus.
+Die  Main-Methode wird nach dem Programmstart (leerer Kreis) ohne Parameter aufgerufen.
+Danach ruft diese die Methode \\\texttt{ReadNumbersFromCmd} auf, welche aus der Konsole eine Eingabe liest und sie
+zu einem  \texttt{int}] konvertiert.Der int-Wert wird von der Main-Methode entgegengenommen und wird in dieser an die Methode \texttt{FindtheAnswer} weitergereicht.
+Diese Methode hat die Aufgabe den entgegengenommenen int-Wert mit der Zahl 42 zu vergleichen. Wenn die Zahl 42 ist, wird der Datenstrom
+abgebrochen. Wenn es nicht die 42 war, dann wird der int-Wert nach außen gereicht und die Main-Methode gibt die Zahl an die
+\\\texttt{PrintNumber}-Methode weiter.\texttt{PrintNumber} gibt die Zahl in die Konsole aus.
 Wenn der Datenstrom abbricht, returned die Main-Methode und das Programm wird beendet.
 
 \item Implementation
@@ -1144,7 +1144,7 @@ class Program
 \end{lstlisting}
 
 Der Producer ist in dem Fall der \texttt{ReadNumbersFromCmd}.
-Dieser produziert ein endloser Stream an \texttt{int}-Daten.
+Dieser produziert einen endlosen Stream an \texttt{int}-Daten.
 Es wird jedoch immer nur ein Element erzeugt und erst nachdem der Consumer das
 Element abgefragt hat, wird ein neues Element erzeugt.
 Wenn nichts mehr konsumiert wird, wird auch nichts mehr produziert.
@@ -1173,7 +1173,7 @@ von F an die beiden nachfolgenden Funktionseinheiten einfach weiterreicht.
 Eine weitere Möglichkeit wäre, wenn der Methode F ein Action mit übergeben wird,
 und die übergeordnete Integration ruft G und H in einem Lambda auf.
 Die dritte Möglichkeit besteht darin Events zu nutzen.
-Leider bedarf es dann bei der Benutzung der API mehr Vorsicht, da man sich vorher auf ein Events registrieren muss, bevor man
+Leider bedarf es dann bei der Benutzung der API mehr Vorsicht, da man sich vorher auf ein Event registrieren muss, bevor man
 die gewünschte Funktion aufrufen kann.
 
 \begin{lstlisting}[caption= Mehrere Empfänger eines Outputs]
@@ -1327,18 +1327,18 @@ static List<string> FormatStrings(List<string> lines , Func<string,string> forma
 
 \section{Nutzen von IOSP}
 
-Im diesem Abschnitt wird versucht zu erschließen was der Mehraufwand für die
+In diesem Abschnitt wird versucht zu erschließen was der Mehraufwand für die
 Einhaltung des IOSP in der Praxis für einen Nutzen hat.
 \subsubsection{Die Perlenkette}
 
 Die Codebasis, die nach IOSP implementiert wurde, soll bildlich gesprochen einer
-Perlenkette ähneln. Der Code besteht aus aneinandergereihte Funktionseinheiten,
+Perlenkette ähneln. Der Code besteht aus aneinandergereihten Funktionseinheiten,
 die zusammen ein großes Ganzes bilden. Möchte man Änderungen an dem Programm
-vornehmen, so brauch man nur an einer Stelle die Kette zu öffnen und etwas
+vornehmen, so braucht man nur an einer Stelle die Kette zu öffnen und etwas
 hinzufügen oder entfernen. Danach schließt man die Kette wieder und das Programm
 läuft wieder. Beim Einfügen oder Entfernen ist nur darauf zu achten, dass die
 Eingänge und Ausgänge zueinander passen. Ist das nicht der Fall, so gibt es auch
-die Möglichkeit eine s.g "Adapter"-Funktionseinheit zwischenzuschalten die die inkompatiblen
+die Möglichkeit eine s.g Adapter-Funktionseinheit zwischenzuschalten, die die inkompatiblen
 Ein- und Ausgänge zu korrigieren.Eine weitere Option wäre, die betroffenen
 Funktionseinheiten und deren
 ein- und ausgehenden Datentypen entsprechend abzuändern und die
@@ -1354,10 +1354,10 @@ einfach umsetzbar. Dann bleibt nur die Option eine Adpater-Funktionseinheit zu v
 Funktionale Abhängigkeiten sind auch in anderen Gebieten außerhalb von der
 Softwareentwicklung ein Problem. Dann wenn es darum geht produktive
 Arbeitsabläufe zu gestalten.
-Wenn jemand oder etwas seine Arbeit erst abschließen kann, wenn eine anderer
+Wenn jemand oder etwas seine Arbeit erst abschließen kann, wenn ein anderer
 ihre Aufgabe erledigt hat, dann entsteht eine funktionale Abhängigkeit.
 Solch eine Eigenschaft gilt es wenn möglich zu verhindern.
-Besser ist es, wenn es Pool an Aufgaben gibt von dem sich jeder bedienen kann,
+Besser ist es, wenn ein Pool an Aufgaben exisitert, von dem sich jeder bedienen kann,
 diese unabhängig von anderen Einheiten erledigen kann und dann das Ergebnis wieder
 in ein Pool zurückgibt, von denen sich andere wiederum bedienen können.
 Flow Design untersagt solche funktionale Abhängigkeiten in Operationen.
@@ -1378,7 +1378,7 @@ herausgestellt hat.
 
 Operationen ist es erlaubt sich selbst aufzurufen und wiederum auf das Ergebnis
 zu warten. Besteht die Rekursion aus einer Kette an Operationen, so muss die letzte
-Operation die erste Operation aufrufen und auf ihr Ergebnis warten dürfen.
+Operation die erste Operation aufrufen und auf ihr Ergebnis warten.
 \subsubsection{LINQ / Standard-Library Methoden}
 
 Eine Koppelung an Methoden, die die Sprache selbst bereitstellt, hat keine
@@ -1413,7 +1413,7 @@ Die Aufgabe der UI-Logik besteht dann anschließend darin das Ergebnis der Modif
 \chapter{Die Entwurfsmethode}
 
 Wie in der Einleitung dieser Arbeit bereits erwähnt, ist Flow Design nicht nur
-ein Methodik um Datenflüsse auf dem Papier zu modellieren, sondern Flow Design
+eine Methodik um Datenflüsse auf dem Papier zu modellieren, sondern Flow Design
 bietet neben dem Diagramm auch noch eine Entwurfsmethode um die Architektur einer Software
 zu entwerfen.
 
@@ -1423,13 +1423,12 @@ Der erste Schritt beim Entwerfen einer Software nach Flow Design besteht
 darin, die Grenzen des Systems kennenzulernen. Es soll herausgefunden
 werden, welche Möglichkeiten es gibt, mit dem System zu interagieren und auf
 welche Ressourcen das System zugreifen soll. Ziel soll sein, dass das System
-so entworfen wird, dass die Businessdomäne entkoppelt bleibt von diesen
-äußeren Faktoren.
+so entworfen wird, dass die Businessdomäne von diesen äußeren Faktoren entkoppelt bleibt.
 Ein einfaches Schaubild soll einem helfen diese äußeren Faktoren zu
 identifizieren: Ein Kreis wird in der Mitte eines Papiers gezeichnet, dieser
 Kreis symbolisiert das System oder auch Domäne genannt.
 Auf der linken Seite des Kreises werden die äußeren Systeme eingetragen, die
-auf das System zugreifen und damit interagieren, diese Systeme oder
+auf das System zugreifen und damit interagieren. Diese Systeme oder
 Techniken werden auch als Portale bezeichnet. Beispiele für Portale wären:
 HTTP-Zugriff, Batch mode und GUIs.
 Auf der anderen Seite des Kreises werden die externen Ressourcen eingetragen, auf die
@@ -1443,9 +1442,9 @@ einer Nährstofflösung und verarbeitet die Stoffe, die durch ihre Membran in
 ihr Inneres gelangen. Die Membran einer Softwarezelle trennt diese von
 ihrer Umwelt (andere Systeme) und regelt den Austausch von Daten mit dem
 Inneren des Systems. Ziel ist es später in der Implementierung darauf zu
-achten, dass die "Schicht" oder "Membran", zwischen Domäne und Außenwelt möglichst
+achten, dass die \enquote{Schicht} oder \enquote{Membran}, zwischen Domäne und Außenwelt möglichst
 dünn bleibt.
-Ist das System von der Umwelt entkoppelt lässt es sich besser testen und es
+Ist das System von der Umwelt entkoppelt, so lässt es sich besser testen und es
 lassen sich leichter neue Portale und Provider an das System anhängen.
 
 \section{Interfaceskizze ( im Falle einer GUI Anwendung )}
@@ -1465,7 +1464,7 @@ Für jede der definierten Interaktionen aus der Interfaceskizze(n) wird ein Flow
 erstellt.
 
 Nachdem die Flow Design Diagramme erstellt wurden, muss überlegt werden, wie die
-einzelnen Funktionseinheiten in Klassen, Dlls und Anwendungen zusammengefasst
+einzelnen Funktionseinheiten in Klassen, DLLs und Anwendungen zusammengefasst
 und strukturiert werden sollen.
 Dazu bietet sich an, einzelnen Funktionseinheiten zusätzlich mit dem Namen der
 Klasse (gegebenenfalls auch DLLs und Anwendung) zu beschriften. Alternative ist es
@@ -1479,7 +1478,7 @@ parallel laufen können.
 
 Eine Softwarezelle hat die Eigenschaft, dass sie rekursive ist.
 Das gesamte System lässt sich als eine große Softwarezelle betrachten, die wiederum
-aus mehreren kleineren Softwarezellen bestehen können (Dlls und Anwendungen).
+aus mehreren kleineren Softwarezellen bestehen können (DLLs und Anwendungen).
 Diese Untersysteme sollen wieder wie das gesamte System möglichst entkoppelt
 sein von den restlichen Untersystemen. Einer dieser Untersysteme muss sich dann
 jedoch als integrierendes System verstehen, welches die anderen Untersysteme
