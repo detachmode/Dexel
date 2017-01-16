@@ -27,6 +27,7 @@ namespace Dexel.Editor.Views
             _instance = this;
             InitializeComponent();
             DataContext = vm;
+            Interactions.StartAutoSave();
         }
 
         public static MainWindow Get() => _instance;

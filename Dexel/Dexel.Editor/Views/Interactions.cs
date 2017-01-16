@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading;
@@ -14,6 +15,7 @@ using Dexel.Library;
 using Dexel.Model.DataTypes;
 using Dexel.Model.Manager;
 using Roslyn;
+using Roslyn.Generators;
 using Roslyn.Parser;
 using Roslyn.Validator;
 
@@ -46,12 +48,14 @@ namespace Dexel.Editor.Views
         {
             MainViewModel.Instance().ChangeTheme("Views/Themes/Print.xaml", @"Views/Themes/FlowDesignColorPrint.xshd");
             App.SetConfig("Theme", "Print");
-            
+
         }
+
 
         public static void ChangeToDarkTheme()
         {
-            MainViewModel.Instance().ChangeTheme("Views/Themes/DarkColorfull.xaml", @"Views/Themes/FlowDesignColorDark.xshd");
+            MainViewModel.Instance()
+                .ChangeTheme("Views/Themes/DarkColorfull.xaml", @"Views/Themes/FlowDesignColorDark.xshd");
             App.SetConfig("Theme", "Dark");
         }
 
@@ -90,7 +94,8 @@ namespace Dexel.Editor.Views
         {
 
             DeConnect(dataStream, mainModel);
-            MainModelManager.ConnectTwoDefintions(dataStream.Sources.First(), newdestination.InputStreams.First(), mainModel);
+            MainModelManager.ConnectTwoDefintions(dataStream.Sources.First(), newdestination.InputStreams.First(),
+                mainModel);
 
             ViewRedraw();
         }
@@ -139,7 +144,10 @@ namespace Dexel.Editor.Views
             DataStreamManager.IsInSameCollection(sourceDSD, destinationDSD,
                 onTrue: list => DataStreamManager.SwapDataStreamDefinitons(sourceDSD, destinationDSD, list),
                 onFalse: () => CheckAreBothInputs(sourceDSD, destinationDSD,
-                    isTrue: () => MainModelManager.MakeIntegrationIncludingChildren(sourceDSD.Parent, destinationDSD.Parent, mainModel),
+                    isTrue:
+                    () =>
+                        MainModelManager.MakeIntegrationIncludingChildren(sourceDSD.Parent, destinationDSD.Parent,
+                            mainModel),
                     isFalse: () => MainModelManager.ConnectTwoDefintions(sourceDSD, destinationDSD, mainModel)));
 
             ViewRedraw();
@@ -161,7 +169,7 @@ namespace Dexel.Editor.Views
         public static void ConnectDangelingConnectionAndFunctionUnit(DataStreamDefinition defintionDSD,
             FunctionUnit destination, MainModel mainModel)
         {
-           
+
             MainModelManager.ConnectTwoDefintions(defintionDSD, destination.InputStreams.First(), mainModel);
 
             ViewRedraw();
@@ -195,7 +203,7 @@ namespace Dexel.Editor.Views
 
         public static void GenerateCodeToConsole(MainModel mainModel)
         {
-            SafeExecute(sleepBeforeErrorPrint:true, safeExecute: () =>
+            SafeExecute(sleepBeforeErrorPrint: true, safeExecute: () =>
             {
                 var gen = new MyGenerator();
                 gen.GenerateCodeWithNamespace(mainModel, Outputs.ClearPrintToConsole);
@@ -203,7 +211,7 @@ namespace Dexel.Editor.Views
         }
 
 
-        private static void SafeExecute(bool sleepBeforeErrorPrint = true , Action safeExecute = null)
+        private static void SafeExecute(bool sleepBeforeErrorPrint = true, Action safeExecute = null)
         {
             try
             {
@@ -214,15 +222,18 @@ namespace Dexel.Editor.Views
             {
                 Console.Clear();
                 Console.WriteLine(@"...");
-                if (sleepBeforeErrorPrint) Thread.Sleep(400);// when same message pops up the user will see that the same error occured.           
+                if (sleepBeforeErrorPrint)
+                    Thread.Sleep(400);
+                        // when same message pops up the user will see that the same error occured.           
                 Console.WriteLine(ex.Message);
             }
 
         }
 
+
         public static void GenerateCodeToClipboard(MainModel mainModel)
         {
-            SafeExecute(sleepBeforeErrorPrint:true, safeExecute:() =>
+            SafeExecute(sleepBeforeErrorPrint: true, safeExecute: () =>
             {
                 var gen = new MyGenerator();
                 var methods = gen.GenerateAllMethods(mainModel);
@@ -261,6 +272,15 @@ namespace Dexel.Editor.Views
             _aTimer?.Dispose();
             _aTimer = new Timer(state => { printAction(mainModel); }, null, 0, 200);
         }
+
+
+        public static void StartAutoSave()
+        {
+            AutoSave.Start();
+        }
+
+
+
 
 
         public static void ChangeConnectionDatanames(DataStream datastream, string newDatanames)

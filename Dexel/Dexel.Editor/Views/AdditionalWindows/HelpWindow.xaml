@@ -20,6 +20,9 @@
         <Label Foreground="{DynamicResource Foreground}">Delete : delete selected function unit</Label>
         <Label Foreground="{DynamicResource Foreground}">Tab : cycle through text fields</Label>
         <Label Foreground="{DynamicResource Foreground}">Shift + Tab : Cycle through text fields backwards</Label>
-        
+<Label></Label>
+        <Label>Autosave:</Label>
+        <Label Foreground="{DynamicResource Foreground}">every 15 seconds in a subfolder where the exe is</Label>
+
     </StackPanel>
 </Window>
