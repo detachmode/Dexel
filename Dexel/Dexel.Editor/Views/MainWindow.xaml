@@ -43,7 +43,7 @@
             </MenuItem>
             
             <MenuItem Header="HELP">
-                <MenuItem Header="Shortcuts cheatsheet" Click="help_OnClicked"></MenuItem>
+                <MenuItem Header="Help / Shortcuts cheatsheet" Click="help_OnClicked"></MenuItem>
             </MenuItem>
         </Menu>
 
