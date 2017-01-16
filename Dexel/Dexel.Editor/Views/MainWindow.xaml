@@ -9,6 +9,7 @@
         xmlns:drawingBoard="clr-namespace:Dexel.Editor.Views.UserControls.DrawingBoard"
         mc:Ignorable="d"
         Focusable="True"
+        Drop="MainWindow_Drop" AllowDrop="true"
         KeyDown="MainWindow_OnPreviewKeyDown"
         Title="Dexel" Height="850" Width="1225">
     <DockPanel>
@@ -47,7 +48,7 @@
         </Menu>
 
         <dataTypeEditor:DataTypesEditor DockPanel.Dock="Left" Width="250"></dataTypeEditor:DataTypesEditor>
-        <drawingBoard:DrawingBoard DockPanel.Dock="Top" x:Name="TheDrawingBoard" Focusable="True" />
+        <drawingBoard:DrawingBoard DockPanel.Dock="Top"   x:Name="TheDrawingBoard" Focusable="True" />
 
     </DockPanel>
 </Window>

@@ -137,7 +137,8 @@ namespace Dexel.Editor.ViewModels
 
         public List<Type> AllowedDropTypes => new List<Type>
         {
-            typeof(ConnectionViewModel)
+            typeof(ConnectionViewModel),
+           
         };
 
 
