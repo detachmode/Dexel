@@ -1,8 +1,8 @@
-\nomenclatureentry{aCCD@[{CCD}]\begingroup Clean Code Development \nomeqref {2.0}|nompageref}{11}
-\nomenclatureentry{aKISS@[{KISS}]\begingroup Keep It Stupid Simple\nomeqref {2.0}|nompageref}{12}
-\nomenclatureentry{aYAGNI@[{YAGNI}]\begingroup You Ain't Gonna Need It\nomeqref {2.0}|nompageref}{13}
-\nomenclatureentry{aDRY@[{DRY}]\begingroup Don't Repeat Yourself\nomeqref {2.0}|nompageref}{14}
-\nomenclatureentry{aIODA@[{IODA}]\begingroup Integration Operation Data API\nomeqref {5.0}|nompageref}{28}
-\nomenclatureentry{aPoMO@[{PoMO}]\begingroup Principle of Mutual Oblivion\nomeqref {5.0}|nompageref}{29}
-\nomenclatureentry{aIOSP@[{IOSP}]\begingroup Integration Operation Segregation Principle\nomeqref {5.0}|nompageref}{30}
-\nomenclatureentry{aLINQ@[{LINQ}]\begingroup Language-Integrated Query\nomeqref {5.0}|nompageref}{35}
+\nomenclatureentry{aCCD@[{CCD}]\begingroup Clean Code Development \nomeqref {2.0}|nompageref}{10}
+\nomenclatureentry{aKISS@[{KISS}]\begingroup Keep It Stupid Simple\nomeqref {2.0}|nompageref}{11}
+\nomenclatureentry{aYAGNI@[{YAGNI}]\begingroup You Ain't Gonna Need It\nomeqref {2.0}|nompageref}{11}
+\nomenclatureentry{aDRY@[{DRY}]\begingroup Don't Repeat Yourself\nomeqref {2.0}|nompageref}{13}
+\nomenclatureentry{aIODA@[{IODA}]\begingroup Integration Operation Data API\nomeqref {5.0}|nompageref}{26}
+\nomenclatureentry{aPoMO@[{PoMO}]\begingroup Principle of Mutual Oblivion\nomeqref {5.0}|nompageref}{27}
+\nomenclatureentry{aIOSP@[{IOSP}]\begingroup Integration Operation Segregation Principle\nomeqref {5.0}|nompageref}{27}
+\nomenclatureentry{aLINQ@[{LINQ}]\begingroup Language-Integrated Query\nomeqref {5.0}|nompageref}{33}

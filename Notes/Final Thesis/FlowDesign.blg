@@ -1,2 +1,15 @@
-[0] 05015a72.pm:324> INFO - This is Biber 2.1
-[0] 05015a72.pm:327> INFO - Logfile is 'FlowDesign.blg'
+[0] Config.pm:354> INFO - This is Biber 2.7
+[0] Config.pm:357> INFO - Logfile is 'FlowDesign.blg'
+[34] biber-MSWIN64:303> INFO - === 
+[60] Biber.pm:359> INFO - Reading 'FlowDesign.bcf'
+[153] Biber.pm:832> INFO - Using all citekeys in bib section 0
+[170] Biber.pm:3670> INFO - Processing section 0
+[193] Biber.pm:3840> INFO - Looking for bibtex format file 'ref.bib' for section 0
+[196] bibtex.pm:1435> INFO - Decoding LaTeX character macros into UTF-8
+[201] bibtex.pm:1292> INFO - Found BibTeX data source 'ref.bib'
+[262] UCollate.pm:68> INFO - Overriding locale 'de-DE' defaults 'variable = shifted' with 'variable = non-ignorable'
+[262] UCollate.pm:68> INFO - Overriding locale 'de-DE' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[262] Biber.pm:3499> INFO - Sorting list 'anyt/global/' of type 'entry' with scheme 'anyt' and locale 'de-DE'
+[263] Biber.pm:3505> INFO - No sort tailoring available for locale 'de-DE'
+[273] bbl.pm:608> INFO - Writing 'FlowDesign.bbl' with encoding 'UTF-8'
+[274] bbl.pm:712> INFO - Output to FlowDesign.bbl

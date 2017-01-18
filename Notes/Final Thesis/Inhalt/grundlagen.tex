@@ -173,7 +173,7 @@ ein nicht zu verachtender Performanceaspekt (Remote Procedure Calls).
 \bigskip
 Vorteile:
 \begin{itemize}
-\item Erspart Kommentare durch aussagekräftige Methodennamen
+\item Erspart Kommentare durch aussagekräftige Methodennamen.
 \item Änderungen sind leichter zu realisieren, da durch kleine Methoden auch die
 höhere Wiederverwendbarkeit einzelner Methoden gegeben ist. Durch weniger Redundanzen kann man
 eine Änderung meistens gezielt an einer Stelle machen anstatt an vielen
@@ -182,10 +182,10 @@ Stellen etwas ändern zu müssen.
 Implementierungsdetails hinter aussagekräftigen Methodennamen verborgen sind.
 \item Erlaubt anderen Personen den Code leichter zu verstehen und  können selbst
 leichter Änderungen an der Codebasis realisieren, da sie nicht den kompletten
-Code nachvollziehen brauchen, sondern direkt zu den für sie relevanten Stellen
+Code nachvollziehen müssen, sondern direkt zu den für sie relevanten Stellen
 springen können.
 \item Automatische Test / Unittest sind besser realisierbar, da man feingranularer
-testen kann
+testen kann.
 \end{itemize}
 
 \subsubsection{Single Responsibiltiy Principle}
@@ -212,26 +212,26 @@ eine wichtige Rolle (siehe Kapitel 5).
 \section{Flow Design - Was ist das?}
 
 Unter Flow Design versteht man zwei Dinge:
-Einmal das Diagramm und einmal die komplette Entwurfsmethode, indem das
-Diagramm nur ein Teil davon ist.
+Einmal das Diagramm und einmal die komplette Entwurfsmethode, wobei das Diagramm nur ein Teil dieser ist.
+
 
 Flow Design soll im Gegensatz zu UML besser geeignet sein, bereits in der Entwurfsphase Anwendung zu finden.
 Ziel ist es sich auf dem Papier bereits ein Entwurf der Programmstruktur überlegen zu können.
-Aktuell sei es aus der Mode gekommen, vor dem Programmieren einen Entwurf zu erzeugen, was vor allem daran läge, dass die vorhandenen
-Entwurfsmethodiken eher hinderlich seien und einen unnötigen Overhead erzeugen ( laut Ralf Westphal).
+Nach Westphal sei es aus der Mode gekommen, vor dem Programmieren einen Entwurf zu erzeugen, was vor allem daran läge, dass die vorhandenen
+Entwurfsmethodiken hinderlich seien und einen unnötigen Overhead erzeugen
+\cite[S. 2]{schummelzettel}.
 
-%TODO
 Es sei somit üblich geworden die Denkarbeit, wie man seinen Code möglichst sauber strukturieren kann,
-während dem Programmieren direkt im/vor dem Sourcecode zu verrichten.
+während dem Programmieren direkt im Sourcecode zu verrichten.
 Dies sei jedoch laut Ralf Westphal eine eher ungünstige Lösung und behindere eher den kreativen Denkprozess mit
 unnötiger Schreibarbeit.
 Auf dem Papier sei man mit einer passenden Entwurfsmethodik schneller und man könne auch verschiedene Ideen schneller
 ausprobieren, Änderungen machen, oder auch wieder verwerfen, als direkt im Sourcecode.
 
 Es geht jedoch nicht darum den Sourcecode bis ins kleinste Detail in eine Art visuelle Programmiersprache zu pressen,
-sondern darum, wie man den Code am sinnvollsten in Funktionseinheiten zerlegt (die einen möglichst aussagekräftigen Namen haben sollten).
+sondern darum, wie man den Code am sinnvollsten in Funktionseinheiten zerlegt und diesen auch gleich einen verständlichen Namen zuordnet.
 Wie die Funktionalität auf unterster Ebene implementiert wird, wird auf dem Diagramm nicht berücksichtigt.
-Das ist jedoch keine negative Einschränkung, vielmehr ermöglicht dies, sich beim Entwurf nicht mit unnötigen Implementierungsdetails zu beschäftigen, sondern sich auf das große Ganze - das Zusammenspiel/ Komposition der Funktionseinheiten und den Datenfluss - zu konzentrieren.
+Das ist jedoch keine negative Einschränkung, vielmehr ermöglicht dies, sich beim Entwurf nicht mit unnötigen Implementierungsdetails zu beschäftigen, sondern sich auf das große Ganze - das Zusammenspiel bzw. der Komposition der Funktionseinheiten und den Datenfluss - zu konzentrieren.
 
 
 Anzumerken wäre noch, dass nicht der Kontrollfluss abgebildet wird, sondern, wie erwähnt, der Datenfluss.
@@ -241,29 +241,26 @@ Anzumerken wäre noch, dass nicht der Kontrollfluss abgebildet wird, sondern, wi
 
 \section{RomanNumbers Beispiel}
 
-\begin{center}
+
 \begin{figure}[H]
+	\centering
 	\includegraphics[width=1.0\linewidth]{./img/FromRomanNumerals.png}
-	\caption{Einfaches Flow Design Beispiel}
+	\caption{Einfaches Flow Design Beispiel (die Beispieldaten unten sind nicht Teil der Notation sondern dienen hier nur dem besseren Verständnis)
+	}
 \end{figure}
-\end{center}
-
-
-
 
 Das Beispiel soll auf einfache Weise zeigen, wie ein Flow Design Diagramm aufgebaut ist.
-Das Programm/Unterprogramm soll eine römische Zahl in eine Dezimalzahl konvertieren.
+Das Programm/Unterprogramm soll eine römische Zahl in eine Dezimalzahl konvertieren.\footnote{Beipsiel und Flow Design sind von \cite{CODEWHISPERER} entnommen}
 
 Alle eingekreisten Namen sind Funktionseinheiten.
 Diese werden in den meisten Fällen im Code als Methoden implementiert.
-Die Pfeile zeigen den Datenstrom. Links die Inputs und rechts die Outputs.
+Die Pfeile zeigen den Datenstrom zwischen den Funktionseinheiten. Links die Inputs und rechts die Outputs.
 
 
-Der Input-Datenstrom der ersten Funktionseinheit besteht aus einem String. Dieser String wird zerlegt in einzelne Buchstaben.
-Der Buchstabenstrom fließt anschließend in eine weitere Funktionseinheit, die jeden Buchstaben zu der entsprechenden
-Dezimalzahl konvertiert. Anschließend muss auf den Strom noch die Subtraktionsregel angewendet werden. Diese untersucht den
-Strom aus Ganzzahlen auf Stellen, wo eine kleinere Zahl vor einer größeren Zahl steht und sie in dem Fall dann negativ macht.
-Am Ende wird der Datenstrom einer Funktionseinheit übergeben, die alle Zahlen aufaddiert.
+Der einfließende Datenstrom der ersten Funktionseinheit besteht aus einem String. Dieser String wird innerhalb dieser Funktionseinheit in einzelne römische Ziffern zerlegt.
+Der Datenstrom fließt anschließend in eine weitere Funktionseinheit, die jede römische Ziffer zu der entsprechenden Dezimalzahl konvertiert. Anschließend muss auf den Strom noch die Subtraktionsregel angewendet werden. Diese untersucht den
+Strom aus Ganzzahlen auf Stellen, wo eine kleinere Zahl vor einer größeren Zahl steht und sie in dem Fall dann negiert.
+Am Ende wird der Datenstrom zu einer Funktionseinheit hingeleitet, die alle Zahlen aufaddiert.
 Das Ergebnis ist die Summe aller Zahlen.
 
 
@@ -291,15 +288,14 @@ Das Ergebnis ist die Summe aller Zahlen.
 
 
 Über den Pfeilen, die die Richtung der Datenflüsse darstellen, werden die im
-Datenfluss enthaltenen Datentypen in runden Klammern eingetragen.
+Datenfluss enthaltenen Daten in runden Klammern eingetragen.
 
 Eine leere Klammer bedeutet, dass ein Datenstrom ohne Daten fließt.
-Die Funktionseinheit wird einfach nur aufgerufen, ohne ihr Daten zu übergeben.
+Die Funktionseinheit wird nur aufgerufen, ohne ihr Daten zu übergeben.
 
 
-Die Notation erlaubt es auch einzelne Datentypen zusätzlich noch mit einem Namen
-zu versehen. Was vor allem bei primitiven Datentypen hilfreich sein kann. 
-Der optionale Namen wird dem Datentyp durch einen Doppelpunkt getrennt vorangestellt.
+Die Notation erlaubt es auch einzelne Datentypen zusätzlich noch mit einem Namen zu versehen. Was vor allem bei primitiven Datentypen hilfreich sein kann. 
+Der optionale Name wird dem Datentyp durch einen Doppelpunkt getrennt vorangestellt.
 
 \begin{figure}[H]
 	\centering
@@ -324,14 +320,13 @@ Falls der Datentyp aus dem Namen hervorgeht - oder nicht allzu relevant ist - ka
 \end{figure}
 
 
-Das Flow Design Flussdiagramm unterstützt die Funktion in eine Funktionseinheit sozusagen hineinzuzoomen.
+Das Flow-Design-Diagramm unterstützt die Funktion in eine Funktionseinheit sozusagen hineinzuzoomen.
 Hier erkennt man die rekursive Eigenschaft der Funktionseinheiten:
 Eine Funktionseinheit kann wiederum aus mehreren Funktionseinheiten bestehen,
 die zusammen die Aufgabe erledigen, die die übergeordnete Funktionseinheit
 beschreibt. Eine solche übergeordnete Funktionseinheit wird als Integration
 bezeichnet. Hat eine Funktionseinheit keine untergeordneten Funktionseinheiten wird sie
-als Operation bezeichnet. Was es mit dieser Aufteilung genau auf sich hat, wird im
-Kaptiel 4 erläutert.
+als Operation bezeichnet. Was es mit dieser Aufteilung genau auf sich hat, wird im Kapitel 4 erläutert.
 
 
 \section{Definition eigener Datentypen}
@@ -344,14 +339,14 @@ Kaptiel 4 erläutert.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.35\linewidth]{./img/diagramCustomTypes.png}
-	\caption{Eigener Datentype}
+	\caption{Eigener Datentyp}
 \end{figure}
 
 
-Bei einem Datenstrom, bestehend aus einem eigenen Datentypen, kann es helfen, den Datentyp innerhalb des Flow Design Diagrammes zu definieren.
+Bei einem Datenstrom, der einen eigenen Datentyp beinhaltet, kann es helfen, den Datentyp innerhalb des Flow Design Diagrammes zu definieren.
 Dafür wird an einer beliebigen Stelle auf dem Papier eine Box gezeichnet,
 in der der Datentyp mit seinen Membervariablen aufgelistet wird.\footnote{Diese Notation ist nicht offiziell Teil der Flow Design Notation,
-sondern ist eine Ergänzung von Kevin Erath}
+sondern eine Ergänzung von Kevin Erath.}
 
 \section{Arrays}
 
@@ -379,7 +374,7 @@ Ist die Arraygröße bekannt, so kann man diese in die Klammer noch zusätzlich 
 
 Ein Datenstrom wird mit einem * außerhalb der Klammer dargestellt.
 Selten wird ein Datenstrom auch mit geschweiften Klammern dargestellt, um ihn
-von einem optionalen Output ( 0 bis 1 ) unterscheiden zu können: \{int\}.
+von einem optionalen Output (0 bis 1) unterscheiden zu können: \{int\}.
 
 Ein Datenstrom zeigt an, dass die in der Klammer stehenden Daten keinmal,
 einmal, oder auch öfters als einmal fließen können.
@@ -394,12 +389,9 @@ einmal, oder auch öfters als einmal fließen können.
 \end{figure}
 
 
-Stern innerhalb der Klammer.
-Der Datentyp liegt in einem Container vor.
-Die zu bearbeitende Daten können entweder komplett auf einmal an die Funktionseinheit gegeben werden ( als Liste, Dictionary, etc. )
-oder aber - falls die Programmiersprache dies unterstützt - als yield ähnlich
-wie ein Stream realisiert werden, wo einzelne Elemente bereits abgearbeitet werden
-können, bevor alle anderen Daten erzeugt wurden.
+Ein Stern innerhalb der Klammer und hinter einem Datentyp besagt, dass dieser in einem Container vorliegt.
+Die zu bearbeitende Daten können entweder komplett auf einmal an die Funktionseinheit gegeben werden (als Liste, Dictionary, etc. )
+oder aber - falls die Programmiersprache dies unterstützt - mit \texttt{yield} ähnlich wie ein Stream realisiert werden, wo einzelne Elemente bereits abgearbeitet werden können, bevor alle anderen Daten erzeugt wurden.
 
 \section{0 bis 1 (optionaler Output)}
 
@@ -414,9 +406,9 @@ Mit einer eckigen Klammer lässt sich ein optional Output - einmal oder keinmal 
 darstellen. \footnote{Oft wird jedoch auf diese Notation verzichtet und auch bei optionalen Ausgängen eine runde Klammer verwendet. 
 }
 
-Optionale Outputs können genau wie Datenströme nicht über ein Rückgabewert einer
+Optionale Outputs können genau wie Datenströme in den meisten Programmiersprachen nicht über ein Rückgabewert einer
 Methode realisiert werden, da nach jedem Aufruf genau ein Rückgabewert erwartet wird. Wie solche
-Datenflüsse in C\# realisiert werden, wird in einem späteren Kapitel gezeigt.
+Datenflüsse in C\# realisiert werden, wird in Kapitel 5 gezeigt.
 
 \section{Mehrere Datentypen auf einem Datenstrom}
 
@@ -431,7 +423,7 @@ Datenflüsse in C\# realisiert werden, wird in einem späteren Kapitel gezeigt.
 Besteht ein Datenstrom einer Funktionseinheit aus mehrere Datentypen, so werden diese durch Kommas getrennt in die Klammer geschrieben.
 
 Mehrere Outputs lassen sich nicht in allen Sprachen einfach realisieren.
-Wahlweise kann es mit Tupel realisiert werden, oder es werden aus den mehreren Datentypen ein 
+Wahlweise kann es mit Tupel realisiert werden, oder es wird aus mehreren Datentypen ein 
 neuer Datentyp erzeugt, der alle Output-Daten beinhaltet.
 
 \section{Joined Inputs und Pipe-Notation}
@@ -443,20 +435,20 @@ neuer Datentyp erzeugt, der alle Output-Daten beinhaltet.
 \end{figure}
 
 
-Falls der Output mehrerer Funktionseinheiten in einen Datenstrom zusammenlaufen
+Falls im Output mehrerer Funktionseinheiten in einen Datenstrom zusammenlaufen
 sollen und dieser dann als Input in eine anderen Funktionseinheit hineinfließen
 soll, wird das mit Hilfe eines s.g. Joined Inputs dargestellt. 
 Dieser wird als Linie dargestellt an die mehrere Inputs zusammenlaufen.
 
 Im Code wird dies meistens als Methode umgesetzt, die mehrere Inputparameter entgegennimmt.
 Wichtig hierbei ist, dass das Bündeln der Datenflüsse nicht Aufgabe der
-Funktionseinheit \textit{F} ist, sondern ihrer Umgebung ( z.B einer übergeordneten Methode).
+Funktionseinheit \textit{F} ist, sondern ihrer Umgebung (z.B einer übergeordneten Methode).
 Die Funktionseinheit \textit{F} erwartet einfach ein Datenstrom mit zwei Daten \textit{x} und \textit{y}
 und kennt deren Herkunft nicht.
 
 \bigskip
 Eine andere Schreibweise, die im Diagramm platzsparender ist als die Joined Inputs, ist die Pipe-Notation.
-Hiermit kann der Output sich von dem Input der nachfolgenden Funktionseinheit unterscheiden.
+Hiermit kann sich der Output von dem Input der nachfolgenden Funktionseinheit unterscheiden.
 Dadurch können auch Daten, die aus vorherigen Funktionseinheiten innerhalb des Datenflusses entstanden sind, entnommen und einer Funktionseinheit
 übergeben werden.
 
@@ -481,7 +473,7 @@ In die Funktionseinheit \textit{F} fließen die Daten aus \textit{G} und \textit
 
 Eine Tonne zeigt an, dass die Funktionseinheit state-behaftet ist.
 In einer OO-Sprache wie C\# wäre das in den meisten Fällen ein Lesen oder
-Schreiben einer Membervariable einer Klasse.
+Schreiben einer Instanzvariable eines Objektes.
 
 \section{Abhängigkeiten / Provider}
 
@@ -500,7 +492,7 @@ Geschieht der Zugriff auf die Ressource über eine Helferklasse, die den Zugriff
 kapselt, wird anstelle der Tonne ein Dreieck als Symbol verwendet. Eine solche
 Klasse wird auch als Provider bezeichnet. 
 
-Den Kreis kann man sich bildlich wie eine Hand vorstellen, an die sich die
+Den Kreis kann man sich bildlich wie eine Hand vorstellen, an der sich die
 Funktionseinheit festhält, und dadurch eine Abhängigkeit symbolisiert.
 
 \pagebreak
@@ -551,12 +543,12 @@ des Containers am Rand der Umrandung.
 
 \chapter{Implementation}
 
-
-Flow Design hat zwei Implementierungsregeln, die zu beachten sind:
+Flow Design empfielt zwei Prinzipien, die bei der Implementierung,
+einzuhalten sind:
 
 \begin{itemize}
-\item Trennen von Integrationen und Operationen
-\item keine funktionale Abhängigkeiten in Operationen zu anderen Funktionseinheiten aus dem selben Programm
+\item Trennen von Integrationen und Operationen (IOSP),
+\item keine funktionale Abhängigkeiten in Operationen zu anderen Funktionseinheiten aus dem selben Programm (PoMO).
 \end{itemize}
 
 Um was es sich dabei im Detail genau handelt, wird in diesem Kapitel erläutert.
@@ -571,17 +563,16 @@ unterschiedliche Arten von Funktionseinheiten. Integrationen und Operationen.
 Die IODA Architektur beschreibt die Eigenschaften von diesen beiden genauer.
 
 IODA steht für: Integration Operation Data API
+\footcite{ioda}.
 
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=.9\linewidth]{./img/ioda1.png}
-	\caption{IODA Architektur}
+	\includegraphics[width=.9\linewidth]{./img/ioda.jpg}
+	\caption{IODA Architektur, Quelle:\cite{ioda}}
 \end{figure}
 
 
-
-\let\thefootnote\relax\footnotetext{\url{http://blog.ralfw.de/2015/04/die-ioda-architektur.html}}
 \subsubsection{Erläuterung des Schaubildes}
 
 Operationen sollen komplett unabhängig vom Rest ihrer Umwelt funktionieren und
@@ -592,30 +583,29 @@ integrieren.
 \footnote{Ralf Westphal spielte auch mit den Gedanken diese Funktionseinheiten als Koordinatoren oder
 Kompositionen zu bezeichnen.}
 
-Integrationen integrieren andere Integrationen und/oder Operationen in das Programm. Sie dürfen also anderen von Funktionseinheiten funktional abhängig sein.
+Integrationen integrieren andere Integrationen und/oder Operationen in das Programm. Sie dürfen also von anderen Funktionseinheiten funktional abhängig sein.
 
 Im Gegensatz dazu dürfen Operationen keine Integrationen oder andere Operationen
 kennen. Sie dürfen aber auf Daten zugreifen. Über diese entsteht auch die einzige Möglichkeit der
-Kommunikation zwischen Operationen. Mit Daten sind hauptsächlich die nicht-persistente
-Daten gemeint. Daten in Form von Objekten und primitive Datentypen, die von den
+Kommunikation zwischen Operationen. Mit Daten sind hauptsächlich nicht-persistente
+Daten gemeint, die als Stream durch die Operationen fließen. Daten in Form von Objekten und primitive Datentypen, die von den
 integrierenden Funktionseinheiten koordiniert werden.
 Sowohl Operationen als auch Integrationen dürfen Daten erzeugen.
 Beispielsweise das Aufrufen eines Konstruktors oder Deklarieren einer lokalen Variablen.
-Das "Verdrahten" von Datenflüssen übernehmen jedoch die Integrationen ( was auf
-dem Schaubild leider nicht so deutlich herauskommt). 
+Das \enquote{Verdrahten} von Datenflüssen übernehmen jedoch die Integrationen (was auf der Abbildung 5.1 leider nicht so deutlich herauskommt). 
 Mit Daten können auch persistente Daten auf der Festplatte gemeint sein, wobei
 ein Zugriff auf persistente Daten eigentlich immer über eine API geschieht und
-somit würden solche Aufrufe dann eher zu der Gruppe API zählen.
+somit würden solche Aufrufe dann zu der Gruppe API zählen.
 
 Die IODA Architektur besagt, dass API-Aufrufe sich nur innerhalb von Operationen befinden
-dürfen, damit diese Informationen gekapselt und die Integrationen frei von API-spezifisches Wissen bleiben.
+dürfen, damit diese Informationen gekapselt und die Integrationen frei von API-spezifischem Wissen bleiben.
 
 
 Anhand einer Flow Design Skizze, kann man leicht herausfinden, welche Methoden Operationen sind und welche
 Integrationen. Alle Leaf-Knoten sind Operationen, der Rest sind Integrationen.
 
 
-\subsubsection{PoMO ( Principle of Mutual Oblivion)}
+\subsubsection{PoMO (Principle of Mutual Oblivion)}
 
 \abk{PoMO}{Principle of Mutual Oblivion}
 
@@ -629,9 +619,9 @@ Integrationen. Alle Leaf-Knoten sind Operationen, der Rest sind Integrationen.
 	{\signed{\usebox\mybox}\end{quote}}
 
 \begin{aquote}{Ralf Westphal \cite[S. 80]{schummelzettel}}
-	Ein Producer kennt seinen Consumer nicht. Ein Consumer kennt seinen Producer
+	\enquote{Ein Producer kennt seinen Consumer nicht. Ein Consumer kennt seinen Producer
 	nicht. Das nenne ich das Principle of Mutual Oblivion (PoMO,
-	Prinzip der gegenseitigen Nichtbeachtung) 
+	Prinzip der gegenseitigen Nichtbeachtung).}
 \end{aquote}
 
 
@@ -640,21 +630,18 @@ Integrationen. Alle Leaf-Knoten sind Operationen, der Rest sind Integrationen.
 Dieses Prinzip besagt, dass Funktionseinheiten sich nicht gegenseitig kennen sollen.
 Es soll auch verhindert werden, dass eine Einheit eine andere aufruft und von deren Ergebnis
 abhängig ist, bzw. auf das Ergebnis wartet.
-Eine Funktionseinheit soll, nachdem sie die Daten bearbeitet hat, sie einfach nach
+Eine Funktionseinheit soll, nachdem sie die Daten bearbeitet hat, diese nach
 außen weiterreichen und nicht wissen, wer die Daten entgegennimmt.
 Dieses Prinzip verhindert eine Koppelung zwischen den einzelnen Funktionseinheiten.
 
 Um jedoch ein Zusammenspiel zwischen den einzelnen entkoppelten Einheiten zu ermöglichen, bedarf es einen oder
-mehrere \enquote{Koordinatoren},welche diesem Prinzip nicht entsprechen müssen.
-Nur so kann aus vielen kleinen Funktionseinheiten ein großes Ganzes werden, dass eine komplexe Aufgabe lösen kann.
-Damit das Zusammenspiel leicht zu modifizieren bleibt und die Verdrahtung
-leicht zu verstehen sind, gelten für Integrationen einige Einschränkungen, die
-unter der Namen \enquote{Integration Operationen Segregation Principle} zusammengefasst
-werden.
+mehrere \enquote{Koordinatoren}, welche diesem Prinzip nicht entsprechen müssen.
+Nur so kann aus vielen kleinen Funktionseinheiten ein großes Ganzes werden, welches eine komplexe Aufgabe lösen kann.
+
+Diese Koordinatoren werden Integrationen genannt, sie ermöglichen das Zusammenspiel. Da diese nun eine starke Kopplung zwischen den Funktionseinheiten eingehen, müssen diese so leichtgewichtig wie möglich sein, nur so ist diese Abhängigkeit nicht schmerzhaft.
 
 
-
-\subsubsection{IOSP ( Integration Operation Segregation Principle)}
+\subsubsection{IOSP (Integration Operation Segregation Principle)}
 
 \abk{IOSP}{Integration Operation Segregation Principle}
 
@@ -684,9 +671,9 @@ Gleichzeitig müssen die Operationen das PoMO Prinzip erfüllen.
 Nach dieser Regel dürfen sie keine Kenntnisse über die Herkunft der Daten haben. Auch soll den Operationen unbekannt sein,
 was im Anschluss mit den Daten passiert. Aus diesem Grund darf auch kein Rückgabewert erwartet werden,
 da sich daraus Rückschlüsse bzw. Erwartungen verknüpfen würden. 
-Ein Funktionsaufruf ist nur über Actions (Funktionszeiger), die man als Funktionsparameter mit übergibt, oder Events möglich.
-Beide dürfen keine Rückgabewerte haben, was bei Actions implizit der Fall ist.
-Durch diese Regel wird einer Operation ermöglicht eine andere Funktion
+Ein Funktionsaufruf ist nur indirekt über Callback-Techniken, wie Funktionszeiger oder Events möglich. Wichtig dabei ist, dass der dahinterstehende Aufgerufene nicht bekannt ist und dieser auch kein Rückgabewert verwendet werden darf. Nur so kann die Entkopplung sichergestellt werden.
+
+Durch diese Regel wird einer Operation ermöglicht eine andere Funktionseinheit
 aufzurufen, ohne dass sie das PoMO bricht. Sie bestimmt nicht selbst, welche
 Funktionseinheit sie aufruft, sondern die übergeordnete, welche die Operation
 aufruft (und somit automatisch eine Integration sein muss, welche die PoMO Bedingung nicht erfüllen muss).
@@ -704,7 +691,7 @@ und selbst bestimmen, wie es die Anfrage am besten ausführt.
 \item Integrationen
 
 
-Die Integrationen werden nach Flow Design deklarative programmiert.
+Die Integrationen werden nach Flow Design deklarativ programmiert.
 Diese Funktionseinheiten dürfen anders als die Operationen, andere Funktionseinheiten aufrufen, sie also kennen.
 Die Integrationen erfüllen also nicht das \emph{Principle of Mutual Oblivion}.
 Der Unterschied beim Flow Design ist jedoch, dass eine bewusste Trennung eingehalten wird.
@@ -716,7 +703,7 @@ auf Ressourcen wie Konsole, UI oder Dateien.
 
 Die Businesslogik, das was die Funktionalität erzeugt, befindet sich in Operationen und sind entkoppelt von ihrer Umgebung.
 Sie bekommen einfach nur von irgendwo her einen Input (bzw. bei keinen Inputparametern einfach ausgeführt werden) und führen damit die von ihnen implementierte
-Logik aus und geben das Ergebnis nach außen. Beim Weiterreichen nach außen kennt die Funktionseinheit jedoch nicht den Empfänger.
+Logik aus und geben das Ergebnis nach außen. Beim Weiterreichen nach außen kennt die Funktionseinheit jedoch den Empfänger nicht.
 \end{enumerate}
 
 \subsubsection{Tabelle -  IOSP auf einen Blick}
@@ -806,7 +793,7 @@ static void PrintLines(List<string> lines)
 \end{lstlisting}
 
 
-Als Flow Design dargestellt, würde der Code folgendermaßen aussehen:
+Als Flow Design dargestellt, sieht der Code folgendermaßen aus:
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=1\linewidth]{./img/flowForeach1.png}
@@ -861,7 +848,7 @@ static void Print(string line)
 
 \end{lstlisting}
 
-Als Flow Design dargestellt, würde der Code folgendermaßen aussehen:
+Als Flow Design dargestellt, sieht der Code folgendermaßen aus:
 
 \begin{figure}[H]
 	\centering
@@ -916,14 +903,14 @@ static void FormatAndPrintStrings(List<string> lines)
 \end{lstlisting}
 
 Man könnte sich nun darüber streiten, was man nun damit gewonnen hat. Schließlich enthält die Funktion mit LINQ im Grunde
-genommen fast nun genau die selbe Logik, wie das nicht IOSP-konforme Beispiel, nur mit einer anderen Schreibweise.
+genommen fast genau die selbe Logik, wie das nicht IOSP-konforme Beispiel, nur in einer anderen Schreibweise.
 Der Nutzen dieser Regel erschließt sich erst, bei größeren Codebasen und kommt bei kleinen Beispielen oft nicht zum Vorschein.
 Erst wenn die Integrationen mehr machen, als nur eine Funktion aufrufen, wird das Entkoppeln nützlich.
 Außerdem ist der Fall einer Foreach-Schleife und ein Funktionsaufruf eine Koppelung, die nicht so dramatisch ist. Man
 könnte für diesen Fall sogar eine Ausnahme machen und sie erlauben.
 
 
-Zusammenfassend könnte noch gesagt werden, dass eine größere Lesbarkeit von IOSP konformen Programmcode entsteht, umso mehr moderne und funktionale
+Zusammenfassend kann gesagt werden, dass eine größere Lesbarkeit von IOSP konformen Programmcode entsteht, umso mehr moderne und funktionale
 Sprachfeatures eine Programmiersprache bietet.
 
 \section{C\# Features um Datenflüsse zu implementieren}
@@ -952,11 +939,11 @@ Integrationen auch eine Operation sein.
 
 
 \blankfootnote{LINQ besteht aus ca. 150 Methoden.
-	Eine (nicht vollständige Liste) befindet sich hier: \url{https://msdn.microsoft.com/en-us/library/system.linq.enumerable_methods}} 
+	Eine (nicht vollständige Liste) befindet sich hier:\cite{MICROSOFT} } 
 
 
 \bigskip
-Im folgenden Abschnitt werden hier nur ein paar der häufigsten verwendeten Methoden erläutert.
+Im folgenden Abschnitt werden hier nur ein paar der am häufigsten verwendeten Methoden erläutert.
 
 \begin{enumerate}
 \item Modifizieren
@@ -1026,10 +1013,10 @@ die mathematische Rechenoperationen mit jedem Element umzugehen hat.
 \begin{tabularx}{\textwidth}{|p{130pt}|X|}
 	\hline
 Sum & Aufsummieren der Elemente\\ 	\hline
-Max & Gibt das Element mit dem höchsten Wert zurück\\	\hline
-Min & Gibt das Element mit dem niedrigsten Wert zurück\\ 	\hline
-Count & Zählt die Elemente des Containers und gibt die Anzahl zurück\\	\hline
-Average & Berechnet den Durchschnitt der Sequenz\\	\hline
+Max & Gibt das Element mit dem höchsten Wert zurück.\\	\hline
+Min & Gibt das Element mit dem niedrigsten Wert zurück.\\ 	\hline
+Count & Zählt die Elemente des Containers und gibt die Anzahl zurück.\\	\hline
+Average & Berechnet den Durchschnitt der Sequenz.\\	\hline
 \end{tabularx}
 	\medskip
 	\caption{LINQ - Berechnungen}
@@ -1045,9 +1032,9 @@ eine neue Sequenz an Daten zurück.
 	\centering
 \begin{tabularx}{\textwidth}{|p{130pt}|X|}
 	\hline
-TakeWhile & Nimmt Elemente solange aus dem Container, bis eine Bedingung erfüllt ist. Es wird eine Sequenz von allen genommenen Elementen zurückgegeben\\	\hline
-Skip & Überspringt eine Anzahl an Elementen\\	\hline
-SkipWhile & Überspringt die ersten Elemente einer Sequenz, solange bis die Bedingung von einem Element nicht erfüllt wird, dann wird ohne weitere Überprüfungen der Rest der Sequenz zurückgegeben\\	\hline
+TakeWhile & Nimmt Elemente solange aus dem Container, bis eine Bedingung erfüllt ist. Es wird eine Sequenz von allen genommenen Elementen zurückgegeben.\\	\hline
+Skip & Überspringt eine Anzahl an Elementen.\\	\hline
+SkipWhile & Überspringt die ersten Elemente einer Sequenz, solange bis die Bedingung von einem Element nicht erfüllt wird, dann wird ohne weitere Überprüfungen der Rest der Sequenz zurückgegeben.\\	\hline
 \end{tabularx}
 	\medskip
 	\caption{LINQ - Überspringen und Nehmen}
@@ -1062,12 +1049,10 @@ von Container konvertiert werden. Zum Beispiel: \texttt{ToList} oder \texttt{ToD
 \item Parallele Verarbeitung
 
 Datenströme können von LINQ auch parallel verarbeitet werden. Dazu konvertiert
-man die Sequenz mit \texttt{toParallel()} zu einem PLINQ Datenstrom.
+man die Sequenz mit \texttt{ToParallel()} zu einem PLINQ Datenstrom.
 Anschließend ausgeführte Methoden werden, falls möglich, parallel verarbeitet.
 
 \end{enumerate}
-
-\blankfootnote{Quelle: \url{https://www.dotnetperls.com/linq}} 
 
 \subsubsection{yield return}
 
@@ -1079,12 +1064,10 @@ Das folgende Flow Design soll mit \texttt{yield return} realisiert werden.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=\linewidth]{./img/FlowDesign2.png}
-	\caption{FindTheAnswer - Flow Design}
+	\caption{FindTheAnswer - Flow Design, Quelle: \cite{CODEWHISPERER}}
 \end{figure}
 
 
-
-\blankfootnote{\url{http://www.code-whisperer.de/preview/2015/06/14/eva/}}
 
 \bigskip
 Das Programm ist eine Konsolenanwendung, die dem Benutzer eine Eingabe erlaubt.
@@ -1097,8 +1080,8 @@ Das wiederholt sich, solange bis der Benutzer die Zahl 42 eingetippt hat.
 \item Erläuterung des Schaubildes
 
 Die  Main-Methode wird nach dem Programmstart (leerer Kreis) ohne Parameter aufgerufen.
-Danach ruft diese die Methode \\\texttt{ReadNumbersFromCmd} auf, welche aus der Konsole eine Eingabe liest und sie
-zu einem  \texttt{int}] konvertiert.Der int-Wert wird von der Main-Methode entgegengenommen und wird in dieser an die Methode \texttt{FindtheAnswer} weitergereicht.
+Danach ruft diese die Methode \texttt{ReadNumbersFromCmd} auf, welche aus der Konsole eine Eingabe liest und sie
+zu einem  \texttt{int} konvertiert. Der int-Wert wird von der Main-Methode entgegengenommen und wird in dieser an die Methode \texttt{FindtheAnswer} weitergereicht.
 Diese Methode hat die Aufgabe den entgegengenommenen int-Wert mit der Zahl 42 zu vergleichen. Wenn die Zahl 42 ist, wird der Datenstrom
 abgebrochen. Wenn es nicht die 42 war, dann wird der int-Wert nach außen gereicht und die Main-Methode gibt die Zahl an die
 \\\texttt{PrintNumber}-Methode weiter.\texttt{PrintNumber} gibt die Zahl in die Konsole aus.
@@ -1146,7 +1129,7 @@ Dieser produziert einen endlosen Stream an \texttt{int}-Daten.
 Es wird jedoch immer nur ein Element erzeugt und erst nachdem der Consumer das
 Element abgefragt hat, wird ein neues Element erzeugt.
 Wenn nichts mehr konsumiert wird, wird auch nichts mehr produziert.
-Den Abbruch der Endlosschleife ( also das Stoppen des Datenflusses) kann somit auch eine andere Funktion außerhalb der Schleife
+Den Abbruch der Endlosschleife (also das Stoppen des Datenflusses) kann somit auch eine andere Funktion außerhalb der Schleife
 übernehmen.
 \end{enumerate}
 
@@ -1164,12 +1147,14 @@ Den Abbruch der Endlosschleife ( also das Stoppen des Datenflusses) kann somit a
 \end{figure}
 
 
-Falls ein Output an mehrere Empfänger weitergereicht werden soll, so gibt es
+Falls ein Output\footnote{Die Notation erlaubt es einen Ausgang zu bennen, indem man diesen mit einem Punkt vorangestellt unterhalb des Pfeiles notiert. Siehe Abbildung 5.5 \textit{.OnResult}.} an mehrere Empfänger weitergereicht werden soll, so gibt es
 mehrere Möglichkeiten dies zu realisieren.
+
+
 Die beste Möglichkeit ist, wenn die übergeordnete Integration den Rückgabewert
 von F an die beiden nachfolgenden Funktionseinheiten einfach weiterreicht.
-Eine weitere Möglichkeit wäre, wenn der Methode F ein Action mit übergeben wird,
-und die übergeordnete Integration ruft G und H in einem Lambda auf.
+Eine weitere Möglichkeit wäre, wenn der Methode F eine Methodenreferenz mit übergeben wird,
+und die übergeordnete Integration ruft G und H in einem Lambda-Ausdruck auf.
 Die dritte Möglichkeit besteht darin Events zu nutzen.
 Leider bedarf es dann bei der Benutzung der API mehr Vorsicht, da man sich vorher auf ein Event registrieren muss, bevor man
 die gewünschte Funktion aufrufen kann.
@@ -1213,24 +1198,20 @@ Deutungsmöglichkeiten: Entweder kommen immer beide Daten x und y zurück oder
 aber, es kann auch vorkommen, dass x und y nicht immer zurückgeben werden.
 Im ersten Fall, wäre eine Umsetzung durch ein Tupel als Rückgabewert machbar.
 Ist jedoch nicht gewährleistet, dass immer beide Werte zurückgeben werden, so
-muss man in C\# die Outputwege als Actions über die Argumente der Methode
-mitgeben. Somit werden die Verantwortlichkeiten bewahrt und die übergeordnete
-Integration koordiniert weiter den Datenfluss. Die Operation selbst kennt nun keine
+muss man in C\# die Outputwege als Methodenreferenz über die Argumente der Methode mitgeben. Somit werden die Verantwortlichkeiten bewahrt und die übergeordnete Integration koordiniert weiter den Datenfluss. Die Operation selbst kennt nun keine
 anderen Funktionseinheiten, sie weiß nur, dass sie zwei Ausgänge besitzt.
 
-Ist diese Mehrdeutigkeit nicht erwünscht, so gibt es auch die Möglichkeit die den Kontrollfluss, auch in das Diagramm hier mit
-dazu nehmen. Man kann in den Winkel der beiden Pfeile notieren, ob beide
+Ist diese Mehrdeutigkeit nicht erwünscht, so gibt es auch die Möglichkeit den Kontrollfluss in das Diagramm hier mit aufzunehmen. Man kann in den Winkel der beiden Pfeile notieren, ob beide
 Datenflüsse fließen, oder immer nur einer. 
 Oft reicht es aber auch schon aus die Output-Wege zu benennen, damit ersichtlich
 wird, ob es sich um ein \emph{and}, \emph{or} oder \emph{xor} handelt. Zum Beispiel würde ein \emph{onError}
 und \emph{onSuccess} auf ein \emph{xor} hindeuten.
 
-Alternativ könnte man auch hier Events nutzen, was aber durch das zusätzliche
-Registrieren auf das Event nur in seltenen Fällen zu empfehlen ist.
+Alternativ könnte man auch hier Events nutzen,  was aber nur in seltenen Fällen zu empfehlen ist. Das Problem ist die zu starke Entkopplung - die Registrierung erfolgt an anderer Stelle als die Verwendung. Dadurch verliert man schnell den Kontext.
 
 
-Üblicherweise entstehen mehrere Output-Wege, sobald man eine
-If-Else-Logik verwendet.
+Üblicherweise entstehen mehrere Output-Wege, sobald eine
+If-Else-Logik verwendet wird.
 
 \pagebreak
 
@@ -1271,7 +1252,7 @@ static void CheckAndSaveToFile(string inputstring)
    var filename = @"C:/test.txt";
 
    CheckIsCorrectFormat(inputstring, 
-      onCorrect: () => SaveStringToFile(inputstring, filename);
+      onCorrect: () => SaveStringToFile(inputstring, filename),
       onError: () => PrintError("Wrong Input Format"));
 }
 
@@ -1289,15 +1270,15 @@ static void CheckIsCorrectFormat(string inputstring, Action onCorrect, Action on
 \end{lstlisting}
 
 Wie in diesem Beispiel zu erkennen ist, ist es möglich innerhalb eines
-Lambdas auf lokale Variablen der übergeordneten Methode zuzugreifen. Dies
-erlaubt es der Integration einer nachfolgenden Operation (hier \texttt{SaveStringToFile}) Parameter zu übergeben,
+Lambdas auf lokale Variablen der übergeordneten Methode zuzugreifen (Closure). Dies erlaubt es der Integration einer nachfolgenden Operation (hier \texttt{SaveStringToFile}) Parameter zu übergeben,
 die die erste Operation (hier \texttt{CheckIsCorrectFormat}) selbst nicht kennt (hier
 \texttt{filename} und auch \texttt{inputstring}). Die Operation ruft eine Action ohne
 Parameter auf. Die Integration kann dadruch innerhalb des Lambda-Bodys frei
 bestimmen, welche Methoden als nächstes aufgerufen werden.
 Dadurch schränkt man die möglichen nachfolgenden Methodenaufrufe nicht durch
 die Operation ein. In Sprachen die dieses Feature
-nicht unterstützen, macht das die Umsetzung von Flow Design deutlich umständlicher.
+nicht unterstützen, macht das die Umsetzung von Flow Design deutlich umständlicher
+\footnote{Java unterstützt aktuell kein Closure bei Lambda-Ausdrücken}.
 
 \section{Auf Rückgabewert warten}
 

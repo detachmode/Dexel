@@ -1,0 +1,6 @@
+﻿- Implementierungsregeln
+- Nachteile vorteile kleine funktionen
+- Die Unterscheidung ob Typ oder Name machen Westphal und Lieser anhand der Groß/Kleinschreibung fest
+
+
+bis seite 41. korregiert
