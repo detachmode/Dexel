@@ -1,21 +1,19 @@
 \chapter{Entstehung und Grundgedanken}
 
 
-Flow Design ist aus der Clean Code Development  (CCD) Bewegung heraus entstanden. Hauptinitiator und Erfinder ist Ralf Westphal.
-Ralf Westphal war auch Mitbegründer und Miterfinder der Clean Code Development Bewegung.
+Flow Design ist aus der Clean Code Development  (CCD) Bewegung heraus entstanden. Hauptinitiator und Erfinder ist Ralf Westphal, welcher auch Mitbegründer und Erfinder der CCD Bewegung ist.
 
 \abk{CCD}{Clean Code Development } 
 
-Clean Code Development ist eine Ansammlung aus Prinzipien, die einem helfen
-sollen sauber programmierte Software zu schreiben. Diese Prinzipien sind aus dem Buch \enquote{Clean Code} von Robert C. Martin entnommen. Sauber programmierte Software hat 
-die vor allem die Eigenschaft, dass Änderungen und Erweiterungen an ihrer Funktionalität
+Clean Code Development ist eine Ansammlung an Prinzipien, die einem helfen
+sollen sauber programmierte Software zu schreiben. Viele der Prinzipien sind aus dem Buch \enquote{Clean Code} von Robert C. Martin entnommen. Sauber programmierte Software hat 
+ vor allem die Eigenschaft, dass Änderungen und Erweiterungen an ihrer Funktionalität
 leicht zu realisieren sind. Laut Robert C. Martin \cite{Martin2009} gibt es in der Softwareentwicklung
-keine Garantie dafür, dass sich eine für die Software relevanten
+keine Garantie dafür, dass sich für die Software relevanten
 Rahmenbedingungen nicht jederzeit plötzlich ändern können. Sauber programmierte
 Software kann leichter auf solche Änderungen angepasst werden. 
 
-Es bedarf zwar anfänglich mehr Zeit ein Feature zu implementieren, dass den CCD Prinzipien entspricht, auf langer
-Sicht jedoch steigt dieser Zeitaufwand nicht mit jedem neuen Feature stark
+Es bedarf zwar anfänglich mehr Zeit ein Feature zu implementieren, dass den CCD Prinzipien entspricht, auf lange Sicht steigt jedoch dieser Zeitaufwand nicht mit jedem neuen Feature stark
 an. Im Vergleich dazu steigt bei einer unsauber programmierten Software der Zeitaufwand ein neues
 Feature zu implementierten mit der Anzahl an bereits implementieren Features
 exponentiell an \footnote{\url{http://clean-code-developer.de/das-wertesystem/\#Evolvierbarkeit}}.
@@ -23,7 +21,7 @@ Irgendwann erreicht der Quellcode der Software dann einen Punkt, an
 dem der Zeitaufwand ein neues Feature zu implementieren derart groß geworden ist, dass es besser ist die Software neu zu schreiben, anstatt sie anzupassen.
 
 CCD bezeichnet eine saubere programmierte Software aus diesem Grund auch als \emph{evolvierbar}.
-Software die mit dem Fokus auf Evolvierbarkeit hin programmiert wurde,
+Software die mit dem Fokus auf Evolvierbarkeit programmiert wurde,
 kann leicht an neue Rahmenbedingungen oder Kundenwünsche angepasst werden.
 
 
@@ -34,9 +32,9 @@ Lesbarkeit eine wichtige Eigenschaft. Gute Lesbarkeit ist auch dann von großer
 Bedeutsamkeit, wenn eine andere Person den Programmcode nachvollziehen muss, als diejenige Person, die ihn geschrieben hat.
 Somit ist in größeren Softwareprojekten ein saubere Codebasis umso unverzichtbarer.
 
-Prinzipien haben jedoch die Eigenheit, dass sie nicht so leicht einzuhalten sind wie konkrete Regeln.
+Entwurfsprinzipien haben jedoch die Eigenheit, dass sie nicht so leicht einzuhalten sind wie konkrete Regeln.
 Somit ist es in der Praxis schwer die Prinzipien auf den eigenen Code anzuwenden.
-Hierbei soll Flow Design einen Lösungsansatz bieten. Flow Design bieten in
+Hierbei soll Flow Design einen Lösungsansatz bieten. Flow Design bietet in
 Ergänzung zu den CCD Prinzipien eine Entwurfsmethodik und dazugehörende Implementierungsregeln, die
 einfach zu befolgen sind und man erhält fast automatisch einen Code, der ein Großteil der CCD Prinzipien erfüllt.
 
@@ -73,7 +71,7 @@ Die Komplexität der Lösung eines Problems soll immer in Relation zu der
 Komplexität des Problems stehen.
 
 Schnell passiert es, dass man die einfachste Lösung für ein Problem übersieht und das Problem unnötig verkompliziert.
-Das KISS Prinzip soll einen in erster Linie ein Bewusstsein dafür schaffen bei
+Das KISS Prinzip soll  in erster Linie ein Bewusstsein dafür schaffen bei
 komplizierten Lösungen innezuhalten und sich nochmal genau zu
 überlegen, ob es nicht eine einfachere Lösung gibt.
 Manche Problemdomänen erfordern jedoch eine komplexe Lösung, da das Problem
@@ -86,13 +84,13 @@ verständlichste Lösung für ein Problem zu finden.
 \subsubsection{YAGNI}
 \abk{YAGNI}{You Ain't Gonna Need It}  
 
-Vielen Softwareentwickler ist es wohl schon passiert, dass sie es zu gut gemeint
+Vielen Softwareentwicklern ist es wohl schon passiert, dass sie es zu gut gemeint
 haben mit dem vorausschauendem Denken. Etliche Funktionen wurden für ein
 zukünftiges Szenario implementiert oder verkompliziert, die jedoch nie
 eintrafen, oder falls sie eintrafen kam es anders als gedacht, oder die Software
 wurde bereits durch eine andere ersetzt.
 YAGNI soll einem das Bewusstsein dafür schärfen, wann man sich gerade mit einer
-Situation beschäftigt, die die aktuellen Rahmenbedingungen überschreiten.
+Situation beschäftigt, die die aktuellen Rahmenbedingungen überschreitet.
 Man sollte sich eher auf das aktuelle Szenario beschränken und keine unnötige Ressourcen für zukünftige
 Eventualitäten verschwenden.
 Flow Design bietet hierfür Implementierungsregeln, die es einem ermöglichen
@@ -102,7 +100,7 @@ zu befolgen und sich auf die aktuellen Rahmenbedingungen zu konzentrieren.
 
 \subsubsection{Lose Koppelung}
 
-Ein System soll aus möglichst voneinander unabhängigen Untersystemen bestehen,
+Ein System soll aus möglichst voneinander unabhängigen Teilsystemen bestehen,
 die nur über eine  klar definierte Stelle miteinander kommunizieren.
 Bei jedem Aufruf einer Funktion oder Abrufen einer Variable entsteht eine
 Koppelung zwischen beiden.
@@ -114,9 +112,9 @@ Flow Design fördert das Entkoppeln und zeigt Abhängigkeiten bereits bei der Mo
 
 \subsubsection{Orthogonalität}
 
-In einem dreidimensionalen Raum sind die 3 Achsen üblicherweise zueinander
-orthogonal. Verschiebe ich ein Objekt auf einer Achse, so bleiben die Werte der
-beiden anderen unberührt. Wäre eine Achse nicht orthogonal zu den beiden anderen,
+In einem dreidimensionalen Raum sind die 3 Koordinatenachsen üblicherweise zueinander
+orthogonal. Beim Verschieben eines Objektes auf einer Achse bleiben die Werte der
+beiden anderen unverändert. Wäre eine Achse nicht orthogonal zu den beiden anderen,
 so würde eine Verschiebung entlang dieser Achse auch eine Änderung der Werte
 einer anderen Achse bewirken. Diese Eigenschaft wird nun auch auf Code und wie
 er auf Änderungen reagiert, projiziert.
@@ -151,15 +149,15 @@ Information Hiding Principle \cite[S. 48 f.]{schummelzettel}  & Ein Untersystem 
 Einer der wichtigsten Aspekte von sauberen Codebasen. Der Grund warum es überhaupt 
 Programmstrukturen wie Funktionen, Methoden, Klassen etc. gibt.
 Durch Coderedundanzen (Copy-Paste) können schnell Fehler entstehen, der Code
-wird unverständlicher und durch die Wiederholungen schwerer zu lesen.
-Wenn man das DRY Prinzip befolgt, können viele Änderungen meistens bereits an
-eine Stelle gezielt geändert werden, anstatt die Änderung an vielen Stellen
+wird unverständlicher und durch die Wiederholungen schwer lesbar.
+Wenn man das DRY Prinzip befolgt, können viele Änderungen bereits an
+einer Stelle gezielt geändert werden, anstatt die Änderung an vielen Stellen
 machen zu müssen.
 
 \subsubsection{Kleine Funktionen / Methoden}
 
-CCD schlägt vor Methoden so klein wie nur möglich zu gestalten (ca. 3-10 Zeilen) und sobald 
-sie länger werden den Code aufzuteilen und in kleinere Methoden auszulagern.
+Robert C. Martin schlägt vor Methoden so klein wie nur möglich zu gestalten und sobald 
+sie länger werden den Code in kleinere Methoden auszulagern.
 
 \bigskip
 Nachteile:
@@ -167,10 +165,10 @@ Nachteile:
 \item In den meisten Fällen fördert das Einhalten dieser Regel eine bessere Verständlichkeit
 des Codes. Es gibt jedoch auch Fälle, bei denen der abstraktere Namen der übergeordneten Methoden die Verständlichkeit nicht
 fördert und eine geringere Verschachtlung die eigentliche Funktionalität besser
-ausdrückt und den Programmverlauf leichter zu überschauen macht.
+ausdrückt und den Programmverlauf leichter überschaubar macht.
 \item Das Finden von aussagekräftigen Namen erschwert sich zunehmend.
 \item In bestimmten Szenarien ist der Overhead eines Methodenaufrufs möglicherweise
-ein nicht zu verachtender Performanceaspekt (Remote Procedure Calls)
+ein nicht zu verachtender Performanceaspekt (Remote Procedure Calls).
 \end{itemize}
 \bigskip
 Vorteile:
@@ -204,10 +202,10 @@ GUI, Daten und Businesslogik gemeint.
 Eine Klasse besteht aus vielen Funktionen, diese werden jedoch nicht alle nach
 außen zur Verfügung gestellt.
 Oder eine API, die nach außen nur eine ganz bestimmte Schnittstelle bietet und
-die Komplexität des Systems im Inneren verbergt. Informationen von der
+die Komplexität des Systems im Inneren verbirgt. Informationen von der
 Außenwelt zu verstecken ist eine Kernidee der objektorientierten Programmierung
 und spielt auch bei Flow Design im Prinzip der gegenseitigen Nichtbeachtung
-eine wichtige Rolle ( Vermerk auf späteres Kapitel).
+eine wichtige Rolle (siehe Kapitel 5).
 
 
 
