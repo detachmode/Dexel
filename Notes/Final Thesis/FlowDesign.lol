@@ -39,65 +39,65 @@
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.1}MainModel Klasse}{63}{lstlisting.10.1}
+\contentsline {lstlisting}{\numberline {10.1}MainModel Klasse}{64}{lstlisting.10.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.2}FunctionUnit Klasse}{63}{lstlisting.10.2}
+\contentsline {lstlisting}{\numberline {10.2}FunctionUnit Klasse}{64}{lstlisting.10.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.3}DataStreamDefinition Klasse}{64}{lstlisting.10.3}
+\contentsline {lstlisting}{\numberline {10.3}DataStreamDefinition Klasse}{65}{lstlisting.10.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.4}DataStream}{65}{lstlisting.10.4}
+\contentsline {lstlisting}{\numberline {10.4}DataStream}{66}{lstlisting.10.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.5}CustomDataType und SubDataType Klasse}{66}{lstlisting.10.5}
+\contentsline {lstlisting}{\numberline {10.5}CustomDataType und SubDataType Klasse}{67}{lstlisting.10.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.6}ChangeDatanames Methode}{67}{lstlisting.10.6}
+\contentsline {lstlisting}{\numberline {10.6}ChangeDatanames Methode}{68}{lstlisting.10.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.7}AppendNewFunctionUnit}{71}{lstlisting.10.7}
+\contentsline {lstlisting}{\numberline {10.7}AppendNewFunctionUnit}{72}{lstlisting.10.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.8}CreateNewOrGetFirstIntegrated}{72}{lstlisting.10.8}
+\contentsline {lstlisting}{\numberline {10.8}CreateNewOrGetFirstIntegrated}{73}{lstlisting.10.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.9}Tabstopp vorw\IeC {\"a}rts}{74}{lstlisting.10.9}
+\contentsline {lstlisting}{\numberline {10.9}Tabstopp vorw\IeC {\"a}rts}{75}{lstlisting.10.9}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.10}Tabstop r\IeC {\"u}ckw\IeC {\"a}rts}{76}{lstlisting.10.10}
+\contentsline {lstlisting}{\numberline {10.10}Tabstop r\IeC {\"u}ckw\IeC {\"a}rts}{77}{lstlisting.10.10}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.11}CSV tabellieren mit Dexel generierter Code}{81}{lstlisting.10.11}
+\contentsline {lstlisting}{\numberline {10.11}CSV tabellieren mit Dexel generierter Code}{82}{lstlisting.10.11}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.12}CSV tabellieren mit Dexel generierter Code}{81}{lstlisting.10.12}
+\contentsline {lstlisting}{\numberline {10.12}CSV tabellieren mit Dexel generierter Code}{82}{lstlisting.10.12}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.13}CSV tabellieren mit Dexel generierter Code}{81}{lstlisting.10.13}
+\contentsline {lstlisting}{\numberline {10.13}CSV tabellieren mit Dexel generierter Code}{82}{lstlisting.10.13}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.14}Shopping Simulator - automatisch generierter Code mit Dexel}{84}{lstlisting.10.14}
+\contentsline {lstlisting}{\numberline {10.14}Shopping Simulator - automatisch generierter Code mit Dexel}{85}{lstlisting.10.14}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.15}Shopping Simulator - automatisch generierter Code mit Dexel}{84}{lstlisting.10.15}
+\contentsline {lstlisting}{\numberline {10.15}Shopping Simulator - automatisch generierter Code mit Dexel}{85}{lstlisting.10.15}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.16}Shopping Simulator - automatisch generierter Code mit Dexel}{84}{lstlisting.10.16}
+\contentsline {lstlisting}{\numberline {10.16}Shopping Simulator - automatisch generierter Code mit Dexel}{85}{lstlisting.10.16}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.17}SyntaxGenerator f\IeC {\"u}r C\# erhalten}{87}{lstlisting.10.17}
+\contentsline {lstlisting}{\numberline {10.17}SyntaxGenerator f\IeC {\"u}r C\# erhalten}{88}{lstlisting.10.17}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.18}Erzeugung einer Person-Klasse mit Roslyn}{87}{lstlisting.10.18}
+\contentsline {lstlisting}{\numberline {10.18}Erzeugung einer Person-Klasse mit Roslyn}{88}{lstlisting.10.18}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.19}Erhalten des Codes als string}{87}{lstlisting.10.19}
+\contentsline {lstlisting}{\numberline {10.19}Erhalten des Codes als string}{88}{lstlisting.10.19}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.20}Mit Dexel generierter Code}{88}{lstlisting.10.20}
+\contentsline {lstlisting}{\numberline {10.20}Mit Dexel generierter Code}{89}{lstlisting.10.20}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.21}Mit Dexel generierter Code}{89}{lstlisting.10.21}
+\contentsline {lstlisting}{\numberline {10.21}Mit Dexel generierter Code}{90}{lstlisting.10.21}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.22}Mit Dexel generierter Code}{90}{lstlisting.10.22}
+\contentsline {lstlisting}{\numberline {10.22}Mit Dexel generierter Code}{91}{lstlisting.10.22}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.23}Mit Dexel generierter Code}{91}{lstlisting.10.23}
+\contentsline {lstlisting}{\numberline {10.23}Mit Dexel generierter Code}{92}{lstlisting.10.23}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.24}Mit Dexel generierter Code}{91}{lstlisting.10.24}
+\contentsline {lstlisting}{\numberline {10.24}Mit Dexel generierter Code}{92}{lstlisting.10.24}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.25}GenerateIntegrationBody Methode}{92}{lstlisting.10.25}
+\contentsline {lstlisting}{\numberline {10.25}GenerateIntegrationBody Methode}{93}{lstlisting.10.25}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.26}LambdaBody Klasse}{93}{lstlisting.10.26}
+\contentsline {lstlisting}{\numberline {10.26}LambdaBody Klasse}{94}{lstlisting.10.26}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.27}Action-Action-Beziehung}{94}{lstlisting.10.27}
+\contentsline {lstlisting}{\numberline {10.27}Action-Action-Beziehung}{95}{lstlisting.10.27}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.28}Action-Return-Beziehung}{94}{lstlisting.10.28}
+\contentsline {lstlisting}{\numberline {10.28}Action-Return-Beziehung}{95}{lstlisting.10.28}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.29}Return-Action-Beziehung}{94}{lstlisting.10.29}
+\contentsline {lstlisting}{\numberline {10.29}Return-Action-Beziehung}{95}{lstlisting.10.29}
 \defcounter {refsection}{0}\relax 
-\contentsline {lstlisting}{\numberline {10.30}Return-Return-Beziehung}{95}{lstlisting.10.30}
+\contentsline {lstlisting}{\numberline {10.30}Return-Return-Beziehung}{96}{lstlisting.10.30}
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 

@@ -18,8 +18,8 @@ abzuspeichern und Teile zu verschieben, umzubenennen und umzustrukturieren sind
 klare Vorteile von einem digitalen Editor.
 \subsubsection{Automatische Einhaltung der Notation}
 
-Ein Editor bewirkt eine automatische Einhaltung der Notation
-\subsubsection{Automaische Validierungsprozesse}
+Ein Editor bewirkt eine automatische Einhaltung der Notation.
+\subsubsection{Automatische Validierungsprozesse}
 
 Während der Erstellung des Flow Designs können im Hintergrund
 Validierungsprozesse beim Erstellen des Diagrammes Hilfestellung bieten.
@@ -31,7 +31,7 @@ Aus den Beschriftungen im Flow Design Diagramm lassen sich die Variablennamen un
 Methoden Signaturen leicht herleiten. Liegt das Diagramm in digitaler Form vor,
 wäre eine automatische Generierung von Quellcode naheliegend und
 würde dem Anwender unnötige Abtipparbeit ersparen. Außerdem können schnell
-mehrere Iterationen eines Diagrammes erstellt werden und in
+mehrere Iterationen eines Diagrammes erstellt und in
 Versionskontrollsystemen eingepflegt werden.
 Die Diagramme können auch einfacher von unterschiedlichen Orten aus und von mehreren
 Personen abgerufen und bearbeitet werden.
@@ -51,11 +51,7 @@ Teile seines Quellcodes in ein Flow Design überführen, um dann mit Hilfe des
 Flow Designs, diesen zu überarbeiten und anschließend neu zu generieren.
 Möglicherweise würde er die erstellten Codezeilen mit Copy\&Paste in sein
 bestehendes Projekt übertragen.
-\footnote{Aufgrund von Unterhaltungen mit meinem
-Anleiter Kevin Erath stellte sich heraus, dass ein perfekter Roundtrip umzusetzen keine triviale Aufgabe
-darstellt. Deswegen wird im Rahmen dieser Arbeit, wenn überhaupt, der Fokus auf jene Funktionalitäten
-gelegt, die leichter zu implementieren sind und doch dem Anwender möglichst viel
-Zeitersparnis einbringen.}
+
 
 \section{Vorteile von einem Entwurf auf dem Papier}
 
@@ -69,7 +65,11 @@ kreatives Arbeiten besser ermöglicht.
 
 \chapter{Anforderungen}
 
+Im Folgendem eine Auflistung der Anforderungen in Tabellenformat.
+
 \section{Editor}
+
+Die Anforderungen des Editors wurden aufgeteilt in drei Prioritäten: hoch, mittel und niedrig.
 
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{X|l}
@@ -125,13 +125,15 @@ Mehrere Themes: Dark, Light (Print) & niedrig\\ \hline
 
 \subsubsection{Navigation}
 
-Durch Inspiration aus Grafikanwendungen: Panning ( Verschieben der Kamera in
-der X- und Y-Achse mit Hilfe der Mittleren Maustaste. Zoomen in und aus dem
-Diagramm durch das Mausrad. Die Position der Maus bestimmt das Zentrum des
+Durch Inspiration aus Grafikanwendungen: Panning (Verschieben der Kamera in
+der X- und Y-Achse) mit Hilfe der mittleren Maustaste. Zoomen in und aus dem
+Diagramm durch das Mausrad. Die Position des Mauszeigers bestimmt das Zentrum des
 Zooms.
 
 
 \section{Generierung von Code}
+
+Im folgenden eine Auflistung der Anforderungen einer Code-Generierung aus einem Flow-Design-Diagramm.
 
 \begin{table}[H]
 \begin{tabularx}{\textwidth}{X|l}
@@ -142,7 +144,7 @@ Generierung von Methodensignaturen anhand der ein- und ausgehenden Datenflüssen
 \hline
 Erzeugen des kompletten Methodenrumpfes einer Integration & hoch\\
 \hline
-Erzeugung von Klassen und Datentypen & hoch\\
+Erzeugung von Klassen der benutzerdefinierten Datentypen & hoch\\
 \hline
 Einstellungen  dem Benutzer zugänglich machen, um die Generierung zu konfigurieren & mittel\\
 \hline
@@ -183,7 +185,7 @@ machen: Ab welcher Zeilenlänge, wie die Variablen benannt werden sollen, etc.
 
 Notwendig hierfür wäre, dass bestehende Klassen gefunden werden müssten, Usings korrekt
 eingefügt und schlussendlich die generierten Methoden und Datentypen in die
-jeweiligen Klassen / Dateien eingefügt werden. Dabei muss die Syntax
+jeweiligen Klassen/Dateien eingefügt werden. Dabei muss die Syntax
 berücksichtigt werden und möglicherweise Zugriffsberechtigungen erkannt und bei
 Problemen einen Dialog zur Korrektur dem Anwender anbieten. Ein weiteres Problem
 wäre die Überschneidung von Namen. Wenn automatisch der generierte Code bevorzugt
@@ -233,24 +235,21 @@ Bei Verwendung von Events kann der Datenfluss möglicherweise nicht mehr nachvol
 
 \section{Minimalistischer Aufbau. Fokus auf Produktivität.}
 
-
-
+Die Anwendung soll möglichst viel Platz für die Zeichenfläche
+bieten.
 
 \begin{figure}[H]
 	\centering
 \includegraphics[width=.9\linewidth]{./img/MainCrop.jpg}
-	\caption{Die Hauptansicht. Die Anwendung soll möglichst viel Platz für die Zeichenfläche
-		bieten}
+	\caption{Die Hauptansicht}
 \end{figure}
 
-
-
-
+Bei einem Rechtsklick auf eine leere Stelle in der Zeichenfläche erscheint ein Kontextmenu, dass dem Anwender erlaubt an dieser Stelle eine neue Funktionseinheit einzufügen.
 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=.9\linewidth]{./img/ContextMenu.jpg}
-	\caption{Bei einem Rechtsklick auf eine leere Stelle in der Zeichenfläche erscheint ein Kontextmenu, dass dem Anwender erlaubt an dieser Stelle eine neue Funktionseinheit einzufügen.}
+	\caption{Ablauf einer Erstellung einer neuen Funktionseinheit}
 \end{figure}
 
 
@@ -267,7 +266,7 @@ Bei Verwendung von Events kann der Datenfluss möglicherweise nicht mehr nachvol
 Im folgendem einige Kerngedanken über die Funktionalität des Editors:
 
 \begin{itemize}
-\item Keine unnötigen Menüleisten, Symbolleisten, etc. Besser kontextsensitive
+\item Keine unnötigen Menüleisten, Symbolleisten, etc. besser kontextsensitive
 Kontextmenüs, oder Tastenkürzel,  damit die Strecke, die die Maus bewegt werden muss, gering
 gehalten wird.
 \item Tabulatorstopps einbauen, damit schnell zwischen den Textfeldern, entlang des
@@ -285,13 +284,10 @@ schnell und komfortable zu selektieren.
 Einmal daran gewöhnt, möchte man es nicht mehr missen.} 
 
 Anwendungsfälle:
-Der Anwender möchte  schnell ein gesamtes Diagramm duplizieren und an ein andere Stelle schieben, um
-dort eine weitere Iteration davon zu erstellen. Möglicherweise müssen solche
-Duplikate vor der Generierung des Codes aus dem Diagramm gelöscht werden.
-Ein andere Anwendungsfall von Duplizierten ist, dass der Anwender eine vorhandene
-Funktionseinheit an einer anderen Stelle im Diagramm verwendet möchte. Damit
-entstehen weitere Probleme, bei der Generierung des Codes, das gelöst werden
-muss: Duplizierte Funktionseinheiten müssen erkannt und nur einmal generiert werden.
+Der Anwender möchte  schnell ein gesamtes Diagramm duplizieren und an ein andere Stelle schieben, um dort eine weitere Iteration davon zu erstellen.
+Ein andere Anwendungsfall von Duplizieren ist, dass der Anwender eine vorhandene
+Funktionseinheit an einer anderen Stelle im Diagramm verwendet möchte. 
+
 \item Ctrl + Drag einer Funktionseinheit: Die Funktionseinheit und alle ihre Kinder werden
 Verschoben. Anwendungsfall ist: Der Anwender möchte etwas Platz schaffen
 zwischen zwei Funktionseinheiten. Mit einem Ctrl+ Drag der zweiten Funktionseinheit,

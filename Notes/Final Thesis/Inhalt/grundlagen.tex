@@ -1282,13 +1282,13 @@ nicht unterstützen, macht das die Umsetzung von Flow Design deutlich umständli
 
 \section{Auf Rückgabewert warten}
 
-In C\# gibt es neben den \texttt{Actions} Methodenzeiger, die keine Rückgabewerte 
-erlauben, auch Methodenzeiger, die einen Rückgabewert erlauben.
+In C\# gibt es neben den \texttt{Actions} Methodenreferenzen, die keine Rückgabewerte 
+erlauben, auch Methodenreferenzen, die einen Rückgabewert erlauben.
 Diese werden mit\\\texttt{Func<Parameter,...,Rückgabewert>} deklariert.
 Eine Methode die eine andere Methode über ein \texttt{Func} Methodenzeiger aufruft,
 würde zwar das IOSP erfüllen - die Operation würde die andere Funktion nicht
 kennen - jedoch würde trotzdem eine funktionale Abhängigkeit entstehen.
-Aus diesem Grund ist das nachfolgende Beispiel nicht Flow Design konform.
+Aus diesem Grund ist das nachfolgende Beispiel nicht Flow Design konform, da es das PoMO verletzt.
 
 \begin{lstlisting}[caption=Auf Rückgabewert warten]
 static List<string> FormatStrings(List<string> lines , Func<string,string> formatFunc )
@@ -1317,7 +1317,7 @@ vornehmen, so braucht man nur an einer Stelle die Kette zu öffnen und etwas
 hinzufügen oder entfernen. Danach schließt man die Kette wieder und das Programm
 läuft wieder. Beim Einfügen oder Entfernen ist nur darauf zu achten, dass die
 Eingänge und Ausgänge zueinander passen. Ist das nicht der Fall, so gibt es auch
-die Möglichkeit eine s.g Adapter-Funktionseinheit zwischenzuschalten, die die inkompatiblen
+die Möglichkeit eine sog. Adapter-Funktionseinheit zwischenzuschalten, die die inkompatiblen
 Ein- und Ausgänge zu korrigieren.Eine weitere Option wäre, die betroffenen
 Funktionseinheiten und deren
 ein- und ausgehenden Datentypen entsprechend abzuändern und die
@@ -1331,10 +1331,10 @@ einfach umsetzbar. Dann bleibt nur die Option eine Adpater-Funktionseinheit zu v
 \subsubsection{Funktionale Abhängigkeiten}
 
 Funktionale Abhängigkeiten sind auch in anderen Gebieten außerhalb von der
-Softwareentwicklung ein Problem. Dann wenn es darum geht produktive
+Softwareentwicklung ein Problem. Denn wenn es darum geht produktive
 Arbeitsabläufe zu gestalten.
 Wenn jemand oder etwas seine Arbeit erst abschließen kann, wenn ein anderer
-ihre Aufgabe erledigt hat, dann entsteht eine funktionale Abhängigkeit.
+seine Aufgabe erledigt hat, dann entsteht eine funktionale Abhängigkeit.
 Solch eine Eigenschaft gilt es wenn möglich zu verhindern.
 Besser ist es, wenn ein Pool an Aufgaben exisitert, von dem sich jeder bedienen kann,
 diese unabhängig von anderen Einheiten erledigen kann und dann das Ergebnis wieder
@@ -1348,8 +1348,7 @@ Codebasis an geänderte Anforderungen besser angepasst werden kann.
 
 \section{Ausnahmen}
 
-Generell gilt  wenn eine bewusste Entscheidung getroffen wird an einer Stelle gegen die IOSP
-Regel zu verstoßen, ist das dann in Ordnung, solange sie gut überlegt ist und
+Generell gilt, wenn eine bewusste Entscheidung getroffen wird an einer Stelle gegen die IOSP oder PoMO Regel zu verstoßen, ist das in Ordnung, solange sie gut überlegt ist und
 die Auswirkungen in dem Fall keinen großen Einfluss haben.
 Es gibt jedoch bereits einige Fälle, bei denen sich ein Aufheben der Regel als gut
 herausgestellt hat.
@@ -1362,9 +1361,9 @@ Operation die erste Operation aufrufen und auf ihr Ergebnis warten.
 
 Eine Koppelung an Methoden, die die Sprache selbst bereitstellt, hat keine
 großen negativen Auswirkungen. Würde diese Ausnahme nicht gemacht werden, hätte
-das zur Folge, dass unnötig viele Actions einer Methode mitgegeben werden
-müssten. Beispiele von Methoden aus der Standardbibliothek von C\#:
-\texttt{int.TryParse} , \texttt{List<>.Sort}, \texttt{Dictionary<>.Insert}, etc.
+das zur Folge, dass unnötig viele Methodenreferenzen einer Operation mitgegeben werden
+müssten. Beispiele von Methoden aus der Standardbibliothek von C\# sind:
+\texttt{int.TryParse} , \texttt{List<>.Sort}, \texttt{Dictionary<>.Insert}.
 
 \subsubsection{UI-Logik}
 
@@ -1392,11 +1391,10 @@ Die Aufgabe der UI-Logik besteht dann anschließend darin das Ergebnis der Modif
 \chapter{Die Entwurfsmethode}
 
 Wie in der Einleitung dieser Arbeit bereits erwähnt, ist Flow Design nicht nur
-eine Methodik um Datenflüsse auf dem Papier zu modellieren, sondern Flow Design
-bietet neben dem Diagramm auch noch eine Entwurfsmethode um die Architektur einer Software
+eine Methodik um Datenflüsse auf dem Papier zu modellieren, sondern bietet neben dem Diagramm noch eine Entwurfsmethode, um die Architektur einer Software
 zu entwerfen.
 
-\section{System-Umwelt-Diagramm}
+\section{System-Umwelt-Analyse}
 
 Der erste Schritt beim Entwerfen einer Software nach Flow Design besteht
 darin, die Grenzen des Systems kennenzulernen. Es soll herausgefunden
@@ -1404,15 +1402,29 @@ werden, welche Möglichkeiten es gibt, mit dem System zu interagieren und auf
 welche Ressourcen das System zugreifen soll. Ziel soll sein, dass das System
 so entworfen wird, dass die Businessdomäne von diesen äußeren Faktoren entkoppelt bleibt.
 Ein einfaches Schaubild soll einem helfen diese äußeren Faktoren zu
-identifizieren: Ein Kreis wird in der Mitte eines Papiers gezeichnet, dieser
+identifizieren.
+
+Ein Kreis wird in der Mitte eines Papiers gezeichnet, dieser
 Kreis symbolisiert das System oder auch Domäne genannt.
+
 Auf der linken Seite des Kreises werden die äußeren Systeme eingetragen, die
-auf das System zugreifen und damit interagieren. Diese Systeme oder
-Techniken werden auch als Portale bezeichnet. Beispiele für Portale wären:
-HTTP-Zugriff, Batch mode und GUIs.
+auf die Domäne zugreifen, diese werden auch als Aktoren bezeichnet.
+Solche Aktoren greifen ausschließlich über Portale auf die Domäne zu.
+Die Portale stellen einen Zugriffspunkt auf die Domäne dar und sollen eine Entkoppelung der beiden Systemen gewährleisten.
+Beispiele für Aktoren wären:
+HTTP-Zugriff, Interaktion mit der Anwendung durch Kommandozeilenbefehle und GUIs.
+
 Auf der anderen Seite des Kreises werden die externen Ressourcen eingetragen, auf die
-das System Zugriff haben soll. Diese Ressourcen werden auch als Provider
-bezeichnet. Ein Beispiel hierfür wären, ein Filesystem oder eine Datenbank.
+das System Zugriff haben soll. Diese Ressourcen greifen ebenso wie die Aktoren nur über klar definierte Zugriffpunkte auf die Domäne zu. Diese Zugriffspunkte werden bei Ressourcen als Provider bezeichnet.
+Beispiele für Ressourcen wären, ein Filesystem oder eine Datenbank.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=.7\linewidth]{./img/cell.jpg}
+	\caption{System-Umwelt-Analyse}
+\end{figure}
+
+
 
 Ralf Westphal bezeichnet diesen Kreis auch als Softwarezelle, was
 verdeutlichen soll, dass das zu entwerfende System, sich wie eine Zelle in der
@@ -1426,7 +1438,7 @@ dünn bleibt.
 Ist das System von der Umwelt entkoppelt, so lässt es sich besser testen und es
 lassen sich leichter neue Portale und Provider an das System anhängen.
 
-\section{Interfaceskizze ( im Falle einer GUI Anwendung )}
+\section{Interfaceskizze (im Falle einer GUI Anwendung)}
 
 In Anlehnung an das User Experience Driven Development, soll schnell die
 Features des Systems herausgefunden werden, die der Kunde wirklich
@@ -1455,7 +1467,7 @@ parallel laufen können.
 
 \section{Rekursive Eigenschaft}
 
-Eine Softwarezelle hat die Eigenschaft, dass sie rekursive ist.
+Eine Softwarezelle hat die Eigenschaft, dass sie rekursiv ist.
 Das gesamte System lässt sich als eine große Softwarezelle betrachten, die wiederum
 aus mehreren kleineren Softwarezellen bestehen können (DLLs und Anwendungen).
 Diese Untersysteme sollen wieder wie das gesamte System möglichst entkoppelt
