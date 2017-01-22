@@ -20,9 +20,9 @@
             </Grid.RowDefinitions>
             <Button 
                     Height="26"
-                    Background="{DynamicResource  BGBrighter}" Foreground="{DynamicResource  Foreground}"
+                    Background="{DynamicResource  BGHigher}" Foreground="{DynamicResource  Foreground}"
                     Content="{Binding MissingDataTypes, Converter={StaticResource  MissingTypesButtonText}}"  Click="CreateMissingTypes_click" Grid.Row="0"></Button>
-            <Border  Grid.Row="1" BorderBrush="{DynamicResource  BorderBrush}" BorderThickness="1" Background="{DynamicResource  BGDarker}"  Margin="6">
+            <Border  Grid.Row="1" BorderBrush="{DynamicResource  BorderBrush}" BorderThickness="1" Background="{DynamicResource  BGDeeper}"  Margin="6">
            
 
                

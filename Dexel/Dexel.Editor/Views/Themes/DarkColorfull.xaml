@@ -4,8 +4,8 @@
 
     <SolidColorBrush x:Key="BGDatanames" Color="#EE27272C"/>
     <SolidColorBrush x:Key="BG" Color="#2d2d30"/>
-    <SolidColorBrush x:Key="BGBrighter" Color="#FF313132"/>
-    <SolidColorBrush x:Key="BGDarker" Color="#252526"/>
+    <SolidColorBrush x:Key="BGHigher" Color="#FF313132"/>
+    <SolidColorBrush x:Key="BGDeeper" Color="#252526"/>
     
     <SolidColorBrush x:Key="GridColor" Color="#353538" />
     <SolidColorBrush x:Key="BorderBrush" Color="#3e3e40" />

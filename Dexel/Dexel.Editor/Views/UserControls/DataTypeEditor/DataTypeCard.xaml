@@ -23,8 +23,8 @@
                         d:DataContext="{d:DesignData DataTypeViewModel}">
                 <TextBox
                     x:Name="TheNameTextBox"
-                    Background="{DynamicResource  BGBrighter}"
-                    BorderBrush="{DynamicResource  BGBrighter}"
+                    Background="{DynamicResource  BGHigher}"
+                    BorderBrush="{DynamicResource  BGHigher}"
                     ContextMenu="{StaticResource MyContextMenu}"
                     FontSize="14"
                     Foreground="{DynamicResource  Foreground}" Text="{Binding Model.Name, Mode=TwoWay}" />

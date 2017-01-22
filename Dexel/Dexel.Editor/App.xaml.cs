@@ -60,9 +60,9 @@ namespace Dexel.Editor
 
         private static void LoadLastUsedTheme()
         {
-            App.TryGetConfig("Theme", s =>
+            App.TryGetConfig("Theme", configname =>
             {
-                if (s == "Print")
+                if (configname == "Print")
                 {
                     MainViewModel.Instance().ChangeTheme("Views/Themes/Print.xaml", @"Views/Themes/FlowDesignColorPrint.xshd");
                 }
