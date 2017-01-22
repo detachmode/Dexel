@@ -8,59 +8,59 @@
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {3.1}{\ignorespaces Einfaches Flow Design Beispiel (die Beispieldaten unten sind nicht Teil der Notation sondern dienen hier nur dem besseren Verst\IeC {\"a}ndnis) }}{16}{figure.3.1}
+\contentsline {figure}{\numberline {3.1}{\ignorespaces Einfaches Flow Design Beispiel (die Beispieldaten unten sind nicht Teil der Notation sondern dienen hier nur dem besseren Verst\IeC {\"a}ndnis) }}{17}{figure.3.1}
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.1}{\ignorespaces Datenfluss zwischen drei Funktionseinheiten}}{17}{figure.4.1}
+\contentsline {figure}{\numberline {4.1}{\ignorespaces Datenfluss zwischen drei Funktionseinheiten}}{18}{figure.4.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.2}{\ignorespaces Datentyp \textit {int} mit Namen \textit {alter}}}{17}{figure.4.2}
+\contentsline {figure}{\numberline {4.2}{\ignorespaces Datentyp \textit {int} mit Namen \textit {alter}}}{18}{figure.4.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.3}{\ignorespaces Hierarchischer Datenfluss}}{18}{figure.4.3}
+\contentsline {figure}{\numberline {4.3}{\ignorespaces Hierarchischer Datenfluss}}{19}{figure.4.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.4}{\ignorespaces Eigener Datentyp}}{18}{figure.4.4}
+\contentsline {figure}{\numberline {4.4}{\ignorespaces Eigener Datentyp}}{19}{figure.4.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.5}{\ignorespaces Array Notation}}{19}{figure.4.5}
+\contentsline {figure}{\numberline {4.5}{\ignorespaces Array Notation}}{20}{figure.4.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.6}{\ignorespaces Datenstrom Notation}}{19}{figure.4.6}
+\contentsline {figure}{\numberline {4.6}{\ignorespaces Datenstrom Notation}}{20}{figure.4.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.7}{\ignorespaces Container Notation}}{20}{figure.4.7}
+\contentsline {figure}{\numberline {4.7}{\ignorespaces Container Notation}}{21}{figure.4.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.8}{\ignorespaces Optionaler Output}}{20}{figure.4.8}
+\contentsline {figure}{\numberline {4.8}{\ignorespaces Optionaler Output}}{21}{figure.4.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.9}{\ignorespaces Mehrere unterschiedliche Datentypen auf einem Datenstrom}}{21}{figure.4.9}
+\contentsline {figure}{\numberline {4.9}{\ignorespaces Mehrere unterschiedliche Datentypen auf einem Datenstrom}}{22}{figure.4.9}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.10}{\ignorespaces Joined Inputs}}{21}{figure.4.10}
+\contentsline {figure}{\numberline {4.10}{\ignorespaces Joined Inputs}}{22}{figure.4.10}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.11}{\ignorespaces Pipe-Notation}}{22}{figure.4.11}
+\contentsline {figure}{\numberline {4.11}{\ignorespaces Pipe-Notation}}{23}{figure.4.11}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.12}{\ignorespaces Tonnensymbol}}{22}{figure.4.12}
+\contentsline {figure}{\numberline {4.12}{\ignorespaces Tonnensymbol}}{23}{figure.4.12}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.13}{\ignorespaces Provider}}{23}{figure.4.13}
+\contentsline {figure}{\numberline {4.13}{\ignorespaces Provider}}{24}{figure.4.13}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.14}{\ignorespaces Programmstart und Programmende}}{24}{figure.4.14}
+\contentsline {figure}{\numberline {4.14}{\ignorespaces Programmstart und Programmende}}{25}{figure.4.14}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.15}{\ignorespaces UI}}{24}{figure.4.15}
+\contentsline {figure}{\numberline {4.15}{\ignorespaces UI}}{25}{figure.4.15}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {4.16}{\ignorespaces Zugeh\IeC {\"o}rigkeit zu einer Klasse}}{24}{figure.4.16}
-\defcounter {refsection}{0}\relax 
-\addvspace {10\p@ }
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.1}{\ignorespaces IODA Architektur, Quelle:\cite {ioda}}}{26}{figure.5.1}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.2}{\ignorespaces FormatAndPrintStrings Variante 1 - Flow Design}}{31}{figure.5.2}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.3}{\ignorespaces FormatAndPrintStrings Variante 2 - Flow Design}}{32}{figure.5.3}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.4}{\ignorespaces FindTheAnswer - Flow Design, Quelle: \cite {CODEWHISPERER}}}{37}{figure.5.4}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.5}{\ignorespaces Ein Ausgang mehrere Empf\IeC {\"a}nger}}{38}{figure.5.5}
-\defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {5.6}{\ignorespaces Eine Funktionseinheit mit mehreren Ausg\IeC {\"a}ngen}}{39}{figure.5.6}
+\contentsline {figure}{\numberline {4.16}{\ignorespaces Zugeh\IeC {\"o}rigkeit zu einer Klasse}}{25}{figure.4.16}
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {6.1}{\ignorespaces System-Umwelt-Analyse}}{46}{figure.6.1}
+\contentsline {figure}{\numberline {5.1}{\ignorespaces IODA Architektur, Quelle:\cite {ioda}}}{27}{figure.5.1}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.2}{\ignorespaces FormatAndPrintStrings Variante 1 - Flow Design}}{32}{figure.5.2}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.3}{\ignorespaces FormatAndPrintStrings Variante 2 - Flow Design}}{33}{figure.5.3}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.4}{\ignorespaces FindTheAnswer - Flow Design, Quelle: \cite {CODEWHISPERER}}}{38}{figure.5.4}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.5}{\ignorespaces Ein Ausgang mehrere Empf\IeC {\"a}nger}}{39}{figure.5.5}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {5.6}{\ignorespaces Eine Funktionseinheit mit mehreren Ausg\IeC {\"a}ngen}}{40}{figure.5.6}
+\defcounter {refsection}{0}\relax 
+\addvspace {10\p@ }
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {6.1}{\ignorespaces System-Umwelt-Analyse}}{47}{figure.6.1}
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
@@ -68,53 +68,69 @@
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {9.1}{\ignorespaces Die Hauptansicht}}{56}{figure.9.1}
+\contentsline {figure}{\numberline {9.1}{\ignorespaces Die Hauptansicht}}{57}{figure.9.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {9.2}{\ignorespaces Ablauf einer Erstellung einer neuen Funktionseinheit}}{57}{figure.9.2}
+\contentsline {figure}{\numberline {9.2}{\ignorespaces Ablauf einer Erstellung einer neuen Funktionseinheit}}{58}{figure.9.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {9.3}{\ignorespaces Eine neue Funktionseinheit wurde erstellt}}{57}{figure.9.3}
+\contentsline {figure}{\numberline {9.3}{\ignorespaces Eine neue Funktionseinheit wurde erstellt}}{58}{figure.9.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {9.4}{\ignorespaces Datentypen Editor}}{60}{figure.9.4}
+\contentsline {figure}{\numberline {9.4}{\ignorespaces Datentypen Editor}}{61}{figure.9.4}
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.1}{\ignorespaces Dexel}}{62}{figure.10.1}
+\contentsline {figure}{\numberline {10.1}{\ignorespaces Dexel}}{63}{figure.10.1}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.2}{\ignorespaces Dexel-Screenshot: FunctionUnit-View}}{64}{figure.10.2}
+\contentsline {figure}{\numberline {10.2}{\ignorespaces Das Dom\IeC {\"a}nenmodell von Dexel}}{65}{figure.10.2}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.3}{\ignorespaces Dexel-Screenshot: DataStreamDefinition-View}}{65}{figure.10.3}
+\contentsline {figure}{\numberline {10.3}{\ignorespaces Dexel-Screenshot: FunctionUnit-View}}{66}{figure.10.3}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.4}{\ignorespaces Dexel-Screenshot: DataStream-View}}{66}{figure.10.4}
+\contentsline {figure}{\numberline {10.4}{\ignorespaces Dexel-Screenshot: DataStreamDefinition-View}}{66}{figure.10.4}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.5}{\ignorespaces Dexel-Screenshot: CustomDataType-View}}{67}{figure.10.5}
+\contentsline {figure}{\numberline {10.5}{\ignorespaces Dexel-Screenshot: DataStream-View}}{67}{figure.10.5}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.6}{\ignorespaces Aufgabe - Tabstopp von FunctionUnit aus}}{75}{figure.10.6}
+\contentsline {figure}{\numberline {10.6}{\ignorespaces Dexel-Screenshot: CustomDataType-View}}{68}{figure.10.6}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.7}{\ignorespaces Aufgabe - Tabstopp von DataStream aus}}{75}{figure.10.7}
+\contentsline {figure}{\numberline {10.7}{\ignorespaces Erstellen einer neuen Funktionseinheit}}{70}{figure.10.7}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.8}{\ignorespaces Aufgabe - Tabstopp von DataStreamDefinition aus}}{75}{figure.10.8}
+\contentsline {figure}{\numberline {10.8}{\ignorespaces Textfeld innerhalb der Funktionseinheit}}{70}{figure.10.8}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.9}{\ignorespaces Dexel - Warnung- und Fehler-Darstellung}}{78}{figure.10.9}
+\contentsline {figure}{\numberline {10.9}{\ignorespaces Syntaxhighlighting}}{70}{figure.10.9}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.10}{\ignorespaces Aufgabe - CSV Tabellieren}}{79}{figure.10.10}
+\contentsline {figure}{\numberline {10.10}{\ignorespaces Hinzuf\IeC {\"u}gen eines neuen Outputs}}{71}{figure.10.10}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.11}{\ignorespaces CSV Tabellarisieren - Flow Design aus YouTube Video}}{80}{figure.10.11}
+\contentsline {figure}{\numberline {10.11}{\ignorespaces Verbinden von Funktionseinheiten}}{71}{figure.10.11}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.12}{\ignorespaces CSV Tabellarisieren - Datentypen}}{80}{figure.10.12}
+\contentsline {figure}{\numberline {10.12}{\ignorespaces Erstellen von Integrationen}}{72}{figure.10.12}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.13}{\ignorespaces CSV Tabellarisieren - Dexel Flow Design}}{81}{figure.10.13}
+\contentsline {figure}{\numberline {10.13}{\ignorespaces Der Editor \IeC {\"u}berpr\IeC {\"u}ft, ob f\IeC {\"u}r \textit {Address} ein Datentyp definiert wurde.}}{73}{figure.10.13}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.14}{\ignorespaces Shopping Simulator}}{84}{figure.10.14}
+\contentsline {figure}{\numberline {10.14}{\ignorespaces Dexel - Warnung- und Fehler-Darstellung}}{77}{figure.10.14}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.15}{\ignorespaces Dexel-Screenshot: Einfache Funktionseinheit mit benutzerdefinierten Datentyp}}{89}{figure.10.15}
+\contentsline {figure}{\numberline {10.15}{\ignorespaces Aufgabe - CSV Tabellieren}}{78}{figure.10.15}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.16}{\ignorespaces Dexel-Screenshot: Funktionseinheit mit Tupel-Output}}{90}{figure.10.16}
+\contentsline {figure}{\numberline {10.16}{\ignorespaces CSV Tabellarisieren - Flow Design aus YouTube Video}}{78}{figure.10.16}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.17}{\ignorespaces Dexel-Screenshot: Funktionseinheit mit zwei Outputs mit definierten Actionnamen}}{91}{figure.10.17}
+\contentsline {figure}{\numberline {10.17}{\ignorespaces CSV Tabellarisieren - Datentypen}}{79}{figure.10.17}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.18}{\ignorespaces Dexel-Screenshot: Funktionseinheit mit Stream als Ausgang}}{92}{figure.10.18}
+\contentsline {figure}{\numberline {10.18}{\ignorespaces CSV Tabellarisieren - Dexel Flow Design}}{80}{figure.10.18}
 \defcounter {refsection}{0}\relax 
-\contentsline {figure}{\numberline {10.19}{\ignorespaces Dexel-Screenshot: Funktionseinheit mit eingehendem und ausgehendem Stream und undefinierten Actionnamen}}{92}{figure.10.19}
+\contentsline {figure}{\numberline {10.19}{\ignorespaces Konsolenausgabe - ShoppingSimulator}}{83}{figure.10.19}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {10.20}{\ignorespaces Shopping Simulator}}{84}{figure.10.20}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {10.21}{\ignorespaces Datentyp der generiert werden soll}}{88}{figure.10.21}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {10.22}{\ignorespaces Dexel-Screenshot: Einfache Funktionseinheit mit benutzerdefinierten Datentyp}}{89}{figure.10.22}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {10.23}{\ignorespaces Dexel-Screenshot: Funktionseinheit mit Tupel-Output}}{90}{figure.10.23}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {10.24}{\ignorespaces Dexel-Screenshot: Funktionseinheit mit zwei Outputs mit definierten Actionnamen}}{91}{figure.10.24}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {10.25}{\ignorespaces Dexel-Screenshot: Funktionseinheit mit Stream als Ausgang}}{92}{figure.10.25}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {10.26}{\ignorespaces Dexel-Screenshot: Funktionseinheit mit eingehendem und ausgehendem Stream und undefinierten Actionnamen}}{92}{figure.10.26}
+\defcounter {refsection}{0}\relax 
+\contentsline {figure}{\numberline {10.27}{\ignorespaces Generate Integration Body - Flow Design}}{94}{figure.10.27}
 \defcounter {refsection}{0}\relax 
 \addvspace {10\p@ }
 \defcounter {refsection}{0}\relax 

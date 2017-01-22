@@ -10,7 +10,6 @@
 	\end{figure}
 
 
-
 In diesem Kapitel soll vorgestellt werden, was in dem Zeitraum dieser
 Bachelorarbeit erreicht wurde. Die Architektur der Anwendung wurde selbst nach
 Flow Design umgesetzt und bietet somit dem Leser eine Quelle an weiteren
@@ -72,6 +71,13 @@ ausgelagert, damit alle anderen Projekte darauf zugreifen können.
 
 \section{Das Domänenmodell}
 
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1\linewidth]{./img/ModellUml.png} 
+		\caption{Das Domänenmodell von Dexel}
+	\end{figure}
+
+
 Um nachfolgende Kapitel der Realisierung und die darin enthaltenden
 Codeausschnitte verstehen zu können, braucht es ein Verständnis darüber, wie die
 grundlegenden Datentypen des Domänenmodells aufgebaut sind. Um die Funktionalität der
@@ -86,48 +92,17 @@ eines MainModels übergeben werden und erhält dadurch alle Informationen über 
 Das \textit{MainModel} beinhaltet alle Funktionseinheiten, alle verbindende
 Datenströme (\textit{Connections}) und alle benutzerdefinierten Datentypen (\textit{DataTypes}).
 
-\begin{lstlisting}[caption=MainModel Klasse]
-[ImplementPropertyChanged]
-public class MainModel
-{
-	public List<FunctionUnit> FunctionUnits { get; set; }
-	public List<DataStream> Connections { get;  set; }
-	public List<CustomDataType> DataTypes { get; set; } 
-}
-\end{lstlisting}
-
-\subsubsection{FunctionUnit}
-
-
-\begin{lstlisting}[caption=FunctionUnit Klasse]
-[ImplementPropertyChanged]
-public class FunctionUnit
-{
-	public Guid ID { get; set; }
-	public string Name { get; set; }
-	public Point Position { get; set; }
-	public List<FunctionUnit> IsIntegrating { get; set; }
-	public List<DataStreamDefinition> InputStreams { get; set; }
-	public List<DataStreamDefinition> OutputStreams { get; set; }
-}
-\end{lstlisting}
-
+	\subsubsection{FunctionUnit}
 	
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=0.9\linewidth]{./img/FunctionUnitView.png} 
-		\caption{Dexel-Screenshot: FunctionUnit-View}
-	\end{figure}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.9\linewidth]{./img/FunctionUnitView.png} 
+	\caption{Dexel-Screenshot: FunctionUnit-View}
+\end{figure}
 
 Der Name ist der Name der Funktionseinheit ( der Text, der bei der
 Darstellung später innerhalb des Kreises erscheint). Dieser wird später per \textit{Binding}
-direkt an die UI gebunden. Aus diesem Grund implementiert dieses Klasse,
-genau wie alle anderen des Modells, die ImplementPropertyChanged
-Funktionalität. Diese bewirkt, dass bei einer Änderung im UI automatisch das
-entsprechende Eigenschaft im Modell aktualisiert wird und umgekehrt.
-
-Die Position beschreibt die Position der Funktionseinheiten innerhalb des
-Diagramms.  
+direkt an die UI gebunden. 
 
 Das IsIntegrating-Eigenschaft gibt an, ob diese Funktionseinheit eine Integration
 ist und welche andere Instanzen von Funktionseinheiten sie integriert.
@@ -139,18 +114,7 @@ verbinden. Dadurch lassen sie die Datenflüsse modellieren.
 
 
 	\subsubsection{DataStreamDefinition}
-	
-	\begin{lstlisting}[caption=DataStreamDefinition Klasse]
-[ImplementPropertyChanged]
-public class DataStreamDefinition
-{
-	public Guid ID { get;  set; }
-	public string DataNames { get;  set; }
-	public string ActionName { get;  set; }
-	public FunctionUnit Parent { get;  set; }
-	public bool Connected { get;  set; }
-}
-	\end{lstlisting}
+
 	
 		
 		\begin{figure}[H]
@@ -169,8 +133,8 @@ public class DataStreamDefinition
 	Ein- oder Ausgang ist.
 	
 	Eine weitere grundlegende Eigenschaft ist die Benennung der Daten, die auf dem
-  Datenfluss fließen. Für Ausgänge ist auch die Angabe eines
-	ActionNames manchmal nötig. Dieser soll später unterhalb des Pfeiles
+	Datenfluss fließen. Für Ausgänge ist auch die Angabe eines
+	Names manchmal nötig. Dieser soll später unterhalb des Pfeiles
 	dargestellt werden.
 
 \subsubsection{DataStream (Connections)}
@@ -179,17 +143,6 @@ Um Datenflüsse zwischen Funktionseinheiten zu beschreiben, bedarf es einer
 Verbindungsklasse. Die DataStream-Klasse stellt diese Verbindungsklasse dar.
 
 
-\begin{lstlisting}[caption=DataStream]
-[ImplementPropertyChanged]
-public class DataStream
-{
-	public Guid ID { get; set; }
-	public string DataNames { get;  set; }
-	public List<DataStreamDefinition> Sources { get;  set; }
-	public List<DataStreamDefinition> Destinations { get;  set; }
-
-}
-\end{lstlisting}
 
 		\begin{figure}[H]
 			\centering
@@ -216,22 +169,6 @@ Der aktuelle Stand der UI kann nur Datenflüsse mit einer Quelle und
 einem Ziel darstellen.
 
 \subsubsection{DataType}
-
-\begin{lstlisting}[caption= CustomDataType und SubDataType Klasse]
-[ImplementPropertyChanged]
-public class CustomDataType
-{
-	public string Name { get; set; }
-	public List<SubDataType> SubDataTypes { get; set; }
-}
-
-[ImplementPropertyChanged]
-public class SubDataType
-{
-	public string Name { get; set; }
-	public string Type { get; set; }
-}
-\end{lstlisting}
 
 
 \begin{figure}[H]
@@ -325,12 +262,19 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 
 \subsubsection{Erstellen von Funktionseinheiten, Verschieben, Benennen, Selektieren}
 
-	Das DrawingBoard wurde implementiert, auf dem der Benutzer über 
-	Rechtsklick->Create New Function Unit eine erste Funktionseinheit erzeugen
-	kann. Per Drag\&Drop kann er diese dann innerhalb des DrawingBoards frei
-	verschieben. Mit einer Rectangle-Selection ist es mögliche mehrere
+	Der Zeichenbereich wurde implementiert, auf dem der Benutzer über 
+\textit{Rechtsklick->Add New Function Unit} eine erste Funktionseinheit erzeugen
+	kann. Per Drag\&Drop kann er diese innerhalb des Zeichenbereichs frei
+	verschieben. Mit einer Rectangle-Selektion ist es mögliche mehrere
 	Funktionseinheiten zu selektieren. Selektierte Funktionseinheiten können
 	gemeinsam verschoben, dupliziert und gelöscht werden.
+	
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=1\linewidth]{./img/newFunctionUnit.jpg} 
+			\caption{Erstellen einer neuen Funktionseinheit}
+		\end{figure}
+		
 	
 	Nach dem Erstellen einer neuen Funktionseinheit, wird diese automatisch
 	selektiert und der Tastaturfokus wird in das Textfeld des Kreises gesetzt.
@@ -343,47 +287,87 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 	des Textes zu markieren bleibt damit dem Benutzer weiterhin möglich, so wie er es von
 	einem Textfeld gewohnt ist).
 	
+			\begin{figure}[H]
+				\centering
+				\includegraphics[width=1\linewidth]{./img/functionUnitCursor.jpg} 
+				\caption{Textfeld innerhalb der Funktionseinheit}
+			\end{figure}
+	
 	
 \subsubsection{Erstellen/Löschen/Manipulieren von Inputs und Outputs}
 
 	Eine Funktionseinheit wird standardmäßig mit einem Eingang und einem Ausgang
 	erstellt. Die Daten die aus diesen hinein- oder herausfließen können auf
 	dem Textfeld eingetragen werden. Dabei bietet diese Textfeld ein einfaches
-	Syntaxhighlighting, dass mit Doppelpunkt getrennte Namen-Type-Paare
-	farblich trennt. Auch Symbole wie * | [] () , \ldots{} haben eine eigene Farbe.
+	Syntaxhighlighting.
 	
-	Der Action-Name kann unterhalb des Pfeiles eingetragen werden.
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=0.4\linewidth]{./img/synatxHighlighting.jpg} 
+			\caption{Syntaxhighlighting}
+		\end{figure}
 	
+		
 	Eine Funktionseinheit kann mehr als nur einen Ausgang besitzen.
 	Das Hinzufügen eines neuen Ausgangs ist über Rechtsklick -> Add New Output möglich.
 	Das Löschen eines Ausgangs ist ebenso möglich.
 
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1\linewidth]{./img/addOutput.jpg} 
+		\caption{Hinzufügen eines neuen Outputs}
+	\end{figure}
+
+
+
 	Die Reihenfolge bei mehreren Ausgängen kann per Drag\&Drop verändert werden.
+	
+	Der Name des Ausgangs kann unterhalb des Pfeiles eingetragen werden.
 	
 \subsubsection{Verknüpfen und Trennen von Funktionseinheiten über Drag\&Drop }
 
 	Wird das Ende eines Pfeiles eines Ausgangs auf eine andere Funktionseinheit gedropt, so werden beide
-	miteinander Verbunden. Die Datennamen des Flusses werden bei nicht
+	miteinander Verbunden. 
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=1\linewidth]{./img/dragdrop.jpg} 
+		\caption{Verbinden von Funktionseinheiten}
+	\end{figure}
+	
+	
+	
+	
+	Die Datennamen des Flusses werden bei nicht
 	Übereinstimmung dieser mit Hilfe der Pipe-Notation in das Textfeld des nun neu
-   erzeugten Datenstromes eingetragen. Stimmen beide überein, wird auf die Pipe-Notation
+	erzeugten Datenstromes eingetragen. Stimmen beide überein, wird auf die Pipe-Notation
 	verzichtete.
+	
+	
 	
 	Werden die Daten eines verbundenen Datenflusses geändert, werden die Eingänge
 	und Ausgänge mit Berücksichtigung auf die Pipe-Notation angepasst, sodass
 	beim Trennen der beiden Funktionseinheiten, die Änderungen erhalten bleiben.
 	
 	Durch Drag and Drop eines verbunden Pfeiles auf eine leere Stelle des
-	DrawingBoard kann eine Verbindung getrennt werden. Wird sie auf eine
+	Zeichenbereichs kann eine Verbindung getrennt werden. Wird sie auf eine
 	andere Funktionseinheit gedropt, so wird diese als neues Ziel gesetzt und die 
 	Verbindung zur vorherigen Funktionseinheit gelöscht. 
 	
 \subsubsection{Erstellen von Integrationen}
 
 	Durch Rechtsklick auf eine Funktionseinheit kann im Kontextmenü der Eintrag
-	'Make to Integration of (Pick)' ausgewählt werden. Der Cursor verändert
-	sich und wird nun eine andere Funktionseinheit angeklickt, so wird der
-	komplette Flow, von der diese Funktionseinheit Teil ist, zu einem
-	Sub-Flow der Integration gemacht.
+	\textit{Make to Integration of (Pick)} ausgewählt werden. Der Cursor verändert
+	sich, wird nun eine andere Funktionseinheit angeklickt, so wird der
+	komplette Flow, von der diese Funktionseinheit Teil ist, der Integration untergeordnet.
+	
+		\begin{figure}[H]
+			\centering
+			\includegraphics[width=1\linewidth]{./img/pickIntegration.jpg} 
+			\caption{Erstellen von Integrationen}
+		\end{figure}
+		
+	
 	
 	Das Entfernen eines Flows von einer Integration ist auch über das Kontextmenü
   möglich.
@@ -404,19 +388,23 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 	sind. ( int, string, double, usw. werden automatisch ignoriert). Ein Klick
 	auf diesen erstellt für jeden nicht-definierten Datentyp einen neuen Eintrag.
 	Auch Datentypen innerhalb eines eigenen Datentypen werden überprüft, ob sie 
-	bekannt sind oder nicht. Bsp. 
-	Person 
-	name:string
-	address:Address  
+	bekannt sind oder nicht.
 	
-	Der Editor würde überprüfen ob für Address ein Datentyp definiert wurde oder nicht.
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.4\linewidth]{./img/datatypes.jpg} 
+		\caption{Der Editor überprüft, ob für \textit{Address} ein Datentyp definiert wurde.}
+	\end{figure}
+	
+		
+
 	
 \subsubsection{Navigation und Tastenkürzel}
 
-	Zur Navigation innerhalb des DrawingBoards wird das Mausrad verwendet.
-	Durch Scrollen wird in das DrawingBoard herein und heraus gezoomt.
+	Zur Navigation innerhalb des Zeichenbereichs wird das Mausrad verwendet.
+	Durch Scrollen wird in den Zeichenbereich herein und heraus gezoomt.
 	Durch gedrückt halten des Mausrades (mittlere Maustaste) und Bewegen der
-	Maus kann die Ansicht verschoben werden ( das DrawingBoard ist endlos groß)
+	Maus kann die Ansicht verschoben werden ( das Zeichenbereich ist endlos groß)
 	
 	Ein weiteres Feature besteht darin, dass ab bestimmten Zoom-Stufen die
 	Schriftgrößen der Namen der Funktionseinheiten angepasst werden und die 
@@ -488,7 +476,7 @@ etwas länger.
 
 \subsection{Interaktionen}
 
-Wie bereits im Grundlagen-Teil erwähnt, (Abschnitt Entwurfsmethode) schlägt Flow Design
+Wie bereits im Grundlagen-Teil erwähnt (Abschnitt Entwurfsmethode), schlägt Flow Design
 vor, alle Events als Interaktionen zu bezeichnen und für jedes dieser
 Änderungen ein eigenen Flow Design zu erstellen. 
 Es bietet sich somit an, alle Interaktionen in einer Klasse zu sammeln.
@@ -594,172 +582,10 @@ public static FunctionUnit CreateNewOrGetFirstIntegrated(FunctionUnit currentFun
 	So ist auf einen Blick ersichtlich, was die Interaktion genau macht, ohne
 	im Code herum springen zu müssen.
 
-\subsection{Eigene Tabstopp-Logik}
-
-Mit Tab und Shift-Tab soll es dem Nutzer möglich sein den Tastaturfokus zu
-verändern\footnote{Dieses Beispiel zeigt dabei noch einmal, das Coderedundanzen innerhalb
-von mehreren Integrationen nichts Schlechtes sein muss.
-Außerdem macht es auch deutlich, wie eine etwas komplexerer Integration mit
-mehreren verschachtelten Lambda-Ausdrücken in der Praxis aussehen kann. Auch das Arbeiten mit dem Domänenmodell und den Managerklassen soll dem Leser hier noch einmal verdeutlicht werden.}.
 
 
 
-Der nächsten Tabstopp soll nach folgenden Regeln und abhängig vom aktuell
-fokussierten \textit{Model} bestimmt werden:
 
-\begin{enumerate}
-	\item FunctionUnit
-
-	Besitzt aktuell die View einer FunctionUnit den Tastaturfokus, so soll als
-	nächster Tabstopp der erste Datenfluss, der verbunden ist gewählt werden. Ist keiner
-	verbunden, wähle als nächsten Tabstop den ersten Ausgang der Funktionseinheit.
-	
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=0.6\linewidth]{./img/tabstop_functionunit.png}
-		\caption{Aufgabe - Tabstopp von FunctionUnit aus}
-	\end{figure}
-	
-	\item DataStream
-
-	 Wenn der Fokus aktuell auf einem DataStream liegt, so ist der nächste Tabstopp die Ziel-Funktionseinheit des Datenflusses.
-
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=0.6\linewidth]{./img/tabstop_datastream.png}
-		\caption{Aufgabe - Tabstopp von DataStream aus}
-	\end{figure}
-	
-	\item DataStreamDefinition
-
-	Der komplexeste Fall: 
-	Zu erst muss überprüft werden, ob es sich um ein Eingang oder Ausgang
-	handelt. Ist es ein Eingang (A), so soll als nächster Tabstopp die Funktionseinheit
-	zurückgegeben werden, von der die DataStreamDefinition der Eingang ist. 
-	Bei einem Output muss überprüft werden, ob das Ende des Flows erreicht
-	wurde, oder nicht. Wird ein verbundener Output entdeckt, wird der
-	entsprechende DataStream als nächster Tabstopp zurückgegeben (B). Ist das Ende
-	erreicht, so soll zum Anfang des kompletten Flows gesprungen werden (C).
-	
-	
-	\begin{figure}[H]
-		\centering
-		\includegraphics[width=\linewidth]{./img/tabstop_datastreamdefiniton.png}
-		\caption{Aufgabe - Tabstopp von DataStreamDefinition aus}
-	\end{figure}
-	
-	\begin{lstlisting}[caption=Tabstopp vorwärts]
-public static object TabStopGetNext(object focusedModel, MainModel mainModel)
-{
-	object @return = null;
-	
-	focusedModel.TryCast<FunctionUnit>(fu =>
-	{
-		// prefer connected outputs as next tabstop
-		// if no connected take first output defintion if there are any
-		fu.OutputStreams.GetFirstConnected(
-			foundConnected: connectedDsd => 
-				@return =MainModelManager.FindDataStream(
-				connectedDsd, mainModel),
-			noConnected: () => 
-				@return = fu.OutputStreams.FirstOrDefault());
-		});
-		
-		focusedModel.TryCast<DataStream>(stream =>
-		{
-			// if focus was inside datastream take its destination function unit as next tabstop
-			if (stream.Destinations.Any())
-				@return = stream.Destinations.First().Parent;
-		});
-		
-		focusedModel.TryCast<DataStreamDefinition>(dsd =>
-		{
-			// if focus was inside definition there are two case:
-			// is input definition: next tabstop is the function unit of the definition
-			// is output definition: in case the end of the flow was reached ( no connected output ) 
-			// the next tabstop is the first input definition of the beginning of the whole flow.
-			// Is the end not reached go to first connected output datastream
-			dsd.CheckIsInputOrOutput( 
-				isInput: () => @return = dsd.Parent,
-				isOutput: () =>
-			{
-				dsd.Parent.OutputStreams.GetFirstConnected(
-					foundConnected: connectedInput => 
-						@return = MainModelManager.FindDataStream(
-						connectedInput, mainModel),
-					noConnected: () =>
-					 // loop tabstop focus when the 
-					 // end is reached
-						@return = MainModelManager.GetBeginningOfFlow(
-							dsd.Parent, mainModel)); 
-			});
-	});
-	return @return;
-}
-
-\end{lstlisting}
-	Analog dazu die Tabstopp-Methode in die entgegengesetzte Richtung.
-	
-	
-\begin{lstlisting}[caption=Tabstop rückwärts]
-public static object TabStopGetPrevious(object focusedModel, MainModel mainModel)
-{
-	object @return = null;
-	
-	focusedModel.TryCast<FunctionUnit>(fu => 
-	{
-		fu.InputStreams.GetFirstConnected(
-			foundConnected: connectedDsd => 
-				@return = MainModelManager.FindDataStream(
-				connectedDsd, mainModel),
-		noConnected: () =>
-			@return = fu.InputStreams.FirstOrDefault());
-	});
-	
-	focusedModel.TryCast<DataStream>(stream => 
-	{
-		if (stream.Sources.Any())
-			@return = stream.Sources.First().Parent;
-	});
-	
-	focusedModel.TryCast<DataStreamDefinition>(dsd => 
-	{
-		dsd.CheckIsInputOrOutput(
-			isOutput: () => @return = dsd.Parent,
-			isInput: () => 
-			{
-				dsd.Parent.InputStreams.GetFirstConnected(
-					foundConnected: connectedInput =>
-						@return = MainModelManager.FindDataStream(
-						connectedInput, mainModel),
-					noConnected: () =>
-						// loop tabstop focus when
-						// the beginning is reached
-						@return = MainModelManager.GetEndOfFlow(
-						dsd.Parent, mainModel));
-		});
-	});	
-	return @return;
-}
-\end{lstlisting}
-	
-	
-
-	Auf oberster Ebene wird überprüft um welchen Typ von Objekt es sich
-	handelt, der aktuell fokussiert ist \footnote{Teile davon war Aufgabe der UI und die
-	Interaktion bekommt das Model dann als \texttt{object} übergeben. Deshalb bedarf es
-	innerhalb der Methode einer Überprüfung des Typen mit TryCast. Natürlich
-  könnte man dies auch durch ein Interface verhindern, dann würden die 3 Fälle
-  jedoch nicht mehr klar vor einem liegen, sondern in den jeweiligen
-  Implementierungen der Klassen versteckt.}. Nun existieren die drei Fälle, abhängig vom übergebenen Typen.\footnote{Zur Erinnerung: Die \texttt{Sources}-Eigenschaft eines \texttt{DataStream} beinhaltet nicht die Funktionseinheit,
-	sondern die \texttt{DataStreamDefinition} einer Funktionseinheit. Die eigentliche
-	Funktionseinheit enthält die \texttt{Parent}-Eigenschaft der \texttt{DataStreamDefinition}.
-	Analog dazu enthält die \texttt{InputStream}- und \texttt{OutputStream}-Eigenschaft der
-	Funktionseinheit auch nur die \texttt{DataStreamDefinition}-Objekte nicht ein \texttt{DataStream}-Objekt.
-	Eine \texttt{DataStreamDefinition} kennt jedoch nicht den Datenfluss, mit dem sie
-	verbunden ist. Eine Helfer-Methode der \texttt{MainModelManager}-Klasse stellt
-	diese Funktionalität zum Auffinden des \texttt{DataStream} zur Verfügung.}
-\end{enumerate}
 
 \subsection{Validierung des Datenflusses - Farbliche Kennzeichnung }
 
@@ -823,6 +649,7 @@ Nun das Flow Design umgesetzt in Dexel. Zu beachten ist, das die Split Output un
 
 \begin{landscape}
 \begin{figure}
+	\thispagestyle{empty}
 	    \hspace*{-1.5cm}
 	    \makebox[\linewidth]{
 	    		\includegraphics[width=1.25\linewidth]{./img/csvtabellierenDexel.png}
@@ -902,10 +729,31 @@ public static IEnumerable<Record> CSVParsen(IEnumerable<string> strings)
 }
 \end{lstlisting}
 
+Der Datenfluss in den beiden Integrationen wurde korrekt generiert. 
+Außerdem wurden alle Datentypen und Methodensignaturen der Operationen erzeugt.
+
 \subsubsection{Shopping Simulator - Komplexeres Beispiel}
+
+Dieses Beispiel soll zeigen, wie auch mehreren Ausgänge von Funktionseinheiten und Streams korrekt generiert werden.
+
+Der Methode \texttt{ShoppingSimulator} wird eine Anzahl an Kunden übergeben, die generiert werden soll.
+Jeder Kunde ist eine Person, die noch zusätzlich zu Name und Alter ein Budget hat.
+Diese drei Eigenschaften werden für jeden Kunde zufällig generiert.
+Anschließend wird ein zufälliger Einkaufswagen erzeugt und die beiden Objekte (Einkaufswagen und Kunde) durchlaufen eine \texttt{Checkout}-Routine.
+Das Ergebnis wird in die Konsole ausgegeben.
+
+Eine mögliche Ausgabe - nachdem die Methodenrümpfe der Operationen von Hand implementiert wurden - wäre:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\linewidth]{./img/ShoppingSimulator_result.png}
+	\caption{Konsolenausgabe - ShoppingSimulator}
+\end{figure}
+
+
 
 \begin{landscape}
 	\begin{figure}
+		\thispagestyle{empty}
 		\vspace*{-1.5cm}
 		\hspace*{-2cm}
 		\makebox[\linewidth]{
@@ -1080,26 +928,33 @@ var generator = SyntaxGenerator.GetGenerator(workspace, LanguageNames.CSharp);
 Das Erstellen eines Ausdruckes, Klasse oder Methode mit Hilfe von Methoden
 des SyntaxGenerators liefern am Ende immer eine SyntaxNode zurück.
 Beim Erstellen einer Methode oder Klasse kann der Inhalt des Scopes durch
-ein Array von SyntaxNodes bestimmt werden.
+ein Array von \texttt{Syn}taxNodes bestimmt werden.
 
 Nachfolgend ein einfaches Beispiel zum Erstellen von einem
 benutzerdefinierten Datentyp.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\linewidth]{./img/Person.png}
+	\caption{Datentyp der generiert werden soll}
+\end{figure}
 
 
 	\subsubsection{Erzeugung eines Datentypen als einfaches Beispiel}
 
 	
 	\begin{lstlisting}[caption=Erzeugung einer Person-Klasse mit Roslyn]
-SyntaxNode fieldAlter = generator.FieldDeclaration(
-	name: "Alter",
-	type: generator.TypeExpression( SpecialType.System_Int32),
-	accessibility: Accessibility.Public);
+
 
 SyntaxNode fieldName = generator.FieldDeclaration(
 	name: "Name",
 	type: generator.TypeExpression( SpecialType.System_String),
 	accessibility: Accessibility.Public);
 
+SyntaxNode fieldAlter = generator.FieldDeclaration(
+	name: "Alter",
+	type: generator.TypeExpression( SpecialType.System_Int32),
+	accessibility: Accessibility.Public);
 
 SyntaxNode[] allFields =  new[] {fieldName, fieldAlter};
 
@@ -1117,7 +972,7 @@ SyntaxNode classDefinition = Generator.ClassDeclaration(
 	\end{lstlisting}
 	
 	Um am Ende den Code in Form eines Strings zu erhalten muss auf die oberste
-	SyntaxNode folgende beide Methoden aufgerufen werden:
+	\texttt{SyntaxNode} folgende beide Methoden aufgerufen werden:
 	
 	\begin{lstlisting}[caption=Erhalten des Codes als string]
 	string code = classDefinition.NormalizeWhitespace().ToFullString();
@@ -1158,7 +1013,7 @@ public static Person NewPerson(int aint, string astring)
 }
 	\end{lstlisting}
 	
-	Hat ein Output mehr als ein Datentyp und ist kein Stream und ist auch nicht optional, so
+	Hat ein Output mehr als ein Datentyp, ist kein Stream und ist auch nicht optional, so
 	wird das Ergebnis als Tupel über den Rückgabewert geliefert.
 	
 		\begin{figure}[H]
@@ -1276,7 +1131,7 @@ public static Person NewPersons(int age, string name)
 	\subsubsection{Die Herangehensweise}
 
 	
-	Die automatische Erzeugung eines Integration ist die komplexeste Aufgabe in
+	Die automatische Erzeugung einer Integration ist die komplexeste Aufgabe in
 	diesem Projekt. Um die Aufgabe überschaubar zu halten, wurde diese im Groben in
 	zwei Teileaufgaben zerteilt: die Analyse und die Generierung.
 	Die Analyse besteht wiederum aus unterschiedlichen Methoden, die jeweils das
@@ -1285,27 +1140,18 @@ public static Person NewPersons(int age, string name)
 	Diese beinhaltet alle Informationen aus der Analyse. Am Ende wird dieses Objekt
 	der Generierungsmethode übergeben, die anhand diesem den Code erzeugt\footnote{Ein weiterer Vorteil dieser Aufteilung ist, dass ein großer Teil frei von der Roslyn-API bleibt. Die eigenen Datentypen lassen sich dazu auch besser testen, als die SyntaxNodes von Roslyn. Möchte man das Ergebnis von Roslyn testen, bleibt einem  oft keine andere Wahl, als den erzeugten Code samt Whitespaces über ein String-Vergleich zu erschlagen, was bei mehrzeiligem Code doch etwas ausufern kann. Stattdessen lässt sich das Ergebnis aus den eigenen Analysen hingegen einfach über ein Vergleich von den gefundenen Objekt-Referenzen überprüfen.}.
 	
-	\begin{lstlisting}[caption=GenerateIntegrationBody Methode]
-public static SyntaxNode[] GenerateIntegrationBody( SyntaxGenerator generator, MainModel mainModel, FunctionUnit integration )
-{
-	// integrationbody object for storing analysed and generated information
-	var integrationBody = IntegrationAnalyser.CreateNewIntegrationBody( mainModel.Connections, integration);
-	AddIntegrationInputParameterToLocalScope(integrationBody, integration);
-	
-	// analyse data flow before generation 
-	IntegrationAnalyser.AnalyseParameterDependencies( integrationBody);
-	IntegrationAnalyser.AnalyseLambdaBodies( integrationBody, mainModel);
-	IntegrationAnalyser.AnalyseMatchingOutputOfIntegration( integrationBody, mainModel);
-	IntegrationAnalyser.AnalyseReturnToLocalReturnVariable( integrationBody, mainModel);
-	
-	// generation
-	var result = new List<SyntaxNode>();
-	integrationBody.Generator = generator;
-	GenerateBody(integrationBody, result.Add);
-	
-	return result.ToArray();
-}
-	\end{lstlisting}
+\begin{landscape}
+	\begin{figure}
+		\thispagestyle{empty}
+		\vspace*{-1.5cm}
+		\hspace*{-0cm}
+		\makebox[\linewidth]{
+			\includegraphics[width=1.15\linewidth]{./img/GenerateIntegrationBody.jpg}
+		}
+		
+		\caption{Generate Integration Body - Flow Design}
+	\end{figure}
+\end{landscape}
 	
 	\subsubsection{Analyse des Flow Designs}
 
@@ -1317,11 +1163,11 @@ public static SyntaxNode[] GenerateIntegrationBody( SyntaxGenerator generator, M
 		Funktionseinheit fließen. Stattdessen muss der Fluss rückwärts
 		traversiert werden und auf Übereinstimmungen untersucht werden.
 		Für jede Sub-Funktionseinheit muss diese Analyse durchgeführt werden.
-		Für jeden Input-Datentyp jeder Funkionseinheit wird das Ergebnis gespeichert. Das Ergebnis beinhaltet ob der Datentyp überhaupt gefunden
+		Für jeden Input-Datentyp jeder Funkionseinheit wird das Ergebnis gespeichert.
+		Das Ergebnis beinhaltet ob der Datentyp gefunden
 		wurde, ob er im Eingang der Integration gefunden wurde, oder ob er aus einer
 		anderen Sub-Funktionseinheit innerhalb des Datenflusses stammt. 
-		Außerdem wird die gefundene DataStreamDefinition gespeichert, in der die
-		Daten gefunden wurden. Ein Aufruf einer Sub-Funktionseinheit kann nur generiert werden, wenn alle Datentypen gefunden
+		Ein Aufruf einer Sub-Funktionseinheit kann nur generiert werden, wenn alle Datentypen gefunden
 		wurden.
 		
 		\item \texttt{AnalyseLambdaBodies}
@@ -1402,7 +1248,7 @@ public static void CreateRandomPersons(int customerCount, Action<Person> onPerso
 			ausgegeben.
 			
 \begin{lstlisting}[caption=Return-Action-Beziehung]
-public static void TryGetMessage(Action<string> onError)
+public static void TryGetMessage(Action<string> onMessage)
 {
 	throw new NotImplementedException();
 }

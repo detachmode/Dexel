@@ -1,70 +1,219 @@
 FunctionUnits:
-- &o0
-  Position:
-    X: 70.982905982905834
-    Y: -244.61811965811921
-  Name: "Create \r\nNew Persons"
-  ID: 3e842a34-8d77-43b7-94fe-66634b49b447
-  IsIntegrating: []
-  InputStreams:
-  - ActionName: ''
-    DataNames: (int)
-    ID: 0c98a921-d1eb-453e-aa98-a6ddabab9185
-    Parent: *o0
-  OutputStreams:
-  - &o3
-    ActionName: .onPerson
-    DataNames: (Person)*
-    ID: 3bf80ae6-d807-4efc-bb4a-5a27726a438c
-    Connected: true
-    Parent: *o0
-  - ActionName: .onError
-    DataNames: ()
-    ID: 06ff7403-2e2d-47a9-83ce-a4ad3a3d10b2
-    Parent: *o0
-- &o1
-  Position:
-    X: 350.28142138906833
-    Y: -253.04388996624252
-  Name: Print Name
-  ID: 6143f459-dd6b-4a60-a848-b925fe50160a
-  IsIntegrating: []
-  InputStreams:
-  - &o4
-    ActionName: ''
-    DataNames: (Person)*
-    ID: a6884c62-8466-4530-8f7c-f29646a0b296
-    Connected: true
-    Parent: *o1
-  OutputStreams:
-  - ActionName: ''
-    DataNames: (string)
-    ID: 6a62f19a-2938-4c05-9a1b-9a03cdaa213c
-    Parent: *o1
-- &o2
-  Position:
-    X: 213.72250620896125
-    Y: -358.5607861677363
-  Name: Main
-  ID: bce74d64-c8ee-4ce1-9c8a-e297a0e4d9ac
+- &o7
+  ID: 7c2bb808-4eb8-4ded-8c50-0ae120104520
   IsIntegrating:
-  - *o0
-  - *o1
+  - &o0
+    ID: 17e5672c-0236-4eb7-9d44-81ee9d091ad8
+    IsIntegrating: []
+    Name: >-
+      Create New
+
+      IntegrationBody
+    Position:
+      X: 153.92406204906195
+      Y: 82.245086580086763
+    InputStreams:
+    - ActionName: ''
+      DataNames: (MainModel , integration)
+      ID: 0fa2c099-0c1e-4bde-b365-73b1169ca268
+      Parent: *o0
+    OutputStreams:
+    - &o18
+      ActionName: ''
+      DataNames: (IntegrationBody)
+      ID: 611f9b89-b9d4-4fdc-90a4-c403e9df3fa0
+      Connected: true
+      Parent: *o0
+  - &o1
+    ID: e6b5ec75-7bc3-4a0f-832f-8c13268eec2a
+    IsIntegrating: []
+    Name: "Add Integration \r\nInput Parameter \r\nTo Local Scope"
+    Position:
+      X: 510.64298201798238
+      Y: 73.240618825618924
+    InputStreams:
+    - &o19
+      ActionName: ''
+      DataNames: (IntegrationBody, integration)
+      ID: c60b3eb8-477a-4b9a-bdf1-27cef0525b23
+      Connected: true
+      Parent: *o1
+    OutputStreams:
+    - &o8
+      ActionName: ''
+      DataNames: ()
+      ID: f4c6cc3b-7bbb-482f-9783-1153564b3323
+      Connected: true
+      Parent: *o1
+  - &o2
+    ID: 341c9f11-08b2-4fc3-a234-7ac13889e0cc
+    IsIntegrating: []
+    Name: "Analyse \r\nParameter \r\nDependencies"
+    Position:
+      X: -48.659937284936859
+      Y: 265.24428182928199
+    InputStreams:
+    - &o9
+      ActionName: ''
+      DataNames: (IntegrationBody)
+      ID: 9511260e-1658-44ea-b296-4cab81992b7b
+      Connected: true
+      Parent: *o2
+    OutputStreams:
+    - &o10
+      ActionName: ''
+      DataNames: ()
+      ID: 9227b439-2161-4a40-aa52-33ba35c192a5
+      Connected: true
+      Parent: *o2
+  - &o3
+    ID: ca4bd433-b810-40d3-aabc-b783d30c3f0e
+    IsIntegrating: []
+    Name: "Analyse \r\nLambdaBodies"
+    Position:
+      X: 290.96515984015991
+      Y: 273.76506660006646
+    InputStreams:
+    - &o11
+      ActionName: ''
+      DataNames: (IntegrationBody, MainModel)
+      ID: 0ad7e0df-28a4-4da6-b795-7a0861b79e37
+      Connected: true
+      Parent: *o3
+    OutputStreams:
+    - &o12
+      ActionName: ''
+      DataNames: ()
+      ID: c50c7b82-6044-47c8-8e47-48438c46bc00
+      Connected: true
+      Parent: *o3
+  - &o4
+    ID: e0531f84-8c2e-4ac7-9622-c445c3659f5a
+    IsIntegrating: []
+    Name: "Analyse\r\nMatching Output Of \r\nIntegration"
+    Position:
+      X: 669.97059884559917
+      Y: 266.71766955266958
+    InputStreams:
+    - &o13
+      ActionName: ''
+      DataNames: (IntegrationBody , MainModel)
+      ID: 24c14f83-289b-430c-a7fb-eceefde025f6
+      Connected: true
+      Parent: *o4
+    OutputStreams:
+    - &o14
+      ActionName: ''
+      DataNames: ()
+      ID: bf82dde1-4956-4b6a-a483-7e81e27551ee
+      Connected: true
+      Parent: *o4
+  - &o5
+    ID: 708fe25d-790d-46c6-97ad-cad8b96a501c
+    IsIntegrating: []
+    Name: >-
+      Analyse
+
+      Return To Local
+
+      Return Variable
+    Position:
+      X: 1042.43272005772
+      Y: 265.89696248196242
+    InputStreams:
+    - &o15
+      ActionName: ''
+      DataNames: (IntegrationBody , MainModel)
+      ID: 9fa18768-5426-457c-bc31-7642219964b7
+      Connected: true
+      Parent: *o5
+    OutputStreams:
+    - &o16
+      ActionName: ''
+      DataNames: ()
+      ID: 2de706cb-50cb-4ef0-a54c-148dd324f4b1
+      Connected: true
+      Parent: *o5
+  - &o6
+    ID: 5a5b5d45-0a13-46b1-a1be-1ec6a12798a6
+    IsIntegrating: []
+    Name: GenerateBody
+    Position:
+      X: 29.973484848485214
+      Y: 461.53729437229447
+    InputStreams:
+    - &o17
+      ActionName: ''
+      DataNames: (IntegrationBody)
+      ID: fe525904-643e-4115-9d09-71c727d685b9
+      Connected: true
+      Parent: *o6
+    OutputStreams:
+    - ActionName: ''
+      DataNames: (SyntaxNode[])
+      ID: 2b920ea7-3828-4698-a5fc-6454a7506136
+      Parent: *o6
+  Name: Generate Integration Body
+  Position:
+    X: 463.54365079365095
+    Y: -101.68132034632015
   InputStreams:
   - ActionName: ''
-    DataNames: ()
-    ID: 31201f07-584f-4cf1-b240-15a8815d53ef
-    Parent: *o2
+    DataNames: >-
+      (SyntaxGenerator, integration:FunctionUnit, MainModel)
+
+      )
+    ID: ddaed519-af0d-407c-bc91-ae93af31ea78
+    Parent: *o7
   OutputStreams:
-  - ActionName: .onError
-    DataNames: ()
-    ID: cdbd8120-84ed-45e8-895b-b50724061efa
-    Parent: *o2
+  - ActionName: ''
+    DataNames: (SyntaxNode[])
+    ID: f74d20e1-6828-4a81-9e06-75e3339b7c59
+    Parent: *o7
+- *o0
+- *o1
+- *o2
+- *o3
+- *o4
+- *o5
+- *o6
 Connections:
-- DataNames: (Person)*
-  ID: db3cf22c-4011-4de0-ad8b-f074a4e1b393
+- DataNames: () | (IntegrationBody)
+  ID: 3d29e020-8f31-4b9b-80f9-c4e2da1a9f06
   Sources:
-  - *o3
+  - *o8
   Destinations:
-  - *o4
-DataTypes: []
+  - *o9
+- DataNames: () | (IntegrationBody, MainModel)
+  ID: 7e519627-c0d2-4692-90dd-020d50a22e52
+  Sources:
+  - *o10
+  Destinations:
+  - *o11
+- DataNames: () | (IntegrationBody , MainModel)
+  ID: 7fa6e6e9-b9e6-49d9-b16f-6734604b8b5d
+  Sources:
+  - *o12
+  Destinations:
+  - *o13
+- DataNames: () | (IntegrationBody , MainModel)
+  ID: 75380664-a8a8-407a-9d14-122b37546f7d
+  Sources:
+  - *o14
+  Destinations:
+  - *o15
+- DataNames: () | (IntegrationBody)
+  ID: 6868e457-7ff1-487b-b9b4-6a77d32c17af
+  Sources:
+  - *o16
+  Destinations:
+  - *o17
+- DataNames: "(IntegrationBody) | \r\n(IntegrationBody, integration)"
+  ID: afb648a2-e320-4c59-9347-85e4a2e1d60c
+  Sources:
+  - *o18
+  Destinations:
+  - *o19
+DataTypes:
+- Name: IntegrationBody
+  SubDataTypes: []
