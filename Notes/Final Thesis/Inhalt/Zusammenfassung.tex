@@ -8,7 +8,7 @@ Diese hat keinen Anspruch auf Vollständigkeit.
 	\item Joined-Inputs und auch Split Outputs. Dies erfordert Möglicherweise noch einmal
 	eine kleine Überarbeitung des Domänenmodells. Auch die Darstellung wurde noch nicht realisiert. Zusätzlich wird die Generierung etwas komplexer und wirft weitere Fragen auf eine eindeutige Interpretation auf.
 	
-	\item Validierung der Syntax - Markierung invalider Syntax innerhalb des Editors wurden nicht realisiert (z.B sind die Klammern richtig gesetzt).
+	\item Validierung der Syntax - Markierung invalider Syntax innerhalb des Editors wurden nicht realisiert (z.B. sind die Klammern richtig gesetzt).
 	
 	\item Search-Replace Funktionalität, um Datentypen oder andere Namen, die an vielen Stellen verwendet werden, schnell und  einfach umbenennen zu können.
 	
@@ -45,40 +45,36 @@ Diese hat keinen Anspruch auf Vollständigkeit.
 \section{Fazit}
 
 \subsubsection{Flow Design}
-Mir persönlich gefällt IOSP sehr gut. Nach einer Eingewöhnungszeit lernte ich die Lambda-Schreibweise lieben und finde sie nun auch sehr leserlich. Der Code der sonst in vielen Unterfunktionen versteckt ist, kann so auf einen Blick überschaubar gehalten und trotzdem bleibt die Abstraktionsebene hoch. Ab einer gewissen Tiefe ist eine Aufteilung in unterschiedliche Methoden jedoch trotzdem sinnvoll.
+Mir persönlich gefällt IOSP sehr gut. Nach einer Eingewöhnungszeit lernte ich die Lambda-Schreibweise lieben und finde sie nun auch sehr leserlich. Der Code der sonst in vielen Unterfunktionen versteckt ist, kann so an einer Stelle gehalten werden und trotzdem bleibt die Abstraktionsebene hoch. Ab einer gewissen Tiefe ist eine Aufteilung in unterschiedliche Methoden jedoch trotzdem sinnvoll.
 
-Den Vorteil von entkoppelten Methoden lernte ich bereits im Dexel Projekt kennen. Methoden können leichter angepasst werden und an unterschiedlichen Stellen verwendet werden. Die Aufgabe einer Operation ist klar definiert, was sie einfacher zu implementieren und besser testbar macht. 
+Den Vorteil von entkoppelten Methoden lernte ich im Dexel Projekt kennen. Methoden können leichter angepasst werden und an unterschiedlichen Stellen verwendet werden. Die Aufgabe einer Operation ist klar definiert, was sie einfacher zu implementieren und besser testbar macht. 
 
 Die Tatsache, dass dadurch die Integrationen frei von Kontrollstrukturen bleiben finde ich auch gut. 
 Leider gilt die Aussage, das die Integrationen dadurch leicht zu verstehen bleiben, da sie frei von \enquote{Logik} bleiben leider nicht immer. Wenn eine Operation zwei oder mehrere Ausgänge hat und diese in der Integration \enquote{verdrahtet} werden, so landet doch eine gute Portion Logik auch in den Integration und dadurch wird diese auch schwerer zu verstehen. 
 Trotzdem würde ich weiter diese Art bevorzugen. Falls es mal nicht so sein sollte, steht es einem schließlich auch frei an jenen Stellen von der Regel abzuweichen.
 
 
-Leider scheint diese Art zu programmieren  vorerst stark auf C\# ausgerichtet zu sein. In anderen Programmiersprachen, die ich kenne - wie Java und Python - besitzen diese nicht alle Funktionalitäten, die eine Umsetzung so leserlich erlauben, wie C\# \footnote{Möglicheweise gibt es andere Programmiersprachen, die es genauso gut oder vielleicht sogar noch besser ermöglichen, jedoch kenne ich persönlich aktuell keine }.
-Fehlendes Closure für Lambdas ( in Python keine mehrzeiligen Lambda-Asdrücke)innerhalb eines Lambdas. 
-Auch sind Java8 Streams lange nicht so mächtig und ausgereift wie LINQ. \footnote{Diese Aussage beruht darauf, dass LINQ in so gut wie jedem C\# Projekt an sehr vielen Stellen im Code zum Einsatz kommt, Java 8 Streams hingegen werden von den meisten Java-Entwickler gemieden, weil sie eben nicht so ausgereift sind. ( Laut Aussage von Kevin Erath über seine persönlichen Erfahrungen mit Java-Entwicklungsteams innerhalb der Firma)}
-
 Leider habe bei der Umsetzung von IOSP innerhalb von Dexel so gut wie nie auf eine Flow Design Diagramm zurückgegriffen, stattdessen habe ich es innerhalb der IDE \enquote{herunterprogrammiert} und anschließend refaktorisiert. Das mag vor allem daran liegen, dass mir eine IDE durch Intellisense oft viel Arbeit erspart, gerade wenn bereits eine große Codebasis vorhanden ist.
 Mit Intellisense kann ich bereits vorhandene Methoden auffinden und bekomme angezeigt, welche Parameter diese erwarten.
-Auch die Eigenschaften eines Objektes mit werden mir übersichtlich angezeigt.
+Auch die Eigenschaften eines Objektes werden mir übersichtlich angezeigt.
 All das habe ich auf dem Papier ( oder auch im aktuellen Stand von Dexel nicht).
 
 
 
 \subsubsection{Dexel}
 
-Wie bereits erwähnt, habe ich beim Programmieren noch nicht so oft das Bedürfnis verspürt eine Flow Design Diagramm zu erstellen, wodurch ich mir die Sinnhaftigkeit eines Editors in Frage stellte.
+Wie bereits erwähnt, habe ich beim Programmieren von Dexelnoch nicht so oft das Bedürfnis verspürt eine Flow Design Diagramm zu erstellen, wodurch ich die Sinnhaftigkeit eines Editors in Frage stellte.
 Auch eine automatische Generierung  vollständig und ohne Fehler zu implementieren ist ein aufwendiges Unterfangen. Verglichen dazu ist der gewonnene Zeitaufwand  relativ gering. Die paar Zeilen der Integration kann man auch selbst relativ schnell herunter tippen, letzte Anpassungen vornehmen und dabei  auch LINQ  verwenden, um  auch komplexe Algorithmen runter zu schreiben.
 
  Es bedarf vielleicht erst einen perfekten Roundtrip, um eine automatische Generierung zu rechtfertigen und sinnvoll in einem Workflow mit einbinden zu können.
  
  Die Generierung könnte alternativ natürlich auf für Schulungszwecken verwendet werden, um Studenten/Entwicklern IOSP näher zu bringen.
  
-Auch ein Entwurf auf dem Papier hat immer noch einen gewissen Scharm und Einfachheit, die in Dexel noch nicht erreicht wurden.
+Ein Entwurf auf dem Papier hat immer noch einen Einfachheit, die in Dexel noch nicht erreicht wurden.
 Das mag vor allem daran liegen, dass noch nicht alle Notation im Editor umsetzbar sind (Joined Inputs). 
-Auch einfach Pfeile von A zu B zu zeichnen ohne auf eine für den Computer Eindeutigkeit Interpretation zu achten hat auch seine Vorteile.
+Auch einfach Pfeile von A nach B zu zeichnen, ohne auf eine für den Computer eindeutige Interpretation zu achten, hat seine Vorteile.
 
-Dexel hat jedoch auch schon einige Vorteile gegenüber dem Entwurf auf dem Papier. Der erste ist Geschwindigkeit. 
+Dexel hat jedoch auch einige Vorteile gegenüber dem Entwurf auf dem Papier. Der erste ist Geschwindigkeit. 
 Namen können auf der Tastatur schneller geschrieben werden, als auf mit dem Stift. Mit Hilfe von Tastenkürzel lassen sich schnell neue Funktionseinheiten hinten anhängen und so den Datenfluss schnell herunter schreiben.
 
 Einfaches Duplizieren des Schaubildes und vorhandene Elemente neu anzuordnen und Texte abzuändern ist ein klarer Pluspunkt für Dexel.
@@ -88,9 +84,9 @@ Auch eine Validierung des Datenflusses kann vorteilhaft sein.
 
 
 Der aktuelle Stand ist denke ich trotzdem ein guter Start geworden, der eine Vision aufzeigt, wie ein Editor für Flow Design aussehen könnte.
-Mir persönlich fällt es schwer anhand des aktuellen Stand des Projektes abzuschätzen, ob ein vollausgereifter Editor nicht doch einen  Platz finden könnte im \enquote{Werkzeugkasten} eines Softwareentwicklers.
- Es würde trotzdem noch einige Monate an in Anspruch nehmen,  um auf einen Stand zu kommen mit dem man sinnvoll Arbeiten kann und erst dann lässt sich sagen, wie sinnvoll er im Einsatz eines Softwareprojektes wirklich ist.
-  Vielleicht ergibt es sich die Möglichkeit  im Rahmen einer Masterarbeit daran weiter zu arbeiten. Vielleicht findet sich auch  ein anderer Student, der bereit ist, sich in ein bestehendes Projekt einzuarbeiten und im Rahmen seiner Bachelorabeit daran weiterarbeiten möchte.
+Mir persönlich fällt es schwer anhand des aktuellen Stands des Projektes abzuschätzen, ob ein vollausgereifter Editor nicht doch einen  Platz finden könnte im \enquote{Werkzeugkasten} eines Softwareentwicklers.
+ Es würde trotzdem noch einige Monate an in Anspruch nehmen,  um auf einen Stand zu kommen mit dem man sinnvoll arbeiten kann und erst dann lässt sich sagen, wie sinnvoll er im Einsatz eines Softwareprojektes wirklich ist.
+  Vielleicht ergibt es sich die Möglichkeit im Rahmen einer Masterarbeit daran weiter zu arbeiten. Vielleicht findet sich auch ein anderer Student, der bereit ist, sich in ein bestehendes Projekt einzuarbeiten und im Rahmen seiner Bachelorabeit daran weiterarbeiten möchte.
 
 
 

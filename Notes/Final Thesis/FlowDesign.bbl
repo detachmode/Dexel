@@ -91,6 +91,18 @@
       \verb http://www.code-whisperer.de/
       \endverb
     \endentry
+    \entry{EVOLVIERBARKEIT}{online}{}
+      \field{labelalpha}{EVOLVIERBARKEIT}
+      \field{sortinit}{E}
+      \field{sortinithash}{07bbd5a529b5beaa311df5be05b874bc}
+      \field{labeltitlesource}{title}
+      \field{note}{[Online, abgefragt 18.01.2017]}
+      \field{shorthand}{EVOLVIERBARKEIT}
+      \field{title}{Evolvierbarkeit - CDD}
+      \verb{url}
+      \verb http://clean-code-developer.de/das-wertesystem/#Evolvierbarkeit
+      \endverb
+    \endentry
     \entry{flowdesignorg}{online}{}
       \name{author}{1}{}{%
         {{hash=64d29e15fc7be5a7e120dfd3a5b79828}{%
@@ -195,6 +207,18 @@
       \field{title}{LINQ}
       \verb{url}
       \verb https://www.dotnetperls.com/linq
+      \endverb
+    \endentry
+    \entry{ROTERGRAD}{online}{}
+      \field{labelalpha}{ROTERGRAD}
+      \field{sortinit}{R}
+      \field{sortinithash}{c15bc8eb6936bc6b3c8baa9e8575af53}
+      \field{labeltitlesource}{title}
+      \field{note}{[Online, abgefragt 18.01.2017]}
+      \field{shorthand}{ROTERGRAD}
+      \field{title}{Roter Grad - CDD}
+      \verb{url}
+      \verb http://clean-code-developer.de/die-grade/roter-grad/
       \endverb
     \endentry
     \entry{schummelzettel}{book}{}

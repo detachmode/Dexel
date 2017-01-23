@@ -187,16 +187,10 @@ Notwendig hierfür wäre, dass bestehende Klassen gefunden werden müssten, Usin
 eingefügt und schlussendlich die generierten Methoden und Datentypen in die
 jeweiligen Klassen/Dateien eingefügt werden. Dabei muss die Syntax
 berücksichtigt werden und möglicherweise Zugriffsberechtigungen erkannt und bei
-Problemen einen Dialog zur Korrektur dem Anwender anbieten. Ein weiteres Problem
-wäre die Überschneidung von Namen. Wenn automatisch der generierte Code bevorzugt
-  werden soll, dann könnten durch die Überschreibung von Datentypen und Methoden
-  bestehende Codezeilen plötzlich fehlerhaft werden. Ein extra Dialog wäre
-  möglich, würde jedoch den Aufwand zur Integration des Codes möglicherweise stark
-  anheben. Ebenso wäre ein solcher Dialog aufwendig zu implementieren.
+Problemen einen Dialog zur Korrektur dem Anwender anbieten. 
  
-  Eine andere Option wäre es, dies Codezeilen einfach einzufügen und die Erkennung und Lösung der
-  Probleme der IDE zu überlassen. Gerade bei C\# gibt es mit Resharper viele
-  Refactorisierungs-Tools, die einem bei der Lösung solcher Probleme unterstützen.
+Eine andere Option wäre es, dies Codezeilen einfach einzufügen und die Erkennung und Lösung der Probleme der IDE zu überlassen. Gerade bei C\# gibt es mit Resharper viele
+Refactorisierungs-Tools, die einem bei der Lösung solcher Probleme unterstützen.
 
 
 
@@ -210,7 +204,7 @@ Automatisches Spacing & hoch ( aber nicht unbedingt perfekt)\\ \hline
 Den Datenfluss einer Integration erkennen und ihn in ein Flow Design Diagramm übertragen & hoch\\ \hline
 Erkennen, ob es sich bei der Methode um eine Operation oder Integration handelt & hoch\\ \hline
 Umgang mit Methoden die nicht das IOSP befolgen & mittel\\ \hline
-Speichern der Inhalte, die nicht im Diagramm dargestellt werden können. & mittel\\ \hline
+Speichern der Inhalte, die nicht im Diagramm dargestellt werden können & mittel\\ \hline
 \end{tabularx}
 \caption{Anforderungen der Diagramm-Generierung}
 \end{table}
@@ -222,7 +216,7 @@ Speichern der Inhalte, die nicht im Diagramm dargestellt werden können. & mitte
 Unbedingt notwendig, auch wenn es nur sehr rudimentär umgesetzt wird, ansonsten liegen
 alle Funktionseinheiten nach dem Erstellen unübersichtlich auf einem Punkt aufeinander.
 Falls das Automatische Spacing an manchen Stellen nicht perfekt funktionieren
-sollte, kann eine gute Usability ( Selektierungs- und Verschiebungsfeatures)
+sollte, kann eine gute Usability (Selektierungs- und Verschiebungsfeatures)
 hier dieser Imperfektion leichter verschmerzbarer machen.
 
 \subsubsection{Schwierigkeiten}
@@ -314,9 +308,8 @@ manchen Stellen etwas vom original Abweichen.
 sind.
 \end{itemize}
 
+\pagebreak
 \emph{Mehrere Ausgänge}
-
-
 
 \includegraphics[width=.9\linewidth]{./img/NotationChanges1.jpg}
 \bigskip
@@ -340,8 +333,8 @@ Anwender die nötige Information in der Nähe des Datenstroms schnell ersichtlic
 platzieren kann, wo die Daten auch vorkommen.
 
 Nachteil wäre, dass der Algorithmus zum automatischen Spacing komplizierter
-werden würde, da nun auch eine sinnvolle Platzierung der Datentypen nun mit
-berücksichtigen werden müsste.
+werden würde, da nun auch eine sinnvolle Platzierung der Datentypen mit
+berücksichtigt werden müsste.
 Ein weiteres Problem dieser Lösung taucht auf, sobald der Anwender an unterschiedlichen
 Positionen im Diagramm den selben Datentypen verwendet. In diesem Fall müssten Doppelungen erlaubt
 sein, oder der Anwender würde an einer Stelle nicht die Information haben, worum
@@ -359,8 +352,7 @@ den Anwender subtil auffordert diesen zu definieren.
 Um den Vorteil einer Box innerhalb des Diagrammes etwas zu entkräften, könnten
 die Einträge in der Liste kontextsensitiv sein: Wenn der Anwender in ein
 Textfeld eines Datenstromes klickt, könnte die Liste nur jene Datentypen
-anzeigen, die in dem Textfeld vorhanden sind. Beim klick auf eine leere Fläche (
-defokussieren des Textfeldes) würden wieder alle Datentypen im gesamten Diagramm
+anzeigen, die in dem Textfeld vorhanden sind. Beim klick auf eine leere Fläche (defokussieren des Textfeldes) würden wieder alle Datentypen im gesamten Diagramm
 angezeigt werden. Des weiteren wäre eine visuelle Hervorhebung von nicht
 verwendeten Datentypen auch denkbar.
 \bigskip
@@ -387,15 +379,15 @@ Grund - diese Information im Bild haben möchte.
 \section{Darstellung von Joined Inputs \& Split Outputs}
 
 Datenströme können aus verschieden Quellen stammen und an einer Funktionseinheit
-zusammenlaufen oder aus einer Quelle an viele andere Funktionseinheiten weitergereicht werden. Flow Design bietet hierfür die Pipe-Notation, oder die s.g. Joined Inputs und Split Outputs an. 
+zusammenlaufen oder aus einer Quelle an viele andere Funktionseinheiten weitergereicht werden. Flow Design bietet hierfür die Pipe-Notation, oder die sog. Joined Inputs und Split Outputs an. 
 
 \bigskip
 
 Vorteile der Pipe-Notation:
 
 \begin{itemize}
-\item Einfacher zu realisieren auf GUI Seite ( Automatisches Spacing aufgrund der
-geringeren Anzahl an Pfeilen einfacher umzusetzen
+\item Einfacher zu realisieren auf GUI Seite (Automatisches Spacing aufgrund der
+geringeren Anzahl an Pfeilen einfacher umzusetzen)
 \item Pfeile müssen seltener große Distanzen überbrücken, was das Diagramm weniger
 chaotisch wirken lässt
 \end{itemize}
@@ -417,17 +409,17 @@ eine möglichst freie Gestaltung, wie beim Zeichnen auf dem Papier, zu
 gewährleisten. Der Anwender soll die Freiheit haben, nicht valide Verbindungen
 zu erstellen, die er möglicherweise erst nach dem Verbinden dann entsprechend
 anpasst. Eine dezente farbliche Hervorhebung soll als Feedback des
-Validierungsprozesses ( möglicherweise indem man den Pfeil einfärbt) ausreichen. Mögliche Validierungsfehler wären:
+Validierungsprozesses (möglicherweise indem man den Pfeil einfärbt) ausreichen. Mögliche Validierungsfehler wären:
 \begin{itemize}
-\item Pipe-Notation : Überschneidung von Datentypen.
-\item Fehlende Daten : Nicht alle vom Eingang der Funktionseinheit verlangten Daten
+\item Pipe-Notation: Überschneidung von Datentypen.
+\item Fehlende Daten: Nicht alle vom Eingang der Funktionseinheit verlangten Daten
 sind im Datenfluss enthalten.
 \end{itemize}
 
 Im Grunde wäre jedoch auch eine Generierung von jeglichen Flow Design Diagrammen
 möglich, würde man folgende Regeln einführen:
 
-Der Graph wird zurück gelaufen, bis ein passender Datentype
+Der Graph wird zurück gelaufen, bis ein passender Datentyp
 gefunden wird (das erste Vorkommen wird genommen). Falls der Datentyp nicht
 gefunden wird, wird er in der Integration als lokale Variable deklariert und mit einem Standardwert initialisiert.
 
@@ -437,5 +429,5 @@ gefunden wird, wird er in der Integration als lokale Variable deklariert und mit
 Die Notation der Daten der Datenflüssen besteht aus einer einfachen Syntax. Diese muss zwingend eingehalten
  werden, damit eine Generierung des Codes möglich ist.
  Eine rote gewellte Linie unterhalb des nicht validen Textes soll dem Anwender
- anzeigen, dass ein Syntaxfehler vorhanden ist.
+ anzeigen, dass ein Syntaxfehler vorliegt.
 

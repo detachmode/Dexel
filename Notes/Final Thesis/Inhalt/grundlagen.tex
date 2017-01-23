@@ -16,7 +16,7 @@ Software kann leichter auf solche Änderungen angepasst werden.
 Es bedarf zwar anfänglich mehr Zeit ein Feature zu implementieren, dass den CCD Prinzipien entspricht, auf lange Sicht steigt jedoch dieser Zeitaufwand nicht mit jedem neuen Feature stark
 an. Im Vergleich dazu steigt bei einer unsauber programmierten Software der Zeitaufwand ein neues
 Feature zu implementierten mit der Anzahl an bereits implementieren Features
-exponentiell an \footnote{\url{http://clean-code-developer.de/das-wertesystem/\#Evolvierbarkeit}}.
+exponentiell an \footcite{EVOLVIERBARKEIT}.
 Irgendwann erreicht der Quellcode der Software dann einen Punkt, an
 dem der Zeitaufwand ein neues Feature zu implementieren derart groß geworden ist, dass es besser ist die Software neu zu schreiben, anstatt sie anzupassen.
 
@@ -40,7 +40,7 @@ einfach zu befolgen sind und man erhält fast automatisch einen Code, der ein Gr
 
 \section{CCD Prinzipien}
 
-Flow Design legt den Schwerpunkt vor allem auf folgende Prinzipien von CCD \footnote{\url{http://clean-code-developer.de/die-grade/roter-grad/}}:
+Flow Design legt den Schwerpunkt vor allem auf folgende Prinzipien von CCD \footcite{ROTERGRAD}
 
 \bigskip
 
@@ -127,7 +127,6 @@ Orthogonalität erfüllt.
 
 \section{Weitere Prinzipien die Beachtung finden sollen}
 
-%TODO Punkt setzen? Halbsätze auch ok hier?
 \bigskip
 \begin{table}[H]
 	\centering
@@ -495,8 +494,6 @@ Klasse wird auch als Provider bezeichnet.
 Den Kreis kann man sich bildlich wie eine Hand vorstellen, an der sich die
 Funktionseinheit festhält, und dadurch eine Abhängigkeit symbolisiert.
 
-\pagebreak
-
 \section{GUIS / Programmstart/ Ende}
 
 \begin{figure}[H]
@@ -761,7 +758,7 @@ Das so etwas nun nicht mehr erlaubt ist, braucht eine gewissen Umgewöhnungszeit
 \bigskip
 
 Hier nun die Umsetzung in Flow Design mit einfachsten Mitteln:
-
+\\
 \begin{lstlisting}[caption=FormatAndPrintStrings Variante 1]
 // Integration
 static void FormatAndPrintStrings(List<string> lines)
@@ -802,7 +799,7 @@ Als Flow Design dargestellt, sieht der Code folgendermaßen aus:
 
 
 Die Methode wurde aufgeteilt in eine Integration (\texttt{FormatAndPrintStrings}) und zwei Operationen.
-Im ersten Beispiel hat die Methode zwei Aufgaben erfüllt, sie hat die Formatierung-Methode integriert und
+Im ersten Beispiel hat die Methode zwei Aufgaben erfüllt, sie hat die \\ Formatierung-Methode integriert und
 das Ergebnis ausgegeben.
 
 Nun sind Integration, Ausgabe und Formatierung sauber getrennt.
@@ -817,7 +814,7 @@ einer extra Methode  befand.
 \bigskip
 
 Elegantere Lösung mit Actions:
-
+\\
 \begin{lstlisting}[caption=FormatAndPrintStrings Variante 2]
 // Integrationen
 static void FormatAndPrintStrings(List<string> lines)
@@ -859,7 +856,7 @@ Als Flow Design dargestellt, sieht der Code folgendermaßen aus:
 
 
 Noch eleganter mit Actions und Lambdas:
-
+\\
 \begin{lstlisting}[caption=FormatAndPrintStrings Variante 3]
 static void FormatAndPrintStrings(List<string> lines)
 {
@@ -893,7 +890,7 @@ zusammengefasst unter dem Namen LINQ (Language-Integrated Query).
 
 \bigskip
 Mit Hilfe von LINQ lässt sich obiges Beispiel zu einem IOSP konformen Einzeiler reduzieren.
-
+\\
 \begin{lstlisting}[caption=FormatAndPrintStrings Variante LINQ]
 static void FormatAndPrintStrings(List<string> lines)
 {
@@ -951,7 +948,7 @@ Im folgenden Abschnitt werden hier nur ein paar der am häufigsten verwendeten M
 Folgende Methoden verändern den Datenstrom und liefern einen neuen Datenstrom
 zurück (mit Ausnahme von ForEach).
 
-\bigskip
+
 \begin{table}[H]
 	\centering
 \begin{tabularx}{\textwidth}{|p{130 pt}|X|}
@@ -1088,39 +1085,33 @@ abgebrochen. Wenn es nicht die 42 war, dann wird der int-Wert nach außen gereic
 Wenn der Datenstrom abbricht, returned die Main-Methode und das Programm wird beendet.
 
 \item Implementation
-
-
+\\
 \begin{lstlisting} [caption=Find the answer Implementation]
-class Program
+static void Main()
 {
-  static void Main()
-  {
-    IEnumerable<int> numbers = ReadNumbersFromCmd();
-    IEnumerable<int> answer = FindTheAnswer(numbers);
-    PrintNumbers(answer);
-  }
+	IEnumerable<int> numbers = ReadNumbersFromCmd();
+	IEnumerable<int> answer = FindTheAnswer(numbers);
+	PrintNumbers(answer);
+}
 
-  public static IEnumerable<int> ReadNumbersFromCmd()
-  {
-    while (true)
-    {
-      var line = Console.ReadLine();
-      yield return int.Parse(line);
-    }
-  }
+public static IEnumerable<int> ReadNumbersFromCmd()
+{
+	while (true)
+	{
+		var line = Console.ReadLine();
+		yield return int.Parse(line);
+	}
+}
 
-  private static IEnumerable<int> FindTheAnswer(IEnumerable<int> numbers)
-  {
-    return numbers.TakeWhile(x => x != 42);
-  }
+private static IEnumerable<int> FindTheAnswer( IEnumerable<int> numbers)
+{
+	return numbers.TakeWhile(x => x != 42);
+}
 
-  private static void PrintNumbers(IEnumerable<int> numbers)
-  {
-    foreach (var number in numbers)
-    {
-      Console.WriteLine(number);
-    }
-  }
+private static void PrintNumbers(IEnumerable<int> numbers)
+{
+	foreach (var number in numbers)    
+		Console.WriteLine(number);    
 }
 \end{lstlisting}
 
@@ -1158,7 +1149,7 @@ und die übergeordnete Integration ruft G und H in einem Lambda-Ausdruck auf.
 Die dritte Möglichkeit besteht darin Events zu nutzen.
 Leider bedarf es dann bei der Benutzung der API mehr Vorsicht, da man sich vorher auf ein Event registrieren muss, bevor man
 die gewünschte Funktion aufrufen kann.
-
+\\
 \begin{lstlisting}[caption= Mehrere Empfänger eines Outputs]
 static void Main()
 { 
@@ -1216,6 +1207,7 @@ If-Else-Logik verwendet wird.
 \pagebreak
 
 Ein typischer Programmierstil in C\# veranschaulicht folgendes Beispiel:
+\\
 \begin{lstlisting}[caption= {Typerischer Programmierstil, der nicht IOSP-konform ist}]
 static void CheckAndSaveToFile(string inputstring)
 {
@@ -1245,7 +1237,7 @@ die ausgelagerte Methode zu extrahieren und die zwei möglichen Ausgänge als Ac
 in die Methode zu übergeben. Mithilfe der \enquote{Named Parameter} lässt sich die
 Leserlichkeit weiter steigern (vor allem wenn es mehr als zwei Ausgänge
 gibt, da man jedem Ausgang einen sinnvollen Namen geben kann).
-
+\\
 \begin{lstlisting}[caption= {IOSP-konforme Variante}]
 static void CheckAndSaveToFile(string inputstring)
 {
@@ -1289,7 +1281,7 @@ Eine Methode die eine andere Methode über ein \texttt{Func} Methodenzeiger aufr
 würde zwar das IOSP erfüllen - die Operation würde die andere Funktion nicht
 kennen - jedoch würde trotzdem eine funktionale Abhängigkeit entstehen.
 Aus diesem Grund ist das nachfolgende Beispiel nicht Flow Design konform, da es das PoMO verletzt.
-
+\\
 \begin{lstlisting}[caption=Auf Rückgabewert warten]
 static List<string> FormatStrings(List<string> lines , Func<string,string> formatFunc )
 {

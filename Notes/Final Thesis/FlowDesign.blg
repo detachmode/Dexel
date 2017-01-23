@@ -1,15 +1,15 @@
 [0] Config.pm:354> INFO - This is Biber 2.7
 [0] Config.pm:357> INFO - Logfile is 'FlowDesign.blg'
-[26] biber-MSWIN32:303> INFO - === 
-[45] Biber.pm:359> INFO - Reading 'FlowDesign.bcf'
-[123] Biber.pm:832> INFO - Using all citekeys in bib section 0
-[134] Biber.pm:3670> INFO - Processing section 0
-[150] Biber.pm:3840> INFO - Looking for bibtex format file 'ref.bib' for section 0
-[154] bibtex.pm:1435> INFO - Decoding LaTeX character macros into UTF-8
-[161] bibtex.pm:1292> INFO - Found BibTeX data source 'ref.bib'
-[204] UCollate.pm:68> INFO - Overriding locale 'de-DE' defaults 'variable = shifted' with 'variable = non-ignorable'
-[204] UCollate.pm:68> INFO - Overriding locale 'de-DE' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[204] Biber.pm:3499> INFO - Sorting list 'anyt/global/' of type 'entry' with scheme 'anyt' and locale 'de-DE'
-[204] Biber.pm:3505> INFO - No sort tailoring available for locale 'de-DE'
-[212] bbl.pm:608> INFO - Writing 'FlowDesign.bbl' with encoding 'UTF-8'
-[214] bbl.pm:712> INFO - Output to FlowDesign.bbl
+[33] biber-MSWIN64:303> INFO - === 
+[58] Biber.pm:359> INFO - Reading 'FlowDesign.bcf'
+[149] Biber.pm:832> INFO - Using all citekeys in bib section 0
+[165] Biber.pm:3670> INFO - Processing section 0
+[189] Biber.pm:3840> INFO - Looking for bibtex format file 'ref.bib' for section 0
+[192] bibtex.pm:1435> INFO - Decoding LaTeX character macros into UTF-8
+[198] bibtex.pm:1292> INFO - Found BibTeX data source 'ref.bib'
+[260] UCollate.pm:68> INFO - Overriding locale 'de-DE' defaults 'variable = shifted' with 'variable = non-ignorable'
+[260] UCollate.pm:68> INFO - Overriding locale 'de-DE' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[260] Biber.pm:3499> INFO - Sorting list 'anyt/global/' of type 'entry' with scheme 'anyt' and locale 'de-DE'
+[260] Biber.pm:3505> INFO - No sort tailoring available for locale 'de-DE'
+[271] bbl.pm:608> INFO - Writing 'FlowDesign.bbl' with encoding 'UTF-8'
+[273] bbl.pm:712> INFO - Output to FlowDesign.bbl

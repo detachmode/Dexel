@@ -13,16 +13,25 @@
 In diesem Kapitel soll vorgestellt werden, was in dem Zeitraum dieser
 Bachelorarbeit erreicht wurde. Die Architektur der Anwendung wurde selbst nach
 Flow Design umgesetzt und bietet somit dem Leser eine Quelle an weiteren
-konkreten Beispielen aus der Praxis, wie eine Methode nach IOSP in der Praxis aussieht.
+konkreten Beispielen, wie eine Methode nach IOSP in der Praxis aussieht.
 
 Als Arbeitstitel für die Anwendung wurde der Name Dexel gewählt.
 
 \section{Übersicht über die unterschiedlichen Projekte}
 
-Die Anwendung besteht aus einer \textit{Solution}, die folgende Unterprojekte beinhaltet \footnote{Bei komplexen Funktionalitäten wurde nach TDD (Test Driven Development)
-programmiert, bei dem zuerst der Test geschrieben wird, der das zu erwartende
-Ergebnis definiert, und erst anschließend die Methode implementiert wird.
-. Diese Tests wurden in einem extra Test-Projekt für jedes Projekt zusammengefasst.}:
+
+
+
+Die Anwendung besteht aus einer \textit{Solution}, die folgende Unterprojekte beinhaltet\footnote{Bei komplexen Funktionalitäten wurde nach TDD (Test Driven Development)
+	programmiert, bei dem zuerst der Test geschrieben wird, der das zu erwartende
+	Ergebnis definiert, und erst anschließend die Methode implementiert wird. Diese Tests wurden in einem extra Test-Projekt für jedes Projekt zusammengefasst.}: 
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width=0.8\linewidth]{./img/Projekte.png} 
+		\caption{Aufbau der Assembly-Struktur und Abhänigkeiten zwischen den Dexel-Unterprojekten}
+	\end{figure}
+
+
 
 \subsubsection{Dexel.Model / Dexel.Model.Tests}
 
@@ -50,9 +59,9 @@ kennt.
 Diese Projekt beinhaltet die Logik zur Erstellung von C\#-Code aus einem Flow
 Design. Mircosoft Rosyln ist die Technik, die hier zum Erstellen von Code zum
 Einsatz kommt.
-Das Flow Design Diagramm muss in Form eines MainModels aus dem
+Das Flow Design Diagramm muss in Form eines \texttt{MainModels} aus dem
 Dexel.Model Projekt vorliegen. Aus diesem Grund gibt es eine Abhängigkeit
-zwischen diesem Projekt und dem Dexel.Model Projekt. 
+zwischen diesem und dem Dexel.Model Projekt. 
 
 Eine Trennung dieser Abhängigkeit wurde versucht umzusetzen indem gegen ein Interface
 programmiert wurde, anstatt gegen die konkrete Implementation in
@@ -60,12 +69,11 @@ Dexel.Model. Diese Interfaces der Datentypen und Manager-Klassen wurde dann
 in ein Contracts-Projekt ausgelagert, von dem alle anderen Projekte abhängig
 sein durften. Die zusätzliche Komplexität, Mehraufwand und ein Problem bei
 der Serialisierung von Datentypen, die Interfaces als Eigenschaften besaßen,
-machte es nicht wert hier eine Entkoppelung zu schaffen. Somit wurde der
-Beschluss gefällt auf die Interfaces zu verzichten.
+machte es nicht wert hier eine Entkoppelung zu schaffen. Somit wurde beschlossen die Änderung rückgängig zu machen und auf die Interfaces zu verzichten.
 
 \subsubsection{Dexel.Library}
 
-Dieses Projekt beinhaltet einige Methoden ( meist Extension-Methoden), die ein Arbeiten
+Dieses Projekt beinhaltet einige Methoden (meist Extension-Methoden), die ein Arbeiten
 nach Flow Design erleichtern. Diese wurden in ein separates Projekt
 ausgelagert, damit alle anderen Projekte darauf zugreifen können.
 
@@ -82,14 +90,14 @@ Um nachfolgende Kapitel der Realisierung und die darin enthaltenden
 Codeausschnitte verstehen zu können, braucht es ein Verständnis darüber, wie die
 grundlegenden Datentypen des Domänenmodells aufgebaut sind. Um die Funktionalität der
 jeweiligen Datentypen besser zu veranschaulichen, werden in diesem Kapitel
-Bilder verwendet, welche die spätere Darstellung des Datentypen in der UI zeigen.
+Bilder verwendet, welche die spätere Darstellung des Datentyps in der UI zeigen.
 
 \subsubsection{MainModel}
 
-Das MainModel ist, wie der Name schon sagt, das Haupt-Modell, das alle
+Das \texttt{MainModel} ist, wie der Name schon sagt, das Haupt-Modell, das alle
 anderen Modelle per Komposition beinhaltet. Somit kann einer Methode einfach eine Objektinstanz
-eines MainModels übergeben werden und erhält dadurch alle Informationen über das aktuelle Flow Design Diagramm. 
-Das \textit{MainModel} beinhaltet alle Funktionseinheiten, alle verbindende
+eines \texttt{MainModels} übergeben werden und erhält dadurch alle Informationen über das aktuelle Flow-Design-Diagramm. 
+Das \textit{MainModel} beinhaltet alle Funktionseinheiten, alle verbindenden
 Datenströme (\textit{Connections}) und alle benutzerdefinierten Datentypen (\textit{DataTypes}).
 
 	\subsubsection{FunctionUnit}
@@ -100,17 +108,17 @@ Datenströme (\textit{Connections}) und alle benutzerdefinierten Datentypen (\te
 	\caption{Dexel-Screenshot: FunctionUnit-View}
 \end{figure}
 
-Der Name ist der Name der Funktionseinheit ( der Text, der bei der
+Die \texttt{Name}-Eigenschaft ist der Name der Funktionseinheit (der Text, der bei der
 Darstellung später innerhalb des Kreises erscheint). Dieser wird später per \textit{Binding}
 direkt an die UI gebunden. 
 
-Das IsIntegrating-Eigenschaft gibt an, ob diese Funktionseinheit eine Integration
+Die \texttt{IsIntegrating}-Eigenschaft gibt an, ob diese Funktionseinheit eine Integration
 ist und welche andere Instanzen von Funktionseinheiten sie integriert.
 Eine leere Liste besagt, dass die Funktionseinheit keine Integration ist.
 
-Die Input- und OutputStreams definieren die möglichen ein- und ausgehenden
-Datenströme der Funktionseinheiten. An diese DataStreamDefinitionen können sich DataStreams
-verbinden. Dadurch lassen sie die Datenflüsse modellieren.
+Die \texttt{Input}- und \texttt{OutputStreams} definieren die möglichen ein- und ausgehenden
+Datenströme der Funktionseinheiten. An diese \texttt{DataStreamDefinitionen} können sich \\\texttt{DataStreams}
+verbinden. Dadurch lassen sich die Datenflüsse modellieren.
 
 
 	\subsubsection{DataStreamDefinition}
@@ -124,12 +132,12 @@ verbinden. Dadurch lassen sie die Datenflüsse modellieren.
 		\end{figure}
 	
 	Eine Funktionseinheit verfügt über ein oder mehrere ein- und ausgehende
-	DataStreamDefinitionen. Diese können verbunden sein oder nicht. Wenn eine
-	Verbindung erstellt und gelöscht wird, muss deshalb auch die Connected-Eigenschaft
+	\\\texttt{DataStreamDefinitionen}. Diese können verbunden sein oder nicht. Wenn eine
+	Verbindung erstellt und gelöscht wird, muss deshalb auch die \texttt{Connected}-Eigenschaft
 	immer angepasst werden, damit das Modell valide bleibt.
-	Ob eine DataStreamDefinition verbunden ist, oder nicht, ist später
+	Ob eine \texttt{DataStreamDefinition} verbunden ist, oder nicht, ist später
 	für die Darstellung relevant.
-	Eine DataStreamDefinition kennt auch die Funktionseinheit, von der sie ein
+	Eine \texttt{DataStreamDefinition} kennt auch die Funktionseinheit, von der sie ein
 	Ein- oder Ausgang ist.
 	
 	Eine weitere grundlegende Eigenschaft ist die Benennung der Daten, die auf dem
@@ -151,19 +159,19 @@ Verbindungsklasse. Die DataStream-Klasse stellt diese Verbindungsklasse dar.
 		\end{figure}
 
 
-Ein DataStream hat ein oder mehrere Referenzen an DataStreamDefinition als
-Quellen und ein oder mehrere Referenzen an DataStreamDefinition als Ziele.
+Ein \texttt{DataStream} hat ein oder mehrere Referenzen an \texttt{DataStreamDefinition} als
+Quellen und ein oder mehrere Referenzen an \texttt{DataStreamDefinition} als Ziele.
 Um ein Datenstrom zu beschreiben, der aus mehren Quellen Daten bezieht und
-an einer Stelle zusammenläuft, wird ein DataStream benötigt, der mehrere
-Einträge in der Source-Liste besitzt und ein Eintrag in der
-Destination-Liste. Diese Datenstrom wäre dann ein Joined Input.
-Ein Datenstrom mit einer Quelle und mehreren Zielen wäre ein s.g. Split.
+an einer Stelle zusammenläuft, wird ein \texttt{DataStream} benötigt, der mehrere
+Einträge in der \texttt{Source}-Liste besitzt und ein Eintrag in der
+\texttt{Destination}-Liste. Dieser Datenstrom wäre dann ein Joined Input.
+Ein Datenstrom mit einer Quelle und mehreren Zielen wäre ein sog. Split.
 
-Die DataNames Eigenschaft beinhaltet den Text, der später in der Mitte des
+Die \texttt{DataNames}-Eigenschaft beinhaltet den Text, der später in der Mitte des
 Pfeiles dargestellt werden soll. Eine Änderung dieser Eigenschaft bedarf
-einer Aktualisierung der DataNames aller Sources und Destinations.
+einer Aktualisierung der \texttt{DataNames} aller \texttt{Sources} und \texttt{Destinations}.
 Die Aktualisierungsmethode muss die optionalen Pipe-Notation kennen und
-entsprechend dieser die Ein und Ausgänge aktualisieren.
+entsprechend dieser die Ein- und Ausgänge aktualisieren.
 
 Der aktuelle Stand der UI kann nur Datenflüsse mit einer Quelle und
 einem Ziel darstellen.
@@ -181,24 +189,23 @@ einem Ziel darstellen.
 Ein benutzerdefinierter Datentyp besteht aus einem Namen und einer Liste von mehreren
 \texttt{SubDataType}-Objekten. 
 
-Ein SubDataType besteht aus einem Namen und den Namen
-des Typen (zum Beispiel string, int oder auch ein anderen benutzerdefinierten
-Datentyp).
+Ein \texttt{SubDataType} besteht aus einem Namen und den Namen
+des Typen (zum Beispiel \texttt{string}, \texttt{int} oder auch ein anderen benutzerdefinierten Datentyp).
 
 \subsubsection{Manager-Klassen}
 
 \begin{enumerate}
-	\item MainModelManager
+	\item\texttt{MainModelManager}
 	
-	Einer der relevantesten Manager-Klassen ist die MainModelManager-Klasse,
+	Einer der relevantesten Manager-Klassen ist die \texttt{MainModelManager}-Klasse,
 	diese stellt die wichtigsten Funktionalitäten zur Verfügung die mit dem
-	Arbeiten des MainModels gebraucht werden. Einige dieser Funktionalitäten
+	Arbeiten des \texttt{MainModels} gebraucht werden. Einige dieser Funktionalitäten
 	wären: Verbinden und Trennen von Funktionseinheiten, vorwärts und rückwärts
 	Traversieren entlang des Graphen, Hinzufügen und Entfernen einer
 	Funktionseinheit von einer Integration, Hinzufügen, Löschen und Duplizieren
 	von Funktionseinheiten, oder Teile des Graphen.
 	
-	\item DataStreamManager
+	\item\texttt{DataStreamManager}
 	
 	Diese statische Klasse bietet einige Funktionalitäten, die das Arbeiten mit
 	Objekten der DataStream-Klasse vereinfachen soll.
@@ -209,25 +216,22 @@ Datentyp).
 	angepasst werden. 
 	
 	Um dies nochmal zu verdeutlichen, zwei konkrete Beispiele:
-	Falls der Datenfluss auf \textbf{(int) | (string) } geändert wurde
-	, so muss die DataNames-Eigenschaft der Source-DataStreamDefinition auf
+	Falls der Datenfluss auf \textbf{(int) | (string) } geändert wurde, so muss die \texttt{DataNames}-Eigenschaft der \\\texttt{Source-DataStreamDefinition} auf
   \textbf{(int)} gesetzt werden und die der
-	Destination-DataStreamDefinition auf \textbf{(string)}. 
-	Falls der Datenfluss auf \textbf{(double)} geändert wurde, so müssen Source-
-	und Destination-Daten auf  \textbf{(double)} gesetzt werden.\footnote{	Da aktuell nur DataStreams mit einer Source und einer Destination im Editor unterstützt
-		
+	\\\texttt{Destination-DataStreamDefinition} auf \textbf{(string)}. 
+	Falls der Datenfluss auf \textbf{(double)} geändert wurde, so müssen Quelle-
+	und Ziel-Daten auf \textbf{(double)} gesetzt werden.\footnote{Da aktuell nur \texttt{DataStreams} mit einer Quelle und einem Ziel im Editor unterstützt		
 		werden, wurde aktuell auch nur dieses Szenario implementiert. Ändert sich
 		diese Einschränkung müsste man sich Gedanken darüber machen, was in diesen
 		Fällen zu tun wäre. Ein Option wäre, die Pipe-Notation in diesen Fällen zu
-		verbieten. Die UI würde die Daten der DataStreamDefinitionen direkt
+		verbieten. Die UI würde die Daten der \texttt{DataStreamDefinitionen} direkt
 		anzeigen und der Benutzer würde diese dann direkt ändern. Der Datenstrom
-		selbst würde dann kein eigenes Textfeld besitzen und die DataNames-Eigenschaft hätte in diesen Fall keine Bedeutung. 
+		selbst würde dann kein eigenes Textfeld besitzen und die \texttt{DataNames}-Eigenschaft hätte in diesen Fall keine Bedeutung. 
 		Vielleicht wäre es dann auch besser im Modell separate Klassen
 		anzulegen für Split Outputs und Joined Input. Dadurch hätte die
-		einfache DataStream-Klasse dann anstatt einer Liste von DatastreamDefinitionen nur noch ein einfaches Feld
-		für eine Source-DataStreamDefinition und eine Destionation-DataStreamDefinition.}
-	
-	\begin{lstlisting}[caption=ChangeDatanames Methode]
+		einfache \texttt{DataStream}-Klasse dann anstatt einer Liste von \texttt{DatastreamDefinitionen} nur noch eine als Quelle und eine als Ziel.}
+\\	
+	\begin{lstlisting}[caption=\texttt{ChangeDatanames}-Methode]
 public static void ChangeDatanames(DataStream datastream, string newDatanames)
 {
 	// update datanames of connection itself
@@ -256,14 +260,14 @@ public static void ChangeDatanames(DataStream datastream, string newDatanames)
 
 \subsection{Vorstellung was erreicht wurde}
 
-Die Grundlegenden Basisfunktionen aus dem Anforderungs-Kaptitel wurden größtenteils implementiert. Hierbei kam WPF als GUI-Framework zum Einsatz.
+Die grundlegenden Basisfunktionen aus dem Anforderungs-Kaptitel wurden größtenteils implementiert. Hierbei kam WPF als GUI-Framework zum Einsatz.
 Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 
 
 \subsubsection{Erstellen von Funktionseinheiten, Verschieben, Benennen, Selektieren}
 
 	Der Zeichenbereich wurde implementiert, auf dem der Benutzer über 
-\textit{Rechtsklick->Add New Function Unit} eine erste Funktionseinheit erzeugen
+\textit{Rechtsklick -> Add New Function Unit} eine erste Funktionseinheit erzeugen
 	kann. Per Drag\&Drop kann er diese innerhalb des Zeichenbereichs frei
 	verschieben. Mit einer Rectangle-Selektion ist es mögliche mehrere
 	Funktionseinheiten zu selektieren. Selektierte Funktionseinheiten können
@@ -278,11 +282,11 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 	
 	Nach dem Erstellen einer neuen Funktionseinheit, wird diese automatisch
 	selektiert und der Tastaturfokus wird in das Textfeld des Kreises gesetzt.
-	Dadurch lässt sich diese Benennen.
+	Dadurch lässt sich diese benennen.
 	
 	Beim Klicken auf den äußeren Teil des Kreises wird die Funktionseinheit
 	selektiert. Beim Klicken auf das Textfeld, wechselt der Tastaturfokus auf
-	das Textfeld ( ein Mouseover zeigt auch an, über welchen Teil des Kreises
+	das Textfeld (ein Mouseover zeigt auch an, über welchen Teil des Kreises
 	die Maus sich gerade befindet, auch ein Klicken und Ziehen um sofort ein Teil
 	des Textes zu markieren bleibt damit dem Benutzer weiterhin möglich, so wie er es von
 	einem Textfeld gewohnt ist).
@@ -297,7 +301,7 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 \subsubsection{Erstellen/Löschen/Manipulieren von Inputs und Outputs}
 
 	Eine Funktionseinheit wird standardmäßig mit einem Eingang und einem Ausgang
-	erstellt. Die Daten die aus diesen hinein- oder herausfließen können auf
+	erstellt. Die Daten, die aus diesen hinein- oder herausfließen, können auf
 	dem Textfeld eingetragen werden. Dabei bietet diese Textfeld ein einfaches
 	Syntaxhighlighting.
 	
@@ -309,7 +313,7 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 	
 		
 	Eine Funktionseinheit kann mehr als nur einen Ausgang besitzen.
-	Das Hinzufügen eines neuen Ausgangs ist über Rechtsklick -> Add New Output möglich.
+	Das Hinzufügen eines neuen Ausgangs ist über \textit{Rechtsklick -> Add New Output} möglich.
 	Das Löschen eines Ausgangs ist ebenso möglich.
 
 	\begin{figure}[H]
@@ -341,7 +345,7 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 	Die Datennamen des Flusses werden bei nicht
 	Übereinstimmung dieser mit Hilfe der Pipe-Notation in das Textfeld des nun neu
 	erzeugten Datenstromes eingetragen. Stimmen beide überein, wird auf die Pipe-Notation
-	verzichtete.
+	verzichtet.
 	
 	
 	
@@ -383,10 +387,9 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 	\subsubsection{Definieren von Datentypen}
 
 	Eigene Datentypen können auf der rechten Seite des Editors angelegt werden.
-	Durch Rechtsklick -> Add New DataType. Außerdem zeigt der obere Button an,
+	Durch \textit{Rechtsklick -> Add New DataType}. Außerdem zeigt der obere Button an,
 	ob im aktuellen Diagramm Datenflüsse mit Daten fließen, die nicht definiert
-	sind. ( int, string, double, usw. werden automatisch ignoriert). Ein Klick
-	auf diesen erstellt für jeden nicht-definierten Datentyp einen neuen Eintrag.
+	sind (\texttt{int}, \texttt{string}, \texttt{double}, usw. werden automatisch ignoriert). Ein Klick auf diesen erstellt für jeden nicht-definierten Datentyp einen neuen Eintrag.
 	Auch Datentypen innerhalb eines eigenen Datentypen werden überprüft, ob sie 
 	bekannt sind oder nicht.
 	
@@ -404,7 +407,7 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 	Zur Navigation innerhalb des Zeichenbereichs wird das Mausrad verwendet.
 	Durch Scrollen wird in den Zeichenbereich herein und heraus gezoomt.
 	Durch gedrückt halten des Mausrades (mittlere Maustaste) und Bewegen der
-	Maus kann die Ansicht verschoben werden ( das Zeichenbereich ist endlos groß)
+	Maus kann die Ansicht verschoben werden (das Zeichenbereich ist endlos groß).
 	
 	Ein weiteres Feature besteht darin, dass ab bestimmten Zoom-Stufen die
 	Schriftgrößen der Namen der Funktionseinheiten angepasst werden und die 
@@ -422,7 +425,7 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 	\begin{itemize}
 		\item Speichern, Laden, Mergen
 		
-		Das Speichern und Laden in 3 Dateiformate wird unterstützt
+		Das Speichern und Laden in drei Dateiformate wird unterstützt
 		(yaml, json und xml - nach Dateigröße aufsteigend sortiert).
 		Auch das Laden eines anderen Flow Designs in das aktuelle geladene wird 
 		mit der Merge-Funktion unterstützt.
@@ -432,8 +435,8 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 		Wird eine Exception geworfen, die nicht behandelt wurde, so wird eine
 		allgemeine Fehlerbehandlung aufgerufen. Das Programm stürzt somit nicht ab,
 		sondern ein Dialog erscheint, mit einem Stacktrace und Informationen
-		über die geflogenen Exception. Der Benutzer kann das entscheiden, ob er
-		hier das Programm Beenden will, oder weiter den Fehler ignorieren will.
+		über die geflogenen Exception. Der Benutzer kann entscheiden, ob er
+		hier das Programm beenden, oder den Fehler ignorieren will.
 		Der Stacktrace kann gegenenfalls kopiert und an den Entwickler als
 		Bugreport zugeschickt werden.
 		
@@ -448,17 +451,16 @@ Im folgendem einige Bilder und Beschreibungen der GUI und Interaktionen.
 
 \subsection{Views / ViewModels}
 
-Das Projekt wurde nicht strikt nach MVVM-Regeln (Model-View-ViewModel) 
+Das Projekt wurde nicht strikt nach MVVM-Pattern (Model-View-ViewModel) 
 umgesetzt, jedoch bedient es sich der Idee, das es eine View gibt, die
 als Datenkontext ein ViewModel zugewiesen bekommen hat. Durch das Zuweisen eines
-Datenkontextes wird es GUI-Elementen der View ermöglicht sich an Eigenschaften des ViewModels zu
-binden. Ein Bindung bewirkt, dass sich das GUI-Element automatisch aktualisiert,
+Datenkontextes wird es GUI-Elementen der View ermöglicht sich an Eigenschaften des ViewModels/Models zu
+binden. Ein \textit{Bindung} bewirkt, dass sich das GUI-Element automatisch aktualisiert,
 sobald sich die dazugehörige Eigenschaft ändert. Eine Änderung einer
 Eigenschaft des ViewModels ändert somit automatisch die View.
 
 Die GUI besteht aus mehreren Views (xaml-Dateien) und dazugehörigen ViewModels.
-Die Aufgabe des ViewModels besteht vor allem darin, ein Domänenmodell entgegenzunehmen und dieses
-darzustellen, bzw. die aktuelle Darstellung zu aktualisieren.
+Die Aufgabe des ViewModels besteht vor allem darin, ein Domänenmodell entgegenzunehmen und dieses darzustellen, bzw. die aktuelle Darstellung zu aktualisieren.
 
 Nach jeder Änderung am Domänenmodell - zum Beispiel das Hinzufügen einer neuen
 Funktionseinheit -  dieses komplett neu zu laden (Löschen und neu Hinzufügen aller
@@ -481,21 +483,16 @@ vor, alle Events als Interaktionen zu bezeichnen und für jedes dieser
 Änderungen ein eigenen Flow Design zu erstellen. 
 Es bietet sich somit an, alle Interaktionen in einer Klasse zu sammeln.
 Diese bietet somit einen Überblick über alle Funktionalitäten der GUI.
-Da diese Integrationen sind, sind sie leicht zu verstehen (mit Ausnahmen). Die
+Da diese Integrationen sind, sind sie in der Regel leicht zu verstehen. Die
 Interaktionen rufen Methoden von anderen Klassen auf, die die Operationen am
-Mainmodel vereinfachen. Am Ende fast jeder Interaktion wird die \texttt{ViewRedraw}
-Methode aufgerufen, die das \texttt{MainViewModel} veranlasst, das Model neu zu
-laden und somit die Änderungen der Interaktion in der GUI sichtbar macht.
+\texttt{MainModel} vereinfachen. Am Ende fast jeder Interaktion wird die \texttt{ViewRedraw} Methode aufgerufen, die das \texttt{MainViewModel} veranlasst, das Modell neu zu laden und somit die Änderungen der Interaktion in der GUI sichtbar macht.
 Aus diesem Grund erwies es sich als schlecht, wenn eine Interaktion eine andere
 Interaktion aufruft, um ihre Funktionalität umzusetzen. 
 Stattdessen war es eine bessere Lösung, den Code der einen Interaktion in
-die andere zu Kopieren. Dies widerspricht zwar dem DRY Prinzip, jedoch eine
-Coderedundanz innerhalb von Integrationen stellt sich als nicht sehr schlimm
-heraus. Integrationen beinhalten schließlich keine Logik \footnote{Beim
+die andere zu kopieren. Dies widerspricht zwar dem DRY Prinzip, jedoch stellt sich heraus, dass Coderedundanzen innerhalb von Integrationen nichts Schlimmes sind. Integrationen beinhalten schließlich keine Logik \footnote{Beim
 Aufruf einer Funktionseinheit, die mehrere Outputs liefert, existiert
-eigentlich doch Logik in der Integration ( Bsp: IsIntegration: Wenn ja,
-dann X wenn nicht, dann Y). Dadurch verlieren Integrationen etwas an ihrer
-Leichtgewichtigkeit und sind nicht mehr ganz so einfach zu verstehen} und haben eine hohe
+eigentlich doch Logik in der Integration (Beispiel \texttt{IsIntegration}-Methode: Wenn ja, dann X, wenn nicht, dann Y). Dadurch verlieren Integrationen etwas an ihrer
+Leichtgewichtigkeit und sind nicht mehr ganz so einfach zu verstehen.} und haben eine hohe
 Abstraktion.
 
 Beispiel dieser Aussage:
@@ -556,25 +553,23 @@ public static FunctionUnit CreateNewOrGetFirstIntegrated(FunctionUnit currentFun
 
 
 
-	Die \texttt{AppendNewCell} Methode erzeugt eine neue Funktionseinheit und 
+	Die \texttt{AppendNewCell}-Methode erzeugt eine neue Funktionseinheit und 
 	verschiebt diese entlang der X-Postion.
-	Außerdem setzt sie den Input gleich der DataStreamDefinition die
+	Außerdem setzt sie den Input gleich der \texttt{DataStreamDefinition} die
 	übergebenen wurde und verbindet diese beide.
 	\texttt{AppendNewCell} wird durch die Tastenkombination Ctrl-Tab ausgelöst, wenn
-	sich der Tastaturfokus innerhalb eines Textfeldes einer View einer Funktionseinheit oder
-	DatastreamDefinition befindet. Bei ersterem wird der erste unverbundene
-  Ausgang als die	DataStreamDefinition genommen, an dem die neue Funktionseinheit angehängt wird \footnote{nicht Teil der gezeigten Methode} .
+	sich der Tastaturfokus innerhalb eines Textfeldes einer View einer Funktionseinheit, oder eines Ausgangs befindet. Bei dem ersten Fall wird der erste unverbundene Ausgang genommen, an dem die neue Funktionseinheit angehängt wird \footnote{nicht Teil der gezeigten Methode.} .
 	
 	Beide Methoden geben eine
 	Domänenmodell-Instanz als \texttt{object} an die GUI zurück. Die GUI-Logik findet dann die
 	dazugehörige View und setzt den Fokus auf diese.
 	
-	Beide Methoden sind Methoden aus der Interaktions-Klasse, sind werden also
+	Beide Methoden sind Methoden aus der Interaktions-Klasse, sie werden also
 	direkt aus einem Event von der GUI ausgelöst. 
-	Beide Methoden haben ähnliche Methodenaufrufe ( Neue Funktionseinheit
+	Beide Methoden haben ähnliche Methodenaufrufe (Neue Funktionseinheit
 	erzeugen, sie auf die gleiche Position zu setzten wie die der übergebenen
 	Funktionseinheit, neue Standardwerte für den Output-Stream der neuen
-	Funktionseinheit setzen, dem MainModel die neue Funktionseinheit hinzufügen
+	Funktionseinheit setzen, dem \texttt{MainModel} die neue Funktionseinheit hinzufügen
   und die Ansicht neu zu zeichnen).
   Diese könnten in eine neue Integration ausgelagert werden, hätte jedoch eine unnötige
 	Verschachtlung von Code als Auswirkung. Besser ist es hier die
@@ -590,7 +585,7 @@ public static FunctionUnit CreateNewOrGetFirstIntegrated(FunctionUnit currentFun
 \subsection{Validierung des Datenflusses - Farbliche Kennzeichnung }
 
 Eine Instanz vom Typ ValidationException kann dem ViewModel übergeben werden.
-Die ValidationException beinhaltet die Information, ob es sich um eine Fehler oder um eine Warnung handelt (Fehler wird rot markiert, Warnungen grün), welche Elemente den Fehler anzeigen sollen, sowie einen Fehlertext, der als Tooltip an dem Element angezeigt wird.
+Die ValidationException beinhaltet die Information, ob es sich um eine Fehler oder um eine Warnung handelt (Fehler werden rot markiert, Warnungen grün), welche Elemente den Fehler anzeigen sollen, sowie einen Fehlertext, der als Tooltip an dem Element angezeigt wird.
 
 \begin{figure}[H]
 	\centering
@@ -616,8 +611,7 @@ vorgestellt.
 
 \subsubsection{CSV Tabellieren -  Beispiel aus YouTube Video von Ralf Westphal und Stefan Lieser}
 
-Die Aufgabe besteht darin, den Inhalt einer CSV-Datei in eine ACSII-Tabelle zu formatieren.
-\footcite[S.12]{kata}
+Die Aufgabe besteht darin, den Inhalt einer CSV-Datei in eine ACSII-Tabelle zu formatieren \cite[S.12]{kata}.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\linewidth]{./img/csvAufgabe.png}
@@ -650,9 +644,8 @@ Nun das Flow Design umgesetzt in Dexel. Zu beachten ist, das die Split Output un
 \begin{landscape}
 \begin{figure}
 	\thispagestyle{empty}
-	    \hspace*{-1.5cm}
 	    \makebox[\linewidth]{
-	    		\includegraphics[width=1.25\linewidth]{./img/csvtabellierenDexel.png}
+	    		\includegraphics[width=1.1\linewidth]{./img/csvtabellierenDexel.png}
 	    }
 
 	\caption{CSV Tabellarisieren - Dexel Flow Design}
@@ -732,6 +725,8 @@ public static IEnumerable<Record> CSVParsen(IEnumerable<string> strings)
 Der Datenfluss in den beiden Integrationen wurde korrekt generiert. 
 Außerdem wurden alle Datentypen und Methodensignaturen der Operationen erzeugt.
 
+\pagebreak
+
 \subsubsection{Shopping Simulator - Komplexeres Beispiel}
 
 Dieses Beispiel soll zeigen, wie auch mehreren Ausgänge von Funktionseinheiten und Streams korrekt generiert werden.
@@ -742,10 +737,10 @@ Diese drei Eigenschaften werden für jeden Kunde zufällig generiert.
 Anschließend wird ein zufälliger Einkaufswagen erzeugt und die beiden Objekte (Einkaufswagen und Kunde) durchlaufen eine \texttt{Checkout}-Routine.
 Das Ergebnis wird in die Konsole ausgegeben.
 
-Eine mögliche Ausgabe - nachdem die Methodenrümpfe der Operationen von Hand implementiert wurden - wäre:
+Eine mögliche Konsolenausgabe - nachdem die Methodenrümpfe der Operationen von Hand implementiert wurden - wäre:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\linewidth]{./img/ShoppingSimulator_result.png}
+	\includegraphics[width=0.6\linewidth]{./img/ShoppingSimulator_result.png}
 	\caption{Konsolenausgabe - ShoppingSimulator}
 \end{figure}
 
@@ -755,7 +750,6 @@ Eine mögliche Ausgabe - nachdem die Methodenrümpfe der Operationen von Hand im
 	\begin{figure}
 		\thispagestyle{empty}
 		\vspace*{-1.5cm}
-		\hspace*{-2cm}
 		\makebox[\linewidth]{
 			\includegraphics[width=1.15\linewidth]{./img/shoppingSimulator.png}
 		}
@@ -882,10 +876,10 @@ Diese wären:
 	\item Generierung der Methodensignaturen einer Funktionseinheit.
 \end{itemize}
 
-Die weitaus komplexere Aufgabe: die Generierung der Methodenrümpfe einer Integration wurde nicht ganz vollständig implementiert.
-Das liegt vor allem daran, dass eine vollständige Umsetzung einiges an manuellem Testen erfordert, um herauszufinden, welche Datenströme noch falsch interpretiert werden. 
+Die Generierung der Methodenrümpfe von Integrationen wurde auch zum Großteil implementiert.
+Jedoch kann erst durch ein prototypischen Einsatz herausgefunden werden, in welchen Fällen ein Flow-Design-Diagramme noch fehlerhaft interpretiert wird. Dafür fehlt im Rahmen dieser Arbeit aber die Zeit.
 
-Die Validierung des Datenflusses ist eng an die Generierung gekoppelt und deswegen gilt das selbe auch für diese. 
+Die Validierung des Datenflusses ist eng an die Generierung gekoppelt, deswegen gilt das selbe auch für diese. 
 
 Auch bei der Generierung von Namen wird aktuell noch nicht in jedem Fall überprüft, ob es zu einer Überschneidung kommt und ob gegebenenfalls der Name angepasst werden muss.
 
@@ -893,7 +887,7 @@ Auch bei der Generierung von Namen wird aktuell noch nicht in jedem Fall überpr
 
 Um Code zu generieren muss im Editor in der Menüleiste der Eintrag Output angesteuert werden.
 Hier gibt es die Möglichkeit das aktuelle Flow Design in eine Datei auf den Desktop zu
-generieren, den Code in die Konsole auszugeben, oder den Code direkt in die Zwischenablage zu kopieren( um den erzeugten Code bequem an eine gewünschte Stelle eingefügt werden kann).
+generieren, den Code in die Konsole auszugeben, oder den Code direkt in die Zwischenablage zu kopieren (um den erzeugten Code bequem an eine gewünschte Stelle eingefügt werden kann).
 
 Außerdem gibt es die Option eine automatische Generierung einzuschalten, die
 den Code während der Bearbeitung immer neu generiert und in die Datei
@@ -907,16 +901,16 @@ Programmstart mit geöffnet wird.
 
 \subsection{Kleiner Einblick in die API von Roslyn}
 
-Das Projekt Rosyln von Microsoft ist ein .NET-Compiler, der eine API bietet, um beliebigen C\#-Quelltext zu erstellten,
+Das Projekt Rosyln von Microsoft ist ein .NET-Compiler, der eine API bietet, um beliebigen C\#- und und VB.NET-Quelltext zu erstellten,
 zu analysieren und zu modifizieren.
 
-Das hier verwendetet Paket ist: Microsoft.CodeAnalysis
+Das hier verwendetet Nuget-Paket ist: Microsoft.CodeAnalysis
 
 Der Datentypen auf dem die Methoden zum Erstellen von Code arbeitet lautet:
 \texttt{SyntaxNode} 
 
-Diese SyntaxNodes werden von einem SyntaxGenerator erstellt werden.
-Diese muss beim Initialisieren konfiguriert werden.
+Diese \texttt{SyntaxNodes} werden von einem Syntaxgenerator erstellt.
+Dieser muss beim Initialisieren konfiguriert werden.
 
 \begin{lstlisting}[caption=SyntaxGenerator für C\# erhalten]
 var workspace = new AdhocWorkspace();
@@ -926,26 +920,22 @@ var generator = SyntaxGenerator.GetGenerator(workspace, LanguageNames.CSharp);
 
 
 Das Erstellen eines Ausdruckes, Klasse oder Methode mit Hilfe von Methoden
-des SyntaxGenerators liefern am Ende immer eine SyntaxNode zurück.
+des Syntaxgenerators liefern am Ende immer eine \texttt{SyntaxNode} zurück.
 Beim Erstellen einer Methode oder Klasse kann der Inhalt des Scopes durch
-ein Array von \texttt{Syn}taxNodes bestimmt werden.
+ein Array von \texttt{SyntaxNodes} bestimmt werden.
 
 Nachfolgend ein einfaches Beispiel zum Erstellen von einem
 benutzerdefinierten Datentyp.
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.4\linewidth]{./img/Person.png}
+	\includegraphics[width=0.3\linewidth]{./img/Person.png}
 	\caption{Datentyp der generiert werden soll}
 \end{figure}
 
-
 	\subsubsection{Erzeugung eines Datentypen als einfaches Beispiel}
-
 	
 	\begin{lstlisting}[caption=Erzeugung einer Person-Klasse mit Roslyn]
-
-
 SyntaxNode fieldName = generator.FieldDeclaration(
 	name: "Name",
 	type: generator.TypeExpression( SpecialType.System_String),
@@ -1034,9 +1024,7 @@ public static Tupel<Person, int> NewPerson(int aInt, string aString)
 	
 \subsubsection{Outputs über Actions}
 
-	Ob ein Ausgang über ein Action realisiert wird, wird indirekt dadurch
-	festgelegt, dass ein Actionname angegeben wurde \footnote{Diese Regel wurde im
-		Rahmen dieser Anwendung so festgelegt}. 
+	 Durch die optionale Vergabe eines Namens für den Ausgang (\textit{Actionname})  steuert der Anwender indirekt, ob ein Ausgang durch eine Action realisiert werden soll\footnote{Diese Regel wurde im Rahmen dieser Anwendung so festgelegt.}. 
 	
 	Ausgänge müssen nicht zwingend mit
 	der Anzahl an Aufrufe der Funktionseinheit übereinstimmen. Ein Action muss
@@ -1046,8 +1034,7 @@ public static Tupel<Person, int> NewPerson(int aInt, string aString)
 	Sobald auch eine Funktionseinheit mehrere Ausgänge hat, diese jedoch nicht
 	optional sind, werden diese jedoch trotzdem als Actions realisiert, selbst wenn sie kein
 	Actionname zugeordnet bekommen haben. Der Name des Actions wird dann
-	automatisch generiert\footnote{	Durch Analyse der Datentypen. Ein
-	(Person) wird zu einem onPerson. Ein () wird zu einem continueWith}.
+	automatisch generiert\footnote{	Durch Analyse der Datentypen. Ein \textit{(Person)} wird zu einem \texttt{onPerson}. Ein \textit{()} wird zu einem \texttt{continueWith}.}.
 	
 	Durch diese Entscheidungen gibt es keine invaliden Kombinationen an
 	Ausgängen einer Funktionseinheit.
@@ -1185,21 +1172,21 @@ public class LambdaBody
 }
 		\end{lstlisting}
 		
-		Da die LambdaBody-Objekte in der Reihenfolge im IntegrationBody abgelegt
+		Da die \texttt{LambdaBody}-Objekte in der Reihenfolge im \texttt{IntegrationBody} abgelegt
 		werden, in der sie im Flow Design vorkommen, kann daraus auch später die
 		Reihenfolge der zu generierenden Methoden abgeleitet werden.
 		
 		
 		Für jede Funktionseinheit wird solch ein Objekt angelegt, auch wenn es
-		nicht innerhalb eines Lambdas vorkommt. Ist das der Fall, so ist der Wert
+		nicht innerhalb eines Lambda-Ausdrucks vorkommt. Ist das der Fall, so ist der Wert
 		\texttt{InsideLambdaOf} \texttt{null} . Alle Funktionseinheiten für die dieser Wert
 		\texttt{null} ist, befinden sich somit direkt im Scope der Integration und nicht
-		innerhalb eines Lambdas.
+		innerhalb eines Lambda-Ausdrucks.
 		
 		\item \texttt{AnalyseMatchingOutputOfIntegration}
 
 		Hat die Integration einen Ausgang der als Action realisiert werden muss, so
-		muss herausgefunden werden, welche Sub-Funkionseinheiten diesen
+		muss herausgefunden werden, welche Sub-Funktionseinheiten diesen
 		Ausgang bedienen. Dabei werden die Implementierungs-Stile der
 		beiden übereinstimmenden Ausgänge mit abgespeichert. Später bei der
 		Generierung gibt es somit vier Möglichkeiten:
@@ -1281,8 +1268,7 @@ public static string Main()
 		\end{itemize}
 			\item \texttt{AnalyseReturnToLocalReturnVariable}
 			
-			Wird der Ausgang einer Integration mit dem Rückgabewert realisiert, so muss noch herausgefunden werden, ob eine lokale Variable nötig ist, um den Rückgabewert aus
-			einem Lambda heraus zu reichen. Ist eine Return-Return-Beziehung vorhanden und befindet sich die betroffene Methode innerhalb eines Lambda-Ausdrucks, so muss der Rückgabewert in die lokale \texttt{@return}-Variable geschrieben werden.
+			Wird der Ausgang einer Integration mit dem Rückgabewert realisiert, so muss noch herausgefunden werden, ob eine lokale Variable nötig ist, um den Rückgabewert aus einem Lambda-Ausdruck heraus zu reichen. Ist eine Return-Return-Beziehung vorhanden und befindet sich die betroffene Methode innerhalb eines Lambda-Ausdrucks, so muss der Rückgabewert in die lokale \texttt{@return}-Variable geschrieben werden.
 	\end{enumerate}
 	
 
@@ -1295,4 +1281,4 @@ Da sich das Modell jedoch sauber getrennt von der GUI in
 einem separaten Unterprojekt befindet, wäre es sicherlich möglich einen anderen
 Studenten dies als Projekt zu übergeben. So hätte dieser bereits eine
 Möglichkeit seine Diagramme darzustellen, ohne sich sonderlich in die
-Codebasis von dem gesamten Dexel-Projekts einarbeiten zu müssen.
+Codebasis des gesamten Dexel-Projekts einarbeiten zu müssen.
