@@ -1,0 +1,726 @@
+FunctionUnits:
+- &o7
+  Position:
+    X: 414.46969696969694
+    Y: 12.651515151515142
+  ID: 87231731-b4a7-4ffa-9196-8e7f67867043
+  IsIntegrating:
+  - &o0
+    Position:
+      X: 305
+      Y: 142.40363636363637
+    ID: a8830e05-b0d8-4d47-a2ff-5188fd3b3c06
+    IsIntegrating: []
+    Name: create rnd start state
+    InputStreams:
+    - ID: 22c53943-4781-4eeb-b788-2ffa6622a096
+      ActionName: ''
+      DataNames: (playercount:int)
+      Parent: *o0
+    OutputStreams:
+    - &o27
+      ID: 4e0a4a7c-d566-406e-a52a-cac7513d41a7
+      ActionName: ''
+      Connected: true
+      DataNames: (World)
+      Parent: *o0
+  - &o5
+    Position:
+      X: 607.59523809523841
+      Y: 142.91734487734556
+    ID: c35ece6f-4e08-4009-b11b-586af92d1361
+    IsIntegrating:
+    - &o1
+      Position:
+        X: 520.54645354645379
+        Y: 284.65394161394227
+      ID: d9f8eeff-dd41-40c3-a7c2-e127bf85bdf6
+      IsIntegrating: []
+      Name: Determine winner
+      InputStreams:
+      - ID: 3ebdaf83-c617-4baa-bd3d-57044c38ab4b
+        ActionName: ''
+        DataNames: (World)
+        Parent: *o1
+      OutputStreams:
+      - ID: ae17113f-0750-467f-a60a-8be0cbd76c5c
+        ActionName: onWinner
+        DataNames: (p:Player)
+        Parent: *o1
+      - &o33
+        ID: e1383cb3-3912-4777-b872-1be9add20a01
+        ActionName: onNoWinnerYet
+        Connected: true
+        DataNames: ()*
+        Parent: *o1
+    - &o2
+      Position:
+        X: 593.73814665726536
+        Y: 416.73563851181541
+      ID: 98055be0-51f6-48b8-924a-bf95b31751d8
+      IsIntegrating: []
+      Name: "print world state \r\nand wait for user "
+      InputStreams:
+      - &o34
+        ID: 021605de-e1e7-40ca-82cc-a4e921772794
+        ActionName: ''
+        Connected: true
+        DataNames: (World)*
+        Parent: *o2
+      OutputStreams:
+      - &o35
+        ID: f73494eb-8abb-4108-a8b6-053ed11b8a68
+        ActionName: ''
+        Connected: true
+        DataNames: ()*
+        Parent: *o2
+    - &o3
+      Position:
+        X: 908.38240835531769
+        Y: 419.08030528295478
+      ID: 8a217b06-9f6c-4e74-ac10-66a6a3c91170
+      IsIntegrating: []
+      Name: >-
+        evaluate top card
+
+        set next player
+      InputStreams:
+      - &o36
+        ID: 46a97128-8361-4f1d-9c4a-a6c7d687ab84
+        ActionName: ''
+        Connected: true
+        DataNames: (World)*
+        Parent: *o3
+      OutputStreams:
+      - &o31
+        ID: a6dc7ee7-77ed-4627-8413-cba0c099c6c0
+        ActionName: ''
+        Connected: true
+        DataNames: ()*
+        Parent: *o3
+    - &o4
+      Position:
+        X: 1178.4963369963375
+        Y: 427.23691419691528
+      ID: 7aaa17b5-9452-4523-9682-a4dce4383cb2
+      IsIntegrating: []
+      Name: active player AI auto play
+      InputStreams:
+      - &o32
+        ID: 88153ff6-a8ce-4cb6-9b7a-85daaa36da39
+        ActionName: ''
+        Connected: true
+        DataNames: (World)*
+        Parent: *o4
+      OutputStreams:
+      - ID: 23d778b0-781e-432e-a9cb-6c761bcfe561
+        ActionName: ''
+        DataNames: ()
+        Parent: *o4
+    Name: play game
+    InputStreams:
+    - &o28
+      ID: eafcdec8-fed3-432c-afe2-14c31c21c737
+      ActionName: ''
+      Connected: true
+      DataNames: (World)
+      Parent: *o5
+    OutputStreams:
+    - &o29
+      ID: 6b82ddb7-1b51-4024-a3cf-0ccc23f47024
+      ActionName: onWinner
+      Connected: true
+      DataNames: (p:Player)
+      Parent: *o5
+  - &o6
+    Position:
+      X: 905.92823842823873
+      Y: 141.15044511044613
+    ID: c591df3d-aa4e-4bca-86b0-7d4ec6a6c354
+    IsIntegrating: []
+    Name: print Winner
+    InputStreams:
+    - &o30
+      ID: 7b241408-2416-4956-94ea-ee8500b15191
+      ActionName: ''
+      Connected: true
+      DataNames: (p:Player)
+      Parent: *o6
+    OutputStreams:
+    - ID: 2d602e0d-14da-4d3d-8177-cdc7fe906073
+      ActionName: ''
+      DataNames: ()
+      Parent: *o6
+  Name: start UNO
+  InputStreams:
+  - ID: 88d20150-a890-4ed4-a9d9-c811a56dda44
+    DataNames: (playercount:int)
+    Parent: *o7
+  OutputStreams:
+  - ID: a180625e-86a1-4802-b92f-0792571a8af1
+    DataNames: ()
+    Parent: *o7
+- *o0
+- *o5
+- *o4
+- *o1
+- *o6
+- *o3
+- *o2
+- &o8
+  Position:
+    X: 1051.9721519450613
+    Y: 1136.7683394709884
+  ID: 8c247ee1-349c-4a21-9bc7-47f4a22731ce
+  IsIntegrating: []
+  Name: evaluate top card
+  InputStreams:
+  - ID: 617a9e01-f86f-4abb-a5d2-c1bd2fea8a85
+    ActionName: ''
+    DataNames: (World)*
+    Parent: *o8
+  OutputStreams:
+  - &o41
+    ID: 9e247ae5-56a7-41ab-a2c5-3abb5f6b78e7
+    ActionName: onReverseCard
+    Connected: true
+    DataNames: ()*
+    Parent: *o8
+  - &o43
+    ID: 7dacb42e-a4fd-4368-9647-196b00d4a4b4
+    ActionName: onBlock
+    Connected: true
+    DataNames: ()*
+    Parent: *o8
+  - &o45
+    ID: 1be01cbc-d647-49bb-bd7a-23e1e4824a8e
+    ActionName: onOther
+    Connected: true
+    DataNames: ()*
+    Parent: *o8
+- &o9
+  Position:
+    X: 1753.7132034632039
+    Y: 1092.9277233877228
+  ID: e88b97fa-6c1a-47af-bfa0-92840fe80eca
+  IsIntegrating: []
+  Name: set next player
+  InputStreams:
+  - &o38
+    ID: 7afccb0d-7db1-4716-a095-48d211128920
+    ActionName: ''
+    Connected: true
+    DataNames: (World)*
+    Parent: *o9
+  OutputStreams:
+  - ID: 19b4a2ca-0f10-4347-9dbd-51c456bf92d5
+    ActionName: ''
+    DataNames: ()
+    Parent: *o9
+- &o10
+  Position:
+    X: 1486.8403021282118
+    Y: 1094.1144933171422
+  ID: d7e2470a-562b-4a40-8cf7-972e1ce78309
+  IsIntegrating: []
+  Name: reverse direction
+  InputStreams:
+  - &o42
+    ID: f939b5cf-0071-454a-bda1-e2f7d1ffa860
+    ActionName: ''
+    Connected: true
+    DataNames: (World)*
+    Parent: *o10
+  OutputStreams:
+  - &o37
+    ID: 877c188e-ef68-4c08-842e-60f9bc4bb543
+    ActionName: ''
+    Connected: true
+    DataNames: ()*
+    Parent: *o10
+- &o11
+  Position:
+    X: 1487.2846320346323
+    Y: 1176.4991519591517
+  ID: 03f754ba-e880-4cb9-b197-c12758d22e97
+  IsIntegrating: []
+  Name: set next player
+  InputStreams:
+  - &o44
+    ID: 848c45c9-b7a8-419e-a614-68d3fe71517a
+    ActionName: ''
+    Connected: true
+    DataNames: (World)*
+    Parent: *o11
+  OutputStreams:
+  - &o39
+    ID: e1360d65-097c-4fc7-af13-ee35fd2ea94d
+    ActionName: ''
+    Connected: true
+    DataNames: ()*
+    Parent: *o11
+- &o12
+  Position:
+    X: 1765.8560606060607
+    Y: 1177.2134376734375
+  ID: 5e91fa9a-6454-4995-9489-cdca0339d935
+  IsIntegrating: []
+  Name: set next player
+  InputStreams:
+  - &o40
+    ID: ec2062ca-82b3-46da-8323-c984049c644a
+    ActionName: ''
+    Connected: true
+    DataNames: (World)*
+    Parent: *o12
+  OutputStreams:
+  - ID: e382d6b6-74ea-4f06-894e-adf6884209d9
+    ActionName: ''
+    DataNames: ()
+    Parent: *o12
+- &o13
+  Position:
+    X: 1492.2846320346323
+    Y: 1260.0705805305802
+  ID: a902416e-66c3-4c33-b028-04cd23d47eb8
+  IsIntegrating: []
+  Name: set next player
+  InputStreams:
+  - &o46
+    ID: 49c21c29-e74e-4f38-a0e6-ea5588636a9b
+    ActionName: ''
+    Connected: true
+    DataNames: (World)*
+    Parent: *o13
+  OutputStreams:
+  - ID: a39dccc1-0b29-4038-9bca-b84973e265a5
+    ActionName: ''
+    DataNames: ()
+    Parent: *o13
+- &o14
+  Position:
+    X: 1412.0490750219849
+    Y: 948.52474972739913
+  ID: 99edf1d9-884f-4ee5-a82b-c14204283db6
+  IsIntegrating:
+  - *o8
+  - *o10
+  - *o9
+  - *o11
+  - *o12
+  - *o13
+  Name: >-
+    evaluate top card
+
+    set next player
+  InputStreams:
+  - ID: a1cede25-9e96-436d-8817-3f9a13b46059
+    ActionName: ''
+    DataNames: (World)*
+    Parent: *o14
+  OutputStreams:
+  - ID: e7aa4958-9d77-4141-9e61-c56b131ecb3b
+    ActionName: ''
+    DataNames: ()*
+    Parent: *o14
+- &o20
+  Position:
+    X: -83.857142857142776
+    Y: 967.97506493506478
+  ID: 7224b613-5948-42e3-aaac-6a434477faaf
+  IsIntegrating:
+  - &o15
+    Position:
+      X: -121.51190476190553
+      Y: 1110.3722510822511
+    ID: 21e010a0-4535-4388-b578-f8f9d63a0242
+    IsIntegrating: []
+    Name: shuffle stack
+    InputStreams:
+    - &o48
+      ID: 5d3d0dfa-ffcd-4794-9501-1747645fe756
+      ActionName: ''
+      Connected: true
+      DataNames: (World)
+      Parent: *o15
+    OutputStreams:
+    - &o49
+      ID: 930c6430-3d7c-493c-9aeb-9a16587443e1
+      ActionName: ''
+      Connected: true
+      DataNames: ()
+      Parent: *o15
+  - &o16
+    Position:
+      X: -395.48917748917734
+      Y: 1105.9404329004326
+    ID: fac89ba7-ca7a-4f95-863a-f27633af8532
+    IsIntegrating: []
+    Name: >-
+      new world with
+
+      all cards on stack
+    InputStreams:
+    - ID: 2daeb24e-8d3d-4c59-a30a-02533518d852
+      ActionName: ''
+      DataNames: ()
+      Parent: *o16
+    OutputStreams:
+    - &o47
+      ID: a05702d5-4aea-458e-854f-873218a56d25
+      ActionName: ''
+      Connected: true
+      DataNames: (World)
+      Parent: *o16
+  - &o17
+    Position:
+      X: 226.35678210678123
+      Y: 1110.1550793650793
+    ID: 882ccfa0-c15d-4c26-9434-2c498a2b885f
+    IsIntegrating: []
+    Name: create players
+    InputStreams:
+    - &o50
+      ID: 3e20f675-1409-4f83-9ccc-68630f1454b6
+      ActionName: ''
+      Connected: true
+      DataNames: (World, playercount:int)
+      Parent: *o17
+    OutputStreams:
+    - &o51
+      ID: cb26c5b4-c2f2-4af4-adb8-7232e6776877
+      ActionName: ''
+      Connected: true
+      DataNames: ()
+      Parent: *o17
+  - &o18
+    Position:
+      X: -176.55331890331922
+      Y: 1251.7712409812407
+    ID: 34358ef6-0c5a-4e3a-9c95-e17265327e5c
+    IsIntegrating: []
+    Name: >-
+      give each player 7 cards
+
+      from stack
+    InputStreams:
+    - &o52
+      ID: d3d577ce-f05a-44d7-91a8-92ffa6399551
+      ActionName: ''
+      Connected: true
+      DataNames: (World)
+      Parent: *o18
+    OutputStreams:
+    - &o53
+      ID: 753d25bd-7840-4734-b546-89a7ebb76345
+      ActionName: ''
+      Connected: true
+      DataNames: ()
+      Parent: *o18
+  - &o19
+    Position:
+      X: 150.44769119769146
+      Y: 1252.9076046176044
+    ID: ebec8d5c-9abe-4df7-a379-2964f1c9de40
+    IsIntegrating: []
+    Name: >-
+      place first card
+
+      from stack on center
+    InputStreams:
+    - &o54
+      ID: e61878bc-2cfe-4242-a562-66dd40076e56
+      ActionName: ''
+      Connected: true
+      DataNames: (World)
+      Parent: *o19
+    OutputStreams:
+    - ID: fac0d151-7787-4984-8d9f-0abfeb3e92e3
+      ActionName: ''
+      DataNames: (World)
+      Parent: *o19
+  Name: create start state
+  InputStreams:
+  - ID: b5ae7469-f647-4d81-96e5-1ddc606370b0
+    ActionName: ''
+    DataNames: (playercount:int)
+    Parent: *o20
+  OutputStreams:
+  - ID: 77692de7-f446-42cf-8dfe-e32a8b1a3300
+    ActionName: ''
+    DataNames: (World)
+    Parent: *o20
+- *o15
+- *o16
+- *o17
+- *o19
+- *o18
+- &o21
+  Position:
+    X: 2599.5737409037038
+    Y: 1088.0291638202507
+  ID: 93da84f4-f02c-4b26-8b68-c64c1e19eb9a
+  IsIntegrating: []
+  Name: check for penalty
+  InputStreams:
+  - ID: 0caab071-8dca-45bf-9a6b-b5afdd0013c5
+    ActionName: ''
+    DataNames: (World)*
+    Parent: *o21
+  OutputStreams:
+  - &o59
+    ID: 5e3fad58-3fa1-4c9e-824a-8d74a7074860
+    ActionName: onDrawTwo
+    Connected: true
+    DataNames: (World)*
+    Parent: *o21
+  - &o61
+    ID: 931c6e99-8e40-4c2e-b530-c9b205f27f9b
+    ActionName: noPenalty
+    Connected: true
+    DataNames: (World)*
+    Parent: *o21
+- &o22
+  Position:
+    X: 3236.6154075703698
+    Y: 1054.7374971535842
+  ID: 3b5f7386-8d3b-4ba6-80f4-03cb4187dd75
+  IsIntegrating: []
+  Name: >-
+    Draw 2 cards
+
+    from stack
+  InputStreams:
+  - &o60
+    ID: 8ff1c073-8bc6-48d0-8611-bb61862295f9
+    ActionName: ''
+    Connected: true
+    DataNames: (World)*
+    Parent: *o22
+  OutputStreams:
+  - ID: 6e69ce07-b24c-40c6-ae8b-ec2d277570ac
+    ActionName: ''
+    DataNames: ()
+    Parent: *o22
+- &o23
+  Position:
+    X: 2923.5833562883186
+    Y: 1179.8464715125583
+  ID: a37962c7-63d7-467c-9e93-0f792d77d0a6
+  IsIntegrating: []
+  Name: Try to play card
+  InputStreams:
+  - &o62
+    ID: 47d22ffb-80c7-43d9-912b-e141e22adb1e
+    ActionName: ''
+    Connected: true
+    DataNames: (World)*
+    Parent: *o23
+  OutputStreams:
+  - &o55
+    ID: c9fb8a93-b28d-47a9-b274-a6a576721203
+    ActionName: onCanNotPlay
+    Connected: true
+    DataNames: ()*
+    Parent: *o23
+  - ID: e3f78acd-a316-4197-9e90-4c5b5b05b06c
+    DataNames: ()
+    Parent: *o23
+- &o24
+  Position:
+    X: 3245.2021541571162
+    Y: 1164.4647698808567
+  ID: 365e343f-d0f3-4c6b-84d4-7863455f38fa
+  IsIntegrating: []
+  Name: >-
+    Draw 1 card
+
+    from stack
+  InputStreams:
+  - &o56
+    ID: 14c256d6-d434-4c7d-9593-0403c3123f3c
+    ActionName: ''
+    Connected: true
+    DataNames: (World)*
+    Parent: *o24
+  OutputStreams:
+  - &o57
+    ID: c1c63639-2c80-44dc-b921-960e74c67723
+    ActionName: ''
+    Connected: true
+    DataNames: ()*
+    Parent: *o24
+- &o25
+  Position:
+    X: 3509.0815247864862
+    Y: 1173.7727535638405
+  ID: 6f1d5117-cfcd-473e-a8ad-e1cc193513d7
+  IsIntegrating: []
+  Name: Try to play card
+  InputStreams:
+  - &o58
+    ID: 7718d5d7-b4f6-4c50-9db9-3ce79b52c06b
+    ActionName: ''
+    Connected: true
+    DataNames: (World)*
+    Parent: *o25
+  OutputStreams:
+  - ID: 8acece23-4502-4f7b-aabc-abbfc38d486c
+    DataNames: ()
+    Parent: *o25
+- &o26
+  Position:
+    X: 2844.890276390277
+    Y: 910.53994449994536
+  ID: b8d0753f-8770-48d2-8ae1-ca13d3e757b8
+  IsIntegrating:
+  - *o21
+  - *o22
+  - *o23
+  - *o24
+  - *o25
+  Name: active player AI auto play
+  InputStreams:
+  - ID: e5cfbfa8-6514-482e-ae8c-59cb2a87980a
+    ActionName: ''
+    DataNames: (World)*
+    Parent: *o26
+  OutputStreams:
+  - ID: 339b9a16-ad4a-48ea-a06d-b912f66b77d2
+    ActionName: ''
+    DataNames: ()
+    Parent: *o26
+Connections:
+- ID: f96a2b46-ddb2-4c08-b7fa-839aa71879a0
+  DataNames: (World)
+  Sources:
+  - *o27
+  Destinations:
+  - *o28
+- ID: 5f14f8c5-52f2-4e00-ad21-f82ce37f0926
+  DataNames: (p:Player)
+  Sources:
+  - *o29
+  Destinations:
+  - *o30
+- ID: 114adda8-73fe-4f85-8e96-209d7c6e49b9
+  DataNames: ()*|(World)*
+  Sources:
+  - *o31
+  Destinations:
+  - *o32
+- ID: 9359d676-6951-441c-851b-6f49cdff8a26
+  DataNames: ()* | (World)*
+  Sources:
+  - *o33
+  Destinations:
+  - *o34
+- ID: ffefa785-60de-4a40-bfc1-61f9f4368e6c
+  DataNames: ()* | (World)*
+  Sources:
+  - *o35
+  Destinations:
+  - *o36
+- ID: 76af0d66-b496-4c00-aa04-6034640902f7
+  DataNames: ()* | (World)*
+  Sources:
+  - *o37
+  Destinations:
+  - *o38
+- ID: d04b2006-cd9c-4f0c-a5f2-04be0f8114d8
+  DataNames: ()* | (World)*
+  Sources:
+  - *o39
+  Destinations:
+  - *o40
+- ID: 36fcaa38-cc18-45bd-aa36-0749dd876c91
+  DataNames: ()* | (World)*
+  Sources:
+  - *o41
+  Destinations:
+  - *o42
+- ID: 23071667-8e35-44c9-a04d-c124b1608458
+  DataNames: ()* | (World)*
+  Sources:
+  - *o43
+  Destinations:
+  - *o44
+- ID: cad6098e-1888-4ca3-842b-63929975b7c2
+  DataNames: ()* | (World)*
+  Sources:
+  - *o45
+  Destinations:
+  - *o46
+- ID: 8e5bbcf6-9dd3-4168-bbde-3901e7b8f61b
+  DataNames: (World)
+  Sources:
+  - *o47
+  Destinations:
+  - *o48
+- ID: e244bc80-bdc1-4700-84c7-fd2c02b34b7c
+  DataNames: () | (World, playercount:int)
+  Sources:
+  - *o49
+  Destinations:
+  - *o50
+- ID: d020cf5f-e4cd-47fc-b3aa-9e8df7dd656f
+  DataNames: () | (World)
+  Sources:
+  - *o51
+  Destinations:
+  - *o52
+- ID: d4f0419f-199b-4ac2-82e4-5e51cc73b5ed
+  DataNames: () | (World)
+  Sources:
+  - *o53
+  Destinations:
+  - *o54
+- ID: e3a34731-34e3-42f0-a0ae-91806f657b52
+  DataNames: ()* | (World)*
+  Sources:
+  - *o55
+  Destinations:
+  - *o56
+- ID: 955c3b09-a665-4bf7-980e-283f2e2c015d
+  DataNames: ()* | (World)*
+  Sources:
+  - *o57
+  Destinations:
+  - *o58
+- ID: caa8fd87-0e00-4602-aa71-807aa05638de
+  DataNames: (World)*
+  Sources:
+  - *o59
+  Destinations:
+  - *o60
+- ID: 156e31b5-6085-4ce5-b904-9002eada135c
+  DataNames: (World)*
+  Sources:
+  - *o61
+  Destinations:
+  - *o62
+DataTypes:
+- Name: World
+  SubDataTypes:
+  - Name: Players
+    Type: List<Player>
+  - Name: Center
+    Type: List<Card>
+  - Name: Stack
+    Type: List<Card>
+  - Name: ActivePlayer
+    Type: Player
+  - Name: ReversedDirection
+    Type: bool
+- Name: Player
+  SubDataTypes:
+  - Name: Name
+    Type: string
+  - Name: Cards
+    Type: List<Card>
+- Name: Card
+  SubDataTypes:
+  - Name: CardColor
+    Type: CardColor
+  - Name: Symbol
+    Type: CardSymbol

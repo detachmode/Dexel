@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Dexel.Library;
 using Dexel.Model.DataTypes;
 
@@ -11,8 +12,19 @@ namespace Dexel.Model.Manager
         {
             var list = CollectAllTypesFromDsds(mainmodel);
             var alltypes = list.Concat(CollectAllSubtypes(mainmodel)).ToList();
-            alltypes = FilterOutDuplicatesAndCustomTypes(alltypes, mainmodel);
+            var stripped = alltypes.Select(StripGenericType).ToList();
+            alltypes = FilterOutDuplicatesAndCustomTypes(stripped, mainmodel);
             return alltypes;
+        }
+
+        public static string StripGenericType(string s)
+        {
+            var matches = Regex.Matches(s, ".*<(.*?)>");
+            if (matches.Count == 1)
+            {
+               return matches[0].Groups[1].Value;
+            }
+            return s;
         }
 
         public static IEnumerable<string> CollectAllTypesFromDsds(MainModel mainmodel)

@@ -54,7 +54,7 @@ namespace Roslyn.Validator
 
             FunctionUnitAnalyser.GetDsdThatReturns(functionUnit, returndsd =>
             {
-                if (returndsd.DataNames.Trim() == "()")
+                if (returndsd.DataNames.Trim() == "()" || returndsd.DataNames.Trim() == "()*")
                     return; // no data 
 
                 IntegrationAnalyser.IsOutputOfIntegration(integrationBody, returndsd, onNotFound: () =>

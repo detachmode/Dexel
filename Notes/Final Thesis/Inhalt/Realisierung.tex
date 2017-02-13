@@ -762,7 +762,7 @@ Eine mögliche Konsolenausgabe - nachdem die Methodenrümpfe der Operationen von
 
 
 \begin{lstlisting}[caption=Shopping Simulator - automatisch generierter Code mit Dexel]
-// Integration
+// Integrationen
 public static void ShoppingSimulator(int customerCount)
 {
 	CreateRandomPersons(customerCount, person => {
@@ -784,6 +784,14 @@ public static void ShoppingSimulator(int customerCount)
 		});
 	});
 }
+
+public static void CreateRandomPersons(int customerCount, Action<Person> onPerson)
+{
+	CreateNewPerson(customerCount, p => {
+		var rndP = AddRndNameAndRndAge(p);
+		onPerson(AddRndBudget(rndP));
+	});
+}
 \end{lstlisting}
 
 \begin{lstlisting}[caption=Shopping Simulator - automatisch generierter Code mit Dexel]
@@ -803,16 +811,10 @@ public class Cart
 }
 \end{lstlisting}
 
+\pagebreak
 
 \begin{lstlisting}[caption=Shopping Simulator - automatisch generierter Code mit Dexel]
 // Operationen
-public static void CreateRandomPersons(int customerCount, Action<Person> onPerson)
-{
-	CreateNewPerson(customerCount, p => {
-		var rndP = AddRndNameAndRndAge(p);
-		onPerson(AddRndBudget(rndP));
-	});
-}
 
 public static Cart CreateRandomShoppingCart()
 {
