@@ -1,10 +1,10 @@
 # Dexel
-An edtior for creating Flow Designs diagramms and generating C# code out of it
+An edtior for creating Flow Design diagramms and generating C# code out of it
 
 ![Image of Dexel Editor](./Screenshots/dexel.PNG)
 
 ## Installation
-- Download latest binary built: https://github.com/detachmode/Dexel/releases/download/v1.0.0/Release.v.1.0.0.zip
+- Download latest binary build: https://github.com/detachmode/Dexel/releases/download/v1.0.0/Release.v.1.0.0.zip
 - Unzip file and run Dexel.Editor.exe
 
 ## Helpful Resources
