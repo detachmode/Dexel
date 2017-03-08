@@ -46,6 +46,7 @@ namespace Dexel.Editor
             AllocConsole();
 
             var mockMainModel = Mockdata.StartMainModel();
+            mockMainModel = CodeAnalyser.CSharpToFlowDesign.FromFile(""); // For fabian so it runs his method and shows the result on startup
             var mainviewModel = MainViewModel.Instance();
             mainviewModel.LoadFromModel(mockMainModel);
             var mainwindow = new MainWindow(mainviewModel);

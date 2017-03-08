@@ -139,6 +139,14 @@ namespace Dexel.Editor.Views
                 Interactions.LoadFromFile(openFileDialog.FileName, MainModel());
         }
 
+        private void MenuItem_LoadFromCSharp(object sender, RoutedEventArgs e)
+        {
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "C# (*.cs)|*.cs|All Files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+                Interactions.LoadFromCSharp(openFileDialog.FileName);
+        }
+
 
         private void MenuItem_Merge(object sender, RoutedEventArgs e)
         {

@@ -309,6 +309,10 @@
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CodeAnalyser\CodeAnalyser.csproj">
+      <Project>{4a23d376-6dc2-4a83-8fec-6c6ac238c7e1}</Project>
+      <Name>CodeAnalyser</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dexel.Library\Dexel.Library.csproj">
       <Project>{fa179c08-1c2a-4e4b-b708-020f235e1283}</Project>
       <Name>Dexel.Library</Name>

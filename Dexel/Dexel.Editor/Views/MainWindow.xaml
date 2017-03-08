@@ -17,6 +17,8 @@
             <MenuItem Header="FILE">
                 <MenuItem Header="New" Click="MenuItem_New"></MenuItem>
                 <Separator></Separator>
+                <MenuItem Header="Load From CSharp" Click="MenuItem_LoadFromCSharp"></MenuItem>
+                <Separator></Separator>
                 <MenuItem Header="Save as" Click="MenuItem_Save"></MenuItem>
                 <Separator></Separator>
                 <MenuItem Header="Load" Click="MenuItem_Load"></MenuItem>

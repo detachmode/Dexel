@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
+using CodeAnalyser;
 using Dexel.Editor.Common;
 using Dexel.Editor.FileIO;
 using Dexel.Editor.ViewModels;
@@ -596,6 +597,12 @@ namespace Dexel.Editor.Views
 
             ViewRedraw();
 
+        }
+
+        public static void LoadFromCSharp(string fileName)
+        {
+            var mainmodel = CSharpToFlowDesign.FromFile(fileName);
+            ViewRedraw(mainmodel);
         }
 
 
