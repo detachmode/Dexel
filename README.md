@@ -8,7 +8,7 @@ An edtior for creating Flow Designs diagramms and generating C# code out of it
 - Unzip file and run Dexel.Editor.exe
 
 ## Helpful Resources
-My bachelor thesis in german about Flow Design and this application.
+My bachelor thesis (in german) about Flow Design and this application.
 https://github.com/detachmode/Dexel/raw/master/pdf/Flow%20Design%20Bachelor%20Thesis%20(german).pdf
 
 ## Disclaimer
