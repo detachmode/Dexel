@@ -1,8 +1,5 @@
 # Dexel
-An edtior for creating Flow Designs.
-
-Additional feature:
-- Generating C# code out of Flow Design 
+An edtior for creating Flow Designs diagramms and generating C# code out of it
 
 ![Image of Dexel Editor](./Screenshots/dexel.PNG)
 
@@ -11,7 +8,7 @@ Additional feature:
 - Unzip file and run Dexel.Editor.exe
 
 ### Bachelor thesis in german:
-https://github.com/detachmode/Dexel/blob/master/pdf/Flow%20Design%20Bachelor%20Thesis%20(german).pdf
+https://github.com/detachmode/Dexel/raw/master/pdf/Flow%20Design%20Bachelor%20Thesis%20(german).pdf
 
 ### Disclaimer
 This application was created in collaboration with IT Designers Gruppe in Esslingen Germany.
