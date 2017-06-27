@@ -31,6 +31,14 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -54,12 +62,16 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\CommandBase.cs" />
+    <Compile Include="Common\ViewModelBase.cs" />
     <Compile Include="DataTypes\BaseModel.cs" />
+    <Compile Include="DataTypes\SketchRectangle.cs" />
     <Compile Include="Manager\DataStreamParser.cs" />
     <Compile Include="Manager\DataTypeManager.cs" />
     <Compile Include="DataTypes\CustomDataType.cs" />
     <Compile Include="Common\Extensions.cs" />
     <Compile Include="FileIO\JsonSaveLoad.cs" />
+    <Compile Include="Manager\SketchRectangleManager.cs" />
     <Compile Include="Mockdata\Mockdata.cs" />
     <Compile Include="DataTypes\DataStream.cs" />
     <Compile Include="DataTypes\DataStreamDefinition.cs" />

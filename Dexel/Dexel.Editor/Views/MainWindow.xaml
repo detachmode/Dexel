@@ -43,8 +43,12 @@
                 <MenuItem Header="Dark Theme" Click="MenuItem_DarkTheme"></MenuItem>
                 <MenuItem Header="Light Theme" Click="MenuItem_PrintTheme"></MenuItem>
             </MenuItem>
-            
-            <MenuItem Header="HELP">
+
+            <MenuItem Header="UI-Sketch">
+                <MenuItem Header="Open Testwindow" Click="uiSketch_OnClicked"></MenuItem>
+            </MenuItem>
+
+        <MenuItem Header="HELP">
                 <MenuItem Header="Help / Shortcuts cheatsheet" Click="help_OnClicked"></MenuItem>
             </MenuItem>
         </Menu>

@@ -204,6 +204,12 @@ namespace Dexel.Editor.Views
             Interactions.ChangeToPrintTheme();
           
         }
+
+        private void uiSketch_OnClicked(object sender, RoutedEventArgs e)
+        {
+            var uisketch= new UI_Sketches.TemporaryTestWindow();
+            uisketch.Show();
+        }
     }
 
 }

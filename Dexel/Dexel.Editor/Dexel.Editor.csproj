@@ -39,6 +39,14 @@
   <PropertyGroup>
     <StartupObject>Dexel.Editor.App</StartupObject>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <PlatformTarget>x86</PlatformTarget>
+    <OutputPath>bin\x86\Release\</OutputPath>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="ICSharpCode.AvalonEdit, Version=5.0.3.0, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -128,6 +136,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="FileIO\AutoSave.cs" />
+    <Compile Include="ViewModels\UI-Sketches\HierarchyViewModel.cs" />
+    <Compile Include="ViewModels\UI-Sketches\SketchRectangleViewModel.cs" />
     <Compile Include="Views\CustomControls\AvalonEditBehaviour.cs" />
     <Compile Include="Views\CustomControls\IntegrationBorders.cs" />
     <Compile Include="Views\CustomControls\SelectionItemsControl.cs" />
@@ -139,6 +149,15 @@
     <Compile Include="ViewModels\DrawingBoard\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\DrawingBoard\ConnectionAdapterViewModel.cs" />
     <Compile Include="ViewModels\DrawingBoard\DangelingConnectionViewModel.cs" />
+    <Compile Include="Views\UI-Sketches\HierarchyView.xaml.cs">
+      <DependentUpon>HierarchyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UI-Sketches\TemporaryTestWindow.xaml.cs">
+      <DependentUpon>TemporaryTestWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UI-Sketches\UiSketchCanvas.xaml.cs">
+      <DependentUpon>UiSketchCanvas.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UserControls\DataTypeEditor\DataTypeCard.xaml.cs">
       <DependentUpon>DataTypeCard.xaml</DependentUpon>
     </Compile>
@@ -205,6 +224,18 @@
     <Page Include="Views\Themes\Print.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\UI-Sketches\HierarchyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UI-Sketches\TemporaryTestWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UI-Sketches\UiSketchCanvas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UserControls\DataTypeEditor\DataTypeCard.xaml">
       <SubType>Designer</SubType>
