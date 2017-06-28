@@ -13,43 +13,52 @@ namespace Dexel.Editor.ViewModels.UI_Sketches
 {
     public class SketchRectangleViewModel:ViewModelBase
     {
-        #region Variablen
+        
         public SketchRectangleViewModel(SketchRectangle sr)
         {
             _id = sr.Id;
-            _position = sr.Position;
+            _x = sr.x;
+            _y = sr.y;
             _height = sr.Height;
             _width = sr.Width;
             _name = sr.Name;
             _parentId = sr.ParentId;
         }
 
-        private int _id;
-        private Point _position;
+        private Guid _id;
+        private int _x;
+        private int _y;
         private int _height;
         private int _width;
-        private int _parentId;
+        private Guid _parentId;
         private string _name;
-        private ObservableCollection<SketchRectangleViewModel> _children;
+        private ObservableCollection<SketchRectangleViewModel> _children = new ObservableCollection<SketchRectangleViewModel>();
         private bool _isSelected;
 
-        public int ID
+        #region Variablendeklarierung
+        public Guid ID
         {
             get { return _id; }
+
+        }
+
+        public int X
+        {
+            get { return _x; }
             set
             {
-                _id = value;
-                OnPropertyChanged("ID");
+                _x = value;
+                OnPropertyChanged("X");
             }
         }
 
-        public Point Position
+        public int Y
         {
-            get { return _position; }
+            get { return _y; }
             set
             {
-                _position = value;
-                OnPropertyChanged("Position");
+                _y = value;
+                OnPropertyChanged("Y");
             }
         }
 
@@ -73,14 +82,9 @@ namespace Dexel.Editor.ViewModels.UI_Sketches
             }
         }
 
-        public int ParentId
+        public Guid ParentId
         {
             get { return _parentId; }
-            set
-            {
-                _parentId = value;
-                OnPropertyChanged("ParentId");
-            }
         }
 
         public string Name
@@ -108,8 +112,6 @@ namespace Dexel.Editor.ViewModels.UI_Sketches
         {
             get
             {
-                if (_children == null)
-                    return GetChildren();
                 return _children;
             }
             set
@@ -118,16 +120,8 @@ namespace Dexel.Editor.ViewModels.UI_Sketches
                 OnPropertyChanged("Children");
             }
         }
-        #endregion
+        #endregion Variablen
 
-        public ObservableCollection<SketchRectangleViewModel> GetChildren()
-        {
-            _children = new ObservableCollection<SketchRectangleViewModel>();
-            foreach (var rectangle in SketchRectangleManager.Instance().GetChildren(ID))
-            {
-                Children.Add(new SketchRectangleViewModel(rectangle));
-            }
-            return Children;
-        }
+
     }
 }

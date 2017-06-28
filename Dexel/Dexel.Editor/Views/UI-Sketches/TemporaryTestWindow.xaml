@@ -6,17 +6,20 @@
         xmlns:local="clr-namespace:Dexel.Editor.Views.UI_Sketches"
         xmlns:views="clr-namespace:Dexel.Editor.Views.UI_Sketches"
         mc:Ignorable="d"
-        Title="TemporaryTestWindow" Height="800" Width="1280">
+        Title="TemporaryTestWindow" Height="820" Width="1280">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <views:HierarchyView Height="Auto" Grid.Column="0"/>
+        <DockPanel Grid.Column="0">
+        <views:HierarchyView Height="580" Width="Auto" DockPanel.Dock="Top" />
+            <views:SketchRectangleDetailsView DockPanel.Dock="Bottom" Height="Auto"/>
+        </DockPanel>
         <StackPanel Orientation="Horizontal" Grid.Column="1">
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
         </StackPanel>
-        <views:UiSketchCanvas Height="Auto" Grid.Column="2"/>
+        <views:UiSketchCanvas Height="Auto" Width="Auto" Grid.Column="2"/>
     </Grid>
 </Window>

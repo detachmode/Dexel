@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Dexel.Editor.Views.UI_Sketches"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         mc:Ignorable="d"
-        Height="720" Width="280" Background="{DynamicResource  BG}">
+        Height="500" Width="280" Background="{DynamicResource  BG}">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -17,13 +17,15 @@
 
         <Label Content="Hierarchie der Elemente" Foreground="{DynamicResource Foreground}" FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0"/>
         <!--<Separator Grid.Row="1" BorderBrush="DarkGray"/> -->
-        <StackPanel Grid.Row="2">
-        <TreeView x:Name="tvMain" ItemsSource="{Binding Root}" Background="{DynamicResource  BG}">
-            <TreeView.ItemTemplate>
-                <HierarchicalDataTemplate ItemsSource="{Binding Children}">
-                    <StackPanel>
+        <Button Margin = "20,10,20,10 " Grid.Row="1" Height="20" Content="Neues Element hinzufügen" Command="{Binding AddHierarchyElementCommand}"/>
+        <Grid Grid.Row="2">
+            <TreeView x:Name="tvMain" ItemsSource="{Binding Rectangles}" Background="{DynamicResource  BG}">
+                <TreeView.ItemTemplate>
+
+                    <HierarchicalDataTemplate ItemsSource="{Binding Children}">
+                        <StackPanel>
                             <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Foreground="{DynamicResource Foreground}"/>
-                        <StackPanel.Style>
+                            <StackPanel.Style>
                                 <Style>
                                     <Style.Triggers>
                                         <DataTrigger Binding="{Binding IsSelected}" Value="true">
@@ -31,25 +33,28 @@
                                         </DataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                        </StackPanel.Style>
-                    </StackPanel>
-                </HierarchicalDataTemplate>
-            </TreeView.ItemTemplate>
-            <TreeView.ItemContainerStyle>
-                <Style TargetType="{x:Type TreeViewItem}">
-                    <Setter Property="IsExpanded" Value="True"/>
-                    <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
-                </Style>
-            </TreeView.ItemContainerStyle>
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectedItemChanged">
-                    <i:InvokeCommandAction Command="{Binding SelectedCommand}" 
+                            </StackPanel.Style>
+                        </StackPanel>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+
+                <TreeView.ItemContainerStyle>
+                    <Style TargetType="{x:Type TreeViewItem}">
+                        <Setter Property="IsExpanded" Value="True"/>
+                        <Setter Property="IsSelected" Value="{Binding IsSelected}"/>
+                    </Style>
+                </TreeView.ItemContainerStyle>
+
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectedItemChanged">
+                        <i:InvokeCommandAction Command="{Binding SelectedCommand}" 
                                            CommandParameter="{Binding ElementName=tvMain, Path=SelectedItem }">
-                    </i:InvokeCommandAction>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
+                        </i:InvokeCommandAction>
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
             </TreeView>
-        </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>
 

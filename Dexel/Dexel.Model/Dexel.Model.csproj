@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\CommandBase.cs" />
+    <Compile Include="Common\DelegateCommand.cs" />
     <Compile Include="Common\ViewModelBase.cs" />
     <Compile Include="DataTypes\BaseModel.cs" />
     <Compile Include="DataTypes\SketchRectangle.cs" />

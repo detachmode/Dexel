@@ -11,18 +11,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using Dexel.Editor.ViewModels.UI_Sketches;
 
 namespace Dexel.Editor.Views.UI_Sketches
 {
     /// <summary>
-    /// Interaktionslogik für TemporaryTestWindow.xaml
+    /// Interaktionslogik für SketchRectangleDetailsView.xaml
     /// </summary>
-    public partial class TemporaryTestWindow : Window
+    public partial class SketchRectangleDetailsView
     {
-        public TemporaryTestWindow()
+        public SketchRectangleDetailsView()
         {
-            DataContext = MainUiSketchViewModel.Instance();
             InitializeComponent();
         }
     }

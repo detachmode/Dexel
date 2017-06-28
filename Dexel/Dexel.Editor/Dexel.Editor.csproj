@@ -136,7 +136,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="FileIO\AutoSave.cs" />
-    <Compile Include="ViewModels\UI-Sketches\HierarchyViewModel.cs" />
+    <Compile Include="ViewModels\UI-Sketches\MainUiSketchViewModel.cs" />
     <Compile Include="ViewModels\UI-Sketches\SketchRectangleViewModel.cs" />
     <Compile Include="Views\CustomControls\AvalonEditBehaviour.cs" />
     <Compile Include="Views\CustomControls\IntegrationBorders.cs" />
@@ -151,6 +151,9 @@
     <Compile Include="ViewModels\DrawingBoard\DangelingConnectionViewModel.cs" />
     <Compile Include="Views\UI-Sketches\HierarchyView.xaml.cs">
       <DependentUpon>HierarchyView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UI-Sketches\SketchRectangleDetailsView.xaml.cs">
+      <DependentUpon>SketchRectangleDetailsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UI-Sketches\TemporaryTestWindow.xaml.cs">
       <DependentUpon>TemporaryTestWindow.xaml</DependentUpon>
@@ -226,6 +229,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\UI-Sketches\HierarchyView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UI-Sketches\SketchRectangleDetailsView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

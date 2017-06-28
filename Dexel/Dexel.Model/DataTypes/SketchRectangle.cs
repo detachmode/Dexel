@@ -9,11 +9,12 @@ namespace Dexel.Model.DataTypes
 {
     public class SketchRectangle
     {
-        public int Id { get; set; }
-        public Point Position { get; set; }
+        public Guid Id { get; set; }
+        public int x { get; set; }
+        public int y { get; set; }
         public int Height { get; set; }
         public int Width { get; set; }
-        public int ParentId { get; set; }
+        public Guid ParentId { get; set; }
         public string Name { get; set; }
     }
 }

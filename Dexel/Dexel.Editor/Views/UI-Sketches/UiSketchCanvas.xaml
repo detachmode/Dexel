@@ -5,8 +5,29 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Dexel.Editor.Views.UI_Sketches"
         mc:Ignorable="d"
-        Height="720" Width="1000" Background="{DynamicResource  BG}">
-    <Grid>
-        
+        Background="{DynamicResource  BG}">
+    <Grid Height="Auto" Width="Auto">
+
+        <ItemsControl ItemsSource="{Binding Rectangles}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemContainerStyle>
+                <Style TargetType="ContentPresenter">
+                    <Setter Property="Canvas.Left" Value="{Binding X}"></Setter>
+                    <Setter Property="Canvas.Top" Value="{Binding Y}"></Setter>
+                </Style>
+            </ItemsControl.ItemContainerStyle>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                    <Label Content="{Binding Name}"/>
+                    <Rectangle Width="{Binding Width}" Height="{Binding Height}" Stroke="White"></Rectangle>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </UserControl>
