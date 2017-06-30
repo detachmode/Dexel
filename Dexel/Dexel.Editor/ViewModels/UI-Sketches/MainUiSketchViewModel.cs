@@ -5,9 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Dexel.Editor.Views;
 using Dexel.Model.Common;
 using Dexel.Model.Manager;
 using Dexel.Model.DataTypes;
+using Microsoft.Win32;
 
 namespace Dexel.Editor.ViewModels.UI_Sketches
 {
@@ -15,6 +17,7 @@ namespace Dexel.Editor.ViewModels.UI_Sketches
     {
         public static MainUiSketchViewModel _self;
         private ObservableCollection<SketchRectangleViewModel> _rectangles;
+        private ObservableCollection<SketchRectangleViewModel> _flattenedRectanglesCollection;
         private SketchRectangleViewModel _selected;
         private ICommand _selectedCommand;
 
@@ -46,15 +49,28 @@ namespace Dexel.Editor.ViewModels.UI_Sketches
             set
             {
                 _rectangles = value;
+                UpdateFlattenedRectanglesCollection(Rectangles);
                 OnPropertyChanged("Rectangles");
             }
         }
 
-
-        private void AddHierarchyElement()
+        public ObservableCollection<SketchRectangleViewModel> FlattenedRectanglesCollection
         {
-            if (Selected == null)
-                return;
+            get { return _flattenedRectanglesCollection; }
+            set
+            {
+                _flattenedRectanglesCollection = value;
+                OnPropertyChanged("FlattenedRectanglesCollection");
+            }
+        }
+
+        private void UpdateFlattenedRectanglesCollection(ObservableCollection<SketchRectangleViewModel> rectangleCollection)
+        {
+            FlattenedRectanglesCollection = Common.FlattenExtension.Flatten(rectangleCollection);
+        }
+
+        private void AddNewRectangleToNotFlattenedRectanglesCollection(SketchRectangleViewModel selectedSketchRectangleViewModel)
+        {
             var srtest = new SketchRectangle
             {
                 Id = Guid.NewGuid(),
@@ -69,9 +85,28 @@ namespace Dexel.Editor.ViewModels.UI_Sketches
             Selected.Children.Add(test);
         }
 
+        private void AddHierarchyElement()
+        {
+            if (Selected == null)
+                return;
+            AddNewRectangleToNotFlattenedRectanglesCollection(Selected);
+            UpdateFlattenedRectanglesCollection(Rectangles);
+            
+        }
+
         private void SetSelected(object sketchRectangle)
         {
             this.Selected = sketchRectangle as SketchRectangleViewModel;
+        }
+
+        private void AddInteractionToRectangle()
+        {
+            if (Selected == null)
+                return;
+            var openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
+            if (openFileDialog.ShowDialog() == true)
+                Selected.Interaction = openFileDialog.FileName;
         }
 
         public ICommand AddHierarchyElementCommand
@@ -89,6 +124,11 @@ namespace Dexel.Editor.ViewModels.UI_Sketches
                 }
                 return _selectedCommand;
             }
+        }
+
+        public ICommand AddInteractionToRectangleCommand
+        {
+            get { return new DelegateCommand(AddInteractionToRectangle); }
         }
     }
 }

@@ -4,14 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Dexel.Editor.Views.UI_Sketches"
+        xmlns:viewModels="clr-namespace:Dexel.Editor.ViewModels.UI_Sketches"
         mc:Ignorable="d"
         Background="{DynamicResource  BG}">
     <Grid Height="Auto" Width="Auto">
-
-        <ItemsControl ItemsSource="{Binding Rectangles}">
+        <ItemsControl ItemsSource="{Binding FlattenedRectanglesCollection}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas/>
+                    <Canvas IsItemsHost="True"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
             <ItemsControl.ItemContainerStyle>

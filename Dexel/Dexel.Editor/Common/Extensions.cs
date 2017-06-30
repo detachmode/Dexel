@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
+using Dexel.Editor.ViewModels.UI_Sketches;
 
 namespace Dexel.Editor.Common
 {
@@ -10,6 +13,16 @@ namespace Dexel.Editor.Common
             if (_lastline == line) return;
             Debug.WriteLine(line);
             _lastline = line;
+        }
+    }
+
+    public static class FlattenExtension
+    {
+        public static ObservableCollection<SketchRectangleViewModel> Flatten(
+            this ObservableCollection<SketchRectangleViewModel> notFlattenedRectangleViewModelsCollection)
+        {
+           var flattenedRectangleIEnumerable = notFlattenedRectangleViewModelsCollection.SelectMany(c => c.Children.Flatten()).Concat(notFlattenedRectangleViewModelsCollection);
+           return new ObservableCollection<SketchRectangleViewModel>(flattenedRectangleIEnumerable);
         }
     }
 

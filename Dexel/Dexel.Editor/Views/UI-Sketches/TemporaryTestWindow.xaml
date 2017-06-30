@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Dexel.Editor.Views.UI_Sketches"
         xmlns:views="clr-namespace:Dexel.Editor.Views.UI_Sketches"
         mc:Ignorable="d"
-        Title="TemporaryTestWindow" Height="820" Width="1280">
+        Title="TemporaryTestWindow" Height="840" Width="1280">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>

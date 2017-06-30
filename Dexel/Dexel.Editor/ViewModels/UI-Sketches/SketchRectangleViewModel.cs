@@ -34,6 +34,7 @@ namespace Dexel.Editor.ViewModels.UI_Sketches
         private string _name;
         private ObservableCollection<SketchRectangleViewModel> _children = new ObservableCollection<SketchRectangleViewModel>();
         private bool _isSelected;
+        private String _interaction;
 
         #region Variablendeklarierung
         public Guid ID
@@ -118,6 +119,16 @@ namespace Dexel.Editor.ViewModels.UI_Sketches
             {
                 _children = value;
                 OnPropertyChanged("Children");
+            }
+        }
+
+        public String Interaction
+        {
+            get { return _interaction; }
+            set
+            {
+                _interaction = value;
+                OnPropertyChanged("Interaction");
             }
         }
         #endregion Variablen
