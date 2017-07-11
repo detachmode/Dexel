@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Dexel.Editor.Views.Common;
+using Dexel.Editor.Views.CustomControls;
 
 namespace Dexel.Editor.Views.UI_Sketches
 {

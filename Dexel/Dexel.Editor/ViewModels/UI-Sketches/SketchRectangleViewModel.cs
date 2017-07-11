@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using Dexel.Editor.Views.DragAndDrop;
 using Dexel.Model.Common;
 using Dexel.Model.DataTypes;
 using Dexel.Model.Manager;
@@ -132,7 +134,5 @@ namespace Dexel.Editor.ViewModels.UI_Sketches
             }
         }
         #endregion Variablen
-
-
     }
 }

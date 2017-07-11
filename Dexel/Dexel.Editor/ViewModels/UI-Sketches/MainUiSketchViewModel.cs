@@ -31,7 +31,6 @@ namespace Dexel.Editor.ViewModels.UI_Sketches
         }
 
         public static MainUiSketchViewModel Instance() => _self ?? (_self = new MainUiSketchViewModel());
-
         public SketchRectangleViewModel Selected
         {
             get { return _selected; }
@@ -42,7 +41,6 @@ namespace Dexel.Editor.ViewModels.UI_Sketches
                 OnPropertyChanged("Selected");
             }
         }
-
         public ObservableCollection<SketchRectangleViewModel> Rectangles
         {
             get { return _rectangles; }
@@ -53,7 +51,6 @@ namespace Dexel.Editor.ViewModels.UI_Sketches
                 OnPropertyChanged("Rectangles");
             }
         }
-
         public ObservableCollection<SketchRectangleViewModel> FlattenedRectanglesCollection
         {
             get { return _flattenedRectanglesCollection; }

@@ -139,7 +139,9 @@
     <Compile Include="ViewModels\UI-Sketches\MainUiSketchViewModel.cs" />
     <Compile Include="ViewModels\UI-Sketches\SketchRectangleViewModel.cs" />
     <Compile Include="Views\CustomControls\AvalonEditBehaviour.cs" />
+    <Compile Include="Views\CustomControls\CustomCanvas.cs" />
     <Compile Include="Views\CustomControls\IntegrationBorders.cs" />
+    <Compile Include="Views\CustomControls\ResizingAdorner.cs" />
     <Compile Include="Views\CustomControls\SelectionItemsControl.cs" />
     <Compile Include="Common\Extensions.cs" />
     <Compile Include="Views\MouseEventMediator.cs" />

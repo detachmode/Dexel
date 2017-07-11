@@ -3,31 +3,27 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Dexel.Editor.Views.UI_Sketches"
-        xmlns:viewModels="clr-namespace:Dexel.Editor.ViewModels.UI_Sketches"
-        mc:Ignorable="d"
-        Background="{DynamicResource  BG}">
-    <Grid Height="Auto" Width="Auto">
-        <ItemsControl ItemsSource="{Binding FlattenedRectanglesCollection}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas IsItemsHost="True"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.ItemContainerStyle>
-                <Style TargetType="ContentPresenter">
-                    <Setter Property="Canvas.Left" Value="{Binding X}"></Setter>
-                    <Setter Property="Canvas.Top" Value="{Binding Y}"></Setter>
-                </Style>
-            </ItemsControl.ItemContainerStyle>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <StackPanel>
-                    <Label Content="{Binding Name}"/>
-                    <Rectangle Width="{Binding Width}" Height="{Binding Height}" Stroke="White"></Rectangle>
-                    </StackPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </Grid>
+             xmlns:cc="clr-namespace:Dexel.Editor.Views.CustomControls"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             mc:Ignorable="d"
+        Background="{DynamicResource  BG}"
+             Height="Auto" Width="Auto">
+    <ItemsControl ItemsSource="{Binding FlattenedRectanglesCollection}">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <cc:CustomCanvas Background="Transparent"/>
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemContainerStyle>
+            <Style TargetType="ContentPresenter">
+                <Setter Property="Canvas.Left" Value="{Binding X}"></Setter>
+                <Setter Property="Canvas.Top" Value="{Binding Y}"></Setter>
+            </Style>
+        </ItemsControl.ItemContainerStyle>
+        <ItemsControl.ItemTemplate>
+            <DataTemplate>
+                    <Rectangle Width="{Binding Width}" Height="{Binding Height}" Fill="Transparent" Stroke="White"/>
+            </DataTemplate>
+        </ItemsControl.ItemTemplate>
+    </ItemsControl>
 </UserControl>
