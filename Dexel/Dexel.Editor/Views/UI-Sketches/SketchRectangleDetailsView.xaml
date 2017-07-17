@@ -25,22 +25,22 @@
             </Grid.ColumnDefinitions>
 
             <Label Margin="0,0,0,5" Grid.Row="0" Grid.Column="0" Content="Name"></Label>
-            <TextBox  Text="{Binding Selected.Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center"></TextBox>
+            <TextBox  Text="{Binding Selected.Rectangle.Name, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Grid.Row="0" Grid.Column="1" VerticalContentAlignment="Center"></TextBox>
 
             <Label Margin="0,0,0,5" Grid.Row="1" Grid.Column="0" Content="Height"></Label>
-            <TextBox Text="{Binding Selected.Height, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center"></TextBox>
+            <TextBox Text="{Binding Selected.Rectangle.Height, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Grid.Row="1" Grid.Column="1" VerticalContentAlignment="Center"></TextBox>
 
             <Label Margin="0,0,0,5" Grid.Row="2" Grid.Column="0" Content="Width"></Label>
-            <TextBox Text="{Binding Selected.Width, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center"></TextBox>
+            <TextBox Text="{Binding Selected.Rectangle.Width, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Grid.Row="2" Grid.Column="1" VerticalContentAlignment="Center"></TextBox>
 
             <Label Margin="0,0,0,5" Grid.Row="3" Grid.Column="0" Content="X Position"></Label>
-            <TextBox Text="{Binding Selected.X, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center"></TextBox>
+            <TextBox Text="{Binding Selected.Rectangle.X, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Grid.Row="3" Grid.Column="1" VerticalContentAlignment="Center"></TextBox>
 
             <Label Margin="0,0,0,5" Grid.Row="4" Grid.Column="0" Content="Y Position"></Label>
-            <TextBox Text="{Binding Selected.Y, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Grid.Row="4" Grid.Column="1" VerticalContentAlignment="Center"></TextBox>
+            <TextBox Text="{Binding Selected.Rectangle.Y, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Grid.Row="4" Grid.Column="1" VerticalContentAlignment="Center"></TextBox>
 
             <Label Margin="0,0,0,5" Grid.Row="5" Grid.Column="0" Content="Interaktion"></Label>
-            <TextBox Text="{Binding Selected.Interaction, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Grid.Row="5" Grid.Column="1" VerticalContentAlignment="Center">
+            <TextBox Text="{Binding Selected.Rectangle.Interaction, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,5" Grid.Row="5" Grid.Column="1" VerticalContentAlignment="Center">
             </TextBox>
             <Button Margin="0,0,0,5" Grid.Row="5" Grid.Column="2" Width="20" Content="..." Command="{Binding AddInteractionToRectangleCommand}" />
         </Grid>

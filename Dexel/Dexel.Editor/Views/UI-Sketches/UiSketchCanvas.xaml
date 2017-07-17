@@ -3,27 +3,77 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:cc="clr-namespace:Dexel.Editor.Views.CustomControls"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             xmlns:command="http://www.galasoft.ch/mvvmlight"
+             xmlns:cc="clr-namespace:Dexel.Editor.Views.CustomControls"
+             xmlns:converter="clr-namespace:Dexel.Editor.Views.Converter"
              mc:Ignorable="d"
-        Background="{DynamicResource  BG}"
-             Height="Auto" Width="Auto">
-    <ItemsControl ItemsSource="{Binding FlattenedRectanglesCollection}">
-        <ItemsControl.ItemsPanel>
+        Background="{DynamicResource  BG}">
+    
+    
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converter:MouseButtonEventArgsToPointConverter x:Key="MouseButtonEventArgsToPointConverter" />
+        </ResourceDictionary>
+    </UserControl.Resources>
+    
+    <Grid>
+        <cc:ListBoxNoDragSelection ItemsSource="{Binding Rectangles}" Background="{DynamicResource  BG}" SelectedItem="{Binding Selected}">
+            <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
-                <cc:CustomCanvas Background="Transparent"/>
+                <Canvas Background="Transparent"/>
             </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-        <ItemsControl.ItemContainerStyle>
-            <Style TargetType="ContentPresenter">
-                <Setter Property="Canvas.Left" Value="{Binding X}"></Setter>
-                <Setter Property="Canvas.Top" Value="{Binding Y}"></Setter>
-            </Style>
-        </ItemsControl.ItemContainerStyle>
-        <ItemsControl.ItemTemplate>
-            <DataTemplate>
-                    <Rectangle Width="{Binding Width}" Height="{Binding Height}" Fill="Transparent" Stroke="White"/>
-            </DataTemplate>
-        </ItemsControl.ItemTemplate>
-    </ItemsControl>
+        </ListBox.ItemsPanel>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Canvas.Left" Value="{Binding Rectangle.X}"></Setter>
+                    <Setter Property="Canvas.Top" Value="{Binding Rectangle.Y}"></Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                     <!--  <Label DockPanel.Dock="Top" Content="{Binding Rectangle.Name}"></Label> -->
+                    <Rectangle Width="{Binding Rectangle.Width}" Height="{Binding Rectangle.Height}" Fill="Transparent" Stroke="White">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
+                                <command:EventToCommand 
+                                    Command="{Binding MouseDownCommand}" 
+                                    PassEventArgsToCommand="True"/>
+                            </i:EventTrigger >
+
+                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                <command:EventToCommand 
+                                    Command="{Binding SecondMouseDownCommand}"
+                                    EventArgsConverter="{StaticResource MouseButtonEventArgsToPointConverter}"
+                                    EventArgsConverterParameter="{Binding ElementName=LayoutRoot}"
+                                    PassEventArgsToCommand="True"/>
+                            </i:EventTrigger >
+
+                            <i:EventTrigger EventName="MouseMove">
+                                <command:EventToCommand 
+                                    Command="{Binding MouseMoveCommand}" 
+                                    EventArgsConverter="{StaticResource MouseButtonEventArgsToPointConverter}"
+                                    EventArgsConverterParameter="{Binding ElementName=LayoutRoot}"
+                                    PassEventArgsToCommand="True"/>
+                            </i:EventTrigger >
+                            <i:EventTrigger EventName="MouseLeftButtonUp">
+                                <command:EventToCommand 
+                                    Command="{Binding MouseUpCommand}" 
+                                    EventArgsConverter="{StaticResource MouseButtonEventArgsToPointConverter}"
+                                    EventArgsConverterParameter="{Binding ElementName=LayoutRoot}"
+                                    PassEventArgsToCommand="True"/>
+                            </i:EventTrigger >
+                            <i:EventTrigger EventName="MouseLeave">
+                                <command:EventToCommand 
+                                    Command="{Binding MouseUpCommand}" 
+                                    EventArgsConverter="{StaticResource MouseButtonEventArgsToPointConverter}"
+                                    EventArgsConverterParameter="{Binding ElementName=LayoutRoot}"
+                                    PassEventArgsToCommand="True"/>
+                            </i:EventTrigger >
+                        </i:Interaction.Triggers>
+                    </Rectangle>
+                </DataTemplate>
+        </ListBox.ItemTemplate>
+    </cc:ListBoxNoDragSelection>
+    </Grid>
 </UserControl>

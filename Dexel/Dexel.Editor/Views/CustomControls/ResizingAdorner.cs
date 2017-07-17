@@ -5,6 +5,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using Dexel.Editor.ViewModels.UI_Sketches;
 
 namespace Dexel.Editor.Views.CustomControls
 {
@@ -32,7 +33,6 @@ namespace Dexel.Editor.Views.CustomControls
 
             // Add handlers for resizing.
             bottomRight.DragDelta += new DragDeltaEventHandler(HandleBottomRight);
-            topRight.DragDelta += new DragDeltaEventHandler(HandleTopRight);
         }
 
         // Handler for resizing from the bottom-right.
@@ -40,6 +40,7 @@ namespace Dexel.Editor.Views.CustomControls
         {
             FrameworkElement adornedElement = this.AdornedElement as FrameworkElement;
             Thumb hitThumb = sender as Thumb;
+            var selectedRectangle = adornedElement.DataContext as SketchRectangleViewModel;
 
             if (adornedElement == null || hitThumb == null) return;
             FrameworkElement parentElement = adornedElement.Parent as FrameworkElement;
@@ -49,33 +50,10 @@ namespace Dexel.Editor.Views.CustomControls
 
             // Change the size by the amount the user drags the mouse, as long as it's larger 
             // than the width or height of an adorner, respectively.
-            adornedElement.Width = Math.Max(adornedElement.Width + args.HorizontalChange, hitThumb.DesiredSize.Width);
-            adornedElement.Height = Math.Max(args.VerticalChange + adornedElement.Height, hitThumb.DesiredSize.Height);
+            selectedRectangle.Rectangle.Width = Math.Max(adornedElement.Width + args.HorizontalChange, hitThumb.DesiredSize.Width);
+            selectedRectangle.Rectangle.Height = Math.Max(args.VerticalChange + adornedElement.Height, hitThumb.DesiredSize.Height);
         }
 
-        // Handler for resizing from the top-right.
-        void HandleTopRight(object sender, DragDeltaEventArgs args)
-        {
-            FrameworkElement adornedElement = this.AdornedElement as FrameworkElement;
-            Thumb hitThumb = sender as Thumb;
-
-            if (adornedElement == null || hitThumb == null) return;
-            FrameworkElement parentElement = adornedElement.Parent as FrameworkElement;
-
-            // Ensure that the Width and Height are properly initialized after the resize.
-            EnforceSize(adornedElement);
-
-            // Change the size by the amount the user drags the mouse, as long as it's larger 
-            // than the width or height of an adorner, respectively.
-            adornedElement.Width = Math.Max(adornedElement.Width + args.HorizontalChange, hitThumb.DesiredSize.Width);
-            //adornedElement.Height = Math.Max(adornedElement.Height - args.VerticalChange, hitThumb.DesiredSize.Height);
-
-            double height_old = adornedElement.Height;
-            double height_new = Math.Max(adornedElement.Height - args.VerticalChange, hitThumb.DesiredSize.Height);
-            double top_old = Canvas.GetTop(adornedElement);
-            adornedElement.Height = height_new;
-            Canvas.SetTop(adornedElement, top_old - (height_new - height_old));
-        }
 
         // Arrange the Adorners.
         protected override Size ArrangeOverride(Size finalSize)

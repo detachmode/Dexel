@@ -22,7 +22,7 @@ namespace Dexel.Editor.Views.UI_Sketches
     {
         public TemporaryTestWindow()
         {
-            DataContext = MainUiSketchViewModel.Instance();
+            DataContext = new MainUiSketchViewModel();
             InitializeComponent();
         }
     }

@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+using PropertyChanged;
 
 namespace Dexel.Model.DataTypes
 {
+    [Serializable]
+    [ImplementPropertyChanged]
     public class SketchRectangle
     {
         public Guid Id { get; set; }
-        public int x { get; set; }
-        public int y { get; set; }
-        public int Height { get; set; }
-        public int Width { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Height { get; set; }
+        public double Width { get; set; }
         public Guid ParentId { get; set; }
         public string Name { get; set; }
+        public string Interaction { get; set; }
     }
 }

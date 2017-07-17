@@ -13,7 +13,7 @@ namespace Dexel.Model.Manager
     {
         private SketchRectangleManager()
         {
-            _rectangles.Add(new SketchRectangle{Id = Guid.NewGuid(), Height = 100, Width = 300, Name = "Main Window", x=50,y=50});
+            _rectangles.Add(new SketchRectangle{Id = Guid.NewGuid(), Height = 100, Width = 300, Name = "Main Window", X=50,Y=50});
         }
 
         private static SketchRectangleManager _self;
@@ -27,6 +27,12 @@ namespace Dexel.Model.Manager
         public SketchRectangle GetRoot()
         {
             return _rectangles[0];
+        }
+
+        public static void MoveRectangle(SketchRectangle rectangle, double positionX, double positionY)
+        {
+           rectangle.X = positionX;
+           rectangle.Y = positionY;
         }
     }
 }

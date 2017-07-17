@@ -15,15 +15,4 @@ namespace Dexel.Editor.Common
             _lastline = line;
         }
     }
-
-    public static class FlattenExtension
-    {
-        public static ObservableCollection<SketchRectangleViewModel> Flatten(
-            this ObservableCollection<SketchRectangleViewModel> notFlattenedRectangleViewModelsCollection)
-        {
-           var flattenedRectangleIEnumerable = notFlattenedRectangleViewModelsCollection.SelectMany(c => c.Children.Flatten()).Concat(notFlattenedRectangleViewModelsCollection);
-           return new ObservableCollection<SketchRectangleViewModel>(flattenedRectangleIEnumerable);
-        }
-    }
-
 }

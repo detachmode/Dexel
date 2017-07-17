@@ -24,7 +24,7 @@
 
                     <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                         <StackPanel>
-                            <TextBlock VerticalAlignment="Center" Text="{Binding Name}" Foreground="{DynamicResource Foreground}"/>
+                            <TextBlock VerticalAlignment="Center" Text="{Binding Rectangle.Name}" Foreground="{DynamicResource Foreground}"/>
                             <StackPanel.Style>
                                 <Style>
                                     <Style.Triggers>
