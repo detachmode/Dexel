@@ -26,6 +26,18 @@ namespace Dexel.Editor.Views.UI_Sketches
         public UiSketchCanvas()
         {
             InitializeComponent();
+            
+        }
+
+
+        private void UiSketchCanvas_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            PreviewMouseDown += OnMouseDown;
+        }
+
+        private void OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            
         }
     }
 }

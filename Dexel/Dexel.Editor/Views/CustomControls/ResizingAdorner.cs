@@ -15,6 +15,8 @@ namespace Dexel.Editor.Views.CustomControls
         // The Thumbs have built-in mouse input handling.
         Thumb topLeft, topRight, bottomLeft, bottomRight;
 
+        private Thumb moveThumb;
+
         // To store and manage the adorner's visual children.
         VisualCollection visualChildren;
 
@@ -30,9 +32,12 @@ namespace Dexel.Editor.Views.CustomControls
             BuildAdornerCorner(ref topRight, Cursors.SizeNESW);
             BuildAdornerCorner(ref bottomLeft, Cursors.SizeNESW);
             BuildAdornerCorner(ref bottomRight, Cursors.SizeNWSE);
+            BuildAdornerCenter(ref moveThumb);
+
 
             // Add handlers for resizing.
             bottomRight.DragDelta += new DragDeltaEventHandler(HandleBottomRight);
+            moveThumb.DragDelta += new DragDeltaEventHandler(HandleCenter);
         }
 
         // Handler for resizing from the bottom-right.
@@ -54,6 +59,18 @@ namespace Dexel.Editor.Views.CustomControls
             selectedRectangle.Rectangle.Height = Math.Max(args.VerticalChange + adornedElement.Height, hitThumb.DesiredSize.Height);
         }
 
+        void HandleCenter(object sender, DragDeltaEventArgs args)
+        {
+            FrameworkElement adornedElement = this.AdornedElement as FrameworkElement;
+            var selectedRectangle = adornedElement.DataContext as SketchRectangleViewModel;
+
+            if (selectedRectangle != null)
+            {
+                selectedRectangle.Rectangle.X += args.HorizontalChange;
+                selectedRectangle.Rectangle.Y += args.VerticalChange;
+            }
+        }
+
 
         // Arrange the Adorners.
         protected override Size ArrangeOverride(Size finalSize)
@@ -70,6 +87,7 @@ namespace Dexel.Editor.Views.CustomControls
             topRight.Arrange(new Rect(desiredWidth - adornerWidth / 2, -adornerHeight / 2, adornerWidth, adornerHeight));
             bottomLeft.Arrange(new Rect(-adornerWidth / 2, desiredHeight - adornerHeight / 2, adornerWidth, adornerHeight));
             bottomRight.Arrange(new Rect(desiredWidth - adornerWidth / 2, desiredHeight - adornerHeight / 2, adornerWidth, adornerHeight));
+            moveThumb.Arrange(new Rect(desiredWidth - adornerWidth, desiredHeight - adornerHeight, AdornedElement.DesiredSize.Width, AdornedElement.DesiredSize.Height));
 
             // Return the final size.
             return finalSize;
@@ -90,6 +108,16 @@ namespace Dexel.Editor.Views.CustomControls
             cornerThumb.Background = new SolidColorBrush(Colors.MediumBlue);
 
             visualChildren.Add(cornerThumb);
+        }
+
+        void BuildAdornerCenter(ref Thumb moveThumb)
+        {
+            if (moveThumb != null) return;
+
+            moveThumb = new Thumb();;
+            moveThumb.Opacity = 0;
+            moveThumb.Background = new SolidColorBrush(Colors.Transparent);
+            visualChildren.Add(moveThumb);
         }
 
         // This method ensures that the Widths and Heights are initialized.  Sizing to content produces

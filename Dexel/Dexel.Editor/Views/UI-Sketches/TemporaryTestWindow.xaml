@@ -6,20 +6,40 @@
         xmlns:local="clr-namespace:Dexel.Editor.Views.UI_Sketches"
         xmlns:views="clr-namespace:Dexel.Editor.Views.UI_Sketches"
         mc:Ignorable="d"
-        Title="TemporaryTestWindow" Height="840" Width="1280">
+        Title="TemporaryTestWindow" Height="870" Width="1280">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu Grid.Row="0">
+            <MenuItem Header="File">
+                <MenuItem Header="Open.." Command="{Binding LoadSketchFromFileCommand}"/>
+                <MenuItem Header="Save as.." Command="{Binding SaveCurrentSketchCommand}"/>
+                <Separator/>
+                <MenuItem Header="Exit"/>
+            </MenuItem>
+        </Menu>
+    <Grid Grid.Row="1">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <DockPanel Grid.Column="0">
+        <DockPanel Grid.Column="0" Grid.Row="1">
         <views:HierarchyView Height="580" Width="Auto" DockPanel.Dock="Top" />
+            <ScrollViewer>
             <views:SketchRectangleDetailsView DockPanel.Dock="Bottom" Height="Auto"/>
+            </ScrollViewer>
         </DockPanel>
-        <StackPanel Orientation="Horizontal" Grid.Column="1">
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
             <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
         </StackPanel>
-        <views:UiSketchCanvas Height="Auto" Width="Auto" Grid.Column="2"/>
+        <views:UiSketchCanvas Height="Auto" Width="Auto" Grid.Column="2" Grid.Row="1"/>
+    </Grid>
     </Grid>
 </Window>

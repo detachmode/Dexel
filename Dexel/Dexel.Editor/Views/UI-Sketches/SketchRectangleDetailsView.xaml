@@ -9,19 +9,19 @@
     <StackPanel>
         <Label Content="Details" FontSize="14" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="0"/>
         <Separator Margin="0,0,0,5"/>
-    <Grid Width="270">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
+        <Grid Width="270">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="Auto"></ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <Label Margin="0,0,0,5" Grid.Row="0" Grid.Column="0" Content="Name"></Label>
@@ -44,5 +44,5 @@
             </TextBox>
             <Button Margin="0,0,0,5" Grid.Row="5" Grid.Column="2" Width="20" Content="..." Command="{Binding AddInteractionToRectangleCommand}" />
         </Grid>
-   </StackPanel>
+    </StackPanel>
 </UserControl>

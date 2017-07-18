@@ -12,7 +12,6 @@ namespace Dexel.Model.DataTypes
         public double Y { get; set; }
         public double Height { get; set; }
         public double Width { get; set; }
-        public Guid ParentId { get; set; }
         public string Name { get; set; }
         public string Interaction { get; set; }
     }

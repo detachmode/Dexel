@@ -8,7 +8,7 @@
              xmlns:cc="clr-namespace:Dexel.Editor.Views.CustomControls"
              xmlns:converter="clr-namespace:Dexel.Editor.Views.Converter"
              mc:Ignorable="d"
-        Background="{DynamicResource  BG}">
+        Background="{DynamicResource  BG}" Loaded="UiSketchCanvas_OnLoaded">
     
     
     <UserControl.Resources>
@@ -38,36 +38,6 @@
                             <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
                                 <command:EventToCommand 
                                     Command="{Binding MouseDownCommand}" 
-                                    PassEventArgsToCommand="True"/>
-                            </i:EventTrigger >
-
-                            <i:EventTrigger EventName="MouseLeftButtonDown">
-                                <command:EventToCommand 
-                                    Command="{Binding SecondMouseDownCommand}"
-                                    EventArgsConverter="{StaticResource MouseButtonEventArgsToPointConverter}"
-                                    EventArgsConverterParameter="{Binding ElementName=LayoutRoot}"
-                                    PassEventArgsToCommand="True"/>
-                            </i:EventTrigger >
-
-                            <i:EventTrigger EventName="MouseMove">
-                                <command:EventToCommand 
-                                    Command="{Binding MouseMoveCommand}" 
-                                    EventArgsConverter="{StaticResource MouseButtonEventArgsToPointConverter}"
-                                    EventArgsConverterParameter="{Binding ElementName=LayoutRoot}"
-                                    PassEventArgsToCommand="True"/>
-                            </i:EventTrigger >
-                            <i:EventTrigger EventName="MouseLeftButtonUp">
-                                <command:EventToCommand 
-                                    Command="{Binding MouseUpCommand}" 
-                                    EventArgsConverter="{StaticResource MouseButtonEventArgsToPointConverter}"
-                                    EventArgsConverterParameter="{Binding ElementName=LayoutRoot}"
-                                    PassEventArgsToCommand="True"/>
-                            </i:EventTrigger >
-                            <i:EventTrigger EventName="MouseLeave">
-                                <command:EventToCommand 
-                                    Command="{Binding MouseUpCommand}" 
-                                    EventArgsConverter="{StaticResource MouseButtonEventArgsToPointConverter}"
-                                    EventArgsConverterParameter="{Binding ElementName=LayoutRoot}"
                                     PassEventArgsToCommand="True"/>
                             </i:EventTrigger >
                         </i:Interaction.Triggers>
