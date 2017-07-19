@@ -20,26 +20,26 @@
                 <MenuItem Header="Exit"/>
             </MenuItem>
         </Menu>
-    <Grid Grid.Row="1">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <DockPanel Grid.Column="0" Grid.Row="1">
-        <views:HierarchyView Height="580" Width="Auto" DockPanel.Dock="Top" />
-            <ScrollViewer>
-            <views:SketchRectangleDetailsView DockPanel.Dock="Bottom" Height="Auto"/>
-            </ScrollViewer>
-        </DockPanel>
-        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
-            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
-        </StackPanel>
-        <views:UiSketchCanvas Height="Auto" Width="Auto" Grid.Column="2" Grid.Row="1"/>
-    </Grid>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Column="0" Grid.Row="1">
+                <views:ElementListView Height="580" Width="Auto" DockPanel.Dock="Top" />
+                <ScrollViewer>
+                    <views:SketchRectangleDetailsView DockPanel.Dock="Bottom" Height="Auto"/>
+                </ScrollViewer>
+            </DockPanel>
+            <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1">
+                <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}" />
+            </StackPanel>
+            <views:UiSketchCanvasView Height="Auto" Width="Auto" Grid.Column="2" Grid.Row="1"/>
+        </Grid>
     </Grid>
 </Window>

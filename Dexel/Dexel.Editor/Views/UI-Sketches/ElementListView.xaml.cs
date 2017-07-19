@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace Dexel.Editor.Views.UI_Sketches
 {
     /// <summary>
-    /// Interaktionslogik für HierarchyView.xaml
+    /// Interaktionslogik für ElementListView.xaml
     /// </summary>
-    public partial class HierarchyView
+    public partial class ElementListView
     {
-        public HierarchyView()
+        public ElementListView()
         {
             InitializeComponent();
         }

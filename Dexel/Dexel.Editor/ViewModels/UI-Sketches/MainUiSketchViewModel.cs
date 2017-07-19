@@ -8,6 +8,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Shapes;
 using Dexel.Editor.FileIO;
 using Dexel.Editor.Views;
@@ -36,7 +37,14 @@ namespace Dexel.Editor.ViewModels.UI_Sketches
             set
             {
                 _selected = value;
-                _selected.IsSelected = true;
+                if (Selected != null)
+                {
+                    Selected.IsSelected = true;
+                }
+                else
+                {
+                    SetSelectedStatusForRectanglesToFalse();
+                }
                 OnPropertyChanged("Selected");
             }
         }
@@ -74,9 +82,22 @@ namespace Dexel.Editor.ViewModels.UI_Sketches
             Rectangles.Add(new SketchRectangleViewModel(srtest));
         }
 
+        private void SetSelectedStatusForRectanglesToFalse()
+        {
+            foreach (var rectangle in Rectangles)
+            {
+                rectangle.IsSelected = false;
+            }
+        }
+
         public void SetSelected(object sketchRectangle)
         {
             this.Selected = sketchRectangle as SketchRectangleViewModel;
+        }
+
+        public void RemoveSelected()
+        {
+            Selected = null;
         }
 
         private void AddInteractionToRectangle()

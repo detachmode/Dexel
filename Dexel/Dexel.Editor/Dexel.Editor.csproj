@@ -164,8 +164,8 @@
     <Compile Include="ViewModels\DrawingBoard\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\DrawingBoard\ConnectionAdapterViewModel.cs" />
     <Compile Include="ViewModels\DrawingBoard\DangelingConnectionViewModel.cs" />
-    <Compile Include="Views\UI-Sketches\HierarchyView.xaml.cs">
-      <DependentUpon>HierarchyView.xaml</DependentUpon>
+    <Compile Include="Views\UI-Sketches\ElementListView.xaml.cs">
+      <DependentUpon>ElementListView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UI-Sketches\SketchRectangleDetailsView.xaml.cs">
       <DependentUpon>SketchRectangleDetailsView.xaml</DependentUpon>
@@ -173,8 +173,8 @@
     <Compile Include="Views\UI-Sketches\TemporaryTestWindow.xaml.cs">
       <DependentUpon>TemporaryTestWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\UI-Sketches\UiSketchCanvas.xaml.cs">
-      <DependentUpon>UiSketchCanvas.xaml</DependentUpon>
+    <Compile Include="Views\UI-Sketches\UiSketchCanvasView.xaml.cs">
+      <DependentUpon>UiSketchCanvasView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UserControls\DataTypeEditor\DataTypeCard.xaml.cs">
       <DependentUpon>DataTypeCard.xaml</DependentUpon>
@@ -243,7 +243,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\UI-Sketches\HierarchyView.xaml">
+    <Page Include="Views\UI-Sketches\ElementListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -255,7 +255,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\UI-Sketches\UiSketchCanvas.xaml">
+    <Page Include="Views\UI-Sketches\UiSketchCanvasView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

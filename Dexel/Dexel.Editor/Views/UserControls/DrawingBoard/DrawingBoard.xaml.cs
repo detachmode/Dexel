@@ -334,7 +334,7 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
                 {
                     var unnconnected = vm.Outputs.First(x => !x.Model.Connected);
                     if (unnconnected != null)
-                        AppendNewFunctionUnitBehind(vm, (DangelingConnectionViewModel) unnconnected);
+                        AppendNewFunctionUnitBehind(vm, (DangelingConnectionViewModel)unnconnected);
                 }
             );
 
@@ -393,7 +393,7 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
         {
             Keyboard.FocusedElement.TryGetDataContext<FunctionUnitViewModel>(vm =>
             {
-                FunctionUnit nextmodel =null;
+                FunctionUnit nextmodel = null;
                 if (ctrlDown)
                     nextmodel = Interactions.CreateNewOrGetFirstIntegrated(vm.Model, ViewModelModel());
                 else
