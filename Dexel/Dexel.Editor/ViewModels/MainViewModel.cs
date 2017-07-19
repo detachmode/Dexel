@@ -21,9 +21,7 @@ namespace Dexel.Editor.ViewModels
     [ImplementPropertyChanged]
     public class MainViewModel : IDropable
     {
-        private static MainViewModel _self;
-        public bool LoadingModelFlag;
-
+        public bool LoadingModelFlag => Model.Runtime.IsLoading;
 
         public MainViewModel()
         {
@@ -48,11 +46,12 @@ namespace Dexel.Editor.ViewModels
         public int FontSizeFunctionUnit { get; set; }
         public Visibility VisibilityDatanames { get; set; }
         public Visibility VisibilityBlockTextBox { get; set; }
-        public int MissingDataTypes { get; set; }
 
-        public static MainViewModel Instance() => _self ?? (_self = new MainViewModel());
-
-
+        public int MissingDataTypes
+        {
+            get => Model.Runtime.MissingDataTypes;
+            set => Model.Runtime.MissingDataTypes = value;
+        }
 
 
         #region Modify Selection
@@ -145,19 +144,17 @@ namespace Dexel.Editor.ViewModels
         public void Drop(object data)
         {
             data.TryCast<ConnectionViewModel>(
-                connectionVM => Interactions.DeConnect(connectionVM.Model, Model));
+                connectionVM => Interactions.DeConnect(this, connectionVM.Model));
         }
 
         #endregion
 
         #region Update Positions
 
-        public void UpdateConnectionsPosition(Point inputPoint, Point outputPoint, FunctionUnitViewModel functionUnitViewModel)
+        public static void UpdateConnectionsPosition(IReadOnlyList<ConnectionViewModel> connections, Point inputPoint, Point outputPoint, FunctionUnitViewModel functionUnitViewModel)
         {
-
-
-            var allOutputs = Connections.Where(conn => conn.Model.Sources.Any(x => x.Parent == functionUnitViewModel.Model));
-            var allInputs = Connections.Where(conn => conn.Model.Destinations.Any(x => x.Parent == functionUnitViewModel.Model));
+            var allOutputs = connections.Where(conn => conn.Model.Sources.Any(x => x.Parent == functionUnitViewModel.Model));
+            var allInputs = connections.Where(conn => conn.Model.Destinations.Any(x => x.Parent == functionUnitViewModel.Model));
 
             allInputs.ToList().ForEach(connVm =>
             {
@@ -171,7 +168,7 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        private void SetInputPosition(Point point, ConnectionViewModel connVm, FunctionUnitViewModel functionUnitViewModel)
+        private static void SetInputPosition(Point point, ConnectionViewModel connVm, FunctionUnitViewModel functionUnitViewModel)
         {
             var inputVm = (ConnectionAdapterViewModel)functionUnitViewModel.Inputs.First(ioVm => ioVm.Model == connVm.Model.Destinations.First());
             var index = functionUnitViewModel.Inputs.IndexOf(inputVm);
@@ -183,7 +180,7 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        private void SetOutputPosition(Point point, ConnectionViewModel connVm, FunctionUnitViewModel functionUnitViewModel)
+        private static void SetOutputPosition(Point point, ConnectionViewModel connVm, FunctionUnitViewModel functionUnitViewModel)
         {
             var outputVm = (ConnectionAdapterViewModel)functionUnitViewModel.Outputs.First(ioVm => ioVm.Model == connVm.Model.Sources.First());
             var index = functionUnitViewModel.Outputs.IndexOf(outputVm);
@@ -222,7 +219,7 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        public void UpdateIntegrationBorderPosition(FunctionUnitViewModel fuVm)
+        public static void UpdateIntegrationBorderPosition(FunctionUnitViewModel fuVm)
         {
             if (fuVm.Integration.Count == 0)
                 return;
@@ -251,7 +248,7 @@ namespace Dexel.Editor.ViewModels
 
         public void LoadFromModel(MainModel mainModel)
         {
-            LoadingModelFlag = true;
+            mainModel.Runtime.IsLoading = true;
             try
             {
                 Model = mainModel;
@@ -262,7 +259,7 @@ namespace Dexel.Editor.ViewModels
             }
             finally
             {
-                LoadingModelFlag = false;
+                mainModel.Runtime.IsLoading = false;
             }
         }
 
@@ -274,6 +271,7 @@ namespace Dexel.Editor.ViewModels
             {
                 var vm = new DataTypeViewModel();
                 vm.Model = dataType;
+                vm.MainModel = Model;
 
                 if ((dataType.SubDataTypes == null) || !dataType.SubDataTypes.Any())
                     vm.Definitions = "";
@@ -311,7 +309,7 @@ namespace Dexel.Editor.ViewModels
 
             var lookup = FunctionUnits.ToLookup(x => x.Model.ID, x => x);
             functionUnitsToLoad.ForEach(model => FindFunctionUnitViewModel(lookup, model,
-                onFound: viewModel => FunctionUnitViewModel.LoadFromModel(viewModel, model),
+                onFound: viewModel => FunctionUnitViewModel.LoadFromModel(this, viewModel, model),
                 onNotFound: () => AddNewFunctionUnit(model)));
         }
 
@@ -319,7 +317,7 @@ namespace Dexel.Editor.ViewModels
         private void AddNewFunctionUnit(FunctionUnit model)
         {
             var vm = new FunctionUnitViewModel();
-            vm.LoadFromModel(model);
+            vm.LoadFromModel(this, model);
             FunctionUnits.Add(vm);
         }
 

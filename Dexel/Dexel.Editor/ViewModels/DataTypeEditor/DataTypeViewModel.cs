@@ -10,7 +10,7 @@ namespace Dexel.Editor.ViewModels.DataTypeEditor
 
         public CustomDataType Model { get; set; }
         public string Definitions { get; set; }
-
+        public MainModel MainModel { get; set; }
 
 
         public void UpdateModel(string text)

@@ -156,7 +156,7 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
             //
             dragRect.Inflate(rect.Width / 10, rect.Height / 10);
 
-            MainViewModel.Instance().ClearSelection();
+            ((MainViewModel)DataContext).ClearSelection();
 
 
             foreach (var fuViewModel in ViewModel.FunctionUnits)
@@ -164,7 +164,7 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
                 var itemRect = new Rect(fuViewModel.Model.Position.X, fuViewModel.Model.Position.Y, fuViewModel.Width, fuViewModel.Height);
                 if (dragRect.Contains(itemRect))
                 {
-                    MainViewModel.Instance().AddToSelection(fuViewModel);
+                    ((MainViewModel)DataContext).AddToSelection(fuViewModel);
                 }
             }
         }
@@ -174,7 +174,7 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
 
         private void FocusDataStream(DataStream dataStream)
         {
-            MainViewModel.Instance().SelectedFunctionUnits.Clear();
+            ((MainViewModel)DataContext).SelectedFunctionUnits.Clear();
 
             ConnectionsView frameworkelement = null;
             ConnectionViewModel viewmodel = null;
@@ -206,7 +206,7 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
 
         private void FocusFunctionUnit(FunctionUnit fuModel)
         {
-            MainViewModel.Instance().SelectedFunctionUnits.Clear();
+            ((MainViewModel)DataContext).SelectedFunctionUnits.Clear();
 
             FunctionUnitView frameworkelement = null;
             FunctionUnitViewModel viewmodel = null;
@@ -229,7 +229,7 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
 
         private void FocusDefinition(DataStreamDefinition dsd)
         {
-            MainViewModel.Instance().SelectedFunctionUnits.Clear();
+            ((MainViewModel)DataContext).SelectedFunctionUnits.Clear();
             FunctionUnitView frameworkelement = null;
             FunctionUnitViewModel viewmodel = null;
 
@@ -307,7 +307,7 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
             var positionClicked = GetClickedPosition();
             if (positionClicked == null) return;
 
-            var newFumodel = Interactions.AddNewFunctionUnit(positionClicked.Value, ViewModelModel());
+            var newFumodel = Interactions.AddNewFunctionUnit(ViewModel, positionClicked.Value);
             FocusFunctionUnit(newFumodel);
         }
 
@@ -316,7 +316,7 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
             var positionClicked = GetClickedPosition();
             if (positionClicked == null) return;
 
-            Interactions.Paste(positionClicked.Value, MainViewModel.Instance().Model);
+            Interactions.Paste(ViewModel, positionClicked.Value);
         }
 
 
@@ -340,7 +340,7 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
 
             Keyboard.FocusedElement.TryGetDataContext<DataStreamDefinition>(dsd =>
             {
-                var fuVM = MainViewModel.Instance().FunctionUnits.First(fu => fu.Model == dsd.Parent);
+                var fuVM = ((MainViewModel)DataContext).FunctionUnits.First(fu => fu.Model == dsd.Parent);
                 var vm = fuVM.Outputs.First(dsdVM => dsdVM.Model == dsd);
                 AppendNewFunctionUnitBehind(fuVM, (DangelingConnectionViewModel)vm);
             });
@@ -352,8 +352,7 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
             var width = dangelingConnectionViewModel.Width;
             width += vm.Width / 2 + 100;
             var focusedFu = vm.Model;
-            var nextmodel = Interactions.AppendNewFunctionUnit(focusedFu, width, dangelingConnectionViewModel.Model,
-                ViewModelModel());
+            var nextmodel = Interactions.AppendNewFunctionUnit(ViewModel, focusedFu, width, dangelingConnectionViewModel.Model);
 
             SetFocusOnObject(nextmodel);
         }
@@ -395,7 +394,7 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
             {
                 FunctionUnit nextmodel = null;
                 if (ctrlDown)
-                    nextmodel = Interactions.CreateNewOrGetFirstIntegrated(vm.Model, ViewModelModel());
+                    nextmodel = Interactions.CreateNewOrGetFirstIntegrated(ViewModel, vm.Model);
                 else
                     nextmodel = Interactions.GetFirstIntegrated(vm.Model, ViewModelModel());
 

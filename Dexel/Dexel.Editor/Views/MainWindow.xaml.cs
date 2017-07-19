@@ -41,7 +41,8 @@ namespace Dexel.Editor.Views
 
                 // Assuming you have one file that you care about, pass it off to whatever
                 // handling code you have defined.
-                Interactions.LoadFromFile(files[0], MainViewModel.Instance().Model);
+                var viewModel = (MainViewModel) DataContext;
+                Interactions.LoadFromFile(viewModel, files[0]);
             }
         }
 
@@ -58,8 +59,8 @@ namespace Dexel.Editor.Views
 
             if (e.Key == Key.Delete)
             {
-                Interactions.Delete(MainViewModel.Instance().SelectedFunctionUnits.Select(x => x.Model),
-                    MainViewModel.Instance().Model);
+                var viewModel = (MainViewModel)DataContext;
+                Interactions.Delete(viewModel, viewModel.SelectedFunctionUnits.Select(x => x.Model));
             }
 
             switch (e.Key)
@@ -136,7 +137,7 @@ namespace Dexel.Editor.Views
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
-                Interactions.LoadFromFile(openFileDialog.FileName, MainModel());
+            Interactions.LoadFromFile((MainViewModel)DataContext, openFileDialog.FileName);
         }
 
         private void MenuItem_LoadFromCSharp(object sender, RoutedEventArgs e)
@@ -144,7 +145,7 @@ namespace Dexel.Editor.Views
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "C# (*.cs)|*.cs|All Files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
-                Interactions.LoadFromCSharp(openFileDialog.FileName);
+                Interactions.LoadFromCSharp((MainViewModel)DataContext, openFileDialog.FileName);
         }
 
 
@@ -153,7 +154,7 @@ namespace Dexel.Editor.Views
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
-                Interactions.MergeFromFile(openFileDialog.FileName, MainModel());
+                Interactions.MergeFromFile((MainViewModel)DataContext, openFileDialog.FileName, MainModel());
         }
 
 
@@ -169,18 +170,21 @@ namespace Dexel.Editor.Views
 
         private void MenuItem_New(object sender, RoutedEventArgs e)
         {
-            MainViewModel.Instance().LoadFromModel(new MainModel());
+            var mainViewModel = (MainViewModel) DataContext;
+            mainViewModel.LoadFromModel(new MainModel());
         }
 
         private void MenuItem_OnClick(object sender, RoutedEventArgs e)
         {
-            Interactions.AddMissingDataTypes(MainViewModel.Instance().Model);
+            var mainViewModel = (MainViewModel)DataContext;
+            Interactions.AddMissingDataTypes((MainViewModel)DataContext);
 
         }
 
         private void MenuItem_GenerateCodeToClipboard(object sender, RoutedEventArgs e)
         {
-            Interactions.GenerateCodeToClipboard(MainViewModel.Instance().Model);
+            var mainViewModel = (MainViewModel)DataContext;
+            Interactions.GenerateCodeToClipboard(mainViewModel.Model);
         }
 
 
@@ -196,12 +200,14 @@ namespace Dexel.Editor.Views
         }
         private void MenuItem_DarkTheme(object sender, RoutedEventArgs e)
         {
-            Interactions.ChangeToDarkTheme();
+            var mainViewModel = (MainViewModel)DataContext;
+            Interactions.ChangeToDarkTheme(mainViewModel);
         }
 
         private void MenuItem_PrintTheme(object sender, RoutedEventArgs e)
         {
-            Interactions.ChangeToPrintTheme();
+            var mainViewModel = (MainViewModel)DataContext;
+            Interactions.ChangeToPrintTheme(mainViewModel);
           
         }
 
