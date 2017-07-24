@@ -36,7 +36,7 @@ namespace Dexel.Editor.ViewModels
             SelectedFunctionUnits.CollectionChanged += (sender, args) => UpdateSelectionState();
         }
 
-
+        
         public ObservableCollection<DataTypeViewModel> DataTypes { get; set; }
         public ObservableCollection<FunctionUnitViewModel> IntegrationBorders { get; set; }
         public ObservableCollection<ConnectionViewModel> Connections { get; set; }

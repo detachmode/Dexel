@@ -148,6 +148,7 @@
     </ApplicationDefinition>
     <Compile Include="FileIO\AutoSave.cs" />
     <Compile Include="FileIO\UISketches-SaveLoad.cs" />
+    <Compile Include="ViewModels\DexelViewModel.cs" />
     <Compile Include="ViewModels\UI-Sketches\MainUiSketchViewModel.cs" />
     <Compile Include="ViewModels\UI-Sketches\SketchRectangleViewModel.cs" />
     <Compile Include="Views\AdditionalWindows\Popups.cs" />

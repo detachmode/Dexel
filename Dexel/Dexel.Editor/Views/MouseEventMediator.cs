@@ -100,7 +100,10 @@ namespace Dexel.Editor.Views
         private static void ResetFocus()
         {
             Keyboard.ClearFocus();
-            ((MainWindow) Application.Current.MainWindow).TheDrawingBoard.Focus();
+
+            var mainWindow = ((MainWindow) Application.Current.MainWindow);
+            mainWindow.CurrentlySelectedDrawingBoard.ResetView(); //Fix: TO-DO
+            
         }
 
 

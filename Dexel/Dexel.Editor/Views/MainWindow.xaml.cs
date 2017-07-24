@@ -1,11 +1,17 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using Dexel.Editor.ViewModels;
 using Dexel.Editor.Views.AdditionalWindows;
+using Dexel.Editor.Views.Common;
+using Dexel.Editor.Views.UserControls.DrawingBoard;
 using Dexel.Model.DataTypes;
+using Dexel.Model.Mockdata;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using Microsoft.Win32;
 
@@ -21,12 +27,13 @@ namespace Dexel.Editor.Views
 
         public static string SyntaxColortheme = @"Views/Themes/FlowDesignColorDark.xshd";
         public static XshdSyntaxDefinition Xshd;
+        public DrawingBoard CurrentlySelectedDrawingBoard { get; set; }
+        private MainViewModel CurrentlySelectedMainViewModel { get; set; }
 
-        public MainWindow(MainViewModel vm)
+        public MainWindow()
         {
             _instance = this;
             InitializeComponent();
-            DataContext = vm;
             Interactions.StartAutoSave();
         }
 
@@ -41,16 +48,12 @@ namespace Dexel.Editor.Views
 
                 // Assuming you have one file that you care about, pass it off to whatever
                 // handling code you have defined.
-                var viewModel = (MainViewModel) DataContext;
+                var viewModel = (MainViewModel)DataContext;
                 Interactions.LoadFromFile(viewModel, files[0]);
             }
         }
 
         public static MainWindow Get() => _instance;
-
-
-        private MainModel MainModel() => (DataContext as MainViewModel)?.Model;
-
 
         public void MainWindow_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -67,40 +70,47 @@ namespace Dexel.Editor.Views
             {
                 case Key.Tab:
                     if (ctrlDown)
-                        TheDrawingBoard.AppendNewFunctionUnit();
+                    {
+                        CurrentlySelectedDrawingBoard.AppendNewFunctionUnit();
+                    }
                     else if (shiftDown)
-                        TheDrawingBoard.TabStopMove(Interactions.TabStopGetPrevious);
+                    {
+                        CurrentlySelectedDrawingBoard.TabStopMove(Interactions.TabStopGetPrevious);
+
+                    }
                     else
-                        TheDrawingBoard.TabStopMove(Interactions.TabStopGetNext);
+                    {
+                         CurrentlySelectedDrawingBoard.TabStopMove(Interactions.TabStopGetNext);
+                    }
                     e.Handled = true;
                     break;
                 case Key.Return:
                     if (ctrlDown)
                     {
-                        TheDrawingBoard.EnterShortcut(ctrlDown);
+                        CurrentlySelectedDrawingBoard.EnterShortcut(ctrlDown);
                         e.Handled = true;
                     }
-                        
+
                     break;
             }
         }
 
         private void MenuItem_GenerateCodeToDesktop(object sender, RoutedEventArgs e)
         {
-            Interactions.GeneratedCodeToDesktop(sleepBeforeErrorPrint:true, mainModel:MainModel());
+            Interactions.GeneratedCodeToDesktop(sleepBeforeErrorPrint: true, mainModel: CurrentlySelectedMainViewModel.Model);
         }
 
 
         private void MenuItem_DebugPrint(object sender, RoutedEventArgs e)
         {
-            Interactions.DebugPrint(MainModel());
+            Interactions.DebugPrint(CurrentlySelectedMainViewModel.Model);
         }
 
 
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            Interactions.AutoPrint(MainModel(), Interactions.DebugPrint);
+            Interactions.AutoPrint(CurrentlySelectedMainViewModel.Model, Interactions.DebugPrint);
         }
 
 
@@ -112,7 +122,7 @@ namespace Dexel.Editor.Views
 
         private void AutoGenerate_Checked(object sender, RoutedEventArgs e)
         {
-            Interactions.AutoPrint(MainModel(), mainModel => 
+            Interactions.AutoPrint(CurrentlySelectedMainViewModel.Model, mainModel =>
                 Interactions.GeneratedCodeToDesktop(sleepBeforeErrorPrint: false, mainModel: mainModel));
         }
 
@@ -128,7 +138,7 @@ namespace Dexel.Editor.Views
             var saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
             if (saveFileDialog.ShowDialog() == true)
-                Interactions.SaveToFile(saveFileDialog.FileName, MainModel());
+                Interactions.SaveToFile(saveFileDialog.FileName, CurrentlySelectedMainViewModel.Model);
         }
 
 
@@ -137,7 +147,7 @@ namespace Dexel.Editor.Views
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
-            Interactions.LoadFromFile((MainViewModel)DataContext, openFileDialog.FileName);
+                Interactions.LoadFromFile(CurrentlySelectedMainViewModel, openFileDialog.FileName);
         }
 
         private void MenuItem_LoadFromCSharp(object sender, RoutedEventArgs e)
@@ -154,7 +164,7 @@ namespace Dexel.Editor.Views
             var openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
-                Interactions.MergeFromFile((MainViewModel)DataContext, openFileDialog.FileName, MainModel());
+                Interactions.MergeFromFile((MainViewModel)DataContext, openFileDialog.FileName, CurrentlySelectedMainViewModel.Model);
         }
 
 
@@ -170,15 +180,8 @@ namespace Dexel.Editor.Views
 
         private void MenuItem_New(object sender, RoutedEventArgs e)
         {
-            var mainViewModel = (MainViewModel) DataContext;
-            mainViewModel.LoadFromModel(new MainModel());
-        }
-
-        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
-        {
             var mainViewModel = (MainViewModel)DataContext;
-            Interactions.AddMissingDataTypes((MainViewModel)DataContext);
-
+            mainViewModel.LoadFromModel(new MainModel());
         }
 
         private void MenuItem_GenerateCodeToClipboard(object sender, RoutedEventArgs e)
@@ -190,13 +193,13 @@ namespace Dexel.Editor.Views
 
         private void MenuItem_ResetView(object sender, RoutedEventArgs e)
         {
-            TheDrawingBoard.ResetView();
+            CurrentlySelectedDrawingBoard.ResetView();
         }
 
 
         private void MenuItem_GenerateCodeToConsole(object sender, RoutedEventArgs e)
         {
-            Interactions.GenerateCodeToConsole(MainModel());
+            Interactions.GenerateCodeToConsole(CurrentlySelectedMainViewModel.Model);
         }
         private void MenuItem_DarkTheme(object sender, RoutedEventArgs e)
         {
@@ -208,13 +211,34 @@ namespace Dexel.Editor.Views
         {
             var mainViewModel = (MainViewModel)DataContext;
             Interactions.ChangeToPrintTheme(mainViewModel);
-          
+
         }
 
         private void uiSketch_OnClicked(object sender, RoutedEventArgs e)
         {
-            var uisketch= new UI_Sketches.TemporaryTestWindow();
+            var uisketch = new UI_Sketches.TemporaryTestWindow();
             uisketch.Show();
+        }
+        
+        private void TabControl_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+           
+            if (TabControl.SelectedContent == null) return;
+            foreach (var addedItem in e.AddedItems)
+            {
+                    CurrentlySelectedMainViewModel = addedItem as MainViewModel;
+            }
+            e.Handled = true;
+        }
+
+        private void TabControl_OnLoaded(object sender, RoutedEventArgs e)
+        {
+            TabControl tabControl = sender as TabControl;
+            ContentPresenter cp =
+                tabControl.Template.FindName("PART_SelectedContentHost", tabControl) as ContentPresenter;
+
+            var db = tabControl.ContentTemplate.FindName("TheDrawingBoard", cp) as DrawingBoard;
+            CurrentlySelectedDrawingBoard = db;
         }
     }
 
