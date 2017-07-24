@@ -223,7 +223,7 @@ namespace Dexel.Editor.Views
         private void TabControl_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
            
-            if (TabControl.SelectedContent == null) return;
+            //if (TabControl.SelectedContent == null) return;
             foreach (var addedItem in e.AddedItems)
             {
                     CurrentlySelectedMainViewModel = addedItem as MainViewModel;
