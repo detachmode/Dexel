@@ -405,24 +405,7 @@ namespace Dexel.Editor.ViewModels
         }
 
         #endregion
-
-        public void ChangeTheme(string resourceDict, string syntaxHighlighting)
-        {
-            ResourceDictionary dict = new ResourceDictionary();
-
-            dict.Source = new Uri(resourceDict, UriKind.Relative);
-            Application.Current.Resources.MergedDictionaries.RemoveAt(0);
-            Application.Current.Resources.MergedDictionaries.Add(dict);
-
-            MainWindow.Xshd = null;
-            MainWindow.SyntaxColortheme = syntaxHighlighting;
-         
-            var currentmodel = this.Model;
-            this.LoadFromModel(new MainModel());
-            this.LoadFromModel(currentmodel);
-
-
-        }
+        
     }
     
 

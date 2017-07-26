@@ -15,6 +15,7 @@ using Dexel.Editor.ViewModels;
 using Dexel.Editor.Views.AdditionalWindows;
 using Dexel.Editor.Views.UserControls.DrawingBoard;
 using Dexel.Model.DataTypes;
+using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using Microsoft.Win32;
 using Path = System.IO.Path;
 
@@ -25,13 +26,13 @@ namespace Dexel.Editor.Views
     /// </summary>
     public partial class DexelWindow : Window
     {
+        public static string SyntaxColortheme = @"Views/Themes/FlowDesignColorDark.xshd";
+        public static XshdSyntaxDefinition Xshd;
+
         public DexelWindow()
         {
             InitializeComponent();
         }
-
-        public DrawingBoard DrawingBoard { get; set; }
-        private MainViewModel CurrentlySelectedMainViewModel { get; set; }
 
         private void MainWindow_Drop(object sender, DragEventArgs e)
         {
@@ -51,20 +52,20 @@ namespace Dexel.Editor.Views
 
         private void MenuItem_GenerateCodeToDesktop(object sender, RoutedEventArgs e)
         {
-            Interactions.GeneratedCodeToDesktop(sleepBeforeErrorPrint: true, mainModel: CurrentlySelectedMainViewModel.Model);
+            Interactions.GeneratedCodeToDesktop(sleepBeforeErrorPrint: true, mainModel: MainWindow.CurrentlySelectedMainViewModel.Model);
         }
 
 
         private void MenuItem_DebugPrint(object sender, RoutedEventArgs e)
         {
-            Interactions.DebugPrint(CurrentlySelectedMainViewModel.Model);
+            Interactions.DebugPrint(MainWindow.CurrentlySelectedMainViewModel.Model);
         }
 
 
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            Interactions.AutoPrint(CurrentlySelectedMainViewModel.Model, Interactions.DebugPrint);
+            Interactions.AutoPrint(MainWindow.CurrentlySelectedMainViewModel.Model, Interactions.DebugPrint);
         }
 
 
@@ -76,7 +77,7 @@ namespace Dexel.Editor.Views
 
         private void AutoGenerate_Checked(object sender, RoutedEventArgs e)
         {
-            Interactions.AutoPrint(CurrentlySelectedMainViewModel.Model, mainModel =>
+            Interactions.AutoPrint(MainWindow.CurrentlySelectedMainViewModel.Model, mainModel =>
                 Interactions.GeneratedCodeToDesktop(sleepBeforeErrorPrint: false, mainModel: mainModel));
         }
 
@@ -95,38 +96,29 @@ namespace Dexel.Editor.Views
             };
             if (saveFileDialog.ShowDialog() == true)
             {
-                CurrentlySelectedMainViewModel.Model.Name = Path.GetFileNameWithoutExtension(saveFileDialog.FileName);
-                Interactions.SaveToFile(saveFileDialog.FileName, CurrentlySelectedMainViewModel.Model);
+                MainWindow.CurrentlySelectedMainViewModel.Model.Name = Path.GetFileNameWithoutExtension(saveFileDialog.FileName);
+                Interactions.SaveToFile(saveFileDialog.FileName, MainWindow.CurrentlySelectedMainViewModel.Model);
             }
-        }
-
-
-        private void MenuItem_Load(object sender, RoutedEventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog
-            {
-                Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*"
-            };
-            if (openFileDialog.ShowDialog() == true)
-                Interactions.LoadFromFile(CurrentlySelectedMainViewModel, openFileDialog.FileName);
         }
 
         private void MenuItem_LoadFromCSharp(object sender, RoutedEventArgs e)
         {
-            var openFileDialog = new OpenFileDialog { Filter = "C# (*.cs)|*.cs|All Files (*.*)|*.*" };
-            if (openFileDialog.ShowDialog() == true)
-                Interactions.LoadFromCSharp((MainViewModel)DataContext, openFileDialog.FileName);
+            //var openFileDialog = new OpenFileDialog { Filter = "C# (*.cs)|*.cs|All Files (*.*)|*.*" };
+            //if (openFileDialog.ShowDialog() == true)
+            //    Interactions.LoadFromCSharp((MainViewModel)DataContext, openFileDialog.FileName);
+            //TO-DO
         }
 
 
         private void MenuItem_Merge(object sender, RoutedEventArgs e)
         {
-            var openFileDialog = new OpenFileDialog
-            {
-                Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*"
-            };
-            if (openFileDialog.ShowDialog() == true)
-                Interactions.MergeFromFile((MainViewModel)DataContext, openFileDialog.FileName, CurrentlySelectedMainViewModel.Model);
+            //var openFileDialog = new OpenFileDialog
+            //{
+            //    Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*"
+            //};
+            //if (openFileDialog.ShowDialog() == true)
+            //    Interactions.MergeFromFile((MainViewModel)DataContext, openFileDialog.FileName, MainWindow.CurrentlySelectedMainViewModel.Model);
+            //TO-DO
         }
 
         private void help_OnClicked(object sender, RoutedEventArgs e)
@@ -137,8 +129,9 @@ namespace Dexel.Editor.Views
 
         private void MenuItem_New(object sender, RoutedEventArgs e)
         {
-            var mainViewModel = (MainViewModel)DataContext;
-            mainViewModel.LoadFromModel(new MainModel());
+            //var mainViewModel = (MainViewModel)DataContext;
+            //mainViewModel.LoadFromModel(new MainModel());
+            //TO-DO
         }
 
         private void MenuItem_GenerateCodeToClipboard(object sender, RoutedEventArgs e)
@@ -156,18 +149,19 @@ namespace Dexel.Editor.Views
 
         private void MenuItem_GenerateCodeToConsole(object sender, RoutedEventArgs e)
         {
-            Interactions.GenerateCodeToConsole(CurrentlySelectedMainViewModel.Model);
+            Interactions.GenerateCodeToConsole(MainWindow.CurrentlySelectedMainViewModel.Model);
         }
         private void MenuItem_DarkTheme(object sender, RoutedEventArgs e)
         {
-            var mainViewModel = (MainViewModel)DataContext;
-            Interactions.ChangeToDarkTheme(mainViewModel);
+            var dexelViewModel = (DexelViewModel)DataContext;
+            Interactions.ChangeToDarkTheme(dexelViewModel);
+            // TEST
         }
 
         private void MenuItem_PrintTheme(object sender, RoutedEventArgs e)
         {
-            var mainViewModel = (MainViewModel)DataContext;
-            Interactions.ChangeToPrintTheme(mainViewModel);
+            var dexelViewModel = (DexelViewModel)DataContext;
+            Interactions.ChangeToPrintTheme(dexelViewModel);
 
         }
 

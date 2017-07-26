@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using Dexel.Editor.ViewModels.DataTypeEditor;
 using Dexel.Editor.Views;
@@ -18,7 +19,7 @@ using PropertyChanged;
 namespace Dexel.Editor.ViewModels
 {
     [ImplementPropertyChanged]
-    class DexelViewModel
+    public class DexelViewModel
     {
         public DexelViewModel()
         {
@@ -26,6 +27,8 @@ namespace Dexel.Editor.ViewModels
             var vm1 = new MainViewModel { Model = Mockdata.StartMainModel() };
             Diagrams.Add(vm1);
             Interactions.ViewRedraw(Diagrams[0], Diagrams[0].Model);
+            SelectedDiagram = Diagrams[0];
+            App.LoadLastUsedTheme(this);
         }
 
         public ObservableCollection<MainViewModel> Diagrams { get; set; }
@@ -98,6 +101,22 @@ namespace Dexel.Editor.ViewModels
                 Directory.CreateDirectory(directory + "\\diagrams\\");
                 Interactions.SaveToFile(completeSavePath, mainViewModel.Model);
             }
+        }
+
+        public void ChangeTheme(string resourceDict, string syntaxHighlighting)
+        {
+            ResourceDictionary dict = new ResourceDictionary();
+
+            dict.Source = new Uri(resourceDict, UriKind.Relative);
+            Application.Current.Resources.MergedDictionaries.RemoveAt(0);
+            Application.Current.Resources.MergedDictionaries.Add(dict);
+
+            DexelWindow.Xshd = null;
+            DexelWindow.SyntaxColortheme = syntaxHighlighting;
+
+            var currentmodel = SelectedDiagram.Model;
+            SelectedDiagram.LoadFromModel(new MainModel());
+            SelectedDiagram.LoadFromModel(currentmodel);
         }
     }
 }

@@ -26,10 +26,9 @@ namespace Dexel.Editor.Views
     {
         private static MainWindow _instance;
 
-        public static string SyntaxColortheme = @"Views/Themes/FlowDesignColorDark.xshd";
-        public static XshdSyntaxDefinition Xshd;
+        
         public DrawingBoard DrawingBoard { get; set; }
-        private MainViewModel CurrentlySelectedMainViewModel { get; set; }
+        public MainViewModel CurrentlySelectedMainViewModel { get; set; }
 
         public MainWindow()
         {
@@ -96,134 +95,6 @@ namespace Dexel.Editor.Views
             }
         }
 
-        private void MenuItem_GenerateCodeToDesktop(object sender, RoutedEventArgs e)
-        {
-            Interactions.GeneratedCodeToDesktop(sleepBeforeErrorPrint: true, mainModel: CurrentlySelectedMainViewModel.Model);
-        }
-
-
-        private void MenuItem_DebugPrint(object sender, RoutedEventArgs e)
-        {
-            Interactions.DebugPrint(CurrentlySelectedMainViewModel.Model);
-        }
-
-
-
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
-        {
-            Interactions.AutoPrint(CurrentlySelectedMainViewModel.Model, Interactions.DebugPrint);
-        }
-
-
-        private void CheckBox_UnChecked(object sender, RoutedEventArgs e)
-        {
-            Interactions.AutoOutputTimerDispose();
-        }
-
-
-        private void AutoGenerate_Checked(object sender, RoutedEventArgs e)
-        {
-            Interactions.AutoPrint(CurrentlySelectedMainViewModel.Model, mainModel =>
-                Interactions.GeneratedCodeToDesktop(sleepBeforeErrorPrint: false, mainModel: mainModel));
-        }
-
-
-        private void AutoGenerate_UnChecked(object sender, RoutedEventArgs e)
-        {
-            Interactions.AutoOutputTimerDispose();
-        }
-
-
-        private void MenuItem_Save(object sender, RoutedEventArgs e)
-        {
-            var saveFileDialog = new SaveFileDialog
-            {
-                Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*"
-            };
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                CurrentlySelectedMainViewModel.Model.Name = Path.GetFileNameWithoutExtension(saveFileDialog.FileName);
-                Interactions.SaveToFile(saveFileDialog.FileName, CurrentlySelectedMainViewModel.Model);
-            }
-        }
-
-
-        private void MenuItem_Load(object sender, RoutedEventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog
-            {
-                Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*"
-            };
-            if (openFileDialog.ShowDialog() == true)
-                Interactions.LoadFromFile(CurrentlySelectedMainViewModel, openFileDialog.FileName);
-        }
-
-        private void MenuItem_LoadFromCSharp(object sender, RoutedEventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog { Filter = "C# (*.cs)|*.cs|All Files (*.*)|*.*" };
-            if (openFileDialog.ShowDialog() == true)
-                Interactions.LoadFromCSharp((MainViewModel)DataContext, openFileDialog.FileName);
-        }
-
-
-        private void MenuItem_Merge(object sender, RoutedEventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog
-            {
-                Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*"
-            };
-            if (openFileDialog.ShowDialog() == true)
-                Interactions.MergeFromFile((MainViewModel)DataContext, openFileDialog.FileName, CurrentlySelectedMainViewModel.Model);
-        }
-
-        private void help_OnClicked(object sender, RoutedEventArgs e)
-        {
-            var helpdia = new HelpWindow();
-            helpdia.ShowDialog();
-        }
-
-        private void MenuItem_New(object sender, RoutedEventArgs e)
-        {
-            var mainViewModel = (MainViewModel)DataContext;
-            mainViewModel.LoadFromModel(new MainModel());
-        }
-
-        private void MenuItem_GenerateCodeToClipboard(object sender, RoutedEventArgs e)
-        {
-            var mainViewModel = (MainViewModel)DataContext;
-            Interactions.GenerateCodeToClipboard(mainViewModel.Model);
-        }
-
-
-        private void MenuItem_ResetView(object sender, RoutedEventArgs e)
-        {
-            DrawingBoard.ResetView();
-        }
-
-
-        private void MenuItem_GenerateCodeToConsole(object sender, RoutedEventArgs e)
-        {
-            Interactions.GenerateCodeToConsole(CurrentlySelectedMainViewModel.Model);
-        }
-        private void MenuItem_DarkTheme(object sender, RoutedEventArgs e)
-        {
-            var mainViewModel = (MainViewModel)DataContext;
-            Interactions.ChangeToDarkTheme(mainViewModel);
-        }
-
-        private void MenuItem_PrintTheme(object sender, RoutedEventArgs e)
-        {
-            var mainViewModel = (MainViewModel)DataContext;
-            Interactions.ChangeToPrintTheme(mainViewModel);
-
-        }
-
-        private void uiSketch_OnClicked(object sender, RoutedEventArgs e)
-        {
-            var uisketch = new UI_Sketches.TemporaryTestWindow();
-            uisketch.Show();
-        }
-
         private void TabControl_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             foreach (var addedItem in e.AddedItems)
@@ -235,6 +106,7 @@ namespace Dexel.Editor.Views
 
         private void TabControl_OnLoaded(object sender, RoutedEventArgs e)
         {
+            var test = DataContext;
             TabControl tabControl = sender as TabControl;
             ContentPresenter cp =
                 tabControl.Template.FindName("PART_SelectedContentHost", tabControl) as ContentPresenter;
@@ -242,6 +114,16 @@ namespace Dexel.Editor.Views
             var db = tabControl.ContentTemplate.FindName("TheDrawingBoard", cp) as DrawingBoard;
             DrawingBoard = db;
             e.Handled = true;
+        }
+
+        private void RenameMenuItem_OnClick(object sender, RoutedEventArgs e)
+        {
+            var renamePopup = new RenameDiagramWindow();
+
+            if (renamePopup.ShowDialog() == true)
+            {
+                CurrentlySelectedMainViewModel.Model.Name = renamePopup.NewDiagramName;
+            }
         }
     }
 

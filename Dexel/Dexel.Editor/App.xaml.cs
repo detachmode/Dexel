@@ -50,22 +50,19 @@ namespace Dexel.Editor
             var mainviewModel = new MainViewModel();
             mainviewModel.LoadFromModel(mockMainModel);
             var mainwindow = new DexelWindow();
-
-            LoadLastUsedTheme(mainviewModel);
-
             mainwindow.Show();
 
             App.Current.DispatcherUnhandledException += AppOnDispatcherUnhandledException;
         }
 
 
-        private static void LoadLastUsedTheme(MainViewModel mainViewModel)
+        public static void LoadLastUsedTheme(DexelViewModel dexelViewModel)
         {
             App.TryGetConfig("Theme", configname =>
             {
                 if (configname == "Print")
                 {
-                    mainViewModel.ChangeTheme("Views/Themes/Print.xaml", @"Views/Themes/FlowDesignColorPrint.xshd");
+                    dexelViewModel.ChangeTheme("Views/Themes/Print.xaml", @"Views/Themes/FlowDesignColorPrint.xshd");
                 }
             });
         }

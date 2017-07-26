@@ -46,17 +46,17 @@ namespace Dexel.Editor.Views
         private static FunctionUnit _startPickingAt;
 
 
-        public static void ChangeToPrintTheme(MainViewModel mainViewModel)
+        public static void ChangeToPrintTheme(DexelViewModel dexelViewModel)
         {
-            mainViewModel.ChangeTheme("Views/Themes/Print.xaml", @"Views/Themes/FlowDesignColorPrint.xshd");
+            dexelViewModel.ChangeTheme("Views/Themes/Print.xaml", @"Views/Themes/FlowDesignColorPrint.xshd");
             App.SetConfig("Theme", "Print");
 
         }
 
 
-        public static void ChangeToDarkTheme(MainViewModel mainViewModel)
+        public static void ChangeToDarkTheme(DexelViewModel dexelViewModel)
         {
-            mainViewModel.ChangeTheme("Views/Themes/DarkColorfull.xaml", @"Views/Themes/FlowDesignColorDark.xshd");
+            dexelViewModel.ChangeTheme("Views/Themes/DarkColorfull.xaml", @"Views/Themes/FlowDesignColorDark.xshd");
             App.SetConfig("Theme", "Dark");
         }
 

@@ -20,7 +20,7 @@ namespace Dexel.Editor.Views.UserControls.DataTypeEditor
         {
 
             InitializeComponent();
-            LoadColorSchema(MainWindow.SyntaxColortheme);
+            LoadColorSchema(DexelWindow.SyntaxColortheme);
 
 
             
@@ -46,7 +46,7 @@ namespace Dexel.Editor.Views.UserControls.DataTypeEditor
 
         private void LoadColorSchema(string url)
         {
-            if (MainWindow.Xshd == null)
+            if (DexelWindow.Xshd == null)
             {
                 if (!File.Exists(url))
                 {
@@ -54,11 +54,11 @@ namespace Dexel.Editor.Views.UserControls.DataTypeEditor
                 }
                 using (var reader = new XmlTextReader(url))
                 {
-                    MainWindow.Xshd = HighlightingLoader.LoadXshd(reader);
+                    DexelWindow.Xshd = HighlightingLoader.LoadXshd(reader);
                 }
             }
 
-            TheDefinitionTextBox.SyntaxHighlighting = HighlightingLoader.Load(MainWindow.Xshd, Man);
+            TheDefinitionTextBox.SyntaxHighlighting = HighlightingLoader.Load(DexelWindow.Xshd, Man);
         }
 
         #endregion

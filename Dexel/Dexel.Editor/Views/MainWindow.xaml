@@ -14,55 +14,7 @@
         KeyDown="MainWindow_OnPreviewKeyDown"
         Height="850" Width="1225"
         Background="{DynamicResource BG}">
-    <UserControl.DataContext>
-        <ViewModels:DexelViewModel/>
-    </UserControl.DataContext>
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="FILE">
-                <MenuItem Header="New" Click="MenuItem_New"/>
-                <Separator/>
-                <MenuItem Header="Load From CSharp" Click="MenuItem_LoadFromCSharp"/>
-                <Separator/>
-                <MenuItem Header="Save as" Click="MenuItem_Save"/>
-                <MenuItem Header="Save all">
-                    <MenuItem Header ="Save as Json" Command="{Binding SaveAllOpenedElementsCommand}" CommandParameter=".json"/>
-                    <MenuItem Header ="Save as YAML" Command="{Binding SaveAllOpenedElementsCommand}" CommandParameter=".yaml"/>
-                    <MenuItem Header ="Save as XML" Command="{Binding SaveAllOpenedElementsCommand}" CommandParameter=".xml"/>
-                </MenuItem>
-                <Separator/>
-                <MenuItem Header="Load" Command="{Binding LoadSingleDiagramCommand}"/>
-                <MenuItem Header="Merge" Click="MenuItem_Merge"/>
-            </MenuItem>
-            <MenuItem Header="OUTPUT">
-                <MenuItem Header="Debug Print" Click="MenuItem_DebugPrint"/>
-                <Separator/>
-                <MenuItem Header="Generate Code to Desktop File" Click="MenuItem_GenerateCodeToDesktop"/>
-                <MenuItem Header="Generate Code to Console" Click="MenuItem_GenerateCodeToConsole"/>
-                <MenuItem Header="Generate Code to Clipboard" Click="MenuItem_GenerateCodeToClipboard"/>
-
-                <Separator/>
-                <RadioButton Content="Disabled" IsChecked="True" Unchecked="CheckBox_UnChecked" GroupName="Auto"/>
-                <RadioButton Content="Auto Debug Print" Checked="CheckBox_Checked" Unchecked="CheckBox_UnChecked" GroupName="Auto"/>
-                <RadioButton Content="Auto Generate" Checked="AutoGenerate_Checked" Unchecked="AutoGenerate_UnChecked" GroupName="Auto"/>
-            </MenuItem>
-
-            <!--<MenuItem Header="Test" Click="MenuItem_OnClick"></MenuItem>-->
-            <MenuItem Header="VIEW">
-                <MenuItem Header="Reset" Click="MenuItem_ResetView"/>
-                <MenuItem Header="Dark Theme" Click="MenuItem_DarkTheme"/>
-                <MenuItem Header="Light Theme" Click="MenuItem_PrintTheme"/>
-            </MenuItem>
-
-            <MenuItem Header="UI-Sketch">
-                <MenuItem Header="Open Testwindow" Click="uiSketch_OnClicked"/>
-            </MenuItem>
-
-            <MenuItem Header="HELP">
-                <MenuItem Header="Help / Shortcuts cheatsheet" Click="help_OnClicked"/>
-            </MenuItem>
-        </Menu>
-
         <dataTypeEditor:DataTypesEditor DockPanel.Dock="Left" Width="250"/>
         <Grid>
         <TabControl x:Name="TabControl" SelectedIndex="0" ItemsSource="{Binding Diagrams}" 
@@ -83,6 +35,7 @@
                 <ContextMenu>
                     <MenuItem Header="New diagram" Command="{Binding AddNewDiagramCommand}"/>
                     <MenuItem Header="Close current diagram" Command="{Binding CloseCurrentDiagramCommand}"></MenuItem>
+                    <MenuItem Header="Rename current diagram" Name="RenameMenuItem" Click="RenameMenuItem_OnClick"></MenuItem>
                 </ContextMenu>
             </TabControl.ContextMenu>
         </TabControl>

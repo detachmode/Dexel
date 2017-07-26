@@ -12,24 +12,24 @@
     <Window.DataContext>
         <viewModels:DexelViewModel/>
     </Window.DataContext>
-    <DockPanel>
+    <DockPanel Width="Auto">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="FILE">
-                <MenuItem Header="New" Click="MenuItem_New"/>
+                <MenuItem Header="New" IsEnabled ="False" Click="MenuItem_New"/>
                 <Separator/>
-                <MenuItem Header="Load From CSharp" Click="MenuItem_LoadFromCSharp"/>
+                <MenuItem Header="Load From CSharp" IsEnabled ="False" Click="MenuItem_LoadFromCSharp"/>
                 <Separator/>
-                <MenuItem Header="Save as" Click="MenuItem_Save"/>
+                <MenuItem Header="Save as (Diagram - maybe remove)" IsEnabled ="False" Click="MenuItem_Save"/>
                 <MenuItem Header="Save all">
                     <MenuItem Header ="Save as Json" Command="{Binding SaveAllOpenedElementsCommand}" CommandParameter=".json"/>
                     <MenuItem Header ="Save as YAML" Command="{Binding SaveAllOpenedElementsCommand}" CommandParameter=".yaml"/>
                     <MenuItem Header ="Save as XML" Command="{Binding SaveAllOpenedElementsCommand}" CommandParameter=".xml"/>
                 </MenuItem>
                 <Separator/>
-                <MenuItem Header="Load" Command="{Binding LoadSingleDiagramCommand}"/>
-                <MenuItem Header="Merge" Click="MenuItem_Merge"/>
+                <MenuItem Header="Load (Diamgram - maybe remove)" IsEnabled ="False" Command="{Binding LoadSingleDiagramCommand}"/>
+                <MenuItem Header="Merge (Diagram)" IsEnabled ="False" Click="MenuItem_Merge"/>
             </MenuItem>
-            <MenuItem Header="OUTPUT">
+            <MenuItem Header="Output (Diagram)">
                 <MenuItem Header="Debug Print" Click="MenuItem_DebugPrint"/>
                 <Separator/>
                 <MenuItem Header="Generate Code to Desktop File" Click="MenuItem_GenerateCodeToDesktop"/>
@@ -43,8 +43,8 @@
             </MenuItem>
 
             <!--<MenuItem Header="Test" Click="MenuItem_OnClick"></MenuItem>-->
-            <MenuItem Header="VIEW">
-                <MenuItem Header="Reset" Click="MenuItem_ResetView"/>
+            <MenuItem Header="View">
+                <MenuItem Header="Reset" IsEnabled="False" Click="MenuItem_ResetView"/>
                 <MenuItem Header="Dark Theme" Click="MenuItem_DarkTheme"/>
                 <MenuItem Header="Light Theme" Click="MenuItem_PrintTheme"/>
             </MenuItem>

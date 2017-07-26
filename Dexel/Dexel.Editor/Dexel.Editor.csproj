@@ -155,6 +155,9 @@
     <Compile Include="ViewModels\UI-Sketches\MainUiSketchViewModel.cs" />
     <Compile Include="ViewModels\UI-Sketches\SketchRectangleViewModel.cs" />
     <Compile Include="Views\AdditionalWindows\Popups.cs" />
+    <Compile Include="Views\AdditionalWindows\RenameDiagramWindow.xaml.cs">
+      <DependentUpon>RenameDiagramWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CustomControls\AvalonEditBehaviour.cs" />
     <Compile Include="Views\CustomControls\IntegrationBorders.cs" />
     <Compile Include="Views\CustomControls\ListBoxNoDragSelection.cs" />
@@ -222,6 +225,10 @@
     <Compile Include="Views\AdditionalWindows\UnkownErrorDialog.xaml.cs">
       <DependentUpon>UnkownErrorDialog.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\AdditionalWindows\RenameDiagramWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CustomControls\DataNamesControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
