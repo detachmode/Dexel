@@ -11,6 +11,7 @@ namespace Dexel.Model.DataTypes
     [ImplementPropertyChanged]
     public class MainModel
     {
+        public String Name { get; set; }
         public List<FunctionUnit> FunctionUnits { get; set; }
         public List<DataStream> Connections { get;  set; }
         public List<CustomDataType> DataTypes { get; set; }
@@ -22,11 +23,11 @@ namespace Dexel.Model.DataTypes
         
         public MainModel()
         {
+            Name = "New Diagram";
             Connections = new List<DataStream>();
             FunctionUnits = new List<FunctionUnit>();
             DataTypes = new List<CustomDataType>();
         }
-
     }
 
     public class RuntimeInfoModel

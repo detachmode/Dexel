@@ -101,8 +101,8 @@ namespace Dexel.Editor.Views
         {
             Keyboard.ClearFocus();
 
-            var mainWindow = ((MainWindow) Application.Current.MainWindow);
-            mainWindow.CurrentlySelectedDrawingBoard.ResetView(); //Fix: TO-DO
+            //var mainWindow = ((MainWindow) Application.Current.MainWindow);
+            //mainWindow.DrawingBoard.ResetView(); //Fix: TO-DO
             
         }
 
@@ -212,23 +212,26 @@ namespace Dexel.Editor.Views
             e.Handled = true;
 
             var element = (FrameworkElement)sender;
-            var functionUnitViewModel = (FunctionUnitViewModel)element.DataContext;
+            
+            
+           var functionUnitMainViewModel = (FunctionUnitViewModel) element.DataContext;
+            
 
             //if (DragThresholdReached()) _isDraggingFunctionUnit = true;
 
             ModifiersKeysState(
-                ctrlAndShift: () => DoCtrlShiftDraggingFunctionUnit(functionUnitViewModel.MainViewModel),
-                onlyShift: () => DoShiftDraggingFunctionUnit(functionUnitViewModel.MainViewModel),
+                ctrlAndShift: () => DoCtrlShiftDraggingFunctionUnit(functionUnitMainViewModel.MainViewModel),
+                onlyShift: () => DoShiftDraggingFunctionUnit(functionUnitMainViewModel.MainViewModel),
                 onlyCtrl: () => _isCTRLDraggingFunctionUnit = true
                 );
 
             _isDraggingFunctionUnit = true;
 
             if (_isCTRLDraggingFunctionUnit)
-                DoCtrlDraggingFunctionUnit(functionUnitViewModel.MainViewModel);
+                DoCtrlDraggingFunctionUnit(functionUnitMainViewModel.MainViewModel);
 
             if (_isDraggingFunctionUnit)
-                DraggingSelectedFunctionUnits(functionUnitViewModel.MainViewModel);
+                DraggingSelectedFunctionUnits(functionUnitMainViewModel.MainViewModel);
         }
 
 

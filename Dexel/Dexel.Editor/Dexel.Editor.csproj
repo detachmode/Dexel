@@ -137,6 +137,9 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="TAlex.WPF.Controls, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TAlex.WPF.Controls.2.0.1.0\lib\net40\TAlex.WPF.Controls.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -158,6 +161,9 @@
     <Compile Include="Views\CustomControls\ResizingAdorner.cs" />
     <Compile Include="Views\CustomControls\SelectionItemsControl.cs" />
     <Compile Include="Common\Extensions.cs" />
+    <Compile Include="Views\DexelWindow.xaml.cs">
+      <DependentUpon>DexelWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MouseEventMediator.cs" />
     <Compile Include="FileIO\FileSaveLoad.cs" />
     <Compile Include="Views\Interactions.cs" />
@@ -236,6 +242,10 @@
     <Compile Include="Views\CustomControls\Pointer.cs" />
     <Compile Include="Views\CustomControls\ZoomBorder.cs" />
     <Compile Include="Common\DebugPrinter.cs" />
+    <Page Include="Views\DexelWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Themes\DarkColorfull.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

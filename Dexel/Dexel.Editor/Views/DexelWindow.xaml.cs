@@ -1,43 +1,37 @@
 ﻿using System;
-using System.Collections.ObjectModel;
-using System.IO;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 using Dexel.Editor.ViewModels;
 using Dexel.Editor.Views.AdditionalWindows;
-using Dexel.Editor.Views.Common;
 using Dexel.Editor.Views.UserControls.DrawingBoard;
 using Dexel.Model.DataTypes;
-using Dexel.Model.Mockdata;
-using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using Microsoft.Win32;
+using Path = System.IO.Path;
 
 namespace Dexel.Editor.Views
 {
-
     /// <summary>
-    ///     Interaktionslogik für MainWindow.xaml
+    /// Interaktionslogik für DexelWindow.xaml
     /// </summary>
-    public partial class MainWindow
+    public partial class DexelWindow : Window
     {
-        private static MainWindow _instance;
-
-        public static string SyntaxColortheme = @"Views/Themes/FlowDesignColorDark.xshd";
-        public static XshdSyntaxDefinition Xshd;
-        public DrawingBoard DrawingBoard { get; set; }
-        private MainViewModel CurrentlySelectedMainViewModel { get; set; }
-
-        public MainWindow()
+        public DexelWindow()
         {
-            _instance = this;
             InitializeComponent();
-            Interactions.StartAutoSave();
         }
 
+        public DrawingBoard DrawingBoard { get; set; }
+        private MainViewModel CurrentlySelectedMainViewModel { get; set; }
 
         private void MainWindow_Drop(object sender, DragEventArgs e)
         {
@@ -53,48 +47,7 @@ namespace Dexel.Editor.Views
                 Interactions.LoadFromFile(viewModel, files[0]);
             }
         }
-
-        public static MainWindow Get() => _instance;
-
-        public void MainWindow_OnPreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            var shiftDown = Keyboard.IsKeyDown(Key.LeftShift) || Keyboard.IsKeyDown(Key.RightShift);
-            var ctrlDown = Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl);
-
-            if (e.Key == Key.Delete)
-            {
-                var viewModel = (MainViewModel)DataContext;
-                Interactions.Delete(viewModel, viewModel.SelectedFunctionUnits.Select(x => x.Model));
-            }
-
-            switch (e.Key)
-            {
-                case Key.Tab:
-                    if (ctrlDown)
-                    {
-                        DrawingBoard.AppendNewFunctionUnit();
-                    }
-                    else if (shiftDown)
-                    {
-                        DrawingBoard.TabStopMove(Interactions.TabStopGetPrevious);
-
-                    }
-                    else
-                    {
-                        DrawingBoard.TabStopMove(Interactions.TabStopGetNext);
-                    }
-                    e.Handled = true;
-                    break;
-                case Key.Return:
-                    if (ctrlDown)
-                    {
-                        DrawingBoard.EnterShortcut(ctrlDown);
-                        e.Handled = true;
-                    }
-
-                    break;
-            }
-        }
+        
 
         private void MenuItem_GenerateCodeToDesktop(object sender, RoutedEventArgs e)
         {
@@ -197,7 +150,7 @@ namespace Dexel.Editor.Views
 
         private void MenuItem_ResetView(object sender, RoutedEventArgs e)
         {
-            DrawingBoard.ResetView();
+            MainWindow.DrawingBoard.ResetView();
         }
 
 
@@ -223,26 +176,6 @@ namespace Dexel.Editor.Views
             var uisketch = new UI_Sketches.TemporaryTestWindow();
             uisketch.Show();
         }
-
-        private void TabControl_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            foreach (var addedItem in e.AddedItems)
-            {
-                CurrentlySelectedMainViewModel = addedItem as MainViewModel;
-            }
-            e.Handled = true;
-        }
-
-        private void TabControl_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            TabControl tabControl = sender as TabControl;
-            ContentPresenter cp =
-                tabControl.Template.FindName("PART_SelectedContentHost", tabControl) as ContentPresenter;
-
-            var db = tabControl.ContentTemplate.FindName("TheDrawingBoard", cp) as DrawingBoard;
-            DrawingBoard = db;
-            e.Handled = true;
-        }
     }
-
 }
+

@@ -11,6 +11,7 @@ using CodeAnalyser;
 using Dexel.Editor.Common;
 using Dexel.Editor.FileIO;
 using Dexel.Editor.ViewModels;
+using Dexel.Editor.Views.AdditionalWindows;
 using Dexel.Editor.Views.CustomControls;
 using Dexel.Library;
 using Dexel.Model.DataTypes;
@@ -295,14 +296,17 @@ namespace Dexel.Editor.Views
         }
 
 
-        public static void LoadFromFile(MainViewModel mainViewModel, string fileName)
+        public static MainModel LoadFromFile(MainViewModel mainViewModel, string fileName)
         {
             var loader = FileSaveLoad.GetFileLoader(fileName);
             var loadedMainModel = loader?.Invoke(fileName);
 
-
-            if (loadedMainModel != null)
-                ViewRedraw(mainViewModel, loadedMainModel);
+            if (loadedMainModel == null)
+            {
+                Popups.ShowMessagePopup("The selected file is not compatible", "Error");
+                return null;
+            }
+            return loadedMainModel;
         }
 
 
