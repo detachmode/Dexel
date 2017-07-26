@@ -1,11 +1,18 @@
 ﻿using System;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using Dexel.Editor.ViewModels;
 using Dexel.Editor.Views.AdditionalWindows;
+using Dexel.Editor.Views.Common;
+using Dexel.Editor.Views.UserControls.DrawingBoard;
 using Dexel.Model.DataTypes;
+using Dexel.Model.Mockdata;
 using ICSharpCode.AvalonEdit.Highlighting.Xshd;
 using Microsoft.Win32;
 
@@ -19,14 +26,14 @@ namespace Dexel.Editor.Views
     {
         private static MainWindow _instance;
 
-        public static string SyntaxColortheme = @"Views/Themes/FlowDesignColorDark.xshd";
-        public static XshdSyntaxDefinition Xshd;
+        
+        public DrawingBoard DrawingBoard { get; set; }
+        public MainViewModel CurrentlySelectedMainViewModel { get; set; }
 
-        public MainWindow(MainViewModel vm)
+        public MainWindow()
         {
             _instance = this;
             InitializeComponent();
-            DataContext = vm;
             Interactions.StartAutoSave();
         }
 
@@ -41,15 +48,12 @@ namespace Dexel.Editor.Views
 
                 // Assuming you have one file that you care about, pass it off to whatever
                 // handling code you have defined.
-                Interactions.LoadFromFile(files[0], MainViewModel.Instance().Model);
+                var viewModel = (MainViewModel)DataContext;
+                Interactions.LoadFromFile(viewModel, files[0]);
             }
         }
 
         public static MainWindow Get() => _instance;
-
-
-        private MainModel MainModel() => (DataContext as MainViewModel)?.Model;
-
 
         public void MainWindow_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
@@ -58,151 +62,68 @@ namespace Dexel.Editor.Views
 
             if (e.Key == Key.Delete)
             {
-                Interactions.Delete(MainViewModel.Instance().SelectedFunctionUnits.Select(x => x.Model),
-                    MainViewModel.Instance().Model);
+                var viewModel = (MainViewModel)DataContext;
+                Interactions.Delete(viewModel, viewModel.SelectedFunctionUnits.Select(x => x.Model));
             }
 
             switch (e.Key)
             {
                 case Key.Tab:
                     if (ctrlDown)
-                        TheDrawingBoard.AppendNewFunctionUnit();
+                    {
+                        DrawingBoard.AppendNewFunctionUnit();
+                    }
                     else if (shiftDown)
-                        TheDrawingBoard.TabStopMove(Interactions.TabStopGetPrevious);
+                    {
+                        DrawingBoard.TabStopMove(Interactions.TabStopGetPrevious);
+
+                    }
                     else
-                        TheDrawingBoard.TabStopMove(Interactions.TabStopGetNext);
+                    {
+                        DrawingBoard.TabStopMove(Interactions.TabStopGetNext);
+                    }
                     e.Handled = true;
                     break;
                 case Key.Return:
                     if (ctrlDown)
                     {
-                        TheDrawingBoard.EnterShortcut(ctrlDown);
+                        DrawingBoard.EnterShortcut(ctrlDown);
                         e.Handled = true;
                     }
-                        
+
                     break;
             }
         }
 
-        private void MenuItem_GenerateCodeToDesktop(object sender, RoutedEventArgs e)
+        private void TabControl_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            Interactions.GeneratedCodeToDesktop(sleepBeforeErrorPrint:true, mainModel:MainModel());
+            foreach (var addedItem in e.AddedItems)
+            {
+                CurrentlySelectedMainViewModel = addedItem as MainViewModel;
+            }
+            e.Handled = true;
         }
 
-
-        private void MenuItem_DebugPrint(object sender, RoutedEventArgs e)
+        private void TabControl_OnLoaded(object sender, RoutedEventArgs e)
         {
-            Interactions.DebugPrint(MainModel());
+            var test = DataContext;
+            TabControl tabControl = sender as TabControl;
+            ContentPresenter cp =
+                tabControl.Template.FindName("PART_SelectedContentHost", tabControl) as ContentPresenter;
+
+            var db = tabControl.ContentTemplate.FindName("TheDrawingBoard", cp) as DrawingBoard;
+            DrawingBoard = db;
+            e.Handled = true;
         }
 
-
-
-        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        private void RenameMenuItem_OnClick(object sender, RoutedEventArgs e)
         {
-            Interactions.AutoPrint(MainModel(), Interactions.DebugPrint);
-        }
+            var renamePopup = new RenameDiagramWindow();
 
-
-        private void CheckBox_UnChecked(object sender, RoutedEventArgs e)
-        {
-            Interactions.AutoOutputTimerDispose();
-        }
-
-
-        private void AutoGenerate_Checked(object sender, RoutedEventArgs e)
-        {
-            Interactions.AutoPrint(MainModel(), mainModel => 
-                Interactions.GeneratedCodeToDesktop(sleepBeforeErrorPrint: false, mainModel: mainModel));
-        }
-
-
-        private void AutoGenerate_UnChecked(object sender, RoutedEventArgs e)
-        {
-            Interactions.AutoOutputTimerDispose();
-        }
-
-
-        private void MenuItem_Save(object sender, RoutedEventArgs e)
-        {
-            var saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
-            if (saveFileDialog.ShowDialog() == true)
-                Interactions.SaveToFile(saveFileDialog.FileName, MainModel());
-        }
-
-
-        private void MenuItem_Load(object sender, RoutedEventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
-            if (openFileDialog.ShowDialog() == true)
-                Interactions.LoadFromFile(openFileDialog.FileName, MainModel());
-        }
-
-        private void MenuItem_LoadFromCSharp(object sender, RoutedEventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "C# (*.cs)|*.cs|All Files (*.*)|*.*";
-            if (openFileDialog.ShowDialog() == true)
-                Interactions.LoadFromCSharp(openFileDialog.FileName);
-        }
-
-
-        private void MenuItem_Merge(object sender, RoutedEventArgs e)
-        {
-            var openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "YAML (*.yaml)|*.yaml|Json (*json)|*.json|XML (*.xml)|*.xml|All Files (*.*)|*.*";
-            if (openFileDialog.ShowDialog() == true)
-                Interactions.MergeFromFile(openFileDialog.FileName, MainModel());
-        }
-
-
-
-
-
-
-        private void help_OnClicked(object sender, RoutedEventArgs e)
-        {
-            var helpdia = new HelpWindow();
-            helpdia.ShowDialog();
-        }
-
-        private void MenuItem_New(object sender, RoutedEventArgs e)
-        {
-            MainViewModel.Instance().LoadFromModel(new MainModel());
-        }
-
-        private void MenuItem_OnClick(object sender, RoutedEventArgs e)
-        {
-            Interactions.AddMissingDataTypes(MainViewModel.Instance().Model);
-
-        }
-
-        private void MenuItem_GenerateCodeToClipboard(object sender, RoutedEventArgs e)
-        {
-            Interactions.GenerateCodeToClipboard(MainViewModel.Instance().Model);
-        }
-
-
-        private void MenuItem_ResetView(object sender, RoutedEventArgs e)
-        {
-            TheDrawingBoard.ResetView();
-        }
-
-
-        private void MenuItem_GenerateCodeToConsole(object sender, RoutedEventArgs e)
-        {
-            Interactions.GenerateCodeToConsole(MainModel());
-        }
-        private void MenuItem_DarkTheme(object sender, RoutedEventArgs e)
-        {
-            Interactions.ChangeToDarkTheme();
-        }
-
-        private void MenuItem_PrintTheme(object sender, RoutedEventArgs e)
-        {
-            Interactions.ChangeToPrintTheme();
-          
+            if (renamePopup.ShowDialog() == true)
+            {
+                CurrentlySelectedMainViewModel.Model.Name = renamePopup.NewDiagramName;
+            }
         }
     }
 

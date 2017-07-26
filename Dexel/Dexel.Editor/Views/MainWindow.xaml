@@ -1,4 +1,4 @@
-﻿<Window x:Class="Dexel.Editor.Views.MainWindow"
+﻿<UserControl
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,50 +7,38 @@
         xmlns:views="clr-namespace:Dexel.Editor.Views"
         xmlns:dataTypeEditor="clr-namespace:Dexel.Editor.Views.UserControls.DataTypeEditor"
         xmlns:drawingBoard="clr-namespace:Dexel.Editor.Views.UserControls.DrawingBoard"
+        xmlns:ViewModels="clr-namespace:Dexel.Editor.ViewModels" x:Class="Dexel.Editor.Views.MainWindow"
         mc:Ignorable="d"
         Focusable="True"
         Drop="MainWindow_Drop" AllowDrop="true"
         KeyDown="MainWindow_OnPreviewKeyDown"
-        Title="Dexel" Height="850" Width="1225">
+        Height="850" Width="1225"
+        Background="{DynamicResource BG}">
     <DockPanel>
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="FILE">
-                <MenuItem Header="New" Click="MenuItem_New"></MenuItem>
-                <Separator></Separator>
-                <MenuItem Header="Load From CSharp" Click="MenuItem_LoadFromCSharp"></MenuItem>
-                <Separator></Separator>
-                <MenuItem Header="Save as" Click="MenuItem_Save"></MenuItem>
-                <Separator></Separator>
-                <MenuItem Header="Load" Click="MenuItem_Load"></MenuItem>
-                <MenuItem Header="Merge" Click="MenuItem_Merge"></MenuItem>
-            </MenuItem>
-            <MenuItem Header="OUTPUT">
-                <MenuItem Header="Debug Print" Click="MenuItem_DebugPrint"/>
-                <Separator></Separator>
-                <MenuItem Header="Generate Code to Desktop File" Click="MenuItem_GenerateCodeToDesktop"/>
-                <MenuItem Header="Generate Code to Console" Click="MenuItem_GenerateCodeToConsole"/>
-                <MenuItem Header="Generate Code to Clipboard" Click="MenuItem_GenerateCodeToClipboard"/>
-
-                <Separator></Separator>
-                <RadioButton Content="Disabled" IsChecked="True" Unchecked="CheckBox_UnChecked" GroupName="Auto"/>
-                <RadioButton Content="Auto Debug Print" Checked="CheckBox_Checked" Unchecked="CheckBox_UnChecked" GroupName="Auto"/>
-                <RadioButton Content="Auto Generate" Checked="AutoGenerate_Checked" Unchecked="AutoGenerate_UnChecked" GroupName="Auto"/>
-            </MenuItem>
-
-            <!--<MenuItem Header="Test" Click="MenuItem_OnClick"></MenuItem>-->
-            <MenuItem Header="VIEW">
-                <MenuItem Header="Reset" Click="MenuItem_ResetView"></MenuItem>
-                <MenuItem Header="Dark Theme" Click="MenuItem_DarkTheme"></MenuItem>
-                <MenuItem Header="Light Theme" Click="MenuItem_PrintTheme"></MenuItem>
-            </MenuItem>
-            
-            <MenuItem Header="HELP">
-                <MenuItem Header="Help / Shortcuts cheatsheet" Click="help_OnClicked"></MenuItem>
-            </MenuItem>
-        </Menu>
-
-        <dataTypeEditor:DataTypesEditor DockPanel.Dock="Left" Width="250"></dataTypeEditor:DataTypesEditor>
-        <drawingBoard:DrawingBoard DockPanel.Dock="Top"   x:Name="TheDrawingBoard" Focusable="True" />
-
+        <dataTypeEditor:DataTypesEditor DockPanel.Dock="Left" Width="250"/>
+        <Grid>
+        <TabControl x:Name="TabControl" SelectedIndex="0" ItemsSource="{Binding Diagrams}" 
+                    SelectionChanged="TabControl_OnSelectionChanged" Loaded="TabControl_OnLoaded"
+                    SelectedItem="{Binding SelectedDiagram}">
+            <TabControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding Model.Name}">
+                    </TextBlock>
+                </DataTemplate>
+            </TabControl.ItemTemplate>
+            <TabControl.ContentTemplate>
+                <DataTemplate x:Name="DataTemplate">
+                    <drawingBoard:DrawingBoard x:Name="TheDrawingBoard"  DockPanel.Dock="Top" Focusable="True"/>
+                </DataTemplate>
+            </TabControl.ContentTemplate>
+            <TabControl.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="New diagram" Command="{Binding AddNewDiagramCommand}"/>
+                    <MenuItem Header="Close current diagram" Command="{Binding CloseCurrentDiagramCommand}"></MenuItem>
+                    <MenuItem Header="Rename current diagram" Name="RenameMenuItem" Click="RenameMenuItem_OnClick"></MenuItem>
+                </ContextMenu>
+            </TabControl.ContextMenu>
+        </TabControl>
+        </Grid>
     </DockPanel>
-</Window>
+</UserControl>

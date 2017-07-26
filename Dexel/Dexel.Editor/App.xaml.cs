@@ -47,25 +47,22 @@ namespace Dexel.Editor
 
             var mockMainModel = Mockdata.StartMainModel();
             mockMainModel = CodeAnalyser.CSharpToFlowDesign.FromFile(""); // For fabian so it runs his method and shows the result on startup
-            var mainviewModel = MainViewModel.Instance();
+            var mainviewModel = new MainViewModel();
             mainviewModel.LoadFromModel(mockMainModel);
-            var mainwindow = new MainWindow(mainviewModel);
-
-            LoadLastUsedTheme();
-
+            var mainwindow = new DexelWindow();
             mainwindow.Show();
 
             App.Current.DispatcherUnhandledException += AppOnDispatcherUnhandledException;
         }
 
 
-        private static void LoadLastUsedTheme()
+        public static void LoadLastUsedTheme(DexelViewModel dexelViewModel)
         {
             App.TryGetConfig("Theme", configname =>
             {
                 if (configname == "Print")
                 {
-                    MainViewModel.Instance().ChangeTheme("Views/Themes/Print.xaml", @"Views/Themes/FlowDesignColorPrint.xshd");
+                    dexelViewModel.ChangeTheme("Views/Themes/Print.xaml", @"Views/Themes/FlowDesignColorPrint.xshd");
                 }
             });
         }

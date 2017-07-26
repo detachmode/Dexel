@@ -28,6 +28,7 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         }
 
         public Guid ID;
+        public MainViewModel MainViewModel { get; set; }
         public DataStreamDefinition Model { get; set; }
         public ValidationFlag ValidationFlag { get; set; }
         public string ValidationErrorMessage { get; set; }
@@ -42,34 +43,30 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
 
 
 
-        public void LoadFromModel(FunctionUnit parent, DataStreamDefinition dataStream)
+        public void LoadFromModel(MainViewModel model, FunctionUnit parent, DataStreamDefinition dataStream)
         {
             ID = dataStream.ID;
             Model = dataStream;
+            MainViewModel = model;
             Parent = parent;
             DataNames = dataStream.DataNames;
             Actionname = dataStream.ActionName;
         }
 
 
-        public static void LoadFromModel(DangelingConnectionViewModel vm, FunctionUnit parent,
-            DataStreamDefinition dataStream)
-        {
-            vm.LoadFromModel(parent, dataStream);
-        }
-
         public List<Type> AllowedDropTypes => new List<Type> { typeof(DangelingConnectionViewModel), typeof(ConnectionAdapterViewModel), typeof(ConnectionViewModel) };
-       
+        public bool LoadingModelFlag => MainViewModel.Model.Runtime.IsLoading;
+
 
 
         public void Drop(object data)
         {
             data.TryCast<DangelingConnectionViewModel>(
-                dangConnVm => Interactions.DragDroppedTwoDangelingConnections(dangConnVm.Model, Model, MainViewModel.Instance().Model));
+                dangConnVm => Interactions.DragDroppedTwoDangelingConnections(MainViewModel, dangConnVm.Model, Model));
             data.TryCast<ConnectionAdapterViewModel>(
-               dangConnVm => Interactions.SwapDataStreamOrder(dangConnVm.Model, Model, MainViewModel.Instance().Model));
+               dangConnVm => Interactions.SwapDataStreamOrder(MainViewModel, dangConnVm.Model, Model));
             data.TryCast<ConnectionViewModel>(
-               connVm => Interactions.ChangeConnectionDestination(connVm.Model, Model.Parent, MainViewModel.Instance().Model));
+               connVm => Interactions.ChangeConnectionDestination(MainViewModel, connVm.Model, Model.Parent));
         }
 
 

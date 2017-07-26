@@ -23,11 +23,11 @@ namespace Dexel.Editor.Tests
             testModel.FunctionUnits.Add(sA);
             testModel.FunctionUnits.Add(sB);
 
-            Interactions.AddNewOutput(sA, "dataA");
-            Interactions.AddNewInput(sB, "");
+            Interactions.AddNewOutput(null, sA, "dataA");
+            Interactions.AddNewInput(null, sB, "");
 
 
-            Interactions.DragDroppedTwoDangelingConnections(sA.OutputStreams.First(), sB.InputStreams.First(), testModel);
+            Interactions.DragDroppedTwoDangelingConnections(null, sA.OutputStreams.First(), sB.InputStreams.First());
 
             Assert.IsTrue(testModel.Connections.First().DataNames == "dataA | ");
             Assert.IsTrue(testModel.Connections.First().Sources.First().Parent == sA);
@@ -49,7 +49,7 @@ namespace Dexel.Editor.Tests
             MainModelManager.ConnectTwoFunctionUnits(sA, sB, "(dataAB)", "(dataAB)", testModel);
 
             var fristconnection = testModel.Connections.First();
-            Interactions.DeConnect(fristconnection, testModel);
+            Interactions.DeConnect(null, fristconnection);
 
             Assert.AreEqual(0, testModel.Connections.Count);
             Assert.AreEqual("(dataAB)", testModel.FunctionUnits.First(x => x.Name == "A").OutputStreams.First().DataNames);
@@ -59,14 +59,14 @@ namespace Dexel.Editor.Tests
             testModel = new MainModel();
             sA = FunctionUnitManager.CreateNew("A");
             testModel.FunctionUnits.Add(sA);
-            Interactions.AddNewOutput(sA, "(dataA)");
+            Interactions.AddNewOutput(null, sA, "(dataA)");
 
             sB = FunctionUnitManager.CreateNew("B");
             testModel.FunctionUnits.Add(sB);
 
-            Interactions.ConnectDangelingConnectionAndFunctionUnit(sA.OutputStreams.First(), sB, testModel);
+            Interactions.ConnectDangelingConnectionAndFunctionUnit(null, sA.OutputStreams.First(), sB);
 
-            Interactions.DeConnect(testModel.Connections.First(), testModel);
+            Interactions.DeConnect(null, testModel.Connections.First());
 
             Assert.AreEqual(0, testModel.Connections.Count);
             Assert.AreEqual("dataA", sA.OutputStreams.First().DataNames);
@@ -90,7 +90,7 @@ namespace Dexel.Editor.Tests
             testModel.FunctionUnits.Add(sC);
             MainModelManager.ConnectTwoFunctionUnits(sA, sB, "dataAB", "dataAB", testModel);
 
-            Interactions.ChangeConnectionDestination(testModel.Connections.First(), sC, testModel);
+            Interactions.ChangeConnectionDestination(null, testModel.Connections.First(), sC);
 
             Assert.IsTrue(sA.OutputStreams.Count == 1);
             Assert.IsTrue(sA.OutputStreams.First().Connected);
@@ -125,12 +125,12 @@ namespace Dexel.Editor.Tests
 
             var mainModel = new MainModel();
             var oneFu = MainModelManager.AddNewFunctionUnit("one", mainModel);
-            Interactions.AddNewOutput(oneFu, "(testdata)");
+            Interactions.AddNewOutput(null, oneFu, "(testdata)");
 
             var secondFu = MainModelManager.AddNewFunctionUnit("second", mainModel);
             MainModelManager.AddNewInput(secondFu, "()");
 
-            Interactions.ConnectDangelingConnectionAndFunctionUnit(oneFu.OutputStreams.First(), secondFu, mainModel);
+            Interactions.ConnectDangelingConnectionAndFunctionUnit(null, oneFu.OutputStreams.First(), secondFu);
 
             Assert.AreEqual("(testdata) | ()", mainModel.Connections.First().DataNames);
             Assert.AreEqual(oneFu, mainModel.Connections.First().Sources.First().Parent);
@@ -158,14 +158,14 @@ namespace Dexel.Editor.Tests
             MainModelManager.ConnectTwoFunctionUnits(secondOp, thirdOp, "", "", testModel);
 
             var selected = new List<FunctionUnit> { thirdOp };
-            Interactions.Delete(selected, testModel);
+            Interactions.Delete(null, selected);
             Assert.AreEqual(3, testModel.FunctionUnits.Count);
             Assert.AreEqual(2, main.IsIntegrating.Count);
             CollectionAssert.Contains(main.IsIntegrating, secondOp);
             CollectionAssert.Contains(main.IsIntegrating, firstOp);
 
             selected = new List<FunctionUnit> { firstOp };
-            Interactions.Delete(selected, testModel);
+            Interactions.Delete(null, selected);
             Assert.AreEqual(2, testModel.FunctionUnits.Count);
             Assert.AreEqual(1, main.IsIntegrating.Count);
             Assert.AreEqual(secondOp.Name, main.IsIntegrating.First().Name);

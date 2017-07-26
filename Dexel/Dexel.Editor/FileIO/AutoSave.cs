@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using Dexel.Editor.ViewModels;
 using Dexel.Editor.Views;
+using Dexel.Model.DataTypes;
 using Roslyn.Generators;
 
 namespace Dexel.Editor.FileIO
@@ -13,14 +14,14 @@ namespace Dexel.Editor.FileIO
 
         private static Timer _autosaveTimer;
 
-        public static void ExecuteAutoSave()
+        public static void ExecuteAutoSave(MainModel model)
         {
 
             try
             {
-                GetLongestFunctionUnitName(name => {
+                GetLongestFunctionUnitName(model, name => {
                     var filename = GetAutoSaveFullFilename(name);                   
-                    Interactions.SaveToFile(filename, MainViewModel.Instance().Model);
+                    Interactions.SaveToFile(filename, model);
                 });
             }
             catch
@@ -31,9 +32,9 @@ namespace Dexel.Editor.FileIO
         }
 
 
-        private static void GetLongestFunctionUnitName(Action<string> onName)
+        private static void GetLongestFunctionUnitName(MainModel model, Action<string> onName)
         {
-            var fu = MainViewModel.Instance().Model.FunctionUnits.OrderByDescending(f => f.Name.Length).FirstOrDefault();
+            var fu = model.FunctionUnits.OrderByDescending(f => f.Name.Length).FirstOrDefault();
             if (fu == null) return;
 
             var funame = Names.MethodName(fu);
@@ -108,7 +109,7 @@ namespace Dexel.Editor.FileIO
             var timerinterval = GetAutoSaveInterval();
             _autosaveTimer?.Dispose();
             _autosaveTimer = new Timer(
-                state => ExecuteAutoSave()
+                state => ExecuteAutoSave(null) // TODO: Fixme
                 , null, 0, timerinterval);
         }
     }

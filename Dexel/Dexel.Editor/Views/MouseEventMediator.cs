@@ -52,7 +52,13 @@ namespace Dexel.Editor.Views
             if (FrameworkElementDragBehavior.DragDropInProgressFlag) return;
             _isLeftMouseButtonDownOnWindow = true;
 
-            MainViewModel.Instance().ClearSelection();
+            var mainViewModel = sender.DataContext as MainViewModel;
+            if (mainViewModel == null)
+            {
+                var functionUnitViewModel = (FunctionUnitViewModel)sender.DataContext;
+                mainViewModel = functionUnitViewModel.MainViewModel;
+            }
+            mainViewModel.ClearSelection();
             sender.CaptureMouse();
         }
 
@@ -69,7 +75,14 @@ namespace Dexel.Editor.Views
         {
             if (e.ChangedButton != MouseButton.Left) return;
 
-            MainViewModel.Instance().ClearSelection();
+            var mainViewModel = sender.DataContext as MainViewModel;
+            if (mainViewModel == null)
+            {
+                var functionUnitViewModel = (FunctionUnitViewModel)sender.DataContext;
+                mainViewModel = functionUnitViewModel.MainViewModel;
+            }
+
+            mainViewModel.ClearSelection();
             ResetFocus();
 
             if (_isDraggingSelectionRect)
@@ -87,7 +100,10 @@ namespace Dexel.Editor.Views
         private static void ResetFocus()
         {
             Keyboard.ClearFocus();
-            ((MainWindow) Application.Current.MainWindow).TheDrawingBoard.Focus();
+
+            //var mainWindow = ((MainWindow) Application.Current.MainWindow);
+            //mainWindow.DrawingBoard.ResetView(); //Fix: TO-DO
+            
         }
 
 
@@ -128,7 +144,8 @@ namespace Dexel.Editor.Views
 
             if (Interactions.PickState)
             {
-                Interactions.SetPickedIntegration(fuVm.ViewModel().Model, MainViewModel.Instance().Model);
+                var mainViewModel = ((FunctionUnitViewModel)fuVm.DataContext).MainViewModel;
+                Interactions.SetPickedIntegration(mainViewModel, fuVm.ViewModel().Model);
                 return;
             }
 
@@ -141,7 +158,8 @@ namespace Dexel.Editor.Views
             else
             {
                 _isLeftMouseAndControlDownOnFunctionUnit = false;
-                MainViewModel.Instance().SetSelection(fuVm.ViewModel());
+                var mainViewModel = ((FunctionUnitViewModel)fuVm.DataContext).MainViewModel;
+                mainViewModel.SetSelection(fuVm.ViewModel());
             }
 
             fuVm.CaptureMouse();
@@ -160,10 +178,11 @@ namespace Dexel.Editor.Views
 
                 if (!_isDraggingFunctionUnit && !_isCTRLDraggingFunctionUnit)
                 {
+                    var mainViewModel = (MainViewModel)((FrameworkElement)sender).DataContext;
                     if (_isLeftMouseAndControlDownOnFunctionUnit)
-                        MainViewModel.Instance().SetSelectionCTRLMod(functionUnitViewModel);
+                        mainViewModel.SetSelectionCTRLMod(functionUnitViewModel);
                     else
-                        MainViewModel.Instance().SetSelection(functionUnitViewModel);
+                        mainViewModel.SetSelection(functionUnitViewModel);
                 }
                
                 fuView.ReleaseMouseCapture();
@@ -192,36 +211,39 @@ namespace Dexel.Editor.Views
             if (!_isLeftMouseDownOnFunctionUnit) return;
             e.Handled = true;
 
+            var element = (FrameworkElement)sender;
+            
+            
+           var functionUnitMainViewModel = (FunctionUnitViewModel) element.DataContext;
+            
 
             //if (DragThresholdReached()) _isDraggingFunctionUnit = true;
 
             ModifiersKeysState(
-                ctrlAndShift: DoCtrlShiftDraggingFunctionUnit,
-                onlyShift: DoShiftDraggingFunctionUnit,
+                ctrlAndShift: () => DoCtrlShiftDraggingFunctionUnit(functionUnitMainViewModel.MainViewModel),
+                onlyShift: () => DoShiftDraggingFunctionUnit(functionUnitMainViewModel.MainViewModel),
                 onlyCtrl: () => _isCTRLDraggingFunctionUnit = true
                 );
 
             _isDraggingFunctionUnit = true;
 
             if (_isCTRLDraggingFunctionUnit)
-                DoCtrlDraggingFunctionUnit();
+                DoCtrlDraggingFunctionUnit(functionUnitMainViewModel.MainViewModel);
 
             if (_isDraggingFunctionUnit)
-                DraggingSelectedFunctionUnits();
+                DraggingSelectedFunctionUnits(functionUnitMainViewModel.MainViewModel);
         }
 
 
-        private static void DoCtrlShiftDraggingFunctionUnit()
+        private static void DoCtrlShiftDraggingFunctionUnit(MainViewModel mainViewModel)
         {
             if (_isDraggingFunctionUnit)
                 return;
 
             _isCTRLDraggingFunctionUnit = true;
 
-
             _mouseDownOnFunctionUnit =
-                Interactions.DuplicateFunctionUnitIncludingChildrenAndIntegrated(_mouseDownOnFunctionUnit,
-                    MainViewModel.Instance().Model);
+                Interactions.DuplicateFunctionUnitIncludingChildrenAndIntegrated(mainViewModel, _mouseDownOnFunctionUnit);
         }
 
 
@@ -251,27 +273,24 @@ namespace Dexel.Editor.Views
         }
 
 
-        private static void DoShiftDraggingFunctionUnit()
+        private static void DoShiftDraggingFunctionUnit(MainViewModel mainViewModel)
         {
             if (_isDraggingFunctionUnit)
                 return;
-           
-
-            MainViewModel.Instance().DuplicateSelectionAndSelectNew();
+            mainViewModel.DuplicateSelectionAndSelectNew();
         }
 
 
-        private static void DraggingSelectedFunctionUnits()
+        private static void DraggingSelectedFunctionUnits(MainViewModel mainViewModel)
         {
             MyDebug.WriteLineIfDifferent($"DraggingSelectedFunctionUnits {_isDraggingFunctionUnit}");
             var dragDelta = ProjectedMousePosition - OrigMouseDownPoint;
             OrigMouseDownPoint = ProjectedMousePosition;
-
-            MainViewModel.Instance().MoveSelectedFunctionUnit(dragDelta);
+            mainViewModel.MoveSelectedFunctionUnit(dragDelta);
         }
 
 
-        private static void DoCtrlDraggingFunctionUnit()
+        private static void DoCtrlDraggingFunctionUnit(MainViewModel mainViewModel)
         {
             var dragDelta = ProjectedMousePosition - OrigMouseDownPoint;
             OrigMouseDownPoint = ProjectedMousePosition;
@@ -280,7 +299,7 @@ namespace Dexel.Editor.Views
             if (_mouseDownOnFunctionUnit == null) return;
 
             Interactions.MoveFunctionUnitIncludingChildrenAndIntegrated(
-                _mouseDownOnFunctionUnit, dragDelta, MainViewModel.Instance().Model);
+                _mouseDownOnFunctionUnit, dragDelta, mainViewModel.Model);
         }
     }
 

@@ -20,7 +20,7 @@ namespace Dexel.Editor.Views.UserControls.DataTypeEditor
         {
 
             InitializeComponent();
-            LoadColorSchema(MainWindow.SyntaxColortheme);
+            LoadColorSchema(DexelWindow.SyntaxColortheme);
 
 
             
@@ -31,7 +31,7 @@ namespace Dexel.Editor.Views.UserControls.DataTypeEditor
                 var currentText = TheDefinitionTextBox.Document.Text;
 
                 sender.TryGetDataContext<DataTypeViewModel>(vm => vm.UpdateModel(currentText));
-                Interactions.UpdateMissingDataTypesCounter(MainViewModel.Instance().Model);
+                Interactions.UpdateMissingDataTypesCounter(((DataTypeViewModel)DataContext).MainModel);
                 TheDefinitionTextBox.SelectionStart = caret;
             };
         }
@@ -46,7 +46,7 @@ namespace Dexel.Editor.Views.UserControls.DataTypeEditor
 
         private void LoadColorSchema(string url)
         {
-            if (MainWindow.Xshd == null)
+            if (DexelWindow.Xshd == null)
             {
                 if (!File.Exists(url))
                 {
@@ -54,18 +54,18 @@ namespace Dexel.Editor.Views.UserControls.DataTypeEditor
                 }
                 using (var reader = new XmlTextReader(url))
                 {
-                    MainWindow.Xshd = HighlightingLoader.LoadXshd(reader);
+                    DexelWindow.Xshd = HighlightingLoader.LoadXshd(reader);
                 }
             }
 
-            TheDefinitionTextBox.SyntaxHighlighting = HighlightingLoader.Load(MainWindow.Xshd, Man);
+            TheDefinitionTextBox.SyntaxHighlighting = HighlightingLoader.Load(DexelWindow.Xshd, Man);
         }
 
         #endregion
 
         private void DeleteDataTypeDefinition(object sender, RoutedEventArgs e)
         {
-            sender.TryGetDataContext<DataTypeViewModel>(vm => Interactions.DeleteDataTypeDefinition(vm.Model, MainViewModel.Instance().Model));
+            sender.TryGetDataContext<DataTypeViewModel>(vm => Interactions.DeleteDataTypeDefinition(((MainViewModel)DataContext), vm.Model));
 
         }
 
@@ -82,7 +82,7 @@ namespace Dexel.Editor.Views.UserControls.DataTypeEditor
 
         private void AddNewDataTypeDefinition(object sender, RoutedEventArgs e)
         {
-            Interactions.AddDataTypeDefinition(MainViewModel.Instance().Model);          
+            Interactions.AddDataTypeDefinition(((MainViewModel)DataContext));          
         }
 
         private void DataTypeCard_OnKeyDown(object sender, KeyEventArgs e)

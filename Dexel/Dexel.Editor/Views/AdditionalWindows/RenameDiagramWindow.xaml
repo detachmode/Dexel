@@ -1,0 +1,23 @@
+﻿<Window x:Class="Dexel.Editor.Views.AdditionalWindows.RenameDiagramWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Dexel.Editor.Views.AdditionalWindows"
+        mc:Ignorable="d"
+        Title="Rename Diagram" Height="150" Width="300"
+        Background="{DynamicResource BG}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        
+        <TextBlock Grid.Row="0" HorizontalAlignment="Center"
+                   Foreground="White"  Text="Please enter a new name for your diagram" VerticalAlignment="Center"/>
+        <TextBox x:Name ="NewDiagramNameTextBox"  Margin="50,0,50,0" Grid.Row="1"></TextBox>
+        <Button Name="ApplyChangeButton" Click="ApplyChangeButton_OnClick" Content="Okay" Height="25" Margin="50,10,50,10" Grid.Row="2"></Button>
+        
+    </Grid>
+</Window>

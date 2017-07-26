@@ -113,31 +113,32 @@ namespace Dexel.Editor.Views.CustomControls
         }
 
 
-        private static void SetFontDependingOnZoom(ScaleTransform st)
+        private void SetFontDependingOnZoom(ScaleTransform st)
         {
+            var viewModel = (MainViewModel) DataContext;
             if (st.ScaleX < 0.21 || st.ScaleY < 0.21)
             {
-                MainViewModel.Instance().FontSizeFunctionUnit = 32;
-                MainViewModel.Instance().VisibilityBlockTextBox = Visibility.Visible;
-                MainViewModel.Instance().VisibilityDatanames = Visibility.Hidden;
+                viewModel.FontSizeFunctionUnit = 32;
+                viewModel.VisibilityBlockTextBox = Visibility.Visible;
+                viewModel.VisibilityDatanames = Visibility.Hidden;
             }
             if (st.ScaleX < 0.51 || st.ScaleY < 0.51)
             {
-                MainViewModel.Instance().FontSizeFunctionUnit = 22;
-                MainViewModel.Instance().VisibilityBlockTextBox = Visibility.Visible;
-                MainViewModel.Instance().VisibilityDatanames = Visibility.Hidden;
+                viewModel.FontSizeFunctionUnit = 22;
+                viewModel.VisibilityBlockTextBox = Visibility.Visible;
+                viewModel.VisibilityDatanames = Visibility.Hidden;
             }
             else if (st.ScaleX < 0.71 || st.ScaleY < 0.71)
             {
-                MainViewModel.Instance().FontSizeFunctionUnit = 16;
-                MainViewModel.Instance().VisibilityDatanames = Visibility.Hidden;
-                MainViewModel.Instance().VisibilityBlockTextBox = Visibility.Visible;
+                viewModel.FontSizeFunctionUnit = 16;
+                viewModel.VisibilityDatanames = Visibility.Hidden;
+                viewModel.VisibilityBlockTextBox = Visibility.Visible;
             }
             else
             {
-                MainViewModel.Instance().FontSizeFunctionUnit = 12;
-                MainViewModel.Instance().VisibilityBlockTextBox = Visibility.Hidden;
-                MainViewModel.Instance().VisibilityDatanames = Visibility.Visible;
+                viewModel.FontSizeFunctionUnit = 12;
+                viewModel.VisibilityBlockTextBox = Visibility.Hidden;
+                viewModel.VisibilityDatanames = Visibility.Visible;
             }
         }
 

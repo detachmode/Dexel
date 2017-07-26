@@ -1,4 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Linq;
+using Dexel.Editor.ViewModels.UI_Sketches;
 
 namespace Dexel.Editor.Common
 {
@@ -12,5 +15,4 @@ namespace Dexel.Editor.Common
             _lastline = line;
         }
     }
-
 }
