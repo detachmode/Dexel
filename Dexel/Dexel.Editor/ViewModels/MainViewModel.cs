@@ -21,7 +21,9 @@ namespace Dexel.Editor.ViewModels
     [ImplementPropertyChanged]
     public class MainViewModel : IDropable
     {
-        public bool LoadingModelFlag => Model.Runtime.IsLoading;
+        private static MainViewModel _self;
+        public bool LoadingModelFlag;
+
 
         public MainViewModel()
         {
@@ -36,7 +38,7 @@ namespace Dexel.Editor.ViewModels
             SelectedFunctionUnits.CollectionChanged += (sender, args) => UpdateSelectionState();
         }
 
-        
+
         public ObservableCollection<DataTypeViewModel> DataTypes { get; set; }
         public ObservableCollection<FunctionUnitViewModel> IntegrationBorders { get; set; }
         public ObservableCollection<ConnectionViewModel> Connections { get; set; }
@@ -46,12 +48,11 @@ namespace Dexel.Editor.ViewModels
         public int FontSizeFunctionUnit { get; set; }
         public Visibility VisibilityDatanames { get; set; }
         public Visibility VisibilityBlockTextBox { get; set; }
+        public int MissingDataTypes { get; set; }
 
-        public int MissingDataTypes
-        {
-            get => Model.Runtime.MissingDataTypes;
-            set => Model.Runtime.MissingDataTypes = value;
-        }
+        public static MainViewModel Instance() => _self ?? (_self = new MainViewModel());
+
+
 
 
         #region Modify Selection
@@ -144,17 +145,19 @@ namespace Dexel.Editor.ViewModels
         public void Drop(object data)
         {
             data.TryCast<ConnectionViewModel>(
-                connectionVM => Interactions.DeConnect(this, connectionVM.Model));
+                connectionVM => Interactions.DeConnect(connectionVM.Model, Model));
         }
 
         #endregion
 
         #region Update Positions
 
-        public static void UpdateConnectionsPosition(IReadOnlyList<ConnectionViewModel> connections, Point inputPoint, Point outputPoint, FunctionUnitViewModel functionUnitViewModel)
+        public void UpdateConnectionsPosition(Point inputPoint, Point outputPoint, FunctionUnitViewModel functionUnitViewModel)
         {
-            var allOutputs = connections.Where(conn => conn.Model.Sources.Any(x => x.Parent == functionUnitViewModel.Model));
-            var allInputs = connections.Where(conn => conn.Model.Destinations.Any(x => x.Parent == functionUnitViewModel.Model));
+
+
+            var allOutputs = Connections.Where(conn => conn.Model.Sources.Any(x => x.Parent == functionUnitViewModel.Model));
+            var allInputs = Connections.Where(conn => conn.Model.Destinations.Any(x => x.Parent == functionUnitViewModel.Model));
 
             allInputs.ToList().ForEach(connVm =>
             {
@@ -168,7 +171,7 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        private static void SetInputPosition(Point point, ConnectionViewModel connVm, FunctionUnitViewModel functionUnitViewModel)
+        private void SetInputPosition(Point point, ConnectionViewModel connVm, FunctionUnitViewModel functionUnitViewModel)
         {
             var inputVm = (ConnectionAdapterViewModel)functionUnitViewModel.Inputs.First(ioVm => ioVm.Model == connVm.Model.Destinations.First());
             var index = functionUnitViewModel.Inputs.IndexOf(inputVm);
@@ -180,7 +183,7 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        private static void SetOutputPosition(Point point, ConnectionViewModel connVm, FunctionUnitViewModel functionUnitViewModel)
+        private void SetOutputPosition(Point point, ConnectionViewModel connVm, FunctionUnitViewModel functionUnitViewModel)
         {
             var outputVm = (ConnectionAdapterViewModel)functionUnitViewModel.Outputs.First(ioVm => ioVm.Model == connVm.Model.Sources.First());
             var index = functionUnitViewModel.Outputs.IndexOf(outputVm);
@@ -219,7 +222,7 @@ namespace Dexel.Editor.ViewModels
         }
 
 
-        public static void UpdateIntegrationBorderPosition(FunctionUnitViewModel fuVm)
+        public void UpdateIntegrationBorderPosition(FunctionUnitViewModel fuVm)
         {
             if (fuVm.Integration.Count == 0)
                 return;
@@ -248,7 +251,7 @@ namespace Dexel.Editor.ViewModels
 
         public void LoadFromModel(MainModel mainModel)
         {
-            mainModel.Runtime.IsLoading = true;
+            LoadingModelFlag = true;
             try
             {
                 Model = mainModel;
@@ -259,7 +262,7 @@ namespace Dexel.Editor.ViewModels
             }
             finally
             {
-                mainModel.Runtime.IsLoading = false;
+                LoadingModelFlag = false;
             }
         }
 
@@ -271,7 +274,6 @@ namespace Dexel.Editor.ViewModels
             {
                 var vm = new DataTypeViewModel();
                 vm.Model = dataType;
-                vm.MainModel = Model;
 
                 if ((dataType.SubDataTypes == null) || !dataType.SubDataTypes.Any())
                     vm.Definitions = "";
@@ -309,7 +311,7 @@ namespace Dexel.Editor.ViewModels
 
             var lookup = FunctionUnits.ToLookup(x => x.Model.ID, x => x);
             functionUnitsToLoad.ForEach(model => FindFunctionUnitViewModel(lookup, model,
-                onFound: viewModel => FunctionUnitViewModel.LoadFromModel(this, viewModel, model),
+                onFound: viewModel => FunctionUnitViewModel.LoadFromModel(viewModel, model),
                 onNotFound: () => AddNewFunctionUnit(model)));
         }
 
@@ -317,7 +319,7 @@ namespace Dexel.Editor.ViewModels
         private void AddNewFunctionUnit(FunctionUnit model)
         {
             var vm = new FunctionUnitViewModel();
-            vm.LoadFromModel(this, model);
+            vm.LoadFromModel(model);
             FunctionUnits.Add(vm);
         }
 
@@ -405,7 +407,24 @@ namespace Dexel.Editor.ViewModels
         }
 
         #endregion
-        
+
+        public void ChangeTheme(string resourceDict, string syntaxHighlighting)
+        {
+            ResourceDictionary dict = new ResourceDictionary();
+
+            dict.Source = new Uri(resourceDict, UriKind.Relative);
+            Application.Current.Resources.MergedDictionaries.RemoveAt(0);
+            Application.Current.Resources.MergedDictionaries.Add(dict);
+
+            MainWindow.Xshd = null;
+            MainWindow.SyntaxColortheme = syntaxHighlighting;
+         
+            var currentmodel = this.Model;
+            this.LoadFromModel(new MainModel());
+            this.LoadFromModel(currentmodel);
+
+
+        }
     }
     
 

@@ -11,7 +11,6 @@ using CodeAnalyser;
 using Dexel.Editor.Common;
 using Dexel.Editor.FileIO;
 using Dexel.Editor.ViewModels;
-using Dexel.Editor.Views.AdditionalWindows;
 using Dexel.Editor.Views.CustomControls;
 using Dexel.Library;
 using Dexel.Model.DataTypes;
@@ -46,22 +45,23 @@ namespace Dexel.Editor.Views
         private static FunctionUnit _startPickingAt;
 
 
-        public static void ChangeToPrintTheme(DexelViewModel dexelViewModel)
+        public static void ChangeToPrintTheme()
         {
-            dexelViewModel.ChangeTheme("Views/Themes/Print.xaml", @"Views/Themes/FlowDesignColorPrint.xshd");
+            MainViewModel.Instance().ChangeTheme("Views/Themes/Print.xaml", @"Views/Themes/FlowDesignColorPrint.xshd");
             App.SetConfig("Theme", "Print");
 
         }
 
 
-        public static void ChangeToDarkTheme(DexelViewModel dexelViewModel)
+        public static void ChangeToDarkTheme()
         {
-            dexelViewModel.ChangeTheme("Views/Themes/DarkColorfull.xaml", @"Views/Themes/FlowDesignColorDark.xshd");
+            MainViewModel.Instance()
+                .ChangeTheme("Views/Themes/DarkColorfull.xaml", @"Views/Themes/FlowDesignColorDark.xshd");
             App.SetConfig("Theme", "Dark");
         }
 
 
-        public static FunctionUnit AddNewFunctionUnit(MainViewModel mainViewModel, Point pos)
+        public static FunctionUnit AddNewFunctionUnit(Point pos, MainModel mainModel)
         {
             var functionUnit = FunctionUnitManager.CreateNew();
             pos.X -= 100;
@@ -70,48 +70,49 @@ namespace Dexel.Editor.Views
             functionUnit.InputStreams.Add(DataStreamManager.NewDefinition(functionUnit, "()"));
             functionUnit.OutputStreams.Add(DataStreamManager.NewDefinition(functionUnit, "()"));
 
-            mainViewModel.Model.FunctionUnits.Add(functionUnit);
-            ViewRedraw(mainViewModel);
+            mainModel.FunctionUnits.Add(functionUnit);
+            ViewRedraw();
             return functionUnit;
         }
 
 
-        public static void ViewRedraw(MainViewModel mainViewModel)
+        public static void ViewRedraw()
         {
-            Validate(mainViewModel);
-            mainViewModel.Reload();
+            Validate(MainViewModel.Instance().Model);
+            MainViewModel.Instance().Reload();
         }
 
 
-        public static void ViewRedraw(MainViewModel mainViewModel, MainModel newModel)
+        public static void ViewRedraw(MainModel mainModel)
         {
-            mainViewModel.Model = newModel;
-            mainViewModel.Reload();
+            MainViewModel.Instance().Model = mainModel;
+            MainViewModel.Instance().Reload();
         }
 
 
-        public static void ChangeConnectionDestination(MainViewModel mainViewModel, DataStream dataStream, FunctionUnit newdestination)
+        public static void ChangeConnectionDestination(DataStream dataStream, FunctionUnit newdestination,
+            MainModel mainModel)
         {
 
-            DeConnect(mainViewModel, dataStream);
+            DeConnect(dataStream, mainModel);
             MainModelManager.ConnectTwoDefintions(dataStream.Sources.First(), newdestination.InputStreams.First(),
-                mainViewModel.Model);
+                mainModel);
 
-            ViewRedraw(mainViewModel);
+            ViewRedraw();
         }
 
 
-        public static void AddNewOutput(MainViewModel mainViewModel, FunctionUnit functionUnit, string datanames)
+        public static void AddNewOutput(FunctionUnit functionUnit, string datanames)
         {
             MainModelManager.AddNewOutput(functionUnit, datanames);
-            ViewRedraw(mainViewModel);
+            ViewRedraw();
         }
 
 
-        public static void AddNewInput(MainViewModel mainViewModel, FunctionUnit functionUnit, string datanames)
+        public static void AddNewInput(FunctionUnit functionUnit, string datanames)
         {
             MainModelManager.AddNewInput(functionUnit, datanames);
-            ViewRedraw(mainViewModel);
+            ViewRedraw();
         }
 
 
@@ -128,18 +129,18 @@ namespace Dexel.Editor.Views
         }
 
 
-        public static void DeConnect(MainViewModel mainViewModel, DataStream dataStream)
+        public static void DeConnect(DataStream dataStream, MainModel mainModel)
         {
             DataStreamManager.SetConnectedState(dataStream, false);
-            MainModelManager.RemoveConnection(dataStream, mainViewModel.Model);
-            MainModelManager.RemoveFromIntegrationsIncludingChildren(dataStream, mainViewModel.Model);
+            MainModelManager.RemoveConnection(dataStream, mainModel);
+            MainModelManager.RemoveFromIntegrationsIncludingChildren(dataStream, mainModel);
 
-            ViewRedraw(mainViewModel);
+            ViewRedraw();
         }
 
 
-        public static void DragDroppedTwoDangelingConnections(MainViewModel mainViewModel, DataStreamDefinition sourceDSD,
-            DataStreamDefinition destinationDSD)
+        public static void DragDroppedTwoDangelingConnections(DataStreamDefinition sourceDSD,
+            DataStreamDefinition destinationDSD, MainModel mainModel)
         {
             DataStreamManager.IsInSameCollection(sourceDSD, destinationDSD,
                 onTrue: list => DataStreamManager.SwapDataStreamDefinitons(sourceDSD, destinationDSD, list),
@@ -147,10 +148,10 @@ namespace Dexel.Editor.Views
                     isTrue:
                     () =>
                         MainModelManager.MakeIntegrationIncludingChildren(sourceDSD.Parent, destinationDSD.Parent,
-                            mainViewModel.Model),
-                    isFalse: () => MainModelManager.ConnectTwoDefintions(sourceDSD, destinationDSD, mainViewModel.Model)));
+                            mainModel),
+                    isFalse: () => MainModelManager.ConnectTwoDefintions(sourceDSD, destinationDSD, mainModel)));
 
-            ViewRedraw(mainViewModel);
+            ViewRedraw();
         }
 
 
@@ -166,22 +167,22 @@ namespace Dexel.Editor.Views
         }
 
 
-        public static void ConnectDangelingConnectionAndFunctionUnit(MainViewModel mainViewModel, DataStreamDefinition defintionDSD,
-            FunctionUnit destination)
+        public static void ConnectDangelingConnectionAndFunctionUnit(DataStreamDefinition defintionDSD,
+            FunctionUnit destination, MainModel mainModel)
         {
 
-            MainModelManager.ConnectTwoDefintions(defintionDSD, destination.InputStreams.First(), mainViewModel.Model);
+            MainModelManager.ConnectTwoDefintions(defintionDSD, destination.InputStreams.First(), mainModel);
 
-            ViewRedraw(mainViewModel);
+            ViewRedraw();
         }
 
 
-        public static void DeleteDatastreamDefiniton(MainViewModel mainViewModel, DataStreamDefinition dataStreamDefinition,
+        public static void DeleteDatastreamDefiniton(DataStreamDefinition dataStreamDefinition,
             FunctionUnit functionUnit)
         {
             functionUnit.InputStreams.RemoveAll(x => x == dataStreamDefinition);
             functionUnit.OutputStreams.RemoveAll(x => x == dataStreamDefinition);
-            ViewRedraw(mainViewModel);
+            ViewRedraw();
         }
 
 
@@ -296,21 +297,18 @@ namespace Dexel.Editor.Views
         }
 
 
-        public static MainModel LoadFromFile(MainViewModel mainViewModel, string fileName)
+        public static void LoadFromFile(string fileName, MainModel model)
         {
             var loader = FileSaveLoad.GetFileLoader(fileName);
             var loadedMainModel = loader?.Invoke(fileName);
 
-            if (loadedMainModel == null)
-            {
-                Popups.ShowMessagePopup("The selected file is not compatible", "Error");
-                return null;
-            }
-            return loadedMainModel;
+
+            if (loadedMainModel != null)
+                ViewRedraw(loadedMainModel);
         }
 
 
-        public static void MergeFromFile(MainViewModel mainViewModel, string fileName, MainModel mainModel)
+        public static void MergeFromFile(string fileName, MainModel mainModel)
         {
             var loader = FileSaveLoad.GetFileLoader(fileName);
             var loadedMainModel = loader?.Invoke(fileName);
@@ -321,33 +319,33 @@ namespace Dexel.Editor.Views
                 mainModel.FunctionUnits.AddRange(loadedMainModel.FunctionUnits);
             }
 
-            ViewRedraw(mainViewModel, loadedMainModel);
+            ViewRedraw();
         }
 
 
-        public static void Delete(MainViewModel mainViewModel, IEnumerable<FunctionUnit> functionUnits)
+        public static void Delete(IEnumerable<FunctionUnit> functionUnits, MainModel mainModel)
         {
-            functionUnits.ForEach(sc => MainModelManager.DeleteFunctionUnit(sc, mainViewModel.Model));
-            ViewRedraw(mainViewModel);
+            functionUnits.ForEach(sc => MainModelManager.DeleteFunctionUnit(sc, mainModel));
+            ViewRedraw();
         }
 
 
-        public static void Copy(List<FunctionUnit> functionUnits)
+        public static void Copy(List<FunctionUnit> functionUnits, MainModel mainModel)
         {
             CopiedFunctionUnits.Clear();
             functionUnits.ForEach(CopiedFunctionUnits.Add);
         }
 
 
-        public static void Paste(MainViewModel mainViewModel, Point positionClicked)
+        public static void Paste(Point positionClicked, MainModel mainModel)
         {
             if (CopiedFunctionUnits.Count == 0)
                 return;
 
-            var copiedList = MainModelManager.Duplicate(CopiedFunctionUnits, mainViewModel.Model);
+            var copiedList = MainModelManager.Duplicate(CopiedFunctionUnits, mainModel);
             MainModelManager.MoveFunctionUnitsToClickedPosition(positionClicked, copiedList);
 
-            ViewRedraw(mainViewModel);
+            ViewRedraw();
         }
 
 
@@ -372,14 +370,14 @@ namespace Dexel.Editor.Views
         }
 
 
-        public static FunctionUnit DuplicateFunctionUnitIncludingChildrenAndIntegrated(MainViewModel mainViewModel, FunctionUnit functionUnit)
+        public static FunctionUnit DuplicateFunctionUnitIncludingChildrenAndIntegrated(FunctionUnit functionUnit, MainModel mainModel)
         {
             _toMove.Clear();
-            _toMove = MainModelManager.GetChildrenAndIntegrated(functionUnit, _toMove, mainViewModel.Model);
+            _toMove = MainModelManager.GetChildrenAndIntegrated(functionUnit, _toMove, mainModel);
 
-            var copiedFus = MainModelManager.Duplicate(_toMove, mainViewModel.Model);
+            var copiedFus = MainModelManager.Duplicate(_toMove, mainModel);
 
-            ViewRedraw(mainViewModel);
+            ViewRedraw();
 
             return copiedFus.First(x => x.OriginGuid == functionUnit.ID).NewFunctionUnit;
         }
@@ -387,17 +385,17 @@ namespace Dexel.Editor.Views
 
 
 
-        public static void SetPickedIntegration(MainViewModel mainViewModel, FunctionUnit functionUnit)
+        public static void SetPickedIntegration(FunctionUnit functionUnit, MainModel mainModel)
         {
-            MainModelManager.MakeIntegrationIncludingAllConnected(_startPickingAt, functionUnit, mainViewModel.Model);
-            ViewRedraw(mainViewModel);
+            MainModelManager.MakeIntegrationIncludingAllConnected(_startPickingAt, functionUnit, mainModel);
+            ViewRedraw();
         }
 
 
-        public static void RemoveFromIntegration(MainViewModel mainViewModel, FunctionUnit functionUnit)
+        public static void RemoveFromIntegration(FunctionUnit functionUnit, MainModel mainModel)
         {
-            MainModelManager.RemoveAllConnectedFromIntegration(functionUnit, mainViewModel.Model);
-            ViewRedraw(mainViewModel);
+            MainModelManager.RemoveAllConnectedFromIntegration(functionUnit, mainModel);
+            ViewRedraw();
         }
 
 
@@ -480,19 +478,19 @@ namespace Dexel.Editor.Views
         }
 
 
-        public static void Cut(MainViewModel mainViewModel, List<FunctionUnit> functionUnits)
+        public static void Cut(List<FunctionUnit> functionUnits, MainModel mainModel)
         {
 
             CopiedFunctionUnits.Clear();
             functionUnits.ForEach(CopiedFunctionUnits.Add);
 
-            functionUnits.ForEach(sc => MainModelManager.DeleteFunctionUnit(sc, mainViewModel.Model));
-            ViewRedraw(mainViewModel);
+            functionUnits.ForEach(sc => MainModelManager.DeleteFunctionUnit(sc, mainModel));
+            ViewRedraw();
 
         }
 
 
-        public static object AppendNewFunctionUnit(MainViewModel mainViewModel, FunctionUnit currentFunctionUnit, double offsetX, DataStreamDefinition outputToConnect)
+        public static object AppendNewFunctionUnit(FunctionUnit currentFunctionUnit, double offsetX, DataStreamDefinition outputToConnect, MainModel mainModel)
         {
             var newFunctionUnit = FunctionUnitManager.CreateNew();
 
@@ -502,11 +500,11 @@ namespace Dexel.Editor.Views
             // default IO of new function unit: input of new function unit = output to connect to of current function unit
             newFunctionUnit.InputStreams.Add(DataStreamManager.NewDefinition(newFunctionUnit, outputToConnect.DataNames));
             newFunctionUnit.OutputStreams.Add(DataStreamManager.NewDefinition(newFunctionUnit, "()"));
-            MainModelManager.ConnectTwoDefintions(outputToConnect, newFunctionUnit.InputStreams.First(), mainViewModel.Model);
+            MainModelManager.ConnectTwoDefintions(outputToConnect, newFunctionUnit.InputStreams.First(), mainModel);
 
-            mainViewModel.Model.FunctionUnits.Add(newFunctionUnit);
+            mainModel.FunctionUnits.Add(newFunctionUnit);
 
-            ViewRedraw(mainViewModel);
+            ViewRedraw();
 
             return newFunctionUnit;
         }
@@ -518,12 +516,12 @@ namespace Dexel.Editor.Views
         /// <param name="currentFunctionUnit">the functionUnit that is currently selected</param>
         /// <param name="mainModel">the mainmodel from the view</param>
         /// <returns>the model that was created or the first integrated functionUnit if it already had one</returns>
-        public static FunctionUnit CreateNewOrGetFirstIntegrated(MainViewModel mainViewModel, FunctionUnit currentFunctionUnit)
+        public static FunctionUnit CreateNewOrGetFirstIntegrated(FunctionUnit currentFunctionUnit, MainModel mainModel)
         {
             FunctionUnit @return = null;
 
             currentFunctionUnit.IsIntegration(
-                isIntegration: () => @return = MainModelManager.GetFirstOfIntegrated(currentFunctionUnit, mainViewModel.Model),
+                isIntegration: () => @return = MainModelManager.GetFirstOfIntegrated(currentFunctionUnit, mainModel),
                 isNotIntegration: () =>
                 {
                     var newFunctionUnit = FunctionUnitManager.CreateNew();
@@ -535,24 +533,24 @@ namespace Dexel.Editor.Views
 
                     currentFunctionUnit.IsIntegrating.Add(newFunctionUnit);
 
-                    mainViewModel.Model.FunctionUnits.Add(newFunctionUnit);
+                    mainModel.FunctionUnits.Add(newFunctionUnit);
 
                     @return = newFunctionUnit;
-                    ViewRedraw(mainViewModel);
+                    ViewRedraw();
                 });
 
             return @return;
         }
 
 
-        public static void DeleteDataTypeDefinition(MainViewModel mainViewModel, CustomDataType customDataType)
+        public static void DeleteDataTypeDefinition(CustomDataType customDataType, MainModel mainModel)
         {
-            mainViewModel.Model.DataTypes.Remove(customDataType);
-            ViewRedraw(mainViewModel);
+            mainModel.DataTypes.Remove(customDataType);
+            ViewRedraw();
         }
 
 
-        public static CustomDataType AddDataTypeDefinition(MainViewModel mainViewModel)
+        public static CustomDataType AddDataTypeDefinition(MainModel mainModel)
         {
             var dataType = new CustomDataType
             {
@@ -560,16 +558,16 @@ namespace Dexel.Editor.Views
                 SubDataTypes = null
             };
 
-            mainViewModel.Model.DataTypes.Add(dataType);
+            mainModel.DataTypes.Add(dataType);
 
-            ViewRedraw(mainViewModel);
+            ViewRedraw();
             return dataType;
         }
 
 
-        public static void AddMissingDataTypes(MainViewModel mainViewModel)
+        public static void AddMissingDataTypes(MainModel mainModel)
         {
-            var res = DataTypeManager.GetUndefinedTypenames(mainViewModel.Model).Where(x => !TypeConverter.IsSystemType(x));
+            var res = DataTypeManager.GetUndefinedTypenames(mainModel).Where(x => !TypeConverter.IsSystemType(x));
             res.ForEach(name =>
             {
                 var dataType = new CustomDataType
@@ -577,34 +575,34 @@ namespace Dexel.Editor.Views
                     Name = name,
                     SubDataTypes = null
                 };
-                mainViewModel.Model.DataTypes.Add(dataType);
+                mainModel.DataTypes.Add(dataType);
             });
-            ViewRedraw(mainViewModel);
+            ViewRedraw();
         }
 
 
         public static void UpdateMissingDataTypesCounter(MainModel mainModel)
         {
-            mainModel.Runtime.MissingDataTypes = DataTypeManager.GetUndefinedTypenames(mainModel).Where(x => !TypeConverter.IsSystemType(x)).ToList().Count;
+            MainViewModel.Instance().MissingDataTypes = DataTypeManager.GetUndefinedTypenames(mainModel).Where(x => !TypeConverter.IsSystemType(x)).ToList().Count;
         }
 
 
 
-        public static void SwapDataStreamOrder(MainViewModel mainViewModel, DataStreamDefinition dsd1, DataStreamDefinition dsd2)
+        public static void SwapDataStreamOrder(DataStreamDefinition dsd1, DataStreamDefinition dsd2, MainModel mainModel)
         {
             DataStreamManager.IsInSameCollection(dsd1, dsd2, list =>
             {
                 DataStreamManager.SwapDataStreamDefinitons(dsd1, dsd2, list);
             });
 
-            ViewRedraw(mainViewModel);
+            ViewRedraw();
 
         }
 
-        public static void LoadFromCSharp(MainViewModel mainViewModel, string fileName)
+        public static void LoadFromCSharp(string fileName)
         {
             var mainmodel = CSharpToFlowDesign.FromFile(fileName);
-            ViewRedraw(mainViewModel, mainmodel);
+            ViewRedraw(mainmodel);
         }
 
 
@@ -614,17 +612,17 @@ namespace Dexel.Editor.Views
         }
 
 
-        public static void Validate(MainViewModel mainViewModel)
+        public static void Validate(MainModel mainModel)
         {
             List<ValidationError> errorsAndWarnings = new List<ValidationError>();
 
             try
             {
-                FlowValidator.Validate(mainViewModel.Model, obj => errorsAndWarnings.Add(obj));
+                FlowValidator.Validate(mainModel, obj => errorsAndWarnings.Add(obj));
             }
             catch {}
 
-            mainViewModel.ShowValidationResult(errorsAndWarnings);
+            MainViewModel.Instance().ShowValidationResult(errorsAndWarnings);
         }
     }
 

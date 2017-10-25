@@ -13,7 +13,6 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
     public class ConnectionAdapterViewModel : IDragable, IDropable, IInputOutputViewModel
     {
         public Guid ID;
-        public MainViewModel MainViewModel { get; set; }
         public FunctionUnit Parent { get; set; }
         public string Actionname { get; set; }
         public double Width { get; set; }
@@ -26,17 +25,15 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         public List<Type> AllowedDropTypes
             => new List<Type> {typeof(ConnectionAdapterViewModel), typeof(DangelingConnectionViewModel)};
 
-        public bool LoadingModelFlag => MainViewModel.Model.Runtime.IsLoading;
-
 
         public void Drop(object data)
         {
             data.TryCast<ConnectionAdapterViewModel>(
                 droppedData =>
-                        Interactions.SwapDataStreamOrder(MainViewModel, droppedData.Model, Model));
+                        Interactions.SwapDataStreamOrder(droppedData.Model, Model, MainViewModel.Instance().Model));
             data.TryCast<DangelingConnectionViewModel>(
                 droppedData =>
-                        Interactions.SwapDataStreamOrder(MainViewModel, droppedData.Model, Model));
+                        Interactions.SwapDataStreamOrder(droppedData.Model, Model, MainViewModel.Instance().Model));
         }
 
 
@@ -53,13 +50,19 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         }
 
 
-        public void LoadFromModel(MainViewModel model, FunctionUnit parent, DataStreamDefinition dataStream)
+        public void LoadFromModel(FunctionUnit parent, DataStreamDefinition dataStream)
         {
             ID = dataStream.ID;
             Model = dataStream;
-            MainViewModel = model;
             Parent = parent;
             Actionname = dataStream.ActionName;
+        }
+
+
+        public static void LoadFromModel(ConnectionAdapterViewModel vm, FunctionUnit parent,
+            DataStreamDefinition dataStream)
+        {
+            vm.LoadFromModel(parent, dataStream);
         }
     }
 }

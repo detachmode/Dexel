@@ -20,7 +20,7 @@ namespace Dexel.Editor.Views.UserControls.DataTypeEditor
 
         public void FocusDataType(CustomDataType customDataType)
         {
-            ((MainViewModel)DataContext).SelectedFunctionUnits.Clear();
+            MainViewModel.Instance().SelectedFunctionUnits.Clear();
 
             DataTypeCard frameworkelement = null;
             DataTypeViewModel viewmodel = null;
@@ -52,14 +52,14 @@ namespace Dexel.Editor.Views.UserControls.DataTypeEditor
 
         private void AddNewDataTypeDefinition(object sender, RoutedEventArgs e)
         {
-            var newDataType = Interactions.AddDataTypeDefinition(((MainViewModel)DataContext));
+            var newDataType = Interactions.AddDataTypeDefinition(MainViewModel.Instance().Model);
             FocusDataType(newDataType);
         }
 
 
         private void CreateMissingTypes_click(object sender, RoutedEventArgs e)
         {
-            Interactions.AddMissingDataTypes(((MainViewModel)DataContext));
+            Interactions.AddMissingDataTypes(MainViewModel.Instance().Model);
         }
     }
 }

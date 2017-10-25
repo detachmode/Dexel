@@ -39,24 +39,7 @@
   <PropertyGroup>
     <StartupObject>Dexel.Editor.App</StartupObject>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
-    <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>bin\x86\Debug\</OutputPath>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
-    <PlatformTarget>x86</PlatformTarget>
-    <OutputPath>bin\x86\Release\</OutputPath>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GalaSoft.MvvmLight, Version=5.3.0.19026, Culture=neutral, PublicKeyToken=e7570ab207bcb616, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.dll</HintPath>
-    </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.3.0.19032, Culture=neutral, PublicKeyToken=669f0b5e8f868abf, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.Extras.dll</HintPath>
-    </Reference>
-    <Reference Include="GalaSoft.MvvmLight.Platform, Version=5.3.0.19032, Culture=neutral, PublicKeyToken=5f873c45e98af8a1, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\GalaSoft.MvvmLight.Platform.dll</HintPath>
-    </Reference>
     <Reference Include="ICSharpCode.AvalonEdit, Version=5.0.3.0, Culture=neutral, PublicKeyToken=9cc39be672370310, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\AvalonEdit.5.0.3\lib\Net40\ICSharpCode.AvalonEdit.dll</HintPath>
@@ -87,9 +70,6 @@
     <Reference Include="Microsoft.Expression.Interactions, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Blend.Interctivity.WPF.v4.0.1.0.3\lib\net40\Microsoft.Expression.Interactions.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
     </Reference>
     <Reference Include="PropertyChanged, Version=1.52.1.0, Culture=neutral, PublicKeyToken=ee3ee20bcf148ddd, processorArchitecture=MSIL">
       <HintPath>..\packages\PropertyChanged.Fody.1.52.1\lib\netstandard10\PropertyChanged.dll</HintPath>
@@ -125,8 +105,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\System.Reflection.Metadata.1.0.21\lib\portable-net45+win8\System.Reflection.Metadata.dll</HintPath>
     </Reference>
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmLightLibs.5.3.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Blend.Interctivity.WPF.v4.0.1.0.3\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -136,9 +117,6 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="TAlex.WPF.Controls, Version=2.0.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\TAlex.WPF.Controls.2.0.1.0\lib\net40\TAlex.WPF.Controls.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
@@ -150,23 +128,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="FileIO\AutoSave.cs" />
-    <Compile Include="FileIO\UISketches-SaveLoad.cs" />
-    <Compile Include="ViewModels\DexelViewModel.cs" />
-    <Compile Include="ViewModels\UI-Sketches\MainUiSketchViewModel.cs" />
-    <Compile Include="ViewModels\UI-Sketches\SketchRectangleViewModel.cs" />
-    <Compile Include="Views\AdditionalWindows\Popups.cs" />
-    <Compile Include="Views\AdditionalWindows\RenameDiagramWindow.xaml.cs">
-      <DependentUpon>RenameDiagramWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\CustomControls\AvalonEditBehaviour.cs" />
     <Compile Include="Views\CustomControls\IntegrationBorders.cs" />
-    <Compile Include="Views\CustomControls\ListBoxNoDragSelection.cs" />
-    <Compile Include="Views\CustomControls\ResizingAdorner.cs" />
     <Compile Include="Views\CustomControls\SelectionItemsControl.cs" />
     <Compile Include="Common\Extensions.cs" />
-    <Compile Include="Views\DexelWindow.xaml.cs">
-      <DependentUpon>DexelWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\MouseEventMediator.cs" />
     <Compile Include="FileIO\FileSaveLoad.cs" />
     <Compile Include="Views\Interactions.cs" />
@@ -174,18 +139,6 @@
     <Compile Include="ViewModels\DrawingBoard\ConnectionViewModel.cs" />
     <Compile Include="ViewModels\DrawingBoard\ConnectionAdapterViewModel.cs" />
     <Compile Include="ViewModels\DrawingBoard\DangelingConnectionViewModel.cs" />
-    <Compile Include="Views\UI-Sketches\ElementListView.xaml.cs">
-      <DependentUpon>ElementListView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UI-Sketches\SketchRectangleDetailsView.xaml.cs">
-      <DependentUpon>SketchRectangleDetailsView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UI-Sketches\TemporaryTestWindow.xaml.cs">
-      <DependentUpon>TemporaryTestWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\UI-Sketches\UiSketchCanvasView.xaml.cs">
-      <DependentUpon>UiSketchCanvasView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\UserControls\DataTypeEditor\DataTypeCard.xaml.cs">
       <DependentUpon>DataTypeCard.xaml</DependentUpon>
     </Compile>
@@ -225,10 +178,6 @@
     <Compile Include="Views\AdditionalWindows\UnkownErrorDialog.xaml.cs">
       <DependentUpon>UnkownErrorDialog.xaml</DependentUpon>
     </Compile>
-    <Page Include="Views\AdditionalWindows\RenameDiagramWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\CustomControls\DataNamesControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -249,10 +198,6 @@
     <Compile Include="Views\CustomControls\Pointer.cs" />
     <Compile Include="Views\CustomControls\ZoomBorder.cs" />
     <Compile Include="Common\DebugPrinter.cs" />
-    <Page Include="Views\DexelWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Themes\DarkColorfull.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -260,22 +205,6 @@
     <Page Include="Views\Themes\Print.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\UI-Sketches\ElementListView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UI-Sketches\SketchRectangleDetailsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UI-Sketches\TemporaryTestWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\UI-Sketches\UiSketchCanvasView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UserControls\DataTypeEditor\DataTypeCard.xaml">
       <SubType>Designer</SubType>
