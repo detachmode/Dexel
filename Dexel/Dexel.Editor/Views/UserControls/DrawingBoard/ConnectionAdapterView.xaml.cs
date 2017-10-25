@@ -21,7 +21,7 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
         private void OnLayoutUpdated(object sender, EventArgs eventArgs)
         {
             if (ViewModel() == null) return;
-            if (ViewModel().LoadingModelFlag)
+            if (MainViewModel.Instance().LoadingModelFlag)
                 return;
 
             ViewModel().Width = ActualWidth;
@@ -33,7 +33,7 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
 
         private void ActionNameTextBox_OnTextChanged(object sender, TextChangedEventArgs e)
         {
-            Interactions.Validate(((MainViewModel)DataContext));
+            Interactions.Validate(MainViewModel.Instance().Model);
         }
     }
 

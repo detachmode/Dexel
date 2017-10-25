@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Interactivity;
-using Dexel.Editor.ViewModels;
-using Dexel.Editor.ViewModels.DrawingBoard;
 
 namespace Dexel.Editor.Views.DragAndDrop
 {
@@ -35,7 +33,7 @@ namespace Dexel.Editor.Views.DragAndDrop
                     var draggedItem = e.Data.GetData(type) as IDragable;
 
                     var droppedOn = AssociatedObject.DataContext as IDropable;
-                    droppedOn?.Drop(draggedItem);
+                    droppedOn?.Drop(draggedItem);                  
                 });
 
 

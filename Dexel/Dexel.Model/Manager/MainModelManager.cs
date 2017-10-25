@@ -18,6 +18,7 @@ namespace Dexel.Model.Manager
             mainModel.Connections.RemoveAll(x => x.ID.Equals(dataStream.ID));
         }
 
+
         public static DataStreamDefinition AddNewOutput(FunctionUnit functionUnit, string datanames, string actionName = null)
         {
             return FunctionUnitManager.NewOutputDef(functionUnit, datanames, actionName);

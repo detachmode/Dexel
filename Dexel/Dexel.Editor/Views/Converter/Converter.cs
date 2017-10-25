@@ -2,11 +2,9 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using Dexel.Editor.ViewModels.DrawingBoard;
-using GalaSoft.MvvmLight.Command;
 
 namespace Dexel.Editor.Views.Converter
 {
@@ -218,17 +216,6 @@ namespace Dexel.Editor.Views.Converter
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
-        }
-    }
-
-    public class MouseButtonEventArgsToPointConverter : IEventArgsConverter
-    {
-        public object Convert(object value, object parameter)
-        {
-            var args = (MouseEventArgs)value;
-            var element = (FrameworkElement)parameter;
-            var point = args.GetPosition(element);
-            return point;
         }
     }
 }

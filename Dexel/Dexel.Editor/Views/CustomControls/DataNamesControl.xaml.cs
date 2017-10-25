@@ -23,7 +23,7 @@ namespace Dexel.Editor.Views.CustomControls
         public DataNamesControl()
         {
             InitializeComponent();
-            LoadColorSchema(DexelWindow.SyntaxColortheme);
+            LoadColorSchema(MainWindow.SyntaxColortheme);
 
             TextBox.LostFocus += (sender, args) => TextBox.TextArea.ClearSelection();
 
@@ -35,9 +35,8 @@ namespace Dexel.Editor.Views.CustomControls
 
                 DataContext.TryCast<DataStream>(ds => Interactions.ChangeConnectionDatanames(ds, currentText));
                 DataContext.TryCast<DataStreamDefinition>(dsd => dsd.DataNames = currentText);
-                var viewModel = (MainViewModel) DataContext;
-                Interactions.UpdateMissingDataTypesCounter(viewModel.Model);
-                Interactions.Validate(viewModel);
+                Interactions.UpdateMissingDataTypesCounter(MainViewModel.Instance().Model);
+                Interactions.Validate(MainViewModel.Instance().Model);
                 TextBox.SelectionStart = caret;
             };
 
@@ -59,7 +58,7 @@ namespace Dexel.Editor.Views.CustomControls
 
         private void LoadColorSchema(string url)
         {
-            if (DexelWindow.Xshd == null)
+            if (MainWindow.Xshd == null)
             {
                 if (!File.Exists(url))
                 {
@@ -67,11 +66,11 @@ namespace Dexel.Editor.Views.CustomControls
                 }
                 using (var reader = new XmlTextReader(url))
                 {
-                    DexelWindow.Xshd = HighlightingLoader.LoadXshd(reader);
+                    MainWindow.Xshd = HighlightingLoader.LoadXshd(reader);
                 }
             }
 
-            TextBox.SyntaxHighlighting = HighlightingLoader.Load(DexelWindow.Xshd, Man);
+            TextBox.SyntaxHighlighting = HighlightingLoader.Load(MainWindow.Xshd, Man);
         }
 
         #endregion

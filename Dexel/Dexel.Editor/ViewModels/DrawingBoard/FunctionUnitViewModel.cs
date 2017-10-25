@@ -26,7 +26,6 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
 
 
         public FunctionUnit Model { get; set; }
-        public MainViewModel MainViewModel { get; set; }
         public ObservableCollection<IInputOutputViewModel> Inputs { get; set; }
         public ObservableCollection<IInputOutputViewModel> Outputs { get; set; }
         public double Width { get; set; }
@@ -49,75 +48,69 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         {
             data.TryCast<DangelingConnectionViewModel>(
                 dangConnVM =>
-                    Interactions.ConnectDangelingConnectionAndFunctionUnit(MainViewModel, dangConnVM.Model, Model));
+                    Interactions.ConnectDangelingConnectionAndFunctionUnit(dangConnVM.Model, Model,
+                        MainViewModel.Instance().Model));
             data.TryCast<ConnectionViewModel>(
-                connVM => Interactions.ChangeConnectionDestination(MainViewModel, connVM.Model, Model));
+                connVM => Interactions.ChangeConnectionDestination(connVM.Model, Model, MainViewModel.Instance().Model));
         }
 
 
         public bool IsSelected { get; set; }
         public bool IsInvalid { get; set; }
-        public bool LoadingModelFlag => MainViewModel.Model.Runtime.IsLoading;
+
 
         public void UpdateConnectionsPosition(Point inputPoint, Point outputPoint)
         {
-            MainViewModel.UpdateConnectionsPosition(MainViewModel.Connections, inputPoint, outputPoint, this);
+            MainViewModel.Instance().UpdateConnectionsPosition(inputPoint, outputPoint, this);
         }
 
         #region Load Model
 
-        public void LoadFromModel(MainViewModel mainModel, FunctionUnit modelFunctionUnit)
+        public void LoadFromModel(FunctionUnit modelFunctionUnit)
         {
             Model = modelFunctionUnit;
-            MainViewModel = mainModel;
-            LoadDangelingInputs(mainModel, modelFunctionUnit);
-            LoadDangelingOutputs(mainModel, modelFunctionUnit);
+            LoadDangelingInputs(modelFunctionUnit);
+            LoadDangelingOutputs(modelFunctionUnit);
         }
 
 
-        public static void LoadFromModel(MainViewModel mainModel, FunctionUnitViewModel vm, FunctionUnit modelFunctionUnit)
+        public static void LoadFromModel(FunctionUnitViewModel vm, FunctionUnit modelFunctionUnit)
         {
-            vm.LoadFromModel(mainModel, modelFunctionUnit);
+            vm.LoadFromModel(modelFunctionUnit);
         }
 
 
-        private void LoadDangelingInputs(MainViewModel model, FunctionUnit modelFunctionUnit)
+        private void LoadDangelingInputs(FunctionUnit modelFunctionUnit)
         {
             RemoveDeleted(modelFunctionUnit.InputStreams, Inputs);
-            UpdateOrAdd(model, modelFunctionUnit, modelFunctionUnit.InputStreams, Inputs);
+            UpdateOrAdd(modelFunctionUnit, modelFunctionUnit.InputStreams, Inputs);
 
         }
 
 
-        private void UpdateOrAdd(MainViewModel model, FunctionUnit modelFunctionUnit,
+        private void UpdateOrAdd(FunctionUnit modelFunctionUnit,
             List<DataStreamDefinition> streamDefinitions,
             ObservableCollection<IInputOutputViewModel> viewmodels)
         {
             var lookup = viewmodels.ToLookup(x => x.Model.ID, x => x);
             streamDefinitions.ForEach(dataStreamDef => FindDangelingConnectionViewModel(lookup, dataStreamDef,
-                onFound: viewModel => UpdateExisting(model, modelFunctionUnit, viewmodels, dataStreamDef, viewModel),
-                onNotFound: () => NewViewModel(model, modelFunctionUnit, dataStreamDef, viewmodels.Add)));
+                onFound: viewModel => UpdateExisting(modelFunctionUnit, viewmodels, dataStreamDef, viewModel),
+                onNotFound: () => NewViewModel(modelFunctionUnit, dataStreamDef, viewmodels.Add)));
         }
 
 
-        private static void UpdateExisting(MainViewModel mainModel, FunctionUnit modelFunctionUnit,
+        private static void UpdateExisting(FunctionUnit modelFunctionUnit,
             ObservableCollection<IInputOutputViewModel> viewmodels,
             DataStreamDefinition dataStreamDef, IInputOutputViewModel oldViewModel)
         {
             CheckExistingViewmodel(dataStreamDef, oldViewModel,
-                correctViewModelConnected: () =>
-                {
-                    ((ConnectionAdapterViewModel)oldViewModel).LoadFromModel(mainModel, modelFunctionUnit, dataStreamDef);
-                },
-                correctViewModelUnconnected: () =>
-                {
-                    ((DangelingConnectionViewModel)oldViewModel).LoadFromModel(mainModel, modelFunctionUnit, dataStreamDef);
-                },
+                correctViewModelConnected: () => ConnectionAdapterViewModel.LoadFromModel((ConnectionAdapterViewModel)oldViewModel, modelFunctionUnit, dataStreamDef),
+                correctViewModelUnconnected: () => DangelingConnectionViewModel.LoadFromModel((DangelingConnectionViewModel)oldViewModel, modelFunctionUnit, dataStreamDef),
                 wrongViewModel: () =>
                 {
                     var index = viewmodels.IndexOf(oldViewModel);
                     viewmodels.Remove(oldViewModel);
-                    NewViewModel(mainModel, modelFunctionUnit, dataStreamDef, newVm => viewmodels.Insert(index, newVm));
+                    NewViewModel(modelFunctionUnit, dataStreamDef, newVm => viewmodels.Insert(index, newVm));
                 }
                 );
         }
@@ -148,19 +141,19 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         }
 
 
-        private static void NewViewModel(MainViewModel model, FunctionUnit modelFunctionUnit, DataStreamDefinition dataStreamDef, Action<IInputOutputViewModel> onNewViewModel)
+        private static void NewViewModel(FunctionUnit modelFunctionUnit, DataStreamDefinition dataStreamDef, Action<IInputOutputViewModel> onNewViewModel)
         {
             if (dataStreamDef.Connected)
             {
                 var vm = new ConnectionAdapterViewModel();
-                vm.LoadFromModel(model, modelFunctionUnit, dataStreamDef);
+                vm.LoadFromModel(modelFunctionUnit, dataStreamDef);
                 onNewViewModel(vm);
 
             }
             else
             {
                 var vm = new DangelingConnectionViewModel();
-                vm.LoadFromModel(model, modelFunctionUnit, dataStreamDef);
+                vm.LoadFromModel(modelFunctionUnit, dataStreamDef);
                 onNewViewModel(vm);
             }
 
@@ -186,15 +179,15 @@ namespace Dexel.Editor.ViewModels.DrawingBoard
         }
 
 
-        public void LoadDangelingOutputs(MainViewModel mainViewModel, FunctionUnit modelFunctionUnit)
+        public void LoadDangelingOutputs(FunctionUnit modelFunctionUnit)
         {
             RemoveDeleted(modelFunctionUnit.OutputStreams, Outputs);
             CheckOrderCorrect(modelFunctionUnit.OutputStreams, Outputs, 
-                onCorrectOrder: () => UpdateOrAdd(mainViewModel, modelFunctionUnit, modelFunctionUnit.OutputStreams, Outputs),
+                onCorrectOrder: () => UpdateOrAdd(modelFunctionUnit, modelFunctionUnit.OutputStreams, Outputs),
                 onWrongOrder: () =>
                 {
                     Outputs.Clear();
-                    modelFunctionUnit.OutputStreams.ForEach(dsd => NewViewModel(mainViewModel, dsd.Parent, dsd, Outputs.Add));
+                    modelFunctionUnit.OutputStreams.ForEach(dsd => NewViewModel(dsd.Parent, dsd, Outputs.Add));
                 });
         }
 

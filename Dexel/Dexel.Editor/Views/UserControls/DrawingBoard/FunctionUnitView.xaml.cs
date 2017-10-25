@@ -32,13 +32,14 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
 
         private void FunctionUnit_LayoutUpdated(object sender, EventArgs e)
         {
+            if (MainViewModel.Instance().LoadingModelFlag)
+                return;
             if (ViewModel() == null) return;
-            if (ViewModel().LoadingModelFlag) return;
 
             ViewModel().Width = Fu.ActualWidth;
             ViewModel().Height = Fu.ActualHeight;
 
-            MainViewModel.UpdateIntegrationBorderPosition(ViewModel());
+            MainViewModel.Instance().UpdateIntegrationBorderPosition(ViewModel());
             UpdateConnectionViewModels();
         }
 
@@ -68,13 +69,13 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
 
         private void NewOutput_click(object sender, RoutedEventArgs e)
         {
-            Interactions.AddNewOutput(ViewModel().MainViewModel, ViewModel().Model, "()");
+            Interactions.AddNewOutput(ViewModel().Model, "()");
         }
 
 
         private void Copy_click(object sender, RoutedEventArgs e)
         {
-            Interactions.Copy(GetSelectionOrClickedOn());
+            Interactions.Copy(GetSelectionOrClickedOn(), MainViewModel.Instance().Model);
         }
 
 /*
@@ -93,13 +94,13 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
 
         private void RemoveFromIntegration_OnClick(object sender, RoutedEventArgs e)
         {
-            Interactions.RemoveFromIntegration(ViewModel().MainViewModel, ViewModel().Model);
+            Interactions.RemoveFromIntegration(ViewModel().Model, MainViewModel.Instance().Model);
         }
 
 
         private void Delete_click(object sender, RoutedEventArgs e)
         {
-            Interactions.Delete(ViewModel().MainViewModel, GetSelectionOrClickedOn());
+            Interactions.Delete(GetSelectionOrClickedOn(), MainViewModel.Instance().Model);
         }
 
         #endregion
@@ -109,11 +110,10 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
         private List<Model.DataTypes.FunctionUnit> GetSelectionOrClickedOn()
         {
             var list = new List<Model.DataTypes.FunctionUnit>();
-            var mainViewModel = ((FunctionUnitViewModel)DataContext).MainViewModel;
-            if (mainViewModel.SelectedFunctionUnits.Count == 0)
+            if (MainViewModel.Instance().SelectedFunctionUnits.Count == 0)
                 list.Add(ViewModel().Model);
             else
-                list = mainViewModel.SelectedFunctionUnits.Select(x => x.Model).ToList();
+                list = MainViewModel.Instance().SelectedFunctionUnits.Select(x => x.Model).ToList();
 
             return list;
         }
@@ -122,7 +122,7 @@ namespace Dexel.Editor.Views.UserControls.DrawingBoard
         private void DeleteDataStreamDefinition(object sender, RoutedEventArgs e)
         {
             var vm = (DangelingConnectionViewModel)((FrameworkElement)sender).DataContext;
-            Interactions.DeleteDatastreamDefiniton(ViewModel().MainViewModel, vm.Model, vm.Parent);
+            Interactions.DeleteDatastreamDefiniton(vm.Model, vm.Parent);
         }
     }
 
